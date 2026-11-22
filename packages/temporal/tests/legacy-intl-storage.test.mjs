@@ -152,6 +152,47 @@ assert.notEqual(
   'Exercise installed native-Intl bridge'
 )
 {
+  const hooks = [
+    [Array.prototype, 'map'],
+    [Array.prototype, 'find'],
+    [Set.prototype, 'has'],
+    [Map.prototype, 'get'],
+    [Map.prototype, 'set'],
+    [WeakMap.prototype, 'get'],
+    [WeakMap.prototype, 'set'],
+    [RegExp.prototype, 'exec'],
+  ].map(([target, key]) => [
+    target,
+    key,
+    Object.getOwnPropertyDescriptor(target, key),
+  ])
+  const [first, last] = cases[0].values(Temporal)
+  for (const calendar of ['chinese', 'dangi']) {
+    const options = {...cases[0].options, calendar}
+    const reference = new Native('en', options)
+    for (const method of ['formatRange', 'formatRangeToParts']) {
+      const expected = reference[method](cases[0].first, cases[0].last)
+      const formatter = new Intl.DateTimeFormat('en', options)
+      let actual
+      try {
+        for (const [target, key, descriptor] of hooks) {
+          Object.defineProperty(target, key, {
+            ...descriptor,
+            value() {
+              throw new Error(`Unexpected calendar field hook ${key}`)
+            },
+          })
+        }
+        actual = formatter[method](first, last)
+      } finally {
+        for (const [target, key, descriptor] of hooks)
+          Object.defineProperty(target, key, descriptor)
+      }
+      assert.deepEqual(actual, expected, `${calendar} ${method}`)
+    }
+  }
+}
+{
   for (const sample of [cases[0], cases[5]]) {
     const [first, last] = sample.values(Temporal)
     for (const [method, expected] of [

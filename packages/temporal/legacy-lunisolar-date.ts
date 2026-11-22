@@ -16,6 +16,7 @@ import {
   type CalendarDate,
 } from '#packages/temporal/calendar.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
+import {createObject} from '#packages/temporal/intrinsics.js'
 
 type Calendar = 'chinese' | 'dangi'
 type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
@@ -23,6 +24,11 @@ type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 // ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
 // https://tc39.es/ecma262/#sec-reflect.apply
 const apply = Reflect.apply
+const mapGet = Map.prototype.get
+const mapSet = Map.prototype.set
+const weakMapGet = WeakMap.prototype.get
+const weakMapSet = WeakMap.prototype.set
+const regexpExec = RegExp.prototype.exec
 const Constructor = globalThis.Intl?.DateTimeFormat
 const nativeParts = Constructor?.prototype.formatToParts
 const NumberConstructor = globalThis.Intl?.NumberFormat
@@ -32,7 +38,7 @@ const numberFormat =
 const dayMilliseconds = 86400000
 const probes = new Map<string, Intl.DateTimeFormat>()
 const positiveEras = new WeakMap<Intl.DateTimeFormat, string>()
-const dateTypes = new Set(['year', 'relatedYear', 'yearName', 'month', 'day'])
+const dateTypes = ['year', 'relatedYear', 'yearName', 'month', 'day']
 const stableRangeFields = [
   'day',
   'year',
@@ -66,7 +72,7 @@ function probe(
   timeZone: string
 ): Intl.DateTimeFormat {
   const key = `${calendar}:${timeZone}`
-  let result = probes.get(key)
+  let result = apply(mapGet, probes, [key]) as Intl.DateTimeFormat | undefined
   if (!result) {
     // ECMA-402 §11.5.11 steps 3–5: ask Intl for local calendar fields.
     result = new Constructor!('en-US-u-nu-latn', {
@@ -78,7 +84,7 @@ function probe(
       day: 'numeric',
       ...(calendar === 'iso8601' ? {era: 'short' as const} : {}),
     })
-    probes.set(key, result)
+    apply(mapSet, probes, [key, result])
   }
   return result
 }
@@ -127,18 +133,21 @@ function fields(
   milliseconds: number
 ): {year: number; month: number; day: number; monthCode: string} {
   const formatter = probe(calendar, timeZone)
-  const values = new Map<string, string>(
-    apply(nativeParts!, formatter, [milliseconds]).map(
-      // ECMA-402 §11.5.7 steps 4.b–c: read the emitted type and value.
-      part => [part.type, part.value]
-    )
-  )
+  // ECMA-402 §11.5.7 steps 4.b–c expose the type and value.
+  // Read the host parts into a private record for calendar comparison.
+  // https://tc39.es/ecma402/#sec-formatdatetimetoparts
+  const parts = apply(nativeParts!, formatter, [milliseconds])
+  const values: Record<string, string | undefined> = createObject(null)
+  for (let index = 0; index < parts.length; index++) {
+    const {type, value} = parts[index]
+    values[type] = value
+  }
   // ECMA-402 §11.5.4 steps 15.f.iii and 15.h.i: recover year and related year.
   const year = numberFrom(
-    values.get(calendar === 'iso8601' ? 'year' : 'relatedYear')
+    values[calendar === 'iso8601' ? 'year' : 'relatedYear']
   )
-  const day = numberFrom(values.get('day'))
-  const month = /^(\d{1,2})(bis)?$/.exec(values.get('month') || '')
+  const day = numberFrom(values.day)
+  const month = apply(regexpExec, /^(\d{1,2})(bis)?$/, [values.month || ''])
   if (
     !numberIsSafeInteger(year) ||
     !numberIsInteger(day) ||
@@ -152,17 +161,22 @@ function fields(
   // ECMA-402 §11.5.12 Table 17: recover signed Gregorian year using the era.
   let bce = false
   if (calendar === 'iso8601') {
-    let positive = positiveEras.get(formatter)
+    let positive = apply(weakMapGet, positiveEras, [formatter]) as
+      | string
+      | undefined
     if (positive === undefined) {
-      positive = apply(nativeParts!, formatter, [0]).find(
-        // ECMA-402 §11.5.7 step 4.b: find the era type on the host control.
-        part => part.type === 'era'
-      )?.value
+      // ECMA-402 §11.5.7 step 4.b: find the era type on the host control.
+      const control = apply(nativeParts!, formatter, [0])
+      for (let index = 0; index < control.length; index++) {
+        if (control[index].type !== 'era') continue
+        positive = control[index].value
+        break
+      }
       if (!positive)
         throw new RangeErrorConstructor('Unsupported host Gregorian era')
-      positiveEras.set(formatter, positive)
+      apply(weakMapSet, positiveEras, [formatter, positive])
     }
-    bce = values.get('era') !== positive
+    bce = values.era !== positive
   }
   return {
     year: bce ? 1 - year : year,
@@ -439,7 +453,7 @@ export function correctLunisolarParts(
     !arraySome(
       raw,
       // ECMA-402 §11.5.7 step 4.b: check host part types before correction.
-      part => dateTypes.has(part.type)
+      part => arrayIncludes(dateTypes, part.type)
     )
   )
     return raw
