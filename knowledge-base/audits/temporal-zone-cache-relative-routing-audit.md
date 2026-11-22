@@ -7,7 +7,7 @@ historical line credit. These are implementation hook defects, not new spec issu
 
 ## Five private Maps
 
-[Captured bindings:29](../../packages/temporal/zones.ts#L29) retain the original
+[Captured bindings:36](../../packages/temporal/zones.ts#L36) retain the original
 Map constructor, get and set at module initialization. Bound native invocation
 also avoids later Function.prototype.call/bind lookups. No Map implementation
 is added. Relevant native dependencies are
@@ -15,11 +15,11 @@ is added. Relevant native dependencies are
 [§24.1.3.11 set](https://tc39.es/ecma262/#sec-map.prototype.set).
 
 All eight reads and nine writes now delegate through those captured methods.
-All five stores use the captured constructor: [kernel cache:44](../../packages/temporal/zones.ts#L44),
-[identifier table:55](../../packages/temporal/zones.ts#L55),
-[named kernels:128](../../packages/temporal/zones.ts#L128),
-[spelling table:181](../../packages/temporal/zones.ts#L181), and
-[fixed kernels:196](../../packages/temporal/zones.ts#L196). Identifier and spelling
+All five stores use the captured constructor: [kernel cache:51](../../packages/temporal/zones.ts#L51),
+[identifier table:62](../../packages/temporal/zones.ts#L62),
+[named kernels:135](../../packages/temporal/zones.ts#L135),
+[spelling table:191](../../packages/temporal/zones.ts#L191), and
+[fixed kernels:206](../../packages/temporal/zones.ts#L206). Identifier and spelling
 tables initialize lazily, so capturing only methods would leave a constructor
 hook after import. Constructor calls supply no iterable.
 
@@ -37,8 +37,10 @@ replacement global Map constructor. Expected offsets are literal zero and
 objects/slots in the same namespace. Mutations restore before assertions.
 
 This capture contract assumes original intrinsics at initialization. Identifier
-String methods, Object helpers, fallback/host data pipelines and complete
-provider contracts remain separate obligations. Native profiles share wrappers,
+String methods, Object helpers and default compact preparation are
+covered by the [follow-up audit](temporal-zone-preparation-audit.md). Packed
+fallback/host data pipelines and complete provider contracts remain open.
+Native profiles share wrappers,
 but these mutation witnesses specifically execute the TS frontend path.
 
 ## Relative string routing

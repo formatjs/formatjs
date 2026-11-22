@@ -70,6 +70,8 @@ Zoned `relativeTo` preparation for Duration rounding/totals keeps omitted privat
 fields isolated from inherited getters. ZonedDateTime rounding rejects invalid
 units/increments before computing local time.
 Private timezone caches retain their original Map constructor and access methods.
+Timezone name preparation retains original case/key methods. Default compact-zone
+transition preparation avoids replaced array methods and inherited row/metadata setters.
 Relative `Duration` options route strings without an extra RegExp test; full
 string validation still follows the existing parsers.
 

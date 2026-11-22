@@ -1,5 +1,11 @@
 # Temporal implementation
 
+Timezone name preparation captures original case conversion and key enumeration.
+Default compact transition expansion reads private tuples by index, defines own
+rows/future metadata, then uses captured native sort on dense private data. The
+[preparation audit](audits/temporal-zone-preparation-audit.md) records eight public
+regressions; packed fallback, host preparation and calendar normalization remain open.
+
 Temporal timezone caches retain their original Map constructor/get/set, including
 lazy identifier tables. RelativeTo string routing uses bounded character scanning
 without an extra RegExp method call or match-state change. The
