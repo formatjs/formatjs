@@ -214,6 +214,58 @@ it('collects fold candidates without invoking inherited index setters', () => {
   ])
 })
 
+it('uses exposed legacy transition rows for short folds and reloads', async () => {
+  const Original = Intl.DateTimeFormat
+  const name = 'America/Phoenix'
+  const hour = 3_600_000_000_000n
+  class LegacyDateTimeFormat extends Original {
+    static polyfilled = true
+    static tzData = {
+      [name]: [
+        [-Infinity, 'STD', 0, false],
+        [0, 'DST', 43_200, true],
+        [21_600, 'STD', 0, false],
+      ],
+    }
+    static __addTZData() {
+      LegacyDateTimeFormat.tzData = {[name]: [[-Infinity, 'STD', 0, false]]}
+    }
+    constructor(
+      locales?: Intl.LocalesArgument,
+      options?: Intl.DateTimeFormatOptions
+    ) {
+      super(locales, {...options, timeZone: 'UTC'})
+    }
+    resolvedOptions() {
+      return {...super.resolvedOptions(), timeZone: name}
+    }
+    formatToParts(value?: number | Date) {
+      const milliseconds = Number(value)
+      const row = LegacyDateTimeFormat.tzData[name].findLast(
+        row => Number(row[0]) * 1000 <= milliseconds
+      )!
+      return super.formatToParts(milliseconds + Number(row[2]) * 1000)
+    }
+  }
+  vi.resetModules()
+  try {
+    Intl.DateTimeFormat = LegacyDateTimeFormat as typeof Original
+    const {createHostTimeZone: create} =
+      await import('#packages/temporal/host-timezone.js')
+    const zone = create(name)
+    const fold = {year: 1970, month: 1, day: 1, hour: 15}
+    expect(zone.possibleInstants(fold)).toEqual([3n * hour, 15n * hour])
+    expect(() => zone.resolve(fold, 'reject')).toThrow(RangeError)
+    expect(zone.transition(-1n, 'next')).toBe(0n)
+    LegacyDateTimeFormat.__addTZData()
+    expect(zone.possibleInstants(fold)).toEqual([15n * hour])
+    expect(zone.transition(-1n, 'next')).toBeNull()
+  } finally {
+    Intl.DateTimeFormat = Original
+    vi.resetModules()
+  }
+})
+
 it('extracts offsets when the host falls back to an Arabic locale', async () => {
   const Original = Intl.DateTimeFormat
   vi.resetModules()

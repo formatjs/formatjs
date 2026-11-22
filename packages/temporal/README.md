@@ -65,7 +65,9 @@ Default accepts native Intl or installed FormatJS polyfills; no formatter packag
 is imported, so no circular runtime dependency. Install Intl before importing
 Temporal, which captures its intrinsics. ICU oracles verify offsets, gap/fold
 resolution and transitions on Hermes. Node also compares host-data results with
-`temporal-polyfill`. Native Intl exposes offset queries. Forward searches
+`temporal-polyfill`. Legacy FormatJS DateTimeFormat builds with explicit
+transition rows use those rows for exact zone queries and pick up data reloads.
+Native Intl exposes offset queries. Forward searches
 probe from 1800 or the input, whichever is later, through three years beyond
 the latest of the input, current date and shipped last explicit transition.
 Previous searches probe nearby future years before resuming at the padded

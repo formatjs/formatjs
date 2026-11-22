@@ -292,6 +292,9 @@ al-Qura and named timezone operations. Default ships generated IANA identifiers
 and conservative transition-search intervals, without offset histories. Installed
 Intl may be native or a FormatJS polyfill; load it before Temporal captures its
 intrinsics. No formatter package import or circular dependency is introduced.
+When an installed legacy FormatJS DateTimeFormat exposes compatible explicit
+transition rows, Temporal resolves that zone with its existing exact kernel.
+Replacing the zone data refreshes the kernel on the next query.
 The explicit `standalone.js` entry retains full calendar packs and owned IANA
 histories/future rules. Both Rust WASM profiles and the Hermes SDK retain owned
 timezone data. Earlier measurements below describe their historical data policy.

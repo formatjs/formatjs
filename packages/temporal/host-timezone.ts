@@ -5,6 +5,7 @@ import {
   mathAbs,
   mathMin,
   numberFrom,
+  numberIsSafeInteger,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
@@ -16,11 +17,13 @@ import {
   timeZoneMetadata,
 } from '#packages/temporal/native.js'
 import {
+  createTimeZone,
   isoToEpochNanoseconds,
   type ISODateTime,
   type Disambiguation,
   type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
+import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 import {DateFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 
@@ -32,6 +35,7 @@ export type HostTimeZone = Pick<
 const apply = Reflect.apply
 const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
 const arraySort = Array.prototype.sort
+const isArray = Array.isArray
 const arrayFind = Array.prototype.find
 const arrayCopyWithin = Array.prototype.copyWithin
 const arrayPop = Array.prototype.pop
@@ -50,6 +54,7 @@ const mapIteratorNext = Object.getPrototypeOf(new MapConstructor().keys())
   .next as () => IteratorResult<number>
 const Constructor = globalThis.Intl?.DateTimeFormat
 const hostParts = Constructor?.prototype.formatToParts
+const hostResolvedOptions = Constructor?.prototype.resolvedOptions
 const queryTemporalTimeZoneKey = Symbol.for(
   '@formatjs/intl-datetimeformat/queryTemporalTimeZone'
 )
@@ -62,14 +67,18 @@ type OwnedTimeZoneQuery = (
   direction?: 'earlier' | 'later'
 ) => bigint[] | bigint | undefined
 // ECMA-262 §7.3.12 steps 1–3: A capability descriptor must have its own value.
+function ownDataValue(object: object | undefined, key: PropertyKey): unknown {
+  const descriptor = object && getOwnPropertyDescriptor(object, key)
+  if (!descriptor || !HasOwnProperty(descriptor, 'value')) return undefined
+  return descriptor.value
+}
+
 function hostTimeZoneCapability(
   method: object | undefined,
   key: symbol
 ): unknown {
-  const descriptor = method && getOwnPropertyDescriptor(method, key)
-  if (!descriptor || !HasOwnProperty(descriptor, 'value')) return undefined
   // ECMA-262 §7.2.3 step 2: A capability must be callable.
-  const value = descriptor.value
+  const value = ownDataValue(method, key)
   return typeof value === 'function' ? value : undefined
 }
 
@@ -104,6 +113,61 @@ type HostTimeZoneIntrinsics = {
   parts?: typeof Intl.DateTimeFormat.prototype.formatToParts
 }
 
+function legacyTimeZoneKernel(
+  constructor: Intl.DateTimeFormatConstructor,
+  formatter: Intl.DateTimeFormat
+): (() => TimeZoneKernel | undefined) | undefined {
+  if (
+    !hostResolvedOptions ||
+    checkHostTemporalCandidates ||
+    ownDataValue(constructor, 'polyfilled') !== true ||
+    typeof ownDataValue(constructor, '__addTZData') !== 'function'
+  )
+    return undefined
+  const name = apply(hostResolvedOptions, formatter, []).timeZone
+  let previous: unknown
+  let kernel: TimeZoneKernel | undefined
+  return () => {
+    const table = ownDataValue(constructor, 'tzData')
+    const rows =
+      typeof table === 'object' && table !== null
+        ? ownDataValue(table, name)
+        : undefined
+    if (rows === previous) return kernel
+    previous = rows
+    kernel = undefined
+    // Older FormatJS builds publish explicit rows with a -Infinity sentinel.
+    if (
+      !isArray(rows) ||
+      !rows.length ||
+      getOwnPropertyDescriptor(rows, 'future')
+    )
+      return undefined
+    let last = -Infinity
+    for (let index = 0; index < rows.length; index++) {
+      const row = ownDataValue(rows, index)
+      if (!isArray(row)) return undefined
+      const start = ownDataValue(row, 0)
+      const offset = ownDataValue(row, 2)
+      if (
+        typeof start !== 'number' ||
+        (index === 0
+          ? start !== -Infinity
+          : !numberIsSafeInteger(start) || start <= last) ||
+        typeof offset !== 'number' ||
+        !numberIsSafeInteger(offset) ||
+        mathAbs(offset) >= 86400
+      )
+        return undefined
+      last = start
+    }
+    // §11.1.13 steps 3.a and 4.a need every candidate, including raw epochs
+    // outside the Instant range. Reuse the exact resolver for exposed rows.
+    // https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds
+    return (kernel = createTimeZone(rows as UnpackedTimeZoneData))
+  }
+}
+
 // Proposal comparison §11.1.9 step 3: prepare the host Intl formatter for named offsets.
 function createHostTimeZoneProvider(
   timeZone: string,
@@ -112,6 +176,7 @@ function createHostTimeZoneProvider(
   offsetNanoseconds: HostTimeZone['offsetNanoseconds']
   offsetAt: HostTimeZone['offsetNanoseconds']
   beginOperation(): boolean
+  legacyKernel?: () => TimeZoneKernel | undefined
   ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
   nearestLocalAfter?: TimeZoneKernel['nearestLocalAfter']
   dataGeneration?: () => object
@@ -238,6 +303,10 @@ function createHostTimeZoneProvider(
   }
   return {
     offsetNanoseconds,
+    legacyKernel:
+      parts === hostParts
+        ? legacyTimeZoneKernel(Constructor, formatter)
+        : undefined,
     offsetAt: instant => {
       beginOperation()
       return offsetNanoseconds(instant)
@@ -273,6 +342,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     offsetNanoseconds,
     offsetAt,
     beginOperation,
+    legacyKernel,
     ownedCandidates,
     nearestLocalAfter,
     ownedTransition,
@@ -314,6 +384,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     ])
   }
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
+    const legacy = legacyKernel?.()
+    if (legacy) return legacy.possibleInstantsFromEpochNanoseconds!(local)
     beginOperation()
     return candidatesFor(local)
   }
@@ -325,6 +397,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
+    const legacy = legacyKernel?.()
+    if (legacy) return legacy.resolve(fields, disambiguation)
     if (
       !arrayIncludes(
         ['compatible', 'earlier', 'later', 'reject'],
@@ -376,6 +450,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     instant: bigint,
     direction: 'next' | 'previous'
   ): bigint | null => {
+    const legacy = legacyKernel?.()
+    if (legacy) return legacy.transition(instant, direction)
     check(instant)
     // Proposal comparison §6.3.46 steps 9.a and 10.b: use exact owned boundaries.
     const owned = ownedTransition?.(instant, direction)
@@ -479,10 +555,12 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     return value
   }
   return {
-    offsetNanoseconds: offsetAt,
+    offsetNanoseconds: instant =>
+      legacyKernel?.()?.offsetNanoseconds(instant) ?? offsetAt(instant),
     possibleInstants,
     possibleInstantsFromEpochNanoseconds,
-    nearestLocalAfter,
+    nearestLocalAfter: local =>
+      (legacyKernel?.()?.nearestLocalAfter ?? nearestLocalAfter)?.(local),
     resolve,
     transition,
   }
