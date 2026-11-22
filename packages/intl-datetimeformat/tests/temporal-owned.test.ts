@@ -46,6 +46,59 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test('rejects missing range endpoints with the intrinsic TypeError', () => {
+  const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+  const OriginalTypeError = TypeError
+  let reads = 0
+  const endpoint = {
+    [Symbol.toPrimitive]() {
+      reads++
+      return 0
+    },
+  }
+  const errors: unknown[] = []
+  try {
+    globalThis.TypeError = new Proxy(OriginalTypeError, {
+      construct() {
+        return new Error('Unexpected global TypeError')
+      },
+    })
+    for (const operation of [
+      () => formatter.formatRange(endpoint as any, undefined as any),
+      () => formatter.formatRangeToParts(undefined as any, endpoint as any),
+    ]) {
+      try {
+        operation()
+      } catch (error) {
+        errors.push(error)
+      }
+    }
+  } finally {
+    globalThis.TypeError = OriginalTypeError
+  }
+  expect(reads).toBe(0)
+  expect(errors).toHaveLength(2)
+  for (const error of errors) expect(error).toBeInstanceOf(OriginalTypeError)
+})
+
+test('compares PlainDateTime ranges in the display zone across a formatter DST fold', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'America/New_York',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+  const start = Temporal.PlainDateTime.from('2024-11-03T05:30')
+  const end = Temporal.PlainDateTime.from('2024-11-03T06:30')
+  const hours = formatter
+    .formatRangeToParts(start, end)
+    .filter(part => part.type === 'hour')
+  expect(hours).toEqual([
+    {type: 'hour', value: '05', source: 'startRange'},
+    {type: 'hour', value: '06', source: 'endRange'},
+  ])
+})
+
 test.each([
   ['Array.find', Array.prototype, 'find'],
   ['Array.map', Array.prototype, 'map'],

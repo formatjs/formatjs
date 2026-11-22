@@ -8,6 +8,7 @@ import {
   numberIsInteger,
   RangeErrorConstructor,
   setDataProperty,
+  TypeErrorConstructor,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
@@ -603,15 +604,12 @@ const {formatRangeToParts} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    // ECMA-402 §11.3.5, step 2: validate before reading arguments.
+    // ECMA-402 §11.3.5 steps 2–3: validate before converting endpoints.
     // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1072-L1077
     getInternalSlots(dtf)
-    invariant(
-      startDate !== undefined && endDate !== undefined,
-      'startDate/endDate cannot be undefined',
-      TypeError
-    )
+    if (startDate === undefined || endDate === undefined)
+      throw new TypeErrorConstructor('startDate/endDate cannot be undefined')
 
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
@@ -636,15 +634,12 @@ const {formatRange} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    // ECMA-402 §11.3.4, step 2: validate before reading arguments.
+    // ECMA-402 §11.3.4 steps 2–3: validate before converting endpoints.
     // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1057-L1062
     getInternalSlots(dtf)
-    invariant(
-      startDate !== undefined && endDate !== undefined,
-      'startDate/endDate cannot be undefined',
-      TypeError
-    )
+    if (startDate === undefined || endDate === undefined)
+      throw new TypeErrorConstructor('startDate/endDate cannot be undefined')
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
     return FormatDateTimeRange(dtf, x, y, getDateTimeImplementationDetails())

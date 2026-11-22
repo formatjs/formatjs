@@ -98,6 +98,9 @@ export function PartitionDateTimeRangePattern(
   const dataLocaleData =
     rootLocaleData.calendarData?.[internalSlots.calendar!] ?? rootLocaleData
   /** IMPL END */
+  // §15.6.8 steps 12–13 use the formatter zone. §15.6.4 step 12 renders
+  // Plain values in UTC. Compare in UTC too to preserve distinct wall times.
+  // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
   const tm1 = ToLocalTime(
     first.epochNanoseconds,
     // @ts-ignore
