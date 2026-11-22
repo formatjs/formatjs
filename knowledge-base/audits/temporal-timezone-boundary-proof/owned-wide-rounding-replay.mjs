@@ -387,3 +387,34 @@ for (const [zone, calendar, startDate, months] of [
   )
   console.log(JSON.stringify({retainedMonthLowerBound: calendar, months}))
 }
+
+const foldedGapZone = 'America/New_York'
+Intl.DateTimeFormat.__addTZData({
+  abbrvs: 'TEST',
+  offsets: [-3n, -4n, 4n]
+    .map(offset => (offset * 3600n).toString(36))
+    .join('|'),
+  zones: [
+    foldedGapZone + '|' + [row(null, 0), row(-4, 1), row(-3, 2)].join('|'),
+  ],
+})
+const foldedGap = (local, disambiguation) =>
+  Temporal.ZonedDateTime.from(`${local}[${foldedGapZone}]`, {disambiguation})
+    .epochNanoseconds
+const beforeGap = '1969-12-31T16:59:59.999999999'
+const firstBeforeGap = foldedGap(beforeGap, 'earlier')
+const lastBeforeGap = foldedGap(beforeGap, 'later')
+assert.equal(firstBeforeGap, -4n * hour - 1n)
+assert.equal(lastBeforeGap, -3n * hour - 1n)
+assert.throws(() => foldedGap(beforeGap, 'reject'), RangeError)
+assert.equal(foldedGap('1970-01-01T01:00', 'reject'), -3n * hour)
+assert.throws(() => foldedGap('1970-01-01T00:00', 'reject'), RangeError)
+assert.equal(foldedGap('1970-01-01T07:00', 'reject'), 3n * hour)
+assert.equal(foldedGap('1970-01-01T08:00', 'reject'), 4n * hour)
+console.log(
+  JSON.stringify({
+    foldedGapBoundary: foldedGapZone,
+    beforeCandidates: [firstBeforeGap.toString(), lastBeforeGap.toString()],
+    currentLater: foldedGap('1970-01-01T00:00', 'later').toString(),
+  })
+)

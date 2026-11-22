@@ -132,7 +132,7 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states include 215 conditional and 94 comparison-issue rows. No reviewed
+Remaining core states include 215 conditional and 95 comparison-issue rows. No reviewed
 or partial rows remain. Amendments have 35 conditional and 11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
@@ -444,6 +444,9 @@ reachable local time across intersecting transitions within an unclipped
 interval. Its date-only callers pass the requested date explicitly.
 [Gap replay](temporal-timezone-boundary-proof/README.md#shifted-clock-still-inside-a-gap).
 [Day-start replay](temporal-timezone-boundary-proof/README.md#start-of-day-after-intersecting-transitions).
+The nearest earlier boundary of a separate exact synthetic gap has two
+candidates. This gives a published comparison issue at §11.1.12 step 9.
+[Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).
 The finite retained-week count now has an explicit provider-bound proof.
 A separate public replay isolates the month bubbling policy after a valid
 directed rounding window. The numbered conditions keep their current scope.

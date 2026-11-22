@@ -554,6 +554,22 @@ the fallback when the comparison's nonempty shifted-list assertion fails.
 - Before-fix Bazel SHA-256 `cb4c8dc7cc869d3c2b77be248205ef1ca939deaeae0b11611dd9f5f24da5dafc`
 - Pinned Node 26.8.1 package replay SHA-256 `bf5ca9418c93f957cbb62458c7057466006748bbb1007876f5d7c98f39c2306e`
 
+### Folded nearest gap boundary
+
+An initial −03:00 changes to −04:00 at epoch hour −4, then +04:00 at
+−3. Local midnight is missing. Its nearest earlier local clock, 17:00
+minus 1 ns the previous day, has two candidates at epoch hours −4 and
+−3 minus 1 ns. Its nearest later local clock, 01:00, has one candidate
+at epoch hour −3. This falsifies the singleton assertion in step 9.
+Choosing the earlier or later candidate there would shift midnight
+to local 07:00 or 08:00, giving different results. The package currently
+uses the containing transition and returns epoch hour +3 for later.
+[§11.1.12 steps 8–14](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+[Package replay](owned-wide-rounding-replay.mjs).
+
+Pinned Node 26.8.1 replay SHA-256
+`643e9172bda35b8064159eec5be6f83f9835f283633ed201b36ca31a8c65efa9`.
+
 ### Start of day after intersecting transitions
 
 With initial offset +5h, an offset change to −5h at epoch hour −5 is

@@ -34,6 +34,11 @@ hour 148. The subsequent month check under §7.5.37 steps 6.b.viii–x accepts a
 duration that adds back to hour 158. This composition issue is distinct from
 the published retry and zero-span assertions.
 
+[Folded gap boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary)
+falsifies the singleton assertion in §11.1.12 step 9 on an exact synthetic
+provider. The two before-candidates give different shifts. Current fallback
+behavior remains recorded separately.
+
 [Amendment issues](temporal-amendment-spec-issues.md) record inconsistent Plain
 range comparison timezones (§15.6.8) and duplicate digital Duration group appends
 (§15.9.8). These remain separate from runtime defects and pending candidate tests.

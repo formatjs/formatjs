@@ -37,9 +37,9 @@
   "review_status_counts": {
     "verified": 152,
     "informative": 234,
-    "verified_local_step": 4113,
+    "verified_local_step": 4112,
     "conditional": 215,
-    "spec_issue": 94
+    "spec_issue": 95
   },
   "status_note": "unreconciled means review evidence not yet entered into this register, not missing implementation. existing_evidence_pending preserves current audit references; reviewed/conditional record exact local-step reconciliation, not whole-method compliance.",
   "public_code_binding_rows": 268,
@@ -189,9 +189,11 @@
       "11.1.12/algorithm-1/step-7"
     ],
     "custom_provider_comparison_assertions": [
+      "11.1.12/algorithm-1/step-9",
       "11.1.12/algorithm-1/step-16.f",
       "11.1.12/algorithm-1/step-24"
     ],
-    "evidence": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md#owned-formatjs-gap-disambiguation"
+    "evidence": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md#owned-formatjs-gap-disambiguation",
+    "folded_nearest_boundary_evidence": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary"
   }
 }
