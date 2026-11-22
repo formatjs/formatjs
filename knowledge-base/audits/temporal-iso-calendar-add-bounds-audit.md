@@ -97,9 +97,9 @@ reject cases. Current TS/Rust regulate before displacement and preserve them.
 ## Complete caller bounds versus raw provider boundaries
 
 AST finds exactly two production addNormalizedCalendarDate consumers:
-[date-core576](../../packages/temporal/date-core.ts#L576) and
+[date-core576](../../packages/temporal/date-core.ts#L579) and
 [YearMonth173](../../packages/temporal/plain-year-month.ts#L173).
-The former [addDate569](../../packages/temporal/date-core.ts#L569) applies dayCheck
+The former [addDate569](../../packages/temporal/date-core.ts#L572) applies dayCheck
 to the complete result; the latter applies its corrected full-date guard before
 wider YearMonth bounds. Raw addCalendarDateRaw is used by calendarDateUntilRaw's
 internal trial arithmetic, not proof that its intermediate is a public result.

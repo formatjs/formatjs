@@ -286,8 +286,9 @@ export function relativeRound(
       result.weeks = count
       return result
     }
-    // Proposal comparison §7.5.34 steps 5–6: Resolve the next endpoint if the upper bound falls short.
-    if ((end - b) * bigIntFrom(sign) <= 0n) {
+    // Proposal comparison §7.5.34 steps 5–6: Reuse shared rounding outside the week window.
+    const distance = (end - a) * bigIntFrom(sign)
+    if (0n <= distance && distance <= span) {
       result.weeks = numberFrom(
         roundDuration(bigIntFrom(count) * span + end - a, span, mode) / span
       )

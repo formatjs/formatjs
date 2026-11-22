@@ -379,10 +379,12 @@ nearest reachable local boundaries.
 [Owned gap boundaries](temporal-timezone-boundary-proof/README.md#overlapping-owned-gap-boundaries).
 Borrowed Rust and compact TypeScript now reject exact mixed-range candidates
 at both Instant limits. Retained-week rounding validates its later endpoint
-after an outward retry. Unbound provider capability, lower-side prefix behavior
+after an outward retry. The lower-side retry now keeps both bounds valid when
+the retained prefix overshoots with zero weeks. Unbound provider capability
 and the published assertions remain open.
 [Mixed-range candidates](temporal-timezone-boundary-proof/README.md#borrowed-mixed-range-candidate).
 [Retained-week upper bound](temporal-relative-rounding-contract-audit.md#retained-week-upper-bound).
+[Retained-week lower bound](temporal-relative-rounding-contract-audit.md#retained-week-lower-bound).
 The exact Apia target is now a shared public oracle across TypeScript and
 native Hermes. Its endpoint policy is verified independently of the published
 zero-span assertion. The Intl witnesses isolate two separate prerequisites,
@@ -396,6 +398,9 @@ need their own proof. The native Intl candidate path now appends private
 candidates without calling inherited index setters.
 [Legacy dataset proof](temporal-timezone-boundary-proof/README.md#released-formatter-with-its-shipped-data).
 [Host regression](../../packages/temporal/tests/host-timezone.test.ts#L98).
+Three exact helper comments now cover the Object branch, cached ISO projection
+and canonical packed zone selection. The fixed inventory records 54 reviewed
+helpers without a numbered anchor.
 
 From 16:35 to 17:47 UTC, 44 numbered conditions closed in 71 minutes. The
 final two batches in that interval each landed a validated local correction

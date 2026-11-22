@@ -103,6 +103,7 @@ export const clockFactors: readonly bigint[] = [
   1n,
 ]
 export function object(value: unknown): value is Record<string, unknown> {
+  // Temporal comparison §3.5.4 step 2: test the Object branch, including callables.
   return IsObject(value)
 }
 export function integer(value: unknown): number {
@@ -326,6 +327,8 @@ export function dateFieldsView(
   slot: DateSlot,
   extended = false
 ): Readonly<CalendarDate> {
+  // Temporal comparison §12.3.26 steps 1–2: reuse private ISO fields or project
+  // through the calendar provider. Unread record fields may be elided.
   if (
     import.meta.formatjsTemporalNativeData !== true &&
     !nativeTemporal() &&
@@ -1025,13 +1028,34 @@ export function roundRelativeDifference(
     prefix[key] = truncated + stride
     // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
     let b = anchor.endpoint(prefix)
+    let rebasedUpper: DurationFields | undefined
     // Proposal comparison §7.5.34 steps 5.a and 6.a require a bracket.
     // Shift inward if the first endpoint overshoots.
     if ((end - a) * physicalSign < 0n) {
-      truncated -= stride
       b = a
-      prefix[key] = truncated
-      a = anchor.endpoint(prefix)
+      if (smallest === 'week' && truncated === 0) {
+        prefix[key] = 0
+        rebasedUpper = {...prefix}
+        // Zero fields keep the origin, so an overshoot requires a calendar prefix.
+        // Keep the upper prefix. Borrow from the last nonzero calendar unit
+        // so the lower week's fields have one sign.
+        const unit = prefix.months !== 0 ? 'months' : 'years'
+        prefix[unit] -= sign
+        a = anchor.endpoint(prefix)
+        // Offsets can shorten the week stride by less than two days.
+        const minStride = (7n * bigIntFrom(increment) - 2n) * nsPerDay
+        while ((end - a) * physicalSign > minStride) {
+          prefix[key] = truncated + stride
+          const next = anchor.endpoint(prefix)
+          if ((end - next) * physicalSign < 0n) break
+          truncated += stride
+          a = next
+        }
+      } else {
+        truncated -= stride
+        prefix[key] = truncated
+        a = anchor.endpoint(prefix)
+      }
     }
     // A wide fold can put more than one bound before the target.
     while (a !== end && (b - end) * physicalSign < 0n) {
@@ -1067,13 +1091,14 @@ export function roundRelativeDifference(
               (mode === 'halfCeil' && positive) ||
               (mode === 'halfFloor' && !positive) ||
               (mode === 'halfEven' &&
-                mathAbs(truncated / increment) % 2 === 1)))
+                (rebasedUpper !== undefined ||
+                  mathAbs(truncated / increment) % 2 === 1))))
       }
     }
     // Proposal comparison §7.5.34 steps 22–24: keep the selected endpoint and
     // duration.
     prefix[key] = (expand ? truncated + stride : truncated) || 0
-    result = prefix
+    result = expand && rebasedUpper ? rebasedUpper : prefix
     rounded = expand ? b : a
     expanded ||= expand
   } else if (anchor.zoned && largeIndex < 4) {

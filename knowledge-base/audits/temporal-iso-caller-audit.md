@@ -9,17 +9,17 @@ Temporal API chapters; no API section completion or historical trace credit.
 Published proposal [§12.3.10 ToTemporalCalendarIdentifier](https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier)
 is comparison only. Source retains these distinct contracts:
 
-- [calendarFromObject:133](../../packages/temporal/date-core.ts#L133) uses five
+- [calendarFromObject:133](../../packages/temporal/date-core.ts#L134) uses five
   calendar-bearing slots before reading public calendar once. Undefined defaults
   to ISO through calendarId.
-- [calendarId:160](../../packages/temporal/date-core.ts#L160) checks branded slots,
+- [calendarId:160](../../packages/temporal/date-core.ts#L161) checks branded slots,
   rejects nonstrings without coercion, selects bare identifier or calendar-bearing
   string parsing, lowercases, applies aliases and checks supported calendars.
-- [Bare recognition:138](../../packages/temporal/date-core.ts#L138) uses bounded
+- [Bare recognition:138](../../packages/temporal/date-core.ts#L139) uses bounded
   indexed ASCII reads. First character must be a letter; later characters may
   include digits/hyphens. Initial T/t followed by a digit routes to the parser.
   This preserves clock-shaped calendar strings, including invalid-clock rejection.
-- [constructorCalendar:173](../../packages/temporal/date-core.ts#L173) accepts
+- [constructorCalendar:173](../../packages/temporal/date-core.ts#L174) accepts
   identifier strings only. Positional constructors still reject date strings;
   already-parsed calendar fields use this narrower helper. Defaults remain ISO.
 - [Captured lowercase:81](../../packages/temporal/date-core.ts#L81) retains original

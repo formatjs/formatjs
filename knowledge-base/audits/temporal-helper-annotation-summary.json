@@ -9,19 +9,19 @@
     "unmapped": 23
   },
   "annotation_coverage": {
-    "direct_numbered": 982,
-    "no_numbered_anchor": 57,
+    "direct_numbered": 985,
+    "no_numbered_anchor": 54,
     "enclosing_numbered": 26,
     "retired_callback": 4
   },
-  "direct_with_step_wording": 863,
+  "direct_with_step_wording": 866,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 982
+    "overlap": 985
   },
   "no_numbered_anchor_by_kind": {
     "function": 18,
-    "named-function": 18,
-    "callback": 21
+    "named-function": 16,
+    "callback": 20
   },
   "role_review_bundles": {
     "time_zone_and_zoned_algorithm_review": {
@@ -37,8 +37,8 @@
       "rows": 247,
       "files": 19,
       "coverage": {
-        "direct_numbered": 210,
-        "no_numbered_anchor": 28,
+        "direct_numbered": 211,
+        "no_numbered_anchor": 27,
         "enclosing_numbered": 8,
         "retired_callback": 1
       }
@@ -72,8 +72,8 @@
       "rows": 240,
       "files": 24,
       "coverage": {
-        "direct_numbered": 215,
-        "no_numbered_anchor": 7,
+        "direct_numbered": 217,
+        "no_numbered_anchor": 5,
         "enclosing_numbered": 15,
         "retired_callback": 3
       }
@@ -89,7 +89,7 @@
     "crates/intl_datetimeformat_calendars/provider.rs": "612bdd5d09dfaa9d29685d7320a236979291ca4a136c8e1de2fb1825c1b13384",
     "crates/intl_datetimeformat_calendars/table_calendar.rs": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b",
     "crates/intl_datetimeformat_calendars/tables.rs": "25a5677bccc6a4aa4c56d9579e4146777164e0f3773fc50aaaa4096934e0ac66",
-    "crates/temporal/calendar_difference.rs": "b24670823dc9922696f07a2b97607ae65e5d737e7288f8f6ff67400e78d3ce1e",
+    "crates/temporal/calendar_difference.rs": "770fbe40e0b529dbd0eecd0500e172dccbf3ce7dee4e9efa4039756530f724ac",
     "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
     "crates/temporal/calendar_registry.rs": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70",
     "crates/temporal/context.rs": "d424868bd51364e82419be034038517318875cd7ba9a803b6a5aeff28f7911a9",
@@ -102,7 +102,7 @@
     "crates/temporal/now.rs": "554885cb8e8fad1b15f10e6a85a5bd99bc8b8687b64613a28cd3603eba35b840",
     "crates/temporal/parse.rs": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4",
     "crates/temporal/plain_relative.rs": "a407f5324b1278260131dda1f6bb23370e5729e079d7ec32e3bddf4ba2e342c1",
-    "crates/temporal/relative_duration.rs": "c751d01356c855a909f41e6e58f805f6d03a2e250f3599bf0819bc9b22d77c39",
+    "crates/temporal/relative_duration.rs": "087a70c023c7be3410afe0b5e5485d78eb7f78dc5b5c55a129616fb65c4f3f63",
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
     "crates/temporal/short_dates.rs": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
     "crates/temporal/time.rs": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
@@ -117,12 +117,12 @@
     "packages/temporal/calendar.ts": "168b94ad6d7209e1ce0eabcfec3f3c1c28b9490189cf73024a8a711bde9dfd98",
     "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
     "packages/temporal/date-bridge.ts": "0c4e032747e8006f9794fef18d45fd5cb0520a40a535aa15bc5ef00f80989afc",
-    "packages/temporal/date-core.ts": "61a8852bc036344d6a089f12f4eccb9b0e96df381c9c2f5ce359a35232c7d234",
+    "packages/temporal/date-core.ts": "984e8d1628536defb57191110a336598c52304fbc543cf372a8a799f0bce1b91",
     "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
     "packages/temporal/duration-core.ts": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8",
     "packages/temporal/duration-format.ts": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636",
     "packages/temporal/duration.ts": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363",
-    "packages/temporal/fallback-data.ts": "6f0a8fd407bdd0e655a7e7a143b814542ddd5074af23e16e6132b9014e3083d8",
+    "packages/temporal/fallback-data.ts": "773df550626979d4221ff41527003546e6ed37e7a73aea46b9e49fd6e071c370",
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
@@ -148,7 +148,7 @@
     "packages/temporal/plain-slots.ts": "912e2aca439c3f932c510381d5f143a4f365130a1a4d4f73f60cb783fae8f1a7",
     "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
     "packages/temporal/plain-year-month.ts": "ca95004881d884a061ec664e7987cc04bb0f3361b251097e9d835b7353afcae4",
-    "packages/temporal/relative-duration.ts": "2f125db6facdd941e1626053507918f9128e5adaa87b6697cc06927fbd026150",
+    "packages/temporal/relative-duration.ts": "74767df73e567154789f1dc8a47fdf0a6ad49870a60400711f21d163e510779c",
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/short-date-core.ts": "873911e54f428df9e1218185e7b67f650581a316dcbce7b15763f9f3c8c78715",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
@@ -601,8 +601,8 @@
         "unmapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 3,
-        "direct_numbered": 35
+        "direct_numbered": 37,
+        "no_numbered_anchor": 1
       }
     },
     {
@@ -660,8 +660,8 @@
         "unmapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 2,
-        "direct_numbered": 5,
+        "no_numbered_anchor": 1,
+        "direct_numbered": 6,
         "retired_callback": 1
       }
     },

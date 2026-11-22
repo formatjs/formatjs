@@ -12,14 +12,14 @@ not substituted authority or complete caller signoff.
 Compared [§7.5.38 step9](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration)
 bubbles only after a nudge reports expansion, with smallestUnit replaced by the
 larger of actual smallest and day; week smallest unit excludes bubbling. TS
-[date-core.ts:1040](../../packages/temporal/date-core.ts#L1049) and Rust
-[calendar_difference.rs:302](../../crates/temporal/calendar_difference.rs#L348)
+[date-core.ts:1040](../../packages/temporal/date-core.ts#L1073) and Rust
+[calendar_difference.rs:302](../../crates/temporal/calendar_difference.rs#L377)
 use expanded && smallest!=week and min(smallestIndex,dayIndex). This reproduces
 entry-unit selection; it does not prove every producer sets expanded correctly.
 
 AST call inventory finds exactly two TS calls to roundRelativeDifference:
 
-- [date-core.ts:844](../../packages/temporal/date-core.ts#L844), through
+- [date-core.ts:844](../../packages/temporal/date-core.ts#L847), through
   roundedDateTimeDifference. Public callers: PlainDate.until/since
   [plain-date.ts:277](../../packages/temporal/plain-date.ts#L277),
   PlainDateTime.until/since
@@ -27,7 +27,7 @@ AST call inventory finds exactly two TS calls to roundRelativeDifference:
   PlainYearMonth.until/since
   [plain-year-month.ts:260](../../packages/temporal/plain-year-month.ts#L260),
   and plain-relative Duration.round
-  [relative-duration.ts:305](../../packages/temporal/relative-duration.ts#L310).
+  [relative-duration.ts:305](../../packages/temporal/relative-duration.ts#L311).
 - [zoned-date-time.ts:628](../../packages/temporal/zoned-date-time.ts#L628), through
   differenceZonedDuration. Public ZonedDateTime.until/since and zoned-relative
   Duration.round [relative-duration.ts:281](../../packages/temporal/relative-duration.ts#L283).
@@ -45,8 +45,8 @@ arithmetic structure, not JS coercion, public option order or complete adapters.
 
 ## Numbered comparison map
 
-TS anchor: [date-core.ts:1039–1054](../../packages/temporal/date-core.ts#L1048).
-Rust anchor: [calendar_difference.rs:302–318](../../crates/temporal/calendar_difference.rs#L348).
+TS anchor: [date-core.ts:1039–1054](../../packages/temporal/date-core.ts#L1072).
+Rust anchor: [calendar_difference.rs:302–318](../../crates/temporal/calendar_difference.rs#L377).
 The effective smallest index below already includes the caller's day cap.
 
 | Compared step                | TS                        | Rust                           | Result / premise                                                                                                            |
@@ -81,7 +81,7 @@ The effective smallest index below already includes the caller's day cap.
 ## Endpoint and precision proof boundaries
 
 TS plain endpoint closure
-[date-core.ts:855](../../packages/temporal/date-core.ts#L855) adds constrained
+[date-core.ts:855](../../packages/temporal/date-core.ts#L858) adds constrained
 calendar fields to original date, multiplies resulting epoch day by exact
 nsPerDay, then adds original timeOf(start). Zoned closure
 [zoned-date-time.ts:639](../../packages/temporal/zoned-date-time.ts#L639) calls

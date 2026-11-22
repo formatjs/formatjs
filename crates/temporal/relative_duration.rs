@@ -163,8 +163,8 @@ pub(crate) fn round<A: RelativeAnchor>(
             return Duration::new(fields);
         }
         let span = (b - a) * sign;
-        // Proposal comparison §7.5.34 steps 5–6: Resolve the next endpoint if the upper bound falls short.
-        if (finish - b) * sign <= 0 {
+        // Proposal comparison §7.5.34 steps 5–6: Reuse shared rounding outside the week window.
+        if (0..=span).contains(&((finish - a) * sign)) {
             fields[2] =
                 crate::rounding::round_duration(count * span + finish - a, span, mode) / span;
             return Duration::new(fields);

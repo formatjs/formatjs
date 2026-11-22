@@ -28,7 +28,7 @@ all large Duration field values remain exact Numbers.
 
 ## Changed core
 
-[TS roundRelativeDifference:900](../../packages/temporal/date-core.ts#L900)
+[TS roundRelativeDifference:900](../../packages/temporal/date-core.ts#L903)
 retains strict clock-increment validation and the existing equal-endpoint case.
 Lines 882–889 take the time-largest branch before creating balanced Number fields:
 compute the original epoch difference, apply the `since` sign, round in BigInt,
@@ -57,7 +57,7 @@ also remain before the shared core.
 
 The skipped time-unit unrounded paths perform epoch subtraction and private
 balancing; they do not invoke calendar arithmetic, local-time resolution or a
-zone offset provider. See [TS plain](../../packages/temporal/date-core.ts#L802),
+zone offset provider. See [TS plain](../../packages/temporal/date-core.ts#L805),
 [TS zoned](../../packages/temporal/zoned-date-time.ts#L520) and
 [Rust](../../crates/temporal/calendar_difference.rs#L117). Avoiding those private
 intermediates skips no required input getter or provider callback. Complete

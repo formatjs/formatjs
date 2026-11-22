@@ -264,13 +264,36 @@ pub(crate) fn difference<A: RelativeAnchor>(
         prefix[index] = truncated + stride;
         // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
         let mut b = endpoint(start, prefix)?;
+        let mut rebased_upper = None;
         // Proposal comparison §7.5.34 steps 5–6 require a bracket. A borrowed
         // zone can make the first endpoint overshoot after count truncation.
         if (end - a) * sign < 0 {
-            truncated -= stride;
             b = a;
-            prefix[index] = truncated;
-            a = endpoint(start, prefix)?;
+            if smallest == DateTimeUnit::Week && truncated == 0 {
+                prefix[index] = 0;
+                rebased_upper = Some(prefix);
+                // Zero fields keep the origin, so an overshoot requires a calendar prefix.
+                // Keep the upper prefix. Borrow from the last nonzero
+                // calendar unit so the lower week's fields have one sign.
+                let unit = if prefix[1] != 0 { 1 } else { 0 };
+                prefix[unit] -= sign;
+                a = endpoint(start, prefix)?;
+                // Offsets can shorten the week stride by less than two days.
+                let min_stride = (7 * i128::from(increment) - 2) * NANOSECONDS_PER_DAY;
+                while (end - a) * sign > min_stride {
+                    prefix[index] = truncated + stride;
+                    let next = endpoint(start, prefix)?;
+                    if (end - next) * sign < 0 {
+                        break;
+                    }
+                    truncated += stride;
+                    a = next;
+                }
+            } else {
+                truncated -= stride;
+                prefix[index] = truncated;
+                a = endpoint(start, prefix)?;
+            }
         }
         // A wide fold can put more than one successive bound before the target.
         while a != end && (b - end) * sign < 0 {
@@ -298,7 +321,9 @@ pub(crate) fn difference<A: RelativeAnchor>(
                 RoundingMode::HalfTrunc => false,
                 RoundingMode::HalfCeil => positive,
                 RoundingMode::HalfFloor => !positive,
-                RoundingMode::HalfEven => (truncated / i128::from(increment)).abs() % 2 == 1,
+                RoundingMode::HalfEven => {
+                    rebased_upper.is_some() || (truncated / i128::from(increment)).abs() % 2 == 1
+                }
             }
         };
         prefix[index] = if expand {
@@ -306,7 +331,11 @@ pub(crate) fn difference<A: RelativeAnchor>(
         } else {
             truncated
         };
-        fields = prefix;
+        fields = if expand {
+            rebased_upper.unwrap_or(prefix)
+        } else {
+            prefix
+        };
         rounded = if expand { b } else { a };
         expanded |= expand;
     } else if A::ZONED && largest <= DateTimeUnit::Day {

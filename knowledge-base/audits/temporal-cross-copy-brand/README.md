@@ -20,9 +20,9 @@ module graph and pass these controls.
 
 Exact reader ranges are
 [`toInstant`](../../../packages/temporal/instant.ts#L154-L164),
-[`calendarSlot`](../../../packages/temporal/date-core.ts#L129-L137),
-[`calendarFromObject`](../../../packages/temporal/date-core.ts#L138-L143) and
-[`calendarId`](../../../packages/temporal/date-core.ts#L166-L179).
+[`calendarSlot`](../../../packages/temporal/date-core.ts#L130-L138),
+[`calendarFromObject`](../../../packages/temporal/date-core.ts#L139-L144) and
+[`calendarId`](../../../packages/temporal/date-core.ts#L167-L180).
 The ledger retains local same-copy behavior and marks four numbered steps as
 confirmed gaps. Four failing public controls cover these four steps, with two
 controls for §8.5.3 step 1.a and one for both §12.3.11 steps.

@@ -27,7 +27,7 @@ const row = (hours, index) =>
   ',0'
 Intl.DateTimeFormat.__addTZData({
   abbrvs: 'TEST',
-  offsets: [23n, -23n, 17n, 12n, -5n, 21n, 16n, -20n]
+  offsets: [23n, -23n, 17n, 12n, -5n, 21n, 16n, -20n, 2n, -18n, -21n]
     .map(offset => (offset * 3600n).toString(36))
     .join('|'),
   zones: [
@@ -36,6 +36,11 @@ Intl.DateTimeFormat.__addTZData({
     'America/Denver|' + [row(null, 1), row(42, 3)].join('|'),
     'America/New_York|' + [row(null, 4), row(max / hour - 33n, 5)].join('|'),
     'America/Los_Angeles|' + [row(null, 6), row(max / hour - 50n, 7)].join('|'),
+    'America/Detroit|' + [row(null, 4), row(159, 5)].join('|'),
+    'America/Chicago|' +
+      [row(null, 8), row(-234, 9), row(46, 5), row(62, 10), row(111, 3)].join(
+        '|'
+      ),
   ],
 })
 
@@ -135,3 +140,51 @@ const retainedOptions = {
 }
 assert.throws(() => retainedDuration.round(retainedOptions), RangeError)
 console.log(JSON.stringify({retainedWeekRound: 'RangeError'}))
+
+for (const [zone, originHour, targetHour, lowerHour, upperHour, sign] of [
+  ['America/Detroit', -574n, 169n, 98n, 170n, 1],
+  ['America/Chicago', 812n, 63n, 140n, 59n, -1],
+]) {
+  const origin = new Temporal.ZonedDateTime(originHour * hour, zone, 'gregory')
+  const target = new Temporal.ZonedDateTime(targetHour * hour, zone, 'gregory')
+  const elapsed = Temporal.Duration.from({
+    hours: Number(targetHour - originHour),
+  })
+  const lower = Temporal.Duration.from({weeks: sign * 4})
+  const upper = Temporal.Duration.from({months: sign})
+  assert.equal(origin.add(lower).epochNanoseconds, lowerHour * hour)
+  assert.equal(origin.add(upper).epochNanoseconds, upperHour * hour)
+  for (const roundingMode of [
+    'trunc',
+    'ceil',
+    'floor',
+    'expand',
+    'halfCeil',
+    'halfFloor',
+    'halfExpand',
+    'halfTrunc',
+    'halfEven',
+  ]) {
+    const options = {largestUnit: 'month', smallestUnit: 'week', roundingMode}
+    const expected =
+      roundingMode === 'trunc' || roundingMode === (sign > 0 ? 'floor' : 'ceil')
+        ? lower
+        : upper
+    assert.equal(origin.until(target, options).toString(), expected.toString())
+    assert.equal(
+      elapsed.round({...options, relativeTo: origin}).toString(),
+      expected.toString()
+    )
+  }
+  const increment = origin.until(target, {
+    largestUnit: 'month',
+    smallestUnit: 'week',
+    roundingIncrement: 3,
+    roundingMode: 'trunc',
+  })
+  assert.equal(
+    increment.toString(),
+    Temporal.Duration.from({weeks: sign * 3}).toString()
+  )
+  console.log(JSON.stringify({retainedWeekLowerBound: zone, sign}))
+}

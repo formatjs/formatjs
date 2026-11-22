@@ -64,7 +64,10 @@ export function fallbackTimeZonePrimary(): ReturnType<
 export function fallbackTimeZoneData(name: string): UnpackedTimeZoneData {
   if (nativeDataOnly) return unavailable()
   if (compactTimeZones) return unpackCompactTimeZone(name)
-  const entry = packed.zones.find(value => value.startsWith(name + '|'))
+  const entry = packed.zones.find(
+    // Temporal comparison §11.1.9 step 3: select the canonical zone's packed data.
+    value => value.startsWith(name + '|')
+  )
   if (!entry) throw new RangeErrorConstructor('Unknown canonical zone')
   return UnpackTimeZoneData({...packed, zones: [entry]})[name]
 }

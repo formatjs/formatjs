@@ -226,6 +226,103 @@ fn zoned_week_rounding_validates_rebased_endpoint() {
     );
 }
 
+#[test]
+fn zoned_week_rounding_rebases_a_retained_prefix_with_no_weeks() {
+    let hour = 3_600_000_000_000;
+    let forward = [OffsetTransition {
+        epoch_seconds: 159 * 3_600,
+        offset_seconds: 21 * 3_600,
+    }];
+    let backward = [
+        OffsetTransition {
+            epoch_seconds: -234 * 3_600,
+            offset_seconds: -18 * 3_600,
+        },
+        OffsetTransition {
+            epoch_seconds: 46 * 3_600,
+            offset_seconds: 21 * 3_600,
+        },
+        OffsetTransition {
+            epoch_seconds: 62 * 3_600,
+            offset_seconds: -21 * 3_600,
+        },
+        OffsetTransition {
+            epoch_seconds: 111 * 3_600,
+            offset_seconds: 12 * 3_600,
+        },
+    ];
+    for (initial, transitions, first, second, toward, away, toward_three, floor, ceil) in [
+        (
+            -5,
+            forward.as_slice(),
+            -574,
+            169,
+            "P4W",
+            "P1M",
+            "P3W",
+            "P4W",
+            "P1M",
+        ),
+        (
+            2,
+            backward.as_slice(),
+            812,
+            63,
+            "-P4W",
+            "-P1M",
+            "-P3W",
+            "-P1M",
+            "-P4W",
+        ),
+    ] {
+        let zone = TransitionZone::new(initial * 3_600, transitions, None).unwrap();
+        let zoned = |value: i128| {
+            ZonedDateTime::new_in_calendar(
+                Instant::from_epoch_nanoseconds(value * hour).unwrap(),
+                zone,
+                Calendar::Gregory,
+            )
+        };
+        let origin = zoned(first);
+        let target = zoned(second);
+        let duration =
+            Duration::from_time_nanoseconds((second - first) * hour, TimeUnit::Hour).unwrap();
+        for (mode, expected) in [
+            (RoundingMode::Trunc, toward),
+            (RoundingMode::Expand, away),
+            (RoundingMode::Floor, floor),
+            (RoundingMode::Ceil, ceil),
+            (RoundingMode::HalfEven, away),
+        ] {
+            let expected = expected.parse::<Duration>().unwrap();
+            assert_eq!(
+                origin
+                    .until(&target, DateTimeUnit::Month, DateTimeUnit::Week, 1, mode)
+                    .unwrap(),
+                expected
+            );
+            assert_eq!(
+                origin
+                    .round_duration(duration, DateTimeUnit::Month, DateTimeUnit::Week, 1, mode)
+                    .unwrap(),
+                expected
+            );
+        }
+        assert_eq!(
+            origin
+                .until(
+                    &target,
+                    DateTimeUnit::Month,
+                    DateTimeUnit::Week,
+                    3,
+                    RoundingMode::Trunc,
+                )
+                .unwrap(),
+            toward_three.parse::<Duration>().unwrap()
+        );
+    }
+}
+
 fn unit(text: &str) -> DateTimeUnit {
     text.parse().unwrap()
 }
