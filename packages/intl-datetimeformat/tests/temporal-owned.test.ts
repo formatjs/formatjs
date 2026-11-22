@@ -46,6 +46,31 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test('creates Temporal format parts without mutable Array.from', () => {
+  const value = new Temporal.PlainDate(2020, 2, 3)
+  const formatter = new DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+  const expected = formatter.formatToParts(value as any)
+  const original = Array.from
+  let actual: unknown, error: unknown
+  try {
+    Array.from = () => {
+      throw new Error('Mutable array creation reached')
+    }
+    actual = formatter.formatToParts(value as any)
+  } catch (caught) {
+    error = caught
+  } finally {
+    Array.from = original
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toEqual(expected)
+})
+
 test('constructs and formats Temporal values without mutable isPrototypeOf', () => {
   const value = new Temporal.PlainDate(2020, 2, 3)
   const options = {timeZone: 'UTC'}

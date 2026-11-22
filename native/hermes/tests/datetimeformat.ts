@@ -252,6 +252,33 @@ equal(
 const native = new Native('en', {timeZone: 'UTC'}),
   reference = new Reference('en', {timeZone: 'UTC'})
 for (const Constructor of [Native, Reference]) {
+  const formatter = new Constructor('en', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+  const expected = formatter.formatToParts(0)
+  const original = Array.from
+  let actual: unknown, error: unknown
+  try {
+    Array.from = () => {
+      throw new Error('Mutable array creation reached')
+    }
+    actual = formatter.formatToParts(0)
+  } catch (caught) {
+    error = caught
+  } finally {
+    Array.from = original
+  }
+  check(error === undefined, 'format parts ignores mutable Array.from')
+  equal(
+    actual,
+    expected,
+    'format parts preserves output during Array.from mutation'
+  )
+}
+for (const Constructor of [Native, Reference]) {
   const expected = new Constructor('en', {timeZone: 'UTC'}).format(0)
   const original = Object.prototype.isPrototypeOf
   let actual: unknown, error: unknown

@@ -4,6 +4,12 @@
 
 ## Purpose
 
+Private formatToParts result allocation follows ECMA-262 ArrayCreate through a
+captured realm constructor, preserving sparse-array semantics and avoiding
+Array.from hooks. Date-range SameValue comparisons use pure equality, including
+NaN and signed-zero rules. See the [foundation helper audit](audits/temporal-object-contract-audit.md)
+for mappings and remaining caller iteration/appending work.
+
 Constructor instance checks use the captured realm intrinsic rather than mutable
 Object.prototype.isPrototypeOf. Shared ECMA-262 §7.3.21 mapping and consumer
 coverage live in the [Temporal dependency audit](audits/temporal-instance-check-audit.md).
