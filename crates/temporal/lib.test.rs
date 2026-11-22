@@ -1,6 +1,23 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn day_rounding_checks_the_next_week_after_an_exact_week_count() {
+    use formatjs_temporal::{DateTimeUnit as U, Error, PlainDate, RoundingMode as R};
+    for (first, last) in [(99_999_993, 100_000_000), (-99_999_994, -100_000_001)] {
+        let first = PlainDate::from_epoch_day(first).unwrap();
+        let last = PlainDate::from_epoch_day(last).unwrap();
+        assert_eq!(
+            first.until(last, U::Week, U::Day, 2, R::Trunc),
+            Err(Error::OutOfRange)
+        );
+        assert_eq!(
+            first.since(last, U::Week, U::Day, 2, R::Trunc),
+            Err(Error::OutOfRange)
+        );
+    }
+}
+
+#[test]
 fn relative_fold_probes_use_compatible_time_without_changing_addition() {
     use formatjs_temporal::{
         DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,

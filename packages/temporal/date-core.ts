@@ -1235,8 +1235,8 @@ export function roundRelativeDifference(
       days: date.days,
     }
   } else {
-    // Proposal comparison §7.5.36 steps 1–15: round the fixed-length time and
-    // split off whole days.
+    // ECMA-262 preview §22.15.5.15 steps 1–15: round fixed-length time.
+    // https://tc39.es/ecma262/pr/3966/#sec-nudgetodayortime
     const time = durationNanoseconds(result),
       quantum =
         bigIntFrom(increment) *
@@ -1244,8 +1244,12 @@ export function roundRelativeDifference(
           ? nsPerDay
           : timeUnitNanoseconds[smallest as TimeUnit])
     const value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
-    const days = largeIndex < 4 ? numberFrom(value / nsPerDay) : 0
-    expanded = mathSign(days - result.days) === sign
+    const roundedDays = value / nsPerDay
+    const days = largeIndex < 4 ? numberFrom(roundedDays) : 0
+    // Steps 4–8 compare against the original time sign, including zero.
+    expanded =
+      mathSign(numberFrom(roundedDays - time / nsPerDay)) ===
+      (time < 0n ? -1 : time > 0n ? 1 : 0)
     rounded = end + value - time
     result = {
       ...result,
@@ -1259,9 +1263,8 @@ export function roundRelativeDifference(
       days,
     }
   }
-  // Keep the chosen rounding quantum; only bubble when a larger boundary was crossed.
-  // Proposal comparison §7.5.38 step 9 and §7.5.37 steps 4–6: check larger
-  // boundaries after expansion.
+  // ECMA-262 preview §22.15.5.17 step 9 checks larger calendar boundaries.
+  // https://tc39.es/ecma262/pr/3966/#sec-roundrelativeduration
   if (expanded && smallest !== 'week') {
     for (let index = mathMin(smallIndex, 3) - 1; index >= largeIndex; index--) {
       if (index === 2 && largest !== 'week') continue

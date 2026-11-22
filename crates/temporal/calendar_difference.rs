@@ -461,12 +461,15 @@ pub(crate) fn difference<A: RelativeAnchor>(
                 .time()
                 .map_or(NANOSECONDS_PER_DAY, |unit| unit.nanoseconds());
         let value = since_sign * crate::rounding::round_duration(time * since_sign, quantum, mode);
+        let rounded_days = value / NANOSECONDS_PER_DAY;
         let days = if largest <= DateTimeUnit::Day {
-            value / NANOSECONDS_PER_DAY
+            rounded_days
         } else {
             0
         };
-        expanded = (days - fields[3]).signum() == sign;
+        // ECMA-262 preview §22.15.5.15 steps 4–8 compare against the time sign, including zero.
+        // https://tc39.es/ecma262/pr/3966/#sec-nudgetodayortime
+        expanded = (rounded_days - time / NANOSECONDS_PER_DAY).signum() == time.signum();
         rounded = end + value - time;
         let remainder = if largest <= DateTimeUnit::Day {
             value % NANOSECONDS_PER_DAY
@@ -479,6 +482,8 @@ pub(crate) fn difference<A: RelativeAnchor>(
                 .fields()[4..],
         );
     }
+    // ECMA-262 preview §22.15.5.17 step 9 checks larger calendar boundaries.
+    // https://tc39.es/ecma262/pr/3966/#sec-roundrelativeduration
     if expanded && smallest != DateTimeUnit::Week {
         let mut index = (smallest as usize).min(DateTimeUnit::Day as usize);
         while index > largest as usize {

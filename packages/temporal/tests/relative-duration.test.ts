@@ -4,6 +4,37 @@ import {expect, it} from 'vitest'
 import {Temporal} from '#packages/temporal/index.js'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 
+it('checks the next week when day rounding leaves an exact week count', () => {
+  const options = {
+    largestUnit: 'week',
+    smallestUnit: 'day',
+    roundingIncrement: 2,
+  } as const
+  for (const [start, end, inward, expected] of [
+    ['-271821-04-26', '-271821-04-19', 7, '-P1W'],
+    ['+275760-09-06', '+275760-09-13', -7, 'P1W'],
+  ] as const) {
+    const first = Temporal.PlainDate.from(start)
+    const last = Temporal.PlainDate.from(end)
+    expect(() => first.until(last, options)).toThrow(RangeError)
+    expect(() => first.since(last, options)).toThrow(RangeError)
+    const firstTime = first.toPlainDateTime({nanosecond: 1})
+    const lastTime = last.toPlainDateTime({nanosecond: 1})
+    expect(() =>
+      firstTime.until(lastTime, {
+        largestUnit: 'week',
+        smallestUnit: 'hour',
+      })
+    ).toThrow(RangeError)
+    expect(
+      first
+        .add({days: inward})
+        .until(last.add({days: inward}), options)
+        .toString()
+    ).toBe(expected)
+  }
+})
+
 it('matches independent ICU spans through Duration round/total', () => {
   const file = runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-zoned-difference-fixtures.tsv`
