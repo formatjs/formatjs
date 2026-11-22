@@ -299,10 +299,14 @@ export function checkZonedArithmeticOracle(
     1_325_275_200_000_000_000n,
     'Pacific/Apia'
   )
+  const apiaExact = new Temporal.ZonedDateTime(
+    1_325_282_400_000_000_000n,
+    'Pacific/Apia'
+  )
   for (const days of [1, 2]) {
     equal(
       apiaOrigin.subtract({days}).epochNanoseconds,
-      1_325_282_400_000_000_000n,
+      apiaExact.epochNanoseconds,
       `Apia backward ${days} day endpoint`
     )
   }
@@ -348,6 +352,36 @@ export function checkZonedArithmeticOracle(
       apiaDestination.since(apiaOrigin, options).toString(),
       forwardSince,
       `Apia ordinary forward window since ${roundingMode}`
+    )
+    // The exact target has two equal endpoints. Keep the first count for all modes.
+    equal(
+      apiaOrigin.until(apiaExact, options).toString(),
+      '-P1D',
+      `Apia collapsed exact window until ${roundingMode}`
+    )
+    equal(
+      apiaOrigin.since(apiaExact, options).toString(),
+      'P1D',
+      `Apia collapsed exact window since ${roundingMode}`
+    )
+  }
+  for (const days of [-1, -2]) {
+    const duration = Temporal.Duration.from({days})
+    equal(
+      duration.total({relativeTo: apiaOrigin, unit: 'day'}),
+      -1,
+      `Apia collapsed exact window total for ${days} days`
+    )
+    equal(
+      duration
+        .round({
+          relativeTo: apiaOrigin,
+          largestUnit: 'day',
+          smallestUnit: 'day',
+        })
+        .toString(),
+      '-P1D',
+      `Apia collapsed exact window round for ${days} days`
     )
   }
   const overlapStart = new Temporal.ZonedDateTime(

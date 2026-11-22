@@ -383,6 +383,17 @@ after an outward retry. Unbound provider capability, lower-side prefix behavior
 and the published assertions remain open.
 [Mixed-range candidates](temporal-timezone-boundary-proof/README.md#borrowed-mixed-range-candidate).
 [Retained-week upper bound](temporal-relative-rounding-contract-audit.md#retained-week-upper-bound).
+The exact Apia target is now a shared public oracle across TypeScript and
+native Hermes. Its endpoint policy is verified independently of the published
+zero-span assertion. The Intl witnesses isolate two separate prerequisites,
+Plain timezone projection and the comparison cutoff for numeric ranges.
+[Apia exact target](temporal-apia-exact-target-spec-issue.md).
+[Intl witnesses](temporal-amendment-spec-issues.md).
+
+From 16:35 to 17:47 UTC, 44 numbered conditions closed in 71 minutes. The
+final two batches in that interval each landed a validated local correction
+in about eight minutes, with 16 in-scope conditions still open. The earlier
+closure rate cannot estimate publication or unbound-provider dependencies.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

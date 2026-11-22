@@ -78,10 +78,13 @@ tzdb 2026b, agrees on the endpoints and throws a non-finite-value RangeError
 for each of the tested rounding and total calls. That divergence is an
 observation, since the comparison assertion already fails.
 
-The stable shared oracle covers the equal endpoint construction and all nine
-modes for the **10:00 nonexact target** in both directions. It does not cover
-the exact noon target's rounding or total calls.
-[Stable oracle](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L292).
+The shared oracle now covers both the 10:00 nonexact target and the noon exact
+target. It checks the common endpoint, all nine exact `until` and `since` modes,
+and exact `Duration.round` and `Duration.total` for both original day counts.
+The TypeScript zoned-difference and native Hermes zoned targets both pass.
+This verifies the implementation's exact-endpoint policy on both backends.
+The published assertion remains unresolved.
+[Shared oracle](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L292).
 
 For nonexact windows, exact arithmetic gives progress in [0,1] given a
 nonzero signed span and final bracketing. For fixed-clock zoned day increment

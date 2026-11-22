@@ -7,15 +7,21 @@ Requested ECMA-262 authority remains unchanged. No new runtime failure claimed.
 
 ## Plain range comparison timezone
 
-[§15.6.8 steps12–13](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern)
-uses the formatter timezone to compare both records. Its steps24.b/27.e forward
-IsPlain to formatting, whose §15.6.4 step12 uses UTC for Plain fields.
+[§15.6.8 steps 12–13](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern)
+use the formatter timezone to compare both records. Steps 24.b and 27.e forward
+IsPlain to formatting, whose §15.6.4 step 12 uses UTC for Plain fields.
 
-Two PlainDateTime values on 2024-11-03 at05:30 and06:30 therefore compare as
-01:30/01:30 with America/New_York under the literal range comparison, but their
-required Plain output fields remain05:30/06:30. A collapsed single-value result
+Two PlainDateTime values on 2024-11-03 at 05:30 and 06:30 therefore compare as
+01:30 and 01:30 with America/New_York under the literal range comparison.
+Their required Plain output fields are 05:30 and 06:30. A collapsed single-value result
 cannot display both. Implementation consistently uses UTC for Plain comparison
 and display. Preserve that coherent behavior; do not adopt the mismatched zone.
+
+The compared records for this pair have identical values throughout the field
+loop, including AmPm and the fractional second. Step 24 must therefore collapse
+the range for every fixed interval map. Adjusting the cutoff or filling gaps in
+the map cannot recover the lost hour. The comparison inputs in steps 12–13 need
+the Plain rendering zone. [Source comparison](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L103).
 
 ## Sparse range interval records
 
@@ -51,6 +57,8 @@ The selected owned pattern is `{dayPeriod}`; its raw interval map has only
 - `00:00:00Z` to `04:00:00Z`: singles are `夜中` and `朝`. Owned returns
   `夜中～朝`, with distinct endpoint sources. Native returns shared `夜中`.
 
+The same replay produced both observations on Node 26.5.1.
+
 No fixed presence layout can make the literal comparison reproduce both
 owned decisions. For the first pair to collapse, the cutoff must disable
 comparison before AmPm: its hours necessarily give different am/pm values.
@@ -69,6 +77,17 @@ counterexample shape.
 [Public replay](temporal-range-dayperiod-replay.mjs) records both providers;
 the raw selected-record diagnostic was read-only, with one scratch export
 of the existing slot accessor.
+
+The two defects require independent changes. Using the rendering zone fixes
+the Plain fold inputs. The Japanese example is already UTC and numeric, so
+its collapse still depends on which fields are compared. A candidate rule
+can derive comparison coverage from the selected display pattern and use the
+interval map only to choose the specific interval or fallback for the first
+difference. The existing code also checks date context through the display
+precision and handles hidden day periods separately. These witnesses
+constrain any replacement rule without establishing full table equivalence.
+[Source coverage](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L119).
+[Source selection](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L209).
 
 ## Duplicate digital Duration group
 
