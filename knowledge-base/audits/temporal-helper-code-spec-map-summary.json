@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 26392,
+  "whole_selected_source_lines": 26403,
   "whole_selected_source_lines_by_language": {
     "rust": 10894,
-    "typescript": 15498
+    "typescript": 15509
   },
-  "nonoverlapping_callable_lines": 17357,
+  "nonoverlapping_callable_lines": 17368,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8137,
-    "typescript": 9220
+    "typescript": 9231
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 16986,
+    "mapped": 16997,
     "candidate": 154,
     "unmapped": 217
   },
@@ -720,10 +720,10 @@
     },
     {
       "file": "packages/temporal/legacy-calendar-date.ts",
-      "source_lines": 918,
+      "source_lines": 929,
       "callable_rows": 24,
-      "nonoverlapping_callable_lines": 615,
-      "sha256": "32640de5dc3fc2fce0b4e9beb19133d23cae2eaf0f2e371a47925e058e1c2050",
+      "nonoverlapping_callable_lines": 626,
+      "sha256": "2edf0942b0c344b24564e29eca44047eebe741c9d85eae9cc5c5fa84eff94b40",
       "unresolved_callable_rows": 0
     },
     {

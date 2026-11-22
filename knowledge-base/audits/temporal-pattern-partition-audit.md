@@ -111,7 +111,7 @@ nonpositive year for display.
 
 [Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L449)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L903) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L914) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -292,3 +292,24 @@ and all 191 pinned Node 26.8.1 controls pass.
 - Day-only before-fix log SHA-256 `1cf05bfb34873415ba27d901033b8ed005168d8da558d8f947d2f547e6830e68`
 - Day-only after-fix log SHA-256 `a71148a862d5a7053d07af78341cab9dc02ab580de4af312527f16671e689630`
 - Node 26 replay log SHA-256 `0dc65ea3d19bc5e6b946b7235fe04b02da5058c5d4cb594fa896abe0c88b024d`
+
+### Two-digit Buddhist year intervals
+
+The legacy bridge emitted `01 BE – 01 BE` for Buddhist years zero and one
+with a two-digit year and short era. The native interval places the era
+once. The bridge now reuses the verified common-cycle projection for
+UTC two-digit year ranges with only year and era date parts. The original
+calendar year is normalized and rendered at the selected pattern's width.
+
+Distinct centuries can have identical raw or corrected two-digit labels.
+Projecting and verifying full years keeps the Year pattern and its tagged
+endpoints in those cases. Number and PlainDate controls cover centuries,
+negative zero and mathematical digits. Seven focused Bazel targets and
+all 203 controls on pinned Node 26.8.1 pass.
+[Full-year selection](../../packages/temporal/legacy-calendar-date.ts#L855).
+[ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+[ECMA-402 §11.5.4 steps 15.f.iv and 15.f.ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
+
+- Two-digit before-fix log SHA-256 `f98f9709c3c314552e13d6450bd2c3bee0bd96e71f9c8b0d3b04c8795d22edf3`
+- Two-digit after-fix log SHA-256 `af067546dd2ea1153f92236b349075a97aacf98bb5e59c03ef52b3ba21b73395`
+- Node 26 replay log SHA-256 `844d575c8c2dca1a23c7f7ef6fed7b69b5b5d82daa89b081b6478731d06ac6b6`

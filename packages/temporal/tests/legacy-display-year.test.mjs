@@ -79,13 +79,13 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
       timeZone: 'UTC',
     }
     const formatter = new Intl.DateTimeFormat(locale, options)
-    const hostRange =
-      width === 'numeric'
-        ? new NativeDateTimeFormat(locale, options).formatRangeToParts(
-            samples[1].instant.epochMilliseconds,
-            samples[2].instant.epochMilliseconds
-          )
-        : undefined
+    const hostRange = new NativeDateTimeFormat(
+      locale,
+      options
+    ).formatRangeToParts(
+      samples[1].instant.epochMilliseconds,
+      samples[2].instant.epochMilliseconds
+    )
     assert.equal(formatter.resolvedOptions().calendar, 'buddhist')
     for (const sample of samples) {
       const milliseconds = sample.instant.epochMilliseconds
@@ -383,7 +383,62 @@ for (const locale of ['en', 'de', 'en-u-nu-mathsans']) {
   }
 }
 
-assert.equal(checked, 191)
+// Distinct calendar years can have identical two-digit labels.
+for (const locale of ['en', 'en-u-nu-mathsans']) {
+  const options = {
+    calendar: 'buddhist',
+    year: '2-digit',
+    era: 'short',
+    timeZone: 'UTC',
+  }
+  const formatter = new Intl.DateTimeFormat(locale, options)
+  const native = new NativeDateTimeFormat(locale, options)
+  const number = new Intl.NumberFormat(locale, {
+    useGrouping: false,
+    minimumIntegerDigits: 2,
+  })
+  for (const [firstYear, lastYear] of [
+    [-543, -443],
+    [-744, -644],
+    [-643, -543],
+  ]) {
+    const first = new Temporal.PlainDate(firstYear, 1, 1, 'buddhist')
+    const last = new Temporal.PlainDate(lastYear, 1, 1, 'buddhist')
+    const firstMilliseconds = Date.UTC(firstYear, 0, 1)
+    const lastMilliseconds = Date.UTC(lastYear, 0, 1)
+    const expected = native
+      .formatRangeToParts(firstMilliseconds, lastMilliseconds)
+      .map(part => {
+        if (part.type !== 'year') return part
+        const isoYear = part.source === 'endRange' ? lastYear : firstYear
+        const year = isoYear + 543
+        const normalized = year <= 0 ? 1 - year : year
+        return {...part, value: number.format(normalized % 100)}
+      })
+    assert.deepEqual(
+      expected.filter(part => part.type === 'year').map(part => part.source),
+      ['startRange', 'endRange']
+    )
+    assert.equal(
+      expected.filter(part => part.type === 'era' && part.source === 'shared')
+        .length,
+      1
+    )
+    for (const [start, end] of [
+      [first, last],
+      [firstMilliseconds, lastMilliseconds],
+    ]) {
+      assert.deepEqual(formatter.formatRangeToParts(start, end), expected)
+      assert.equal(
+        formatter.formatRange(start, end),
+        expected.map(part => part.value).join('')
+      )
+      checked++
+    }
+  }
+}
+
+assert.equal(checked, 203)
 console.log(
-  '191 native bridge display-year controls, including cold/warm and range paths'
+  '203 native bridge display-year controls, including cold/warm and range paths'
 )

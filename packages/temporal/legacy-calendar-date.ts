@@ -706,7 +706,7 @@ function restoreNumericRangeYears(
   return parts
 }
 
-function buddhistDayRange(
+function projectedBuddhistRange(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
   options: Intl.ResolvedDateTimeFormatOptions,
@@ -846,15 +846,26 @@ export function legacyCalendarRangeParts(
       if (
         calendar === 'buddhist' &&
         timeZone === 'UTC' &&
-        options.day !== undefined &&
-        arrayEvery(
-          start,
-          part => part.type === 'day' || part.type === 'literal'
-        ) &&
-        arrayEvery(end, part => part.type === 'day' || part.type === 'literal')
+        (options.day !== undefined || options.year === '2-digit')
       ) {
-        const dayRange = buddhistDayRange(first, last, options, rangeParts)
-        if (dayRange) return dayRange
+        const shortYear = options.year === '2-digit'
+        const supportedPart = ({type}: Intl.DateTimeFormatPart): boolean =>
+          type === 'literal' ||
+          (shortYear ? type === 'year' || type === 'era' : type === 'day')
+        // ECMA-402 §11.5.8 step 15.d.v: compare the full projected year,
+        // even when distinct years produce the same two-digit text.
+        if (
+          arrayEvery(start, supportedPart) &&
+          arrayEvery(end, supportedPart)
+        ) {
+          const projected = projectedBuddhistRange(
+            first,
+            last,
+            options,
+            rangeParts
+          )
+          if (projected) return projected
+        }
       }
       const firstYear = firstFields.numericYear,
         lastYear = lastFields.numericYear
