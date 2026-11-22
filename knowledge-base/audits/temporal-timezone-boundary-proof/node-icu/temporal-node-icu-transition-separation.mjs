@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import {loadPinnedIcu} from './temporal-pinned-icu-runtime.mjs'
 
+const direct = process.argv[2] === '--direct-annual'
+assert.deepEqual(process.argv.slice(2), direct ? ['--direct-annual'] : [])
 const {binarySha256, icuMajor, lib, toString} = await loadPinnedIcu()
 function bind(name, result, args) {
   return lib.getFunction(`${name}_${icuMajor}`, {
@@ -108,6 +110,15 @@ const startYear = bindCpp(
 const endYear = bindCpp('_ZNK6icu_@18AnnualTimeZoneRule10getEndYearEv', i32, [
   PTR,
 ])
+const annualStart = direct
+  ? bindCpp('_ZNK6icu_@18AnnualTimeZoneRule14getStartInYearEiiiRd', 'i8', [
+      PTR,
+      i32,
+      i32,
+      i32,
+      PTR,
+    ])
+  : undefined
 const ruleRtti = lib.getSymbol(`_ZTIN6icu_${icuMajor}12TimeZoneRuleE`)
 const arrayRtti = lib.getSymbol(`_ZTIN6icu_${icuMajor}21TimeArrayTimeZoneRuleE`)
 const annualRtti = lib.getSymbol(`_ZTIN6icu_${icuMajor}18AnnualTimeZoneRuleE`)
@@ -118,6 +129,23 @@ const actual = (cal, epoch) => {
   assert.equal(checked(getMillis, cal), epoch)
   return checked(get, cal, 15) + checked(get, cal, 16)
 }
+function representativeThrough(firstYear) {
+  const signature = year => {
+    const first = Date.UTC(year, 0, 1)
+    const next = Date.UTC(year + 1, 0, 1)
+    const last = Date.UTC(year + 2, 0, 1)
+    return [new Date(first).getUTCDay(), next - first, last - next].join(',')
+  }
+  const remaining = new Set(
+    Array.from({length: 400}, (_, index) => signature(firstYear + index))
+  )
+  for (let year = firstYear; year < firstYear + 400; year++) {
+    remaining.delete(signature(year))
+    if (remaining.size === 0) return year
+  }
+  assert.fail('Gregorian signatures must repeat in 400 years')
+}
+
 const LIMIT = 8_640_000_000_000_000
 const firstRelevant = -LIMIT - 4 * DAY
 const rows = []
@@ -158,7 +186,13 @@ for (const id of zones) {
     } else {
       const ar = dynamicCast(r, ruleRtti, annualRtti, -1n)
       assert.notEqual(ar, 0n, id)
-      annual.push({startYear: startYear(ar), endYear: endYear(ar), offset: o})
+      annual.push({
+        rule: ar,
+        startYear: startYear(ar),
+        endYear: endYear(ar),
+        rawOffset: raw(ar),
+        dstSavings: dst(ar),
+      })
     }
   }
   assert.ok(
@@ -178,9 +212,13 @@ for (const id of zones) {
   const maxAnnualYear = Math.max(1970, ...annual.map(rule => rule.startYear))
   const recurringYear =
     Math.max(maxAnnualYear, new Date(lastFinite).getUTCFullYear()) + 1
-  // One 400-year Gregorian recurrence and its outer joins.
+  const coveredThrough =
+    direct && annual.length ? representativeThrough(recurringYear + 1) : null
+  // Compare a complete 400-year recurrence or all adjacent-year signatures.
   const cut = annual.length
-    ? Date.UTC(recurringYear + 401, 0, 1)
+    ? coveredThrough === null
+      ? Date.UTC(recurringYear + 401, 0, 1)
+      : Date.UTC(coveredThrough + 2, 0, 1) + 9 * DAY
     : lastFinite + 3 * DAY
   assert.ok(Number.isSafeInteger(cut))
   assert.ok(annual.length === 0 || annual.length === 2, id)
@@ -196,31 +234,88 @@ for (const id of zones) {
     ...events.map(([t]) => t),
     ...tailStarts.map(year => Date.UTC(year, 0, 1)),
   ])
-  const nextInstant = Buffer.alloc(8)
-  checked(setMillis, c, firstRelevant)
-  let t1 = firstRelevant - 1
-  let direction = 1
-  while (checked(transition, c, direction, nextInstant)) {
-    const t = nextInstant.readDoubleLE()
-    assert.ok(Number.isSafeInteger(t) && t > t1)
-    if (t > cut) break
-    direction = 0
-    t1 = t
-    candidateTimes.add(t)
-    checked(setMillis, c, t)
+  const supplementalTimes = new Set()
+  let minimumAnnualYearMargin = Infinity
+  if (annualStart) {
+    for (const [index, rule] of annual.entries()) {
+      const previous = annual[1 - index]
+      assert.equal(previous.rawOffset, rule.rawOffset, id)
+      assert.ok(Math.abs(previous.rawOffset) < DAY, id)
+      assert.ok(Math.abs(previous.dstSavings) < DAY, id)
+      for (let year = rule.startYear; year <= coveredThrough + 1; year++) {
+        assert.equal(
+          annualStart(
+            rule.rule,
+            year,
+            previous.rawOffset,
+            previous.dstSavings,
+            dest
+          ),
+          1,
+          id
+        )
+        const time = dest.readDoubleLE()
+        assert.ok(Number.isSafeInteger(time), id)
+        const margin = Math.min(
+          time - Date.UTC(year, 0, 1),
+          Date.UTC(year + 1, 0, 1) - time
+        )
+        minimumAnnualYearMargin = Math.min(minimumAnnualYearMargin, margin)
+        assert.ok(margin > 16 * DAY, id)
+        candidateTimes.add(time)
+        // SimpleTimeZone compares the same rule clock as AnnualTimeZoneRule.
+        // An unshifted month length can alter its day computation near a
+        // shifted month edge. Include the complete day and edge envelope.
+        for (let day = -16; day <= 16; day++)
+          supplementalTimes.add(time + day * DAY)
+        for (let month = 0; month <= 12; month++) {
+          const edge = Date.UTC(year, month, 1)
+          supplementalTimes.add(edge)
+          supplementalTimes.add(edge - previous.rawOffset)
+          supplementalTimes.add(edge - previous.rawOffset - previous.dstSavings)
+        }
+      }
+    }
+  } else {
+    const nextInstant = Buffer.alloc(8)
+    checked(setMillis, c, firstRelevant)
+    let t1 = firstRelevant - 1
+    let direction = 1
+    while (checked(transition, c, direction, nextInstant)) {
+      const t = nextInstant.readDoubleLE()
+      assert.ok(Number.isSafeInteger(t) && t > t1)
+      if (t > cut) break
+      direction = 0
+      t1 = t
+      candidateTimes.add(t)
+      checked(setMillis, c, t)
+    }
   }
   const short = []
   const wholeDayGaps = []
   let t0 = firstRelevant - 1
   let transitions = 0
   let minimum = Infinity
-  for (const t of [...candidateTimes].sort((a, b) => a - b)) {
-    const before = actual(c, t - 1),
-      after = actual(c, t)
-    if (before === after) continue
+  const supplementalEffective = []
+  const times = [...new Set([...candidateTimes, ...supplementalTimes])].sort(
+    (a, b) => a - b
+  )
+  for (const [index, t] of times.entries()) {
+    const supplemental = !candidateTimes.has(t)
+    const check =
+      supplemental ||
+      !direct ||
+      spread >= DAY ||
+      t - times[index - 1] <= 2 * DAY ||
+      times[index + 1] - t <= 2 * DAY
+    const before = check ? actual(c, t - 1) : undefined
+    const after = check ? actual(c, t) : undefined
+    if (check && before === after) continue
+    if (supplemental) supplementalEffective.push({t, before, after})
     if (transitions) minimum = Math.min(minimum, t - t0)
     if (transitions && t - t0 <= 2 * DAY) short.push({t0, t, before, after})
-    if (after - before === DAY) wholeDayGaps.push({t, before, after})
+    if (before !== undefined && after - before === DAY)
+      wholeDayGaps.push({t, before, after})
     transitions++
     t0 = t
   }
@@ -228,6 +323,9 @@ for (const id of zones) {
     lastFinite,
     cut,
     recurringYear,
+    ...(direct
+      ? {coveredThrough, minimumAnnualYearMargin, supplementalEffective}
+      : {}),
     transitions,
     minimum,
     short,
@@ -244,6 +342,16 @@ console.log(
     {
       runtime: {node: process.version, icu: process.versions.icu, tz: version},
       binarySha256,
+      ...(direct
+        ? {
+            annualEnumeration: 'direct signatures',
+            eventCountsAreUpperBounds: true,
+            minimumGapsAreLowerBounds: true,
+            supplementalEffective: rows.flatMap(row =>
+              row.supplementalEffective.map(event => ({zone: row.id, ...event}))
+            ),
+          }
+        : {}),
       checkedSpacingMilliseconds: 2 * DAY,
       firstCoveredMilliseconds: firstRelevant,
       evaluatedEvents: rows.reduce((sum, row) => sum + row.transitions, 0),
