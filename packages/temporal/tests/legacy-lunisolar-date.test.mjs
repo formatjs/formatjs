@@ -300,6 +300,46 @@ for (const [calendar, dates, years, monthCodes, oldDays, days] of [
 }
 
 for (const calendar of ['chinese', 'dangi']) {
+  for (const [last, reference] of [
+    ['2020-05-23', '2020-06-21'],
+    ['2020-05-24', '2020-06-22'],
+  ]) {
+    const dates = ['2020-03-24', '2020-04-23', last, reference]
+    const [before, start, end, after] = dates.map(date =>
+      Date.parse(`${date}T00:00Z`)
+    )
+    const plain = dates
+      .slice(1, 3)
+      .map(date => Temporal.PlainDate.from(date).withCalendar(calendar))
+    for (const locale of ['en', 'de', 'zh-CN', 'en-u-nu-mathsans']) {
+      const options = {calendar, timeZone: 'UTC', day: 'numeric'}
+      const native = new Native(locale, options)
+      const formatter = new Intl.DateTimeFormat(locale, options)
+      const startParts = native.formatRangeToParts(start, after)
+      const endParts = native.formatRangeToParts(before, end)
+      assert.equal(startParts.length, endParts.length)
+      const expected = startParts.map((part, index) => {
+        const other = endParts[index]
+        assert.equal(part.type, other.type)
+        assert.equal(part.source, other.source)
+        if (part.type === 'literal' || part.source === 'shared')
+          assert.equal(part.value, other.value)
+        return part.source === 'endRange' ? other : part
+      })
+      assert.deepEqual(
+        expected.filter(part => part.type === 'month').map(part => part.source),
+        ['startRange', 'endRange']
+      )
+      for (const inputs of [[start, end], plain]) {
+        assert.deepEqual(formatter.formatRangeToParts(...inputs), expected)
+        assert.equal(
+          formatter.formatRange(...inputs),
+          expected.map(part => part.value).join('')
+        )
+        checked++
+      }
+    }
+  }
   const yearOptions = {calendar, timeZone: 'UTC', year: 'numeric'}
   const nativeYear = new Native('en', yearOptions)
   const yearOnly = new Intl.DateTimeFormat('en', yearOptions)

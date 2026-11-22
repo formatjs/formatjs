@@ -27,6 +27,7 @@ import {
   hostBuddhistMonth,
   legacyISOEpochDay,
   lunisolarUtcRangeDays,
+  lunisolarUtcLeapMonthRange,
   type LunisolarRangeEndpoint,
   type LunisolarRangeFields,
 } from '#packages/temporal/legacy-lunisolar-date.js'
@@ -999,18 +1000,31 @@ export function legacyCalendarRangeParts(
       if (
         (calendar === 'chinese' || calendar === 'dangi') &&
         lunarStart &&
-        lunarEnd &&
-        !regularLeap
+        lunarEnd
       ) {
-        const lunar = restoreLunisolarRangeDays(
-          first,
-          last,
-          calendar,
-          options,
-          rangeParts,
-          [lunarStart, lunarEnd],
-          [start, end]
-        )
+        const onlyDay = (part: Intl.DateTimeFormatPart): boolean =>
+          part.type === 'day' || part.type === 'literal'
+        const lunar = regularLeap
+          ? options.day !== undefined &&
+            arrayEvery(start, onlyDay) &&
+            arrayEvery(end, onlyDay) &&
+            lunisolarUtcLeapMonthRange(
+              calendar,
+              first,
+              last,
+              lunarStart,
+              lunarEnd,
+              rangeParts
+            )
+          : restoreLunisolarRangeDays(
+              first,
+              last,
+              calendar,
+              options,
+              rangeParts,
+              [lunarStart, lunarEnd],
+              [start, end]
+            )
         if (lunar) return lunar
       }
       const firstYear = firstFields.numericYear,

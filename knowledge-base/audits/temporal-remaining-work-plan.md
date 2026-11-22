@@ -204,7 +204,7 @@ Recalculate annotation and local-correction estimates from completed batches.
 
 All eight directly revoked Proxy cases pass. Bound chains that revoke
 during the prototype Get now reject on the validated Node and Hermes paths.
-Foreign intrinsic selection and runtime limits keep 16 realm steps conditional.
+The 16 realm steps remain historical evidence and are excluded from completion.
 [Realm proof](temporal-bound-constructor-realm-audit.md).
 The [Apia exact-target assertion conflict](temporal-apia-exact-target-spec-issue.md)
 is recorded separately from the two nonexact-window conditions. The
@@ -327,7 +327,8 @@ year ranges preserve shared era and full-year comparisons.
 UTC Chinese and Dangi intervals reuse Day or Month selection when the
 related year, month code and corrected day widths are verified. Verified
 year-boundary labels retain their layout. Regular and leap months stay
-distinct at Month or Day precision. Other corrected fallback layouts remain open.
+distinct at Month or Day precision. Verified UTC day-only leap ranges reuse
+the Month pattern. Explicit-year and full-date leap fallback layouts remain open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
 Source hashes and extraction limits:

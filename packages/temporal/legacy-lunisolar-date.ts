@@ -1,5 +1,6 @@
 import {
   RangeErrorConstructor,
+  arrayEvery,
   arrayIncludes,
   arraySome,
   floor,
@@ -192,6 +193,89 @@ export function lunisolarUtcRangeDays(
     [rawStart.day, start.day],
     [rawEnd.day, end.day],
   ]
+}
+
+export function lunisolarUtcLeapMonthRange(
+  calendar: Calendar,
+  first: LegacyDateTimeProjection,
+  last: LegacyDateTimeProjection,
+  left: LunisolarRangeEndpoint,
+  right: LunisolarRangeEndpoint,
+  rangeParts: RangeParts
+): Intl.DateTimeFormatRangePart[] | undefined {
+  const sample = (
+    projection: LegacyDateTimeProjection,
+    {expected, original}: LunisolarRangeEndpoint,
+    adjacentMonth: number
+  ): number | undefined => {
+    const {year, monthCode, day} = expected
+    const actual = original ?? fields(calendar, 'UTC', projection.milliseconds)
+    if (
+      actual.year !== year ||
+      actual.monthCode !== monthCode ||
+      actual.day !== day
+    )
+      return undefined
+    const epochDay = calendarToEpochDayRaw(
+      calendar,
+      {year, month: adjacentMonth, day},
+      'constrain'
+    )
+    const candidate = calendarFromEpochDayRaw(calendar, epochDay)
+    const milliseconds = epochDay * dayMilliseconds
+    if (
+      candidate.month !== adjacentMonth ||
+      candidate.year !== year ||
+      candidate.day !== day
+    )
+      return undefined
+    const host = fields(calendar, 'UTC', milliseconds)
+    if (
+      host.year === year &&
+      host.monthCode === candidate.monthCode &&
+      host.month !== actual.month &&
+      host.day === day
+    )
+      return milliseconds
+    return undefined
+  }
+
+  // ECMA-402 §11.5.8 steps 15.d.v–vi: use adjacent ordinal months to
+  // select the native Month pattern while retaining each actual endpoint.
+  const before = sample(first, left, left.expected.month - 1)
+  const after = sample(last, right, right.expected.month + 1)
+  if (before === undefined || after === undefined) return undefined
+  const starts = rangeParts.call(first.formatter, first.milliseconds, after)
+  const ends = rangeParts.call(first.formatter, before, last.milliseconds)
+  // ECMA-402 §11.5.8 steps 19.e–f: preserve contextual values, literals
+  // and sources when both controls select the same day-only range layout.
+  if (
+    starts.length !== ends.length ||
+    !arrayEvery(starts, (part, index) => {
+      const other = ends[index]
+      return (
+        part.type === other.type &&
+        part.source === other.source &&
+        (part.type === 'month'
+          ? part.source !== 'shared'
+          : (part.type === 'day' || part.type === 'literal') &&
+            part.value === other.value)
+      )
+    }) ||
+    !arraySome(
+      starts,
+      part => part.type === 'month' && part.source === 'startRange'
+    ) ||
+    !arraySome(
+      starts,
+      part => part.type === 'month' && part.source === 'endRange'
+    )
+  )
+    return undefined
+  for (let index = 0; index < starts.length; index++) {
+    if (starts[index].source === 'endRange') starts[index] = ends[index]
+  }
+  return starts
 }
 
 function catalog(calendar: Calendar, code: string): Catalog {
