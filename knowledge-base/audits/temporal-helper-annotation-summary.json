@@ -4,25 +4,25 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 372,
-    "mapped": 313,
-    "unmapped": 384
+    "candidate": 350,
+    "mapped": 342,
+    "unmapped": 377
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 842,
-    "direct_numbered": 211,
+    "no_numbered_anchor": 801,
+    "direct_numbered": 252,
     "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 86,
+  "direct_with_step_wording": 128,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 187,
-    "no_overlap_or_no_prior_mapping": 24
+    "overlap": 229,
+    "no_overlap_or_no_prior_mapping": 23
   },
   "no_numbered_anchor_by_kind": {
-    "function": 470,
-    "named-function": 216,
-    "callback": 148,
+    "function": 549,
+    "named-function": 332,
+    "callback": 164,
     "method": 8
   },
   "role_review_bundles": {
@@ -30,8 +30,8 @@
       "rows": 180,
       "files": 12,
       "coverage": {
-        "no_numbered_anchor": 159,
-        "direct_numbered": 17,
+        "no_numbered_anchor": 144,
+        "direct_numbered": 32,
         "enclosing_numbered": 4
       }
     },
@@ -70,8 +70,8 @@
       "rows": 240,
       "files": 23,
       "coverage": {
-        "no_numbered_anchor": 145,
-        "direct_numbered": 83,
+        "no_numbered_anchor": 119,
+        "direct_numbered": 109,
         "enclosing_numbered": 9,
         "retired_callback": 3
       }
@@ -106,7 +106,7 @@
     "crates/temporal/time.rs": "cd2eebc1449b9eb8a38de8bbafc4b379b0c81ccca9bb084b425036bb02a44c9e",
     "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
     "crates/temporal/timezone_identity.rs": "04e2620d630e9e6942f95616d8a3548893ca803d8b5ba6497d9d609ae5fe85e9",
-    "crates/temporal/timezone_registry.rs": "669a333d0bfe8894cacb20bfaf24b14418958e23e1ec9d9758b5f54f359d9c1c",
+    "crates/temporal/timezone_registry.rs": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
     "crates/temporal/zoned.rs": "9152152a6fbda5ff016c37d32fbe786d306290ee9730582e8845cfe1e96436db",
     "crates/temporal/zoned_difference.rs": "61346edc1dcebfec4bf7f32a0a53f0ab2120ebba6309edeeaef1324e22125fe4",
     "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
@@ -127,7 +127,7 @@
     "packages/temporal/host-timezone.ts": "2cb5324d7f20104efa99b2706bb78a02249502d500770705bc8fbb97795f9a36",
     "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
-    "packages/temporal/instant-string.ts": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a",
+    "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "c3ab0a706c4ef740ec59f22a3ba128d0edfc27029aa9fc3beee55fcc5dec53bd",
     "packages/temporal/intrinsics.ts": "e85f0adcc6b7d2b56173ff70b45d7a12ac53d0361e7dd92c00d60e5c87d5502e",
     "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
@@ -144,7 +144,7 @@
     "packages/temporal/plain-date.ts": "ac07072869eee090ed45fac7af65590776954f270c7162b6ea0ffcdd4b13fe86",
     "packages/temporal/plain-month-day.ts": "af1a02119f94ebdf4149318e330d24d9012d0525eef8c086b6f4a8b814a402b2",
     "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
-    "packages/temporal/plain-time.ts": "19bfc8c47c1fc28697b8bfbf4efe13a5bf450f02ad95f54611c57852f5549046",
+    "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
     "packages/temporal/plain-year-month.ts": "a07bb9982dac43842b830732a3e8a407193736bfea137b1d4fec15e080c6c6bd",
     "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
@@ -478,11 +478,12 @@
       "rows": 21,
       "work_bundle": "time_zone_and_zoned_algorithm_review",
       "mapping_status": {
-        "candidate": 21
+        "mapped": 16,
+        "candidate": 5
       },
       "coverage": {
-        "no_numbered_anchor": 20,
-        "direct_numbered": 1
+        "direct_numbered": 16,
+        "no_numbered_anchor": 5
       }
     },
     {
@@ -726,12 +727,11 @@
       "rows": 34,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "mapped": 26,
-        "candidate": 8
+        "mapped": 32,
+        "candidate": 2
       },
       "coverage": {
-        "direct_numbered": 27,
-        "no_numbered_anchor": 7
+        "direct_numbered": 34
       }
     },
     {
@@ -927,12 +927,10 @@
       "rows": 20,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 7,
-        "mapped": 13
+        "mapped": 20
       },
       "coverage": {
-        "no_numbered_anchor": 19,
-        "direct_numbered": 1
+        "direct_numbered": 20
       }
     },
     {
@@ -1024,8 +1022,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 145,
-  "reviewed_mapping_rows_this_batch": 17,
+  "reviewed_mapping_rows_cumulative": 187,
+  "reviewed_mapping_rows_this_batch": 42,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0

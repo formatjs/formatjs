@@ -3,10 +3,10 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24523,
+  "whole_selected_source_lines": 24565,
   "whole_selected_source_lines_by_language": {
-    "rust": 10439,
-    "typescript": 14084
+    "rust": 10455,
+    "typescript": 14110
   },
   "nonoverlapping_callable_lines": 16824,
   "nonoverlapping_callable_lines_by_language": {
@@ -14,25 +14,25 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 5592,
-    "mapped": 6394,
-    "unmapped": 4838
+    "candidate": 5375,
+    "mapped": 6655,
+    "unmapped": 4794
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 372,
-    "mapped": 313,
-    "unmapped": 384
+    "candidate": 350,
+    "mapped": 342,
+    "unmapped": 377
   },
   "by_language": {
     "typescript": {
-      "candidate": 122,
-      "mapped": 237,
-      "unmapped": 161
+      "candidate": 116,
+      "mapped": 250,
+      "unmapped": 154
     },
     "rust": {
-      "candidate": 250,
-      "mapped": 76,
+      "candidate": 234,
+      "mapped": 92,
       "unmapped": 223
     }
   },
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 325,
+    "implementation_dependency": 303,
     "typed_public_operation_candidate": 47
   },
   "proposal_core_section_ids": 170,
@@ -513,10 +513,10 @@
     },
     {
       "file": "crates/temporal/timezone_registry.rs",
-      "source_lines": 210,
+      "source_lines": 226,
       "callable_rows": 21,
       "nonoverlapping_callable_lines": 147,
-      "sha256": "669a333d0bfe8894cacb20bfaf24b14418958e23e1ec9d9758b5f54f359d9c1c",
+      "sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
       "unresolved_callable_rows": 0
     },
     {
@@ -689,10 +689,10 @@
     },
     {
       "file": "packages/temporal/instant-string.ts",
-      "source_lines": 709,
+      "source_lines": 716,
       "callable_rows": 34,
       "nonoverlapping_callable_lines": 626,
-      "sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a",
+      "sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
       "unresolved_callable_rows": 0
     },
     {
@@ -825,11 +825,11 @@
     },
     {
       "file": "packages/temporal/plain-time.ts",
-      "source_lines": 704,
+      "source_lines": 723,
       "callable_rows": 20,
       "nonoverlapping_callable_lines": 315,
-      "sha256": "19bfc8c47c1fc28697b8bfbf4efe13a5bf450f02ad95f54611c57852f5549046",
-      "unresolved_callable_rows": 7
+      "sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/plain-year-month.ts",

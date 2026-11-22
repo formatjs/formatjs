@@ -110,6 +110,7 @@ const factors = clockValues(index => timeUnitNanoseconds[names[index]])
 const fieldOrder = [0, 4, 3, 1, 5, 2]
 const maxima = [24, 60, 60, 1000, 1000, 1000]
 const day = 86_400_000_000_000n
+// Temporal comparison §4.3.3 step 2. Read the receiver slot or throw.
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
   if (result === undefined)
@@ -117,14 +118,17 @@ function read(value: unknown): bigint {
   return result
 }
 // A private six-field list must not consult array iterators, methods or species.
+// Temporal comparison §4.5.12 step 2. Copy six seed fields into a private list.
 function clockValues<T>(read: (index: number) => T): T[] {
   return [read(0), read(1), read(2), read(3), read(4), read(5)]
 }
+// Temporal comparison §4.3.3 step 3. Split exact clock nanoseconds into getter fields.
 function fields(value: bigint): number[] {
   return clockValues(index =>
     numberFrom((value / factors[index]) % bigIntFrom(maxima[index]))
   )
 }
+// Temporal comparison §13.40 steps 1–3. Coerce, truncate, and normalize zero.
 function integer(value: unknown): number {
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798
   // L1796: unary + performs ToNumber, preserving user coercion and throws.
@@ -136,6 +140,7 @@ function integer(value: unknown): number {
   // L1798: mathematical zero has no negative sign.
   return result || 0
 }
+// Temporal comparison §13.6 steps 1–3. Read and validate overflow once.
 function overflow(options: unknown): boolean {
   const raw = optionsObject(options).overflow
   const value = raw === undefined ? 'constrain' : ToString(raw)
@@ -143,6 +148,7 @@ function overflow(options: unknown): boolean {
     throw new RangeErrorConstructor('Invalid overflow')
   return value === 'constrain'
 }
+// Temporal comparison §4.5.8 steps 1–3. Clamp or reject each field before encoding.
 function regulate(values: number[], constrain: boolean): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -178,9 +184,11 @@ function regulate(values: number[], constrain: boolean): bigint {
   // L632: exact within-day nanoseconds encode all six fields with implicit Days 0.
   return result
 }
+// Temporal comparison §4.5.6 step 2. Test the property bag branch.
 function object(value: unknown): value is Record<string, unknown> {
   return IsObject(value)
 }
+// Temporal comparison §4.5.12 steps 4–18. Read fields in spec order.
 function timeFields(
   item: Record<string, unknown>,
   initial = [0, 0, 0, 0, 0, 0]
@@ -207,6 +215,7 @@ function timeFields(
   if (!any) throw new TypeErrorConstructor('At least one time field required')
   return result
 }
+// Temporal comparison §4.5.6 steps 2–3. Convert slots, property bags, or strings.
 function toTime(value: unknown, options?: unknown): bigint {
   const existing = getSlot(value as object)
   if (existing !== undefined) {
@@ -235,11 +244,13 @@ export function toPlainTimeNanoseconds(value: unknown): bigint {
     ? bigIntFrom(toNativeTime(value).nanoseconds)
     : toTime(value)
 }
+// Temporal comparison §4.3.3 step 2. Read the native-backed receiver slot or throw.
 function nativeTime(value: object): NativeTimeResult {
   const result = getNativeTimeSlot(value)
   if (!result) throw new TypeErrorConstructor('Invalid PlainTime receiver')
   return result
 }
+// Temporal comparison §4.5.6 steps 2.b.iii and 2.c.iv. Project the native clock result.
 function nativeTimeFromValue(value: bigint): NativeTimeResult {
   return nativeTemporal()!.roundPlainTimeResult(
     ((value % day) + day) % day,
@@ -248,6 +259,7 @@ function nativeTimeFromValue(value: bigint): NativeTimeResult {
     'trunc'
   )
 }
+// Temporal comparison §4.5.6 steps 2–3. Convert input to the native clock record.
 function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
   const existing = getNativeTimeSlot(value as object)
   if (existing !== undefined) {
@@ -270,6 +282,7 @@ function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
   overflow(options)
   return result
 }
+// Temporal comparison §4.5.11 steps 1–4. Allocate and initialize the local result.
 function create(value: bigint | NativeTimeResult): PlainTimeObject {
   if (import.meta.formatjsTemporalNativeData === true) {
     const data = typeof value === 'bigint' ? nativeTimeFromValue(value) : value
@@ -281,9 +294,11 @@ function create(value: bigint | NativeTimeResult): PlainTimeObject {
   setSlot(result, (((value as bigint) % day) + day) % day)
   return result
 }
+// Temporal comparison §4.5.11 steps 1–4. Create a local PlainTime from exact nanoseconds.
 export function createPlainTime(value: bigint): PlainTimeObject {
   return create(value)
 }
+// Temporal comparison §13.14 steps 2–4. Check the exclusive rounding increment.
 export function validateTimeIncrement(unit: TimeUnit, increment: number): void {
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
   // L432-L434: all six L722 maxima exceed one; strict cap is dividend - 1.
@@ -292,6 +307,7 @@ export function validateTimeIncrement(unit: TimeUnit, increment: number): void {
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeErrorConstructor('Invalid time rounding increment')
 }
+// Temporal comparison §4.5.16 steps 1–8. Round within the next larger clock unit.
 export function roundTime(
   value: bigint,
   unit: TimeUnit,
@@ -310,6 +326,7 @@ export function roundTime(
     roundInstant(value - base, factors[index] * bigIntFrom(increment), mode)
   )
 }
+// Temporal comparison §4.5.17 steps 1–9. Convert, round, and balance the time difference.
 function difference(
   value: bigint | number,
   other: unknown,
@@ -377,6 +394,7 @@ function difference(
     )
   )
 }
+// Temporal comparison §4.5.18 steps 1–5. Apply the signed time portion and wrap the clock.
 function add(
   value: bigint | number,
   other: unknown,
@@ -393,6 +411,7 @@ function add(
     return create(native.addPlainTime(value as bigint, duration, sign < 0n))
   return create((value as bigint) + sign * durationNanoseconds(duration, false))
 }
+// Temporal comparison §4.3.16 steps 11–12. Round and format the selected precision.
 function format(
   value: bigint | number,
   precision: Precision = 'auto',

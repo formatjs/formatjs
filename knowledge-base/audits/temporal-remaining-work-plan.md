@@ -40,11 +40,11 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 201 mapped, 484 candidate/dependency assignments, 384 unmapped (including 3 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 342 mapped, 350 candidate/dependency assignments, 377 unmapped (including 3 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
-Code maps cover 82 distinct selected source files and 24,790 physical lines.
+The initial code maps covered 82 distinct selected source files and 24,790 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -108,7 +108,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 384 unresolved
+separately. Candidate source assignments require confirmation; 377 unresolved
 helper mappings are a mapping queue, not missing functions.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -131,8 +131,10 @@ First review pass is complete. Landed timezone/Intl corrections closed69 numbere
 steps; the reader/calendar batch closes another17. Reusing those contracts
 closes16 caller steps without runtime changes. At the preceding checkpoint,104 steps formed14
 shared-premise families. All268 public entries have numbered inline anchors;
-helper/backend annotation remains part of completion. Confirmed constructor realm
-fallback gap spans16 rows across eight constructors; it is not a spec issue.
+helper/backend annotation remains part of completion. Four confirmed cross-copy
+steps join 16 constructor realm fallback steps. The four public controls
+reproduce with separate module graphs and ordinary index/standalone imports.
+[Cross-copy evidence](temporal-cross-copy-brand/README.md).
 
 The numbered queue falls from144 to104:36 steps are locally verified, two Notes
 become informative and two steps retain explicit comparison issues. These are
@@ -188,13 +190,13 @@ contracts. Host and remaining calendar-unit comparisons stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[145 mapping dispositions](temporal-helper-annotation-reconciliation.json)
-cover ISO scanners, Rust formatting, plain-relative arithmetic, TS/Rust
+[187 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-133 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:313 mapped,372 candidate,
-384 unmapped, including three retired identities. Annotation presence alone
-is211 direct,13 enclosing,842 without numbered anchors,3 retired; these are
+175 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:342 mapped,350 candidate,
+377 unmapped, including three retired identities. Annotation presence alone
+is252 direct,13 enclosing,801 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -207,6 +209,10 @@ root integration overlaps runtime work and is not assigned an invented duration.
 Twelve timezone mappings took 35 seconds to apply and rebind after preliminary
 review. Seventeen Rust parser mappings preserve all 31 callable bodies.
 [Parser evidence](temporal-native-parse17-annotation-source-proof.json).
+A further 42 mappings cover TypeScript clock/ISO helpers and Rust timezone
+registry routing. Seven Bazel targets pass.
+[Clock evidence](temporal-ts-clock26-annotation-source-proof.json)
+[Registry evidence](temporal-native-zoneregistry16-annotation-source-proof.json).
 Keep the 3–5 hour annotation estimate provisional because review time
 varies by source and the timezone timing excludes its preliminary review.
 

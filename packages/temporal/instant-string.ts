@@ -249,6 +249,7 @@ function monthDayMatch(value: string): string[] | null {
   if (!digitsAt(value, index, 2) || index + 2 !== value.length) return null
   return [value, month, stringPart(value, index)]
 }
+// Temporal comparison §4.5.6 step 3.b. Scan the date prefix of a time string.
 function dateTimePrefixMatch(value: string): string[] | null {
   const date = datePrefix(value)
   if (!date || !timeMarker(value, date.end)) return null
@@ -260,6 +261,7 @@ function dateTimePrefixMatch(value: string): string[] | null {
     date.day,
   ]
 }
+// Temporal comparison §13.38 step 3. Split date and clock text for zone parsing.
 function dateBodyMatch(value: string): string[] | null {
   const date = datePrefix(value)
   if (!date) return null
@@ -282,6 +284,7 @@ function dateBodyMatch(value: string): string[] | null {
     stringPart(value, date.end + 1),
   ]
 }
+// Temporal comparison §13.35 step 4.a.i. Scan a whole clock and optional offset.
 function timeMatch(value: string, allowZ = false): string[] | null {
   const time = timePrefix(value, 0)
   if (!time) return null
@@ -333,6 +336,7 @@ export function zoneName(value: string): boolean {
   }
   return !first
 }
+// Temporal comparison §13.35 steps 4.a.ii.3.a and 4.a.ii.4.a. Test the ISO calendar token.
 function isoCalendar(value: string): boolean {
   return (
     value.length === 7 &&
@@ -345,6 +349,7 @@ function isoCalendar(value: string): boolean {
     value[6] === '1'
   )
 }
+// Temporal comparison §13.36 step 1. Select the date branch for calendar parsing.
 function calendarDatePrefix(value: string): boolean {
   const date = datePrefix(value)
   return (
@@ -352,6 +357,7 @@ function calendarDatePrefix(value: string): boolean {
     (date.end === value.length || timeMarker(value, date.end))
   )
 }
+// Temporal comparison §6.5.2 steps 5.f and 5.g.i. Extract the trailing offset token.
 function suffixOffset(value: string): string | undefined {
   for (let index = 0; index < value.length; index++) {
     if (isZ(value[index]) && index + 1 === value.length) return value[index]
@@ -476,6 +482,7 @@ export function parseInstantString(value: string): bigint {
   return local - (isZ(match[10]) ? 0n : parseOffsetNanoseconds(match[10]))
 }
 
+// Temporal comparison §3.5.8 steps 1–3. Check day bounds and reject a negative zero year token.
 function isValidDate(year: string, month: string, day: string): boolean {
   const y = +year,
     m = +month,

@@ -1,0 +1,887 @@
+{
+  "scope": "26 local TypeScript ISO and PlainTime helper mappings.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "packages/temporal/instant-string.ts",
+      "before_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a",
+      "after_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
+      "verified_callable_count": 34,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    },
+    {
+      "file": "packages/temporal/plain-time.ts",
+      "before_sha256": "19bfc8c47c1fc28697b8bfbf4efe13a5bf450f02ad95f54611c57852f5549046",
+      "after_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
+      "verified_callable_count": 42,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    713, 714, 715, 717, 718, 719, 722, 979, 980, 981, 982, 983, 984, 985, 986,
+    987, 989, 990, 991, 992, 993, 994, 995, 996, 997, 998
+  ],
+  "review_timing": {
+    "scope": "Artifact and AST scan generation only. Excludes semantic review.",
+    "elapsed_seconds": 0.09
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 713,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "dateTimePrefixMatch",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "253",
+        "end_line": "263",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": ["4.5.6/algorithm-1/step-3.b"],
+      "annotation_placement": "leading",
+      "annotation_line": 252,
+      "annotation": "// Temporal comparison \u00a74.5.6 step 3.b. Scan the date prefix of a time string.",
+      "evidence": "Matches an ISO date followed by a clock marker. The caller validates the ISO date and removes the prefix before parsing the clock."
+    },
+    {
+      "inventory_row": 714,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "dateBodyMatch",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "265",
+        "end_line": "286",
+        "comparison_sections": "13.38",
+        "section_ids": "sec-temporal-parsetemporaltimezonestring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaltimezonestring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": ["13.38/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 264,
+      "annotation": "// Temporal comparison \u00a713.38 step 3. Split date and clock text for zone parsing.",
+      "evidence": "Identifies a date with an optional clock suffix. The timezone string caller enforces validity and may fall back to other ISO goals."
+    },
+    {
+      "inventory_row": 715,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "timeMatch",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "288",
+        "end_line": "312",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-4.a.i"],
+      "annotation_placement": "leading",
+      "annotation_line": 287,
+      "annotation": "// Temporal comparison \u00a713.35 step 4.a.i. Scan a whole clock and optional offset.",
+      "evidence": "Reads a clock, an allowed Z designator or a numeric offset and requires full consumption. Callers apply semantic bounds and offset validation."
+    },
+    {
+      "inventory_row": 717,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "isoCalendar",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "340",
+        "end_line": "351",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.ii.3.a",
+        "13.35/algorithm-1/step-4.a.ii.4.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 339,
+      "annotation": "// Temporal comparison \u00a713.35 steps 4.a.ii.3.a and 4.a.ii.4.a. Test the ISO calendar token.",
+      "evidence": "Tests the exact ASCII case-insensitive iso8601 token after the caller has established a short date form."
+    },
+    {
+      "inventory_row": 718,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "calendarDatePrefix",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "353",
+        "end_line": "359",
+        "comparison_sections": "13.36",
+        "section_ids": "sec-temporal-parsetemporalcalendarstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": ["13.36/algorithm-1/step-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 352,
+      "annotation": "// Temporal comparison \u00a713.36 step 1. Select the date branch for calendar parsing.",
+      "evidence": "Chooses full date parsing when the date prefix ends the string or has a clock marker. The enclosing parser validates the full input."
+    },
+    {
+      "inventory_row": 719,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "suffixOffset",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "361",
+        "end_line": "368",
+        "comparison_sections": "6.5.2",
+        "section_ids": "sec-temporal-totemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": [
+        "6.5.2/algorithm-1/step-5.f",
+        "6.5.2/algorithm-1/step-5.g.i"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 360,
+      "annotation": "// Temporal comparison \u00a76.5.2 steps 5.f and 5.g.i. Extract the trailing offset token.",
+      "evidence": "Finds a trailing Z designator or a numeric offset candidate. The zoned parser separately validates the date and clock and computes match precision."
+    },
+    {
+      "inventory_row": 722,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "isValidDate",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "486",
+        "end_line": "494",
+        "comparison_sections": "3.5.8|13.31.3",
+        "section_ids": "sec-temporal-isvalidisodate|sec-temporal-iso8601grammar-static-semantics-early-errors",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isvalidisodate|https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar-static-semantics-early-errors",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a"
+      },
+      "spec_row_ids": [
+        "3.5.8/algorithm-1/step-1",
+        "3.5.8/algorithm-1/step-2",
+        "3.5.8/algorithm-1/step-3",
+        "13.31.3/prose_list_item-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 485,
+      "annotation": "// Temporal comparison \u00a73.5.8 steps 1\u20133. Check day bounds and reject a negative zero year token.",
+      "evidence": "Determines Gregorian day bounds from parsed ASCII fields. The additional -000000 test belongs to input grammar."
+    },
+    {
+      "inventory_row": 979,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "read",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "114",
+        "end_line": "119",
+        "comparison_sections": "4.3.3",
+        "section_ids": "sec-get-temporal.plaintime.prototype.hour",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.hour",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": ["4.3.3/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 113,
+      "annotation": "// Temporal comparison \u00a74.3.3 step 2. Read the receiver slot or throw.",
+      "evidence": "Used by getters and methods. Tests WeakMap presence before using the stored exact nanoseconds."
+    },
+    {
+      "inventory_row": 980,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "clockValues",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "122",
+        "end_line": "124",
+        "comparison_sections": "4.5.12",
+        "section_ids": "sec-temporal-totemporaltimerecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimerecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": ["4.5.12/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 121,
+      "annotation": "// Temporal comparison \u00a74.5.12 step 2. Copy six seed fields into a private list.",
+      "evidence": "Indexed construction of the six default fields in the cache-free bag path. Allocation is shared with other clock operations."
+    },
+    {
+      "inventory_row": 981,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "fields",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "126",
+        "end_line": "130",
+        "comparison_sections": "4.3.3",
+        "section_ids": "sec-get-temporal.plaintime.prototype.hour",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.hour",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": ["4.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 125,
+      "annotation": "// Temporal comparison \u00a74.3.3 step 3. Split exact clock nanoseconds into getter fields.",
+      "evidence": "Divides by each exact factor and reduces modulo its field length before Number conversion. All six projected values fit exactly."
+    },
+    {
+      "inventory_row": 982,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "integer",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "132",
+        "end_line": "142",
+        "comparison_sections": "13.40",
+        "section_ids": "sec-tointegerwithtruncation",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-tointegerwithtruncation",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "13.40/algorithm-1/step-1",
+        "13.40/algorithm-1/step-2",
+        "13.40/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 131,
+      "annotation": "// Temporal comparison \u00a713.40 steps 1\u20133. Coerce, truncate, and normalize zero.",
+      "evidence": "Unary plus supplies ToNumber. Captured truncation and integer check reject the three nonfinite cases, then normalize negative zero."
+    },
+    {
+      "inventory_row": 983,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "overflow",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "144",
+        "end_line": "150",
+        "comparison_sections": "13.6",
+        "section_ids": "sec-temporal-gettemporaloverflowoption",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporaloverflowoption",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "13.6/algorithm-1/step-1",
+        "13.6/algorithm-1/step-2",
+        "13.6/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 143,
+      "annotation": "// Temporal comparison \u00a713.6 steps 1\u20133. Read and validate overflow once.",
+      "evidence": "Validates options before one property Get. Missing option selects constrain. Spec enumeration uses an internal boolean."
+    },
+    {
+      "inventory_row": 984,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "regulate",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "152",
+        "end_line": "186",
+        "comparison_sections": "4.5.8|4.5.9",
+        "section_ids": "sec-temporal-regulatetime|sec-temporal-isvalidtime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-regulatetime|https://tc39.es/proposal-temporal/#sec-temporal-isvalidtime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.8/algorithm-1/step-1",
+        "4.5.8/algorithm-1/step-2",
+        "4.5.8/algorithm-1/step-3",
+        "4.5.9/algorithm-1/step-1",
+        "4.5.9/algorithm-1/step-2",
+        "4.5.9/algorithm-1/step-3",
+        "4.5.9/algorithm-1/step-4",
+        "4.5.9/algorithm-1/step-5",
+        "4.5.9/algorithm-1/step-6",
+        "4.5.9/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 151,
+      "annotation": "// Temporal comparison \u00a74.5.8 steps 1\u20133. Clamp or reject each field before encoding.",
+      "evidence": "Retains the existing native delegation. Fallback handles each supplied integer independently, then encodes its weighted contribution as BigInt."
+    },
+    {
+      "inventory_row": 985,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "object",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "188",
+        "end_line": "190",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": ["4.5.6/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 187,
+      "annotation": "// Temporal comparison \u00a74.5.6 step 2. Test the property bag branch.",
+      "evidence": "Delegates to the shared IsObject predicate. The caller hands branded values through separate paths."
+    },
+    {
+      "inventory_row": 986,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "timeFields",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "192",
+        "end_line": "217",
+        "comparison_sections": "4.5.12",
+        "section_ids": "sec-temporal-totemporaltimerecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimerecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.12/algorithm-1/step-4",
+        "4.5.12/algorithm-1/step-5",
+        "4.5.12/algorithm-1/step-6",
+        "4.5.12/algorithm-1/step-7",
+        "4.5.12/algorithm-1/step-8",
+        "4.5.12/algorithm-1/step-9",
+        "4.5.12/algorithm-1/step-10",
+        "4.5.12/algorithm-1/step-11",
+        "4.5.12/algorithm-1/step-12",
+        "4.5.12/algorithm-1/step-13",
+        "4.5.12/algorithm-1/step-14",
+        "4.5.12/algorithm-1/step-15",
+        "4.5.12/algorithm-1/step-16",
+        "4.5.12/algorithm-1/step-17",
+        "4.5.12/algorithm-1/step-18"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 191,
+      "annotation": "// Temporal comparison \u00a74.5.12 steps 4\u201318. Read fields in spec order.",
+      "evidence": "Indexed field order and immediate truncation preserve get/coercion order. The merged partial-record path retains its separately recorded comparison issue."
+    },
+    {
+      "inventory_row": 987,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "toTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "219",
+        "end_line": "240",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.6/algorithm-1/step-2.a",
+        "4.5.6/algorithm-1/step-2.b",
+        "4.5.6/algorithm-1/step-2.c",
+        "4.5.6/algorithm-1/step-2.d",
+        "4.5.6/algorithm-1/step-2.g",
+        "4.5.6/algorithm-1/step-3.a",
+        "4.5.6/algorithm-1/step-3.b",
+        "4.5.6/algorithm-1/step-3.f",
+        "4.5.6/algorithm-1/step-3.g"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 218,
+      "annotation": "// Temporal comparison \u00a74.5.6 steps 2\u20133. Convert slots, property bags, or strings.",
+      "evidence": "Returns a private exact clock value. The public caller creates the wrapped PlainTime when required."
+    },
+    {
+      "inventory_row": 989,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "nativeTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "248",
+        "end_line": "252",
+        "comparison_sections": "4.3.3",
+        "section_ids": "sec-get-temporal.plaintime.prototype.hour",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.hour",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": ["4.3.3/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 247,
+      "annotation": "// Temporal comparison \u00a74.3.3 step 2. Read the native-backed receiver slot or throw.",
+      "evidence": "Native-backed getters and methods reject missing brands through their own private time map."
+    },
+    {
+      "inventory_row": 990,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "nativeTimeFromValue",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "254",
+        "end_line": "261",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.6/algorithm-1/step-2.b.iii",
+        "4.5.6/algorithm-1/step-2.c.iv"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 253,
+      "annotation": "// Temporal comparison \u00a74.5.6 steps 2.b.iii and 2.c.iv. Project the native clock result.",
+      "evidence": "Modulo extracts within-day nanoseconds from a projected timestamp. Uses the native exact nanosecond operation to populate the transported clock result."
+    },
+    {
+      "inventory_row": 991,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "toNativeTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "263",
+        "end_line": "284",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.6/algorithm-1/step-2.a",
+        "4.5.6/algorithm-1/step-2.b",
+        "4.5.6/algorithm-1/step-2.c",
+        "4.5.6/algorithm-1/step-2.d",
+        "4.5.6/algorithm-1/step-2.g",
+        "4.5.6/algorithm-1/step-3.a",
+        "4.5.6/algorithm-1/step-3.b",
+        "4.5.6/algorithm-1/step-3.f",
+        "4.5.6/algorithm-1/step-3.g"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 262,
+      "annotation": "// Temporal comparison \u00a74.5.6 steps 2\u20133. Convert input to the native clock record.",
+      "evidence": "Uses native parsed or regulated clock data after the same branded, object, and string branches. Public object allocation remains separate."
+    },
+    {
+      "inventory_row": 992,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "create",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "286",
+        "end_line": "296",
+        "comparison_sections": "4.5.11",
+        "section_ids": "sec-temporal-createtemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.11/algorithm-1/step-1",
+        "4.5.11/algorithm-1/step-2",
+        "4.5.11/algorithm-1/step-3",
+        "4.5.11/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 285,
+      "annotation": "// Temporal comparison \u00a74.5.11 steps 1\u20134. Allocate and initialize the local result.",
+      "evidence": "Used for internal allocations with the local PlainTime prototype. Public newTarget handling has separate obligations."
+    },
+    {
+      "inventory_row": 993,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "createPlainTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "298",
+        "end_line": "300",
+        "comparison_sections": "4.5.11",
+        "section_ids": "sec-temporal-createtemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.11/algorithm-1/step-1",
+        "4.5.11/algorithm-1/step-2",
+        "4.5.11/algorithm-1/step-3",
+        "4.5.11/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 297,
+      "annotation": "// Temporal comparison \u00a74.5.11 steps 1\u20134. Create a local PlainTime from exact nanoseconds.",
+      "evidence": "Calls the same internal allocator used by other time results. The caller must supply the existing exact encoded clock value."
+    },
+    {
+      "inventory_row": 994,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "validateTimeIncrement",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "302",
+        "end_line": "309",
+        "comparison_sections": "13.14",
+        "section_ids": "sec-validatetemporalroundingincrement",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-validatetemporalroundingincrement",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "13.14/algorithm-1/step-2.a",
+        "13.14/algorithm-1/step-2.b",
+        "13.14/algorithm-1/step-3",
+        "13.14/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 301,
+      "annotation": "// Temporal comparison \u00a713.14 steps 2\u20134. Check the exclusive rounding increment.",
+      "evidence": "Called after conversion to a positive integer. Tests the exclusive cap and requires divisibility by the chosen field maximum."
+    },
+    {
+      "inventory_row": 995,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "roundTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "311",
+        "end_line": "328",
+        "comparison_sections": "4.5.16",
+        "section_ids": "sec-temporal-roundtime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-roundtime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.16/algorithm-1/step-1",
+        "4.5.16/algorithm-1/step-2",
+        "4.5.16/algorithm-1/step-3",
+        "4.5.16/algorithm-1/step-4",
+        "4.5.16/algorithm-1/step-5",
+        "4.5.16/algorithm-1/step-6",
+        "4.5.16/algorithm-1/step-7",
+        "4.5.16/algorithm-1/step-8"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 310,
+      "annotation": "// Temporal comparison \u00a74.5.16 steps 1\u20138. Round within the next larger clock unit.",
+      "evidence": "Uses exact BigInt factors in the fallback. Returns an encoded clock that can carry out of the day, with final wrap owned by its caller."
+    },
+    {
+      "inventory_row": 996,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "difference",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "330",
+        "end_line": "396",
+        "comparison_sections": "4.5.17",
+        "section_ids": "sec-temporal-differencetemporalplaintime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplaintime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.17/algorithm-1/step-1",
+        "4.5.17/algorithm-1/step-2",
+        "4.5.17/algorithm-1/step-3",
+        "4.5.17/algorithm-1/step-4",
+        "4.5.17/algorithm-1/step-5",
+        "4.5.17/algorithm-1/step-6",
+        "4.5.17/algorithm-1/step-7",
+        "4.5.17/algorithm-1/step-8",
+        "4.5.17/algorithm-1/step-9"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 329,
+      "annotation": "// Temporal comparison \u00a74.5.17 steps 1\u20139. Convert, round, and balance the time difference.",
+      "evidence": "Local or native subtraction consumes resolved time settings. This mapping records the comparison operation and preserves the independent native and settings evidence."
+    },
+    {
+      "inventory_row": 997,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "add",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "398",
+        "end_line": "413",
+        "comparison_sections": "4.5.18",
+        "section_ids": "sec-temporal-adddurationtotime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtotime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.5.18/algorithm-1/step-1",
+        "4.5.18/algorithm-1/step-2",
+        "4.5.18/algorithm-1/step-3",
+        "4.5.18/algorithm-1/step-4",
+        "4.5.18/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 397,
+      "annotation": "// Temporal comparison \u00a74.5.18 steps 1\u20135. Apply the signed time portion and wrap the clock.",
+      "evidence": "Uses Duration conversion up front and applies only signed time fields. Allocation normalizes the result within a day."
+    },
+    {
+      "inventory_row": 998,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "format",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "415",
+        "end_line": "447",
+        "comparison_sections": "4.3.16|4.3.18|4.5.13",
+        "section_ids": "sec-temporal.plaintime.prototype.tostring|sec-temporal.plaintime.prototype.tojson|sec-temporal-timerecordtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tostring|https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tojson|https://tc39.es/proposal-temporal/#sec-temporal-timerecordtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-remaining-work-plan.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "spec_row_ids": [
+        "4.3.16/algorithm-1/step-11",
+        "4.3.16/algorithm-1/step-12",
+        "4.3.18/algorithm-1/step-3",
+        "4.5.13/algorithm-1/step-1",
+        "4.5.13/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 414,
+      "annotation": "// Temporal comparison \u00a74.3.16 steps 11\u201312. Round and format the selected precision.",
+      "evidence": "Handles native formatting or exact fallback rounding, then renders two-digit fields and the chosen fraction. JSON uses the same formatter at automatic precision."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//packages/temporal:plain_time_test",
+      "//packages/temporal:instant_test262",
+      "//packages/temporal:plain_time_test262",
+      "//packages/temporal:plain_time_hermes_test262_strict",
+      "//packages/temporal:plain_time_hermes_bytecode_test262_strict"
+    ],
+    "log_sha256": "febe6bc6202328307c577729ab08ccc5e8bee73c02fc11fac578cd54b163f48d",
+    "result": "7 tests pass across both batches."
+  }
+}

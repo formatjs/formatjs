@@ -14,7 +14,7 @@
     "packages/temporal/plain-date-time.ts": "b73fe57fbcfeba8eb1e20ce5651ac0d01dbe30a8f05c5552a803c07d658248a3",
     "packages/temporal/plain-date.ts": "ac07072869eee090ed45fac7af65590776954f270c7162b6ea0ffcdd4b13fe86",
     "packages/temporal/plain-month-day.ts": "af1a02119f94ebdf4149318e330d24d9012d0525eef8c086b6f4a8b814a402b2",
-    "packages/temporal/plain-time.ts": "19bfc8c47c1fc28697b8bfbf4efe13a5bf450f02ad95f54611c57852f5549046",
+    "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
     "packages/temporal/plain-year-month.ts": "a07bb9982dac43842b830732a3e8a407193736bfea137b1d4fec15e080c6c6bd",
     "packages/temporal/zoned-date-time.ts": "2ad61af9ab2200bc4981261c6c2d111ed9f829b9711f3dd1449dc9958a18ebe2"
   },

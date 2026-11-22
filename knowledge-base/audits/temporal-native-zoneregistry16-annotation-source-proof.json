@@ -1,0 +1,526 @@
+{
+  "scope": "16 local Rust timezone registry dependencies for identity, routing and compiled data. Implementation and requirement statuses unchanged.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "crates/temporal/timezone_registry.rs",
+      "before_sha256": "669a333d0bfe8894cacb20bfaf24b14418958e23e1ec9d9758b5f54f359d9c1c",
+      "after_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
+      "verified_callable_count": 27,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    480, 481, 483, 485, 486, 487, 489, 490, 492, 494, 495, 496, 497, 498, 499,
+    500
+  ],
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 480,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> TimeZoneRecord<'a>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "14",
+        "end_line": "23",
+        "comparison_sections": "11.1.1",
+        "section_ids": "sec-getavailablenamedtimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-getavailablenamedtimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": ["11.1.1/algorithm-1/step-1.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 13,
+      "annotation": "// Proposal comparison \u00a711.1.1 step 1.a: bind a borrowed provider to its primary identifier.",
+      "evidence": "Resolves available identity, rejects alias spellings and any UTC-primary record, and stores the primary name with the supplied provider. Lowercase input for a primary name is accepted via case-insensitive identity resolution. UTC is supplied by registry resolution."
+    },
+    {
+      "inventory_row": 481,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> TimeZoneRecord<'a>::identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "25",
+        "end_line": "27",
+        "comparison_sections": "11.1.1",
+        "section_ids": "sec-getavailablenamedtimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-getavailablenamedtimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": ["11.1.1/algorithm-1/step-1.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 24,
+      "annotation": "// Proposal comparison \u00a711.1.1 step 1.a: expose the canonical key of the provider record.",
+      "evidence": "Returns the previously validated primary key from one borrowed provider record. This is the typed accessor rather than a full available-identifiers enumeration."
+    },
+    {
+      "inventory_row": 483,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> TimeZoneRegistry<'a>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "41",
+        "end_line": "49",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 40,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: require ordered, unique provider keys before lookup.",
+      "evidence": "Checks adjacent keys for strict ordering, the prerequisite for binary lookup by primary ID. Provider identity and transition data validity are established at their separate construction boundaries."
+    },
+    {
+      "inventory_row": 485,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> TimeZoneRegistry<'a>::resolve",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "54",
+        "end_line": "76",
+        "comparison_sections": "11.1.8|11.1.9",
+        "section_ids": "sec-temporal-totemporaltimezoneidentifier|sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimezoneidentifier|https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-offset-grammar-audit.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.8/algorithm-1/step-5",
+        "11.1.8/algorithm-1/step-7",
+        "11.1.8/algorithm-1/step-8",
+        "11.1.8/algorithm-1/step-9",
+        "11.1.9/algorithm-1/step-2",
+        "11.1.9/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 53,
+      "annotation": "// Proposal comparison \u00a711.1.8 steps 5, 7\u20139: resolve the typed offset or named zone.",
+      "evidence": "Signed normalized builtins get fixed providers. Named identity is resolved case-insensitively, and the table is searched by the primary key while the alias spelling is preserved for output. UTC uses a zero provider; other known identities with missing data return a typed error."
+    },
+    {
+      "inventory_row": 486,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> TimeZoneRegistry<'a>::system",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "82",
+        "end_line": "86",
+        "comparison_sections": "14.6.4",
+        "section_ids": "sec-systemtimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "14.6.4/algorithm-1/step-1",
+        "14.6.4/algorithm-1/step-2",
+        "14.6.4/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 81,
+      "annotation": "// Proposal comparison \u00a714.6.4 steps 1\u20133: normalize the supplied host zone or use UTC.",
+      "evidence": "Takes a supplied host identifier, then resolves its primary named identity or normalized fixed offset text. Missing or unsupported host data use the typed UTC fallback. This does not inspect the environment or equate all host fallback cases with the normative UTC-only premise."
+    },
+    {
+      "inventory_row": 487,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl TimeZoneRegistry<'static>::compiled",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "92",
+        "end_line": "96",
+        "comparison_sections": "11.1.9|11.1.13",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor|sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.9/algorithm-1/step-3",
+        "11.1.13/algorithm-1/step-3.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 91,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: supply the compiled IANA provider records.",
+      "evidence": "Supplies the generated pinned table to native provider resolution. Data-generation and offset evaluation are separately owned. The specific shipped profile is recorded in the endpoint proof."
+    },
+    {
+      "inventory_row": 489,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> ResolvedTimeZone<'a>::identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "116",
+        "end_line": "121",
+        "comparison_sections": "11.1.8|6.3.4",
+        "section_ids": "sec-temporal-totemporaltimezoneidentifier|sec-get-temporal.zoneddatetime.prototype.timezoneid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimezoneidentifier|https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.timezoneid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.8/algorithm-1/step-5",
+        "11.1.8/algorithm-1/step-9",
+        "6.3.4/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 115,
+      "annotation": "// Proposal comparison \u00a711.1.8 steps 5, 9: return the normalized offset or named spelling.",
+      "evidence": "Returns stored IANA identifier (which may be non-primary) or the fixed-width ASCII offset string. Slot construction and JS getter validation are caller responsibilities."
+    },
+    {
+      "inventory_row": 490,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl<'a> ResolvedTimeZone<'a>::primary_identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "123",
+        "end_line": "128",
+        "comparison_sections": "11.1.15|14.6.4",
+        "section_ids": "sec-temporal-timezoneequals|sec-systemtimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timezoneequals|https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.15/algorithm-1/step-2.e",
+        "14.6.4/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 122,
+      "annotation": "// Proposal comparison \u00a711.1.15 step 2.e: read the primary identity used for equality.",
+      "evidence": "Returns the primary name independently of alias spelling, or reuses already normalized fixed-offset identity. The helper supplies zone equality and typed system-zone normalization."
+    },
+    {
+      "inventory_row": 492,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl PartialEq for ResolvedTimeZone<'_>::eq",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "135",
+        "end_line": "137",
+        "comparison_sections": "11.1.15",
+        "section_ids": "sec-temporal-timezoneequals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timezoneequals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.15/algorithm-1/step-1",
+        "11.1.15/algorithm-1/step-2.e",
+        "11.1.15/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 134,
+      "annotation": "// Proposal comparison \u00a711.1.15 steps 2.e, 4: compare resolved zone identities.",
+      "evidence": "Primary name equality handles aliases; fixed offset text was already canonicalized before comparison. Named and fixed ID domains are disjoint even for UTC versus +00:00. No parsing or provider-data comparison takes place here."
+    },
+    {
+      "inventory_row": 494,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl TimeZone for ResolvedTimeZone<'_>::offset_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "147",
+        "end_line": "149",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.9/algorithm-1/step-2",
+        "11.1.9/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 146,
+      "annotation": "// Proposal comparison \u00a711.1.9 steps 2\u20133: query the resolved provider for the offset.",
+      "evidence": "Delegates the exact Instant to the stored TransitionZone. The fixed provider is constant and the named provider owns historical/future offset selection. No provider-wide signoff is implied by forwarding."
+    },
+    {
+      "inventory_row": 495,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl TimeZone for ResolvedTimeZone<'_>::visit_offsets",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "151",
+        "end_line": "153",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 150,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: delegate enumeration of possible offsets.",
+      "evidence": "Forwards the visitor to the stored provider for its full distinct-offset enumeration. This is a candidate-input dependency. Candidate validation and bounds are enforced elsewhere."
+    },
+    {
+      "inventory_row": 496,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl TimeZone for ResolvedTimeZone<'_>::visit_offsets_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "155",
+        "end_line": "157",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 154,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: delegate offsets near the requested local time.",
+      "evidence": "Passes exact local nanoseconds and the visitor to the provider. The visitor\u2019s caller validates possible epochs and their actual offsets. Mixed-validity folds and transition search stay separately owned."
+    },
+    {
+      "inventory_row": 497,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "impl TimeZone for ResolvedTimeZone<'_>::transition",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "159",
+        "end_line": "161",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 158,
+      "annotation": "// Proposal comparison \u00a76.3.46 steps 9.a, 10.b: dispatch the selected transition direction.",
+      "evidence": "Passes Instant and typed direction to the stored provider, forwarding its optional result. Strict boundary and future-rule search semantics belong to the provider."
+    },
+    {
+      "inventory_row": 498,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "module::offset_identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "166",
+        "end_line": "196",
+        "comparison_sections": "11.1.16|11.1.8",
+        "section_ids": "sec-parsetimezoneidentifier|sec-temporal-totemporaltimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-parsetimezoneidentifier|https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-offset-grammar-audit.md|knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.16/algorithm-1/step-1",
+        "11.1.16/algorithm-1/step-2",
+        "11.1.16/algorithm-1/step-6",
+        "11.1.16/algorithm-1/step-7",
+        "11.1.16/algorithm-1/step-8",
+        "11.1.8/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 165,
+      "annotation": "// Proposal comparison \u00a711.1.16 steps 1\u20132, 6\u20138: parse a minute-precision identifier.",
+      "evidence": "Validates signed HH, HHMM and HH:MM only, checks hour/minute bounds, turns numeric minutes into exact seconds for the provider and emits \u00b1HH:MM. Signed zero canonicalizes to +00:00. This is the minute-only identifier grammar, with full UTC offset scanning elsewhere."
+    },
+    {
+      "inventory_row": 499,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "module::checked_future",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "200",
+        "end_line": "208",
+        "comparison_sections": "11.1.9|6.3.46",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor|sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.9/algorithm-1/step-3",
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 199,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: validate generated future rules for named offsets.",
+      "evidence": "Requires FutureRule construction to succeed during compiled-table assembly. Generated rule values and their recurrence semantics are separately owned by generator and Rust rule implementation."
+    },
+    {
+      "inventory_row": 500,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_registry.rs",
+        "symbol": "module::checked_zone",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "211",
+        "end_line": "220",
+        "comparison_sections": "11.1.9|11.1.13",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor|sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b"
+      },
+      "spec_row_ids": [
+        "11.1.9/algorithm-1/step-3",
+        "11.1.13/algorithm-1/step-3.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 210,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: validate generated transition providers.",
+      "evidence": "Requires TransitionZone construction to succeed for the compiled initial offset, event slice and footer. This validates through the existing constructor and does not itself calculate timezone results."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//crates/temporal:registry_test",
+      "//crates/temporal:zoned_string_test"
+    ],
+    "log_sha256": "febe6bc6202328307c577729ab08ccc5e8bee73c02fc11fac578cd54b163f48d",
+    "result": "7 tests pass across both batches."
+  }
+}
