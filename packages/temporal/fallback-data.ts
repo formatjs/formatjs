@@ -26,6 +26,8 @@ function unavailable(): never {
     'Temporal native build requires Rust calendar and timezone data'
   )
 }
+// Temporal comparison §12.3.26 step 2, §12.3.25 prose.
+// Select the generated Chinese or Dangi chronology table.
 export function fallbackLunisolar(
   calendar: 'chinese' | 'dangi'
 ): typeof chinese {
@@ -35,6 +37,8 @@ export function fallbackLunisolar(
       ? chinese
       : dangi
 }
+// Temporal comparison §12.3.22 step 2, §12.3.26 step 2.
+// Select generated Umm al-Qura data for calendar conversions.
 export function fallbackUmmAlQura(): typeof ummAlQura {
   return nativeDataOnly ? unavailable() : ummAlQura
 }
@@ -46,9 +50,13 @@ export function fallbackTimeZoneIdentifiers() {
     ? {...metadata, names: compactTimeZoneNames()}
     : metadata
 }
+// Temporal comparison §11.1.15 step 2.e.
+// Supply primary named-zone metadata to time zone equality.
 export function fallbackTimeZonePrimary() {
   return fallbackTimeZoneIdentifiers().primary
 }
+// Temporal comparison §11.1.9 step 3, §11.1.13 step 3.a.
+// Load named-zone transition and offset data for the fallback kernel.
 export function fallbackTimeZoneData(name: string): UnpackedTimeZoneData {
   if (nativeDataOnly) return unavailable()
   if (compactTimeZones) return unpackCompactTimeZone(name)

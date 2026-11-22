@@ -36,6 +36,8 @@ export function legacyHostTimeZone(
   if (cache.has(timeZone)) return cache.get(timeZone)
   let zone: HostTimeZone['offsetNanoseconds'] | undefined
   try {
+    // ECMA-402 §11.5.11 step 2.b: Reuse the host offset reader for the named
+    // zone.
     zone = createHostTimeZoneOffset(timeZone, {Constructor, parts})
   } catch (error) {
     if (!(error instanceof RangeErrorConstructor)) throw error
@@ -52,6 +54,7 @@ export function legacyZonedProjection(
   offset: bigint,
   parts: Parts
 ): LegacyDateTimeProjection {
+  // ECMA-402 §11.5.11 step 3: Format the offset-adjusted local scalar in UTC.
   const formatter = new Constructor(resolved.locale, {
     __proto__: null,
     ...selected,
@@ -84,6 +87,8 @@ function offsetName(
   parts: Parts
 ): string {
   const label = (timeZone: string, long: boolean, latin = false): string =>
+    // ECMA-402 §11.5.4 step 15.e.iv: Sample the host zone label at the
+    // requested width.
     parts
       .call(
         new Constructor(resolved.locale, {
@@ -95,6 +100,8 @@ function offsetName(
         0
       )
       .find(part => part.type === 'timeZoneName')!.value
+  // ECMA-402 §11.5.4 step 15.e.iv: Build the localized offset label from host
+  // controls.
   if (offset === 0n) return label('Etc/GMT', long)
   const pattern = label(offset < 0n ? 'Etc/GMT+1' : 'Etc/GMT-1', long, true)
   const separator = /01(\D+)00/.exec(label('Etc/GMT-1', true, true))?.[1] ?? ':'
@@ -111,6 +118,8 @@ function offsetName(
       'Timezone offset labels require Intl.NumberFormat'
     )
   const numeric = (digits: number): ((value: number) => string) =>
+    // ECMA-402 §11.5.4 steps 3–10: Use localized integer digits in the offset
+    // label.
     numberFormat.call(
       new NumberConstructor(resolved.locale, {
         numberingSystem,

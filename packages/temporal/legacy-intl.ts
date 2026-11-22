@@ -99,6 +99,8 @@ export function installLegacyDateTimeFormat(
         ),
       }
     }
+    // ECMA-402 §11.5.5 step 7: Project the Temporal record for the host pattern
+    // call.
     const result = legacyDateTimeProjection(
       Native!,
       value,
@@ -111,6 +113,8 @@ export function installLegacyDateTimeFormat(
     return result
   }
   function single(state: State, input: unknown): Projection | undefined {
+    // ECMA-402 §11.3.6 steps 3–4: Use the native default or prepare the
+    // supplied value.
     if (input === undefined)
       return state.calendar !== 'gregory' && state.calendar !== 'iso8601'
         ? {formatter: state.formatter, milliseconds: now()}
@@ -125,6 +129,8 @@ export function installLegacyDateTimeFormat(
     start: unknown,
     end: unknown
   ): [Projection, Projection] {
+    // ECMA-402 §11.3.4 steps 3–5: Reject missing endpoints, then prepare start
+    // before end.
     if (start === undefined || end === undefined)
       throw new TypeErrorConstructor('DateTimeFormat range requires two values')
     const first = ToDateTimeFormattable(start)
@@ -151,6 +157,7 @@ export function installLegacyDateTimeFormat(
     const snapshot: Record<string, unknown> = createObject(null)
     const tracked = createProxy(createObject(null), {
       get(_target, key) {
+        // ECMA-402 §11.1.2 step 4: Record options as the host resolves them.
         if (source === undefined) {
           if (options === null)
             throw new TypeErrorConstructor('Invalid options')
@@ -163,6 +170,7 @@ export function installLegacyDateTimeFormat(
         return value
       },
     })
+    // ECMA-402 §11.1.1 step 2: Delegate formatter construction to the host.
     const formatter = construct(
       Native!,
       [locales, tracked],
@@ -182,11 +190,15 @@ export function installLegacyDateTimeFormat(
   }
   class LegacyDateTimeFormat {
     get format(): (value?: unknown) => string {
+      // ECMA-402 §11.3.3 steps 4–5: Reuse the native bound formatter or the
+      // cached adapter.
       const bound = nativeFormat.call(this)
       const state: State | undefined = apply(weakMapGet, boundStates, [bound])
       if (!state) return bound
       if (!state.bound) {
         state.bound = (input?: unknown): string => {
+          // ECMA-402 §11.3.3 steps 4.a.i–ii: Prepare the bound call input and
+          // return its formatted value.
           const value = single(state, input)
           return value
             ? legacyDateTimeFormat(
@@ -204,6 +216,8 @@ export function installLegacyDateTimeFormat(
     formatToParts(input?: unknown): Intl.DateTimeFormatPart[] {
       const state: State | undefined = apply(weakMapGet, states, [this])
       if (!state) return apply(nativeParts, this, [input])
+      // ECMA-402 §11.3.6 step 5: Route the prepared value to its parts
+      // formatter.
       const value = single(state, input)
       return value
         ? legacyDateTimeParts(value, nativeParts, nativeResolved)
@@ -212,6 +226,8 @@ export function installLegacyDateTimeFormat(
     formatRange(start: unknown, end: unknown): string {
       const state: State | undefined = apply(weakMapGet, states, [this])
       if (!state) return apply(nativeRange, this, [start, end])
+      // ECMA-402 §11.3.4 step 6: Return the formatted range for the prepared
+      // endpoints.
       const [first, last] = range(state, start, end)
       return legacyDateTimeRangeFormat(
         first,
@@ -227,6 +243,8 @@ export function installLegacyDateTimeFormat(
     ): Intl.DateTimeRangeFormatPart[] {
       const state: State | undefined = apply(weakMapGet, states, [this])
       if (!state) return apply(nativeRangeParts, this, [start, end])
+      // ECMA-402 §11.3.5 step 6: Return the range parts for the prepared
+      // endpoints.
       const [first, last] = range(state, start, end)
       return legacyDateTimeRangeParts(
         first,
@@ -236,6 +254,7 @@ export function installLegacyDateTimeFormat(
       )
     }
     resolvedOptions(): Intl.ResolvedDateTimeFormatOptions {
+      // ECMA-402 §11.3.2 step 6: Return the host's resolved options record.
       return apply(nativeResolved, this, [])
     }
   }
@@ -244,6 +263,8 @@ export function installLegacyDateTimeFormat(
     locales: unknown = undefined,
     options: unknown = undefined
   ): Intl.DateTimeFormat {
+    // ECMA-402 §11.1.1 step 2: Create the formatter with the selected
+    // constructor target.
     const formatter = create(locales, options, new.target || DateTimeFormat)
     if (!new.target && legacySymbol && hasInstance.call(Native, this)) {
       Object.defineProperty(this, legacySymbol, {
@@ -275,6 +296,8 @@ export function installLegacyDateTimeFormat(
           intrinsics,
           localNanoseconds
         )
+        // ECMA-402 §11.5.6 step 1: Pass the private Temporal projection to the
+        // formatter.
         return legacyDateTimeFormat(
           result,
           nativeFormat,

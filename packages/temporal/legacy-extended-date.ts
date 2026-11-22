@@ -123,6 +123,7 @@ export function legacyDateTimeFormat(
       .map(part => part.value)
       .join('')
   const calendar = legacyCalendarParts(value, parts, resolved)
+  // ECMA-402 §11.5.6 steps 2–4: Concatenate corrected calendar part values.
   if (calendar) return calendar.map(part => part.value).join('')
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
     const calendar = resolved.call(value.formatter).calendar
@@ -131,10 +132,14 @@ export function legacyDateTimeFormat(
       return format.call(value.formatter)(value.milliseconds)
     const raw = parts.call(value.formatter, value.milliseconds),
       corrected = correctLunisolarParts(value, raw, resolved)
+    // ECMA-402 §11.5.6 steps 2–4: Concatenate corrected lunar parts when the
+    // host labels changed.
     return corrected === raw
       ? format.call(value.formatter)(value.milliseconds)
       : corrected.map(part => part.value).join('')
   }
+  // ECMA-402 §11.5.6 steps 2–4: Concatenate restored parts for the extended
+  // Gregorian projection.
   return legacyDateTimeParts(value, parts, resolved)
     .map(part => part.value)
     .join('')
@@ -213,6 +218,7 @@ export function legacyDateTimeRangeFormat(
   // ECMA-402 §11.5.9 steps 2–4: concatenate the corrected range values.
   if (extended) return extended.map(part => part.value).join('')
   const lunar = lunisolarRangeParts(first, last, parts, resolved)
+  // ECMA-402 §11.5.9 steps 2–4: Concatenate the corrected lunar range values.
   if (lunar) return lunar.map(part => part.value).join('')
   if (
     (!clipped(first) && !clipped(last)) ||
@@ -220,6 +226,8 @@ export function legacyDateTimeRangeFormat(
   )
     // ECMA-402 §11.3.4 step 6: forward the unchanged numeric range.
     return format.call(first.formatter, first.milliseconds, last.milliseconds)
+  // ECMA-402 §11.5.9 steps 2–4: Concatenate the corrected extended range
+  // values.
   return legacyDateTimeRangeParts(first, last, parts, resolved)
     .map(part => part.value)
     .join('')

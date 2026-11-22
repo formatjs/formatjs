@@ -1,5 +1,5 @@
 {
-  "scope": "832 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
+  "scope": "910 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
   "fixed_inventory_rows": 1069,
   "live_rebound_rows": 1066,
   "retired_identities": [
@@ -32,6 +32,23 @@
         "kind": "callback"
       },
       "reason": "Replaced by direct captured formatToParts/indexed loops; no live callable. Historical ranges only; retain identity."
+    },
+    {
+      "inventory_row": 664,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/fallback-data.ts",
+        "symbol": "anonymous@57",
+        "kind": "callback"
+      },
+      "before_mapping_status": "candidate",
+      "reason": "Removed packed-name projection",
+      "evidence": "The original callback in fallbackTimeZoneIdentifiers extracted each packed zone prefix before the separator at line 57. Commit 574608815 removed it in favor of shared generated metadata and the compact names accessor. Queue's present line 43 points to a guard, not an AST callback.",
+      "annotation_disposition": "removed_callable_stale_inventory_location",
+      "original_ast_lines": [57, 57],
+      "original_callable_sha256": "d9612316f301ac2370d2a17d289facbc2a3d93a90a143e17b06a59ca202acbc8",
+      "removed_by_commit": "574608815",
+      "stale_queue_range": [43, 43]
     }
   ],
   "reviewed_rows": [
@@ -27272,6 +27289,2913 @@
       "annotation_line": 7,
       "annotation": "// Proposal comparison \u00a714.9.1 steps 2\u20135: Read Date milliseconds and create an exact Instant.",
       "evidence": "Captured Date.prototype.getTime performs the receiver slot check and reads its milliseconds. BigInt converts the integer Date value, rejects NaN, and scales by one million exactly. The supplied create function owns object construction. Realm is outside this mapping."
+    },
+    {
+      "inventory_row": 661,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/fallback-data.ts",
+        "symbol": "fallbackLunisolar",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "31",
+        "end_line": "39",
+        "comparison_sections": "12.3.26|12.3.25",
+        "section_ids": "sec-temporal-calendarisotodate|sec-temporal-nonisocalendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-provider18-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad"
+      },
+      "base_ast_start_line": 29,
+      "base_ast_end_line": 37,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "8b474f4e7df4926dfc7bcfd61e5e50228b8edce561c9dc7517f594ab65133317",
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2", "12.3.25/prose-1"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 29,
+      "annotation": "// Temporal comparison \u00a712.3.26 step 2, \u00a712.3.25 prose.\n// Select the generated Chinese or Dangi chronology table.",
+      "local_scope": "Generated calendar data dependency",
+      "evidence": "Calendar-table data/pattern and tableDate use this selection for fallback chronology and calendar field projection. This function supplies the table. Host calendar profiles and native-data guards stay distinct."
+    },
+    {
+      "inventory_row": 662,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/fallback-data.ts",
+        "symbol": "fallbackUmmAlQura",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "42",
+        "end_line": "44",
+        "comparison_sections": "12.3.22|12.3.26",
+        "section_ids": "sec-temporal-calendardatetoiso|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-provider18-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad"
+      },
+      "base_ast_start_line": 38,
+      "base_ast_end_line": 40,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "40f262bacc21eaae38955f56e2787b498fc94f372d3d155c70bb5ec0769f57c9",
+      "spec_row_ids": [
+        "12.3.22/algorithm-1/step-2",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 40,
+      "annotation": "// Temporal comparison \u00a712.3.22 step 2, \u00a712.3.26 step 2.\n// Select generated Umm al-Qura data for calendar conversions.",
+      "local_scope": "Generated calendar data dependency",
+      "evidence": "The tableYearStart/tableMonthLength consumers use prepared Saudi year starts and length bits. The loader itself computes no calendar date. Caller owns table range and Islamic civil fallback."
+    },
+    {
+      "inventory_row": 665,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/fallback-data.ts",
+        "symbol": "fallbackTimeZonePrimary",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "55",
+        "end_line": "57",
+        "comparison_sections": "11.1.15",
+        "section_ids": "sec-temporal-timezoneequals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timezoneequals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-provider18-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad"
+      },
+      "base_ast_start_line": 49,
+      "base_ast_end_line": 51,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "43c44441489fa1a2ee352d1741b5199cf876170f421c061c7115b6af618cdd9b",
+      "spec_row_ids": ["11.1.15/algorithm-1/step-2.e"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 53,
+      "annotation": "// Temporal comparison \u00a711.1.15 step 2.e.\n// Supply primary named-zone metadata to time zone equality.",
+      "local_scope": "Generated registry dependency",
+      "evidence": "The fallback exposes the primary identifier dictionary and zones.ts reads its own entries. Choosing a comparison result and validating actual zone IDs remain with the caller."
+    },
+    {
+      "inventory_row": 666,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/fallback-data.ts",
+        "symbol": "fallbackTimeZoneData",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "60",
+        "end_line": "66",
+        "comparison_sections": "11.1.9|11.1.13",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor|sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-provider18-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad"
+      },
+      "base_ast_start_line": 52,
+      "base_ast_end_line": 58,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "d87408cf2505c3b70564865653e6ea19af4da7f3fb2b14ff9ae51e4f14a1d525",
+      "spec_row_ids": [
+        "11.1.9/algorithm-1/step-3",
+        "11.1.13/algorithm-1/step-3.a"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 58,
+      "annotation": "// Temporal comparison \u00a711.1.9 step 3, \u00a711.1.13 step 3.a.\n// Load named-zone transition and offset data for the fallback kernel.",
+      "local_scope": "Generated timezone data dependency",
+      "evidence": "Selects compact unpacking or finds and unpacks one entry from the full generated pack. zones.ts passes the result to createTimeZone for actual lookup and candidate enumeration. No direct offset arithmetic or provider compatibility assertion."
+    },
+    {
+      "inventory_row": 739,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "floorDivide",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "61",
+        "end_line": "64",
+        "comparison_sections": "11.1.2",
+        "section_ids": "sec-temporal-getisopartsfromepoch",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisopartsfromepoch",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 59,
+      "base_ast_end_line": 62,
+      "base_ast_columns_zero_based": [0, 1],
+      "callable_text_sha256": "8cbe9c1400a280ca44cdbae9e79af161b07c20680c4ed4a6bfc506c27f81cd22",
+      "spec_row_ids": [
+        "11.1.2/algorithm-1/step-2",
+        "11.1.2/algorithm-1/step-3"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 59,
+      "annotation": "// Temporal comparison \u00a711.1.2 steps 2, 3.\n// Floor the epoch quotient so negative instants keep the correct remainder.",
+      "local_scope": "Exact arithmetic dependency",
+      "evidence": "With a positive divisor, truncation is adjusted down one when a negative input has nonzero remainder. The date projector calls it with one day, and the offset lookup calls it with one millisecond before passing an exact Number."
+    },
+    {
+      "inventory_row": 740,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "checkInstant",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "68",
+        "end_line": "74",
+        "comparison_sections": "8.5.1",
+        "section_ids": "sec-temporal-isvalidepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isvalidepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 64,
+      "base_ast_end_line": 70,
+      "base_ast_columns_zero_based": [0, 1],
+      "callable_text_sha256": "826196322022a87a3e3ec2433bd2a0eec46b6ba84e892ca6fd07f74289eaace9",
+      "spec_row_ids": ["8.5.1/algorithm-1/step-1"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 66,
+      "annotation": "// Temporal comparison \u00a78.5.1 step 1.\n// Check inclusive Instant epoch bounds before the zone operation.",
+      "local_scope": "Private exact range check",
+      "evidence": "Comparisons of BigInt to symmetric limits throw on strict outside or return the exact epoch. Caller contexts own when an IsValidEpochNanoseconds false result should throw."
+    },
+    {
+      "inventory_row": 741,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "isoToEpochNanoseconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "78",
+        "end_line": "139",
+        "comparison_sections": "3.5.8|4.5.9|5.5.4|14.6.1",
+        "section_ids": "sec-temporal-isvalidisodate|sec-temporal-isvalidtime|sec-temporal-isodatetimewithinlimits|sec-getutcepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isvalidisodate|https://tc39.es/proposal-temporal/#sec-temporal-isvalidtime|https://tc39.es/proposal-temporal/#sec-temporal-isodatetimewithinlimits|https://tc39.es/proposal-temporal/#sec-getutcepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 72,
+      "base_ast_end_line": 131,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "18d3e3e4ffb28ea5d607edb8a6971d5301e04a16e8c9054e8dbfaa8c6fb48596",
+      "spec_row_ids": [
+        "3.5.8/algorithm-1/step-1",
+        "3.5.8/algorithm-1/step-2",
+        "3.5.8/algorithm-1/step-3",
+        "4.5.9/algorithm-1/step-1",
+        "4.5.9/algorithm-1/step-2",
+        "4.5.9/algorithm-1/step-3",
+        "4.5.9/algorithm-1/step-4",
+        "4.5.9/algorithm-1/step-5",
+        "4.5.9/algorithm-1/step-6",
+        "5.5.4/algorithm-1/step-2",
+        "5.5.4/algorithm-1/step-3",
+        "5.5.4/algorithm-1/step-4",
+        "14.6.1/algorithm-1/step-1",
+        "14.6.1/algorithm-1/step-2",
+        "14.6.1/algorithm-1/step-3",
+        "14.6.1/algorithm-1/step-4",
+        "14.6.1/algorithm-1/step-5"
+      ],
+      "frozen_checklists": ["core", "amendment"],
+      "annotation_placement": "leading",
+      "annotation_line": 76,
+      "annotation": "// Temporal comparison \u00a75.5.4 steps 2\u20134 and amendment \u00a714.6.1 steps 1\u20135.\n// Compose exact local epoch nanoseconds and enforce the strict bounds.",
+      "local_scope": "Numeric calendar and time dependency",
+      "evidence": "Validates prepared ISO date/time fields and own optional clock members. Direct Gregorian epoch day plus BigInt clock composition preserves all submilliseconds. Native path delegates to the backend. Guard is a private throw-based integration of the range predicate."
+    },
+    {
+      "inventory_row": 742,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "anonymous@91",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "102",
+        "end_line": "102",
+        "comparison_sections": "4.5.9",
+        "section_ids": "sec-temporal-isvalidtime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isvalidtime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 94,
+      "base_ast_end_line": 94,
+      "base_ast_columns_zero_based": [20, 64],
+      "callable_text_sha256": "a58bb4fce08d50b23a81e04fd159c41e0767f59348b05c65422996a15d72b7c2",
+      "spec_row_ids": [
+        "4.5.9/algorithm-1/step-1",
+        "4.5.9/algorithm-1/step-2",
+        "4.5.9/algorithm-1/step-3",
+        "4.5.9/algorithm-1/step-4",
+        "4.5.9/algorithm-1/step-5",
+        "4.5.9/algorithm-1/step-6"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 100,
+      "annotation": "// Temporal comparison \u00a74.5.9 steps 1\u20136.\n// Check each prepared clock component against its unit bound.",
+      "local_scope": "Private clock validation",
+      "evidence": "Test flags any value outside zero and the indexed upper limit. The enclosing code enforces integral values separately and converts failure to RangeError. Predicate scope covers only local clock bounds."
+    },
+    {
+      "inventory_row": 743,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "epochNanosecondsToISO",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "145",
+        "end_line": "189",
+        "comparison_sections": "11.1.2",
+        "section_ids": "sec-temporal-getisopartsfromepoch",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisopartsfromepoch",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 135,
+      "base_ast_end_line": 179,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "5da2e2117d3def52fb9a8f7f9fc07c3f3021d4422d9011c499f4914e12b18b2e",
+      "spec_row_ids": [
+        "11.1.2/algorithm-1/step-2",
+        "11.1.2/algorithm-1/step-3",
+        "11.1.2/algorithm-1/step-4",
+        "11.1.2/algorithm-1/step-5",
+        "11.1.2/algorithm-1/step-6",
+        "11.1.2/algorithm-1/step-7",
+        "11.1.2/algorithm-1/step-8",
+        "11.1.2/algorithm-1/step-9",
+        "11.1.2/algorithm-1/step-10",
+        "11.1.2/algorithm-1/step-11",
+        "11.1.2/algorithm-1/step-12",
+        "11.1.2/algorithm-1/step-13",
+        "11.1.2/algorithm-1/step-14",
+        "11.1.2/algorithm-1/step-15",
+        "11.1.2/algorithm-1/step-16"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 143,
+      "annotation": "// Temporal comparison \u00a711.1.2 steps 2\u201316.\n// Project the epoch into exact Gregorian date and clock fields.",
+      "local_scope": "Numeric projection dependency",
+      "evidence": "Floors day quotient, derives Gregorian date and decomposes the nonnegative day remainder into time fields. Local helper supports the wider admitted local epoch range; ordinary GetISOPartsFromEpoch has a narrower caller precondition. No identity or timezone offset is read."
+    },
+    {
+      "inventory_row": 744,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "addISODays",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "193",
+        "end_line": "205",
+        "comparison_sections": "3.5.9",
+        "section_ids": "sec-temporal-adddaystoisodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddaystoisodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 181,
+      "base_ast_end_line": 193,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "e87ebab6d1287fc4502d691ad266796abc261df1f6996c1bdc05d2218c7eff36",
+      "spec_row_ids": [
+        "3.5.9/algorithm-1/step-1",
+        "3.5.9/algorithm-1/step-2",
+        "3.5.9/algorithm-1/step-3"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 191,
+      "annotation": "// Temporal comparison \u00a73.5.9 steps 1\u20133.\n// Add an exact day count while preserving the prepared clock.",
+      "local_scope": "ISO day arithmetic dependency",
+      "evidence": "Checks safe integer days, adds days times nsPerDay to the exact local epoch, and reprojects the date with the same clock. The preserved clock is caller-required private extension beyond AddDaysToISODate."
+    },
+    {
+      "inventory_row": 745,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "zoneTransition",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "209",
+        "end_line": "285",
+        "comparison_sections": "6.3.46|11.1.3|11.1.4",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition|sec-temporal-getnamedtimezonenexttransition|sec-temporal-getnamedtimezoneprevioustransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition|https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition|https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 195,
+      "base_ast_end_line": 269,
+      "base_ast_columns_zero_based": [0, 1],
+      "callable_text_sha256": "6883a1907c2940cd1e5c05944b6e15a30190a5b758714d96e018bb0b433057d3",
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b",
+        "11.1.3/prose-2",
+        "11.1.3/prose-3",
+        "11.1.4/prose-2",
+        "11.1.4/prose-3"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 207,
+      "annotation": "// Temporal comparison \u00a76.3.46 steps 9.a and 10.b.\n// Find the strict neighboring offset change in the loaded zone data.",
+      "local_scope": "Named-zone provider dependency",
+      "evidence": "Binary search plus adjacent row scan handles explicit boundaries. Recurrence scans a bounded Gregorian cycle using supplied POSIX rule constraints. Does not claim equivalence across other history feeds or host providers."
+    },
+    {
+      "inventory_row": 746,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "consider@199",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "218",
+        "end_line": "234",
+        "comparison_sections": "11.1.3|11.1.4",
+        "section_ids": "sec-temporal-getnamedtimezonenexttransition|sec-temporal-getnamedtimezoneprevioustransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition|https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 202,
+      "base_ast_end_line": 218,
+      "base_ast_columns_zero_based": [19, 3],
+      "callable_text_sha256": "91483e640b1ea298200bae22dfa6d3a5906441ce012a131e90609c00fbfc2657",
+      "spec_row_ids": [
+        "11.1.3/prose-2",
+        "11.1.3/prose-3",
+        "11.1.4/prose-2",
+        "11.1.4/prose-3"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 216,
+      "annotation": "// Temporal comparison \u00a711.1.3 and \u00a711.1.4 transition requirements.\n// Keep only the nearer in-range candidate that changes the offset.",
+      "local_scope": "Private transition filter",
+      "evidence": "Keeps strict next/previous ordering and capacity inside both Instant bounds. Offset comparison immediately before and at each candidate excludes abbreviation-only events. Provider supplies exact integer second boundaries."
+    },
+    {
+      "inventory_row": 747,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "createTimeZone",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "290",
+        "end_line": "394",
+        "comparison_sections": "11.1.9|11.1.13|11.1.11",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor|sec-temporal-getpossibleepochnanoseconds|sec-temporal-getepochnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds|https://tc39.es/proposal-temporal/#sec-temporal-getepochnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 272,
+      "base_ast_end_line": 364,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "14605e960ab9c9948675332836e4577f20f28e40bad10344c8643099d45730ec",
+      "spec_row_ids": [
+        "11.1.9/algorithm-1/step-3",
+        "11.1.13/algorithm-1/step-3.a",
+        "11.1.11/algorithm-1/step-1",
+        "11.1.11/algorithm-1/step-2"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 287,
+      "annotation": "// Temporal comparison \u00a711.1.9 step 3 and \u00a711.1.13 step 3.a.\n// Build the offset, candidate and disambiguation operations for prepared data.",
+      "local_scope": "Kernel construction dependency",
+      "evidence": "Captures trusted zone rows plus unique explicit/footer offsets and returns ordered lookup closures. Construction is provider graph assembly rather than a standalone runtime spec operation. Existing candidate collection comment stays intact."
+    },
+    {
+      "inventory_row": 748,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "offsetNanoseconds@277",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "306",
+        "end_line": "313",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 286,
+      "base_ast_end_line": 293,
+      "base_ast_columns_zero_based": [28, 3],
+      "callable_text_sha256": "d4305351a242337a7de608136201c5aa4a0ab38de3e2904fa17c3803e6783bb1",
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 304,
+      "annotation": "// Temporal comparison \u00a711.1.9 step 3.\n// Look up the named-zone offset at the exact epoch and scale to nanoseconds.",
+      "local_scope": "Named-zone offset dependency",
+      "evidence": "Bounds the exact epoch, floors to milliseconds for the second-resolution backend, and scales selected offset seconds in BigInt. This is the named path, separate from fixed-offset parsing."
+    },
+    {
+      "inventory_row": 749,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "possibleInstantsFromEpochNanoseconds@285",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "316",
+        "end_line": "330",
+        "comparison_sections": "11.1.13|14.6.3",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds|sec-getnamedtimezoneepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds|https://tc39.es/proposal-temporal/#sec-getnamedtimezoneepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 294,
+      "base_ast_end_line": 306,
+      "base_ast_columns_zero_based": [47, 3],
+      "callable_text_sha256": "94f6f108ffcbcb7aca6bc7706773470dd2990b682a14ebec3481c7543dd9e17d",
+      "spec_row_ids": [
+        "11.1.13/algorithm-1/step-3.a",
+        "11.1.13/algorithm-1/step-5",
+        "14.6.3/prose-1",
+        "14.6.3/prose-2"
+      ],
+      "frozen_checklists": ["core", "amendment"],
+      "annotation_placement": "leading",
+      "annotation_line": 314,
+      "annotation": "// Temporal comparison \u00a711.1.13 steps 3.a, 5, \u00a714.6.3 prose.\n// Collect round-tripping named-zone candidates and sort the private list.",
+      "local_scope": "Named-zone candidate dependency",
+      "evidence": "Tries each unique supplied offset and retains candidates which round-trip to the same local coordinate. Sorts by exact BigInt. Range probes are filtered before round trip, so this mapping does not claim step 4.a's required throw if an actual out-of-range candidate exists."
+    },
+    {
+      "inventory_row": 750,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "anonymous@293",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "328",
+        "end_line": "328",
+        "comparison_sections": "11.1.13|14.6.3",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds|sec-getnamedtimezoneepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds|https://tc39.es/proposal-temporal/#sec-getnamedtimezoneepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 304,
+      "base_ast_end_line": 304,
+      "base_ast_columns_zero_based": [6, 60],
+      "callable_text_sha256": "5242e21d486bd3b4235ddf1e5843a160c67910915dd6434ca13aeb61ff491acb",
+      "spec_row_ids": ["11.1.13/algorithm-1/step-5", "14.6.3/prose-2"],
+      "frozen_checklists": ["core", "amendment"],
+      "annotation_placement": "leading",
+      "annotation_line": 326,
+      "annotation": "// Temporal comparison \u00a711.1.13 step 5, \u00a714.6.3 prose.\n// Compare the two exact candidate epochs for ascending order.",
+      "local_scope": "Private comparator dependency",
+      "evidence": "Three-way BigInt comparator avoids Number reduction. Parent owns candidate collection, cardinality and sort invocation."
+    },
+    {
+      "inventory_row": 751,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "possibleInstants@295",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "333",
+        "end_line": "334",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 307,
+      "base_ast_end_line": 308,
+      "base_ast_columns_zero_based": [27, 71],
+      "callable_text_sha256": "074e6f7482f61899b8bc7ec7c0d06d62b46ffa240042e0e5db1b389115546c5b",
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 331,
+      "annotation": "// Temporal comparison \u00a711.1.13 step 3.a.\n// Project prepared ISO fields before named-zone candidate lookup.",
+      "local_scope": "Named-zone candidate dependency",
+      "evidence": "Converts typed ISO fields into an exact local epoch and delegates to the candidate collector. Callers perform public field/argument conversion."
+    },
+    {
+      "inventory_row": 752,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "resolve@297",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "337",
+        "end_line": "381",
+        "comparison_sections": "11.1.11|11.1.12",
+        "section_ids": "sec-temporal-getepochnanosecondsfor|sec-temporal-disambiguatepossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getepochnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 309,
+      "base_ast_end_line": 353,
+      "base_ast_columns_zero_based": [18, 3],
+      "callable_text_sha256": "6238d8cc3fa067171e0ae9e11ee23cde12b32e19175c9bc165206e5792f6e16b",
+      "spec_row_ids": [
+        "11.1.11/algorithm-1/step-1",
+        "11.1.11/algorithm-1/step-2",
+        "11.1.12/algorithm-1/step-2",
+        "11.1.12/algorithm-1/step-3.a",
+        "11.1.12/algorithm-1/step-3.b",
+        "11.1.12/algorithm-1/step-3.d",
+        "11.1.12/algorithm-1/step-5",
+        "11.1.12/algorithm-1/step-12",
+        "11.1.12/algorithm-1/step-13"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 335,
+      "annotation": "// Temporal comparison \u00a711.1.12 steps 2, 3.a, 3.b and 5.\n// Choose single or folded candidates and resolve loaded-zone gaps.",
+      "local_scope": "Disambiguation dependency",
+      "evidence": "Uses ordered candidates directly for one/fold cases and rejects ambiguous/missing case under reject. Gap route locates a forward transition and selects before/after offset using loaded provider window premises. No claim of full gap-step equivalence or candidate-range throw."
+    },
+    {
+      "inventory_row": 753,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "transition@346",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "389",
+        "end_line": "392",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-lower-local-range-reconciliation.md",
+        "unresolved_mapping": "",
+        "source_sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d"
+      },
+      "base_ast_start_line": 359,
+      "base_ast_end_line": 362,
+      "base_ast_columns_zero_based": [16, 5],
+      "callable_text_sha256": "a0089af081c49fe70a8e7a0483bb9f3aac3c4999f4c2df53573051d2ab978f47",
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b",
+        "6.3.46/algorithm-1/step-11"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 387,
+      "annotation": "// Temporal comparison \u00a76.3.46 steps 9.a, 10.b, 11.\n// Dispatch the direction to the bounded named-zone transition search.",
+      "local_scope": "Named-zone transition dependency",
+      "evidence": "Validates the prepared epoch then invokes explicit/recurring search for that direction. Preserves null if no neighbor is found, leaving public options, slots and allocation to the caller."
+    },
+    {
+      "inventory_row": 757,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-calendar-date.ts",
+        "symbol": "firstPart",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "144",
+        "end_line": "152",
+        "comparison_sections": "11.5.7",
+        "section_ids": "sec-formatdatetimetoparts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.7",
+          "steps": ["4.b", "4.c"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+          "step_text_sha256": {
+            "4.b": "a52bc4023035e0e9f58700371adc9948d5a0d49d69c1fd739408b8ccddb138a8",
+            "4.c": "384db6bd984e312a085ff759f880e00afa97ab9d049f169c2ffd0373cd42cb0b"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 145,
+      "annotation": "// ECMA-402 \u00a711.5.7 steps 4.b\u2013c: read the host part with the requested type.",
+      "evidence": "Reads the requested typed host part. Missing-part failure is compatibility policy."
+    },
+    {
+      "inventory_row": 764,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-calendar-date.ts",
+        "symbol": "anonymous@307",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "346",
+        "end_line": "349",
+        "comparison_sections": "11.5.4",
+        "section_ids": "sec-formatdatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.4",
+          "steps": ["13", "14", "15"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+          "step_text_sha256": {
+            "13": "73159cb467e58b1f3d247a6065697a92112895507e4a3c41afafbd832414d32b",
+            "14": "2beecd2b209f8a3aa81cb2f547ae6bd1dd78aeae09c2fcae04a2bb61a2cea97b",
+            "15": "2ae16501fb32b5bb494544e542fba4f445a3cf7bbbccc085c90ab2b6a899e096"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 342,
+      "annotation": "// ECMA-402 \u00a711.5.4 steps 13\u201315: use surrogate labels and retain the real",
+      "evidence": "Keeps real clock values when applying surrogate calendar labels. Uses the adjacent dated partition anchor."
+    },
+    {
+      "inventory_row": 785,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@70",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "76",
+        "end_line": "76",
+        "comparison_sections": "11.5.4",
+        "section_ids": "sec-formatdatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.4",
+          "steps": ["15.f.iv"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+          "step_text_sha256": {
+            "15.f.iv": "eb51d1ab652ec028d3787b4bc070df7d5232936b33f84cb595712561abbee298"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 72,
+      "annotation": "// ECMA-402 \u00a711.5.4 step 15.f.iv: convert each signed year to display year.",
+      "evidence": "Uses the precomputed normalized original/surrogate labels and leaves unrelated text alone."
+    },
+    {
+      "inventory_row": 787,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@83",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "90",
+        "end_line": "93",
+        "comparison_sections": "11.5.4",
+        "section_ids": "sec-formatdatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.4",
+          "steps": ["15.e.iv", "15.e.v"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+          "step_text_sha256": {
+            "15.e.iv": "bb8df6371095cc79c803a151a010eb1450c2f0a738710463fb0c6d98a169548d",
+            "15.e.v": "c9ea7494fa014556025856f79cde819006a9da4e4dc7e36393906c1006f2f277"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 84,
+      "annotation": "// ECMA-402 \u00a711.5.4 steps 15.e.iv\u2013v: restore the projected timezone label.",
+      "evidence": "Replaces only the projected timeZoneName part. Does not choose the zone name or width."
+    },
+    {
+      "inventory_row": 788,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@100",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "109",
+        "end_line": "110",
+        "comparison_sections": "11.5.7",
+        "section_ids": "sec-formatdatetimetoparts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.7",
+          "steps": ["1"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+          "step_text_sha256": {
+            "1": "bcf38327847926bccf383e93f326c3569041f797f09f913bc97fc00a4529a0cb"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 106,
+      "annotation": "// ECMA-402 \u00a711.5.7 step 1: partition the surrogate and restore its year.",
+      "evidence": "Restores only the year value in host surrogate parts. Does not repartition arbitrary input."
+    },
+    {
+      "inventory_row": 790,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@113",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "123",
+        "end_line": "123",
+        "comparison_sections": "11.5.6",
+        "section_ids": "sec-formatdatetime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.6",
+          "steps": ["2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetime",
+          "step_text_sha256": {
+            "2": "ad2aab3f48086cd8779a052e94cf1a69f08c0204a95351b02d606e8cc841c969",
+            "3": "e0616fe901396a7fe061941bda7d5ec60c6bd9400f95883cec70b3012f349792",
+            "4": "d044b977476843537ccba1ae05fa9eea5261c8947be7782792b1169d0484402c"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 120,
+      "annotation": "// ECMA-402 \u00a711.5.6 steps 2\u20134: concatenate the corrected part values.",
+      "evidence": "Extracts each corrected part value for concatenation in original segment order."
+    },
+    {
+      "inventory_row": 791,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@116",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "127",
+        "end_line": "127",
+        "comparison_sections": "11.5.6",
+        "section_ids": "sec-formatdatetime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.6",
+          "steps": ["2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetime",
+          "step_text_sha256": {
+            "2": "ad2aab3f48086cd8779a052e94cf1a69f08c0204a95351b02d606e8cc841c969",
+            "3": "e0616fe901396a7fe061941bda7d5ec60c6bd9400f95883cec70b3012f349792",
+            "4": "d044b977476843537ccba1ae05fa9eea5261c8947be7782792b1169d0484402c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 126,
+      "annotation": "// ECMA-402 \u00a711.5.6 steps 2\u20134: Concatenate corrected calendar part values.",
+      "evidence": "Concatenate corrected calendar part values."
+    },
+    {
+      "inventory_row": 792,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@125",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "139",
+        "end_line": "139",
+        "comparison_sections": "11.5.6",
+        "section_ids": "sec-formatdatetime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.6",
+          "steps": ["2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetime",
+          "step_text_sha256": {
+            "2": "ad2aab3f48086cd8779a052e94cf1a69f08c0204a95351b02d606e8cc841c969",
+            "3": "e0616fe901396a7fe061941bda7d5ec60c6bd9400f95883cec70b3012f349792",
+            "4": "d044b977476843537ccba1ae05fa9eea5261c8947be7782792b1169d0484402c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 135,
+      "annotation": "// ECMA-402 \u00a711.5.6 steps 2\u20134: Concatenate corrected lunar parts when the",
+      "evidence": "Concatenate corrected lunar parts when the host labels changed."
+    },
+    {
+      "inventory_row": 793,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@128",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "144",
+        "end_line": "144",
+        "comparison_sections": "11.5.6",
+        "section_ids": "sec-formatdatetime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.6",
+          "steps": ["2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetime",
+          "step_text_sha256": {
+            "2": "ad2aab3f48086cd8779a052e94cf1a69f08c0204a95351b02d606e8cc841c969",
+            "3": "e0616fe901396a7fe061941bda7d5ec60c6bd9400f95883cec70b3012f349792",
+            "4": "d044b977476843537ccba1ae05fa9eea5261c8947be7782792b1169d0484402c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 141,
+      "annotation": "// ECMA-402 \u00a711.5.6 steps 2\u20134: Concatenate restored parts for the extended",
+      "evidence": "Concatenate restored parts for the extended Gregorian projection."
+    },
+    {
+      "inventory_row": 794,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "rangeShifts",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "148",
+        "end_line": "162",
+        "comparison_sections": "11.5.8",
+        "section_ids": "sec-partitiondatetimerangepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.8",
+          "steps": ["1", "2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+          "step_text_sha256": {
+            "1": "a994846f16a45b1ea50df9ef6fa65cb847b0bc72a93235119c7712b857d155b9",
+            "2": "acb9b2e53b976b84a7e867bdeda8b6ce03e247b27bf65f3af2ab177aa833ac31",
+            "3": "16b978f1100d6820646da4c94aa03b25098c4e153c76ee57c9b3e10cc3b57d9b",
+            "4": "3095134f3a621c2c11988b24942969ae6af2f4de563e06c763c22e1ab65dd79c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 153,
+      "annotation": "// ECMA-402 \u00a711.5.8 steps 1\u20134: select host-safe endpoints without crossing",
+      "evidence": "Chooses a host-safe surrogate pair and preserves its era boundary. The host still performs TimeClip on the surrogate."
+    },
+    {
+      "inventory_row": 797,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@172",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "192",
+        "end_line": "200",
+        "comparison_sections": "11.5.8",
+        "section_ids": "sec-partitiondatetimerangepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.8",
+          "steps": ["19.c", "19.d", "19.e"],
+          "url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+          "step_text_sha256": {
+            "19.c": "2243416ea52a5a70142c32375523c11a07ef093ed78325ebb7f4aec38d05ff7a",
+            "19.d": "73d618bc9c48dd8d5d4a39344335170f2bcaf3ded63a8e768f84a0b5773818e8",
+            "19.e": "ca4c2b2ae86ad38fd415dd561f33ca50d89d691b69d6e498a317a968b79e6ab4"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 189,
+      "annotation": "// ECMA-402 \u00a711.5.8 steps 19.c\u2013e: choose the year rewrite by part source.",
+      "evidence": "Selects end rewrite only for endRange and start rewrite for the other source tags. Pattern selection stays at the host."
+    },
+    {
+      "inventory_row": 800,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@200",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "222",
+        "end_line": "222",
+        "comparison_sections": "11.5.9",
+        "section_ids": "sec-formatdatetimerange",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimerange",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.9",
+          "steps": ["2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimerange",
+          "step_text_sha256": {
+            "2": "ad2aab3f48086cd8779a052e94cf1a69f08c0204a95351b02d606e8cc841c969",
+            "3": "6b4c35648bf469482f2ced082663f1f03b9bf154fc3232f3b24e885fab16acdd",
+            "4": "d044b977476843537ccba1ae05fa9eea5261c8947be7782792b1169d0484402c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 221,
+      "annotation": "// ECMA-402 \u00a711.5.9 steps 2\u20134: Concatenate the corrected lunar range values.",
+      "evidence": "Concatenate the corrected lunar range values."
+    },
+    {
+      "inventory_row": 801,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@207",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "232",
+        "end_line": "232",
+        "comparison_sections": "11.5.9",
+        "section_ids": "sec-formatdatetimerange",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimerange",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.9",
+          "steps": ["2", "3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimerange",
+          "step_text_sha256": {
+            "2": "ad2aab3f48086cd8779a052e94cf1a69f08c0204a95351b02d606e8cc841c969",
+            "3": "6b4c35648bf469482f2ced082663f1f03b9bf154fc3232f3b24e885fab16acdd",
+            "4": "d044b977476843537ccba1ae05fa9eea5261c8947be7782792b1169d0484402c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 229,
+      "annotation": "// ECMA-402 \u00a711.5.9 steps 2\u20134: Concatenate the corrected extended range",
+      "evidence": "Concatenate the corrected extended range values."
+    },
+    {
+      "inventory_row": 803,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "project",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "72",
+        "end_line": "114",
+        "comparison_sections": "11.5.5",
+        "section_ids": "sec-partitiondatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-partitiondatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.5",
+          "steps": ["7"],
+          "url": "https://tc39.es/ecma402/#sec-partitiondatetimepattern",
+          "step_text_sha256": {
+            "7": "3c27b26b291fd07716d0066d33a256a39ac9ebc7b05637059af75c13518c2e3d"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 102,
+      "annotation": "// ECMA-402 \u00a711.5.5 step 7: Project the Temporal record for the host pattern",
+      "evidence": "Project the Temporal record for the host pattern call."
+    },
+    {
+      "inventory_row": 804,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "single",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "115",
+        "end_line": "126",
+        "comparison_sections": "11.3.6",
+        "section_ids": "sec-Intl.DateTimeFormat.prototype.formatToParts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.6",
+          "steps": ["3", "4"],
+          "url": "https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts",
+          "step_text_sha256": {
+            "3": "0436808b41d02a7412497ed5b03047efd50e51e8b9a9054c0006780174a456d6",
+            "4": "73d618bc9c48dd8d5d4a39344335170f2bcaf3ded63a8e768f84a0b5773818e8"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 116,
+      "annotation": "// ECMA-402 \u00a711.3.6 steps 3\u20134: Use the native default or prepare the",
+      "evidence": "Use the native default or prepare the supplied value."
+    },
+    {
+      "inventory_row": 805,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "range",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "127",
+        "end_line": "150",
+        "comparison_sections": "11.3.4",
+        "section_ids": "sec-intl.datetimeformat.prototype.formatRange",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.4",
+          "steps": ["3", "4", "5"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange",
+          "step_text_sha256": {
+            "3": "7e2b2fff2f7a7037ebfca5b83ce7748f929cae163457b1e17596b58aebf2f694",
+            "4": "2314e342863d2e79f5e8209347267072b54330db45d522e2ef454b64de9c5f4d",
+            "5": "f9ca60b0085904bb039908e92ac913e36dc86832429532c03a215f7625616c17"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 132,
+      "annotation": "// ECMA-402 \u00a711.3.4 steps 3\u20135: Reject missing endpoints, then prepare start",
+      "evidence": "Reject missing endpoints, then prepare start before end."
+    },
+    {
+      "inventory_row": 806,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "create",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "151",
+        "end_line": "190",
+        "comparison_sections": "11.1.1",
+        "section_ids": "sec-intl.datetimeformat",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.1.1",
+          "steps": ["2"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat",
+          "step_text_sha256": {
+            "2": "33c6eeee5962ca98b057435bbc08fd00c7cecacb9a86c659acaac7f4f5011601"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 173,
+      "annotation": "// ECMA-402 \u00a711.1.1 step 2: Delegate formatter construction to the host.",
+      "evidence": "Delegate formatter construction to the host."
+    },
+    {
+      "inventory_row": 807,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "get",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "159",
+        "end_line": "171",
+        "comparison_sections": "11.1.2",
+        "section_ids": "sec-createdatetimeformat",
+        "spec_urls": "https://tc39.es/ecma402/#sec-createdatetimeformat",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.1.2",
+          "steps": ["4"],
+          "url": "https://tc39.es/ecma402/#sec-createdatetimeformat",
+          "step_text_sha256": {
+            "4": "25bff2f229a62df0417af2c992fa35f04c81235d016bbb6aef0e19fb2d73c73b"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 160,
+      "annotation": "// ECMA-402 \u00a711.1.2 step 4: Record options as the host resolves them.",
+      "evidence": "Record options as the host resolves them."
+    },
+    {
+      "inventory_row": 808,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "format",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "192",
+        "end_line": "215",
+        "comparison_sections": "11.3.3",
+        "section_ids": "sec-intl.datetimeformat.prototype.format",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.3",
+          "steps": ["4", "5"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format",
+          "step_text_sha256": {
+            "4": "bc963ccbbb626ef57b010418131657683a6b667ee939dc613f9ab0a1b3f476d4",
+            "5": "5a26eb980745e1d5925d2d2f37390bc27a1cdcfbd1b5394e543732e751a2a917"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 193,
+      "annotation": "// ECMA-402 \u00a711.3.3 steps 4\u20135: Reuse the native bound formatter or the",
+      "evidence": "Reuse the native bound formatter or the cached adapter."
+    },
+    {
+      "inventory_row": 809,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "bound@189",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "199",
+        "end_line": "211",
+        "comparison_sections": "11.3.3",
+        "section_ids": "sec-intl.datetimeformat.prototype.format",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.3",
+          "steps": ["4.a.i", "4.a.ii"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format",
+          "step_text_sha256": {
+            "4.a.i": "8fb0b882cf0adcee3235a474105ae10da170496fa60171ef01898a45ac9671fc",
+            "4.a.ii": "c8fd0e36640e175c090a24459a67d9cce667f1170cdcf7fd0bbb2ef90f171a93"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 200,
+      "annotation": "// ECMA-402 \u00a711.3.3 steps 4.a.i\u2013ii: Prepare the bound call input and",
+      "evidence": "Prepare the bound call input and return its formatted value."
+    },
+    {
+      "inventory_row": 810,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "formatToParts",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "216",
+        "end_line": "225",
+        "comparison_sections": "11.3.6",
+        "section_ids": "sec-Intl.DateTimeFormat.prototype.formatToParts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.6",
+          "steps": ["5"],
+          "url": "https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts",
+          "step_text_sha256": {
+            "5": "252d65f2cc3d2f926c1c4bd5b1cd1d81e0f1eeaa89de9074a404fa733b8d857c"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 219,
+      "annotation": "// ECMA-402 \u00a711.3.6 step 5: Route the prepared value to its parts",
+      "evidence": "Route the prepared value to its parts formatter."
+    },
+    {
+      "inventory_row": 811,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "formatRange",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "226",
+        "end_line": "239",
+        "comparison_sections": "11.3.4",
+        "section_ids": "sec-intl.datetimeformat.prototype.formatRange",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.4",
+          "steps": ["6"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange",
+          "step_text_sha256": {
+            "6": "76e2ce99c49c99e0832c87a21df133c8d865ec08decf1b7e5c8a3fe9cc0f97f9"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 229,
+      "annotation": "// ECMA-402 \u00a711.3.4 step 6: Return the formatted range for the prepared",
+      "evidence": "Return the formatted range for the prepared endpoints."
+    },
+    {
+      "inventory_row": 812,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "formatRangeToParts",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "240",
+        "end_line": "255",
+        "comparison_sections": "11.3.5",
+        "section_ids": "sec-Intl.DateTimeFormat.prototype.formatRangeToParts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.5",
+          "steps": ["6"],
+          "url": "https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts",
+          "step_text_sha256": {
+            "6": "982edcf49a80231064ec62f1f4ef0862bb70f6b226d7e68b3827d220e21bdfbe"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 246,
+      "annotation": "// ECMA-402 \u00a711.3.5 step 6: Return the range parts for the prepared",
+      "evidence": "Return the range parts for the prepared endpoints."
+    },
+    {
+      "inventory_row": 813,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "resolvedOptions",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "256",
+        "end_line": "259",
+        "comparison_sections": "11.3.2",
+        "section_ids": "sec-intl.datetimeformat.prototype.resolvedoptions",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.3.2",
+          "steps": ["6"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions",
+          "step_text_sha256": {
+            "6": "b6c857c089780e56330541834cdd58d297b0366afa9868e8745750632a4553ab"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 257,
+      "annotation": "// ECMA-402 \u00a711.3.2 step 6: Return the host's resolved options record.",
+      "evidence": "Return the host's resolved options record."
+    },
+    {
+      "inventory_row": 814,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "DateTimeFormat",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "261",
+        "end_line": "279",
+        "comparison_sections": "11.1.1",
+        "section_ids": "sec-intl.datetimeformat",
+        "spec_urls": "https://tc39.es/ecma402/#sec-intl.datetimeformat",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.1.1",
+          "steps": ["2"],
+          "url": "https://tc39.es/ecma402/#sec-intl.datetimeformat",
+          "step_text_sha256": {
+            "2": "33c6eeee5962ca98b057435bbc08fd00c7cecacb9a86c659acaac7f4f5011601"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 266,
+      "annotation": "// ECMA-402 \u00a711.1.1 step 2: Create the formatter with the selected",
+      "evidence": "Create the formatter with the selected constructor target."
+    },
+    {
+      "inventory_row": 815,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "value",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "284",
+        "end_line": "307",
+        "comparison_sections": "11.5.6",
+        "section_ids": "sec-formatdatetime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.6",
+          "steps": ["1"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetime",
+          "step_text_sha256": {
+            "1": "bcf38327847926bccf383e93f326c3569041f797f09f913bc97fc00a4529a0cb"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 299,
+      "annotation": "// ECMA-402 \u00a711.5.6 step 1: Pass the private Temporal projection to the",
+      "evidence": "Pass the private Temporal projection to the formatter."
+    },
+    {
+      "inventory_row": 819,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-lunisolar-date.ts",
+        "symbol": "anonymous@71",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "75",
+        "end_line": "75",
+        "comparison_sections": "11.5.7",
+        "section_ids": "sec-formatdatetimetoparts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.7",
+          "steps": ["4.b", "4.c"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+          "step_text_sha256": {
+            "4.b": "a52bc4023035e0e9f58700371adc9948d5a0d49d69c1fd739408b8ccddb138a8",
+            "4.c": "384db6bd984e312a085ff759f880e00afa97ab9d049f169c2ffd0373cd42cb0b"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 71,
+      "annotation": "// ECMA-402 \u00a711.5.7 steps 4.b\u2013c: read the emitted type/value fields.",
+      "evidence": "Collects host part type/value pairs for numeric field recovery without its own part partition."
+    },
+    {
+      "inventory_row": 826,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-lunisolar-date.ts",
+        "symbol": "anonymous@172",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "184",
+        "end_line": "184",
+        "comparison_sections": "11.5.7",
+        "section_ids": "sec-formatdatetimetoparts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.7",
+          "steps": ["1"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+          "step_text_sha256": {
+            "1": "bcf38327847926bccf383e93f326c3569041f797f09f913bc97fc00a4529a0cb"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 181,
+      "annotation": "// ECMA-402 \u00a711.5.7 step 1: get the requested label from a native partition.",
+      "evidence": "Selects one label by type from the native partition under the surrounding caller link."
+    },
+    {
+      "inventory_row": 832,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-lunisolar-date.ts",
+        "symbol": "anonymous@288",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "314",
+        "end_line": "317",
+        "comparison_sections": "11.5.7",
+        "section_ids": "sec-formatdatetimetoparts",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.7",
+          "steps": ["4.b", "4.c"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimetoparts",
+          "step_text_sha256": {
+            "4.b": "a52bc4023035e0e9f58700371adc9948d5a0d49d69c1fd739408b8ccddb138a8",
+            "4.c": "384db6bd984e312a085ff759f880e00afa97ab9d049f169c2ffd0373cd42cb0b"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 312,
+      "annotation": "// ECMA-402 \u00a711.5.7 steps 4.b\u2013c: preserve type while replacing corrected text.",
+      "evidence": "Replaces only changed values and preserves types and order in the corrected output."
+    },
+    {
+      "inventory_row": 840,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-lunisolar-date.ts",
+        "symbol": "anonymous@348",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "381",
+        "end_line": "381",
+        "comparison_sections": "11.5.8",
+        "section_ids": "sec-partitiondatetimerangepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.8",
+          "steps": ["19.f.i"],
+          "url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+          "step_text_sha256": {
+            "19.f.i": "8588592e3164a52b81acb61d54c182bd4490d796d723fcf5dfcd5c92c137edd4"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 379,
+      "annotation": "// ECMA-402 \u00a711.5.8 step 19.f.i: keep start, shared and end source labels.",
+      "evidence": "Tags all start fallback parts with their source. Only the source materialization is mapped."
+    },
+    {
+      "inventory_row": 841,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-lunisolar-date.ts",
+        "symbol": "anonymous@350",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "383",
+        "end_line": "383",
+        "comparison_sections": "11.5.8",
+        "section_ids": "sec-partitiondatetimerangepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.8",
+          "steps": ["19.f.i"],
+          "url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+          "step_text_sha256": {
+            "19.f.i": "8588592e3164a52b81acb61d54c182bd4490d796d723fcf5dfcd5c92c137edd4"
+          }
+        }
+      ],
+      "annotation_placement": "enclosing",
+      "annotation_line": 379,
+      "annotation": "// ECMA-402 \u00a711.5.8 step 19.f.i: keep start, shared and end source labels.",
+      "evidence": "Tags all end fallback parts with their source. Only the source materialization is mapped."
+    },
+    {
+      "inventory_row": 842,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-zoned-date.ts",
+        "symbol": "legacyHostTimeZone",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "26",
+        "end_line": "47",
+        "comparison_sections": "11.5.11",
+        "section_ids": "sec-tolocaltime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-tolocaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.11",
+          "steps": ["2.b"],
+          "url": "https://tc39.es/ecma402/#sec-tolocaltime",
+          "step_text_sha256": {
+            "2.b": "66d0b147b2ee5ae90b33ffec49d1404eb20d5386f079914c351917ed63194de4"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 39,
+      "annotation": "// ECMA-402 \u00a711.5.11 step 2.b: Reuse the host offset reader for the named",
+      "evidence": "Reuse the host offset reader for the named zone."
+    },
+    {
+      "inventory_row": 843,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-zoned-date.ts",
+        "symbol": "legacyZonedProjection",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "49",
+        "end_line": "80",
+        "comparison_sections": "11.5.11",
+        "section_ids": "sec-tolocaltime",
+        "spec_urls": "https://tc39.es/ecma402/#sec-tolocaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.11",
+          "steps": ["3"],
+          "url": "https://tc39.es/ecma402/#sec-tolocaltime",
+          "step_text_sha256": {
+            "3": "47202ef39563001eae5d10510c4ce9b7005401652050afdb495bbdad032df817"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 57,
+      "annotation": "// ECMA-402 \u00a711.5.11 step 3: Format the offset-adjusted local scalar in UTC.",
+      "evidence": "Format the offset-adjusted local scalar in UTC."
+    },
+    {
+      "inventory_row": 845,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-zoned-date.ts",
+        "symbol": "offsetName",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "82",
+        "end_line": "138",
+        "comparison_sections": "11.5.4",
+        "section_ids": "sec-formatdatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.4",
+          "steps": ["15.e.iv"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+          "step_text_sha256": {
+            "15.e.iv": "bb8df6371095cc79c803a151a010eb1450c2f0a738710463fb0c6d98a169548d"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 103,
+      "annotation": "// ECMA-402 \u00a711.5.4 step 15.e.iv: Build the localized offset label from host",
+      "evidence": "Build the localized offset label from host controls."
+    },
+    {
+      "inventory_row": 846,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-zoned-date.ts",
+        "symbol": "label@86",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "89",
+        "end_line": "102",
+        "comparison_sections": "11.5.4",
+        "section_ids": "sec-formatdatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.4",
+          "steps": ["15.e.iv"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+          "step_text_sha256": {
+            "15.e.iv": "bb8df6371095cc79c803a151a010eb1450c2f0a738710463fb0c6d98a169548d"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 90,
+      "annotation": "// ECMA-402 \u00a711.5.4 step 15.e.iv: Sample the host zone label at the",
+      "evidence": "Sample the host zone label at the requested width."
+    },
+    {
+      "inventory_row": 848,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-zoned-date.ts",
+        "symbol": "numeric@113",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "120",
+        "end_line": "130",
+        "comparison_sections": "11.5.4",
+        "section_ids": "sec-formatdatetimepattern",
+        "spec_urls": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_rendered_local_scope",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-pattern-partition-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493"
+      },
+      "spec_row_ids": [],
+      "rendered_references": [
+        {
+          "spec": "ECMA-402",
+          "section": "11.5.4",
+          "steps": ["3", "4", "5", "6", "7", "8", "9", "10"],
+          "url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
+          "step_text_sha256": {
+            "3": "e23ca384ce1e7155be4cc37bdb69838b96ae4fe04173a631ea0e2b020781071b",
+            "4": "dec0c11f296be16b72bead6b5329d6a2007795307be3d05af24210a246d512e2",
+            "5": "6a199ec2ad1c11b92c90c960e0408d1d5e1b314c882991f38b8688934f5519b0",
+            "6": "6a5d2f4c3a50f12c15079af354d73b1fb6c7f60a42a1a7baed50aee74bd4daf5",
+            "7": "145294c7613dcdbd973bdda7e4f8a74fcb1de28173b131a1927e3830404bed4b",
+            "8": "4da8caa4c971873a4c86ff366abff1649ba59a1d50d310ae116cde7d57cc52fa",
+            "9": "50c48f5e9ad9197965e0c6510e3cfa5a0522fde16dc6ca028c79aa4f9f65a775",
+            "10": "353a65739fdebdf0e28745e5cae4e33207e64a7c35a2bdd9eb9accf3bd117502"
+          }
+        }
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 121,
+      "annotation": "// ECMA-402 \u00a711.5.4 steps 3\u201310: Use localized integer digits in the offset",
+      "evidence": "Use localized integer digits in the offset label."
+    },
+    {
+      "inventory_row": 732,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "read",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "114",
+        "end_line": "119",
+        "comparison_sections": "8.3.4",
+        "section_ids": "sec-get-temporal.instant.prototype.epochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.instant.prototype.epochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-epoch-annotation-proof.json|knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8"
+      },
+      "spec_row_ids": ["8.3.4/algorithm-1/step-2", "8.3.4/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 113,
+      "annotation": "// Proposal comparison \u00a78.3.4 steps 2\u20133: Validate the receiver and read its exact Instant epoch.",
+      "evidence": "Checks the profile-selected private Instant storage. Missing slot throws TypeError, and a zero-valued slot is valid. Returns the stored bigint unchanged. Cross-profile or independent loader identity is outside this mapping."
+    },
+    {
+      "inventory_row": 729,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "instantString",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "61",
+        "end_line": "70",
+        "comparison_sections": "8.3.11",
+        "section_ids": "sec-temporal.instant.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md|knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8"
+      },
+      "spec_row_ids": ["8.3.11/algorithm-1/step-15"],
+      "annotation_placement": "leading",
+      "annotation_line": 60,
+      "annotation": "// Proposal comparison \u00a78.3.11 step 15: Format prepared Instant nanoseconds through the active backend.",
+      "evidence": "Receives exact nanoseconds and selected precision/offset. Chooses native or fallback formatter. Caller owns option reads, rounding and timezone lookup."
+    },
+    {
+      "inventory_row": 731,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "toBigInt",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "103",
+        "end_line": "112",
+        "comparison_sections": "8.1.1",
+        "section_ids": "sec-temporal.instant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.instant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-epoch-annotation-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8"
+      },
+      "spec_row_ids": ["8.1.1/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 102,
+      "annotation": "// Proposal comparison \u00a78.1.1 step 2: Convert an Instant argument with the BigInt coercion rules.",
+      "evidence": "Applies number-hint ToPrimitive, accepts BigInt/String/Boolean and rejects other primitives. Captured BigInt handles the permitted primitives and string syntax. Same helper serves the constructor and fromEpochNanoseconds."
+    },
+    {
+      "inventory_row": 733,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "createNativeInstant",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "139",
+        "end_line": "143",
+        "comparison_sections": "8.5.2",
+        "section_ids": "sec-temporal-createtemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-epoch-annotation-proof.json|knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8"
+      },
+      "spec_row_ids": ["8.5.2/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 138,
+      "annotation": "// Proposal comparison \u00a78.5.2 step 4: Supply the exact epoch to native Instant storage.",
+      "evidence": "Passes the validated or provider-returned bigint to NativeInstant, whose constructor stores it in the private value. Scope is data forwarding to exact epoch storage. Prototype and realm allocation rules remain outside this mapping."
+    },
+    {
+      "inventory_row": 736,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "difference",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "164",
+        "end_line": "221",
+        "comparison_sections": "8.5.9",
+        "section_ids": "sec-temporal-differencetemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-get-difference-settings-audit.md|knowledge-base/audits/temporal-difference-precision-audit.md|knowledge-base/audits/temporal-since-field-negation-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8"
+      },
+      "spec_row_ids": [
+        "8.5.9/algorithm-1/step-1",
+        "8.5.9/algorithm-1/step-2",
+        "8.5.9/algorithm-1/step-3",
+        "8.5.9/algorithm-1/step-4",
+        "8.5.9/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 163,
+      "annotation": "// Proposal comparison \u00a78.5.9 steps 1\u20135: Prepare Instant difference settings and route exact rounding.",
+      "evidence": "Converts the other Instant, reads difference options, validates unit ordering/increment and dispatches with exact endpoints or subtracts and rounds bigint locally. Since direction is passed through reversed native endpoint order or signed fallback arithmetic. Covers local preparation and calculation pieces, with direction and settings evidence from the cited audits."
+    },
+    {
+      "inventory_row": 1029,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "read",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "172",
+        "end_line": "176",
+        "comparison_sections": "6.3.18",
+        "section_ids": "sec-get-temporal.zoneddatetime.prototype.epochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.epochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-epoch-annotation-proof.json|knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.3.18/algorithm-1/step-2",
+        "6.3.18/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 171,
+      "annotation": "// Proposal comparison \u00a76.3.18 steps 2\u20133: Validate the ZonedDateTime receiver and supply its epoch slot.",
+      "evidence": "Uses getZonedSlot to retrieve the private stored record or throw TypeError. The epochNanoseconds getter reads the exact bigint from that record. The helper also supplies calendar and timezone slots to other callers."
+    },
+    {
+      "inventory_row": 1030,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "zonedSnapshot",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "187",
+        "end_line": "210",
+        "comparison_sections": "11.1.10|12.3.26",
+        "section_ids": "sec-temporal-getisodatetimefor|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisodatetimefor|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json|knowledge-base/audits/temporal-local-offset-precision-audit.md|knowledge-base/audits/temporal-zone-cache-relative-routing-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "11.1.10/algorithm-1/step-1",
+        "11.1.10/algorithm-1/step-2",
+        "11.1.10/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 186,
+      "annotation": "// Proposal comparison \u00a711.1.10 steps 1\u20133 and \u00a712.3.26 steps 1.b and 2: Reuse native zoned projection by slot.",
+      "evidence": "Reuses only entries owned by the current native provider, or calls zonedProperties and reads its exact decimal local nanoseconds. Keeps calendar, epoch day and property snapshot together. Backend offset and calendar chronology, plus private cache implementation contracts, remain separate."
+    },
+    {
+      "inventory_row": 1033,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "option",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "261",
+        "end_line": "270",
+        "comparison_sections": "13.7|13.9",
+        "section_ids": "sec-temporal-gettemporaldisambiguationoption|sec-temporal-gettemporaloffsetoption",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporaldisambiguationoption|https://tc39.es/proposal-temporal/#sec-temporal-gettemporaloffsetoption",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": ["13.7/algorithm-1/step-1", "13.9/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 260,
+      "annotation": "// Proposal comparison \u00a713.7 step 1 and \u00a713.9 step 5: Default and validate an already read option.",
+      "evidence": "Uses the selected string fallback for undefined; otherwise applies ToString, then rejects values outside the supplied list. Disambiguation and offset callers read the original property before invoking this helper."
+    },
+    {
+      "inventory_row": 1035,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "zonedFromLocal",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "280",
+        "end_line": "296",
+        "comparison_sections": "5.3.38",
+        "section_ids": "sec-temporal.plaindatetime.prototype.tozoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tozoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-cache-relative-routing-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-day-window-engine-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "5.3.38/algorithm-1/step-3",
+        "5.3.38/algorithm-1/step-4",
+        "5.3.38/algorithm-1/step-5",
+        "5.3.38/algorithm-1/step-6",
+        "5.3.38/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 279,
+      "annotation": "// Proposal comparison \u00a75.3.38 steps 3\u20137: Resolve a local date-time with its selected zone and options.",
+      "evidence": "Orders zone normalization, options and disambiguation reading, then exact local projection to ISO fields and typed resolution. Constructs from resulting epoch, zone and calendar. This maps the non-start path used by PlainDateTime; PlainDate start-of-day path has separate provider and endpoint premises."
+    },
+    {
+      "inventory_row": 1045,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "numericOffset",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "733",
+        "end_line": "750",
+        "comparison_sections": "6.3.29",
+        "section_ids": "sec-get-temporal.zoneddatetime.prototype.offsetnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.offsetnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-local-offset-precision-audit.md|knowledge-base/audits/temporal-zone-cache-relative-routing-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": ["6.3.29/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 732,
+      "annotation": "// Proposal comparison \u00a76.3.29 step 3: Return an exact Number offset for the fallback zoned slot.",
+      "evidence": "Gets the exact provider offset for the stored instant and timezone or reuses a recent slot-matched Number. A bounded sub-day offset is within Number safe-integer magnitude. Scope covers value forwarding and exact conversion, independent of provider rule correctness or backend switching."
+    },
+    {
+      "inventory_row": 1031,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "local",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "212",
+        "end_line": "219",
+        "comparison_sections": "11.1.10",
+        "section_ids": "sec-temporal-getisodatetimefor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisodatetimefor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json|knowledge-base/audits/temporal-local-offset-precision-audit.md|knowledge-base/audits/temporal-zone-cache-relative-routing-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "11.1.10/algorithm-1/step-1",
+        "11.1.10/algorithm-1/step-2",
+        "11.1.10/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 211,
+      "annotation": "// Proposal comparison \u00a711.1.10 steps 1\u20133: Project an exact zoned epoch into local nanoseconds.",
+      "evidence": "Uses the native local snapshot when available, otherwise adds the exact offset for the stored epoch. The bigint represents the local date/time for later ISO field decomposition. Provider data coverage remains separate."
+    },
+    {
+      "inventory_row": 1034,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "offsetString",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "272",
+        "end_line": "278",
+        "comparison_sections": "13.41",
+        "section_ids": "sec-temporal-tooffsetstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-tooffsetstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-offset-fraction-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "13.41/algorithm-1/step-1",
+        "13.41/algorithm-1/step-2",
+        "13.41/algorithm-1/step-3",
+        "13.41/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 271,
+      "annotation": "// Proposal comparison \u00a713.41 steps 1\u20134: Validate an offset string while preserving its spelling.",
+      "evidence": "Applies string-hint ToPrimitive to objects and checks that the result is a string. Delegates numeric-offset syntax validation and returns the unchanged spelling."
+    },
+    {
+      "inventory_row": 1036,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "disambiguation",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "298",
+        "end_line": "305",
+        "comparison_sections": "13.7",
+        "section_ids": "sec-temporal-gettemporaldisambiguationoption",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporaldisambiguationoption",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "13.7/algorithm-1/step-1",
+        "13.7/algorithm-1/step-2",
+        "13.7/algorithm-1/step-3",
+        "13.7/algorithm-1/step-4",
+        "13.7/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 297,
+      "annotation": "// Proposal comparison \u00a713.7 steps 1\u20135: Normalize disambiguation with compatible as default.",
+      "evidence": "Passes the compatible default and four recognized string values to the typed option helper. Property reads happen at callers."
+    },
+    {
+      "inventory_row": 1037,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "resolve",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "307",
+        "end_line": "329",
+        "comparison_sections": "6.5.1",
+        "section_ids": "sec-temporal-interpretisodatetimeoffset",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-interpretisodatetimeoffset",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.1/algorithm-1/step-3.a",
+        "6.5.1/algorithm-1/step-4.d",
+        "6.5.1/algorithm-1/step-4.e"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 306,
+      "annotation": "// Proposal comparison \u00a76.5.1 steps 3.a and 4.d\u20134.e: Resolve wall time or validate an exact UTC instant.",
+      "evidence": "Exact UTC designator uses the validated local value as the instant. Missing numeric offset or ignore behavior routes to zone resolution; other paths delegate numeric-offset matching to the next owner. Wrapper has no provider equivalence claim."
+    },
+    {
+      "inventory_row": 1038,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "resolveOffsetNanoseconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "331",
+        "end_line": "356",
+        "comparison_sections": "6.5.1",
+        "section_ids": "sec-temporal-interpretisodatetimeoffset",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-interpretisodatetimeoffset",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-offset-fraction-audit.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.1/algorithm-1/step-10.a",
+        "6.5.1/algorithm-1/step-10.b",
+        "6.5.1/algorithm-1/step-10.c.i",
+        "6.5.1/algorithm-1/step-10.c.ii",
+        "6.5.1/algorithm-1/step-11",
+        "6.5.1/algorithm-1/step-12"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 330,
+      "annotation": "// Proposal comparison \u00a76.5.1 steps 10.a\u201310.c.ii and 11\u201312: Match exact or minute-rounded offset candidates.",
+      "evidence": "Subtracts each candidate from the exact local epoch, uses half-expand minute matching only when requested, rejects misses for reject, otherwise delegates disambiguation. Candidate availability/range premises and use behavior remain separate."
+    },
+    {
+      "inventory_row": 1039,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "toZonedDateTimeSlot",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "358",
+        "end_line": "497",
+        "comparison_sections": "6.5.2",
+        "section_ids": "sec-temporal-totemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.2/algorithm-1/step-5.b",
+        "6.5.2/algorithm-1/step-5.m",
+        "6.5.2/algorithm-1/step-5.n",
+        "6.5.2/algorithm-1/step-5.o",
+        "6.5.2/algorithm-1/step-5.p",
+        "6.5.2/algorithm-1/step-11"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 357,
+      "annotation": "// Proposal comparison \u00a76.5.2 steps 5.b, 5.m\u20135.p and 11: Prepare zoned strings before offset interpretation.",
+      "evidence": "Parses strings before options, then reads disambiguation, offset and overflow before a parsed epoch is converted/resolved. Dispatches the prepared inputs to native or fallback interpretation. Scope is string-path phase order and delegation. Typed objects, full grammar and exception equivalence remain separately audited."
+    },
+    {
+      "inventory_row": 1040,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "add",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "499",
+        "end_line": "536",
+        "comparison_sections": "6.5.10",
+        "section_ids": "sec-temporal-adddurationtozoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtozoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-native-zoned-now35-annotation-source-proof.json|knowledge-base/audits/temporal-relative-rounding-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.10/algorithm-1/step-1",
+        "6.5.10/algorithm-1/step-2",
+        "6.5.10/algorithm-1/step-3",
+        "6.5.10/algorithm-1/step-4",
+        "6.5.10/algorithm-1/step-8",
+        "6.5.10/algorithm-1/step-9"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 498,
+      "annotation": "// Proposal comparison \u00a76.5.10 steps 1\u20134 and 8\u20139: Prepare duration addition or subtraction and build the zoned result.",
+      "evidence": "Converts duration first. Native receives signed operation separately with resolved overflow; fallback signs prepared fields, applies duration date units to local time and clock units to the instant, then creates a result preserving zone/calendar. Exact overflow/endpoint premises are separate."
+    },
+    {
+      "inventory_row": 1041,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "addZonedDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "538",
+        "end_line": "543",
+        "comparison_sections": "7.3.20|7.3.21",
+        "section_ids": "sec-temporal.duration.prototype.round|sec-temporal.duration.prototype.total",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.round|https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.total",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-native-zoned-now35-annotation-source-proof.json|knowledge-base/audits/temporal-relative-window-families-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "7.3.20/algorithm-1/step-27.e",
+        "7.3.21/algorithm-1/step-12.e"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 537,
+      "annotation": "// Proposal comparison \u00a77.3.20 step 27.e and \u00a77.3.21 step 12.e: Supply the resolved zoned duration endpoint.",
+      "evidence": "Calls typed zoned addition with default constrain and reads the exact result epoch from its private slot. No relative rounding, projection or total arithmetic runs in this wrapper."
+    },
+    {
+      "inventory_row": 1042,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "unroundedZonedDifference",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "545",
+        "end_line": "598",
+        "comparison_sections": "6.5.6",
+        "section_ids": "sec-temporal-differencezoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-relative-window-families-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.6/algorithm-1/step-1",
+        "6.5.6/algorithm-1/step-2",
+        "6.5.6/algorithm-1/step-3",
+        "6.5.6/algorithm-1/step-14",
+        "6.5.6/algorithm-1/step-15"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 544,
+      "annotation": "// Proposal comparison \u00a76.5.6 steps 1\u20133 and 14\u201315: Project endpoints and combine calendar and clock differences.",
+      "evidence": "Date-unit path detects equal epochs, projects both endpoints, delegates calendar counts at the selected intermediate day and combines the exact remainder. Clock-only branch subtracts exact epochs directly. Mapping does not equate the retry loop or boundary handling to \u00a76.5.6 steps 6\u201312."
+    },
+    {
+      "inventory_row": 1043,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "differenceZonedDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "600",
+        "end_line": "674",
+        "comparison_sections": "6.5.9",
+        "section_ids": "sec-temporal-differencetemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-get-difference-settings-audit.md|knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-relative-window-families-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.9/algorithm-1/step-1",
+        "6.5.9/algorithm-1/step-2",
+        "6.5.9/algorithm-1/step-3",
+        "6.5.9/algorithm-1/step-4",
+        "6.5.9/algorithm-1/step-7",
+        "6.5.9/algorithm-1/step-8",
+        "6.5.9/algorithm-1/step-9"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 599,
+      "annotation": "// Proposal comparison \u00a76.5.9 steps 1\u20134 and 7\u20139: Prepare zoned difference and dispatch relative rounding.",
+      "evidence": "Converts other, compares calendar and conditional date-unit zone identity, reads normalized difference settings, then delegates native or fallback relative operations. Ordinary identical epochs can short-circuit after local checks; Duration rounding has its separate retained path. Settings timing, provider constraints and endpoint corrections keep existing audit scope."
+    },
+    {
+      "inventory_row": 1044,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "startOfDay",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "677",
+        "end_line": "709",
+        "comparison_sections": "11.1.14",
+        "section_ids": "sec-temporal-getstartofday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getstartofday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-native-zoned-now35-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "11.1.14/algorithm-1/step-1",
+        "11.1.14/algorithm-1/step-2",
+        "11.1.14/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 676,
+      "annotation": "// Proposal comparison \u00a711.1.14 steps 1\u20133: Find the earliest representable midnight candidate.",
+      "evidence": "Uses native day-boundary owner or forms exact local midnight and selects first sorted candidate. Missing-midnight scanning and endpoint validity remain conditional on separate provider and window evidence. No overall gap-path equivalence claim."
+    },
+    {
+      "inventory_row": 1046,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "offsetText",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "758",
+        "end_line": "782",
+        "comparison_sections": "11.1.6",
+        "section_ids": "sec-temporal-formatutcoffsetnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formatutcoffsetnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-offset-fraction-audit.md|knowledge-base/audits/temporal-fractional-format-audit.md|knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "11.1.6/algorithm-1/step-8",
+        "11.1.6/algorithm-1/step-9"
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 767,
+      "annotation": "// Proposal comparison \u00a711.1.6 steps8\u20139: private offset digits and fraction.",
+      "evidence": "Existing numbered comment applies to fallback string assembly. Exact offset sign and fields feed the minute or auto-precision text path. Native snapshot offset string is delegated separately."
+    },
+    {
+      "inventory_row": 1047,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "format",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "783",
+        "end_line": "840",
+        "comparison_sections": "6.5.4",
+        "section_ids": "sec-temporal-temporalzoneddatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalzoneddatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
+      },
+      "spec_row_ids": [
+        "6.5.4/algorithm-1/step-9",
+        "6.5.4/algorithm-1/step-11.a"
+      ],
+      "annotation_placement": "inline",
+      "annotation_line": 829,
+      "annotation": "// Proposal comparison \u00a76.5.4 steps9,11.a: private ISO and offset substrings.",
+      "evidence": "Existing numbered comment applies to fallback rendered substrings. ISO local text drops its trailing UTC designator. Offset text is taken from the prepared minute-precision formatter when enabled. No claim about formatting option order or full native equivalence."
     }
   ],
   "comment_only_source_evidence": [
@@ -27333,37 +30257,36 @@
   "fresh_annotation_presence_summary": {
     "inventory_rows": 1069,
     "files": 75,
-    "active_rebound_rows": 1066,
-    "retired_replaced_callbacks": 3,
+    "active_rebound_rows": 1065,
+    "retired_replaced_callbacks": 4,
     "mapping_status": {
-      "mapped": 925,
-      "candidate": 87,
-      "unmapped": 57
+      "mapped": 980,
+      "candidate": 46,
+      "unmapped": 43
     },
     "annotation_coverage": {
-      "direct_numbered": 874,
-      "no_numbered_anchor": 177,
-      "enclosing_numbered": 15,
-      "retired_callback": 3
+      "direct_numbered": 939,
+      "no_numbered_anchor": 100,
+      "enclosing_numbered": 26,
+      "retired_callback": 4
     },
-    "direct_with_step_wording": 754,
+    "direct_with_step_wording": 818,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 860,
+      "overlap": 925,
       "no_overlap_or_no_prior_mapping": 14
     },
     "no_numbered_anchor_by_kind": {
       "function": 18,
-      "named-function": 100,
-      "callback": 52,
-      "method": 7
+      "named-function": 58,
+      "callback": 24
     },
     "role_review_bundles": {
       "time_zone_and_zoned_algorithm_review": {
         "rows": 180,
         "files": 12,
         "coverage": {
-          "direct_numbered": 143,
-          "no_numbered_anchor": 33,
+          "direct_numbered": 164,
+          "no_numbered_anchor": 12,
           "enclosing_numbered": 4
         }
       },
@@ -27371,9 +30294,10 @@
         "rows": 247,
         "files": 19,
         "coverage": {
-          "direct_numbered": 203,
-          "no_numbered_anchor": 42,
-          "enclosing_numbered": 2
+          "direct_numbered": 208,
+          "no_numbered_anchor": 30,
+          "enclosing_numbered": 8,
+          "retired_callback": 1
         }
       },
       "rust_value_parser_arithmetic_algorithm_review": {
@@ -27403,9 +30327,9 @@
         "rows": 240,
         "files": 24,
         "coverage": {
-          "no_numbered_anchor": 84,
-          "direct_numbered": 144,
-          "enclosing_numbered": 9,
+          "no_numbered_anchor": 40,
+          "direct_numbered": 183,
+          "enclosing_numbered": 14,
           "retired_callback": 3
         }
       }
@@ -27454,7 +30378,7 @@
     "packages/temporal/duration-core.ts": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8",
     "packages/temporal/duration-format.ts": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636",
     "packages/temporal/duration.ts": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363",
-    "packages/temporal/fallback-data.ts": "16171b1425316c0af6c0bcd7863d6617038afb30f5756f1ad652cda78d28f067",
+    "packages/temporal/fallback-data.ts": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad",
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
@@ -27462,15 +30386,15 @@
     "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
-    "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
+    "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "e85f0adcc6b7d2b56173ff70b45d7a12ac53d0361e7dd92c00d60e5c87d5502e",
-    "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
+    "packages/temporal/kernel.ts": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d",
     "packages/temporal/legacy-calendar-date.ts": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
-    "packages/temporal/legacy-extended-date.ts": "9b4d1c655f572a2a278005672e03077e45ea0298193caead0b22df5fc8997aef",
-    "packages/temporal/legacy-intl.ts": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
+    "packages/temporal/legacy-extended-date.ts": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6",
+    "packages/temporal/legacy-intl.ts": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
     "packages/temporal/legacy-lunisolar-date.ts": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496",
-    "packages/temporal/legacy-zoned-date.ts": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
+    "packages/temporal/legacy-zoned-date.ts": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493",
     "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
     "packages/temporal/native.ts": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
@@ -27484,7 +30408,7 @@
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
-    "packages/temporal/zoned-date-time.ts": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72",
+    "packages/temporal/zoned-date-time.ts": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b",
     "packages/temporal/zones.ts": "8a8fa402f2a3f05e66fe2a3734a958d49a3e00734ef519d535e85982c13c0c6f",
     "packages/temporal/epoch-slots.ts": "9580c5573978e5efbf0e131179be8982ec3e84810fcbdc780220be4af7b84a73"
   },
@@ -27811,6 +30735,19 @@
     ],
     "ts_date_helpers12": [
       606, 608, 611, 612, 616, 618, 622, 623, 624, 638, 639, 602
+    ],
+    "ts_kernel19": [
+      661, 662, 665, 666, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749,
+      750, 751, 752, 753
+    ],
+    "ts_legacy_ancestor36": [
+      757, 764, 785, 787, 788, 790, 791, 792, 793, 794, 797, 800, 801, 803, 804,
+      805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 819, 826, 832, 840,
+      841, 842, 843, 845, 846, 848
+    ],
+    "ts_epoch23": [
+      732, 729, 731, 733, 736, 1029, 1030, 1033, 1035, 1045, 1031, 1034, 1036,
+      1037, 1038, 1039, 1040, 1041, 1042, 1043, 1044, 1046, 1047
     ]
   },
   "inline_caller_dependency_link_reviews": [

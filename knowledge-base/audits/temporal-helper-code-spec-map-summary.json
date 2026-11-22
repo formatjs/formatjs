@@ -3,32 +3,32 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 25786,
+  "whole_selected_source_lines": 25885,
   "whole_selected_source_lines_by_language": {
     "rust": 10894,
-    "typescript": 14892
+    "typescript": 14991
   },
-  "nonoverlapping_callable_lines": 17164,
+  "nonoverlapping_callable_lines": 17220,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8137,
-    "typescript": 9027
+    "typescript": 9083
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 15525,
-    "candidate": 872,
-    "unmapped": 767
+    "mapped": 16136,
+    "candidate": 491,
+    "unmapped": 593
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "mapped": 925,
-    "candidate": 87,
-    "unmapped": 57
+    "mapped": 980,
+    "candidate": 46,
+    "unmapped": 43
   },
   "by_language": {
     "typescript": {
-      "candidate": 79,
-      "mapped": 394,
-      "unmapped": 47
+      "candidate": 38,
+      "mapped": 449,
+      "unmapped": 33
     },
     "rust": {
       "mapped": 531,
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 87
+    "implementation_dependency": 46
   },
   "proposal_core_section_ids": 170,
   "proposal_amendment_section_ids": 5,
@@ -632,11 +632,11 @@
     },
     {
       "file": "packages/temporal/fallback-data.ts",
-      "source_lines": 58,
+      "source_lines": 66,
       "callable_rows": 8,
       "nonoverlapping_callable_lines": 34,
-      "sha256": "16171b1425316c0af6c0bcd7863d6617038afb30f5756f1ad652cda78d28f067",
-      "unresolved_callable_rows": 0
+      "sha256": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad",
+      "unresolved_callable_rows": 1
     },
     {
       "file": "packages/temporal/format-digits.ts",
@@ -696,11 +696,11 @@
     },
     {
       "file": "packages/temporal/instant.ts",
-      "source_lines": 474,
+      "source_lines": 479,
       "callable_rows": 7,
       "nonoverlapping_callable_lines": 107,
-      "sha256": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
-      "unresolved_callable_rows": 1
+      "sha256": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/intrinsics.ts",
@@ -712,11 +712,11 @@
     },
     {
       "file": "packages/temporal/kernel.ts",
-      "source_lines": 364,
+      "source_lines": 394,
       "callable_rows": 15,
-      "nonoverlapping_callable_lines": 297,
-      "sha256": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
-      "unresolved_callable_rows": 9
+      "nonoverlapping_callable_lines": 313,
+      "sha256": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/legacy-calendar-date.ts",
@@ -736,18 +736,18 @@
     },
     {
       "file": "packages/temporal/legacy-extended-date.ts",
-      "source_lines": 226,
+      "source_lines": 234,
       "callable_rows": 22,
-      "nonoverlapping_callable_lines": 187,
-      "sha256": "9b4d1c655f572a2a278005672e03077e45ea0298193caead0b22df5fc8997aef",
+      "nonoverlapping_callable_lines": 195,
+      "sha256": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6",
       "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/legacy-intl.ts",
-      "source_lines": 298,
+      "source_lines": 321,
       "callable_rows": 14,
-      "nonoverlapping_callable_lines": 263,
-      "sha256": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
+      "nonoverlapping_callable_lines": 286,
+      "sha256": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
       "unresolved_callable_rows": 0
     },
     {
@@ -760,10 +760,10 @@
     },
     {
       "file": "packages/temporal/legacy-zoned-date.ts",
-      "source_lines": 129,
+      "source_lines": 138,
       "callable_rows": 7,
-      "nonoverlapping_callable_lines": 102,
-      "sha256": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
+      "nonoverlapping_callable_lines": 111,
+      "sha256": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493",
       "unresolved_callable_rows": 0
     },
     {
@@ -896,11 +896,11 @@
     },
     {
       "file": "packages/temporal/zoned-date-time.ts",
-      "source_lines": 1304,
+      "source_lines": 1320,
       "callable_rows": 19,
       "nonoverlapping_callable_lines": 608,
-      "sha256": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72",
-      "unresolved_callable_rows": 5
+      "sha256": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/zones.ts",

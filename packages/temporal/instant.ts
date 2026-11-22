@@ -57,6 +57,7 @@ import {
 } from '#packages/temporal/native.js'
 export {validateInstant} from '#packages/temporal/native.js'
 
+// Proposal comparison §8.3.11 step 15: Format prepared Instant nanoseconds through the active backend.
 function instantString(
   value: bigint,
   precision: Precision = 'auto',
@@ -98,6 +99,7 @@ const getSlot =
   import.meta.formatjsTemporalNativeData === true
     ? (value: object) => nativeInstantSlot(value)
     : getSharedInstantSlot
+// Proposal comparison §8.1.1 step 2: Convert an Instant argument with the BigInt coercion rules.
 function toBigInt(value: unknown): bigint {
   const primitive = ToPrimitive(value, 'number')
   if (
@@ -108,6 +110,7 @@ function toBigInt(value: unknown): bigint {
     throw new TypeErrorConstructor('Invalid BigInt input')
   return bigIntFrom(primitive)
 }
+// Proposal comparison §8.3.4 steps 2–3: Validate the receiver and read its exact Instant epoch.
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
   if (result === undefined)
@@ -132,6 +135,7 @@ const NativeInstant =
         }
       }
     : undefined
+// Proposal comparison §8.5.2 step 4: Supply the exact epoch to native Instant storage.
 function createNativeInstant(value: bigint): InstantObject {
   return new (NativeInstant as unknown as new (value: bigint) => InstantObject)(
     value
@@ -156,6 +160,7 @@ function toInstant(item: unknown): bigint {
     return parseInstantString(primitive)
   return validateInstant(parseInstantString(primitive))
 }
+// Proposal comparison §8.5.9 steps 1–5: Prepare Instant difference settings and route exact rounding.
 function difference(
   value: bigint,
   other: unknown,

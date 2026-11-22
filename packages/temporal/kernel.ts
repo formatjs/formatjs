@@ -56,11 +56,15 @@ export interface TimeZoneKernel {
   resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
 }
 
+// Temporal comparison §11.1.2 steps 2, 3.
+// Floor the epoch quotient so negative instants keep the correct remainder.
 function floorDivide(value: bigint, divisor: bigint): bigint {
   const quotient = value / divisor
   return value < 0n && value % divisor !== 0n ? quotient - 1n : quotient
 }
 
+// Temporal comparison §8.5.1 step 1.
+// Check inclusive Instant epoch bounds before the zone operation.
 function checkInstant(value: bigint): bigint {
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
   // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
@@ -69,6 +73,8 @@ function checkInstant(value: bigint): bigint {
   return value
 }
 
+// Temporal comparison §5.5.4 steps 2–4 and amendment §14.6.1 steps 1–5.
+// Compose exact local epoch nanoseconds and enforce the strict bounds.
 export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -91,6 +97,8 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
     month > 12 ||
     date < 1 ||
     date > 31 ||
+    // Temporal comparison §4.5.9 steps 1–6.
+    // Check each prepared clock component against its unit bound.
     arraySome(time, (value, i) => value < 0 || value > bounds[i])
   ) {
     throw new RangeErrorConstructor('Invalid ISO fields')
@@ -132,6 +140,8 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
 
 // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L62-L77
 // Line tags below refer to this pinned timezone.html.
+// Temporal comparison §11.1.2 steps 2–16.
+// Project the epoch into exact Gregorian date and clock fields.
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -178,6 +188,8 @@ export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   }
 }
 
+// Temporal comparison §3.5.9 steps 1–3.
+// Add an exact day count while preserving the prepared clock.
 export function addISODays(
   fields: ISODateTime,
   days: number
@@ -192,6 +204,8 @@ export function addISODays(
   )
 }
 
+// Temporal comparison §6.3.46 steps 9.a and 10.b.
+// Find the strict neighboring offset change in the loaded zone data.
 function zoneTransition(
   data: UnpackedTimeZoneData,
   instant: bigint,
@@ -199,6 +213,8 @@ function zoneTransition(
 ): bigint | null {
   const next = direction === 'next'
   let best: bigint | null = null
+  // Temporal comparison §11.1.3 and §11.1.4 transition requirements.
+  // Keep only the nearer in-range candidate that changes the offset.
   const consider = (seconds: number): void => {
     if (!numberIsFinite(seconds)) return
     const candidate = bigIntFrom(seconds) * second
@@ -268,6 +284,8 @@ function zoneTransition(
   return best
 }
 
+// Temporal comparison §11.1.9 step 3 and §11.1.13 step 3.a.
+// Build the offset, candidate and disambiguation operations for prepared data.
 /** Caller supplies canonical zone data; offsets are seconds in the shared pack. */
 export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   // Proposal comparison §11.1.13 steps3.a,5: private candidate collection.
@@ -283,6 +301,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     if (data.future.daylightOffset !== undefined)
       addOffset(data.future.daylightOffset)
   }
+  // Temporal comparison §11.1.9 step 3.
+  // Look up the named-zone offset at the exact epoch and scale to nanoseconds.
   const offsetNanoseconds = (instant: bigint): bigint => {
     checkInstant(instant)
     return (
@@ -291,6 +311,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       ) * second
     )
   }
+  // Temporal comparison §11.1.13 steps 3.a, 5, §14.6.3 prose.
+  // Collect round-tripping named-zone candidates and sort the private list.
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
     for (let index = 0; index < offsets.length; index++) {
@@ -301,11 +323,17 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
         setDataProperty(candidates, `${candidates.length}`, instant)
     }
     return apply(arraySort, candidates, [
+      // Temporal comparison §11.1.13 step 5, §14.6.3 prose.
+      // Compare the two exact candidate epochs for ascending order.
       (a: bigint, b: bigint) => (a < b ? -1 : a > b ? 1 : 0),
     ])
   }
+  // Temporal comparison §11.1.13 step 3.a.
+  // Project prepared ISO fields before named-zone candidate lookup.
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
+  // Temporal comparison §11.1.12 steps 2, 3.a, 3.b and 5.
+  // Choose single or folded candidates and resolve loaded-zone gaps.
   const resolve = (
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
@@ -356,6 +384,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     possibleInstants,
     possibleInstantsFromEpochNanoseconds,
     resolve,
+    // Temporal comparison §6.3.46 steps 9.a, 10.b, 11.
+    // Dispatch the direction to the bounded named-zone transition search.
     transition: (instant, direction) => {
       checkInstant(instant)
       return zoneTransition(data, instant, direction)

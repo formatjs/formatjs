@@ -7,13 +7,13 @@ Public bindings, helper/backend ranges and fixed step checklists retain source
 hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
-1,069 fixed identities, with three retired callbacks explicit.
-Comment-only batches reconcile 832 mappings across parsers, arithmetic,
+1,069 fixed identities, with four retired callbacks explicit.
+Comment-only batches reconcile 910 mappings across parsers, arithmetic,
 providers, transport, and legacy DateTimeFormat. Twelve transport mappings
 identify narrow caller dependencies. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
 binds comments to source hashes and verifies that executable code is unchanged.
-The inventory has 874 direct anchors, 15 enclosing anchors, 177 helpers without
-numbered anchors, and three retired callbacks. Twenty-five of those 177 have a
+The inventory has 939 direct anchors, 26 enclosing anchors, 100 helpers without
+numbered anchors, and four retired callbacks. Forty-eight of those 100 have a
 reviewed structural disposition, including all 18 remaining Rust helpers.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms

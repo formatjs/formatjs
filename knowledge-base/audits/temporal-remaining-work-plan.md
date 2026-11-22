@@ -49,7 +49,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                       |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                 |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 925 mapped, 87 candidate/dependency assignments, 57 unmapped (including 3 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 980 mapped, 46 candidate/dependency assignments, 43 unmapped (including 4 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                  |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                          |
 
@@ -117,7 +117,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 57 unresolved
+separately. Candidate source assignments require confirmation; 43 unresolved
 helper mappings are a mapping queue, not missing functions.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -206,14 +206,14 @@ validates that extra week on the certified profiles. Published assertion and
 retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
-retains1,069 identities:1,066 live bindings and three retired callbacks.
-[832 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+retains 1,069 identities, including 1,065 live bindings and four retired callbacks.
+[910 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-820 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:925 mapped,87 candidate,
-57 unmapped, including three retired identities. Annotation presence alone
-is 874 direct, 15 enclosing, 177 without numbered anchors, 3 retired; these are
+898 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:980 mapped,46 candidate,
+43 unmapped, including four retired identities. Annotation presence alone
+is 939 direct, 26 enclosing, 100 without numbered anchors, 4 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -279,9 +279,16 @@ Six focused Bazel targets pass.
 [Duration proof](temporal-ts-duration23-annotation-source-proof.json).
 [Date proof](temporal-ts-date-helpers12-annotation-source-proof.json).
 
-209 TypeScript helpers still need review, including 152 without anchors and
-57 with existing comments whose scope needs reconciliation. Estimated time
-for source review is 35–90 minutes at the measured review rate. Behavioral review still has
+The next 78 mappings cover legacy Intl, fallback providers, kernel arithmetic,
+Instant, and ZonedDateTime. Twenty-three structural reviews and a retired
+fallback callback also leave the queue. Six focused Bazel targets pass.
+[Legacy proof](temporal-legacy-ancestor57-annotation-source-proof.json).
+[Kernel proof](temporal-ts-kernel19-annotation-source-proof.json).
+[Instant and ZonedDateTime proof](temporal-ts-epoch-routing23-annotation-source-proof.json).
+
+107 TypeScript helpers still need review. 52 lack anchors and 55 have comments
+whose scope needs checking. Estimated time for source review is 20–45 minutes
+at the measured review rate. Behavioral review still has
 57 conditional Temporal steps. The published ECMA-402 range-collapse regression is fixed and validated.
 The numeric-year and era path now reuses a validated host range layout.
 Exact layout selection for other corrected fallback parts remains open.

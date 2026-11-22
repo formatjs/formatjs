@@ -4,14 +4,14 @@
   "source_files": {
     "packages/temporal/duration.ts": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363",
     "packages/temporal/index.ts": "eff29c356b773d0906c77a7b2b9b1232ccf51ad4c3fd91a031551a72152f9eae",
-    "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
+    "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/now.ts": "0e4766a9b82c409e3134a9f0ddffdb25fa9c109645f9f3bdb49e4c25a1b1a89d",
     "packages/temporal/plain-date-time.ts": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57",
     "packages/temporal/plain-date.ts": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3",
     "packages/temporal/plain-month-day.ts": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b",
     "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
     "packages/temporal/plain-year-month.ts": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7",
-    "packages/temporal/zoned-date-time.ts": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72"
+    "packages/temporal/zoned-date-time.ts": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b"
   },
   "entries": [
     {
@@ -648,280 +648,280 @@
       "section": "6.1.1",
       "spec_anchor": "sec-temporal.zoneddatetime",
       "comment_locations": [
-        "packages/temporal/zoned-date-time.ts:1217",
-        "packages/temporal/zoned-date-time.ts:1236"
+        "packages/temporal/zoned-date-time.ts:1233",
+        "packages/temporal/zoned-date-time.ts:1252"
       ]
     },
     {
       "section": "6.2.1",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1212"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1228"]
     },
     {
       "section": "6.2.2",
       "spec_anchor": "sec-temporal.zoneddatetime.from",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:834"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:850"]
     },
     {
       "section": "6.2.3",
       "spec_anchor": "sec-temporal.zoneddatetime.compare",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:843"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:859"]
     },
     {
       "section": "6.3.1",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.constructor",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1254"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1270"]
     },
     {
       "section": "6.3.2",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1256"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1272"]
     },
     {
       "section": "6.3.3",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.calendarid",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1263"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1279"]
     },
     {
       "section": "6.3.4",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.timezoneid",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:869"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:885"]
     },
     {
       "section": "6.3.5",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.era",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1264"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1280"]
     },
     {
       "section": "6.3.6",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.erayear",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1265"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1281"]
     },
     {
       "section": "6.3.7",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.year",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1266"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1282"]
     },
     {
       "section": "6.3.8",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.month",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1267"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1283"]
     },
     {
       "section": "6.3.9",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.monthcode",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1268"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1284"]
     },
     {
       "section": "6.3.10",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.day",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1269"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1285"]
     },
     {
       "section": "6.3.11",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.hour",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1270"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1286"]
     },
     {
       "section": "6.3.12",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.minute",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1271"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1287"]
     },
     {
       "section": "6.3.13",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.second",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1272"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1288"]
     },
     {
       "section": "6.3.14",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.millisecond",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1273"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1289"]
     },
     {
       "section": "6.3.15",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.microsecond",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1274"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1290"]
     },
     {
       "section": "6.3.16",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.nanosecond",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1275"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1291"]
     },
     {
       "section": "6.3.17",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.epochmilliseconds",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:861"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:877"]
     },
     {
       "section": "6.3.18",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.epochnanoseconds",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:856"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:872"]
     },
     {
       "section": "6.3.19",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.dayofweek",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1276"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1292"]
     },
     {
       "section": "6.3.20",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.dayofyear",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1277"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1293"]
     },
     {
       "section": "6.3.21",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.weekofyear",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1278"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1294"]
     },
     {
       "section": "6.3.22",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.yearofweek",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1279"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1295"]
     },
     {
       "section": "6.3.23",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.hoursinday",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:887"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:903"]
     },
     {
       "section": "6.3.24",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.daysinweek",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1280"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1296"]
     },
     {
       "section": "6.3.25",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.daysinmonth",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1281"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1297"]
     },
     {
       "section": "6.3.26",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.daysinyear",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1282"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1298"]
     },
     {
       "section": "6.3.27",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.monthsinyear",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1283"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1299"]
     },
     {
       "section": "6.3.28",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.inleapyear",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1284"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1300"]
     },
     {
       "section": "6.3.29",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.offsetnanoseconds",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:874"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:890"]
     },
     {
       "section": "6.3.30",
       "spec_anchor": "sec-get-temporal.zoneddatetime.prototype.offset",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:882"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:898"]
     },
     {
       "section": "6.3.31",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.with",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:906"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:922"]
     },
     {
       "section": "6.3.32",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.withplaintime",
       "comment_locations": [
-        "packages/temporal/zoned-date-time.ts:1061",
-        "packages/temporal/zoned-date-time.ts:1071"
+        "packages/temporal/zoned-date-time.ts:1077",
+        "packages/temporal/zoned-date-time.ts:1087"
       ]
     },
     {
       "section": "6.3.33",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.withtimezone",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1039"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1055"]
     },
     {
       "section": "6.3.34",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.withcalendar",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1049"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1065"]
     },
     {
       "section": "6.3.35",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.add",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1088"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1104"]
     },
     {
       "section": "6.3.36",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.subtract",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1093"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1109"]
     },
     {
       "section": "6.3.37",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.until",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1078"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1094"]
     },
     {
       "section": "6.3.38",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.since",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1083"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1099"]
     },
     {
       "section": "6.3.39",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.round",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:973"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:989"]
     },
     {
       "section": "6.3.40",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.equals",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1134"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1150"]
     },
     {
       "section": "6.3.41",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.tostring",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1169"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1185"]
     },
     {
       "section": "6.3.42",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1174"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1190"]
     },
     {
       "section": "6.3.43",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.tojson",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1189"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1205"]
     },
     {
       "section": "6.3.44",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.valueof",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1194"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1210"]
     },
     {
       "section": "6.3.45",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.startofday",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1121"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1137"]
     },
     {
       "section": "6.3.46",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1101"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1117"]
     },
     {
       "section": "6.3.47",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.toinstant",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1145"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1161"]
     },
     {
       "section": "6.3.48",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.toplaindate",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1156"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1172"]
     },
     {
       "section": "6.3.49",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.toplaintime",
       "comment_locations": [
-        "packages/temporal/zoned-date-time.ts:1162",
-        "packages/temporal/zoned-date-time.ts:1165"
+        "packages/temporal/zoned-date-time.ts:1178",
+        "packages/temporal/zoned-date-time.ts:1181"
       ]
     },
     {
       "section": "6.3.50",
       "spec_anchor": "sec-temporal.zoneddatetime.prototype.toplaindatetime",
-      "comment_locations": ["packages/temporal/zoned-date-time.ts:1150"]
+      "comment_locations": ["packages/temporal/zoned-date-time.ts:1166"]
     },
     {
       "section": "7.1.1",
@@ -1075,115 +1075,115 @@
     {
       "section": "8.1.1",
       "spec_anchor": "sec-temporal.instant",
-      "comment_locations": ["packages/temporal/instant.ts:429"]
+      "comment_locations": ["packages/temporal/instant.ts:434"]
     },
     {
       "section": "8.2.1",
       "spec_anchor": "sec-temporal.instant.prototype",
       "comment_locations": [
-        "packages/temporal/instant.ts:422",
-        "packages/temporal/instant.ts:453"
+        "packages/temporal/instant.ts:427",
+        "packages/temporal/instant.ts:458"
       ]
     },
     {
       "section": "8.2.2",
       "spec_anchor": "sec-temporal.instant.from",
-      "comment_locations": ["packages/temporal/instant.ts:235"]
+      "comment_locations": ["packages/temporal/instant.ts:240"]
     },
     {
       "section": "8.2.3",
       "spec_anchor": "sec-temporal.instant.fromepochmilliseconds",
-      "comment_locations": ["packages/temporal/instant.ts:247"]
+      "comment_locations": ["packages/temporal/instant.ts:252"]
     },
     {
       "section": "8.2.4",
       "spec_anchor": "sec-temporal.instant.fromepochnanoseconds",
-      "comment_locations": ["packages/temporal/instant.ts:242"]
+      "comment_locations": ["packages/temporal/instant.ts:247"]
     },
     {
       "section": "8.2.5",
       "spec_anchor": "sec-temporal.instant.compare",
-      "comment_locations": ["packages/temporal/instant.ts:222"]
+      "comment_locations": ["packages/temporal/instant.ts:227"]
     },
     {
       "section": "8.3.1",
       "spec_anchor": "sec-temporal.instant.prototype.constructor",
-      "comment_locations": ["packages/temporal/instant.ts:444"]
+      "comment_locations": ["packages/temporal/instant.ts:449"]
     },
     {
       "section": "8.3.2",
       "spec_anchor": "sec-temporal.instant.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/instant.ts:446"]
+      "comment_locations": ["packages/temporal/instant.ts:451"]
     },
     {
       "section": "8.3.3",
       "spec_anchor": "sec-get-temporal.instant.prototype.epochmilliseconds",
-      "comment_locations": ["packages/temporal/instant.ts:265"]
+      "comment_locations": ["packages/temporal/instant.ts:270"]
     },
     {
       "section": "8.3.4",
       "spec_anchor": "sec-get-temporal.instant.prototype.epochnanoseconds",
-      "comment_locations": ["packages/temporal/instant.ts:260"]
+      "comment_locations": ["packages/temporal/instant.ts:265"]
     },
     {
       "section": "8.3.5",
       "spec_anchor": "sec-temporal.instant.prototype.add",
-      "comment_locations": ["packages/temporal/instant.ts:289"]
+      "comment_locations": ["packages/temporal/instant.ts:294"]
     },
     {
       "section": "8.3.6",
       "spec_anchor": "sec-temporal.instant.prototype.subtract",
-      "comment_locations": ["packages/temporal/instant.ts:308"]
+      "comment_locations": ["packages/temporal/instant.ts:313"]
     },
     {
       "section": "8.3.7",
       "spec_anchor": "sec-temporal.instant.prototype.until",
-      "comment_locations": ["packages/temporal/instant.ts:279"]
+      "comment_locations": ["packages/temporal/instant.ts:284"]
     },
     {
       "section": "8.3.8",
       "spec_anchor": "sec-temporal.instant.prototype.since",
-      "comment_locations": ["packages/temporal/instant.ts:284"]
+      "comment_locations": ["packages/temporal/instant.ts:289"]
     },
     {
       "section": "8.3.9",
       "spec_anchor": "sec-temporal.instant.prototype.round",
-      "comment_locations": ["packages/temporal/instant.ts:327"]
+      "comment_locations": ["packages/temporal/instant.ts:332"]
     },
     {
       "section": "8.3.10",
       "spec_anchor": "sec-temporal.instant.prototype.equals",
-      "comment_locations": ["packages/temporal/instant.ts:274"]
+      "comment_locations": ["packages/temporal/instant.ts:279"]
     },
     {
       "section": "8.3.11",
       "spec_anchor": "sec-temporal.instant.prototype.tostring",
-      "comment_locations": ["packages/temporal/instant.ts:334"]
+      "comment_locations": ["packages/temporal/instant.ts:339"]
     },
     {
       "section": "8.3.12",
       "spec_anchor": "sec-temporal.instant.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/instant.ts:388"]
+      "comment_locations": ["packages/temporal/instant.ts:393"]
     },
     {
       "section": "8.3.13",
       "spec_anchor": "sec-temporal.instant.prototype.tojson",
-      "comment_locations": ["packages/temporal/instant.ts:402"]
+      "comment_locations": ["packages/temporal/instant.ts:407"]
     },
     {
       "section": "8.3.14",
       "spec_anchor": "sec-temporal.instant.prototype.valueof",
-      "comment_locations": ["packages/temporal/instant.ts:407"]
+      "comment_locations": ["packages/temporal/instant.ts:412"]
     },
     {
       "section": "8.3.15",
       "spec_anchor": "sec-temporal.instant.prototype.tozoneddatetimeiso",
-      "comment_locations": ["packages/temporal/instant.ts:254"]
+      "comment_locations": ["packages/temporal/instant.ts:259"]
     },
     {
       "section": "8.4.1",
       "spec_anchor": "sec-temporal-instant-range",
-      "comment_locations": ["packages/temporal/instant.ts:100"]
+      "comment_locations": ["packages/temporal/instant.ts:101"]
     },
     {
       "section": "9.1.1",

@@ -168,6 +168,7 @@ export interface ZonedDateTimeConstructor {
   from(item: unknown, options?: unknown): ZonedDateTimeObject
   compare(one: unknown, two: unknown): -1 | 0 | 1
 }
+// Proposal comparison §6.3.18 steps 2–3: Validate the ZonedDateTime receiver and supply its epoch slot.
 function read(value: unknown): ZonedSlot {
   const slot = getZonedSlot(value as object)
   if (!slot) throw new TypeErrorConstructor('Invalid ZonedDateTime receiver')
@@ -182,6 +183,7 @@ const zonedSnapshots = new WeakMap<
     date: {epochDay: number; calendar: string; properties: NativeDateSnapshot}
   }
 >()
+// Proposal comparison §11.1.10 steps 1–3 and §12.3.26 steps 1.b and 2: Reuse native zoned projection by slot.
 function zonedSnapshot(slot: ZonedSlot) {
   const owner = nativeTemporal()
   if (!owner) return undefined
@@ -206,6 +208,7 @@ function zonedSnapshot(slot: ZonedSlot) {
   zonedSnapshots.set(slot, entry)
   return entry
 }
+// Proposal comparison §11.1.10 steps 1–3: Project an exact zoned epoch into local nanoseconds.
 function local(slot: ZonedSlot): bigint {
   const cached = zonedSnapshot(slot)
   if (cached) return cached.local
@@ -254,6 +257,7 @@ export function createZonedDateTime(
   setZonedSlot(result, slot)
   return result
 }
+// Proposal comparison §13.7 step 1 and §13.9 step 5: Default and validate an already read option.
 function option<T extends string>(
   value: unknown,
   fallback: T,
@@ -264,6 +268,7 @@ function option<T extends string>(
     throw new RangeErrorConstructor('Invalid option')
   return text as T
 }
+// Proposal comparison §13.41 steps 1–4: Validate an offset string while preserving its spelling.
 function offsetString(value: unknown): string {
   const primitive = object(value) ? ToPrimitive(value, 'string') : value
   if (typeof primitive !== 'string')
@@ -271,6 +276,7 @@ function offsetString(value: unknown): string {
   parseOffsetNanoseconds(primitive)
   return primitive
 }
+// Proposal comparison §5.3.38 steps 3–7: Resolve a local date-time with its selected zone and options.
 export function zonedFromLocal(
   value: bigint,
   timeZone: unknown,
@@ -288,6 +294,7 @@ export function zonedFromLocal(
   const slot = {epochNanoseconds: epoch, timeZone: zone, calendar}
   return createZonedDateTime(start ? startOfDay(slot) : epoch, zone, calendar)
 }
+// Proposal comparison §13.7 steps 1–5: Normalize disambiguation with compatible as default.
 function disambiguation(value: unknown): Disambiguation {
   return option(value, 'compatible', [
     'compatible',
@@ -296,6 +303,7 @@ function disambiguation(value: unknown): Disambiguation {
     'reject',
   ])
 }
+// Proposal comparison §6.5.1 steps 3.a and 4.d–4.e: Resolve wall time or validate an exact UTC instant.
 function resolve(
   localTime: bigint,
   timeZone: string,
@@ -319,6 +327,7 @@ function resolve(
     matchMinute
   )
 }
+// Proposal comparison §6.5.1 steps 10.a–10.c.ii and 11–12: Match exact or minute-rounded offset candidates.
 function resolveOffsetNanoseconds(
   localTime: bigint,
   provided: bigint,
@@ -345,6 +354,7 @@ function resolveOffsetNanoseconds(
     throw new RangeErrorConstructor('Offset does not match timezone')
   return kernel.resolve(fields, ambiguous)
 }
+// Proposal comparison §6.5.2 steps 5.b, 5.m–5.p and 11: Prepare zoned strings before offset interpretation.
 export function toZonedDateTimeSlot(
   item: unknown,
   options?: unknown
@@ -485,6 +495,7 @@ export function toZonedDateTimeSlot(
     calendar,
   }
 }
+// Proposal comparison §6.5.10 steps 1–4 and 8–9: Prepare duration addition or subtraction and build the zoned result.
 function add(
   slot: ZonedSlot,
   duration: unknown,
@@ -523,12 +534,14 @@ function add(
     slot.calendar
   )
 }
+// Proposal comparison §7.3.20 step 27.e and §7.3.21 step 12.e: Supply the resolved zoned duration endpoint.
 export function addZonedDuration(
   slot: ZonedSlot,
   fields: DurationFields
 ): bigint {
   return getZonedSlot(add(slot, fields, undefined, 1))!.epochNanoseconds
 }
+// Proposal comparison §6.5.6 steps 1–3 and 14–15: Project endpoints and combine calendar and clock differences.
 export function unroundedZonedDifference(
   start: ZonedSlot,
   end: bigint,
@@ -583,6 +596,7 @@ export function unroundedZonedDifference(
   }
   return fields
 }
+// Proposal comparison §6.5.9 steps 1–4 and 7–9: Prepare zoned difference and dispatch relative rounding.
 export function differenceZonedDuration(
   start: ZonedSlot,
   other: unknown,
@@ -659,6 +673,7 @@ export function differenceZonedDuration(
   )
 }
 
+// Proposal comparison §11.1.14 steps 1–3: Find the earliest representable midnight candidate.
 function startOfDay(slot: ZonedSlot, day?: number): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -714,6 +729,7 @@ const numericOffsetSlots: (ZonedSlot | undefined)[] = [
 const numericOffsetValues = new Float64Array(16)
 let numericOffsetPosition = 0
 let numericOffsetSkip = 0
+// Proposal comparison §6.3.29 step 3: Return an exact Number offset for the fallback zoned slot.
 function numericOffset(slot: ZonedSlot): number {
   const remember = numericOffsetSkip === 0
   if (remember) {
