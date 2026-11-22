@@ -182,6 +182,9 @@ inherited getters. PlainTime's private clock lists also ignore replaced array
 mapping, iteration and species hooks; public field getters retain their order.
 `ZonedDateTime` constructors check epoch range before validating timezone and
 calendar arguments.
+Rounding a ZonedDateTime to one nanosecond returns a fresh equivalent value,
+including minimum/maximum instants with outward timezone offsets.
+Rounding options are validated before that return.
 Calendar/unit array `includes`/`indexOf` lookups retain original intrinsics.
 
 ## Conformance and verification

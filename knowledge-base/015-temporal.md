@@ -1,5 +1,10 @@
 # Temporal implementation
 
+ZonedDateTime rounding to one nanosecond returns a fresh equivalent value after
+option validation, including Instant bounds whose local clock triggers the
+local-date resolution guard. The [identity audit](audits/temporal-zoned-identity-rounding-audit.md)
+keeps complete rounding and the repeated-date day assertion separate.
+
 `Duration.from(string)` uses indexed ASCII grammar scanning. It avoids mutable
 RegExp/String methods and legacy RegExp match-state changes. The
 [parser audit](audits/temporal-duration-parser-audit.md) records exact accepted

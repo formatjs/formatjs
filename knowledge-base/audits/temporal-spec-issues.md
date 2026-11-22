@@ -173,3 +173,48 @@ this witness. Current formatter schemas use their own placeholder vocabularies;
 this finding does not establish a public formatter failure. The specification
 could reserve the name in §6.10 or describe literal segments by their origin
 rather than by the type field alone.
+
+## Day-rounding upper-bound assertion on repeated civil dates
+
+Status: algorithm inconsistency in historical Temporal revision
+`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`; also present in the separately
+published proposal checked 2026-11-21. No upstream issue filed by this review.
+This is not a numbered ECMA-262 Temporal finding: the requested ECMA-262 snapshot
+has no Temporal API chapters. The proposal comparison below does not change the
+requested authority or grant section completion.
+
+Historical `zoneddatetime.html:651–661` obtains the earliest starts of the
+receiver's local date and the following date, then asserts `thisNs < endNs`
+at line 657. The separately published
+[proposal §6.3.39 step 19.f](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.round)
+still contains that assertion. Its
+[§11.1.14 step 3](https://tc39.es/proposal-temporal/#sec-temporal-getstartofday)
+selects the first possible midnight instant when midnight exists.
+
+Pinned [IANA tzdb 2026f, `antarctica`, Zone Antarctica/Casey](https://data.iana.org/time-zones/tzdb-2026f/antarctica)
+uses UTC+11 until 2010-03-05 02:00 local, then UTC+08. Thus at
+2010-03-04T15:00Z the clock moves from March 5 at 02:00 back to March 4 at 23:00.
+
+For receiver `2010-03-04T23:10+08:00[Antarctica/Casey]`, exact offset subtraction
+gives:
+
+| Quantity                             | UTC instant       |
+| ------------------------------------ | ----------------- |
+| Receiver, `thisNs`                   | 2010-03-04T15:10Z |
+| Earliest March 4 midnight, `startNs` | 2010-03-03T13:00Z |
+| Earliest March 5 midnight, `endNs`   | 2010-03-04T13:00Z |
+
+March 5 midnight occurs again at 2010-03-04T16:00Z, but the first candidate is
+13:00Z. Therefore `thisNs = endNs + 7_800_000_000_000 ns`: the asserted upper
+bound fails on a valid instant with an available named zone. The elapsed progress
+from `startNs` is 26 hours 10 minutes, exceeding the calculated 24-hour interval.
+This arithmetic does not depend on FormatJS rounding output.
+
+[Existing Casey controls](../../packages/temporal/tests/zoned.test.ts#L241)
+already cover this receiver. The
+[TS day branch](../../packages/temporal/zoned-date-time.ts#L925) and
+[Rust day branch](../../crates/temporal/zoned.rs#L211) clamp the receiver to
+`endNs - 1 ns` before rounding. That is an existing fallback, not a consequence
+of the failed assertion. Keep its behavior separate from the ordinary-day proof;
+this finding does not prescribe a replacement rule or establish a new runtime
+regression. Day rounding retains open status pending an authoritative resolution.
