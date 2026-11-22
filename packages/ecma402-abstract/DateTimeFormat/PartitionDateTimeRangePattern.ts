@@ -1,5 +1,6 @@
 import {
   TypeErrorConstructor,
+  arrayIndexOf,
   arraySome,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
@@ -105,7 +106,10 @@ export function PartitionDateTimeRangePattern(
         : part.type === 'relatedYear' || part.type === 'yearName'
           ? 'year'
           : part.type
-    lastField = Math.max(lastField, TABLE_2_FIELDS.indexOf(field as TABLE_2))
+    lastField = Math.max(
+      lastField,
+      arrayIndexOf(TABLE_2_FIELDS, field as TABLE_2)
+    )
   }
 
   const fallback: RangePatterns = rangePatterns.default || {

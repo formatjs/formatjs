@@ -1,3 +1,4 @@
+import {arrayIndexOf} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {BestFitMatcher} from '#packages/intl-localematcher/abstract/BestFitMatcher.js'
 import {CanonicalizeUValue} from '#packages/intl-localematcher/abstract/CanonicalizeUValue.js'
 import {InsertUnicodeExtensionAndCanonicalize} from '#packages/intl-localematcher/abstract/InsertUnicodeExtensionAndCanonicalize.js'
@@ -129,14 +130,14 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
     if (entry) {
       let requestedValue = entry.value
       if (requestedValue !== '') {
-        if (keyLocaleData.indexOf(requestedValue) > -1) {
+        if (arrayIndexOf(keyLocaleData, requestedValue) > -1) {
           value = requestedValue
           supportedKeyword = {
             key,
             value,
           }
         }
-      } else if (keyLocaleData.indexOf('true') > -1) {
+      } else if (arrayIndexOf(keyLocaleData, 'true') > -1) {
         value = 'true'
         supportedKeyword = {
           key,
@@ -160,7 +161,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
     if (
       optionsValue !== undefined &&
       optionsValue !== value &&
-      keyLocaleData.indexOf(optionsValue) > -1
+      arrayIndexOf(keyLocaleData, optionsValue) > -1
     ) {
       value = optionsValue
       supportedKeyword = undefined

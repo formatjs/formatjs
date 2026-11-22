@@ -1,4 +1,8 @@
-import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  arrayEvery,
+  arrayIncludes,
+  arrayIndexOf,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   extensionAlias,
@@ -81,7 +85,7 @@ function compareExtension(e1: Extension, e2: Extension): number {
 function mergeVariants(v1: string[], v2: string[]): string[] {
   const result = [...v1]
   for (const v of v2) {
-    if (v1.indexOf(v) < 0) {
+    if (arrayIndexOf(v1, v) < 0) {
       appendToList(result, v)
     }
   }
@@ -172,7 +176,7 @@ export function canonicalizeUnicodeLanguageId(
     (!type.script || type.script === finalLangAst.script) &&
     (!type.region || type.region === finalLangAst.region) &&
     arrayEvery(type.variants, variant =>
-      finalLangAst.variants.includes(variant)
+      arrayIncludes(finalLangAst.variants, variant)
     )
   const languageRule = languageAliasRules[finalLangAst.lang]?.find(matches)
   const undRule =
@@ -200,7 +204,7 @@ export function canonicalizeUnicodeLanguageId(
         ? replacement.region
         : finalLangAst.region || replacement.region,
       variants: mergeVariants(
-        finalLangAst.variants.filter(v => !type.variants.includes(v)),
+        finalLangAst.variants.filter(v => !arrayIncludes(type.variants, v)),
         replacement.variants
       ),
     }
@@ -231,7 +235,7 @@ export function canonicalizeUnicodeLanguageId(
         const {region: likelyRegion} = parseUnicodeLanguageId(
           likelySubtag.split(SEPARATOR)
         )
-        if (likelyRegion && regions.indexOf(likelyRegion) > -1) {
+        if (likelyRegion && arrayIndexOf(regions, likelyRegion) > -1) {
           replacedRegion = likelyRegion
         }
       }

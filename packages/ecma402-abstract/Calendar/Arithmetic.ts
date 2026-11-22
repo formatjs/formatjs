@@ -1,6 +1,7 @@
 import {
   ErrorConstructor,
   RangeErrorConstructor,
+  arrayIncludes,
   floor,
   numberFrom,
   numberIsInteger,
@@ -57,7 +58,8 @@ function hebrewDelay(year: number): number {
 function IsISOCalendar(
   calendar: ArithmeticCalendarId
 ): calendar is GregorianCalendarId {
-  return ['iso8601', 'gregory', 'buddhist', 'japanese', 'roc'].includes(
+  return arrayIncludes(
+    ['iso8601', 'gregory', 'buddhist', 'japanese', 'roc'],
     calendar
   )
 }
@@ -132,7 +134,7 @@ export function ArithmeticCalendarMonthsInYear(
   calendar: ArithmeticCalendarId,
   year: number
 ): number {
-  return ['coptic', 'ethiopic', 'ethioaa'].includes(calendar) ||
+  return arrayIncludes(['coptic', 'ethiopic', 'ethioaa'], calendar) ||
     (calendar === 'hebrew' && HebrewLeapYear(year))
     ? 13
     : 12
@@ -157,7 +159,7 @@ export function ArithmeticCalendarDaysInMonth(
   const length =
     ArithmeticCalendarStartOfYear(calendar, year + 1) -
     ArithmeticCalendarStartOfYear(calendar, year)
-  if (['coptic', 'ethiopic', 'ethioaa'].includes(calendar))
+  if (arrayIncludes(['coptic', 'ethiopic', 'ethioaa'], calendar))
     return month === 13 ? length - 360 : 30
   if (calendar === 'indian')
     return month === 1
@@ -170,7 +172,7 @@ export function ArithmeticCalendarDaysInMonth(
   if (calendar === 'persian')
     return month <= 6 ? 31 : month < 12 ? 30 : length - 336
   const code = month + numberFrom(!HebrewLeapYear(year) && month >= 6)
-  if ([4, 7, 9, 11, 13].includes(code)) return 29
+  if (arrayIncludes([4, 7, 9, 11, 13], code)) return 29
   if (code === 2) return length % 10 === 5 ? 30 : 29
   if (code === 3) return length % 10 === 3 ? 29 : 30
   return 30

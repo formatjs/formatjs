@@ -1,6 +1,8 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
+  arrayIndexOf,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -240,15 +242,15 @@ function difference(
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'day'
   const names = ['year', 'month', 'week', 'day'],
-    smallIndex = names.indexOf(smallest)
+    smallIndex = arrayIndexOf(names, smallest)
   const largest =
     largestText === 'auto'
       ? names[mathMin(3, smallIndex)]
       : unitOption(largestText)!
   if (
     smallIndex < 0 ||
-    !names.includes(largest) ||
-    names.indexOf(largest) > smallIndex
+    !arrayIncludes(names, largest) ||
+    arrayIndexOf(names, largest) > smallIndex
   )
     throw new RangeErrorConstructor('Invalid date units')
   const native = nativeTemporal()

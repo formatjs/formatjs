@@ -495,6 +495,31 @@ Current pass:
   kernel/ICU controls, locale profiles and Intl consumer/accepted-failure gates.
   Five package assemblies pass. Exclusions and accepted-failure baselines unchanged.
 
+- Private array membership/index searches now retain original Array intrinsics
+  and Reflect.apply: 76 calls (39 includes, 37 indexOf) across 32 runtime modules.
+  Temporal calendar/field/unit checks and shared formatter/locale providers no
+  longer consult replaced search methods. Five locale-matcher calls use local
+  captures, preserving dependency layering. The helpers retain SameValueZero
+  versus strict equality, first-match indices and original sparse-slot behavior.
+  [Per-callsite inventory](temporal-list-search-inventory.md) links all 76 code lines.
+  Two Temporal, two owned-formatter and two locale-matcher mutation cases plus
+  native Hermes failed before the fix. Owned/native controls also replace
+  Reflect.apply; ordinary fields, calendars, exact rounding and locale extension
+  resolution remain covered. New helper controls distinguish NaN, signed zero,
+  duplicate values, missing values and sparse slots.
+  AST comparison verifies all classified array calls were replaced and all 55
+  remaining direct string searches in the inspected scope are unchanged. String
+  searches, other list methods/iterators and cross-realm behavior remain open.
+  No new formal spec-line traces or complete public methods are claimed here;
+  ISO date regulation and its remaining callers retain their open status.
+  Follow-up: CanonicalizeLocaleList still classifies entries with a typeof
+  whitelist. Undetectable host objects need a separate classification review;
+  retaining the search intrinsic does not sign off that guard.
+  All 109 gates and five package assemblies pass: regression/helper checks and
+  typechecks, all 40 Temporal class Test262 backend gates, native Hermes,
+  Rust/kernel/ICU controls, locale profiles and Intl consumer/accepted-failure
+  gates. Exclusions and accepted-failure baselines are unchanged.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -514,7 +539,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [zoned string option order and range audit](https://github.com/formatjs/formatjs/pull/8077),
 [private defaults and constructor order](https://github.com/formatjs/formatjs/pull/8080),
 [chronological comparison audit](https://github.com/formatjs/formatjs/pull/8081),
-[private clock lists and regulation audit](https://github.com/formatjs/formatjs/pull/8082).
+[private clock lists and regulation audit](https://github.com/formatjs/formatjs/pull/8082),
+[private list search intrinsics](https://github.com/formatjs/formatjs/pull/8083).
 
 New traces: 171 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIndexOf,
   bigIntFrom,
   floor,
   mathMax,
@@ -266,7 +267,7 @@ export function createPlainTime(value: bigint): PlainTimeObject {
   return create(value)
 }
 function validateIncrement(unit: TimeUnit, increment: number): void {
-  const maximum = maxima[names.indexOf(unit)]
+  const maximum = maxima[arrayIndexOf(names, unit)]
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeErrorConstructor('Invalid time rounding increment')
 }
@@ -280,7 +281,7 @@ export function roundTime(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.roundPlainTime(value, unit, increment, mode)
-  const index = names.indexOf(unit)
+  const index = arrayIndexOf(names, unit)
   const parent = index === 0 ? day : factors[index - 1]
   const base = (value / parent) * parent
   return (
@@ -306,8 +307,8 @@ function difference(
   const increment = roundingIncrement(resolved.roundingIncrement)
   const mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = timeUnit(unitOption(resolved.smallestUnit) ?? 'nanosecond')
-  const smallIndex = names.indexOf(smallest),
-    largeIndex = names.indexOf(timeUnit(largest ?? 'hour'))
+  const smallIndex = arrayIndexOf(names, smallest),
+    largeIndex = arrayIndexOf(names, timeUnit(largest ?? 'hour'))
   if (largeIndex > smallIndex)
     throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   validateIncrement(smallest, increment)

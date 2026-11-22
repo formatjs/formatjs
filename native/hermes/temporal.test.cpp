@@ -319,11 +319,14 @@ int main(int argc, char **argv) {
       }
       check(privateDate === '2024-02-29');
       const listEvery = Array.prototype.every, listSome = Array.prototype.some, listApply = Reflect.apply;
+      const listIncludes = Array.prototype.includes, listIndexOf = Array.prototype.indexOf;
       const listPoison = function () { throw new Error('Mutable array predicate reached'); };
       let listResults;
       try {
         Array.prototype.every = listPoison;
         Array.prototype.some = listPoison;
+        Array.prototype.includes = listPoison;
+        Array.prototype.indexOf = listPoison;
         Reflect.apply = listPoison;
         listResults = [
           new Temporal.PlainDateTime(2000, 2, 29, 12, 34, 56).toString(),
@@ -334,6 +337,8 @@ int main(int argc, char **argv) {
       } finally {
         Array.prototype.every = listEvery;
         Array.prototype.some = listSome;
+        Array.prototype.includes = listIncludes;
+        Array.prototype.indexOf = listIndexOf;
         Reflect.apply = listApply;
       }
       check(listResults.join('|') === '2000-02-29T12:34:56|P1DT2H|0|29');

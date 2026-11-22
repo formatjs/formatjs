@@ -1,3 +1,4 @@
+import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
 import {type Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {
@@ -83,8 +84,8 @@ export function BasicFormatMatcher(
         } else {
           values = ['2-digit', 'numeric', 'narrow', 'short', 'long']
         }
-        const optionsPropIndex = values.indexOf(optionsProp as string)
-        const formatPropIndex = values.indexOf(formatProp as string)
+        const optionsPropIndex = arrayIndexOf(values, optionsProp as string)
+        const formatPropIndex = arrayIndexOf(values, formatProp as string)
         const delta = Math.max(
           -2,
           Math.min(formatPropIndex - optionsPropIndex, 2)

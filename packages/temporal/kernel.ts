@@ -2,6 +2,7 @@ import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   arrayEvery,
+  arrayIncludes,
   arraySome,
   bigIntFrom,
   mathAbs,
@@ -297,7 +298,12 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
-    if (!['compatible', 'earlier', 'later', 'reject'].includes(disambiguation))
+    if (
+      !arrayIncludes(
+        ['compatible', 'earlier', 'later', 'reject'],
+        disambiguation
+      )
+    )
       throw new RangeErrorConstructor('Invalid disambiguation')
     const candidates = possibleInstants(fields)
     if (candidates.length === 1) return candidates[0]
