@@ -179,6 +179,39 @@ node "$replay" legacy-installed "$replay_dir/node_modules/@formatjs/intl-datetim
 node "$replay" owned "$datetime_pkg" "$temporal_pkg" "$matcher_pkg" "$memoize_pkg"
 ```
 
+### Function source recognition for direct imports
+
+The captured `Function.prototype.toString` returns exact source for the
+published 7.8.1 constructor and `formatToParts` on Node 26.5.1. Native,
+bound, live proxy and revoked proxy controls return `NativeFunction` text
+without invoking any proxy trap. The explicit `tzData` descriptor control
+invokes the armed descriptor trap. The exact released source can therefore
+precede descriptor inspection on this V8 profile. Source text alone leaves
+the provider's captured state and repackaged builds unverified.
+[ECMA-262 §20.2.3.5 steps 2–4](https://tc39.es/ecma262/#sec-function.prototype.tostring).
+
+The pinned Hermes runner reports `[bytecode]` for both exact source
+expressions and its native formatter. The same captured reflection invokes
+the live callable proxy's `get name` trap and throws `TypeError` for the
+revoked proxy. A check of the returned text would happen after that get.
+These behaviors prevent a shared source-reflection gate on arbitrary host
+constructors. Direct-import legacy cache applicability remains conditional.
+
+```sh
+reflection=knowledge-base/audits/temporal-timezone-boundary-proof/legacy-source-reflection.mjs
+legacy_pkg="$replay_dir/node_modules/@formatjs/intl-datetimeformat"
+bazel build -c opt //native/hermes:hermes_runner
+hermes=$(bazel cquery -c opt 'config(//native/hermes:hermes_runner, target)' --output=files)
+node "$reflection" fixture "$legacy_pkg" > "$replay_dir/reflect.js"
+"$hermes" --native-datetimeformat "$replay_dir/reflect.js" > "$replay_dir/hermes-reflect.json"
+node "$reflection" verify "$legacy_pkg" "$hermes" "$replay_dir/hermes-reflect.json"
+```
+
+The replay pins the published bundle and both extracted source hashes. Its
+result SHA-256 is `7a6596b724af97ecf2f0bd539550af3d711998d57d692e12278b814a114652a8`
+with Node ELF `fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6`
+and Hermes ELF `0589610953acf7d6f5b7cf3ccb1f30bbd117e69931b5eae62698ab57586e0a81`.
+
 ### Released formatter with its shipped data
 
 The custom rows in the replay above exercise capabilities beyond the two
@@ -375,7 +408,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L539).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L348).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L350).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
@@ -403,7 +436,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L374).
+[Host search](../../../packages/temporal/host-timezone.ts#L376).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary
@@ -427,7 +460,7 @@ unchanged interval. Both used the captured Array push, which still calls an
 inherited index setter. Both now append an own data property to the private
 array. The first and repeated lookups return the transition at the exact
 nanosecond in both cases.
-[Host cache writes](../../../packages/temporal/host-timezone.ts#L430).
+[Host cache writes](../../../packages/temporal/host-timezone.ts#L432).
 [Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L403).
 
 ## Reproduce analysis

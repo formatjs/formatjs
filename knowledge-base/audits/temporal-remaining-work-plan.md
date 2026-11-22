@@ -41,6 +41,12 @@ step. Rechecked 2026-11-22: published document has no Temporal API chapters.
 Temporal API numbers in the registers therefore explicitly identify the
 separately published [Temporal comparison](https://tc39.es/proposal-temporal/),
 not an adopted replacement authority. Keep this distinction until resolved.
+The rendered ECMAScript named-zone contracts still apply to the provider
+audit. §21.4.1.20 requires every matching epoch in ascending order.
+§21.4.1.21 requires the offset in nanoseconds at the requested epoch. Both
+describe named-zone behavior separately from their numbered UTC-only default.
+[Candidate contract](https://tc39.es/ecma262/#sec-getnamedtimezoneepochnanoseconds).
+[Offset contract](https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds).
 
 Comparison snapshot retrieved 2026-11-21; SHA-256
 `fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e`.
@@ -50,7 +56,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,012 mapped, 34 candidate/dependency assignments, 23 unmapped (including 4 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,013 mapped, 34 candidate/dependency assignments, 22 unmapped (including 4 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
@@ -118,7 +124,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. The 34 candidate assignments and 23 unmapped identities all have
+separately. The 34 candidate assignments and 22 unmapped identities all have
 reviewed dispositions, including four retired callbacks.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -229,8 +235,8 @@ retains 1,069 identities, including 1,065 live bindings and four retired callbac
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
 996 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:1,012 mapped,34 candidate,
-23 unmapped, including four retired identities. Annotation presence alone
+inline caller/dependency links. Current mapping states:1,013 mapped,34 candidate,
+22 unmapped, including four retired identities. Annotation presence alone
 is 982 direct, 26 enclosing, 57 reviewed structural rows, 4 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
@@ -419,11 +425,17 @@ checked timezone bounds. The explicit Temporal installer now refreshes
 offset and transition samples on each lookup for the captured FormatJS
 DateTimeFormat 7.8.1 formatter. The direct import still reproduces stale
 samples after reload. Provider spacing and TimeClip premises stay open.
+Source reflection cannot classify the direct provider across supported
+engines. The pinned Hermes runner observes a callable Proxy property and
+hides formatter source behind a bytecode placeholder.
 [Debian SpiderMonkey proof](temporal-timezone-boundary-proof/spidermonkey-provider-audit.md).
 [Legacy reload replay](temporal-timezone-boundary-proof/README.md#legacy-reload-after-installing-temporal).
+[Source reflection replay](temporal-timezone-boundary-proof/README.md#function-source-recognition-for-direct-imports).
 Three exact helper comments now cover the Object branch, cached ISO projection
-and canonical packed zone selection. The fixed inventory records 54 reviewed
-helpers without a numbered anchor.
+and canonical packed zone selection. A fourth now maps native zoned offset
+transport to §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii. The wire result preserves
+wall, UTC, minute and exact classifications for the caller. The fixed inventory
+records 53 reviewed helpers without a numbered anchor.
 
 From 16:35 to 17:47 UTC, 44 numbered conditions closed in 71 minutes. The
 final two batches in that interval each landed a validated local correction

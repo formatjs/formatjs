@@ -1027,6 +1027,7 @@ fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+// Proposal comparison §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii: Preserve the UTC designator and offset precision across the wire.
 pub(crate) fn parsed_offset_text(offset: crate::OffsetInput) -> Option<std::string::String> {
     match offset {
         crate::OffsetInput::Wall => None,

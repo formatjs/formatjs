@@ -224,7 +224,7 @@ halfCeil with halfFloor under negation. Other modes are invariant under
 that conjugation, including halfEven's absolute parity check.
 [TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L647).
 [Rust dispatch](../../crates/temporal/zoned_difference.rs#L51).
-[Native dispatch](../../crates/temporal/ffi.rs#L1189).
+[Native dispatch](../../crates/temporal/ffi.rs#L1190).
 [Temporal comparison §6.5.9 step 9](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime).
 
 The zoned rounding entry uses the unrounded fields after the time-unit

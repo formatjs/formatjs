@@ -53,6 +53,40 @@
   ],
   "reviewed_rows": [
     {
+      "inventory_row": 286,
+      "file": "crates/temporal/ffi.rs",
+      "symbol": "module::parsed_offset_text",
+      "original_mapping_status": "unmapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "numbered_caller_or_dependency_scope",
+      "comparison_sections": "6.5.2",
+      "section_ids": "sec-temporal-totemporalzoneddatetime",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalzoneddatetime",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal comparison",
+          "section": "6.5.2",
+          "steps": "5.f\u20135.g.i, 5.k\u20135.l.iii",
+          "section_id": "sec-temporal-totemporalzoneddatetime"
+        }
+      ],
+      "evidence": "The wire encoding carries wall, UTC, minute and exact classifications into the existing TS zoned string interpretation.",
+      "base_locations": ["crates/temporal/ffi.rs:1030-1053"],
+      "base_source_sha256": "21d213ca3c00148e5a16946989bdce1bc7090a62c81240a59031b3b3c7815761",
+      "proposed_source_sha256": "392afb496bc10f2fccae7eb808e6ba75d6930f9c68a4f0d7f6ee37be27d6f6a4",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/ffi.rs:1031-1054"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/ffi.rs",
+        "symbol": "module::parsed_offset_text",
+        "kind": "function"
+      },
+      "bundle": "native_zoned_offset_transport"
+    },
+    {
       "inventory_row": 603,
       "file": "packages/temporal/date-core.ts",
       "symbol": "object",
@@ -33780,22 +33814,22 @@
     "active_rebound_rows": 1065,
     "retired_replaced_callbacks": 4,
     "mapping_status": {
-      "mapped": 1012,
+      "mapped": 1013,
       "candidate": 34,
-      "unmapped": 23
+      "unmapped": 22
     },
     "annotation_coverage": {
-      "direct_numbered": 985,
-      "no_numbered_anchor": 54,
+      "direct_numbered": 986,
+      "no_numbered_anchor": 53,
       "enclosing_numbered": 26,
       "retired_callback": 4
     },
-    "direct_with_step_wording": 866,
+    "direct_with_step_wording": 867,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 985
+      "overlap": 986
     },
     "no_numbered_anchor_by_kind": {
-      "function": 18,
+      "function": 17,
       "named-function": 16,
       "callback": 20
     },
@@ -33831,8 +33865,8 @@
         "rows": 145,
         "files": 2,
         "coverage": {
-          "no_numbered_anchor": 5,
-          "direct_numbered": 140
+          "no_numbered_anchor": 4,
+          "direct_numbered": 141
         }
       },
       "generic_runtime_or_installation_review": {
@@ -33872,7 +33906,7 @@
     "crates/temporal/context.rs": "d424868bd51364e82419be034038517318875cd7ba9a803b6a5aeff28f7911a9",
     "crates/temporal/date.rs": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7",
     "crates/temporal/duration.rs": "f70628d9db8cb92a5e8a9ac8e26dede09d2fd602722ba201867c1a3b59326ef4",
-    "crates/temporal/ffi.rs": "21d213ca3c00148e5a16946989bdce1bc7090a62c81240a59031b3b3c7815761",
+    "crates/temporal/ffi.rs": "392afb496bc10f2fccae7eb808e6ba75d6930f9c68a4f0d7f6ee37be27d6f6a4",
     "crates/temporal/format.rs": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c",
     "crates/temporal/iso.rs": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736",
     "crates/temporal/lib.rs": "61bc6647d4f9aa44aea4a0fcbca949657d18d30bdde2ae8972138bc466603542",
@@ -33903,7 +33937,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
+    "packages/temporal/host-timezone.ts": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
     "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
@@ -34134,6 +34168,7 @@
   ],
   "behavioral_status_changes": 0,
   "reviewed_rows_by_batch": {
+    "native_zoned_offset_transport": [286],
     "projection_and_candidate_dependencies3": [603, 620, 667],
     "earlier_checkpoint": "3e32",
     "calendar_provider18": [
@@ -34498,6 +34533,30 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "ecma262_named_zone_contracts": [
+      {
+        "file": "packages/temporal/host-timezone.ts",
+        "symbol": "offsetNanoseconds",
+        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
+        "anchor_line": 145,
+        "start_line": 144,
+        "end_line": 217,
+        "section": "21.4.1.21",
+        "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds",
+        "scope": "Return nanoseconds east of UTC at the input epoch."
+      },
+      {
+        "file": "packages/temporal/host-timezone.ts",
+        "symbol": "candidatesFor",
+        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
+        "anchor_line": 257,
+        "start_line": 259,
+        "end_line": 290,
+        "section": "21.4.1.20",
+        "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneepochnanoseconds",
+        "scope": "Collect and sort matching epochs. Exhaustiveness of sampled host candidates still depends on provider evidence."
+      }
+    ],
     "legacy_timezone_reload": [
       {
         "file": "packages/temporal/native.ts",
@@ -34526,7 +34585,7 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "beginOperation",
-        "source_sha256": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
+        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
         "start_line": 137,
         "end_line": 142,
         "anchor_line": 136,
@@ -34759,9 +34818,9 @@
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "createHostTimeZoneProvider",
         "start_line": 89,
-        "end_line": 236,
+        "end_line": 237,
         "anchor_line": 88,
-        "source_sha256": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
+        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
         "spec_row_ids": [
           "11.1.9/algorithm-1/step-3",
           "11.1.13/algorithm-1/step-3.a",

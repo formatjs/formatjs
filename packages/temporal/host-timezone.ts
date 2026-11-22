@@ -142,6 +142,7 @@ function createHostTimeZoneProvider(
   }
   let offsetGeneration: object | undefined
   const offsetNanoseconds = (instant: bigint): bigint => {
+    // ECMA-262 §21.4.1.21: Return the named zone's UTC offset in nanoseconds.
     // Proposal comparison §11.1.9 step 3: decode host ISO clock fields into offset nanoseconds.
     check(instant)
     if (queryTemporalTimeZone) {
@@ -253,6 +254,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     dataGeneration,
   } = createHostTimeZoneProvider(timeZone)
 
+  // ECMA-262 §21.4.1.20: Return matching epoch nanoseconds in ascending order.
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
   const candidatesFor = (local: bigint): bigint[] => {
     // Proposal comparison §11.1.13 steps 3.a and 4.a: use exact owned candidates.

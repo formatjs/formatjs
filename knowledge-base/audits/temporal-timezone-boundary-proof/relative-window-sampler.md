@@ -7,7 +7,7 @@ profiles. Other installed Intl providers remain conditional.
 
 ## Transition separation
 
-The [host candidate search](../../../packages/temporal/host-timezone.ts#L257)
+The [host candidate search](../../../packages/temporal/host-timezone.ts#L259)
 samples at the local nanosecond scalar and one day on either side, clipping
 the probes to Instant limits. All certified offsets have magnitude less than
 one day. Every valid candidate lies between the two extremal probes. A
