@@ -65,6 +65,8 @@ export interface PlainMonthDayConstructor {
   readonly prototype: PlainMonthDayObject
   from(item: unknown, options?: unknown): PlainMonthDayObject
 }
+// Temporal comparison §10.3.3 step 2.
+// Check the PlainMonthDay receiver before reading its calendar.
 function read(item: unknown): DateSlot {
   const slot = getMonthDaySlot(item as object)
   if (!slot) throw new TypeErrorConstructor('Invalid PlainMonthDay receiver')
@@ -79,6 +81,8 @@ export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
     slot
   ) as PlainMonthDayObject
 }
+// Temporal comparison §10.5.1 steps 3, 4, 8, 9.
+// Delegate month-day parsing with prepared options.
 export function toMonthDaySlot(item: unknown, options?: unknown): DateSlot {
   const existing = getMonthDaySlot(item as object)
   if (existing) {

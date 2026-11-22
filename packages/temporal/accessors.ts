@@ -6,6 +6,8 @@ export function defineGetters<K extends string>(
   // Keep each getter's captures in its own call scope.
   function define(name: K, index: number): void {
     const accessor = {
+      // Temporal comparison §3.3.6 steps 1, 2, 3.
+      // Forward the receiver and selected field to the accessor reader.
       get [name](): unknown {
         return read(this, name, index)
       },

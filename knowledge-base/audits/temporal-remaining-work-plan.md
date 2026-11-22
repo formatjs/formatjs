@@ -46,12 +46,12 @@ Comparison snapshot retrieved 2026-11-21; SHA-256
 Freeze that text for this pass. A newer edition requires an explicit diff and
 scope update, not an automatic restart.
 
-| Register                                                            | Measured scope                                                                                                       |
-| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                 |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 980 mapped, 46 candidate/dependency assignments, 43 unmapped (including 4 retired callbacks) |
-| [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                  |
-| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                          |
+| Register                                                            | Measured scope                                                                                                         |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,012 mapped, 34 candidate/dependency assignments, 23 unmapped (including 4 retired callbacks) |
+| [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
+| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
 The initial code maps covered 82 distinct selected source files and 24,790 physical lines.
 Public entries and helper callables are different units; do not add their counts
@@ -117,8 +117,8 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 43 unresolved
-helper mappings are a mapping queue, not missing functions.
+separately. The 34 candidate assignments and 23 unmapped identities all have
+reviewed dispositions, including four retired callbacks.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
 Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
@@ -207,13 +207,13 @@ retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains 1,069 identities, including 1,065 live bindings and four retired callbacks.
-[910 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[1,008 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-898 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:980 mapped,46 candidate,
-43 unmapped, including four retired identities. Annotation presence alone
-is 939 direct, 26 enclosing, 100 without numbered anchors, 4 retired; these are
+996 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:1,012 mapped,34 candidate,
+23 unmapped, including four retired identities. Annotation presence alone
+is 982 direct, 26 enclosing, 57 reviewed structural rows, 4 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -286,10 +286,19 @@ fallback callback also leave the queue. Six focused Bazel targets pass.
 [Kernel proof](temporal-ts-kernel19-annotation-source-proof.json).
 [Instant and ZonedDateTime proof](temporal-ts-epoch-routing23-annotation-source-proof.json).
 
-107 TypeScript helpers still need review. 52 lack anchors and 55 have comments
-whose scope needs checking. Estimated time for source review is 20–45 minutes
-at the measured review rate. Behavioral review still has
-57 conditional Temporal steps. The published ECMA-402 range-collapse regression is fixed and validated.
+The final 98 mappings cover Plain types, calendar and timezone providers,
+relative durations, locale support, and Instant parsing. Nine more structural
+helpers receive documented dispositions. Every fixed inventory row now has a
+reviewed numbered scope, a structural disposition, or a retired identity.
+Nine focused Bazel targets pass.
+[Plain types](temporal-ts-plain21-annotation-source-proof.json).
+[Providers and relative duration](temporal-ts-provider-relative19-annotation-source-proof.json).
+[Locale and Instant](temporal-ts-locale27-annotation-source-proof.json).
+[Date and short dates](temporal-ts-date-final31-annotation-source-proof.json).
+
+Source review of the fixed helper inventory is complete. Behavioral review
+still has 57 conditional Temporal steps. The published ECMA-402 range-collapse
+regression is fixed and validated.
 The numeric-year and era path now reuses a validated host range layout.
 Exact layout selection for other corrected fallback parts remains open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).

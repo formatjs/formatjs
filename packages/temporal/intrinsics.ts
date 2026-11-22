@@ -7,6 +7,8 @@ const ProxyConstructor = Proxy
 const setPrototypeOf = Object.setPrototypeOf
 
 // Proxy supplies a dense array for its private argument List.
+// Temporal comparison §4.1.1 steps 2–7.
+// Read a present argument or supply undefined for constructor defaults.
 export function argumentAt(args: readonly unknown[], index: number): unknown {
   return index < args.length ? args[index] : undefined
 }

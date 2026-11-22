@@ -105,6 +105,8 @@ export interface PlainYearMonthConstructor {
   from(item: unknown, options?: unknown): PlainYearMonthObject
   compare(one: unknown, two: unknown): -1 | 0 | 1
 }
+// Temporal comparison §9.3.3 step 2.
+// Check the PlainYearMonth receiver before reading its calendar.
 function read(item: unknown): DateSlot {
   const slot = getYearMonthSlot(item as object)
   if (!slot) throw new TypeErrorConstructor('Invalid PlainYearMonth receiver')
@@ -118,6 +120,8 @@ export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
     slot
   ) as PlainYearMonthObject
 }
+// Temporal comparison §9.5.2 steps 3, 4, 8, 9.
+// Delegate year-month parsing with prepared options.
 export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
   const existing = getYearMonthSlot(item as object)
   if (existing) {
@@ -134,6 +138,8 @@ export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
     throw new TypeErrorConstructor('Expected year-month string or object')
   return parseShortSlot(item, 'year-month', options)
 }
+// Temporal comparison §9.5.8 steps 1, 2, 5, 7, 10, 12, 15.
+// Add the signed year and month fields from day one.
 function add(
   slot: DateSlot,
   duration: unknown,
@@ -178,6 +184,8 @@ function add(
     [isoDateFields]: cal === 'iso8601' ? result.date : undefined,
   })
 }
+// Temporal comparison §9.5.7 steps 1, 3, 5, 8, 11, 17.
+// Compare YearMonth values through first-of-month dates.
 function difference(
   slot: DateSlot,
   other: unknown,

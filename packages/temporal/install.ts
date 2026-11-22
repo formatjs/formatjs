@@ -46,6 +46,8 @@ export function installTemporal(force = false): void {
   if (replace || typeof date.toTemporalInstant !== 'function') {
     const Constructor = target.Temporal.Instant
     Object.defineProperty(date, 'toTemporalInstant', {
+      // Temporal comparison §14.9.1 step 5.
+      // Create the result through the installed Instant provider.
       value:
         target.Temporal === Temporal
           ? toTemporalInstant

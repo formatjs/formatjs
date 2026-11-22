@@ -93,6 +93,8 @@ export function localeDuration(
   ])
 }
 
+// Temporal amendment comparison §15.11.2.1 steps 3–4 and §15.11.3.1 steps 3–4.
+// Route prepared Temporal date-time data to the selected formatter.
 export function localeDateTime(
   value: TemporalDateTimeValue & {timeZone?: string},
   locales: unknown,
@@ -410,6 +412,8 @@ function legacyStyleFields(
   return result
 }
 
+// Temporal amendment comparison §15.4.1 steps 13, 29.b, 38.b.i, 38.c.ii.
+// Convert the captured option value before passing it to the host.
 export function legacyDateTimeOption(key: string, value: unknown): unknown {
   if (value === undefined) return undefined
   if (key === 'hour12') return !!value

@@ -4,42 +4,41 @@
   "active_rebound_rows": 1065,
   "retired_replaced_callbacks": 4,
   "mapping_status": {
-    "mapped": 980,
-    "candidate": 46,
-    "unmapped": 43
+    "mapped": 1012,
+    "candidate": 34,
+    "unmapped": 23
   },
   "annotation_coverage": {
-    "direct_numbered": 939,
-    "no_numbered_anchor": 100,
+    "direct_numbered": 982,
+    "no_numbered_anchor": 57,
     "enclosing_numbered": 26,
     "retired_callback": 4
   },
-  "direct_with_step_wording": 818,
+  "direct_with_step_wording": 862,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 925,
-    "no_overlap_or_no_prior_mapping": 14
+    "overlap": 982
   },
   "no_numbered_anchor_by_kind": {
     "function": 18,
-    "named-function": 58,
-    "callback": 24
+    "named-function": 18,
+    "callback": 21
   },
   "role_review_bundles": {
     "time_zone_and_zoned_algorithm_review": {
       "rows": 180,
       "files": 12,
       "coverage": {
-        "direct_numbered": 164,
-        "no_numbered_anchor": 12,
-        "enclosing_numbered": 4
+        "direct_numbered": 171,
+        "no_numbered_anchor": 7,
+        "enclosing_numbered": 2
       }
     },
     "calendar_provider_and_algorithm_review": {
       "rows": 247,
       "files": 19,
       "coverage": {
-        "direct_numbered": 208,
-        "no_numbered_anchor": 30,
+        "direct_numbered": 210,
+        "no_numbered_anchor": 28,
         "enclosing_numbered": 8,
         "retired_callback": 1
       }
@@ -64,16 +63,18 @@
       "rows": 9,
       "files": 5,
       "coverage": {
-        "no_numbered_anchor": 9
+        "no_numbered_anchor": 6,
+        "direct_numbered": 2,
+        "enclosing_numbered": 1
       }
     },
     "typescript_value_parser_arithmetic_algorithm_review": {
       "rows": 240,
       "files": 24,
       "coverage": {
-        "no_numbered_anchor": 40,
-        "direct_numbered": 183,
-        "enclosing_numbered": 14,
+        "direct_numbered": 215,
+        "no_numbered_anchor": 7,
+        "enclosing_numbered": 15,
         "retired_callback": 3
       }
     }
@@ -111,26 +112,26 @@
     "crates/temporal/zoned.rs": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd",
     "crates/temporal/zoned_difference.rs": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353",
     "crates/temporal/zoned_string.rs": "c883ba2ab73f4fbdbe827862c3e1307a4f246c42a90beccd343d25d402aabb57",
-    "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
+    "packages/temporal/accessors.ts": "4d6cc7204e5451cb19339c90e5aa9f9624817317dd44683140d0272091f19a7a",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
     "packages/temporal/calendar.ts": "a08e6fceab90c6ef59fd202f0f258235062572c42a704a21cab6507a507f24f5",
     "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
-    "packages/temporal/date-bridge.ts": "b39e22687c45e53927dbca8142ee747ca3c9f811db569ed5d132e3f4cbda296c",
-    "packages/temporal/date-core.ts": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c",
+    "packages/temporal/date-bridge.ts": "0c4e032747e8006f9794fef18d45fd5cb0520a40a535aa15bc5ef00f80989afc",
+    "packages/temporal/date-core.ts": "fec6119b19f7976ed21cfc406ba61b2e97e949e421b1a4002fb55c67a1e1e84a",
     "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
     "packages/temporal/duration-core.ts": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8",
     "packages/temporal/duration-format.ts": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636",
     "packages/temporal/duration.ts": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363",
     "packages/temporal/fallback-data.ts": "324e9f24ea27c8be08a5beee2d3b899e2bfd5d28f89af55c0fb8edf058f60aad",
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
-    "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
+    "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "a0ebfd19d4c840681e2a74012ab59c56b4bfd62aebd2a9bc9ef48b6cf4eea826",
-    "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
+    "packages/temporal/host-timezone.ts": "e3f1c173d8e4dba191707f45442338e81a4e3c1e69cf982d5bd9fbc82e863164",
+    "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
-    "packages/temporal/intrinsics.ts": "e85f0adcc6b7d2b56173ff70b45d7a12ac53d0361e7dd92c00d60e5c87d5502e",
+    "packages/temporal/intrinsics.ts": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
     "packages/temporal/kernel.ts": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d",
     "packages/temporal/legacy-calendar-date.ts": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
@@ -138,21 +139,21 @@
     "packages/temporal/legacy-intl.ts": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
     "packages/temporal/legacy-lunisolar-date.ts": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496",
     "packages/temporal/legacy-zoned-date.ts": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493",
-    "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
+    "packages/temporal/locale.ts": "d8fb1861ecc5b6818e539320ba7a7221e50236dc317289af1e6c2a6248395f5e",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
     "packages/temporal/native.ts": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
-    "packages/temporal/plain-date-time.ts": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57",
-    "packages/temporal/plain-date.ts": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3",
-    "packages/temporal/plain-month-day.ts": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b",
-    "packages/temporal/plain-slots.ts": "ac765b5e666e0ba3fc92bab3d8ab8a90d5daf74bc492b413019a73ff45c9be7a",
+    "packages/temporal/plain-date-time.ts": "c9143c5d6005425be85ab1ab0729b815c8388c0e5c398582cb9ffc41e5cb3b78",
+    "packages/temporal/plain-date.ts": "840c7cb5265e135a38c79205c2d00554ce384d8dececbcc449fdb7a21a6281f6",
+    "packages/temporal/plain-month-day.ts": "d2a347b5bbb9efa6eaf43184ae2c655d4e17d1713c108377e310d9e79d157296",
+    "packages/temporal/plain-slots.ts": "912e2aca439c3f932c510381d5f143a4f365130a1a4d4f73f60cb783fae8f1a7",
     "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
-    "packages/temporal/plain-year-month.ts": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7",
-    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/plain-year-month.ts": "ca95004881d884a061ec664e7987cc04bb0f3361b251097e9d835b7353afcae4",
+    "packages/temporal/relative-duration.ts": "3bc422d6b679d2b23e2932d914b2e48f6df99c3765e279e439de723883c4d019",
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
-    "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
+    "packages/temporal/short-date-core.ts": "873911e54f428df9e1218185e7b67f650581a316dcbce7b15763f9f3c8c78715",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
     "packages/temporal/zoned-date-time.ts": "8112a7e72fc5b9e47b2b19092bdd906d984bd4b52dcca99fb6b5c581fff9011b",
-    "packages/temporal/zones.ts": "8a8fa402f2a3f05e66fe2a3734a958d49a3e00734ef519d535e85982c13c0c6f",
+    "packages/temporal/zones.ts": "67b41bb489b4003a7880198c398ff97f17dd378f52a6464efdf490c2d9c84d40",
     "packages/temporal/epoch-slots.ts": "9580c5573978e5efbf0e131179be8982ec3e84810fcbdc780220be4af7b84a73"
   },
   "files_queue": [
@@ -535,10 +536,12 @@
       "rows": 3,
       "work_bundle": "generic_runtime_or_installation_review",
       "mapping_status": {
-        "candidate": 3
+        "candidate": 2,
+        "mapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 3
+        "no_numbered_anchor": 2,
+        "direct_numbered": 1
       }
     },
     {
@@ -586,8 +589,7 @@
         "mapped": 2
       },
       "coverage": {
-        "no_numbered_anchor": 1,
-        "direct_numbered": 1
+        "direct_numbered": 2
       }
     },
     {
@@ -599,8 +601,8 @@
         "unmapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 9,
-        "direct_numbered": 29
+        "no_numbered_anchor": 3,
+        "direct_numbered": 35
       }
     },
     {
@@ -679,10 +681,10 @@
       "rows": 2,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 2
+        "mapped": 2
       },
       "coverage": {
-        "no_numbered_anchor": 2
+        "direct_numbered": 2
       }
     },
     {
@@ -701,12 +703,11 @@
       "rows": 13,
       "work_bundle": "time_zone_and_zoned_algorithm_review",
       "mapping_status": {
-        "mapped": 9,
-        "candidate": 4
+        "mapped": 13
       },
       "coverage": {
-        "direct_numbered": 10,
-        "enclosing_numbered": 3
+        "direct_numbered": 12,
+        "enclosing_numbered": 1
       }
     },
     {
@@ -714,10 +715,12 @@
       "rows": 2,
       "work_bundle": "generic_runtime_or_installation_review",
       "mapping_status": {
-        "unmapped": 2
+        "unmapped": 1,
+        "mapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 2
+        "no_numbered_anchor": 1,
+        "enclosing_numbered": 1
       }
     },
     {
@@ -725,8 +728,7 @@
       "rows": 2,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "mapped": 1,
-        "unmapped": 1
+        "mapped": 2
       },
       "coverage": {
         "direct_numbered": 1,
@@ -738,8 +740,7 @@
       "rows": 34,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "mapped": 32,
-        "candidate": 2
+        "mapped": 34
       },
       "coverage": {
         "direct_numbered": 34
@@ -761,10 +762,12 @@
       "rows": 2,
       "work_bundle": "generic_runtime_or_installation_review",
       "mapping_status": {
-        "candidate": 2
+        "mapped": 1,
+        "candidate": 1
       },
       "coverage": {
-        "no_numbered_anchor": 2
+        "direct_numbered": 1,
+        "no_numbered_anchor": 1
       }
     },
     {
@@ -862,11 +865,12 @@
       "rows": 16,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 16
+        "unmapped": 4,
+        "mapped": 12
       },
       "coverage": {
-        "no_numbered_anchor": 3,
-        "direct_numbered": 3,
+        "no_numbered_anchor": 1,
+        "direct_numbered": 5,
         "enclosing_numbered": 7,
         "retired_callback": 3
       }
@@ -898,12 +902,10 @@
       "rows": 7,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 2,
-        "mapped": 5
+        "mapped": 7
       },
       "coverage": {
-        "no_numbered_anchor": 5,
-        "direct_numbered": 2
+        "direct_numbered": 7
       }
     },
     {
@@ -911,12 +913,10 @@
       "rows": 6,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 1,
-        "mapped": 5
+        "mapped": 6
       },
       "coverage": {
-        "no_numbered_anchor": 5,
-        "direct_numbered": 1
+        "direct_numbered": 6
       }
     },
     {
@@ -924,12 +924,10 @@
       "rows": 3,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 1,
-        "mapped": 2
+        "mapped": 3
       },
       "coverage": {
-        "no_numbered_anchor": 2,
-        "direct_numbered": 1
+        "direct_numbered": 3
       }
     },
     {
@@ -937,10 +935,11 @@
       "rows": 2,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "candidate": 2
+        "mapped": 2
       },
       "coverage": {
-        "no_numbered_anchor": 2
+        "enclosing_numbered": 1,
+        "direct_numbered": 1
       }
     },
     {
@@ -959,12 +958,10 @@
       "rows": 5,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 1,
-        "mapped": 4
+        "mapped": 5
       },
       "coverage": {
-        "no_numbered_anchor": 4,
-        "direct_numbered": 1
+        "direct_numbered": 5
       }
     },
     {
@@ -972,12 +969,10 @@
       "rows": 6,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 1,
-        "mapped": 5
+        "mapped": 6
       },
       "coverage": {
-        "no_numbered_anchor": 4,
-        "direct_numbered": 2
+        "direct_numbered": 6
       }
     },
     {
@@ -1000,8 +995,8 @@
         "mapped": 7
       },
       "coverage": {
-        "no_numbered_anchor": 3,
-        "direct_numbered": 5
+        "no_numbered_anchor": 1,
+        "direct_numbered": 7
       }
     },
     {
@@ -1034,8 +1029,7 @@
         "mapped": 22
       },
       "coverage": {
-        "no_numbered_anchor": 5,
-        "direct_numbered": 17
+        "direct_numbered": 22
       }
     },
     {
@@ -1052,13 +1046,12 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 910,
-  "reviewed_mapping_rows_this_batch": 78,
+  "reviewed_mapping_rows_cumulative": 1008,
+  "reviewed_mapping_rows_this_batch": 98,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0,
   "no_numbered_anchor_by_disposition": {
-    "examined_no_exact_step_anchor_established": 48,
-    "annotation_owner_and_step_scope_review_pending": 52
+    "examined_no_exact_step_anchor_established": 57
   }
 }

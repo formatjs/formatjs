@@ -8,13 +8,14 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with four retired callbacks explicit.
-Comment-only batches reconcile 910 mappings across parsers, arithmetic,
+Comment-only batches reconcile 1,008 mappings across parsers, arithmetic,
 providers, transport, and legacy DateTimeFormat. Twelve transport mappings
 identify narrow caller dependencies. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
 binds comments to source hashes and verifies that executable code is unchanged.
-The inventory has 939 direct anchors, 26 enclosing anchors, 100 helpers without
-numbered anchors, and four retired callbacks. Forty-eight of those 100 have a
-reviewed structural disposition, including all 18 remaining Rust helpers.
+All fixed helper identities have a recorded review. The inventory has 982
+direct anchors, 26 enclosing anchors, 57 documented structural dispositions,
+and four retired callbacks. Behavior verification uses the separate numbered
+requirement checklists.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup

@@ -38,6 +38,8 @@ export function isoReferenceDay(
   month: number,
   day: number
 ): number {
+  // Proposal comparison §13.1 steps 3–4: Convert a validated ISO reference date
+  // to its epoch day.
   return calendarToEpochDayRaw('iso8601', {year, month, day}, 'reject')
 }
 // Temporal comparison §9.5.3 steps1–4: guard inclusive ISO year-month limits
@@ -300,6 +302,8 @@ export function mergeShortFields(
   partial: Record<string, unknown>,
   kind: 'year-month' | 'month-day' = 'year-month'
 ): Record<string, unknown> {
+  // Proposal comparison §9.3.13 steps 5 and 7 and §10.3.6 steps 5 and 7:
+  // Project short-date fields before merging prepared updates.
   const fields: Record<string, unknown> = {...dateFields(slot, true)}
   if (kind === 'month-day') fields.year = undefined
   else fields.day = undefined

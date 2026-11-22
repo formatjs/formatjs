@@ -253,6 +253,8 @@ export function resolveCalendarYear(
   return year
 }
 export function epochDayOf(value: bigint): number {
+  // ECMA-262 §21.4.1.3 step 1: Floor the epoch-day quotient, including negative
+  // nanoseconds.
   let days = value / nsPerDay
   if (value < 0n && value % nsPerDay !== 0n) days--
   return numberFrom(days)
@@ -307,6 +309,8 @@ export function nativeDateSnapshot(
   return value
 }
 export function dateFields(slot: DateSlot, extended = false): CalendarDate {
+  // Proposal comparison §12.3.26 steps 1–2: Project the stored ISO day through
+  // the selected calendar provider.
   const value = nativeDateSnapshot(slot, extended)
   if (import.meta.formatjsTemporalNativeData === true || value) {
     if (!value!.date)
@@ -473,6 +477,8 @@ function readISODateFields(
   partial: boolean,
   withDay: boolean
 ): Record<string, unknown> {
+  // Proposal comparison §12.3.3 steps 6–11: Prepare ISO date fields in day,
+  // month, monthCode, year order.
   const result = createObject(fieldRecordPrototype) as Record<string, unknown>
   let any = false
   if (withDay) {
@@ -847,11 +853,15 @@ function unroundedDifference(
   calendar: string,
   largest: string
 ): DurationFields {
+  // Proposal comparison §5.5.12 steps 8–11: combine clock and whole-day
+  // nanoseconds before balancing a time-largest result.
   if (HasOwnProperty(timeUnitNanoseconds, largest))
     return balanceDurationTime(
       end - start,
       arrayIndexOf(clockNames, largest as TimeUnit) + 4
     )
+  // Proposal comparison §5.5.12 steps 3–9: Borrow one day when the clock
+  // remainder opposes the date direction.
   const sign = end < start ? -1 : end > start ? 1 : 0
   let lastDay = epochDayOf(end),
     time = timeOf(end) - timeOf(start)
@@ -859,6 +869,8 @@ function unroundedDifference(
     lastDay -= sign
     time += bigIntFrom(sign) * nsPerDay
   }
+  // Proposal comparison §5.5.12 step 9: use the adjusted date for the calendar
+  // difference.
   const result = dateUntil(
     {epochDay: epochDayOf(start), calendar},
     lastDay,
@@ -889,6 +901,8 @@ export function roundedDateTimeDifference(
   mode: RoundingMode,
   since: boolean
 ): DurationFields {
+  // Proposal comparison §5.5.13 step 7: Round against the supplied UTC scalars
+  // and plain date anchor.
   return roundRelativeDifference(
     start,
     end,
@@ -947,6 +961,8 @@ export function roundRelativeDifference(
       smallest as (typeof differenceUnits)[number]
     ),
     sinceSign = since ? -1n : 1n
+  // Proposal comparison §13.14 steps 2–4: bound the exclusive fixed-unit
+  // increment and check divisibility.
   if (smallIndex >= 4) {
     const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
     if (increment >= maximum || maximum % increment)
@@ -954,6 +970,8 @@ export function roundRelativeDifference(
   }
   const exactZonedNanosecond =
     anchor.zoned && smallIndex === 9 && increment === 1
+  // Proposal comparison §5.5.13 step 1: take the supported equal-endpoint
+  // shortcuts.
   if (
     start === end &&
     (!anchor.zoned || largeIndex >= 4 || exactZonedNanosecond)
@@ -982,8 +1000,12 @@ export function roundRelativeDifference(
     }
     return result
   }
+  // Proposal comparison §7.5.38 steps 1–7: Select calendar, zoned-clock, or
+  // fixed-day rounding.
   const irregular = smallIndex < 3 || (anchor.zoned && smallIndex === 3)
   if (irregular) {
+    // Proposal comparison §7.5.33 steps 1–4: retain the larger fields and form
+    // adjacent unit counts.
     const prefix = zeroDuration()
     for (let index = largeIndex; index < smallIndex; index++) {
       const key = `${differenceUnits[index]}s` as keyof DurationFields
@@ -999,6 +1021,8 @@ export function roundRelativeDifference(
     let a = anchor.endpoint(prefix)
     prefix[key] = truncated + sign * increment
     let b = anchor.endpoint(prefix)
+    // Proposal comparison §7.5.34 steps 5.a and 6.a: retry an overshooting
+    // window. Use the existing shifted day/week policy.
     if ((end - a) * physicalSign < 0n || (b - end) * physicalSign < 0n) {
       truncated += sign * increment
       a = b
@@ -1021,6 +1045,8 @@ export function roundRelativeDifference(
         mode === 'halfTrunc' ||
         mode === 'halfEven'
       ) {
+        // Proposal comparison §7.5.34 steps 14–16 and 19–21: compare exact
+        // distances without dividing.
         const distance = (end - a) * physicalSign,
           span = (b - a) * physicalSign
         expand =
@@ -1033,11 +1059,15 @@ export function roundRelativeDifference(
                 mathAbs(truncated / increment) % 2 === 1)))
       }
     }
+    // Proposal comparison §7.5.34 steps 22–24: keep the selected endpoint and
+    // duration.
     prefix[key] = (expand ? truncated + sign * increment : truncated) || 0
     result = prefix
     rounded = expand ? b : a
     expanded ||= expand
   } else if (anchor.zoned && largeIndex < 4) {
+    // Proposal comparison §7.5.35 steps 1–7 and 9–16: measure the zoned day
+    // span and carry the rounded clock.
     const time = durationNanoseconds(result, false),
       quantum =
         bigIntFrom(increment) * timeUnitNanoseconds[smallest as TimeUnit]
@@ -1064,6 +1094,8 @@ export function roundRelativeDifference(
       days: date.days,
     }
   } else {
+    // Proposal comparison §7.5.36 steps 1–15: round the fixed-length time and
+    // split off whole days.
     const time = durationNanoseconds(result),
       quantum =
         bigIntFrom(increment) *
@@ -1087,6 +1119,8 @@ export function roundRelativeDifference(
     }
   }
   // Keep the chosen rounding quantum; only bubble when a larger boundary was crossed.
+  // Proposal comparison §7.5.38 step 9 and §7.5.37 steps 4–6: check larger
+  // boundaries after expansion.
   if (expanded && smallest !== 'week') {
     for (let index = mathMin(smallIndex, 3) - 1; index >= largeIndex; index--) {
       if (index === 2 && largest !== 'week') continue

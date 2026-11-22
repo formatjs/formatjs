@@ -50,6 +50,7 @@ const mapSet = Function.prototype.call.bind(MapConstructor.prototype.set) as <
 ) => void
 let identifiers: Map<string, string> | undefined
 const cache = new MapConstructor<string, ReturnType<typeof createTimeZone>>()
+// Proposal comparison §11.1.9 step 3: Select the named TypeScript offset provider.
 function typescriptTimeZone(name: string): TimeZoneKernel {
   if (import.meta.formatjsTemporalHostTimeZones === true) {
     if (name === 'UTC' || name === 'Etc/UTC' || name === 'Etc/GMT')
@@ -141,6 +142,7 @@ function withNativeZone(
   }
 }
 const namedKernels = new MapConstructor<string, TimeZoneKernel>()
+// Proposal comparison §11.1.8 steps 7–9: Resolve a named identifier before selecting its kernel.
 export function timeZone(name: string): TimeZoneKernel {
   const existing = mapGet(namedKernels, name)
   if (existing) return existing
@@ -157,6 +159,7 @@ export function timeZone(name: string): TimeZoneKernel {
 }
 export * from '#packages/temporal/kernel.js'
 
+// Proposal comparison §11.1.8 steps 1–3 and §11.1.9 steps 2–3: Select an offset lookup for the input zone.
 export function resolveTimeZone(
   value: unknown
 ): Pick<TimeZoneKernel, 'offsetNanoseconds'> {
@@ -174,6 +177,7 @@ export function resolveTimeZone(
 }
 
 let spellings: Map<string, string> | undefined
+// Proposal comparison §11.1.8 steps 1–5 and 7–9: Return the normalized offset or available named spelling.
 export function timeZoneIdentifier(value: unknown): string {
   const slot = getZonedSlot(value as object)
   if (slot) return slot.timeZone
@@ -213,6 +217,7 @@ export function timeZoneIdentifier(value: unknown): string {
   return id
 }
 const fixedKernels = new MapConstructor<string, TimeZoneKernel>()
+// Proposal comparison §11.1.9 steps 2–3: Select the fixed, UTC or named provider kernel.
 export function zonedKernel(identifier: string): TimeZoneKernel {
   const utc = identifier === 'UTC'
   if (!utc && !isTimeZoneOffsetString(identifier)) return timeZone(identifier)

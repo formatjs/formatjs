@@ -117,6 +117,8 @@ export function allocateDateTime(
   setLocalDateTime(value, slot)
   return value
 }
+// Temporal comparison §4.3.3 step 3.
+// Decode native time storage for the clock projection.
 export const getTimeSlot: (value: object) => bigint | undefined =
   import.meta.formatjsTemporalNativeData === true
     ? value => {
@@ -155,6 +157,8 @@ export const getZonedSlot: (value: object) => ZonedSlot | undefined =
 export const setZonedSlot: (value: object, slot: ZonedSlot) => unknown =
   zonedDates.set.bind(zonedDates)
 
+// Temporal comparison §5.5.6 step 2.b.i.
+// Project a stored ZonedDateTime epoch into its local clock.
 export function getZonedDateTimeSlot(value: object): DateTimeSlot | undefined {
   const slot = getZonedSlot(value)
   return (

@@ -16,6 +16,7 @@ const apply = Reflect.apply
 const mapGet = Map.prototype.get
 const mapSet = Map.prototype.set
 const cache = new Map<string, Range[]>()
+// Proposal comparison §12.3.26 step 2: Decode year boundaries for compact calendar projection.
 function ranges(calendar: 'chinese' | 'dangi'): Range[] {
   let result = apply(mapGet, cache, [calendar]) as Range[] | undefined
   if (!result) {
@@ -45,6 +46,7 @@ function ranges(calendar: 'chinese' | 'dangi'): Range[] {
   return result
 }
 
+// Proposal comparison §12.3.26 step 2: Recover a compact calendar year and its month starts.
 export function compactCalendarYear(
   calendar: 'chinese' | 'dangi',
   year: number

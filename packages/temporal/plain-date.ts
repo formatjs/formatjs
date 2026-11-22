@@ -136,6 +136,8 @@ export interface PlainDateConstructor {
   from(item: unknown, options?: unknown): PlainDateObject
   compare(one: unknown, two: unknown): -1 | 0 | 1
 }
+// Temporal comparison §3.3.7 step 2.
+// Check the PlainDate receiver before calendar projection.
 function read(item: unknown): DateSlot {
   const slot = getDateSlot(item as object)
   if (!slot) throw new TypeErrorConstructor('Invalid PlainDate receiver')
@@ -158,6 +160,8 @@ export function createPlainDate(
     typeof value === 'number' ? {epochDay, calendar} : value
   ) as PlainDateObject
 }
+// Temporal comparison §3.5.4 steps 3, 4, 7, 9, 10.
+// Delegate date parsing and build the prepared date record.
 export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   const date = getDateSlot(item as object),
     datetime =
@@ -199,6 +203,8 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
     calendar: fields.calendar,
   }
 }
+// Temporal comparison §3.5.15 steps 2, 3, 4, 6, 7, 8.
+// Route the signed date-duration addition.
 function add(
   value: DateSlot,
   duration: unknown,
@@ -230,6 +236,8 @@ function add(
     value.calendar
   )
 }
+// Temporal comparison §3.5.14 steps 1, 2, 3, 4, 9.
+// Route the prepared PlainDate difference.
 function difference(
   slot: DateSlot,
   other: unknown,
@@ -288,6 +296,8 @@ function difference(
   )
 }
 
+// Temporal comparison §3.5.11 steps 1, 2, 3, 4, 5.
+// Format the private ISO date with its calendar annotation.
 function format(slot: DateSlot, calendarName: unknown = undefined): string {
   const show = calendarNameOption(calendarName),
     native = nativeTemporal()

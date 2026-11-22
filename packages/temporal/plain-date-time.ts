@@ -145,6 +145,8 @@ export interface PlainDateTimeConstructor {
   from(item: unknown, options?: unknown): PlainDateTimeObject
   compare(one: unknown, two: unknown): -1 | 0 | 1
 }
+// Temporal comparison §5.3.10 step 2.
+// Check the PlainDateTime receiver before projection.
 function read(item: unknown): DateTimeSlot {
   const slot = getDateTimeSlot(item as object)
   if (!slot) throw new TypeErrorConstructor('Invalid PlainDateTime receiver')
@@ -179,6 +181,8 @@ const dateSlots = new WeakMap<
   DateTimeSlot,
   {epochDay: number; calendar: string; properties?: DateTimeSlot['properties']}
 >()
+// Temporal comparison §5.3.6 step 3.
+// Reuse the private ISO date needed for calendar year projection.
 function dateSlot(slot: DateTimeSlot) {
   if (
     import.meta.formatjsTemporalNativeData === true &&
@@ -196,6 +200,8 @@ function dateSlot(slot: DateTimeSlot) {
   }
   return value
 }
+// Temporal comparison §5.5.6 steps 3, 4, 9, 10, 12.
+// Delegate PlainDateTime parsing and assemble its private record.
 export function toPlainDateTimeSlot(
   item: unknown,
   options?: unknown
@@ -237,6 +243,8 @@ export function toPlainDateTimeSlot(
     calendar: fields.calendar,
   }
 }
+// Temporal comparison §5.5.16 steps 1, 2, 4, 6, 8, 9, 10.
+// Normalize duration and forward calendar and clock addition.
 function add(
   slot: DateTimeSlot,
   duration: unknown,
@@ -272,6 +280,8 @@ function add(
     slot.calendar
   )
 }
+// Temporal comparison §5.5.15 steps 1, 2, 3, 4, 6, 7.
+// Resolve inputs and forward the prepared difference.
 function difference(
   slot: DateTimeSlot,
   other: unknown,
@@ -336,6 +346,8 @@ function difference(
     )
   )
 }
+// Temporal comparison §5.5.9 steps 1, 2, 3, 4, 5, 6, 7.
+// Format prepared local fields without a UTC suffix.
 function format(
   slot: DateTimeSlot,
   precision: Precision = 'auto',

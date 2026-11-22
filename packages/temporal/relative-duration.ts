@@ -50,6 +50,7 @@ import {
   type DurationFields,
 } from '#packages/temporal/duration-core.js'
 
+// Proposal comparison §13.19 steps 6.d–6.e.i: Route relative strings by a candidate zone annotation.
 function hasTimeZoneAnnotation(value: string): boolean {
   let opening = -1
   for (let index = 0; index < value.length; index++) {
@@ -64,6 +65,7 @@ function hasTimeZoneAnnotation(value: string): boolean {
 }
 
 export type RelativeTo = {date: DateSlot} | {zoned: ZonedSlot}
+// Proposal comparison §13.19 steps 2 and 5.a.i–5.c.ii: Prepare anchors from initialized Temporal values.
 export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (value === undefined) return undefined
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L607-L613
@@ -117,11 +119,13 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
     date: {calendar, epochDay: dayFromFields(calendar, prepared, 'constrain')},
   }
 }
+// Proposal comparison §7.3.21 steps 12.d and 13.f and §5.5.14 step 5: Read the exact relative origin.
 export function relativeOrigin(relative: RelativeTo): bigint {
   return 'zoned' in relative
     ? relative.zoned.epochNanoseconds
     : bigIntFrom(relative.date.epochDay) * nsPerDay
 }
+// Proposal comparison §7.3.21 steps 12.e, 13.e and 13.g: Form a constrained duration endpoint.
 export function relativeEndpoint(
   relative: RelativeTo,
   fields: DurationFields

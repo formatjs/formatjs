@@ -150,6 +150,7 @@ export function createHostTimeZoneOffset(
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
   const offsetNanoseconds = createHostTimeZoneOffset(timeZone)
 
+  // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
   const candidatesFor = (local: bigint): bigint[] => {
     const before = offsetNanoseconds(clamp(local - day)),
       middle = offsetNanoseconds(clamp(local)),
@@ -178,6 +179,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     // Proposal comparison §11.1.13 step 3.a: pass the ISO local time as epoch nanoseconds.
     candidatesFor(isoToEpochNanoseconds(fields))
+  // Proposal comparison §11.1.12 steps 2, 3.a, 3.b, 3.d and 5: Select observed candidates by disambiguation.
   const resolve = (
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
