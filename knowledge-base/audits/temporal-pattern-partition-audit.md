@@ -99,15 +99,28 @@ Confirmed against the Bazel Temporal package on Node. Install
 `polyfill-force.js`, create `Intl.DateTimeFormat('en', {calendar: 'buddhist',
 year: 'numeric', era: 'short', timeZone: 'UTC'})`, then call
 `formatRangeToParts(-79302585600000, -79271049600000)`. The two local calendar
-years are 0 and 1. Both display as 1 BE. The patched formatter produces a single
-shared year part. Constructing matching Buddhist `Temporal.PlainDate` endpoints
-reproduces the same failure. The numeric host range has separate start and end
+years are 0 and 1. Both display as 1 BE. Before the fix, the patched formatter produced a single shared year part. Constructing matching Buddhist `Temporal.PlainDate` endpoints
+reproduced the same failure. The numeric host range has separate start and end
 year parts.
 
 The compatibility fallback in
 [`joinCalendarRangeParts`](../../packages/temporal/legacy-lunisolar-date.ts)
-compares display text. ECMA-402 §11.5.8 steps 15.d.v–vi compare local fields
+compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local fields
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
-nonpositive year for display. The fallback needs the original year comparison.
+nonpositive year for display.
+
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L425)
+retains the raw year when the endpoint renders a year part. The
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L549) prevents
+collapse for distinct raw years. The existing fallback still supplies the range
+layout. Exact selection of locale-specific compact patterns remains open.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
+
+The Bazel `//packages/temporal:legacy_display_year_test` regression failed before
+the fix with one shared year. Afterward, all eight new controls passed across
+Number and PlainDate endpoints, two year widths, and two numbering systems.
+Equal-endpoint controls still pass. All seven focused Bazel targets passed.
+
+- Before-fix log SHA-256 `7410a4c9ed0be713a89ff46d4d76ce5a0012a12e7cc97b04137445544074739a`
+- After-fix log SHA-256 `aee459ae57dfdbea159d3a9b2c0d96112b45cde2d527687871325c570d3b4a49`

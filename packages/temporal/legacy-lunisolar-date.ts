@@ -350,11 +350,13 @@ export function joinCalendarRangeParts(
   formatter: Intl.DateTimeFormat,
   start: Intl.DateTimeFormatPart[],
   end: Intl.DateTimeFormatPart[],
-  parts: RangeParts
+  parts: RangeParts,
+  allowCollapse = true
 ): Intl.DateTimeRangeFormatPart[] {
   if (
+    allowCollapse &&
     start.map(part => part.value).join('') ===
-    end.map(part => part.value).join('')
+      end.map(part => part.value).join('')
   )
     // ECMA-402 §11.5.8 step 16.c: tag the collapsed fallback parts as shared.
     return start.map(part => ({...part, source: 'shared'}))

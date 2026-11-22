@@ -107,6 +107,30 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
         checked++
       }
     }
+    // Calendar years 0 and 1 both render as 1 after year normalization.
+    for (const [start, end] of [
+      [samples[1].date, samples[2].date],
+      [
+        samples[1].instant.epochMilliseconds,
+        samples[2].instant.epochMilliseconds,
+      ],
+    ]) {
+      const parts = formatter.formatRangeToParts(start, end)
+      assert.deepEqual(
+        parts
+          .filter(part => part.type === 'year')
+          .map(({source, value}) => ({source, value})),
+        [
+          {source: 'startRange', value: number.format(1)},
+          {source: 'endRange', value: number.format(1)},
+        ]
+      )
+      assert.equal(
+        formatter.formatRange(start, end),
+        parts.map(part => part.value).join('')
+      )
+      checked++
+    }
     const range = formatter.formatRangeToParts(samples[0].date, samples[1].date)
     for (const [source, expected] of [
       ['startRange', 2],
@@ -125,7 +149,7 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
     checked++
   }
 }
-assert.equal(checked, 124)
+assert.equal(checked, 132)
 console.log(
-  '124 native bridge display-year controls, including cold/warm and range paths'
+  '132 native bridge display-year controls, including cold/warm and range paths'
 )

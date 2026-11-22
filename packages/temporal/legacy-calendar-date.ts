@@ -29,6 +29,11 @@ import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-
 type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
+
+interface CalendarRangeFields {
+  year: number | undefined
+}
+
 const Constructor = globalThis.Intl?.DateTimeFormat
 const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
@@ -259,7 +264,8 @@ function eraLabel(
 export function legacyCalendarParts(
   value: LegacyDateTimeProjection,
   parts: Parts,
-  resolved: Resolved
+  resolved: Resolved,
+  rangeFields?: CalendarRangeFields
 ): Intl.DateTimeFormatPart[] | undefined {
   // ECMA-402 §11.5.4 step 12: select the calendar for date-field restoration.
   const options = resolved.call(value.formatter),
@@ -345,7 +351,15 @@ export function legacyCalendarParts(
         surrogate,
         epoch
       )
-    return restoreCalendarParts(value, raw, epoch!, labels, options, parts)
+    return restoreCalendarParts(
+      value,
+      raw,
+      epoch!,
+      labels,
+      options,
+      parts,
+      rangeFields
+    )
   }
   // Whole Gregorian cycles preserve weekday and clock in the plain UTC projection.
   const surrogate =
@@ -370,7 +384,8 @@ export function legacyCalendarParts(
     floor(value.milliseconds / dayMilliseconds),
     value.formatter,
     options,
-    parts
+    parts,
+    rangeFields
   )
 }
 
@@ -380,7 +395,8 @@ function restoreCalendarParts(
   epoch: number,
   labels: Intl.DateTimeFormat,
   options: Intl.ResolvedDateTimeFormatOptions,
-  parts: Parts
+  parts: Parts,
+  rangeFields?: CalendarRangeFields
 ): Intl.DateTimeFormatPart[] {
   const calendar = options.calendar as CalendarId,
     // ECMA-402 §11.5.11 step 5.a: convert the original local day to calendar
@@ -406,6 +422,8 @@ function restoreCalendarParts(
       Array.from(formatTwo(value)).slice(-2).join(''),
     changes = new Map<string, string>()
   if (arraySome(raw, part => part.type === 'year')) {
+    // ECMA-402 §11.5.8 step 15.d.v: keep the year before formatting it.
+    if (rangeFields) rangeFields.year = rawYear
     const sampleText = firstPart(controls, 'year'),
       two =
         options.year === '2-digit' ||
@@ -485,15 +503,17 @@ export function legacyCalendarRangeParts(
   )
     return undefined
   // ECMA-402 §11.5.8 steps 7–8 and 19.e: obtain corrected endpoint partitions.
+  const firstFields: CalendarRangeFields = {year: undefined},
+    lastFields: CalendarRangeFields = {year: undefined}
   const start =
-      legacyCalendarParts(first, parts, resolved) ??
+      legacyCalendarParts(first, parts, resolved, firstFields) ??
       correctLunisolarParts(
         first,
         parts.call(first.formatter, first.milliseconds),
         resolved
       ),
     end =
-      legacyCalendarParts(last, parts, resolved) ??
+      legacyCalendarParts(last, parts, resolved, lastFields) ??
       correctLunisolarParts(
         last,
         parts.call(last.formatter, last.milliseconds),
@@ -526,5 +546,16 @@ export function legacyCalendarRangeParts(
         throw error
     }
   }
-  return joinCalendarRangeParts(first.formatter, start, end, rangeParts)
+  // ECMA-402 §11.5.8 step 15.d.vi: distinct raw years prevent collapse.
+  const allowCollapse =
+    firstFields.year === undefined ||
+    lastFields.year === undefined ||
+    firstFields.year === lastFields.year
+  return joinCalendarRangeParts(
+    first.formatter,
+    start,
+    end,
+    rangeParts,
+    allowCollapse
+  )
 }

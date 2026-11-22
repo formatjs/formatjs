@@ -262,8 +262,10 @@ ECMA-402 clauses. Six focused Bazel targets pass.
 
 Estimated time to triage 255 remaining helper anchors is 45 minutes–2 hours at
 the measured review rate. Behavioral review still has 57 conditional Temporal
-steps and one confirmed published ECMA-402 range-collapse gap.
-[Range witness](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
+steps. The published ECMA-402 range-collapse regression is fixed and validated.
+Exact locale range-pattern selection for corrected fallback parts still needs
+separate verification.
+[Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),
