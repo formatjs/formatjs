@@ -432,6 +432,31 @@ export function checkZonedArithmeticOracle(
     overlapEnd.epochNanoseconds,
     'New York zero-date addition keeps the chosen fold instant'
   )
+  // https://github.com/tc39/proposal-temporal/issues/3336
+  const dayFoldOrigin = Temporal.ZonedDateTime.from(
+    '2024-11-02T01:30-04:00[America/New_York]'
+  )
+  const dayFoldDuration = Temporal.Duration.from('PT24H30M')
+  const dayFoldTarget = dayFoldOrigin.add(dayFoldDuration)
+  equal(
+    dayFoldDuration.total({relativeTo: dayFoldOrigin, unit: 'day'}),
+    1.02,
+    'Day total advances to the 25-hour window past the fold'
+  )
+  equal(
+    dayFoldDuration
+      .round({relativeTo: dayFoldOrigin, smallestUnit: 'day'})
+      .toString(),
+    'P1D',
+    'Duration day rounding advances past the fold'
+  )
+  equal(
+    dayFoldOrigin
+      .until(dayFoldTarget, {largestUnit: 'day', smallestUnit: 'day'})
+      .toString(),
+    'P1D',
+    'Zoned day difference advances past the fold'
+  )
   const minimum = new Temporal.ZonedDateTime(
     -8_640_000_000_000_000_000_000n,
     '-01:00'

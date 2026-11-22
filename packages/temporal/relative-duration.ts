@@ -211,8 +211,8 @@ export function relativeTotal(
   const candidate = zeroDuration()
   candidate[(unit + 's') as keyof DurationFields] = count
   let a = relativeEndpoint(relative, candidate)
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908
-  // L1908: zero uses the positive window.
+  // §7.5.39 step 1.a uses the positive window for zero.
+  // https://tc39.es/proposal-temporal/#sec-temporal-totalrelativeduration
   const sign = end < start ? -1 : 1
   // Proposal comparison §7.5.33 steps 8–12: Validate both initial endpoints before retrying.
   candidate[(unit + 's') as keyof DurationFields] = count + sign
@@ -224,6 +224,9 @@ export function relativeTotal(
     a = relativeEndpoint(relative, candidate)
   }
   if (a === end) return count || 0
+  // §7.5.34 step 5.a can leave the target outside the day window after a fold.
+  // Advance the bounds before computing the total.
+  // https://github.com/tc39/proposal-temporal/issues/3336
   while ((end - b) * bigIntFrom(sign) >= 0n) {
     count += sign
     a = b

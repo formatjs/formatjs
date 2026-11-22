@@ -1150,7 +1150,10 @@ export function roundRelativeDifference(
         a = anchor.endpoint(prefix)
       }
     }
-    // A wide fold can put more than one bound before the target.
+    // §7.5.34 step 5.a retries with the same day bounds across this fold.
+    // Advance the bounds until they bracket the target.
+    // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
+    // https://github.com/tc39/proposal-temporal/issues/3336
     while (a !== end && (b - end) * physicalSign < 0n) {
       truncated += stride
       a = b
