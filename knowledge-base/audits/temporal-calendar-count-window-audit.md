@@ -12,7 +12,7 @@ integer epoch-day residual. Weeks divide that residual by seven. Rust's
 [NumericCalendar::until_raw](../../crates/intl_datetimeformat_calendars/date_math.rs#L60)
 uses the same structure in i64.
 
-The shipped arithmetic calendars differ from arbitrary provider results:
+Actual supported calendar engines have these finite coordinate domains:
 
 - [Raw TS day conversion:372](../../packages/temporal/calendar.ts#L372) and
   [Rust:326](../../crates/intl_datetimeformat_calendars/core.rs#L326) bound input
@@ -47,9 +47,11 @@ Consequently these shipped count magnitudes satisfy the sufficient division/
 truncation precision contract in the [date-largest scan](temporal-date-largest-precision-audit.md). This is a numeric
 bound, not proof that month codes, leap months or era transitions are correct.
 
-Custom Rust CalendarProvider implementations can return arbitrary i64
-DateDuration fields. Host-calendar modes have separate host-data contracts.
-Neither inherits a complete count/round-trip proof from this built-in mapping.
+[CalendarProvider is sealed](../../crates/temporal/calendar_provider.rs#L11):
+arithmetic calendars, validated table calendars and CalendarRef are the supported
+Rust routes. Arbitrary external implementations cannot supply counts. Host-calendar
+modes keep separate host-data contracts. Concrete provider bounds establish
+numeric magnitude; complete calendar/round-trip semantics require their own proofs.
 
 ## Apia: adjacent day counts need not have distinct endpoints
 

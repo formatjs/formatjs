@@ -2528,6 +2528,7 @@ rolldown_bundle(
 rolldown_bundle(
     name = "native-iso-host",
     srcs = [
+        "tests/arithmetic-calendar-oracle.ts",
         "tests/native-iso-host.ts",
         "tests/plain-time-oracle.ts",
         "tests/public-calendar-oracle.ts",

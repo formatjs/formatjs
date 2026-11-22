@@ -50,8 +50,7 @@ below one day.
 [Rust:277](../../crates/temporal/calendar_difference.rs#L277) performs the same
 calculation in i128 and reconstructs the remainder at hour. Provided the calendar
 day field has the required bounded integer value, its intermediate f64
-conversion is exact as well. This does not validate that a custom provider
-returned the right day count.
+conversion is exact as well. This does not establish that provider arithmetic selected the correct day count.
 
 ## Irregular date-unit counts
 
@@ -85,8 +84,9 @@ and window monotonicity remain separate algorithm obligations.
 - Rust [date_until](../../crates/temporal/calendar_difference.rs#L77) promotes
   provider i64 counts to i128 exactly. The provider's
   [DateDuration fields](../../crates/intl_datetimeformat_calendars/core.rs#L50)
-  permit much larger values than ordinary calendar differences. No full
-  precision guarantee is claimed for arbitrary custom-provider results.
+  permit much larger values than ordinary calendar differences. The actual
+  CalendarProvider trait is sealed; use concrete built-in count bounds rather
+  than inferring precision or semantics from these field types alone.
 - Repeated-date decomposition, overshoot correction, next-window construction
   and calendar add/until round trips remain open. Exact intermediate arithmetic
   alone does not prove those algorithms select the right date or instant.

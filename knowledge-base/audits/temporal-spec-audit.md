@@ -22,6 +22,25 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Calendar date-difference operation map, 2026-11-22
+
+[Complete numbered comparison map](temporal-calendar-date-until-contract-audit.md)
+separates the published zero-month nontermination issue from working finite
+source decomposition. [ISO finite-prefix proof](temporal-iso-date-until-prefix-proof-audit.md)
+covers raw±110million-day endpoints: maximal unregulated year/month prefixes,
+constrained anchor placement, common sign, exact add-back and bounded arithmetic.
+Ten literal controls distinguish that contract from a days-only result that also
+adds back. Shared TS/Hermes/native and typed Rust routes run the controls.
+
+[Non-ISO policy map](temporal-noniso-date-until-policy-audit.md) records leap-code
+remapping, serial ordering, era coordinates and conditional sign proof. Public
+Chinese/Dangi/Hebrew controls assert forward/reverse policy and constrained-year
+fallback. Rust providers are sealed; stale arbitrary-custom-provider claims in
+two earlier audits are corrected. All 12 focused targets pass (three executed,
+nine cached); [manifest](temporal-date-until-validation-targets.txt). Conversion/data,
+full caller/native/realm contracts and authoritative Temporal API text stay open.
+No runtime arithmetic or historical completion-count changes.
+
 ## ISO date-difference comparison defect, 2026-11-22
 
 Separate [zero-month shortcut issue](temporal-isodatesurpasses-zero-month-spec-issue.md)

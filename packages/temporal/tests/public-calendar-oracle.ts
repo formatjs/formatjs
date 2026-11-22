@@ -115,6 +115,57 @@ function checkLargeCalendarFields(
   }
 }
 
+export function checkCalendarDifferencePolicy(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  for (const [
+    calendar,
+    firstYear,
+    firstCode,
+    lastYear,
+    lastCode,
+    forward,
+    backward,
+  ] of [
+    ['chinese', 2023, 'M02L', 2024, 'M02', 'P12M', '-P12M'],
+    ['dangi', 2023, 'M02L', 2024, 'M02', 'P12M', '-P12M'],
+    ['hebrew', 5784, 'M05L', 5785, 'M06', 'P1Y', '-P1Y1M'],
+  ] as const) {
+    const first = Temporal.PlainDate.from({
+        calendar,
+        year: firstYear,
+        monthCode: firstCode,
+        day: 29,
+      }),
+      last = Temporal.PlainDate.from({
+        calendar,
+        year: lastYear,
+        monthCode: lastCode,
+        day: 29,
+      }),
+      positive = first.until(last, {largestUnit: 'year'}),
+      negative = last.until(first, {largestUnit: 'year'})
+    equal(positive.toString(), forward, `${calendar} retained year prefix`)
+    equal(negative.toString(), backward, `${calendar} reverse year prefix`)
+    equal(
+      first.add(positive).equals(last),
+      true,
+      `${calendar} forward add-back`
+    )
+    equal(
+      last.add(negative).equals(first),
+      true,
+      `${calendar} reverse add-back`
+    )
+    equal(
+      first.add({years: 1}).equals(last),
+      true,
+      `${calendar} constrained year fallback`
+    )
+  }
+}
+
 export function checkPublicCalendarOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
