@@ -9,6 +9,44 @@ export function checkPlainRelativeOracle(
     context: string
   ) => void
 ): {rounds: number; totals: number; dates: number; comparisons: number} {
+  const plainDate = Temporal.PlainDate.from('2020-01-01')
+  const otherDate = Temporal.PlainDate.from('2020-01-03')
+  const plainDateTime = Temporal.PlainDateTime.from('2020-01-01T00:00')
+  const otherDateTime = Temporal.PlainDateTime.from('2020-01-03T00:00')
+  const yearMonth = Temporal.PlainYearMonth.from('2020-01')
+  const otherYearMonth = Temporal.PlainYearMonth.from('2021-01')
+  const cases = [
+    [() => plainDate.since(otherDate), '-P2D'],
+    [() => plainDateTime.since(otherDateTime), '-P2D'],
+    [() => yearMonth.since(otherYearMonth, {smallestUnit: 'year'}), '-P1Y'],
+  ] as const
+  for (const [run, expected] of cases) {
+    const originalKeys = Object.keys
+    let hooks = 0
+    let result: InstanceType<typeof Temporal.Duration> | undefined
+    let error: unknown
+    try {
+      Object.keys = () => {
+        hooks++
+        throw new Error('Observable private difference keys')
+      }
+      try {
+        result = run()
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.keys = originalKeys
+    }
+    equal(hooks, 0, `Plain since avoids private enumeration ${expected}`)
+    if (error) throw error
+    equal(result!.toString(), expected, 'Plain since retains signed result')
+    equal(
+      Number(Object.is(result!.nanoseconds, -0)),
+      0,
+      'Since zero stays positive'
+    )
+  }
   const dateTime = (epoch: string) =>
     Temporal.Instant.fromEpochNanoseconds(BigInt(epoch))
       .toZonedDateTimeISO('UTC')

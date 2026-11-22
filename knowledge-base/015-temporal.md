@@ -1,5 +1,10 @@
 # Temporal implementation
 
+Calendar-relative `since` negates fixed private Duration fields without calling
+mutable `Object.keys`; zoned intermediate additions use fixed fields too.
+See [caller audit](audits/temporal-since-field-negation-audit.md) and
+[conditional bubbling map](audits/temporal-bubble-relative-duration-audit.md).
+
 Duration year/month-to-week rounding validates both calendar window endpoints,
 even for exact results. Zoned zero uses a positive week window; plain zero keeps
 its equality shortcut. See [public caller map](audits/temporal-duration-round-contract-audit.md)

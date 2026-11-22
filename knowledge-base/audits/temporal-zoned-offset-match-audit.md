@@ -13,7 +13,7 @@ the requested live document has no Temporal API chapters in the fetched snapshot
 
 ## Comparison and rounding
 
-[TS offset candidates:317](../../packages/temporal/zoned-date-time.ts#L317) walks candidate
+[TS offset candidates:318](../../packages/temporal/zoned-date-time.ts#L318) walks candidate
 instants and computes `actual = localTime - candidate`. Lines 323–324 accept
 exact equality, or equality after minute rounding when `matchMinute` is true.
 This assumes the zone supplies valid, complete candidates for the same local
@@ -62,7 +62,7 @@ the same candidate satisfies both comparisons; a later exact match does not
 override an earlier rounded match. This review does not establish that every
 zone visitor supplies every possible candidate.
 
-[TS:411](../../packages/temporal/zoned-date-time.ts#L411) enables minute matching
+[TS:412](../../packages/temporal/zoned-date-time.ts#L412) enables minute matching
 for string offsets with hours and optional minutes, without seconds.
 [Rust parse:293](../../crates/temporal/parse.rs#L293) distinguishes UTC, wall,
 minute and exact input; consumed lengths 3/5/6 select minute precision. Those
@@ -93,7 +93,7 @@ Independent controls now cover:
 - [Rust day bounds:693](../../crates/temporal/zoned_string.test.rs#L693):
   exact offsets one nanosecond inside ±day remain valid. Minute rounding can
   reach ±day; invalid hints at those exclusive bounds reject.
-- [Shared public controls](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L80):
+- [Shared public controls](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L110):
   Monrovia's 1970 offset was -00:44:30, verified against
   [IANA 2026f africa](https://data.iana.org/time-zones/tzdb-2026f/africa) and the
   repository's pinned data. Local midnight with minute hint -00:45 accepts

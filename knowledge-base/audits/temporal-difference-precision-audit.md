@@ -58,7 +58,7 @@ also remain before the shared core.
 The skipped time-unit unrounded paths perform epoch subtraction and private
 balancing; they do not invoke calendar arithmetic, local-time resolution or a
 zone offset provider. See [TS plain](../../packages/temporal/date-core.ts#L802),
-[TS zoned](../../packages/temporal/zoned-date-time.ts#L519) and
+[TS zoned](../../packages/temporal/zoned-date-time.ts#L520) and
 [Rust](../../crates/temporal/calendar_difference.rs#L113). Avoiding those private
 intermediates skips no required input getter or provider callback. Complete
 intrinsic-mutation and realm contracts remain separate work.
