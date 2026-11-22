@@ -166,51 +166,80 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
   }
 }
 for (const locale of ['en', 'en-u-nu-mathsans']) {
-  const options = {
-    calendar: 'buddhist',
-    year: 'numeric',
-    month: 'numeric',
-    era: 'short',
-    timeZone: 'UTC',
-  }
-  const first = samples[1]
-  const last = samples[2]
-  const firstMilliseconds = first.instant.epochMilliseconds
-  const lastMilliseconds = last.instant.epochMilliseconds
-  const year = new Intl.NumberFormat(locale, {useGrouping: false}).format(1)
-  const expected = new NativeDateTimeFormat(locale, options)
-    .formatRangeToParts(firstMilliseconds, lastMilliseconds)
-    .map(part => (part.type === 'year' ? {...part, value: year} : part))
-  const formatter = new Intl.DateTimeFormat(locale, options)
-  for (const [start, end] of [
-    [firstMilliseconds, lastMilliseconds],
-    [first.date, last.date],
-  ]) {
-    assert.deepEqual(formatter.formatRangeToParts(start, end), expected)
-    assert.equal(
-      formatter.formatRange(start, end),
-      expected.map(part => part.value).join('')
-    )
-    checked++
+  for (const day of [undefined, 'numeric']) {
+    const options = {
+      calendar: 'buddhist',
+      year: 'numeric',
+      month: 'numeric',
+      day,
+      era: 'short',
+      timeZone: 'UTC',
+    }
+    const first = samples[1]
+    const last = samples[2]
+    const firstMilliseconds = first.instant.epochMilliseconds
+    const lastMilliseconds = day
+      ? Date.parse('-000542-01-02T00:00Z')
+      : last.instant.epochMilliseconds
+    const lastDate = day
+      ? new Temporal.PlainDate(-542, 1, 2, 'buddhist')
+      : last.date
+    const number = new Intl.NumberFormat(locale, {useGrouping: false})
+    const expected = new NativeDateTimeFormat(locale, options)
+      .formatRangeToParts(firstMilliseconds, lastMilliseconds)
+      .map(part => {
+        if (part.type === 'year') return {...part, value: number.format(1)}
+        if (part.type === 'day')
+          return {
+            ...part,
+            value: number.format(part.source === 'endRange' ? 2 : 1),
+          }
+        return part
+      })
+    const formatter = new Intl.DateTimeFormat(locale, options)
+    for (const [start, end] of [
+      [firstMilliseconds, lastMilliseconds],
+      [first.date, lastDate],
+    ]) {
+      assert.deepEqual(formatter.formatRangeToParts(start, end), expected)
+      assert.equal(
+        formatter.formatRange(start, end),
+        expected.map(part => part.value).join('')
+      )
+      checked++
+    }
   }
 }
 
-// A host interval can contain stale fields even when Year selects the pattern.
-const withDay = new Intl.DateTimeFormat('en', {
+// Native day 11 cannot distinguish numeric and two-digit interval widths.
+const withDayOptions = {
   calendar: 'buddhist',
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
   era: 'short',
   timeZone: 'UTC',
-})
+}
+const withDay = new Intl.DateTimeFormat('en', withDayOptions)
+const fifth = [
+  new Temporal.PlainDate(-543, 1, 5, 'buddhist'),
+  new Temporal.PlainDate(-542, 1, 5, 'buddhist'),
+]
+const rawDays = new NativeDateTimeFormat('en', withDayOptions)
+  .formatRangeToParts(
+    Date.parse('-000543-01-05T00:00Z'),
+    Date.parse('-000542-01-05T00:00Z')
+  )
+  .filter(part => part.type === 'day')
+assert.ok(rawDays.length > 0)
+assert.ok(rawDays.every(part => part.value === '11'))
 const days = withDay
-  .formatRangeToParts(samples[1].date, samples[2].date)
+  .formatRangeToParts(...fifth)
   .filter(part => part.type === 'day')
 assert.ok(days.length > 0)
-assert.ok(days.every(part => part.value === '1'))
+assert.ok(days.every(part => part.value === '5'))
 checked++
-assert.equal(checked, 137)
+assert.equal(checked, 141)
 console.log(
-  '137 native bridge display-year controls, including cold/warm and range paths'
+  '141 native bridge display-year controls, including cold/warm and range paths'
 )

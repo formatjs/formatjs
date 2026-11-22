@@ -35,6 +35,13 @@ interface NumericRangeYear {
   raw: string
   corrected: string
   month: string | undefined
+  day:
+    | {
+        raw: string | undefined
+        corrected: string
+        isNumeric: (text: string) => boolean
+      }
+    | undefined
 }
 
 interface CalendarRangeFields {
@@ -47,6 +54,7 @@ const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
   NumberConstructor &&
   Object.getOwnPropertyDescriptor(NumberConstructor.prototype, 'format')?.get
+const singleDigitDays = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const dayMilliseconds = 86400000
 const limit = 8640000000000000
 const cycle = 146097 * dayMilliseconds
@@ -455,6 +463,7 @@ function restoreCalendarParts(
           raw: hostYear,
           corrected: display,
           month: options.month === 'numeric' ? format(date.month) : undefined,
+          day: undefined,
         }
     }
     if (
@@ -476,7 +485,20 @@ function restoreCalendarParts(
   if (arraySome(raw, part => part.type === 'day')) {
     // ECMA-402 §11.5.4 steps 15.f.viii–ix: preserve the host day width.
     const two = firstPart(controls, 'day') === formatTwo(3)
-    changes.set('day', two ? formatTwo(date.day) : format(date.day))
+    const corrected = two ? formatTwo(date.day) : format(date.day)
+    changes.set('day', corrected)
+    const year = rangeFields?.numericYear
+    if (year && options.day === 'numeric' && !two) {
+      year.day = {
+        raw: undefined,
+        corrected,
+        isNumeric: text =>
+          arraySome(
+            singleDigitDays,
+            day => format(day) === text && formatTwo(day) !== text
+          ),
+      }
+    }
   }
   // ECMA-402 §11.5.4 steps 15.f.ii and 15.f.x: restore the era label at that
   // width.
@@ -527,6 +549,16 @@ function matchesNumericRangeYear(
       if (type !== after.type) return false
       if (type === 'year')
         return value === year.raw && after.value === year.corrected
+      if (type === 'day') {
+        const day = year.day
+        // Check the original endpoint's text. Plain formatting may have used
+        // a different year as its surrogate.
+        if (!day || after.value !== day.corrected) return false
+        if (value !== day.corrected && !day.isNumeric(value)) return false
+        if (day.raw !== undefined && value !== day.raw) return false
+        day.raw = value
+        return true
+      }
       if (value !== after.value) return false
       if (type === 'month') return value === year.month
       return type === 'era' || type === 'literal'
@@ -541,6 +573,7 @@ function restoreNumericRangeYears(
 ): Intl.DateTimeRangeFormatPart[] | undefined {
   let start: Intl.DateTimeRangeFormatPart | undefined,
     end: Intl.DateTimeRangeFormatPart | undefined
+  let hasDays = false
   for (let index = 0; index < parts.length; index++) {
     const part = parts[index]
     if (part.type === 'era' || part.type === 'literal') continue
@@ -549,6 +582,19 @@ function restoreNumericRangeYears(
         return undefined
       if (part.source !== 'startRange' && part.value !== last.month)
         return undefined
+      continue
+    }
+    if (part.type === 'day') {
+      const day = part.source === 'endRange' ? last.day : first.day
+      if (
+        !day ||
+        part.value !== day.raw ||
+        (part.source === 'shared' &&
+          (part.value !== last.day?.raw ||
+            day.corrected !== last.day?.corrected))
+      )
+        return undefined
+      hasDays = true
       continue
     }
     if (part.type !== 'year') return undefined
@@ -562,6 +608,15 @@ function restoreNumericRangeYears(
   // ECMA-402 §11.5.8 steps 19.b–f: keep the host pattern and source tags.
   start.value = first.corrected
   end.value = last.corrected
+  if (hasDays) {
+    for (let index = 0; index < parts.length; index++) {
+      const part = parts[index]
+      if (part.type === 'day')
+        part.value = (
+          part.source === 'endRange' ? last.day : first.day
+        )!.corrected
+    }
+  }
   return parts
 }
 
@@ -625,9 +680,8 @@ export function legacyCalendarRangeParts(
       }
       const firstYear = firstFields.numericYear,
         lastYear = lastFields.numericYear
-      // ECMA-402 §11.5.8 step 15.d: reuse native selection when only numeric
-      // year display changed. A known common era and distinct full years
-      // identify the same first difference before any smaller field matters.
+      // ECMA-402 §11.5.8 step 15.d: common era and distinct full years
+      // select the same pattern before any month or day difference matters.
       if (
         firstYear &&
         lastYear &&

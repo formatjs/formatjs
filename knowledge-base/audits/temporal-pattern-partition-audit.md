@@ -109,9 +109,9 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L433)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L441)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L662) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L716) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -164,3 +164,19 @@ targets passed.
 
 - Numeric-month before-fix log SHA-256 `4a17efe6e24309168402c1ca59232a7dd0fce7e6d9ee96536cf657a77b4ce29a`
 - Numeric-month after-fix log SHA-256 `281532f210f656c27c3eb227b9d080b67264e5ae80949e18fa1182638de2c297`
+
+### Numeric days in the selected range
+
+For Buddhist year zero through year one, the host selected a Year range with a
+shared era and supplied days from its calendar approximation. Compare range
+day parts with the original native endpoints before substituting the corrected
+numeric days. A shared part requires both raw and corrected days to agree.
+Ambiguous widths fall back to complete endpoints.
+
+Number and PlainDate controls cover Latin and mathematical digits. The full
+range-part regression failed before the fix. All seven focused Bazel targets
+passed after it.
+[ECMA-402 §11.5.8 steps 15.d and 19](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+- Numeric-day before-fix log SHA-256 `61cd4dc6e86ebae853eb18b57aabea5ccc258c24f47dbb1632c41e92e5f84bb5`
+- Numeric-day after-fix log SHA-256 `5bf4ad81c58769725c7568fcb1ab4c1162db9a0bd7a563699ad6db601936fd21`

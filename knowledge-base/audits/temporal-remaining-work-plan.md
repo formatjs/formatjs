@@ -26,12 +26,11 @@ satisfy this requirement.
 
 ## Current scope
 
-Realm-specific work is deferred at the user's direction. Preserve all realm
-findings and keep the 16 shared constructor-realm steps in the fixed ledger.
+Realm-specific work is out of scope. The fixed ledger records the 16 shared
+constructor-realm steps for reference.
 60 of 76 conditional numbered steps remain in scope. The ordinary
 `index.js` and `standalone.js` failures reproduced inside one realm are now
-verified with shared private epoch and calendar slots. Full audit completion uses the active scope and records the realm
-deferral explicitly.
+verified with shared private epoch and calendar slots. Audit completion is measured against the non-realm scope.
 
 ## Source and finite scope
 
@@ -309,7 +308,7 @@ and gap disambiguation now pass public packed-data regressions. Other Intl
 profiles retain candidate and gap-boundary premises. The published ECMA-402 range-collapse
 regression is fixed and validated.
 The numeric-year and era path reuses a validated host layout, including
-explicit numeric months whose values match the owned endpoints.
+matching numeric months and numeric days with verified endpoint parts.
 Exact layout selection for other corrected fallback parts remains open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
