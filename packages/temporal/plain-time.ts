@@ -183,15 +183,24 @@ function timeFields(
   initial = [0, 0, 0, 0, 0, 0]
 ): number[] {
   const result = clockValues(index => initial[index])
+  // ToTemporalTimeRecord: complete callers seed zero; with() fuses the later merge.
+  // The partial-record unset/undefined conflict remains in the separate spec-issue log.
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L733-L758
+  // L733: no defined field has been converted yet.
   let any = false
   for (let position = 0; position < 6; position++) {
     const index = fieldOrder[position]
+    // L734/L738/L742/L746/L750/L754: one Get, in hour/microsecond/millisecond/minute/nanosecond/second order.
     const raw = item[names[index]]
+    // L735/L739/L743/L747/L751/L755: undefined alone means absent; preserve the seed.
     if (raw !== undefined) {
+      // L736/L740/L744/L748/L752/L756: convert before reading the next field; propagate throws.
       result[index] = integer(raw)
+      // L737/L741/L745/L749/L753/L757: even a converted zero counts as a supplied field.
       any = true
     }
   }
+  // L758: finish all six Gets before rejecting a record with no supplied fields.
   if (!any) throw new TypeErrorConstructor('At least one time field required')
   return result
 }

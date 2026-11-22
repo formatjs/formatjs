@@ -129,6 +129,15 @@ imported FormatJS implementation. Ponyfill imports preserve native globals.
 Trusted initialization and completed registered instances bound this proof;
 constructor production, unregistered brands, realms and complete callers remain open.
 
+ToTemporalTimeRecord's six ordered Gets, defined guards, integer conversions and
+supplied-field checks now have individual source mappings. Complete and partial
+public paths have Node/native Hermes controls for inherited values, missing
+fields, number hints and exact abrupt completion order. The
+[spec issue log](audits/temporal-spec-issues.md) records an unresolved `~unset~`
+versus `undefined` mismatch between partial record production and with(). The
+existing fused merge preserves receiver fields; its conflicting spec clauses
+remain open. The field-reading audit adds 26 independent Temporal source lines.
+
 ## Native performance direction
 
 Goal: native Rust faster than TS; pure TS faster than both references across
