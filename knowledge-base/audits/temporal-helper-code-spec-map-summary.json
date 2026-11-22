@@ -3,37 +3,37 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 25290,
+  "whole_selected_source_lines": 25411,
   "whole_selected_source_lines_by_language": {
-    "rust": 10796,
-    "typescript": 14494
+    "rust": 10841,
+    "typescript": 14570
   },
-  "nonoverlapping_callable_lines": 16902,
+  "nonoverlapping_callable_lines": 16972,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8137,
-    "typescript": 8765
+    "typescript": 8835
   },
   "disjoint_callable_line_assignment": {
     "candidate": 2336,
-    "mapped": 12651,
-    "unmapped": 1915
+    "mapped": 13468,
+    "unmapped": 1168
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
     "candidate": 161,
-    "mapped": 719,
-    "unmapped": 189
+    "mapped": 799,
+    "unmapped": 109
   },
   "by_language": {
     "typescript": {
       "candidate": 115,
-      "mapped": 286,
-      "unmapped": 119
+      "mapped": 321,
+      "unmapped": 84
     },
     "rust": {
       "candidate": 46,
-      "mapped": 433,
-      "unmapped": 70
+      "mapped": 478,
+      "unmapped": 25
     }
   },
   "direct_target_assignments": [
@@ -480,11 +480,11 @@
     },
     {
       "file": "crates/temporal/short_dates.rs",
-      "source_lines": 621,
+      "source_lines": 666,
       "callable_rows": 56,
       "nonoverlapping_callable_lines": 536,
-      "sha256": "47b747390e377fbdf3a62837f80f3dae43a99772628b64e260ccde62aff16920",
-      "unresolved_callable_rows": 46
+      "sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
+      "unresolved_callable_rows": 1
     },
     {
       "file": "crates/temporal/time.rs",
@@ -784,11 +784,11 @@
     },
     {
       "file": "packages/temporal/native.ts",
-      "source_lines": 1372,
+      "source_lines": 1448,
       "callable_rows": 91,
-      "nonoverlapping_callable_lines": 966,
-      "sha256": "171340609ef6ae9ce3915e753d229977d64adfc027a6f6ebac91de7cf3724c94",
-      "unresolved_callable_rows": 35
+      "nonoverlapping_callable_lines": 1036,
+      "sha256": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/plain-date-time.ts",

@@ -104,6 +104,8 @@ const apply = Reflect.apply
 const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const ToNumber = Number
+// Temporal comparison §4.5.18 step 4.
+// Capture the numeric clock operand serializer.
 const numberText = /* @__PURE__ */ (() => Number.prototype.toString)()
 const BadRange = RangeError
 const BadType = TypeError
@@ -404,9 +406,13 @@ export interface NativeTemporal {
   ): DurationFields
 }
 let native: NativeTemporal | undefined
+// Temporal comparison §8.5.8 step 5.
+// Select the supplied backend for Instant string formatting.
 export function nativeTemporal(): NativeTemporal | undefined {
   return native
 }
+// Temporal comparison §8.5.10 step 6.
+// Configure the native adapter, including prepared Instant addition.
 /** @internal Experimental Hermes backend installation. */
 export function configureNativeTemporal(
   query: NativeQuery,
@@ -419,7 +425,11 @@ export function configureNativeTemporal(
   const addDateTime = invoke?.addPlainDateTime
   const roundDateTime = invoke?.roundPlainDateTime
   const formatDateTime = invoke?.formatPlainDateTime
+  // Temporal comparison §8.5.5 step 1.
+  // Encode a prepared BigInt operand for native addition.
   const text = (value: bigint) => apply(bigintText, value, [])
+  // Temporal comparison §4.5.18 step 4.
+  // Encode prepared bounded numeric or BigInt clock operands.
   const clockText = (value: bigint | number) =>
     typeof value === 'number' ? apply(numberText, value, []) : text(value)
   // Temporal comparison §3.5.4 step 4.
@@ -1149,7 +1159,11 @@ export function configureNativeTemporal(
         mode,
         relative: relativeFields(relative),
       }),
+    // Temporal comparison §11.1.8 steps 5, 7, 8, 9, §11.1.15 step 2.e.
+    // Forward zone identity for canonical and primary identifiers.
     timeZoneIdentity: identifier => call('timeZoneIdentity', {identifier}),
+    // Temporal comparison §11.1.9 steps 2, 3.
+    // Forward the zone and exact epoch for offset lookup.
     timeZoneOffset: (identifier, value) =>
       ToBigInt(call('timeZoneOffset', {identifier, nanoseconds: text(value)})),
     timeZonePossibleInstants: (identifier, fields) => {
@@ -1164,6 +1178,8 @@ export function configureNativeTemporal(
         result[index] = ToBigInt(values[index])
       return result
     },
+    // Temporal comparison §11.1.11 steps 1, 2.
+    // Forward ISO fields and candidate disambiguation.
     timeZoneResolve: (identifier, fields, disambiguation) =>
       ToBigInt(
         call('timeZoneResolve', {
@@ -1174,6 +1190,8 @@ export function configureNativeTemporal(
       ),
     timeZoneTransition:
       invoke?.timeZoneTransition ??
+      // Temporal comparison §6.3.46 steps 9.a, 10.b, 11.
+      // Forward the transition direction and restore its exact epoch.
       ((identifier, value, direction) => {
         const result = call('timeZoneTransition', {
           identifier,
@@ -1182,20 +1200,32 @@ export function configureNativeTemporal(
         })
         return result === null ? null : ToBigInt(result)
       }),
+    // Temporal comparison §3.3.11 step 3, §3.3.16 step 3.
+    // Forward calendar year-start lookup for day and year lengths.
     calendarStartOfYear: (calendar, year) =>
       call('calendarStartOfYear', {calendar, year}),
+    // Temporal comparison §3.3.17 step 3.
+    // Forward the calendar and year for month-count projection.
     calendarMonthsInYear: (calendar, year) =>
       call('calendarMonthsInYear', {calendar, year}),
+    // Temporal comparison §3.3.15 step 3.
+    // Forward calendar month length for the projected month.
     calendarDaysInMonth: (calendar, year, month) =>
       call('calendarDaysInMonth', {calendar, year, month}),
+    // Temporal comparison §12.3.22 steps 1.b, 2.
+    // Forward prepared date fields and overflow for ISO conversion.
     calendarToEpochDay: (calendar, fields, overflow) =>
       call('calendarToEpochDay', {
         calendar,
         fields: dateFields(fields),
         overflow,
       }),
+    // Temporal comparison §12.3.26 steps 1.b, 2.
+    // Forward a prepared ISO day for calendar field projection.
     calendarFromEpochDay: (calendar, epoch) =>
       call('calendarFromEpochDay', {calendar, epoch}),
+    // Temporal comparison §12.3.7 steps 1.a, 1.b, 1.c, 1.d, 2.a.
+    // Forward prepared date arithmetic and overflow.
     calendarAdd: (calendar, fields, values, overflow) => {
       const duration = create(null)
       duration.years = values.years ?? 0
@@ -1209,26 +1239,44 @@ export function configureNativeTemporal(
         overflow,
       })
     },
+    // Temporal comparison §12.3.9 steps 3.k, 4.
+    // Forward date endpoints and largest unit for calendar difference.
     calendarUntil: (calendar, one, two, largest) =>
       call('calendarUntil', {calendar, one, two, largest}),
+    // Temporal comparison §12.3.9 step 4, §12.3.8 prose.
+    // Forward calendar month indexing for difference arithmetic.
     calendarMonthSerial: (calendar, year, month) =>
       call('calendarMonthSerial', {calendar, year, month}),
+    // Temporal comparison §3.3.4 step 3, §3.3.5 step 3.
+    // Forward calendar era projection and decode absence.
     calendarEra: (calendar, epoch) =>
       call('calendarEra', {calendar, epoch}) ?? undefined,
+    // Temporal comparison §12.3.31 step 2.a, §12.3.30 prose.
+    // Forward era and era year for calendar year resolution.
     calendarYearFromEra: (calendar, era, year) =>
       call('calendarYearFromEra', {calendar, era, year}),
+    // Temporal comparison §5.5.4 step 2.
+    // Forward ISO fields for exact local epoch computation.
     isoToEpochNanoseconds: fields =>
       ToBigInt(request('isoToEpochNanoseconds', fields)),
+    // Temporal comparison §11.1.10 step 2.
+    // Forward the exact epoch for ISO field projection.
     epochNanosecondsToISO: value =>
       request('epochNanosecondsToISO', undefined, value),
+    // Temporal comparison §3.5.9 steps 1, 2, 3.
+    // Forward the date and day count for ISO date addition.
     addISODays: (fields, days) =>
       request('addISODays', fields, undefined, days),
+    // Temporal comparison §4.5.6 steps 3.b, 3.d.
+    // Forward PlainTime string parsing and decode its clock snapshot.
     parsePlainTimeResult: value =>
       invoke?.parsePlainTimeResult
         ? invoke.parsePlainTimeResult(value)
         : clockResult(
             call('parsePlainTime', {text: value, clockSnapshot: true})
           ),
+    // Temporal comparison §4.5.6 step 2.g.
+    // Forward prepared clock regulation and decode its snapshot.
     regulatePlainTimeResult: (values, constrain) => {
       if (invoke?.regulatePlainTimeResult)
         return invoke.regulatePlainTimeResult(values, constrain)
@@ -1243,6 +1291,8 @@ export function configureNativeTemporal(
         call('regulatePlainTime', {fields, constrain, clockSnapshot: true})
       )
     },
+    // Temporal comparison §4.5.18 step 4.
+    // Forward clock addition and decode its snapshot.
     addPlainTimeResult: (value, fields, subtract) =>
       invoke?.addPlainTimeResult
         ? invoke.addPlainTimeResult(value, fields, subtract)
@@ -1254,6 +1304,8 @@ export function configureNativeTemporal(
               clockSnapshot: true,
             })
           ),
+    // Temporal comparison §4.3.14 step 14.
+    // Forward clock rounding and decode its snapshot.
     roundPlainTimeResult: (value, unit, increment, mode) =>
       invoke?.roundPlainTimeResult
         ? invoke.roundPlainTimeResult(value, unit, increment, mode)
@@ -1266,7 +1318,11 @@ export function configureNativeTemporal(
               clockSnapshot: true,
             })
           ),
+    // Temporal comparison §4.5.6 steps 3.b, 3.d.
+    // Forward PlainTime string parsing and restore the exact clock.
     parsePlainTime: value => ToBigInt(call('parsePlainTime', {text: value})),
+    // Temporal comparison §4.5.6 step 2.g.
+    // Forward prepared clock components for regulation.
     regulatePlainTime: (values, constrain) => {
       const fields = create(null)
       fields.hour = values[0]
@@ -1277,6 +1333,8 @@ export function configureNativeTemporal(
       fields.nanosecond = values[5]
       return ToBigInt(call('regulatePlainTime', {fields, constrain}))
     },
+    // Temporal comparison §4.5.13 steps 1, 2.
+    // Forward the exact clock and prepared precision for formatting.
     formatPlainTime: (value, precision, mode) =>
       invoke?.formatPlainTime
         ? invoke.formatPlainTime(value, precision, mode)
@@ -1285,8 +1343,12 @@ export function configureNativeTemporal(
             precision,
             mode,
           }),
+    // Temporal comparison §4.5.18 step 4.
+    // Forward exact clock addition through the scalar return path.
     addPlainTime: (value, fields, subtract) =>
       addition('addPlainTime', value, fields, subtract),
+    // Temporal comparison §4.3.14 step 14.
+    // Forward prepared PlainTime rounding and restore the exact result.
     roundPlainTime: (value, unit, increment, mode) =>
       ToBigInt(
         call('roundPlainTime', {
@@ -1296,6 +1358,8 @@ export function configureNativeTemporal(
           mode,
         })
       ),
+    // Temporal comparison §4.5.17 steps 4, 5, 7.
+    // Forward both clock values and prepared difference settings.
     differencePlainTime: (value, other, largest, smallest, increment, mode) =>
       invoke?.differencePlainTime
         ? invoke.differencePlainTime(
@@ -1316,9 +1380,13 @@ export function configureNativeTemporal(
           }),
     parseInstant:
       invoke?.parseInstant ??
+      // Temporal comparison §8.5.3 steps 3, 8, 10.
+      // Forward Instant string parsing and restore the exact epoch.
       (value => ToBigInt(call('parseInstant', {text: value}))),
     formatInstant:
       invoke?.formatInstant ??
+      // Temporal comparison §8.5.8 steps 4, 5, 7.b, 8.
+      // Forward Instant epoch, offset and precision for formatting.
       ((value, precision, offset, mode, identifier) =>
         call('formatInstant', {
           nanoseconds: text(value),
@@ -1329,10 +1397,14 @@ export function configureNativeTemporal(
         })),
     addInstant:
       invoke?.addInstant ??
+      // Temporal comparison §8.5.10 step 6.
+      // Forward prepared Instant addition through the scalar return path.
       ((value, fields, subtract) =>
         addition('addInstant', value, fields, subtract)),
     roundInstantUnit:
       invoke?.roundInstantUnit ??
+      // Temporal comparison §8.5.7 steps 2, 3.
+      // Forward Instant unit rounding and restore the exact epoch.
       ((value, unit, increment, mode) =>
         ToBigInt(
           call('roundInstant', {
@@ -1342,6 +1414,8 @@ export function configureNativeTemporal(
             mode,
           })
         )),
+    // Temporal comparison §8.5.7 step 3.
+    // Forward Instant rounding with the already-computed quantum.
     roundInstant: (value, quantum, mode) =>
       ToBigInt(
         call('roundInstant', {
@@ -1350,6 +1424,8 @@ export function configureNativeTemporal(
           mode,
         })
       ),
+    // Temporal comparison §8.5.6 steps 1, 2, §8.5.9 step 5.
+    // Forward exact Instant endpoints and prepared difference settings.
     differenceInstant: (value, other, largest, smallest, increment, mode) =>
       invoke?.differenceInstant
         ? invoke.differenceInstant(

@@ -1,0 +1,1444 @@
+{
+  "scope": "45 local Rust short-date helpers. Scope limited to evidenced typed dependencies. Implementation and requirement statuses unchanged.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "crates/temporal/short_dates.rs",
+      "before_sha256": "47b747390e377fbdf3a62837f80f3dae43a99772628b64e260ccde62aff16920",
+      "after_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
+      "verified_callable_count": 61,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    380, 381, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395,
+    396, 397, 399, 401, 406, 407, 408, 410, 411, 412, 413, 415, 416, 417, 418,
+    419, 420, 421, 422, 424, 425, 427, 428, 429, 430, 431, 432, 433, 434, 435
+  ],
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "separate_scopes": [
+    {
+      "inventory_row": 409,
+      "reason": "Rust PartialOrd publishes the total Rust comparator result, including calendar-ID tie-breaking. No independent numbered owner."
+    },
+    {
+      "inventory_row": 410,
+      "reason": "Only the ISO primary comparison maps. The Rust total-order tie-break remains outside the mapping."
+    },
+    {
+      "inventory_row": 416,
+      "reason": "Mapped ISO path only. CalendarMonthDayToISOReferenceDate\u2019s non-ISO dispatch and the implementation\u2019s finite 1900\u20132035 search are not established as equivalent for all supported calendars by this review."
+    },
+    {
+      "inventory_rows": [390, 422],
+      "reason": "Constructor dependency only. The Rust calendar-replacement methods have no corresponding public short-date API."
+    }
+  ],
+  "reviewed_rows": [
+    {
+      "inventory_row": 380,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl From<YearMonthUnit> for DateTimeUnit::from",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "21",
+        "end_line": "26",
+        "comparison_sections": "9.5.7",
+        "section_ids": "sec-temporal-differencetemporalplainyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplainyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.5.7/algorithm-1/step-16.e"],
+      "annotation_placement": "leading",
+      "annotation_line": 20,
+      "annotation": "// Proposal comparison \u00a79.5.7 step 16.e: Forward year or month to typed relative rounding.",
+      "evidence": "The non-exact YearMonth difference branch uses this conversion for both units. It preserves the already selected year or month when passing them to the typed PlainDate difference. Settings and rounding are separate."
+    },
+    {
+      "inventory_row": 381,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl PlainYearMonth::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "36",
+        "end_line": "47",
+        "comparison_sections": "9.1.1",
+        "section_ids": "sec-temporal.plainyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.1.1/algorithm-1/step-9",
+        "9.1.1/algorithm-1/step-10",
+        "9.1.1/algorithm-1/step-11"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 35,
+      "annotation": "// Proposal comparison \u00a79.1.1 steps 9\u201311: Validate the typed ISO reference date and build the year-month.",
+      "evidence": "Checks month and day against exact ISO month length. Converts the valid date to an epoch day before the typed constructor checks year-month limits. This entry point supplies ISO and receives a required reference day."
+    },
+    {
+      "inventory_row": 383,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::from_epoch_day_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "64",
+        "end_line": "71",
+        "comparison_sections": "9.5.5",
+        "section_ids": "sec-temporal-createtemporalyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.5/algorithm-1/step-1",
+        "9.5.5/algorithm-1/step-4",
+        "9.5.5/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 63,
+      "annotation": "// Proposal comparison \u00a79.5.5 steps 1, 4 and 5: Check the reference month and store its calendar.",
+      "evidence": "Checks the ISO year-month bounds, verifies selected-provider projection and stores the exact ISO reference day and calendar provider."
+    },
+    {
+      "inventory_row": 384,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::from_calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "73",
+        "end_line": "92",
+        "comparison_sections": "12.3.13",
+        "section_ids": "sec-temporal-calendaryearmonthfromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendaryearmonthfromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-date-add-iso-contract-audit.md|knowledge-base/audits/temporal-year-month-add-contract-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "12.3.13/algorithm-1/step-1",
+        "12.3.13/algorithm-1/step-2",
+        "12.3.13/algorithm-1/step-3",
+        "12.3.13/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 72,
+      "annotation": "// Proposal comparison \u00a712.3.13 steps 1\u20134: Resolve typed year-month fields with day one.",
+      "evidence": "Overwrites day with one. Resolves typed year/month in the selected provider and delegates exact epoch conversion plus year-month checks. Field validation remains scoped to the typed provider."
+    },
+    {
+      "inventory_row": 385,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::parse_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "94",
+        "end_line": "103",
+        "comparison_sections": "9.5.2",
+        "section_ids": "sec-temporal-totemporalyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-year-month-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.2/algorithm-1/step-4",
+        "9.5.2/algorithm-1/step-11",
+        "9.5.2/algorithm-1/step-12",
+        "9.5.2/algorithm-1/step-14",
+        "9.5.2/algorithm-1/step-15"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 93,
+      "annotation": "// Proposal comparison \u00a79.5.2 steps 4, 11\u201312 and 14\u201315: Parse and normalize a typed year-month.",
+      "evidence": "Parses short-date fields and checks the supplied calendar. Validates the initial reference month, projects through the provider, then rebuilds year and month with constrain and calendar day one. No JS receiver/options behavior is inferred."
+    },
+    {
+      "inventory_row": 386,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "105",
+        "end_line": "107",
+        "comparison_sections": "9.2.3",
+        "section_ids": "sec-temporal.plainyearmonth.compare",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.compare",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.2.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 104,
+      "annotation": "// Proposal comparison \u00a79.2.3 step 3: Read the exact ISO reference day used for comparison.",
+      "evidence": "Returns the native epoch-day encoding of the ISO reference date used by callers and wire transport. Comparison stays in the typed compare owner."
+    },
+    {
+      "inventory_row": 387,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "109",
+        "end_line": "111",
+        "comparison_sections": "9.5.7",
+        "section_ids": "sec-temporal-differencetemporalplainyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplainyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.5.7/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 108,
+      "annotation": "// Proposal comparison \u00a79.5.7 step 2: Read the stored calendar provider.",
+      "evidence": "Returns the stored provider value, giving native operations access to the calendar associated with the reference ISO date."
+    },
+    {
+      "inventory_row": 388,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::format",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "113",
+        "end_line": "118",
+        "comparison_sections": "9.3.19",
+        "section_ids": "sec-temporal.plainyearmonth.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.19/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 112,
+      "annotation": "// Proposal comparison \u00a79.3.19 step 5: Capture typed year-month formatting inputs.",
+      "evidence": "Pairs the typed value and normalized calendar display mode. The FormattedYearMonth Display implementation renders the output."
+    },
+    {
+      "inventory_row": 389,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::calendar_id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "120",
+        "end_line": "122",
+        "comparison_sections": "9.3.3",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 119,
+      "annotation": "// Proposal comparison \u00a79.3.3 step 3: Return the stored calendar provider ID.",
+      "evidence": "Gets the provider identifier associated with the native calendar slot."
+    },
+    {
+      "inventory_row": 390,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::with_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "124",
+        "end_line": "129",
+        "comparison_sections": "9.5.5",
+        "section_ids": "sec-temporal-createtemporalyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.5/algorithm-1/step-1",
+        "9.5.5/algorithm-1/step-4",
+        "9.5.5/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 123,
+      "annotation": "// Proposal comparison \u00a79.5.5 steps 1, 4 and 5: Reuse typed construction for a replacement calendar.",
+      "evidence": "Native convenience wrapper preserves the ISO reference day and delegates reconstruction with the supplied provider. The mapping covers the shared constructor call only."
+    },
+    {
+      "inventory_row": 391,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "132",
+        "end_line": "134",
+        "comparison_sections": "9.5.6",
+        "section_ids": "sec-temporal-temporalyearmonthtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalyearmonthtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.6/algorithm-1/step-1",
+        "9.5.6/algorithm-1/step-2",
+        "9.5.6/algorithm-1/step-4.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 131,
+      "annotation": "// Proposal comparison \u00a79.5.6 steps 1, 2 and 4.a: Supply the ISO reference fields for formatting.",
+      "evidence": "Projects stored epoch day into ISO year, month and day for the corresponding formatter. Calendar fields have a separate provider projection."
+    },
+    {
+      "inventory_row": 392,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "136",
+        "end_line": "138",
+        "comparison_sections": "13.42",
+        "section_ids": "sec-temporal-isodatetofields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-record-copy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["13.42/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 135,
+      "annotation": "// Proposal comparison \u00a713.42 step 2: Project the reference day through the stored calendar.",
+      "evidence": "Calls date_extended with the exact stored ISO epoch day and selected provider. Supports the date field dependencies used by typed operations."
+    },
+    {
+      "inventory_row": 393,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "140",
+        "end_line": "142",
+        "comparison_sections": "9.3.4",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.era",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.era",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.4/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 139,
+      "annotation": "// Proposal comparison \u00a79.3.4 step 3: Read the calendar era at the reference day.",
+      "evidence": "Delegates era lookup, retaining the provider\u2019s optional era and any error."
+    },
+    {
+      "inventory_row": 394,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::days_in_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "144",
+        "end_line": "149",
+        "comparison_sections": "9.3.10",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.daysinmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.10/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 143,
+      "annotation": "// Proposal comparison \u00a79.3.10 step 3: Look up month length in the projected year and month.",
+      "evidence": "Projects through the calendar provider and passes its year and month to the provider\u2019s month-length lookup."
+    },
+    {
+      "inventory_row": 395,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::months_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "151",
+        "end_line": "155",
+        "comparison_sections": "9.3.11",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.monthsinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.monthsinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.11/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 150,
+      "annotation": "// Proposal comparison \u00a79.3.11 step 3: Look up month count in the projected year.",
+      "evidence": "Gets the calendar year for the stored reference date and delegates month count to the same provider."
+    },
+    {
+      "inventory_row": 396,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::days_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "157",
+        "end_line": "161",
+        "comparison_sections": "9.3.9",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.daysinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 156,
+      "annotation": "// Proposal comparison \u00a79.3.9 step 3: Get year length from consecutive calendar year starts.",
+      "evidence": "Gets the projected calendar year and subtracts exact starts of the current and following years. The result is scoped to providers with both starts available."
+    },
+    {
+      "inventory_row": 397,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::in_leap_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "163",
+        "end_line": "169",
+        "comparison_sections": "9.3.12",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.inleapyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.inleapyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.12/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 162,
+      "annotation": "// Proposal comparison \u00a79.3.12 step 3: Derive leap status from provider month or day count.",
+      "evidence": "Applies calendar-family comparisons to the projected year count. Leap-month calendars use 13 months, supported Islamic calendars use 355 days, and remaining supported families use 366. Provider family assumptions remain scoped."
+    },
+    {
+      "inventory_row": 399,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::compare",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "175",
+        "end_line": "177",
+        "comparison_sections": "9.2.3",
+        "section_ids": "sec-temporal.plainyearmonth.compare",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.compare",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.2.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 174,
+      "annotation": "// Proposal comparison \u00a79.2.3 step 3: Compare typed year-month ISO reference dates.",
+      "evidence": "Compares exact ISO epoch days directly. Calendar ID does not affect this native Temporal comparison."
+    },
+    {
+      "inventory_row": 401,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::first_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "190",
+        "end_line": "192",
+        "comparison_sections": "9.5.7",
+        "section_ids": "sec-temporal-differencetemporalplainyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplainyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-year-month-add-contract-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.7/algorithm-1/step-7",
+        "9.5.7/algorithm-1/step-8",
+        "9.5.7/algorithm-1/step-9",
+        "9.5.7/algorithm-1/step-10",
+        "9.5.7/algorithm-1/step-11",
+        "9.5.7/algorithm-1/step-12"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 189,
+      "annotation": "// Proposal comparison \u00a79.5.7 steps 7\u201312: Derive calendar day one from the reference date.",
+      "evidence": "Uses calendar projection to get day of month, then subtracts day minus one from the exact ISO epoch day. The typed difference calls it for both anchors."
+    },
+    {
+      "inventory_row": 406,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainYearMonth<C>::difference",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "240",
+        "end_line": "283",
+        "comparison_sections": "9.5.7",
+        "section_ids": "sec-temporal-differencetemporalplainyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplainyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-get-difference-settings-audit.md|knowledge-base/audits/temporal-year-month-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.7/algorithm-1/step-3",
+        "9.5.7/algorithm-1/step-6",
+        "9.5.7/algorithm-1/step-13",
+        "9.5.7/algorithm-1/step-14",
+        "9.5.7/algorithm-1/step-15",
+        "9.5.7/algorithm-1/step-16",
+        "9.5.7/algorithm-1/step-18"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 239,
+      "annotation": "// Proposal comparison \u00a79.5.7 steps 3, 6, 13\u201316 and 18: Take typed year-month difference.",
+      "evidence": "Checks calendar identity and typed settings, handles equal reference dates, and resolves calendar month starts. The exact-month path takes raw calendar difference, keeps year/month fields and applies since sign. Other paths delegate to typed PlainDate relative difference. Provider and rounding conditions remain separate."
+    },
+    {
+      "inventory_row": 407,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl FromStr for PlainYearMonth::from_str",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "288",
+        "end_line": "290",
+        "comparison_sections": "9.5.2",
+        "section_ids": "sec-temporal-totemporalyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.2/algorithm-1/step-4",
+        "9.5.2/algorithm-1/step-14",
+        "9.5.2/algorithm-1/step-15"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 287,
+      "annotation": "// Proposal comparison \u00a79.5.2 steps 4 and 14\u201315: Route Rust string parsing to typed year-month normalization.",
+      "evidence": "Resolves an arithmetic calendar and delegates to parse_in. Scope limited to Rust arithmetic parsing and typed normalization."
+    },
+    {
+      "inventory_row": 408,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PartialEq for PlainYearMonth<C>::eq",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "294",
+        "end_line": "296",
+        "comparison_sections": "9.3.18",
+        "section_ids": "sec-temporal.plainyearmonth.prototype.equals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.equals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.3.18/algorithm-1/step-4",
+        "9.3.18/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 293,
+      "annotation": "// Proposal comparison \u00a79.3.18 steps 4\u20135: Delegate Rust equality to typed year-month equality.",
+      "evidence": "Uses the typed equals owner for reference date and calendar identity."
+    },
+    {
+      "inventory_row": 410,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> Ord for PlainYearMonth<C>::cmp",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "306",
+        "end_line": "309",
+        "comparison_sections": "9.2.3",
+        "section_ids": "sec-temporal.plainyearmonth.compare",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.compare",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.2.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 305,
+      "annotation": "// Proposal comparison \u00a79.2.3 step 3: Use ISO reference date as the primary Rust sort key.",
+      "evidence": "Uses Temporal-style typed compare as the primary comparison. The Rust total-order calendar ID tie-break is an independent trait contract and has no mapped step."
+    },
+    {
+      "inventory_row": 411,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for PlainYearMonth<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "313",
+        "end_line": "315",
+        "comparison_sections": "9.3.19",
+        "section_ids": "sec-temporal.plainyearmonth.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["9.3.19/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 312,
+      "annotation": "// Proposal comparison \u00a79.3.19 step 5: Format typed year-month with automatic calendar display.",
+      "evidence": "Rust Display selects automatic calendar display and delegates text rendering to the typed formatter."
+    },
+    {
+      "inventory_row": 412,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for FormattedYearMonth<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "323",
+        "end_line": "336",
+        "comparison_sections": "9.5.6",
+        "section_ids": "sec-temporal-temporalyearmonthtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalyearmonthtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.6/algorithm-1/step-1",
+        "9.5.6/algorithm-1/step-2",
+        "9.5.6/algorithm-1/step-3",
+        "9.5.6/algorithm-1/step-4",
+        "9.5.6/algorithm-1/step-4.a",
+        "9.5.6/algorithm-1/step-4.b",
+        "9.5.6/algorithm-1/step-5",
+        "9.5.6/algorithm-1/step-6",
+        "9.5.6/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 322,
+      "annotation": "// Proposal comparison \u00a79.5.6 steps 1\u20137: Format ISO year-month and conditional reference day.",
+      "evidence": "Writes padded ISO year and month, includes stored ISO reference day for non-ISO or always/critical display, and appends the annotation through the shared formatter."
+    },
+    {
+      "inventory_row": 413,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl PlainMonthDay::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "346",
+        "end_line": "351",
+        "comparison_sections": "10.1.1",
+        "section_ids": "sec-temporal.plainmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.1.1/algorithm-1/step-9",
+        "10.1.1/algorithm-1/step-10",
+        "10.1.1/algorithm-1/step-11"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 345,
+      "annotation": "// Proposal comparison \u00a710.1.1 steps 9\u201311: Validate the typed ISO reference date and build the month-day.",
+      "evidence": "Validates the supplied ISO date through PlainDate::new and stores its exact epoch day under ISO. The Rust signature supplies the required reference year."
+    },
+    {
+      "inventory_row": 415,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::from_epoch_day_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "368",
+        "end_line": "374",
+        "comparison_sections": "10.5.2",
+        "section_ids": "sec-temporal-createtemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.5.2/algorithm-1/step-1",
+        "10.5.2/algorithm-1/step-4",
+        "10.5.2/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 367,
+      "annotation": "// Proposal comparison \u00a710.5.2 steps 1, 4 and 5: Check and store the typed month-day reference date.",
+      "evidence": "Delegates date validity and calendar availability checks to PlainDate, then stores exact reference ISO epoch day and selected provider."
+    },
+    {
+      "inventory_row": 416,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::from_calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "376",
+        "end_line": "492",
+        "comparison_sections": "12.3.24",
+        "section_ids": "sec-temporal-calendarmonthdaytoisoreferencedate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarmonthdaytoisoreferencedate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-calendar-date-add-iso-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "12.3.24/algorithm-1/step-1.b",
+        "12.3.24/algorithm-1/step-1.c",
+        "12.3.24/algorithm-1/step-1.d",
+        "12.3.24/algorithm-1/step-1.e"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 375,
+      "annotation": "// Proposal comparison \u00a712.3.24 steps 1.b\u20131.e: Regulate typed ISO month-day fields and store a 1972 reference.",
+      "evidence": "Scope is the ISO path on resolved typed fields. Uses the supplied year or 1972 to determine the permitted day, then stores the ISO reference month/day in 1972. Local field constraints and non-ISO bounded searches need their own coverage before broader equivalence."
+    },
+    {
+      "inventory_row": 417,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::parse_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "494",
+        "end_line": "517",
+        "comparison_sections": "10.5.1",
+        "section_ids": "sec-temporal-totemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.5.1/algorithm-1/step-4",
+        "10.5.1/algorithm-1/step-10.a",
+        "10.5.1/algorithm-1/step-10.b",
+        "10.5.1/algorithm-1/step-10.c",
+        "10.5.1/algorithm-1/step-12",
+        "10.5.1/algorithm-1/step-13"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 493,
+      "annotation": "// Proposal comparison \u00a710.5.1 steps 4, 10.a\u201310.c and 12\u201313: Parse the month-day and check its ISO reference.",
+      "evidence": "Uses the narrow short-date parser contract. The ISO branch uses typed reference-date normalization. The non-ISO branch checks the original reference date before projecting and delegates canonical reference selection. Scope avoids elevating provider search coverage."
+    },
+    {
+      "inventory_row": 418,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "519",
+        "end_line": "521",
+        "comparison_sections": "10.5.2",
+        "section_ids": "sec-temporal-createtemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["10.5.2/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 518,
+      "annotation": "// Proposal comparison \u00a710.5.2 step 4: Read the stored ISO reference epoch day.",
+      "evidence": "Returns the epoch-day encoding of the ISO reference date used by native slot transport and operation callers."
+    },
+    {
+      "inventory_row": 419,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "523",
+        "end_line": "525",
+        "comparison_sections": "10.3.12",
+        "section_ids": "sec-temporal.plainmonthday.prototype.toplaindate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.toplaindate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["10.3.12/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 522,
+      "annotation": "// Proposal comparison \u00a710.3.12 step 4: Read the stored month-day calendar provider.",
+      "evidence": "Supplies the typed provider associated with the reference ISO date."
+    },
+    {
+      "inventory_row": 420,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::format",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "527",
+        "end_line": "532",
+        "comparison_sections": "10.3.8",
+        "section_ids": "sec-temporal.plainmonthday.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["10.3.8/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 526,
+      "annotation": "// Proposal comparison \u00a710.3.8 step 5: Capture typed month-day formatting inputs.",
+      "evidence": "Pairs the typed value and normalized calendar display mode. FormattedMonthDay renders the string separately."
+    },
+    {
+      "inventory_row": 421,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::calendar_id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "534",
+        "end_line": "536",
+        "comparison_sections": "10.3.3",
+        "section_ids": "sec-get-temporal.plainmonthday.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainmonthday.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["10.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 533,
+      "annotation": "// Proposal comparison \u00a710.3.3 step 3: Return the stored calendar provider ID.",
+      "evidence": "Gets the canonical identifier from the provider stored on the native month-day."
+    },
+    {
+      "inventory_row": 422,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::with_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "538",
+        "end_line": "543",
+        "comparison_sections": "10.5.2",
+        "section_ids": "sec-temporal-createtemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.5.2/algorithm-1/step-1",
+        "10.5.2/algorithm-1/step-4",
+        "10.5.2/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 537,
+      "annotation": "// Proposal comparison \u00a710.5.2 steps 1, 4 and 5: Reuse typed construction for a replacement calendar.",
+      "evidence": "Native convenience wrapper reconstructs with the same ISO reference day plus the supplied provider. The mapping covers the shared typed constructor call only."
+    },
+    {
+      "inventory_row": 424,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "550",
+        "end_line": "553",
+        "comparison_sections": "10.5.3",
+        "section_ids": "sec-temporal-temporalmonthdaytostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalmonthdaytostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.5.3/algorithm-1/step-1",
+        "10.5.3/algorithm-1/step-2",
+        "10.5.3/algorithm-1/step-4.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 549,
+      "annotation": "// Proposal comparison \u00a710.5.3 steps 1, 2 and 4.a: Supply ISO month-day reference fields for formatting.",
+      "evidence": "Projects the stored epoch day into ISO month, day and year consumed by the typed formatter."
+    },
+    {
+      "inventory_row": 425,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "555",
+        "end_line": "557",
+        "comparison_sections": "13.42",
+        "section_ids": "sec-temporal-isodatetofields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["13.42/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 554,
+      "annotation": "// Proposal comparison \u00a713.42 step 2: Project the reference date in the stored calendar.",
+      "evidence": "Calls the calendar provider on the stored reference ISO day and forwards the typed calendar date or provider error."
+    },
+    {
+      "inventory_row": 427,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PlainMonthDay<C>::to_plain_date_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "569",
+        "end_line": "587",
+        "comparison_sections": "10.3.12",
+        "section_ids": "sec-temporal.plainmonthday.prototype.toplaindate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.toplaindate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-month-day-validation-targets.txt|knowledge-base/audits/temporal-record-copy-audit.md|knowledge-base/audits/temporal-calendar-date-add-iso-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.3.12/algorithm-1/step-5",
+        "10.3.12/algorithm-1/step-7",
+        "10.3.12/algorithm-1/step-8",
+        "10.3.12/algorithm-1/step-9"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 568,
+      "annotation": "// Proposal comparison \u00a710.3.12 steps 5 and 7\u20139: Combine reference month-day with typed year fields.",
+      "evidence": "Projects reference month code and day, takes the supplied year or era fields and delegates typed PlainDate construction. The public entry provides constrain. Rust callers can supply overflow directly."
+    },
+    {
+      "inventory_row": 428,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl FromStr for PlainMonthDay::from_str",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "592",
+        "end_line": "594",
+        "comparison_sections": "10.5.1",
+        "section_ids": "sec-temporal-totemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.5.1/algorithm-1/step-4",
+        "10.5.1/algorithm-1/step-15",
+        "10.5.1/algorithm-1/step-16"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 591,
+      "annotation": "// Proposal comparison \u00a710.5.1 steps 4 and 15\u201316: Route Rust string parsing to typed month-day normalization.",
+      "evidence": "Resolves the arithmetic calendar then delegates to parse_in. Scope limited to prepared arithmetic-provider parsing, with reference selection in the called owner."
+    },
+    {
+      "inventory_row": 429,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> PartialEq for PlainMonthDay<C>::eq",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "598",
+        "end_line": "600",
+        "comparison_sections": "10.3.7",
+        "section_ids": "sec-temporal.plainmonthday.prototype.equals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.equals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.3.7/algorithm-1/step-4",
+        "10.3.7/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 597,
+      "annotation": "// Proposal comparison \u00a710.3.7 steps 4\u20135: Delegate Rust equality to typed month-day equality.",
+      "evidence": "Uses the typed equality owner to compare reference ISO date and calendar ID."
+    },
+    {
+      "inventory_row": 430,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for PlainMonthDay<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "605",
+        "end_line": "607",
+        "comparison_sections": "10.3.8",
+        "section_ids": "sec-temporal.plainmonthday.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": ["10.3.8/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 604,
+      "annotation": "// Proposal comparison \u00a710.3.8 step 5: Format typed month-day with automatic calendar display.",
+      "evidence": "Rust Display selects automatic calendar display and delegates typed month-day formatting."
+    },
+    {
+      "inventory_row": 431,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for FormattedMonthDay<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "615",
+        "end_line": "628",
+        "comparison_sections": "10.5.3",
+        "section_ids": "sec-temporal-temporalmonthdaytostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalmonthdaytostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "10.5.3/algorithm-1/step-1",
+        "10.5.3/algorithm-1/step-2",
+        "10.5.3/algorithm-1/step-3",
+        "10.5.3/algorithm-1/step-4",
+        "10.5.3/algorithm-1/step-4.a",
+        "10.5.3/algorithm-1/step-4.b",
+        "10.5.3/algorithm-1/step-5",
+        "10.5.3/algorithm-1/step-6",
+        "10.5.3/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 614,
+      "annotation": "// Proposal comparison \u00a710.5.3 steps 1\u20137: Format ISO month-day with conditional reference year.",
+      "evidence": "Writes padded ISO month/day, adds reference year for non-ISO or always/critical display, and appends the annotation through the shared formatter."
+    },
+    {
+      "inventory_row": 432,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "module::check_year_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "632",
+        "end_line": "644",
+        "comparison_sections": "9.5.3",
+        "section_ids": "sec-temporal-isoyearmonthwithinlimits",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isoyearmonthwithinlimits",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-year-month-difference-caller-audit.md|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "9.5.3/algorithm-1/step-1",
+        "9.5.3/algorithm-1/step-2",
+        "9.5.3/algorithm-1/step-3",
+        "9.5.3/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 631,
+      "annotation": "// Proposal comparison \u00a79.5.3 steps 1\u20134: Check the ISO year-month boundary months.",
+      "evidence": "After a wider native epoch-day guard, rejects years beyond the ISO range and rejects months before April at the lower year or after September at the upper year. Day within each boundary month does not enter the limit check."
+    },
+    {
+      "inventory_row": 433,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "module::date_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "646",
+        "end_line": "653",
+        "comparison_sections": "13.42",
+        "section_ids": "sec-temporal-isodatetofields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-record-copy-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "13.42/algorithm-1/step-3",
+        "13.42/algorithm-1/step-4.a",
+        "13.42/algorithm-1/step-5.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 645,
+      "annotation": "// Proposal comparison \u00a713.42 steps 3, 4.a and 5.a: Carry projected month code, day and year into typed fields.",
+      "evidence": "Copies provider Date values into the resolved typed DateFields record. Subsequent operations retain or replace the appropriate fields for year-month or month-day construction."
+    },
+    {
+      "inventory_row": 434,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "module::iso_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "655",
+        "end_line": "658",
+        "comparison_sections": "11.1.2",
+        "section_ids": "sec-temporal-getisopartsfromepoch",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisopartsfromepoch",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "11.1.2/algorithm-1/step-4",
+        "11.1.2/algorithm-1/step-5",
+        "11.1.2/algorithm-1/step-6"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 654,
+      "annotation": "// Proposal comparison \u00a711.1.2 steps 4\u20136: Recover ISO reference date fields from an epoch day.",
+      "evidence": "Converts the exact stored epoch day to integer nanoseconds and delegates ISO projection. Only year, month and day are returned."
+    },
+    {
+      "inventory_row": 435,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/short_dates.rs",
+        "symbol": "module::write_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "660",
+        "end_line": "666",
+        "comparison_sections": "3.5.10",
+        "section_ids": "sec-temporal-padisoyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-padisoyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-rust-format14-annotation-source-proof.json|knowledge-base/audits/temporal-month-day-validation-targets.txt",
+        "unresolved_mapping": "",
+        "source_sha256": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab"
+      },
+      "spec_row_ids": [
+        "3.5.10/algorithm-1/step-1",
+        "3.5.10/algorithm-1/step-2",
+        "3.5.10/algorithm-1/step-3",
+        "3.5.10/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 659,
+      "annotation": "// Proposal comparison \u00a73.5.10 steps 1\u20134: Pad ISO years and sign extended years.",
+      "evidence": "Writes four digits for years 0 through 9999, and sign plus six digits otherwise on valid short-date reference years."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/temporal:ffi_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:plain_date_test262",
+      "//packages/temporal:year_month_test262",
+      "//packages/temporal:month_day_test262"
+    ],
+    "log_sha256": "2d029a922d95745a9ee4c78c8f3615cb8b33b10055d0ed5e3a0c32cb1d51362d",
+    "result": "7 Bazel targets passed in the same validation batch."
+  }
+}

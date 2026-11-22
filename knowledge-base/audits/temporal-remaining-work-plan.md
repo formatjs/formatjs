@@ -49,7 +49,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 719 mapped, 161 candidate/dependency assignments, 189 unmapped (including 3 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 799 mapped, 161 candidate/dependency assignments, 109 unmapped (including 3 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
@@ -117,7 +117,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 189 unresolved
+separately. Candidate source assignments require confirmation; 109 unresolved
 helper mappings are a mapping queue, not missing functions.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -207,13 +207,13 @@ retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[581 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[665 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-569 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:719 mapped,161 candidate,
-189 unmapped, including three retired identities. Annotation presence alone
-is644 direct,13 enclosing,409 without numbered anchors,3 retired; these are
+653 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:799 mapped,161 candidate,
+109 unmapped, including three retired identities. Annotation presence alone
+is 726 direct, 13 enclosing, 327 without numbered anchors, 3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -248,9 +248,16 @@ Rust FFI and the TypeScript native bridge. [Date proof](temporal-native-date51-a
 [Arithmetic proof](temporal-native-typed26-annotation-source-proof.json).
 [FFI proof](temporal-native-ffi45-annotation-source-proof.json).
 [Bridge proof](temporal-ts-native44-annotation-source-proof.json).
-The prior measured-cost model gives about 1.5–2.5 hours for 409 remaining
-annotations at comparable cost. Use 1.5–3 hours provisionally because the
-remaining mix has more legacy calendar and timezone providers.
+The next 84 mappings cover Rust short dates and the remaining TypeScript native
+bridge dependencies. 82 add numbered anchors. Two reconcile code with existing
+anchors. Seven focused Bazel targets pass.
+[Short-date proof](temporal-native-shortdates45-annotation-source-proof.json).
+[Bridge proof](temporal-ts-native38-annotation-source-proof.json).
+[Candidate List transport](temporal-ts-native-existing-929-source-proof.json).
+The measured review cost gives a provisional 1–2.5 hour estimate for triaging
+327 remaining helper anchors. This estimate covers legacy calendar and timezone
+providers plus structural helpers that may need an explicit disposition.
+The 57 active conditional spec steps remain a separate audit queue.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

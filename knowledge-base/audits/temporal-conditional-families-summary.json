@@ -11,7 +11,7 @@
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. No status changes or fresh implementation audit. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "5bc8d549e16afb83ca2d6f36cd8c383a69cdbcf2080d9f449c0cd3ed6e484ace",
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "c2dd3de72c0d678f90b7ce799ba1a9bc6a92445559ad2e0a1c68745f0c29bddf",
     "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "845ff189882f0a358fb8a116be00f72eec6e7d1c6982bb3e5fd36929b166df95"
   },
   "scope_decision": {

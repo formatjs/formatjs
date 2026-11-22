@@ -5,24 +5,24 @@
   "retired_replaced_callbacks": 3,
   "mapping_status": {
     "candidate": 161,
-    "mapped": 719,
-    "unmapped": 189
+    "mapped": 799,
+    "unmapped": 109
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 409,
-    "direct_numbered": 644,
+    "no_numbered_anchor": 327,
+    "direct_numbered": 726,
     "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 522,
+  "direct_with_step_wording": 605,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 623,
-    "no_overlap_or_no_prior_mapping": 21
+    "overlap": 707,
+    "no_overlap_or_no_prior_mapping": 19
   },
   "no_numbered_anchor_by_kind": {
-    "function": 115,
-    "named-function": 169,
-    "callback": 117,
+    "function": 71,
+    "named-function": 167,
+    "callback": 81,
     "method": 8
   },
   "role_review_bundles": {
@@ -47,16 +47,16 @@
       "rows": 248,
       "files": 13,
       "coverage": {
-        "no_numbered_anchor": 63,
-        "direct_numbered": 185
+        "no_numbered_anchor": 19,
+        "direct_numbered": 229
       }
     },
     "native_transport_with_temporal_adapters_review": {
       "rows": 145,
       "files": 2,
       "coverage": {
-        "no_numbered_anchor": 43,
-        "direct_numbered": 102
+        "no_numbered_anchor": 5,
+        "direct_numbered": 140
       }
     },
     "generic_runtime_or_installation_review": {
@@ -102,7 +102,7 @@
     "crates/temporal/plain_relative.rs": "2180a18fb2672442343ef2e5da471fe98adb30029d31736a7269928f4eed2af2",
     "crates/temporal/relative_duration.rs": "dda8d638d0e5ebda82aa6b41b6153a3b174ee94a5188ac7e11a914d7f911ea7f",
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
-    "crates/temporal/short_dates.rs": "47b747390e377fbdf3a62837f80f3dae43a99772628b64e260ccde62aff16920",
+    "crates/temporal/short_dates.rs": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
     "crates/temporal/time.rs": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
     "crates/temporal/timezone.rs": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2",
     "crates/temporal/timezone_identity.rs": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790",
@@ -139,7 +139,7 @@
     "packages/temporal/legacy-zoned-date.ts": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
     "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
-    "packages/temporal/native.ts": "171340609ef6ae9ce3915e753d229977d64adfc027a6f6ebac91de7cf3724c94",
+    "packages/temporal/native.ts": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
     "packages/temporal/plain-date-time.ts": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57",
     "packages/temporal/plain-date.ts": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3",
     "packages/temporal/plain-month-day.ts": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b",
@@ -434,12 +434,12 @@
       "rows": 56,
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 46,
-        "mapped": 10
+        "mapped": 55,
+        "unmapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 45,
-        "direct_numbered": 11
+        "direct_numbered": 55,
+        "no_numbered_anchor": 1
       }
     },
     {
@@ -873,12 +873,10 @@
       "rows": 91,
       "work_bundle": "native_transport_with_temporal_adapters_review",
       "mapping_status": {
-        "unmapped": 35,
-        "mapped": 56
+        "mapped": 91
       },
       "coverage": {
-        "no_numbered_anchor": 38,
-        "direct_numbered": 53
+        "direct_numbered": 91
       }
     },
     {
@@ -1043,8 +1041,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 581,
-  "reviewed_mapping_rows_this_batch": 166,
+  "reviewed_mapping_rows_cumulative": 665,
+  "reviewed_mapping_rows_this_batch": 84,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0
