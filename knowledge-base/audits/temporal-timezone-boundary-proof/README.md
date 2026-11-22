@@ -93,7 +93,7 @@ actual candidate is outside the Instant limits.
 
 The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
 the installed formatter's private candidate check within one day of either
-limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L410)
+limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L441)
 enumerates decoded historical and recurring offsets and round-trips each
 outside instant through the same `TimeZoneOffset` reader. It uses bigint
 for the candidate and rounds down to an exact integer millisecond for the
@@ -118,7 +118,7 @@ and a forward gap.
 
 The [candidate interval search](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L92)
 visits the first active historical offset, every intersecting transition,
-and reachable recurring offsets. The [owned lookup](../../../packages/intl-datetimeformat/core.ts#L410)
+and reachable recurring offsets. The [owned lookup](../../../packages/intl-datetimeformat/core.ts#L415)
 subtracts each candidate offset from exact local nanoseconds and confirms
 it through the same provider. Subtracting an integral offset commutes with
 flooring to milliseconds, and the lookup interval stays below 2^53 ms.
@@ -141,14 +141,14 @@ The exact path returns 21:00 UTC on the previous day for earlier and 01:00
 UTC for later and compatible. Local 03:00 also tests the shifted query: local 07:00 is a fold
 with two candidates. Later and compatible select 07:00 UTC.
 
-The [owned resolver](../../../packages/intl-datetimeformat/core.ts#L443) enumerates
+The [owned resolver](../../../packages/intl-datetimeformat/core.ts#L458) enumerates
 UTC boundaries around the gap and projects the last nanosecond before and
 first nanosecond after each boundary. With offsets under one day, reachable
 locals within two days bound the nearest choices. Candidate instants for
 those choices are therefore within three days. The resolver confirms
 singleton boundary candidates, shifts by their offset difference, and
 re-queries the exact list. The fallback still handles native Intl and
-cases without a complete interior window.
+cases without valid boundary candidates or matching gap assumptions.
 
 A separate +12-hour pulse lasting six hours yields a zero shift because both
 nearest boundaries have offset zero. The requery remains empty, so the
@@ -161,6 +161,30 @@ Temporal and DateTimeFormat targets passed afterward.
 
 - Short gap before-fix log SHA-256 `7288268ca20ea81bb86fb36202b71d137564ffa9d682b5715b65600ce3e9fa19`
 - Short gap after-fix log SHA-256 `75cc28d542197b2824625daa410711a4424f4693a38835a97291048e596d3469`
+
+### Owned gaps near the Instant limits
+
+A pulse less than one day from either Instant limit used to bypass the
+owned boundary lookup. Legacy ±day sampling then missed the short offset
+change. A public packaged regression reproduces the RangeError on the old
+build. It now verifies earlier, later, compatible and reject independently
+at both limits.
+
+The boundary visitor reads the same decoded zone rows that supply offsets.
+The resolver checks the actual candidates for each nearest reachable local
+boundary, including the inclusive Instant bounds. Both boundaries must
+have one valid candidate. The shifted public query still throws if any of
+its actual candidates is outside the range. The positive-limit regression
+checks that earlier succeeds while later and compatible throw for that case.
+
+[Public boundary regression](../../../packages/temporal/tests/host-candidate-range.test.mjs#L294).
+[Exact boundary checks](../../../packages/intl-datetimeformat/core.ts#L491).
+[Public candidate validation](../../../packages/intl-datetimeformat/core.ts#L441).
+[Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+[Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
+
+The focused Bazel host-candidate target passes. Numeric Intl without this
+owned lookup still requires separate coverage evidence.
 
 ## Reload the owned timezone data
 
@@ -192,7 +216,7 @@ It compares offsets on both sides of each boundary. Direction is strict at
 nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
-[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L515).
+[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L539).
 [Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L318).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in

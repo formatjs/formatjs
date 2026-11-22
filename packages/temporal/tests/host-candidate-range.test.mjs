@@ -290,6 +290,48 @@ try {
   assert.equal(transition(pulse, spring - 1n, 'next'), spring)
   assert.equal(transition(pulse, spring, 'next'), autumn)
   assert.equal(transition(pulse, autumn, 'previous'), spring)
+
+  // The actual neighbors of each pulse are valid, even within a day of a limit.
+  formatter.__addTZData({
+    abbrvs: 'TEST',
+    offsets: '0|2s0|b40',
+    zones: [
+      `${pulse}|${packedRow(null, 0)}|${packedRow(maxSeconds - 10_800n, 1)}|${packedRow(maxSeconds - 3_600n, 0)}`,
+      `${positiveShiftPulse}|${packedRow(null, 0)}|${packedRow(-maxSeconds + 3_600n, 1)}|${packedRow(-maxSeconds + 10_800n, 0)}`,
+      `${ordinaryGap}|${packedRow(null, 0)}|${packedRow(maxSeconds - 7_200n, 2)}`,
+    ],
+  })
+  for (const [local, start] of [
+    [`+275760-09-12T21:30:00[${pulse}]`, maxNanoseconds - 3n * hour],
+    [`-271821-04-20T01:30:00[${positiveShiftPulse}]`, -maxNanoseconds + hour],
+  ]) {
+    assert.equal(
+      Temporal.ZonedDateTime.from(local, {disambiguation: 'earlier'})
+        .epochNanoseconds,
+      start - hour / 2n
+    )
+    for (const disambiguation of ['later', 'compatible'])
+      assert.equal(
+        Temporal.ZonedDateTime.from(local, {disambiguation}).epochNanoseconds,
+        start + hour / 2n
+      )
+    assert.throws(
+      () => Temporal.ZonedDateTime.from(local, {disambiguation: 'reject'}),
+      RangeError
+    )
+  }
+  // A shifted later candidate can still be outside the Instant range.
+  const upperGap = `+275760-09-13T01:00:00[${ordinaryGap}]`
+  assert.equal(
+    Temporal.ZonedDateTime.from(upperGap, {disambiguation: 'earlier'})
+      .epochNanoseconds,
+    maxNanoseconds - 3n * hour
+  )
+  for (const disambiguation of ['later', 'compatible'])
+    assert.throws(
+      () => Temporal.ZonedDateTime.from(upperGap, {disambiguation}),
+      RangeError
+    )
 } finally {
   hooks.deregister()
 }

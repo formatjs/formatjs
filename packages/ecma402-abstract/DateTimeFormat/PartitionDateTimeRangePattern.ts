@@ -2,6 +2,7 @@ import {
   TypeErrorConstructor,
   arrayIndexOf,
   arraySome,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
@@ -183,7 +184,11 @@ export function PartitionDateTimeRangePattern(
         rangeFormatOptions: {localTime: tm1},
       }
     )
-    for (const part of result) part.source = RangePatternType.shared
+    // ECMA-402 §11.5.8 step 16.c.i: create private records without setters.
+    // Temporal comparison §15.6.8 step 24.c.i.
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+    for (const part of result)
+      setDataProperty(part, 'source', RangePatternType.shared)
     return result
   }
 
@@ -258,8 +263,12 @@ export function PartitionDateTimeRangePattern(
       source === RangePatternType.endRange
         ? second.epochNanoseconds
         : first.epochNanoseconds
-    rangeFormatOptions.localTime =
+    // ECMA-402 §11.5.8 step 19.e: private local-time input ignores setters.
+    setDataProperty(
+      rangeFormatOptions,
+      'localTime',
       source === RangePatternType.endRange ? tm2 : tm1
+    )
     const formatted = FormatDateTimePattern(
       dtf,
       PartitionPattern<IntlDateTimeFormatPartType>(partPattern),
@@ -268,7 +277,8 @@ export function PartitionDateTimeRangePattern(
       rangeImplDetails
     )
     for (const item of formatted) {
-      item.source = source
+      // ECMA-402 §11.5.8 step 19.f.i: own source on each private record.
+      setDataProperty(item, 'source', source)
       result.push(item)
     }
   }

@@ -407,7 +407,12 @@ function validTemporalOffset(offset: number): boolean {
   return numberIsInteger(offset) && offset > -86_400 && offset < 86_400
 }
 
-// Proposal comparison §11.1.13 steps 3.a and 4.a: collect and range-check actual candidates.
+// Proposal comparison §8.5.1 step 1: accept both Instant limits.
+function validTemporalInstant(instant: bigint): boolean {
+  return instant >= -instantLimit && instant <= instantLimit
+}
+
+// Proposal comparison §11.1.13 step 3.a: collect actual candidates.
 function temporalCandidates(
   local: bigint,
   zone: UnpackedTimeZoneData
@@ -427,16 +432,26 @@ function temporalCandidates(
         TimeZoneOffset(localMilliseconds - offset * 1_000, zone)[0] !== offset
       )
         return
-      if (instant < -instantLimit || instant > instantLimit)
-        throw new RangeErrorConstructor('Instant out of range')
       setDataProperty(candidates, candidates.length, instant)
     }
   )
   return candidates
 }
 
+// Proposal comparison §11.1.13 step 4.a: reject any actual out-of-range candidate.
+function checkedTemporalCandidates(
+  local: bigint,
+  zone: UnpackedTimeZoneData
+): bigint[] {
+  const candidates = temporalCandidates(local, zone)
+  for (let index = 0; index < candidates.length; index++) {
+    if (!validTemporalInstant(candidates[index]))
+      throw new RangeErrorConstructor('Instant out of range')
+  }
+  return candidates
+}
+
 const gapWindowMilliseconds = 3 * dayMilliseconds
-const gapWindow = bigIntFrom(gapWindowMilliseconds) * candidateMillisecond
 const gapDay = bigIntFrom(dayMilliseconds) * candidateMillisecond
 const oneNanosecond = bigIntFrom(1)
 
@@ -446,8 +461,6 @@ function resolveTemporalGap(
   zone: UnpackedTimeZoneData,
   direction: 'earlier' | 'later'
 ): bigint | undefined {
-  if (local < -instantLimit + gapWindow || local >= instantLimit - gapWindow)
-    return undefined
   const milliseconds = temporalLocalMilliseconds(local)
   let before: bigint | undefined
   let after: bigint | undefined
@@ -475,7 +488,13 @@ function resolveTemporalGap(
     return undefined
   const beforeCandidates = temporalCandidates(before, zone)
   const afterCandidates = temporalCandidates(after, zone)
-  if (beforeCandidates.length !== 1 || afterCandidates.length !== 1)
+  // Only actual candidates determine whether both neighbors fit.
+  if (
+    beforeCandidates.length !== 1 ||
+    afterCandidates.length !== 1 ||
+    !validTemporalInstant(beforeCandidates[0]) ||
+    !validTemporalInstant(afterCandidates[0])
+  )
     return undefined
   const shift = after - afterCandidates[0] - (before - beforeCandidates[0])
   // Keep the existing fallback when the comparison's gap assumptions fail.
@@ -483,7 +502,10 @@ function resolveTemporalGap(
 
   // Proposal comparison §11.1.12 steps 16.e–16.g and 22–25: requery and select the first or last instant.
   const earlier = direction === 'earlier'
-  const shifted = temporalCandidates(local + (earlier ? -shift : shift), zone)
+  const shifted = checkedTemporalCandidates(
+    local + (earlier ? -shift : shift),
+    zone
+  )
   let instant = shifted[0]
   for (let index = 1; index < shifted.length; index++) {
     const candidate = shifted[index]
@@ -507,7 +529,7 @@ Object.defineProperty(
         return undefined
       return direction
         ? resolveTemporalGap(local, zone, direction)
-        : temporalCandidates(local, zone)
+        : checkedTemporalCandidates(local, zone)
     },
   }
 )
@@ -523,8 +545,7 @@ Object.defineProperty(
     ): bigint | null | undefined {
       const {timeZone} = getInternalSlots(this)
       const zone = DateTimeFormat.tzData[timeZone]
-      if (!zone?.length || instant < -instantLimit || instant > instantLimit)
-        return undefined
+      if (!zone?.length || !validTemporalInstant(instant)) return undefined
       if (direction) return TimeZoneTransition(instant, direction, zone)
       // Proposal comparison §11.1.9 step 3: read the same rows at millisecond precision.
       const [offset] = TimeZoneOffset(temporalLocalMilliseconds(instant), zone)

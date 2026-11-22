@@ -34451,15 +34451,15 @@
       {
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "temporalCandidates",
-        "start_line": 411,
-        "end_line": 436,
-        "anchor_line": 410,
-        "source_sha256": "958459374d2080399b6e4bf10a1be2f5a5dbc7c316555e781c20f5fa27446ae4",
+        "start_line": 416,
+        "end_line": 439,
+        "anchor_line": 415,
+        "source_sha256": "79ad643d6c28987485a98a07aec2d4ed49d8dc34dde2ac8c2514acb4946c1b03",
         "spec_row_ids": [
           "11.1.13/algorithm-1/step-3.a",
           "11.1.13/algorithm-1/step-4.a"
         ],
-        "scope": "Round-trip possible candidates and reject actual invalid instants."
+        "scope": "Round-trip all actual candidates from the decoded provider, including outside the Instant limits."
       },
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts",
@@ -34476,10 +34476,10 @@
       {
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "resolveTemporalGap",
-        "start_line": 444,
-        "end_line": 493,
-        "anchor_line": 443,
-        "source_sha256": "958459374d2080399b6e4bf10a1be2f5a5dbc7c316555e781c20f5fa27446ae4",
+        "start_line": 459,
+        "end_line": 515,
+        "anchor_line": 458,
+        "source_sha256": "79ad643d6c28987485a98a07aec2d4ed49d8dc34dde2ac8c2514acb4946c1b03",
         "spec_row_ids": [
           "11.1.12/algorithm-1/step-6",
           "11.1.12/algorithm-1/step-7",
@@ -34496,7 +34496,7 @@
           "11.1.12/algorithm-1/step-22",
           "11.1.12/algorithm-1/step-25"
         ],
-        "scope": "Recover nearest local boundaries from applicable transitions, verify singleton edges and requery the shifted local time."
+        "scope": "Find nearest reachable boundaries and verify their actual candidates before shifting and checking the exact query."
       },
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts",
@@ -34606,6 +34606,18 @@
         "end_line": 311,
         "anchor_line": 270,
         "source_sha256": "5393252c0477e79186ad81e511903dd328b6fb590f00e0009d193e7bbbfa2389"
+      }
+    ],
+    "owned_host_instant_candidate_bounds": [
+      {
+        "file": "packages/intl-datetimeformat/core.ts",
+        "symbol": "checkedTemporalCandidates",
+        "start_line": 442,
+        "end_line": 452,
+        "anchor_line": 441,
+        "source_sha256": "79ad643d6c28987485a98a07aec2d4ed49d8dc34dde2ac8c2514acb4946c1b03",
+        "spec_row_ids": ["11.1.13/algorithm-1/step-4.a"],
+        "scope": "Reject actual out-of-range candidates for the initial and shifted public queries."
       }
     ]
   }

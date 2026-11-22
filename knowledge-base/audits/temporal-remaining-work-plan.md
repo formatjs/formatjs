@@ -312,7 +312,9 @@ Nine focused Bazel targets pass.
 Source review of the fixed helper inventory is complete. Behavioral review
 still has 60 conditional Temporal steps. Both exact owned candidate lookup
 and gap disambiguation now pass public packed-data regressions. Owned next
-and previous transition lookup uses exact decoded boundaries. Other Intl
+and previous transition lookup uses exact decoded boundaries. Owned gap resolution
+checks actual boundary candidates near both Instant limits.
+[Edge evidence](temporal-timezone-boundary-proof/README.md#owned-gaps-near-the-instant-limits). Other Intl
 profiles retain candidate, gap and transition coverage premises. The native
 Intl search now preserves known finite future history before skipping recurring
 years, verified by the pinned Casablanca and El_Aaiun regressions. The published
@@ -335,6 +337,8 @@ and source tags. Layouts without verified controls remain open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 The zoned locale bridge keeps warm host-offset cache lookups private under
 replaced collection methods. [Cache proof](temporal-legacy-bridge-state-audit.md#zoned-locale-offset-cache).
+Owned range records use own data properties for sources and selected local time.
+[Range record proof](temporal-pattern-partition-audit.md#owned-private-range-records).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

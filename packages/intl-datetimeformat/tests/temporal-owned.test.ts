@@ -46,6 +46,51 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test.each([
+  ['collapsed', 'source', 'formatRange'],
+  ['collapsed', 'source', 'formatRangeToParts'],
+  ['distinct', 'source', 'formatRange'],
+  ['distinct', 'source', 'formatRangeToParts'],
+  ['distinct', 'localTime', 'formatRange'],
+  ['distinct', 'localTime', 'formatRangeToParts'],
+] as const)(
+  'formats %s Temporal ranges without inherited %s setters (%s)',
+  (kind, property, method) => {
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    })
+    const start = new Temporal.PlainDate(1970, 1, 1)
+    const end =
+      kind === 'collapsed' ? start : new Temporal.PlainDate(1970, 1, 2)
+    const expected = formatter[method](start as any, end as any)
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, property)
+    let calls = 0,
+      actual: unknown,
+      error: unknown
+    try {
+      Object.defineProperty(Object.prototype, property, {
+        configurable: true,
+        set() {
+          calls++
+          throw new Error(`Inherited range ${property} setter`)
+        },
+      })
+      actual = formatter[method](start as any, end as any)
+    } catch (caught) {
+      error = caught
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, property, original)
+      else Reflect.deleteProperty(Object.prototype, property)
+    }
+    expect(calls).toBe(0)
+    expect(error).toBeUndefined()
+    expect(actual).toEqual(expected)
+  }
+)
+
 test.each(['get', 'set'] as const)(
   'formats owned Temporal values without WeakMap.prototype.%s',
   method => {
