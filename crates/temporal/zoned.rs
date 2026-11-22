@@ -67,6 +67,13 @@ pub trait TimeZone {
     fn nearest_local_after(&self, _local_nanoseconds: i128) -> Option<i128> {
         None
     }
+    /// Return the reachable local times immediately before and after a gap.
+    ///
+    /// Override only when the provider can include raw epochs outside the
+    /// Instant range. The default retains bounded gap disambiguation.
+    fn nearest_gap_boundaries(&self, _local_nanoseconds: i128) -> Option<(i128, i128)> {
+        None
+    }
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant>;
 }
 
@@ -474,9 +481,10 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     }
     let earlier = disambiguation == Disambiguation::Earlier;
     let window = 3 * NANOSECONDS_PER_DAY;
+    let lower = local - window;
     let upper = (local + window).min(crate::MAX_EPOCH_NANOSECONDS);
     let mut cursor =
-        Instant::from_epoch_nanoseconds((local - window - 1).max(-crate::MAX_EPOCH_NANOSECONDS))?;
+        Instant::from_epoch_nanoseconds((lower - 1).max(-crate::MAX_EPOCH_NANOSECONDS))?;
     let mut before: Option<i128> = None;
     let mut after: Option<i128> = None;
     let mut fallback = None;
@@ -501,6 +509,13 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
             fallback = Some(local - if earlier { new_offset } else { old_offset });
         }
         cursor = event;
+    }
+    // Proposal comparison §11.1.12 steps 6–7: Include raw boundaries when the minimum clips the scan.
+    if lower <= -crate::MAX_EPOCH_NANOSECONDS
+        && let Some((raw_before, raw_after)) = zone.nearest_gap_boundaries(local)
+    {
+        before = Some(raw_before);
+        after = Some(raw_after);
     }
     // Proposal comparison §11.1.12 steps 8–15. Derive the shift from
     // the actual singleton candidates at both local boundaries.

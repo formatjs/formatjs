@@ -47,7 +47,7 @@ structures. Neither behavior establishes compliance for arbitrary custom data.
 ## Explicit selection
 
 Let `q` be the instant in seconds and `a` the transition list.
-[TS TimeZoneOffset:75](../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L75)
+[TS TimeZoneOffset:75](../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L81)
 starts `low = 0`, `high = a.length`. The sentinel gives `a[low].time <= q`;
 every index at or above `high` has a timestamp greater than `q`, vacuously at
 initialization. Each midpoint comparison preserves both facts and reduces the
@@ -73,7 +73,7 @@ milliseconds separately.
 
 ## Final-transition fractional second
 
-[TS:72](../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L72)
+[TS:72](../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L78)
 enters footer evaluation when `milliseconds / 1000 > last.time`.
 [Rust:298](../../crates/intl_datetimeformat/timezone.rs#L298) first floors to
 seconds, then uses `seconds > last.time`. During the fractional second after the

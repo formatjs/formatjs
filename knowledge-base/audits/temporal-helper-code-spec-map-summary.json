@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27368,
+  "whole_selected_source_lines": 27416,
   "whole_selected_source_lines_by_language": {
-    "rust": 11258,
+    "rust": 11306,
     "typescript": 16110
   },
-  "nonoverlapping_callable_lines": 17761,
+  "nonoverlapping_callable_lines": 17782,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8361,
+    "rust": 8382,
     "typescript": 9400
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17418,
+    "mapped": 17439,
     "candidate": 159,
     "unmapped": 184
   },
@@ -496,34 +496,34 @@
     },
     {
       "file": "crates/temporal/timezone.rs",
-      "source_lines": 579,
+      "source_lines": 601,
       "callable_rows": 16,
-      "nonoverlapping_callable_lines": 421,
-      "sha256": "d7b1781fda240922e7c45cefb1e89df3e35d1cdaffe62e6f9a8997d13637801e",
+      "nonoverlapping_callable_lines": 427,
+      "sha256": "53ac45f9b1e054653cf8f3331f5e0c9cfe943f252d80872bc9942fe655fe9bf6",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/timezone_identity.rs",
-      "source_lines": 88,
+      "source_lines": 92,
       "callable_rows": 10,
       "nonoverlapping_callable_lines": 46,
-      "sha256": "09e08e5b28ee7f6babd27e92679325abf982f2ae3422a9a8986ebd4b8522b1c4",
+      "sha256": "93bb14d5d0ba17d3dc97dffac128c6d5f30a57bd7aefd400c549814cfd781a99",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/timezone_registry.rs",
-      "source_lines": 241,
+      "source_lines": 248,
       "callable_rows": 21,
       "nonoverlapping_callable_lines": 147,
-      "sha256": "4caa11e81b2c75f3d25bf557b4bf8dfd2dc8f380f21f787adc30e9ad06d7f6ab",
+      "sha256": "b02c1a900fe73b7ed2450150c218840b4d770e7eeb8297fad30424e9071bade3",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/zoned.rs",
-      "source_lines": 529,
+      "source_lines": 544,
       "callable_rows": 31,
-      "nonoverlapping_callable_lines": 418,
-      "sha256": "6150063ce996816c9ebce0b6aa1c42bf4079b69367a2f4d9ea7019c2d8892f6d",
+      "nonoverlapping_callable_lines": 433,
+      "sha256": "8d5a778f084fde8f0610f275096aaa5741aef5713fa2b42de197273891a9f97c",
       "unresolved_callable_rows": 1
     },
     {

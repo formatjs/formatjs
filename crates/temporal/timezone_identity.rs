@@ -81,6 +81,10 @@ impl<Z: TimeZone> TimeZone for NamedTimeZone<Z> {
     fn nearest_local_after(&self, local: i128) -> Option<i128> {
         self.provider.nearest_local_after(local)
     }
+    // Proposal comparison §11.1.12 steps 6–7: Delegate raw named-zone gap lookup.
+    fn nearest_gap_boundaries(&self, local: i128) -> Option<(i128, i128)> {
+        self.provider.nearest_gap_boundaries(local)
+    }
     // Proposal comparison §6.3.46 steps 9.a and 10.b: Delegate named-zone transition lookup.
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         self.provider.transition(instant, direction)

@@ -461,6 +461,12 @@ day start near the minimum using raw boundaries.
 The same raw-provider query now handles upper day starts that a clipped
 scan cannot prove, including a first valid instant equal to the maximum.
 [Upper day-start proof](temporal-timezone-boundary-proof/README.md#exact-start-of-day-at-the-maximum-instant).
+Rust now also uses complete raw boundaries for exact minimum-Instant
+gap disambiguation. Both offset engines carry daylight time through
+January 1 when extended TZif rules shift both previous-year events
+into January.
+[Gap parity](temporal-timezone-boundary-proof/README.md#compact-gap-crossing-the-minimum-instant).
+[TZif carry](temporal-timezone-boundary-proof/README.md#extended-tzif-rules-crossing-a-year-boundary).
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).

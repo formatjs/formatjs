@@ -35,6 +35,8 @@ providers use their exact rules near the limits.
 local time after a gap when the provider covers raw epochs outside Instant.
 Borrowed and registered transition zones supply it for a day-start search
 clipped at an Instant limit. The default retains the bounded fallback.
+`TimeZone::nearest_gap_boundaries(local_nanoseconds)` lets those providers
+include raw neighboring local times in lower-clipped gap disambiguation.
 See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 for current verification. Later sections retain historical implementation stages;
 their pending-work statements describe those stages.

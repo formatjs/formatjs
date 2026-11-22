@@ -170,6 +170,13 @@ impl TimeZone for ResolvedTimeZone<'_> {
             Identity::Offset(_) => None,
         }
     }
+    // Proposal comparison §11.1.12 steps 6–7: Delegate raw named-zone gap lookup.
+    fn nearest_gap_boundaries(&self, local: i128) -> Option<(i128, i128)> {
+        match self.identity {
+            Identity::Named(_) => self.provider.nearest_gap_boundaries(local),
+            Identity::Offset(_) => None,
+        }
+    }
     // Proposal comparison §6.3.46 steps 9.a, 10.b: dispatch the selected transition direction.
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         self.provider.transition(instant, direction)

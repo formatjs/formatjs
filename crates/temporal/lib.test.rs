@@ -1730,6 +1730,67 @@ fn owned_iana_transitions_match_icu() {
 }
 
 #[test]
+fn minimum_gap_uses_the_transition_at_the_instant_limit() {
+    use formatjs_temporal::{
+        Disambiguation, Error, NamedTimeZone, OffsetTransition, TimeZoneRecord, TimeZoneRegistry,
+        TransitionZone, ZonedDateTime,
+    };
+    let minimum = -MAX_EPOCH_NANOSECONDS;
+    let seconds = (minimum / 1_000_000_000) as i64;
+    let hour = 3_600_000_000_000;
+    let events = [
+        OffsetTransition {
+            epoch_seconds: seconds,
+            offset_seconds: 14_400,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds + 3_600,
+            offset_seconds: -7200,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds + 10_800,
+            offset_seconds: 10_800,
+        },
+    ];
+    let zone = TransitionZone::new(0, &events, None).unwrap();
+    let gap = IsoDateTime::from_epoch_nanoseconds(minimum + 2 * hour).unwrap();
+    for (mode, expected) in [
+        (Disambiguation::Later, Ok(minimum + 5 * hour)),
+        (Disambiguation::Compatible, Ok(minimum + 5 * hour)),
+        (Disambiguation::Earlier, Err(Error::OutOfRange)),
+        (Disambiguation::Reject, Err(Error::InvalidDateTime)),
+    ] {
+        assert_eq!(
+            ZonedDateTime::from_local(gap, zone, mode)
+                .map(|zoned| zoned.instant().epoch_nanoseconds()),
+            expected,
+            "{mode:?}"
+        );
+    }
+    let name = "America/Denver";
+    let tagged = NamedTimeZone::new(name, zone).unwrap();
+    let records = [TimeZoneRecord::new(name, zone).unwrap()];
+    let registered = TimeZoneRegistry::new(&records)
+        .unwrap()
+        .resolve(name)
+        .unwrap();
+    let later = Disambiguation::Later;
+    let expected = Instant::from_epoch_nanoseconds(minimum + 5 * hour).unwrap();
+    assert_eq!(
+        ZonedDateTime::from_local(gap, tagged, later)
+            .unwrap()
+            .instant(),
+        expected
+    );
+    assert_eq!(
+        ZonedDateTime::from_local(gap, registered, later)
+            .unwrap()
+            .instant(),
+        expected
+    );
+}
+
+#[test]
 fn borrowed_zones_resolve_nearest_gap_boundaries() {
     use formatjs_temporal::{Disambiguation, OffsetTransition, TransitionZone, ZonedDateTime};
     let minute = 60_000_000_000i128;
@@ -4502,5 +4563,45 @@ fn previous_transition_includes_minimum_instant() {
     assert_eq!(
         no_change.transition(next_nanosecond, TransitionDirection::Previous),
         None
+    );
+}
+
+#[test]
+fn westward_year_window_carries_previous_rule_year_daylight_offset() {
+    use formatjs_temporal::{
+        FutureRule, TimeZone, TransitionDirection, TransitionRule, TransitionZone,
+    };
+    let footer = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Julian {
+                day: 365,
+                seconds: 144 * 3600,
+            },
+            TransitionRule::Julian {
+                day: 364,
+                seconds: 120 * 3600,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(footer)).unwrap();
+    let january: Instant = "2025-01-01T00:00:00Z".parse().unwrap();
+    let end: Instant = "2025-01-03T23:00:00Z".parse().unwrap();
+    let start: Instant = "2024-01-06T00:00:00Z".parse().unwrap();
+    let before_january = Instant::from_epoch_nanoseconds(january.epoch_nanoseconds() - 1).unwrap();
+    let before_end = Instant::from_epoch_nanoseconds(end.epoch_nanoseconds() - 1).unwrap();
+    assert_eq!(zone.offset_nanoseconds(before_january), 3_600_000_000_000);
+    assert_eq!(zone.offset_nanoseconds(january), 3_600_000_000_000);
+    assert_eq!(zone.offset_nanoseconds(before_end), 3_600_000_000_000);
+    assert_eq!(zone.offset_nanoseconds(end), 0);
+    assert_eq!(
+        zone.transition(before_january, TransitionDirection::Next),
+        Some(end)
+    );
+    assert_eq!(
+        zone.transition(january, TransitionDirection::Previous),
+        Some(start)
     );
 }

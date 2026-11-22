@@ -307,7 +307,7 @@ earlier, later, reject, and a matching explicit offset. It also exercises
 both endpoint folds, nanosecond precision near the limits and a transition,
 and a forward gap.
 
-The [candidate interval search](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L92)
+The [candidate interval search](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L98)
 visits the first active historical offset, every intersecting transition,
 and reachable recurring offsets. The [owned lookup](../../../packages/intl-datetimeformat/core.ts#L416)
 subtracts each candidate offset from exact local nanoseconds and confirms
@@ -438,7 +438,7 @@ position, then considers recurring footer events and the footer handoff.
 It compares offsets on both sides of each boundary. Direction is strict at
 nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
-[Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L208).
+[Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L214).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L558).
 [Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L374).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
@@ -468,7 +468,7 @@ that same instant. Both tests query one nanosecond before and after the
 handoff and verify strict direction at the handoff itself.
 
 [Compact delegation](../../../packages/temporal/kernel.ts#L283).
-[Rust handoff check](../../../crates/temporal/timezone.rs#L485).
+[Rust handoff check](../../../crates/temporal/timezone.rs#L507).
 
 - Before-fix Bazel SHA-256 `4413a6ddc2e8a0fd563f9cf390be32878f5b00d727670e5133be548ab37a1bd5`
 - Combined nine-target Bazel SHA-256 `78daf4411c68153d468dc61a45cdaca6e8dd00582929d7ee9cb880def95fa8d0`
@@ -482,12 +482,32 @@ epoch seconds on each side, then returns the valid boundary. At one
 nanosecond above the minimum, both test zones return the minimum as
 their previous transition. The strict query from the minimum returns
 null. An unchanged offset at the same timestamp returns null too.
-[Rust offset check](../../../crates/temporal/timezone.rs#L462).
-[Regression](../../../crates/temporal/lib.test.rs#L4451).
+[Rust offset check](../../../crates/temporal/timezone.rs#L484).
+[Regression](../../../crates/temporal/lib.test.rs#L4512).
 [§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
 
 - Before-fix Bazel SHA-256 `18fa17e034ea575ab2d357c25f1845f3f30750f429669e65d1682362a61b45d4`
 - Six-target Bazel SHA-256 `61797368758b5479318f96850fcdbf44ae11fa739a7b66870aca64831bb742a5`
+
+### Extended TZif rules crossing a year boundary
+
+`STD0DST-1,J365/144,J364/120` schedules both 2024 rule events in
+January 2025. On January 1, 2025 the last effective event is the
+daylight start on January 6, 2024, scheduled by the 2023 rule.
+The old TypeScript and Rust offset readers missed that rule year.
+The TypeScript transition search then reported a false January 1
+change, and both paths could miss the real end at January 3, 23:00 UTC.
+
+When the usual year window contains no applicable event, both readers
+now carry the latest event from two rule years earlier. These extensions
+are allowed for TZif version 3 and above. The regression checks offsets
+across January 1 and the true previous and next transition.
+[TZif RFC 9636 §3.3.2](https://www.rfc-editor.org/rfc/rfc9636.html#section-3.3.2).
+[ECMA-262 §21.4.1.21](https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds).
+
+- Before-fix Bazel SHA-256 `867956ea48fef8089be5fc2b15f54f0e99f2e85c84f55da04d1bc91ff1209e5f`
+- TypeScript four-target Bazel SHA-256 `9d662e5f17d57d37edcc383cb447c31b0e8a1985b513f174cbc991cd79c766ed`
+- Passing packaged replay SHA-256 `5dea9cfc8133b9204113baa0b61a8d26a298e7f24605e56be6eab50a21038512`
 
 ## Finite future history in native Intl
 
@@ -564,7 +584,7 @@ existing gap behavior supplies the fallback. Clipped limits and host
 provider completeness retain their separate evidence.
 
 - [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L371).
-- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L483).
+- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L491).
 - [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
 
 Five focused Bazel gates pass. Before-fix log SHA-256 `060e0dabd0f0a411c115def738840bf7e89fbd85f74c900101fd1614b8e09331`.
@@ -617,6 +637,9 @@ The compact scan now includes the minimum and reads the raw offset
 before it. Later and compatible return minimum plus five hours, matching
 owned Intl. Earlier selects an out-of-range result and throws. Reject
 continues to throw for the gap.
+Rust's clipped gap search now also takes both neighbors from the exact
+provider, using the same raw boundary projection as its day-start path.
+The borrowed and wrapped providers return minimum plus five hours.
 [Compact scan](../../../packages/temporal/kernel.ts#L365).
 [Regression](../../../packages/temporal/tests/compact-timezone.test.ts#L89).
 [§11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
@@ -624,6 +647,8 @@ continues to throw for the gap.
 - Before-fix Bazel SHA-256 `b7c774a8bdd1ba433d151fed376a88b57170d3f0d31e06e48eafa02bb84ac975`
 - Passing Bazel SHA-256 `05014b2339970719e62ece5796bb6e117a78e0216f750a91ccd6a8ca6d1121c0`
 - Pinned packaged replay SHA-256 `7991fec1d1a8fa72f1e9bd492e5f225ab9be7f10a4c8e548d1e2821c8236480a`
+- Rust before-fix Bazel SHA-256 `88e48594882779eb16882e0efefc293896e759c8bb9af53f5f7df65139a4243b`
+- Rust four-target Bazel SHA-256 `1afbec7d8f9b180874c1e11464ce554d74fecfcb1e9e0845b0c9d458e086f243`
 
 A separate custom profile adds a +03:00 row one hour before the
 minimum, keeping the same later rows. For local minimum plus 3.5h
@@ -666,7 +691,7 @@ proof. The existing fallback remains scoped policy, and these witnesses
 leave the rendered comparison conditional. The explicit post-limit rows
 are valid packed Intl inputs. Borrowed Rust TransitionZone rejects such
 explicit rows, so this replay establishes no Rust parity result.
-[Rust transition table validation](../../../crates/temporal/timezone.rs#L256).
+[Rust transition table validation](../../../crates/temporal/timezone.rs#L267).
 [Package replay](owned-wide-rounding-replay.mjs).
 
 Node 26.8.1 public replay output SHA-256
@@ -699,7 +724,7 @@ this bound across packaged, compact and Rust paths. The fallback remains
 for a clipped lower search or an upper search that cannot prove the
 closest local clock.
 [TypeScript scan](../../../packages/temporal/kernel.ts#L70).
-[Rust scan](../../../crates/temporal/zoned.rs#L374).
+[Rust scan](../../../crates/temporal/zoned.rs#L381).
 
 - Before-fix TypeScript Bazel SHA-256 `7a8d461a2e1b4cad672a83f634c8a67ea2ecf1ec6038ed31998b42ea46cdb650`
 - Before-fix Rust Bazel SHA-256 `fb73f1d84265386c0963821cf5f63f8efec592efb9d045adfd2da26c29361189`
@@ -725,10 +750,10 @@ candidate check rejects a raw-only earlier clock outside the range,
 even if a later clock has a valid Instant. Numeric Intl and custom
 Rust providers without raw coverage retain their fallback.
 
-[Shared packed lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L165).
+[Shared packed lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [TypeScript dispatch](../../../packages/temporal/kernel.ts#L99).
 [Zone wrapper](../../../packages/temporal/zones.ts#L128).
-[Rust provider](../../../crates/temporal/timezone.rs#L389).
+[Rust provider](../../../crates/temporal/timezone.rs#L400).
 [§11.1.14 steps 5–7](https://tc39.es/proposal-temporal/#sec-temporal-getstartofday).
 
 - Before-fix packaged Bazel SHA-256 `558fa5e7d9aa696087c738131f3a163f37558cc80deb201e8e78a881d11b0df3`
@@ -751,7 +776,7 @@ because every supported offset is shorter than one day. The rejection
 controls also cover a raw transition outside the range whose wall time
 precedes another reachable in-range clock.
 [TypeScript check](../../../packages/temporal/kernel.ts#L99).
-[Rust check](../../../crates/temporal/zoned.rs#L407).
+[Rust check](../../../crates/temporal/zoned.rs#L414).
 [§11.1.14 steps 5–7](https://tc39.es/proposal-temporal/#sec-temporal-getstartofday).
 
 - TypeScript before-fix Bazel SHA-256 `57922c503a6742349edd309f0645cd66a5aaf6dd7c41b51a3dfd8392373a1a9d`
@@ -784,8 +809,8 @@ both sides. Unknown providers retain bounded enumeration by default and
 the existing provider applicability condition.
 
 - [Compact matching and range check](../../../packages/temporal/kernel.ts#L310).
-- [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L367).
-- [Rust candidate validation](../../../crates/temporal/zoned.rs#L329).
+- [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L378).
+- [Rust candidate validation](../../../crates/temporal/zoned.rs#L336).
 - [Rust explicit offset matching](../../../crates/temporal/zoned_string.rs#L124).
 - [Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
 

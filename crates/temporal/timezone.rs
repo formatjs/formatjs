@@ -111,6 +111,11 @@ impl FutureRule {
             end.event(year) - i64::from(offset),
         ))
     }
+    // RFC 9636 §3.3.2: Both previous rule-year events can spill past January 1.
+    fn daylight_before_rule_window(self, year: i32) -> bool {
+        let (begin, end) = self.events(year - 2).unwrap();
+        begin >= end
+    }
     // Proposal comparison §6.3.46 steps 9.a and 10.b: Check whether a footer event changes the offset.
     fn changes_at(self, seconds: i64) -> bool {
         let Some((offset, _, _)) = self.daylight else {
@@ -147,6 +152,9 @@ impl FutureRule {
                 is_dst = false;
             }
         }
+        if previous == i64::MIN {
+            was_dst = self.daylight_before_rule_window(year);
+        }
         was_dst != is_dst
     }
     #[cold]
@@ -175,6 +183,9 @@ impl FutureRule {
                 latest = end;
                 dst = false;
             }
+        }
+        if latest == i64::MIN {
+            dst = self.daylight_before_rule_window(year);
         }
         if dst { offset } else { self.standard }
     }
@@ -388,21 +399,32 @@ impl TimeZone for TransitionZone<'_> {
 
     // Proposal comparison §11.1.14 step 5: Find the nearest projected raw boundary after a gap.
     fn nearest_local_after(&self, local: i128) -> Option<i128> {
+        self.nearest_gap_boundaries(local).map(|(_, after)| after)
+    }
+
+    // Proposal comparison §11.1.12 steps 6–7: Project adjacent raw offset segments.
+    fn nearest_gap_boundaries(&self, local: i128) -> Option<(i128, i128)> {
         if !(-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&local) {
             return None;
         }
-        // Every offset is shorter than a day. The epoch one day after the gap
-        // projects within two local days, bounding all candidate epochs by three days.
-        let lower = (local - NANOSECONDS_PER_DAY).div_euclid(1_000_000_000) as i64;
-        let upper = (local + 3 * NANOSECONDS_PER_DAY).div_euclid(1_000_000_000) as i64;
-        let mut nearest = None;
+        // Epochs one day away project to opposite sides within two local days.
+        // Their nearest local neighbors therefore have epochs within three days.
+        let window = 3 * NANOSECONDS_PER_DAY;
+        let lower = (local - window).div_euclid(1_000_000_000) as i64;
+        let upper = (local + window).div_euclid(1_000_000_000) as i64;
+        let mut before = None;
+        let mut after = None;
         let mut consider = |at| {
             if at <= lower || at > upper {
                 return;
             }
-            let projected = i128::from(at + i64::from(self.offset_seconds(at))) * 1_000_000_000;
-            if projected > local && nearest.is_none_or(|previous| projected < previous) {
-                nearest = Some(projected);
+            let end = i128::from(at + i64::from(self.offset_seconds(at - 1))) * 1_000_000_000 - 1;
+            let start = i128::from(at + i64::from(self.offset_seconds(at))) * 1_000_000_000;
+            if end < local && before.is_none_or(|previous| end > previous) {
+                before = Some(end);
+            }
+            if start > local && after.is_none_or(|next| start < next) {
+                after = Some(start);
             }
         };
         let start = self
@@ -434,7 +456,7 @@ impl TimeZone for TransitionZone<'_> {
                 }
             }
         }
-        nearest
+        before.zip(after)
     }
 
     // Proposal comparison §6.3.46 steps 9.a and 10.b: Search strict next or previous offset changes.

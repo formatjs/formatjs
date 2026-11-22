@@ -98,7 +98,7 @@ short-date fixtures establish sampled values, not full provider equivalence.
 
 [Shared range controls340](../../packages/temporal/tests/plain-arithmetic-oracle.ts#L340)
 retain literal constructor/with successes and both operation rejections. The
-[typed Rust control3878](../../crates/temporal/lib.test.rs#L4320) also checks exact
+[typed Rust control3878](../../crates/temporal/lib.test.rs#L4381) also checks exact
 epoch coordinates. All three owning TS/native/Rust range controls
 failed before correction. All nine focused gates pass.
 

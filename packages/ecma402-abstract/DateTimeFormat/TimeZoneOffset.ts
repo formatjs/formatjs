@@ -68,6 +68,12 @@ function futureOffset(t: number, rule: TimeZoneFutureRule): [number, boolean] {
       inDST = false
     }
   }
+  // RFC 9636 §3.3.2: Both previous rule-year events can spill past January 1.
+  if (latest === -Infinity) {
+    const begin = TimeZoneRuleTransition(year - 2, start) - standardOffset
+    const finish = TimeZoneRuleTransition(year - 2, end) - daylightOffset
+    inDST = begin >= finish
+  }
   return [inDST ? daylightOffset : standardOffset, inDST]
 }
 
