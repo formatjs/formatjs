@@ -46,6 +46,41 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test('allocates owned Temporal formatters without a mutable Object.create hook', () => {
+  const value = new Temporal.ZonedDateTime(0n, 'UTC')
+  const expected = value.toLocaleString('en')
+  const originalCreate = Object.create
+  let actual
+  try {
+    Object.create = () => {
+      throw new Error('Unexpected Object.create call')
+    }
+    actual = value.toLocaleString('en')
+  } finally {
+    Object.create = originalCreate
+  }
+  expect(actual).toBe(expected)
+})
+
+test('throws the intrinsic RangeError for a ZonedDateTime calendar mismatch', () => {
+  const value = new Temporal.ZonedDateTime(0n, 'UTC', 'gregory')
+  const originalRangeError = RangeError
+  let actual: unknown
+  try {
+    globalThis.RangeError = new Proxy(originalRangeError, {
+      construct() {
+        return new Error('Unexpected global RangeError')
+      },
+    })
+    value.toLocaleString('en', {calendar: 'iso8601'})
+  } catch (error) {
+    actual = error
+  } finally {
+    globalThis.RangeError = originalRangeError
+  }
+  expect(actual).toBeInstanceOf(originalRangeError)
+})
+
 test('rejects missing range endpoints with the intrinsic TypeError', () => {
   const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
   const OriginalTypeError = TypeError

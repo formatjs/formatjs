@@ -174,7 +174,7 @@ function resolveHourCycle(
   return hc == null ? data.hourCycle : hc
 }
 
-const createTimePatternOptions = Object.create
+const createObject = Object.create
 const timePatternIndexOf = String.prototype.indexOf
 const timePatternExec = RegExp.prototype.exec
 const timePatternReplace = RegExp.prototype[Symbol.replace]
@@ -206,7 +206,7 @@ function applyExplicitTimePatternOptions(
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L834
     // Temporal comparison §15.4.1 step46.m: adapt the selected CLDR time pattern.
     // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
-    const numberOptions = createTimePatternOptions(null)
+    const numberOptions = createObject(null)
     numberOptions.numberingSystem = numberingSystem
     const NumberFormat = getNumberFormatProvider()
     const numberFormat = createMemoizedNumberFormatForConstructor(NumberFormat)(
@@ -298,7 +298,9 @@ export function InitializeDateTimeFormat(
   // @ts-ignore
   const requestedLocales: string[] = CanonicalizeLocaleList(locales)
   const options = CoerceOptionsToObject<Intl.DateTimeFormatOptions>(opts)
-  let opt: Opt = Object.create(null)
+  // Temporal §15.4.1 step 4 creates the locale resolution record.
+  // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+  let opt: Opt = createObject(null)
   let matcher = GetOption(
     options,
     'localeMatcher',
@@ -384,7 +386,8 @@ export function InitializeDateTimeFormat(
     uppercaseIdentifiers[timeZone.toUpperCase()] ?? dataTimeZone
   internalSlots.dataTimeZone = dataTimeZone
 
-  opt = Object.create(null)
+  // Temporal §15.4.1 step 35 creates the format options record.
+  opt = createObject(null)
   opt.weekday = GetOption(
     options,
     'weekday',

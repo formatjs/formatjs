@@ -71,6 +71,7 @@ import {
 } from '#packages/intl-datetimeformat/types.js'
 
 const now = Date.now
+const createObject = Object.create
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -276,7 +277,9 @@ defineProperty(DateTimeFormat, '__formatTemporal', {
     locales?: string | string[],
     options?: Intl.DateTimeFormatOptions
   ): string {
-    const dtf = Object.create(DateTimeFormat.prototype) as IDateTimeFormat
+    // Temporal §15.11.8.1 step 3 creates the formatter before calendar checks.
+    // https://tc39.es/proposal-temporal/#sup-temporal.zoneddatetime.prototype.tolocalestring
+    const dtf = createObject(DateTimeFormat.prototype) as IDateTimeFormat
     const date =
       value.kind === 'PlainDate' ||
       value.kind === 'PlainYearMonth' ||
@@ -287,11 +290,14 @@ defineProperty(DateTimeFormat, '__formatTemporal', {
       timeZone: value.kind === 'ZonedDateTime' ? value.timeZone : undefined,
     })
     if (value.kind === 'ZonedDateTime') {
+      // Temporal §15.11.8.1 steps 4–5 validate the calendar and use the instant.
       if (
         value.calendar !== 'iso8601' &&
         value.calendar !== getInternalSlots(dtf).calendar
       )
-        throw new RangeError('Temporal calendar does not match DateTimeFormat')
+        throw new RangeErrorConstructor(
+          'Temporal calendar does not match DateTimeFormat'
+        )
       value = {kind: 'Instant', epochNanoseconds: value.epochNanoseconds}
     }
     return FormatDateTime(dtf, value, getDateTimeImplementationDetails())

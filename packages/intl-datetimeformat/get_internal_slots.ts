@@ -12,6 +12,7 @@ const internalSlotMap = new WeakMap<
 >()
 const readInternalSlots = internalSlotMap.get.bind(internalSlotMap)
 const writeInternalSlots = internalSlotMap.set.bind(internalSlotMap)
+const createObject = Object.create
 
 export default function getInternalSlots(
   x: DateTimeFormat | Intl.DateTimeFormat,
@@ -19,7 +20,9 @@ export default function getInternalSlots(
 ): IntlDateTimeFormatInternal {
   let internalSlots = readInternalSlots(x)
   if (!internalSlots && initialize) {
-    internalSlots = Object.create(null) as IntlDateTimeFormatInternal
+    // Temporal §15.4.1 step 1 allocates private formatter slots.
+    // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+    internalSlots = createObject(null) as IntlDateTimeFormatInternal
     writeInternalSlots(x, internalSlots)
   }
   // ECMA-402 §11.3.3, step 3: require the receiver's internal brand.
