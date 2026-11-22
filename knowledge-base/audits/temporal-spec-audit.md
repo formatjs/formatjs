@@ -16,7 +16,7 @@ source-line inventory below is historical evidence, not section completion.
 Current [goal and execution plan](temporal-remaining-work-plan.md) replaces the
 old provisional citation count with a fixed code/spec register. All 268 public
 API/property/range entries map to existing code. The helper/backend register
-contains 1,068 existing callables, with mapping status separate from review and
+contains 1,069 existing callables, with mapping status separate from review and
 implementation defects. Existing working behavior is the baseline.
 
 Pinned comparison scope: 654 numbered clauses; 484 active algorithms and 4,085
@@ -25,8 +25,8 @@ numbered steps, including 760 amendment steps whose applicability is pending.
 [amendment rows](temporal-amendment-requirement-checklist.tsv) retain prose,
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
-algorithm rows. First numbered pass now reconciles 641 rows across chapters
-1, 2, 8 and 9; 4,145 core rows await reconciliation, 68 remain conditional.
+algorithm rows. Numbered passes now reconcile 1,452 rows across chapters
+1, 2, 3, 4, 8 and 9; 3,334 core rows await reconciliation, 110 remain conditional.
 Local verified steps do not imply complete caller compliance.
 
 Prefer JavaScript runtime and Intl contracts already exercised by this polyfill.
@@ -50,9 +50,26 @@ padStart. Reuse existing zeroPadDecimal. Public regression fails before the
 correction; no-Intl UTC, New York and Kathmandu source/bytecode controls pass
 with each hook replaced. All 16 focused targets pass (10 executed, six cached).
 [Target manifest](temporal-numbered-first-pass-validation-targets.txt).
-Correction and register reconciliation pending push. Further PlainDate candidates
-remain separate until reproduced. Future corrections commit and push directly;
+Correction and initial register reconciliation pushed to main at ae94b3059. Future corrections commit and push directly;
 no new PRs. [Measured review estimate](temporal-remaining-work-plan.md#progress-and-estimate).
+
+## PlainDate and PlainTime numbered pass, 2026-11-22
+
+Another 811 rows reconciled: PlainDate 413, PlainTime 398. PlainTime clock values
+fit below 2^47; exact BigInt scalar arithmetic precedes bounded Number output.
+Existing field-order, strict-increment and signed large-duration evidence reused.
+No new PlainTime defect. Its 38 spec-issue rows include propagated gates for
+the existing CompareTimeRecord prose/sign and partial-record sentinel conflicts.
+
+Four reproduced PlainDate gaps corrected: private short-date fields now have
+null prototypes; time bridges call existing internal conversion rather than
+public PlainTime.from; direct branded zones skip unused plainTime getters;
+ISO year formatting reuses zeroPadDecimal and ToString. Exact sections/steps and
+current source ranges are in the core checklist. All 10 focused targets pass
+(four executed, six cached), including TS/native Hermes source and bytecode.
+Shared public controls preserve
+ordinary bag getter order and nanosecond precision.
+[Validation targets](temporal-plain-date-conversion-validation-targets.txt).
 
 ## Private difference preparation, 2026-11-22
 

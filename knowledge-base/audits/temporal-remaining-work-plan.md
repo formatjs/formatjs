@@ -21,11 +21,11 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                           |
 | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                     |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,068 existing callables: 174 explicit target assignments, 495 candidate/dependency assignments, 399 unresolved mappings |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 existing callables: 175 explicit target assignments, 495 candidate/dependency assignments, 399 unresolved mappings |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability pending                                 |
 
-Code maps cover 82 distinct selected source files and 23,710 physical lines.
+Code maps cover 82 distinct selected source files and 23,723 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -91,18 +91,19 @@ conditional obligations, confirmed implementation gaps and unlanded corrections
 separately. Candidate source assignments require confirmation; 399 unresolved
 helper mappings are a mapping queue, not 399 missing functions.
 
-First numbered batch reconciles 641 rows (369 algorithm steps) across chapters
-1, 2, 8 and 9. Current core register: 4,145 rows still await reconciliation,
-68 conditional, one partial; local decisions are not whole-operation signoff.
-One confirmed Now fallback gap is corrected and validated, pending push.
-Chapter 3/4 review continues separately; new candidates require reproductions.
+Numbered passes reconcile 1,452 rows across chapters 1, 2, 3, 4, 8 and 9.
+Current core register: 3,334 rows await reconciliation, 110 conditional,
+38 rows retain existing spec issues, one partial. Local decisions are not
+whole-operation signoff. Now fallback correction is pushed to main at ae94b3059.
+Four reproduced PlainDate gaps are corrected, with focused validation below.
+Chapter 5/10 review continues; further candidates require reproductions.
 
 Pilot interval: 03:06:12–03:21:57 UTC on 2026-11-22, including parallel review,
-one correction and validation: about 41 rows/minute. Remaining 4,145 core plus
-1,057 amendment rows would take about 128 minutes at that rate. Plan 3–6 hours
+one correction and validation: about 41 rows/minute. Remaining 3,334 core plus
+1,057 amendment rows would take about 107 minutes at that pilot rate. Plan 3–6 hours
 for the remaining first review pass, allowing slower shared algorithms and
 amendment applicability review. This is a review-pass estimate, not a full
-compliance deadline: 68 named conditional premises, confirmed fixes and external
+compliance deadline: 110 conditional rows (including propagated gates), confirmed fixes and external
 spec issues need separate closure. Recalculate after the next disjoint batch;
 row costs vary. Do not derive progress from citations, PR counts or source lines.
 Earlier 7–14-day forecast is retired.
@@ -146,3 +147,10 @@ zeroPadDecimal. Public regression failed before correction; all 16 focused
 Bazel targets pass (10 executed, six cached), covering TS/native Hermes source
 and bytecode, Test262, installation and typechecking.
 [Validation targets](temporal-numbered-first-pass-validation-targets.txt).
+
+PlainDate correction reuses existing time conversion and zeroPadDecimal, removes
+an extra getter, and gives private short-date fields null prototypes. Four public
+regressions failed before correction. All 10 focused targets pass (four executed,
+six cached). Shared oracle controls exercise exact
+nanoseconds, private conversion, ordinary bag getters and ISO year strings.
+[Validation targets](temporal-plain-date-conversion-validation-targets.txt).

@@ -228,6 +228,11 @@ function toTime(value: unknown, options?: unknown): bigint {
   overflow(options)
   return result
 }
+export function toPlainTimeNanoseconds(value: unknown): bigint {
+  return import.meta.formatjsTemporalNativeData === true
+    ? bigIntFrom(toNativeTime(value).nanoseconds)
+    : toTime(value)
+}
 function nativeTime(value: object): NativeTimeResult {
   const result = getNativeTimeSlot(value)
   if (!result) throw new TypeErrorConstructor('Invalid PlainTime receiver')

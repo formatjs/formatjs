@@ -1,3 +1,9 @@
+import {
+  checkPlainDateTimeConversion,
+  checkPlainDateZoneBranch,
+  checkPlainDateShortFields,
+  checkPlainDateYearFormatting,
+} from '#packages/temporal/tests/date-output-oracle.js'
 import {checkDateOutputOracle} from '#packages/temporal/tests/date-output-oracle.js'
 import {it, expect} from 'vitest'
 import {readFileSync} from 'node:fs'
@@ -222,3 +228,14 @@ it('reads short-date overflow once and keeps constrained string normalization', 
     expect(reads).toBe(1)
   }
 })
+
+for (const check of [
+  checkPlainDateTimeConversion,
+  checkPlainDateZoneBranch,
+  checkPlainDateShortFields,
+  checkPlainDateYearFormatting,
+]) {
+  it(check.name, () =>
+    check(Temporal, (actual, expected) => expect(actual).toEqual(expected))
+  )
+}

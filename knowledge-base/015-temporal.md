@@ -12,6 +12,12 @@ zeroPadDecimal, preserving default-zone calls when String or padStart changes.
 The public host regression covers UTC and nonzero offsets in source/bytecode;
 [16 focused targets](audits/temporal-numbered-first-pass-validation-targets.txt) pass.
 
+PlainDate's short-date bridges use null-prototype private fields. Time bridges
+reuse internal conversion; direct branded zones skip unused plainTime getters.
+ISO year padding uses existing zeroPadDecimal. Public controls cover poisoned
+hooks, normal bag getters and exact nanoseconds across TS/native Hermes.
+[Validation targets](audits/temporal-plain-date-conversion-validation-targets.txt).
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

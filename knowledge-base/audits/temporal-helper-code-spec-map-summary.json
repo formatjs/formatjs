@@ -1,33 +1,33 @@
 {
   "scope": "TS root helpers excluding exposed TS members/Now/index; production Rust root modules+calendar providers+shared timezone; no tests/scripts/conformance driver",
-  "callable_rows": 1068,
+  "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 23467,
+  "whole_selected_source_lines": 23480,
   "whole_selected_source_lines_by_language": {
     "rust": 10333,
-    "typescript": 13134
+    "typescript": 13147
   },
-  "nonoverlapping_callable_lines": 16675,
+  "nonoverlapping_callable_lines": 16680,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8112,
-    "typescript": 8563
+    "typescript": 8568
   },
   "disjoint_callable_line_assignment": {
     "candidate": 7373,
     "unmapped": 4954,
-    "mapped": 4348
+    "mapped": 4353
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
     "candidate": 495,
     "unmapped": 399,
-    "mapped": 174
+    "mapped": 175
   },
   "by_language": {
     "typescript": {
       "candidate": 173,
-      "mapped": 174,
+      "mapped": 175,
       "unmapped": 172
     },
     "rust": {
@@ -209,7 +209,8 @@
     "timeZoneIdentifier",
     "zonedKernel",
     "primaryTimeZoneIdentifier",
-    "timeZoneEquals"
+    "timeZoneEquals",
+    "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
     "implementation_dependency": 445,
@@ -583,10 +584,10 @@
     },
     {
       "file": "packages/temporal/date-core.ts",
-      "source_lines": 1062,
+      "source_lines": 1063,
       "callable_rows": 38,
       "nonoverlapping_callable_lines": 853,
-      "sha256": "e35a8795b56b1e76c7cebe47dc5a40ce306e6a92f8fa06883c7f1ea1c6ca51d5",
+      "sha256": "e8bded4e96fb9e4bae70f0e25b93c03bf01d19933ed50a3f37d984f77e2f59c4",
       "unresolved_callable_rows": 12
     },
     {
@@ -799,10 +800,10 @@
     },
     {
       "file": "packages/temporal/plain-date.ts",
-      "source_lines": 466,
+      "source_lines": 473,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 156,
-      "sha256": "b61a9cb8b7a41c1eea3f09b03f01e67d2106ee62d0dd856d0698a8ea3fc6a317",
+      "sha256": "5d215d31f7f75c7ab491dd0b04ab11f624e6f88a479828730feee6368532a945",
       "unresolved_callable_rows": 1
     },
     {
@@ -823,10 +824,10 @@
     },
     {
       "file": "packages/temporal/plain-time.ts",
-      "source_lines": 655,
-      "callable_rows": 19,
-      "nonoverlapping_callable_lines": 309,
-      "sha256": "8e17c08e4a3706f870857e6db40ff9beb66a742d4c89dfa5de3f94cf3b6fbc38",
+      "source_lines": 660,
+      "callable_rows": 20,
+      "nonoverlapping_callable_lines": 314,
+      "sha256": "5f7f24d0b64d6095483c804e28f11b1b356258174747240cb8f0081e3089cd00",
       "unresolved_callable_rows": 7
     },
     {

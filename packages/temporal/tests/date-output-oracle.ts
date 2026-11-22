@@ -1,10 +1,134 @@
 import type {Temporal as TemporalNamespace} from '#packages/temporal/index.js'
 
+export function checkPlainDateTimeConversion(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const date = new Temporal.PlainDate(2020, 2, 29),
+    time = new Temporal.PlainTime(12, 34, 56, 123, 456, 789),
+    original = Temporal.PlainTime.from
+  let plain: ReturnType<typeof date.toPlainDateTime> | undefined,
+    zoned: ReturnType<typeof date.toZonedDateTime> | undefined
+  Temporal.PlainTime.from = () => {
+    throw new Error('Public PlainTime.from reached')
+  }
+  try {
+    plain = date.toPlainDateTime(time)
+    zoned = date.toZonedDateTime({timeZone: 'UTC', plainTime: time})
+  } finally {
+    Temporal.PlainTime.from = original
+  }
+  equal(
+    plain!.toString(),
+    '2020-02-29T12:34:56.123456789',
+    'Private time conversion'
+  )
+  equal(
+    zoned!.epochNanoseconds,
+    1582979696123456789n,
+    'Private zoned time conversion'
+  )
+}
+
+export function checkPlainDateZoneBranch(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const date = new Temporal.PlainDate(2020, 2, 29),
+    zone = new Temporal.ZonedDateTime(0n, 'UTC')
+  Object.defineProperty(zone, 'plainTime', {
+    get() {
+      throw new Error('Unused plainTime reached')
+    },
+  })
+  equal(
+    date.toZonedDateTime(zone).epochNanoseconds,
+    1582934400000000000n,
+    'Direct branded zone ignores plainTime'
+  )
+  const reads: string[] = []
+  date.toZonedDateTime({
+    get timeZone() {
+      reads.push('timeZone')
+      return 'UTC'
+    },
+    get plainTime() {
+      reads.push('plainTime')
+      return {hour: 1}
+    },
+  })
+  equal(reads.join(','), 'timeZone,plainTime', 'Bag time remains observable')
+}
+
+export function checkPlainDateShortFields(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const date = new Temporal.PlainDate(2020, 2, 29, 'gregory')
+  for (const key of ['era', 'eraYear']) {
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+    let yearMonth: ReturnType<typeof date.toPlainYearMonth> | undefined,
+      monthDay: ReturnType<typeof date.toPlainMonthDay> | undefined
+    Object.defineProperty(Object.prototype, key, {
+      configurable: true,
+      get() {
+        throw new Error('Inherited private era reached')
+      },
+    })
+    try {
+      yearMonth = date.toPlainYearMonth()
+      monthDay = date.toPlainMonthDay()
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, key, original)
+      else Reflect.deleteProperty(Object.prototype, key)
+    }
+    equal(
+      yearMonth!.toString(),
+      '2020-02-01[u-ca=gregory]',
+      'Private YearMonth fields'
+    )
+    equal(
+      monthDay!.toString(),
+      '1972-02-29[u-ca=gregory]',
+      'Private MonthDay fields'
+    )
+  }
+}
+
+export function checkPlainDateYearFormatting(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const years = [1, -1, 10000],
+    expected = ['0001-01-02', '-000001-01-02', '+010000-01-02'],
+    dates = years.map(year => new Temporal.PlainDate(year, 1, 2)),
+    original = String.prototype.padStart
+  let result: string[] = []
+  String.prototype.padStart = () => {
+    throw new Error('Public year padding reached')
+  }
+  try {
+    result = dates.map(date => date.toString() + '/' + date.toJSON())
+  } finally {
+    String.prototype.padStart = original
+  }
+  for (let i = 0; i < expected.length; i++)
+    equal(
+      result[i],
+      expected[i] + '/' + expected[i],
+      'Private ISO year padding'
+    )
+}
+
 export function checkDateOutputOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
   equal: (actual: unknown, expected: unknown, context: string) => void
 ): number {
+  checkPlainDateTimeConversion(Temporal, equal)
+  checkPlainDateZoneBranch(Temporal, equal)
+  checkPlainDateShortFields(Temporal, equal)
+  checkPlainDateYearFormatting(Temporal, equal)
   let count = 0
   const rejects = (run: () => unknown, context: string) => {
     let rejected = false

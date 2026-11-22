@@ -114,6 +114,11 @@ Host calendar caches retain original Map/iterator operations. Compact and
 approximate year construction avoids replaced array methods and inherited
 indexed setters; private host Intl options ignore inherited formatting fields.
 
+`PlainDate` conversions keep private calendar fields separate from inherited
+properties and use internal time conversion even when `PlainTime.from` changes.
+Direct branded timezone inputs skip unused `plainTime` getters. ISO year padding
+remains independent of later changes to `String.prototype.padStart`.
+
 Without Intl, default `Temporal.Now` timezone offsets remain independent of
 later replacements of `String` or `String.prototype.padStart`.
 

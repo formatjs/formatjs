@@ -1,3 +1,4 @@
+import {zeroPadDecimal} from '#packages/temporal/format-digits.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
@@ -633,11 +634,11 @@ export function formatISODate(
   if (kind === 'month-day') return month + '-' + day
   const year =
     fields.year >= 1000 && fields.year <= 9999
-      ? String(fields.year)
+      ? ToString(fields.year)
       : fields.year >= 0 && fields.year < 1000
-        ? String(fields.year).padStart(4, '0')
+        ? zeroPadDecimal(fields.year, 4)
         : (fields.year < 0 ? '-' : '+') +
-          String(mathAbs(fields.year)).padStart(6, '0')
+          zeroPadDecimal(mathAbs(fields.year), 6)
   return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
 }
 export function calendarAnnotation(calendar: string, value: unknown): string {

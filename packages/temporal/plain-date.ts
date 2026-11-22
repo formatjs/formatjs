@@ -25,7 +25,7 @@ import {
   createPlainDateTime,
   type PlainDateTimeObject,
 } from '#packages/temporal/plain-date-time.js'
-import {PlainTime} from '#packages/temporal/plain-time.js'
+import {toPlainTimeNanoseconds} from '#packages/temporal/plain-time.js'
 import {
   createPlainYearMonth,
   type PlainYearMonthObject,
@@ -43,7 +43,6 @@ import {
   getZonedDateTimeSlot,
   setDateSlot,
   getDateTimeSlot,
-  getTimeSlot,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -298,13 +297,21 @@ class PlainDateValue {
   toPlainYearMonth(): PlainYearMonthObject {
     const slot = read(this)
     return createPlainYearMonth(
-      yearMonthFields(slot.calendar, {...dateFields(slot)}, 'constrain')
+      yearMonthFields(
+        slot.calendar,
+        {__proto__: null, ...dateFields(slot)},
+        'constrain'
+      )
     )
   }
   toPlainMonthDay(): PlainMonthDayObject {
     const slot = read(this)
     return createPlainMonthDay(
-      monthDayFields(slot.calendar, {...dateFields(slot)}, 'constrain')
+      monthDayFields(
+        slot.calendar,
+        {__proto__: null, ...dateFields(slot)},
+        'constrain'
+      )
     )
   }
   constructor(
@@ -387,9 +394,9 @@ class PlainDateValue {
     if (object(item)) {
       const raw = item.timeZone
       zone = timeZoneIdentifier(raw === undefined ? item : raw)
-      time = item.plainTime
+      if (raw !== undefined) time = item.plainTime
     } else zone = timeZoneIdentifier(item)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return zonedFromLocal(
       bigIntFrom(slot.epochDay) * nsPerDay + clock,
       zone,
@@ -400,7 +407,7 @@ class PlainDateValue {
   }
   toPlainDateTime(time: unknown = undefined): PlainDateTimeObject {
     const slot = read(this)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return createPlainDateTime(
       bigIntFrom(slot.epochDay) * nsPerDay + clock,
       slot.calendar
