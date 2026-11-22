@@ -98,6 +98,9 @@ field processing independent of a replaced `Object.keys`.
 PlainDate, PlainDateTime and PlainYearMonth add/subtract also keep private fields
 independent of replaced `Object.keys` and array iteration. YearMonth addition
 validates the added full date before constructing its YearMonth result.
+Calendar addition also avoids replaced array mapping/species and private
+month-code regex/string hooks. Private destination records ignore inherited
+`monthCode`; public field bags still read inherited month-code getters.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

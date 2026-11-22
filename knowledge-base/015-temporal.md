@@ -1,5 +1,12 @@
 # Temporal implementation
 
+Calendar addition validates private date components by index, shadows inherited
+`monthCode` on private destination records, and reads non-ISO month metadata
+without mutable regex/string hooks. Public inherited month-code fields remain
+observable. [ISO operation map](audits/temporal-calendar-date-add-iso-contract-audit.md)
+and [non-ISO provider map](audits/temporal-noniso-calendar-add-contract-audit.md)
+keep host-provider/data closure and complete caller proofs open.
+
 PlainDate, PlainDateTime and PlainYearMonth add/subtract process fixed private
 Duration fields without mutable enumeration or iteration. YearMonth arithmetic
 checks the added full date before accepting its wider YearMonth result range.

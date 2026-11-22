@@ -96,7 +96,7 @@ short-date fixtures establish sampled values, not full provider equivalence.
 
 ## Validation and residual obligations
 
-[Shared range controls194](../../packages/temporal/tests/plain-arithmetic-oracle.ts#L194)
+[Shared range controls340](../../packages/temporal/tests/plain-arithmetic-oracle.ts#L340)
 retain literal constructor/with successes and both operation rejections. The
 [typed Rust control3878](../../crates/temporal/lib.test.rs#L3878) also checks exact
 epoch coordinates. All three owning TS/native/Rust range controls

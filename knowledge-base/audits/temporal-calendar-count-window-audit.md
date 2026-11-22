@@ -14,11 +14,11 @@ uses the same structure in i64.
 
 The shipped arithmetic calendars differ from arbitrary provider results:
 
-- [Raw TS day conversion:374](../../packages/temporal/calendar.ts#L374) and
+- [Raw TS day conversion:372](../../packages/temporal/calendar.ts#L372) and
   [Rust:326](../../crates/intl_datetimeformat_calendars/core.rs#L326) bound input
   days by ±110,000,000. The built-in arithmetic year estimates and Gregorian
   offsets cover this finite domain, rather than arbitrary i64 calendar labels.
-- [TS addYearMonth:412](../../packages/temporal/calendar.ts#L412) checks resulting
+- [TS addYearMonth:410](../../packages/temporal/calendar.ts#L410) checks resulting
   years against ±400,000; the same bound appears in
   [Rust check_year](../../crates/intl_datetimeformat_calendars/core.rs#L543).
   Successful ordinary year differences therefore stay around 800,000, not near
@@ -33,7 +33,7 @@ The shipped arithmetic calendars differ from arbitrary provider results:
   covers ±110 million days with whole years, asserts sequential year/month
   ordinals, months of 29/30 days and 12/13 months per year, and accumulates month
   checkpoints as u32. Its span contains fewer than 7.6 million months.
-  [TS month differences:185](../../packages/temporal/calendar-table.ts#L185)
+  [TS month differences:187](../../packages/temporal/calendar-table.ts#L187)
   subtract these bounded serials. The
   [Rust table constructor:67](../../crates/intl_datetimeformat_calendars/table_calendar.rs#L67)
   independently validates year bounds, patterns and day/month checkpoints.
