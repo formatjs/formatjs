@@ -2021,6 +2021,25 @@ sh_test(
 )
 
 js_test(
+    name = "host_candidate_range_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //packages/intl-datetimeformat:pkg)",
+        "$(rlocationpath //packages/intl-localematcher:pkg)",
+        "$(rlocationpath //packages/fast-memoize:pkg)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//packages/fast-memoize:pkg",
+        "//packages/intl-datetimeformat:pkg",
+        "//packages/intl-localematcher:pkg",
+    ],
+    entry_point = "tests/host-candidate-range.test.mjs",
+)
+
+js_test(
     name = "package_test",
     size = "small",
     args = ["$(rlocationpath :pkg)"],

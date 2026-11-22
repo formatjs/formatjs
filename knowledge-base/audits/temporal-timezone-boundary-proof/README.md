@@ -80,6 +80,30 @@ suffices. The shipped and pinned profile proofs already have those guarantees.
 The default package also accepts other installed Intl providers and timezone
 resources, so the full provider premise remains open. [Default provider contract](../../../packages/temporal/README.md#L18).
 
+## Owned FormatJS candidate validation
+
+A public package-to-package regression installs the FormatJS DateTimeFormat
+and loads the synthetic upper and lower folds. Before the fix,
+`ZonedDateTime.from` returned the sole visible instant for all four
+disambiguation modes. The comparison requires RangeError when either
+actual candidate is outside the Instant limits.
+
+The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
+the installed formatter's private candidate check within one day of either
+limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L391)
+enumerates decoded historical and recurring offsets and round-trips each
+outside instant through the same `TimeZoneOffset` reader. It uses bigint
+for the candidate and rounds down to an exact integer millisecond for the
+whole-second offset lookup. Nonapplicable offsets never cause rejection.
+Numeric Intl without this capability retains the separate provider premise.
+
+Bazel `//packages/temporal:host_candidate_range_test` failed before the
+correction and passes both mixed candidates and nonapplicable-offset controls
+for all four modes. All five focused Intl and Temporal targets pass.
+
+- Before-fix log SHA-256 `9c01708fa9a9dce8011ffe9d699a1880f4258787c84119d02e5073bb2e32210f`
+- After-fix log SHA-256 `fb615856daa7aa1aec8e6e9d6e7ffac547e5d8e02df11c1af904fbd83e3b89a8`
+
 ## Reproduce analysis
 
 Use `bazel cquery --output=files` for the three targets above; do not guess

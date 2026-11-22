@@ -22,7 +22,9 @@ uses captured host Intl data for AH 1300–1600, then the civil fallback. Named
 timezones use captured installed `Intl.DateTimeFormat`, including its timezone
 data version. UTC and numeric offsets work without Intl. Timezone aliases retain
 their spelling separately from primary identity. Update host or installed
-polyfill data when timezone laws change.
+polyfill data when timezone laws change. When the installed FormatJS formatter supplies
+its private candidate check, named-zone resolution validates actual candidates
+at the Instant limits against the installed data.
 
 ## Installation
 

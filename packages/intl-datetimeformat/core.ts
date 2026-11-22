@@ -2,6 +2,10 @@ import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   arrayEvery,
   arrayIndexOf,
+  bigIntFrom,
+  numberFrom,
+  numberIsInteger,
+  RangeErrorConstructor,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
@@ -46,6 +50,7 @@ import {
   getRangePatternInfo,
   expandIntervalFormatTemplates,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {TimeZoneOffset} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '@formatjs_generated/tz/links.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
@@ -377,6 +382,47 @@ const {formatToParts} = {
 defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   value: formatToParts,
 })
+
+const candidateMillisecond = bigIntFrom(1_000_000)
+const candidateSecond = candidateMillisecond * bigIntFrom(1_000)
+const instantLimit = bigIntFrom(8_640_000_000_000_000) * candidateMillisecond
+
+// Proposal comparison §11.1.13 step 4.a: reject actual out-of-range candidates.
+function checkTemporalCandidate(
+  local: bigint,
+  zone: UnpackedTimeZoneData,
+  offset: number
+): void {
+  if (!numberIsInteger(offset) || offset <= -86_400 || offset >= 86_400) return
+  const instant = local - bigIntFrom(offset) * candidateSecond
+  if (instant >= -instantLimit && instant <= instantLimit) return
+  let milliseconds = instant / candidateMillisecond
+  if (instant < 0 && instant % candidateMillisecond) milliseconds--
+  // Near the Instant limits, whole milliseconds fit exactly in Number.
+  // TimeZoneOffset reads the same rows as formatToParts, without TimeClip.
+  if (TimeZoneOffset(numberFrom(milliseconds), zone)[0] === offset)
+    throw new RangeErrorConstructor('Instant out of range')
+}
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates'),
+  {
+    value(this: Intl.DateTimeFormat, local: bigint): void {
+      const {timeZone} = getInternalSlots(this)
+      const zone = DateTimeFormat.tzData[timeZone]
+      if (!zone?.length) return
+      for (let index = 0; index < zone.length; index++)
+        checkTemporalCandidate(local, zone, zone[index][2])
+      const future = zone.future
+      if (future) {
+        checkTemporalCandidate(local, zone, future.standardOffset)
+        if (future.daylightOffset !== undefined)
+          checkTemporalCandidate(local, zone, future.daylightOffset)
+      }
+    },
+  }
+)
 
 const {formatRangeToParts} = {
   formatRangeToParts(

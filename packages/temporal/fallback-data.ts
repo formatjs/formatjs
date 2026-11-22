@@ -43,7 +43,9 @@ export function fallbackUmmAlQura(): typeof ummAlQura {
   return nativeDataOnly ? unavailable() : ummAlQura
 }
 // Temporal comparison §11.1.1 step 1. Supply the generated zone identifiers and aliases.
-export function fallbackTimeZoneIdentifiers() {
+export function fallbackTimeZoneIdentifiers(): ReturnType<
+  typeof timeZoneMetadata
+> {
   if (nativeDataOnly) return unavailable()
   const metadata = timeZoneMetadata()
   return !hostTimeZones && compactTimeZones
@@ -52,7 +54,9 @@ export function fallbackTimeZoneIdentifiers() {
 }
 // Temporal comparison §11.1.15 step 2.e.
 // Supply primary named-zone metadata to time zone equality.
-export function fallbackTimeZonePrimary() {
+export function fallbackTimeZonePrimary(): ReturnType<
+  typeof timeZoneMetadata
+>['primary'] {
   return fallbackTimeZoneIdentifiers().primary
 }
 // Temporal comparison §11.1.9 step 3, §11.1.13 step 3.a.

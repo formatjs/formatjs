@@ -40,7 +40,15 @@ const mapSize = Object.getOwnPropertyDescriptor(
 const mapIteratorNext = Object.getPrototypeOf(new MapConstructor().keys())
   .next as () => IteratorResult<number>
 const Constructor = globalThis.Intl?.DateTimeFormat
-const parts = Constructor?.prototype.formatToParts
+const hostParts = Constructor?.prototype.formatToParts
+const checkHostTemporalCandidates = hostParts
+  ? (Object.getOwnPropertyDescriptor(
+      hostParts,
+      Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates')
+    )?.value as
+      | ((this: Intl.DateTimeFormat, local: bigint) => void)
+      | undefined)
+  : undefined
 const nowMilliseconds = Date.now
 const second = 1000000000n
 const day = 86400n * second
@@ -55,14 +63,19 @@ function check(instant: bigint): bigint {
 const clamp = (instant: bigint): bigint =>
   instant < -limit ? -limit : instant > limit ? limit : instant
 
+type HostTimeZoneIntrinsics = {
+  Constructor?: Intl.DateTimeFormatConstructor
+  parts?: typeof Intl.DateTimeFormat.prototype.formatToParts
+}
+
 // Proposal comparison §11.1.9 step 3: prepare the host Intl formatter for named offsets.
-export function createHostTimeZoneOffset(
+function createHostTimeZoneProvider(
   timeZone: string,
-  intrinsics: {
-    Constructor?: Intl.DateTimeFormatConstructor
-    parts?: typeof Intl.DateTimeFormat.prototype.formatToParts
-  } = {Constructor, parts}
-): HostTimeZone['offsetNanoseconds'] {
+  intrinsics: HostTimeZoneIntrinsics = {Constructor, parts: hostParts}
+): {
+  offsetNanoseconds: HostTimeZone['offsetNanoseconds']
+  checkCandidates?: (local: bigint) => void
+} {
   const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
     throw new RangeErrorConstructor(
@@ -144,14 +157,31 @@ export function createHostTimeZoneOffset(
     apply(mapSet, offsets, [key, offset])
     return offset
   }
-  return offsetNanoseconds
+  return {
+    offsetNanoseconds,
+    checkCandidates:
+      parts === hostParts && checkHostTemporalCandidates
+        ? local => apply(checkHostTemporalCandidates, formatter, [local])
+        : undefined,
+  }
+}
+
+// Proposal comparison §11.1.9 step 3: Expose the installed offset reader.
+export function createHostTimeZoneOffset(
+  timeZone: string,
+  intrinsics?: HostTimeZoneIntrinsics
+): HostTimeZone['offsetNanoseconds'] {
+  return createHostTimeZoneProvider(timeZone, intrinsics).offsetNanoseconds
 }
 
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
-  const offsetNanoseconds = createHostTimeZoneOffset(timeZone)
+  const {offsetNanoseconds, checkCandidates} =
+    createHostTimeZoneProvider(timeZone)
 
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
   const candidatesFor = (local: bigint): bigint[] => {
+    // Proposal comparison §11.1.13 step 4.a: validate exact owned-provider candidates.
+    if (local <= -limit + day || local >= limit - day) checkCandidates?.(local)
     const before = offsetNanoseconds(clamp(local - day)),
       middle = offsetNanoseconds(clamp(local)),
       after = offsetNanoseconds(clamp(local + day)),

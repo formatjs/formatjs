@@ -61,7 +61,10 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 
 Numeric timestamps stay primitive through TimeClip. The direct bigdecimal
 dependency is removed from BUILD metadata, generated manifest and lockfile;
-shared arithmetic dependencies remain transitive. Standalone DateTimeFormat
+shared arithmetic dependencies remain transitive. The Temporal host adapter
+can use a private candidate check on the owned formatter. It reuses decoded
+timezone data for near-limit lookups without passing through numeric TimeClip.
+[Endpoint audit](audits/temporal-timezone-boundary-proof/README.md#owned-formatjs-candidate-validation). Standalone DateTimeFormat
 composite typechecks and package_json_sync_test are required integration gates.
 
 ## CLDR Data Pipeline
