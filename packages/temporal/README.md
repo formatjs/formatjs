@@ -95,8 +95,8 @@ are inferred through captured `formatToParts` operations before host matching.
 Chinese/Dangi date fields use the same calendar arithmetic as Temporal, including
 numeric Date inputs when host ICU data differs. Captured host formatters supply
 localized labels. Validated numeric Year ranges keep their numeric month and
-day widths and verified weekday labels. Other corrected ranges use complete
-endpoint patterns.
+day widths, verified weekday labels and Buddhist month text with matching
+ordinals. Other corrected ranges use complete endpoint patterns.
 All supported non-Gregorian plain values also format beyond Date TimeClip.
 Safe Gregorian-cycle surrogates preserve weekday/clock; Temporal restores calendar
 fields and eras. Host Intl supplies month and era labels, with compact CLDR

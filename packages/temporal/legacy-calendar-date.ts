@@ -22,6 +22,7 @@ import {
   correctLunisolarParts,
   joinCalendarRangeParts,
   calendarLabelFormatter,
+  hostBuddhistMonth,
   legacyISOEpochDay,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
@@ -44,6 +45,7 @@ interface NumericRangeYear {
   raw: string
   corrected: string
   month: NumericWidths | undefined
+  textualMonth: number | undefined
   day: NumericRangeDay | undefined
   weekday: string | undefined
 }
@@ -469,6 +471,13 @@ function restoreCalendarParts(
             options.month === 'numeric' || options.month === '2-digit'
               ? [format(date.month), formatTwo(date.month)]
               : undefined,
+          textualMonth:
+            calendar === 'buddhist' &&
+            (options.month === 'narrow' ||
+              options.month === 'short' ||
+              options.month === 'long')
+              ? date.month
+              : undefined,
           day: undefined,
           weekday: undefined,
         }
@@ -578,7 +587,10 @@ function matchesNumericRangeYear(
         return true
       }
       if (type === 'month')
-        return year.month !== undefined && arrayIncludes(year.month, value)
+        return (
+          year.textualMonth !== undefined ||
+          (year.month !== undefined && arrayIncludes(year.month, value))
+        )
       return type === 'era' || type === 'literal'
     })
   )
@@ -621,6 +633,16 @@ function restoreNumericRangeYears(
       continue
     }
     if (part.type === 'month') {
+      if (first.textualMonth !== undefined && last.textualMonth !== undefined) {
+        // ECMA-402 §11.5.4 step 15.f.x and §11.5.8 step 19.e: keep the
+        // selected width and day-field context for the verified month.
+        if (
+          part.source === 'shared' &&
+          first.textualMonth !== last.textualMonth
+        )
+          return undefined
+        continue
+      }
       if (
         part.source !== 'endRange' &&
         (!first.month || !arrayIncludes(first.month, part.value))
@@ -676,7 +698,7 @@ export function legacyCalendarRangeParts(
   rangeParts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] | undefined {
-  const calendar = resolved.call(first.formatter).calendar
+  const {calendar, timeZone} = resolved.call(first.formatter)
   if (
     calendar === 'iso8601' ||
     calendar === 'gregory' ||
@@ -741,7 +763,13 @@ export function legacyCalendarRangeParts(
           (rawEnd ??= parts.call(last.formatter, last.milliseconds)),
           end,
           lastYear
-        )
+        ) &&
+        (firstYear.textualMonth === undefined ||
+          hostBuddhistMonth(timeZone, first.milliseconds) ===
+            firstYear.textualMonth) &&
+        (lastYear.textualMonth === undefined ||
+          hostBuddhistMonth(timeZone, last.milliseconds) ===
+            lastYear.textualMonth)
       ) {
         const years = restoreNumericRangeYears(
           rangeParts.call(

@@ -42,7 +42,7 @@ function isoDay(year: number, month: number, day: number): number {
   return calendarToEpochDayRaw('iso8601', {year, month, day}, 'reject')
 }
 function probe(
-  calendar: Calendar | 'iso8601',
+  calendar: Calendar | 'buddhist' | 'iso8601',
   timeZone: string
 ): Intl.DateTimeFormat {
   const key = `${calendar}:${timeZone}`
@@ -62,6 +62,25 @@ function probe(
   }
   return result
 }
+export function hostBuddhistMonth(
+  timeZone: string,
+  milliseconds: number
+): number | undefined {
+  // ECMA-402 §11.5.4 steps 12 and 15.f.iii, v and viii: read the raw ordinal
+  // independently of the original formatter's localized month label.
+  const parts = nativeParts!.call(probe('buddhist', timeZone), milliseconds)
+  for (let index = 0; index < parts.length; index++) {
+    const {type, value} = parts[index]
+    if (type !== 'month') continue
+    const month = numberFrom(value)
+    if (!numberIsInteger(month) || month < 1 || month > 12) return undefined
+    if (value === `${month}` || (month < 10 && value === `0${month}`))
+      return month
+    return undefined
+  }
+  return undefined
+}
+
 function fields(
   calendar: Calendar | 'iso8601',
   timeZone: string,

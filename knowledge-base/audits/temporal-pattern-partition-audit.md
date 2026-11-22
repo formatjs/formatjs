@@ -109,9 +109,9 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L444)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L446)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L765) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L793) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -195,7 +195,7 @@ German padded intervals and English mathematical digits exercise both
 widths. Raw day 11 with corrected day 5 keeps the full endpoint fallback
 because the native label has the same text at either width. Seven focused
 Bazel targets pass.
-[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L588).
+[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L600).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [ECMA-402 §11.5.4 steps 15.f.v and 15.f.viii–ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 
@@ -221,3 +221,25 @@ the Node 26.8.1 replay pass.
 - Weekday before-fix log SHA-256 `9e9243ec53ba046475085ea887ff4d6bbe4ce9ec2cd4c0573f172952e1533e0a`
 - Weekday after-fix log SHA-256 `8168999da92cc8d785fdd21a10fa0401caca5e46db63eceb6f6d6d712f973a25`
 - Node 26 replay log SHA-256 `49e341188e2698974422f833efca36c462b53914949679dfadc507a29cf5d0c9`
+
+### Textual month labels in a Year range
+
+An English Buddhist January interval with distinct raw years duplicated
+its common era. The bridge now keeps the native textual month after checking
+the original endpoint's numeric month against the owned calendar value.
+The selected layout supplies its own width and day context. A shared month
+requires matching ordinals at both endpoints.
+
+Russian controls distinguish `январь` without a day field from `января`
+with one. June and July both abbreviate to English narrow `J`. The
+ordinal check keeps the existing fallback when native July and owned June
+produce the same text. Number and PlainDate controls exercise both paths.
+Seven focused Bazel targets and all 161 controls on pinned Node 26.8.1 pass.
+[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L65).
+[Range label check](../../packages/temporal/legacy-calendar-date.ts#L638).
+[ECMA-402 §11.5.4 step 15.f.x](https://tc39.es/ecma402/#sec-formatdatetimepattern).
+[ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+- Textual-month before-fix log SHA-256 `e7544ef6f182e29e211008f1a040b7b03aa7b9384e38df0406a66ec423f222d0`
+- Textual-month after-fix log SHA-256 `2e9b5a43fbc27b397a3420d0268cef7c463f2ddd8c60032164e7515069fb6fd0`
+- Node 26 replay log SHA-256 `f038fb3d74fba677757ec96bc162b8af93d097c83c2d447d3b3af730fef450cd`

@@ -176,6 +176,9 @@ for (const [locale, month, day, weekday] of [
   ['de', '2-digit', '2-digit'],
   ['en', 'numeric', 'numeric', 'short'],
   ['en-u-nu-mathsans', '2-digit', '2-digit', 'long'],
+  ['en', 'long', undefined],
+  ['ru', 'long', undefined],
+  ['ru', 'long', 'numeric'],
 ]) {
   const options = {
     calendar: 'buddhist',
@@ -203,6 +206,8 @@ for (const [locale, month, day, weekday] of [
   const expected = new NativeDateTimeFormat(locale, options)
     .formatRangeToParts(firstMilliseconds, lastMilliseconds)
     .map(part => {
+      if (locale === 'ru' && part.type === 'month')
+        assert.equal(part.value, day ? 'января' : 'январь')
       if (part.type === 'year') return {...part, value: number.format(1)}
       if (part.type === 'day') {
         const raw = part.source === 'endRange' ? 8 : 7
@@ -255,7 +260,44 @@ const days = withDay
 assert.ok(days.length > 0)
 assert.ok(days.every(part => part.value === '5'))
 checked++
-assert.equal(checked, 153)
+
+const narrowOptions = {...withDayOptions, month: 'narrow', day: undefined}
+const nativeNarrow = new NativeDateTimeFormat('en', narrowOptions)
+const nativeOrdinal = new NativeDateTimeFormat('en', {
+  ...narrowOptions,
+  month: 'numeric',
+})
+const narrow = new Intl.DateTimeFormat('en', narrowOptions)
+const lateJune = [
+  new Temporal.PlainDate(-543, 6, 26, 'buddhist'),
+  new Temporal.PlainDate(-542, 6, 26, 'buddhist'),
+]
+const lateJuneMilliseconds = [
+  Date.parse('-000543-06-26T00:00Z'),
+  Date.parse('-000542-06-26T00:00Z'),
+]
+// Both month labels are J, but the native ordinal is July.
+for (const [index, date] of lateJune.entries()) {
+  const time = lateJuneMilliseconds[index]
+  const month = (formatter, value) =>
+    formatter.formatToParts(value).find(part => part.type === 'month')?.value
+  assert.equal(date.month, 6)
+  assert.equal(month(nativeOrdinal, time), '7')
+  assert.equal(month(nativeNarrow, time), 'J')
+  assert.equal(month(narrow, date), 'J')
+}
+for (const inputs of [lateJune, lateJuneMilliseconds]) {
+  assert.deepEqual(
+    narrow
+      .formatRangeToParts(...inputs)
+      .filter(part => part.type === 'era')
+      .map(part => part.source),
+    ['startRange', 'endRange']
+  )
+  checked++
+}
+
+assert.equal(checked, 161)
 console.log(
-  '153 native bridge display-year controls, including cold/warm and range paths'
+  '161 native bridge display-year controls, including cold/warm and range paths'
 )
