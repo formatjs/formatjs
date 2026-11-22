@@ -1,0 +1,478 @@
+{
+  "scope": "14 local Rust ISO text, offset arithmetic and typed rendering dependencies. Implementation and requirement statuses unchanged.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "crates/temporal/format.rs",
+      "before_sha256": "2e45803ba32dc197970cfa9ccd96a6d2b412a419f5e133814c4b8fae09998b4c",
+      "after_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c",
+      "verified_callable_count": 16,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318
+  ],
+  "review_timing": {
+    "scope": "Full source review and integration time was not measured.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 305,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl Instant::format",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "19",
+        "end_line": "41",
+        "comparison_sections": "8.5.8|8.3.11",
+        "section_ids": "sec-temporal-temporalinstanttostring|sec-temporal.instant.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalinstanttostring|https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "8.5.8/algorithm-1/step-4",
+        "8.3.11/algorithm-1/step-13"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 18,
+      "annotation": "// Proposal comparison \u00a78.5.8 step 4: project the rounded epoch using the supplied offset.",
+      "evidence": "Typed formatter rounds on the requested precision grid, checks the supplied subday offset and projects the integer sum to ISO fields. FFI resolves named offsets from its rounded epoch before invoking this typed formatter. Public options and Instant validity checks remain caller-owned."
+    },
+    {
+      "inventory_row": 306,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl fmt::Display for Instant::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "45",
+        "end_line": "49",
+        "comparison_sections": "8.5.8",
+        "section_ids": "sec-temporal-temporalinstanttostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalinstanttostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "8.5.8/algorithm-1/step-2",
+        "8.5.8/algorithm-1/step-5",
+        "8.5.8/algorithm-1/step-6.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 44,
+      "annotation": "// Proposal comparison \u00a78.5.8 steps 2, 5\u20136.a: display UTC with automatic precision.",
+      "evidence": "Rust Display defaults to no offset and automatic precision. That path uses an exact unit quantum and delegates to FormattedInstant. This is native rendering correspondence rather than a JS toString entrypoint."
+    },
+    {
+      "inventory_row": 307,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "57",
+        "end_line": "62",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": ["5.5.9/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 56,
+      "annotation": "// Proposal comparison \u00a75.5.9 step 7: start an empty buffer for ISO text.",
+      "evidence": "The zero-length byte builder supplies storage for ASCII date-time concatenation. The fixed allocation and initialized tail are private implementation choices."
+    },
+    {
+      "inventory_row": 308,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::push",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "64",
+        "end_line": "67",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": ["5.5.9/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 63,
+      "annotation": "// Proposal comparison \u00a75.5.9 step 7: append one ASCII byte to the ISO text.",
+      "evidence": "Writes at the initialized prefix boundary and advances its length. Date and clock callers supply literal separators and ASCII digits in their own required order."
+    },
+    {
+      "inventory_row": 309,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::pair",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "69",
+        "end_line": "72",
+        "comparison_sections": "13.26|5.5.9",
+        "section_ids": "sec-temporal-formattimestring|sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formattimestring|https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "13.26/algorithm-1/step-2",
+        "13.26/algorithm-1/step-3",
+        "13.26/algorithm-1/step-5",
+        "5.5.9/algorithm-1/step-2",
+        "5.5.9/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 68,
+      "annotation": "// Proposal comparison \u00a713.26 steps 2\u20133, 5: write two decimal digits.",
+      "evidence": "For validated two-digit values, quotient and remainder by ten produce ordered tens and ones digits, including leading zero. Used by date, clock and offset text."
+    },
+    {
+      "inventory_row": 310,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::number",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "74",
+        "end_line": "81",
+        "comparison_sections": "3.5.10|13.25",
+        "section_ids": "sec-temporal-padisoyear|sec-temporal-formatfractionalseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-padisoyear|https://tc39.es/proposal-temporal/#sec-temporal-formatfractionalseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "3.5.10/algorithm-1/step-1",
+        "3.5.10/algorithm-1/step-3",
+        "13.25/algorithm-1/step-1.b",
+        "13.25/algorithm-1/step-2.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 73,
+      "annotation": "// Proposal comparison \u00a73.5.10 steps 1, 3: write the year at its selected width.",
+      "evidence": "Repeated decimal remainder fills the selected width from right to left. Callers bound the integer and choose width for year output or the precision-adjusted fractional digits."
+    },
+    {
+      "inventory_row": 311,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::date",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "83",
+        "end_line": "96",
+        "comparison_sections": "5.5.9|3.5.10|3.5.11",
+        "section_ids": "sec-temporal-isodatetimetostring|sec-temporal-padisoyear|sec-temporal-temporaldatetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring|https://tc39.es/proposal-temporal/#sec-temporal-padisoyear|https://tc39.es/proposal-temporal/#sec-temporal-temporaldatetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "5.5.9/algorithm-1/step-1",
+        "5.5.9/algorithm-1/step-2",
+        "5.5.9/algorithm-1/step-3",
+        "3.5.10/algorithm-1/step-1",
+        "3.5.10/algorithm-1/step-2",
+        "3.5.10/algorithm-1/step-3",
+        "3.5.10/algorithm-1/step-4",
+        "3.5.11/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 82,
+      "annotation": "// Proposal comparison \u00a75.5.9 steps 1\u20133: write the year, month and day.",
+      "evidence": "Valid ISO years in 0..9999 use four digits. Other supported years use sign and six-digit absolute magnitude. Hyphens and two-digit month/day form the date prefix. Calendar annotations stay with caller."
+    },
+    {
+      "inventory_row": 312,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::date_time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "98",
+        "end_line": "106",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "5.5.9/algorithm-1/step-4",
+        "5.5.9/algorithm-1/step-5",
+        "5.5.9/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 97,
+      "annotation": "// Proposal comparison \u00a75.5.9 steps 5, 7: join the date and clock with T.",
+      "evidence": "Emit ISO date and T, passing existing exact subsecond nanoseconds to the clock writer. This helper produces the ISO portion; calendar annotation remains caller-specific."
+    },
+    {
+      "inventory_row": 313,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "108",
+        "end_line": "112",
+        "comparison_sections": "4.5.13",
+        "section_ids": "sec-temporal-timerecordtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timerecordtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": ["4.5.13/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 107,
+      "annotation": "// Proposal comparison \u00a74.5.13 step 2: format a plain clock at the chosen precision.",
+      "evidence": "Allocate the clock output and pass hour, minute, second and the already-combined subsecond integer to append_time. PlainTime rounding occurs before this renderer."
+    },
+    {
+      "inventory_row": 314,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::append_time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "114",
+        "end_line": "143",
+        "comparison_sections": "13.26|13.25",
+        "section_ids": "sec-temporal-formattimestring|sec-temporal-formatfractionalseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formattimestring|https://tc39.es/proposal-temporal/#sec-temporal-formatfractionalseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "13.26/algorithm-1/step-2",
+        "13.26/algorithm-1/step-3",
+        "13.26/algorithm-1/step-4",
+        "13.26/algorithm-1/step-5",
+        "13.26/algorithm-1/step-6",
+        "13.26/algorithm-1/step-7",
+        "13.25/algorithm-1/step-1.a",
+        "13.25/algorithm-1/step-1.b",
+        "13.25/algorithm-1/step-1.c",
+        "13.25/algorithm-1/step-2.a",
+        "13.25/algorithm-1/step-2.b",
+        "13.25/algorithm-1/step-2.c",
+        "13.25/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 113,
+      "annotation": "// Proposal comparison \u00a713.26 steps 2\u20137: write the clock at the selected precision.",
+      "evidence": "Separated clock form emits HH:MM and optional seconds. Auto removes decimal trailing zeros using exact integer division; fixed precision keeps the requested prefix at exact width. Zero digits omit the dot. Unseparated style is outside this writer."
+    },
+    {
+      "inventory_row": 315,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl IsoString::as_str",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "145",
+        "end_line": "147",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": ["5.5.9/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 144,
+      "annotation": "// Proposal comparison \u00a75.5.9 step 7: read the completed ISO text prefix.",
+      "evidence": "Read only initialized bytes after ASCII digits and separators have been appended. UTF-8 conversion borrows the completed text and excludes unused storage. This is a representation dependency."
+    },
+    {
+      "inventory_row": 316,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "impl fmt::Display for FormattedInstant::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "151",
+        "end_line": "165",
+        "comparison_sections": "8.5.8",
+        "section_ids": "sec-temporal-temporalinstanttostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporalinstanttostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "8.5.8/algorithm-1/step-5",
+        "8.5.8/algorithm-1/step-6.a",
+        "8.5.8/algorithm-1/step-7.b",
+        "8.5.8/algorithm-1/step-8"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 150,
+      "annotation": "// Proposal comparison \u00a78.5.8 steps 5\u20138: append Z or the rounded offset to the ISO text.",
+      "evidence": "Serialize supplied fields with no calendar suffix, then append Z for absent offset or sign plus hour/minute from rounded offset minutes. Named offset lookup occurs before this writer."
+    },
+    {
+      "inventory_row": 317,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "module::offset_minutes",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "169",
+        "end_line": "171",
+        "comparison_sections": "11.1.7",
+        "section_ids": "sec-temporal-formatdatetimeutcoffsetrounded",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formatdatetimeutcoffsetrounded",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "11.1.7/algorithm-1/step-1",
+        "11.1.7/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 168,
+      "annotation": "// Proposal comparison \u00a711.1.7 steps 1\u20132: round a signed offset to whole minutes.",
+      "evidence": "For bounded offsets, add half a minute to absolute nanoseconds, divide by one minute and restore sign. Exact integer arithmetic implements half-expand including ties and normalized zero."
+    },
+    {
+      "inventory_row": 318,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/format.rs",
+        "symbol": "module::write_offset",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "173",
+        "end_line": "182",
+        "comparison_sections": "11.1.7|11.1.5|6.5.4",
+        "section_ids": "sec-temporal-formatdatetimeutcoffsetrounded|sec-temporal-formatoffsettimezoneidentifier|sec-temporal-temporalzoneddatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formatdatetimeutcoffsetrounded|https://tc39.es/proposal-temporal/#sec-temporal-formatoffsettimezoneidentifier|https://tc39.es/proposal-temporal/#sec-temporal-temporalzoneddatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-fractional-format-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c"
+      },
+      "spec_row_ids": [
+        "11.1.7/algorithm-1/step-3",
+        "11.1.5/algorithm-1/step-1",
+        "11.1.5/algorithm-1/step-2",
+        "11.1.5/algorithm-1/step-3",
+        "11.1.5/algorithm-1/step-4",
+        "11.1.5/algorithm-1/step-5",
+        "11.1.5/algorithm-1/step-6",
+        "6.5.4/algorithm-1/step-11.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 172,
+      "annotation": "// Proposal comparison \u00a711.1.7 step 3: write the rounded offset as signed hours and minutes.",
+      "evidence": "Zoned renderer passes the actual offset when showOffset applies. Sign and two-digit hour/minute fields follow quotient and remainder of absolute rounded minutes. Zero emits plus."
+    }
+  ]
+}

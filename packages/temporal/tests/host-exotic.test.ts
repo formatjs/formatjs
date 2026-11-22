@@ -177,3 +177,59 @@ it('does not inspect newTarget descriptors during primitive prototype fallback',
   expect(Object.getPrototypeOf(result)).toBe(Temporal.Instant.prototype)
   expect(events).toEqual(['get prototype'])
 })
+
+it.each([
+  ['live', null],
+  ['revoked', null],
+  ['revoked', {}],
+] as const)(
+  'uses one prototype Get for a %s bound newTarget with prototype %s',
+  (state, prototype) => {
+    const events: string[] = []
+    const pair = Proxy.revocable(function Target() {
+      throw new Error('newTarget body must not run')
+    }, {})
+    const bound = pair.proxy.bind(null)
+    const wrapped = new Proxy(
+      new Proxy(bound, {
+        get(target, key, receiver) {
+          if (key !== 'prototype') throw new Error('Unexpected newTarget Get')
+          return Reflect.get(target, key, receiver)
+        },
+        getOwnPropertyDescriptor() {
+          throw new Error('Unexpected newTarget descriptor lookup')
+        },
+        getPrototypeOf() {
+          throw new Error('Unexpected newTarget prototype lookup')
+        },
+        apply() {
+          throw new Error('Unexpected newTarget call')
+        },
+        construct() {
+          throw new Error('Unexpected newTarget construction')
+        },
+      }),
+      {}
+    )
+    Object.defineProperty(bound, 'prototype', {
+      get() {
+        expect(this).toBe(wrapped)
+        events.push('get prototype')
+        if (state === 'revoked') pair.revoke()
+        return prototype
+      },
+    })
+    if (state === 'revoked' && prototype === null) {
+      // ECMA-262 §7.3.24 step 2 follows the bound target after the Get.
+      expect(() => Reflect.construct(Temporal.Instant, [0n], wrapped)).toThrow(
+        TypeError
+      )
+    } else {
+      const result = Reflect.construct(Temporal.Instant, [0n], wrapped)
+      expect(Object.getPrototypeOf(result)).toBe(
+        prototype ?? Temporal.Instant.prototype
+      )
+    }
+    expect(events).toEqual(['get prototype'])
+  }
+)

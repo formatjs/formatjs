@@ -1,3 +1,4 @@
+import {stringCharCodeAt} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 import {
   extensionAlias,
@@ -8,9 +9,6 @@ const hasOwn = Function.prototype.call.bind(
   Object.prototype.hasOwnProperty
 ) as (object: object, property: string) => boolean
 
-const charCodeAt = Function.prototype.call.bind(
-  String.prototype.charCodeAt
-) as (value: string, index: number) => number
 const fromCharCode = String.fromCharCode
 
 export function CanonicalizeUValue(ukey: string, uvalue: string): string {
@@ -19,7 +17,7 @@ export function CanonicalizeUValue(ukey: string, uvalue: string): string {
   // https://tc39.es/ecma402/#sec-canonicalizeuvalue
   let canonicalized = ''
   for (let i = 0; i < uvalue.length; i++) {
-    const code = charCodeAt(uvalue, i)
+    const code = stringCharCodeAt(uvalue, i)
     canonicalized +=
       code >= 65 && code <= 90 ? fromCharCode(code + 32) : uvalue[i]
   }

@@ -1671,9 +1671,61 @@ it.each([
   ['raw cache read', Map.prototype, 'get'],
   ['raw cache membership', Map.prototype, 'has'],
   ['raw cache write', Map.prototype, 'set'],
+  ['equivalent key components', Array.prototype, 'filter'],
+  ['ordered locale indexes', Array.prototype, 'sort'],
+  ['distance candidate indexes', Array.prototype, Symbol.iterator, true],
+  ['distance cache read', Map.prototype, 'get', true],
+  ['distance cache write', Map.prototype, 'set', true],
+  ['locale prefix search', String.prototype, 'indexOf'],
+  ['locale prefix substring', String.prototype, 'slice'],
+  ['region code units', String.prototype, 'charCodeAt'],
+  ['private-use prefix check', String.prototype, 'startsWith'],
+  ['pseudo variant marker', String.prototype, 'includes'],
+  [
+    'variant subtag split',
+    String.prototype,
+    'split',
+    false,
+    'de-AT-1901-u-nu-arab-x-split',
+  ],
+  [
+    'variant boundary search',
+    Array.prototype,
+    'findIndex',
+    false,
+    'de-AT-1901-u-nu-arab-x-find',
+  ],
+  [
+    'variant List range',
+    Array.prototype,
+    'slice',
+    false,
+    'de-AT-1901-u-nu-arab-x-slice',
+  ],
+  [
+    'unknown region key filter',
+    Array.prototype,
+    'filter',
+    false,
+    'de-ZZ-u-nu-arab',
+  ],
+  [
+    'unknown region key join',
+    Array.prototype,
+    'join',
+    false,
+    'de-ZZ-u-nu-arab',
+  ],
+  [
+    'matcher canonicalization',
+    Intl,
+    'getCanonicalLocales',
+    false,
+    'de-AT-1901-u-nu-arab-x-canon',
+  ],
 ] as const)(
   'fresh Duration best fit keeps %s private',
-  (_label, owner, key) => {
+  (_label, owner, key, distance, locale = 'de-AT-u-nu-arab') => {
     DurationFormat.__addTemporalNamespace(Temporal)
     expect(DurationFormat.localeData.de).toBeDefined()
     expect(DurationFormat.localeData.en).toBeDefined()
@@ -1695,7 +1747,6 @@ it.each([
     const mapSize = Object.getOwnPropertyDescriptor(Map.prototype, 'size')!.get!
     const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
     const options = {localeMatcher: 'best fit', style: 'long'} as const
-    const locale = 'de-AT-u-nu-arab'
     let actual: string | undefined
     let hooks = 0
     try {
@@ -1717,19 +1768,39 @@ it.each([
       define(
         owner,
         key,
-        key === 'freeze' || owner === WeakSet.prototype
+        key === 'freeze' ||
+          key === 'getCanonicalLocales' ||
+          owner === WeakSet.prototype
           ? {configurable: true, get: poison}
           : {
               ...descriptor,
-              value(this: readonly unknown[], ...args: unknown[]) {
+              value(this: unknown, ...args: unknown[]) {
+                const items: readonly unknown[] = Array.isArray(this)
+                  ? this
+                  : []
                 let ownedCall: boolean
                 switch (key) {
                   case 'map':
-                    ownedCall = this.length === 1 && this[0] === locale
+                    ownedCall = items.length === 1 && items[0] === locale
                     break
                   case Symbol.iterator:
+                    ownedCall = distance
+                      ? items.length === 2 && items[0] === 0 && items[1] === 1
+                      : items.length === 2 &&
+                        items[0] === 'en' &&
+                        items[1] === 'de'
+                    break
+                  case 'filter':
                     ownedCall =
-                      this.length === 2 && this[0] === 'en' && this[1] === 'de'
+                      items.length === 3 &&
+                      items[0] ===
+                        (locale === 'de-ZZ-u-nu-arab' ? 'de' : 'und') &&
+                      items[1] === '' &&
+                      items[2] === ''
+                    break
+                  case 'sort':
+                    ownedCall =
+                      items.length === 2 && items[0] === 0 && items[1] === 1
                     break
                   case 'defineProperty':
                     ownedCall =
@@ -1740,16 +1811,49 @@ it.each([
                   case 'get':
                     // Only the first empty raw cache lookup. Equivalence checks
                     // later in the pipeline run against a populated cache.
-                    ownedCall =
-                      args[0] === 'de-AT' && apply(mapSize, this, []) === 0
+                    ownedCall = distance
+                      ? args[0] === 'de-AT|en'
+                      : args[0] === 'de-AT' && apply(mapSize, this, []) === 0
                     break
                   case 'has':
                     ownedCall =
                       args[0] === 'de' && apply(mapSize, this, []) === 1
                     break
-                  default:
+                  case 'set':
+                    ownedCall = distance
+                      ? args[0] === 'de-AT|en'
+                      : args[0] === 'de' && args[1] === 1
+                    break
+                  case 'indexOf':
+                    ownedCall = this === 'de-AT' && args[0] === '-'
+                    break
+                  case 'slice':
                     ownedCall =
-                      key === 'set' && args[0] === 'de' && args[1] === 1
+                      owner === String.prototype
+                        ? this === 'de-AT' && args[0] === 0 && args[1] === 2
+                        : items[0] === '1901' && items[2] === 'slice'
+                    break
+                  case 'charCodeAt':
+                    ownedCall = this === 'AT'
+                    break
+                  case 'startsWith':
+                    ownedCall = this === 'de-AT' && args[0] === 'und-x-'
+                    break
+                  case 'includes':
+                    ownedCall = this === 'de-AT' && args[0] === '-ps'
+                    break
+                  case 'split':
+                    ownedCall = this === '1901-x-split'
+                    break
+                  case 'findIndex':
+                    ownedCall = items[0] === '1901' && items[2] === 'find'
+                    break
+                  case 'join':
+                    ownedCall =
+                      items.length === 1 && items[0] === 'de' && args[0] === '-'
+                    break
+                  default:
+                    ownedCall = false
                 }
                 if (ownedCall) poison()
                 return apply(descriptor.value, this, args)

@@ -1,14 +1,18 @@
+import {CanonicalizeLocaleList} from '#packages/intl-localematcher/abstract/CanonicalizeLocaleList.js'
 import {
-  arrayFind,
   arrayIncludes,
   setDataProperty,
   splitLocaleSubtags,
+  stringCharCodeAt,
+  stringIndexOf,
+  stringSlice,
 } from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {memoize} from '@formatjs/fast-memoize'
 import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
 
 const apply = Reflect.apply
 const some = Array.prototype.some
+const sortLocaleIndexes = Array.prototype.sort
 const freezeLocaleList = Object.freeze
 
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
@@ -86,7 +90,7 @@ function ascii(
   max: number
 ): boolean {
   for (let i = start; i < end; i++) {
-    const code = value.charCodeAt(i)
+    const code = stringCharCodeAt(value, i)
     if (code < min || code > max) return false
   }
   return true
@@ -120,6 +124,7 @@ function pseudoRegion(value: string): boolean {
   return value === 'XA' || value === 'XB' || value === 'XC'
 }
 
+// ECMA-402 §9.2.4: parse the best-fit key using private String operations.
 // ASCII parsing preserves legacy RegExp statics during Intl construction.
 function prefix(tag: string): {
   language: string
@@ -127,21 +132,21 @@ function prefix(tag: string): {
   region: string
   end: number
 } {
-  let end = tag.indexOf('-')
+  let end = stringIndexOf(tag, '-')
   if (end < 0) end = tag.length
-  const language = tag.slice(0, end)
+  const language = stringSlice(tag, 0, end)
   let script = ''
   let region = ''
   if (end < tag.length) {
-    let next = tag.indexOf('-', end + 1)
+    let next = stringIndexOf(tag, '-', end + 1)
     if (next < 0) next = tag.length
-    let part = tag.slice(end + 1, next)
+    let part = stringSlice(tag, end + 1, next)
     if (scriptSubtag(part)) {
       script = part
       end = next
-      next = tag.indexOf('-', end + 1)
+      next = stringIndexOf(tag, '-', end + 1)
       if (next < 0) next = tag.length
-      part = tag.slice(end + 1, next)
+      part = stringSlice(tag, end + 1, next)
     }
     if (regionSubtag(part)) {
       region = part
@@ -156,13 +161,18 @@ function fields(tag: string): LSR {
   const language = parsed.language
   let {script, region} = parsed
   const parts =
-    parsed.end < tag.length ? tag.slice(parsed.end + 1).split('-') : []
-  const extension = parts.findIndex(part => part.length === 1)
-  const variants = extension < 0 ? parts : parts.slice(0, extension)
-  const pseudo = arrayFind(
-    variants,
-    p => p === 'psaccent' || p === 'psbidi' || p === 'pscrack'
-  )
+    parsed.end < tag.length
+      ? splitLocaleSubtags(stringSlice(tag, parsed.end + 1))
+      : []
+  let pseudo: string | undefined
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index]
+    if (part.length === 1) break
+    if (part === 'psaccent' || part === 'psbidi' || part === 'pscrack') {
+      pseudo = part
+      break
+    }
+  }
   if (!pseudo && !pseudoRegion(region)) {
     if (script === 'Zzzz') script = ''
     if (region === 'ZZ') region = ''
@@ -178,7 +188,7 @@ function fields(tag: string): LSR {
     flags,
     pseudo,
     key:
-      tag === 'und' || tag.startsWith('und-x-')
+      tag === 'und' || stringIndexOf(tag, 'und-x-') === 0
         ? tag
         : `${language}|${script}|${region}|${flags}|${pseudo || ''}`,
   }
@@ -196,7 +206,8 @@ const canonicalize = memoize(
       !regionAliases.has(basic.region)
     )
       return tag
-    return Intl.getCanonicalLocales(tag)[0]
+    // ECMA-402 §9.2.4: reuse supplied locale canonicalization on the slow path.
+    return CanonicalizeLocaleList(tag)[0]
   },
   {serializer: stringKey}
 )
@@ -204,7 +215,7 @@ const maximal = memoize(
   (tag: string): LSR => {
     const input = fields(tag)
     // ICU keeps bare und, private-use locales and pseudolocales isolated.
-    if (tag === 'und' || tag.startsWith('und-x-')) {
+    if (tag === 'und' || stringIndexOf(tag, 'und-x-') === 0) {
       return {
         ...input,
         language: tag,
@@ -274,22 +285,22 @@ const maximal = memoize(
 
 function rawKey(tag: string): string {
   if (tag === 'und') return '@und'
-  if (tag.startsWith('und-x-')) return tag
+  if (stringIndexOf(tag, 'und-x-') === 0) return tag
   const parsed = prefix(tag)
-  const base = tag.slice(0, parsed.end)
+  const base = stringSlice(tag, 0, parsed.end)
   if (pseudoRegion(parsed.region)) return base
-  if (tag.includes('-ps')) {
+  if (stringIndexOf(tag, '-ps') !== -1) {
     const input = fields(tag)
     if (input.pseudo) return input.key
   }
   if (parsed.script !== 'Zzzz' && parsed.region !== 'ZZ') return base
-  return [
-    parsed.language,
-    parsed.script === 'Zzzz' ? '' : parsed.script,
-    parsed.region === 'ZZ' ? '' : parsed.region,
-  ]
-    .filter(Boolean)
-    .join('-')
+  const script = parsed.script === 'Zzzz' ? '' : parsed.script
+  const region = parsed.region === 'ZZ' ? '' : parsed.region
+  return (
+    parsed.language +
+    (script ? '-' + script : '') +
+    (region ? '-' + region : '')
+  )
 }
 
 function distance(desired: LSR, supported: LSR): number {
@@ -438,7 +449,8 @@ function rawMatch(data: Supported, key: string): number | undefined {
 }
 
 function order(data: Supported, defaultLocale: string): number[] {
-  let result = data.orders.get(defaultLocale)
+  // ECMA-402 §9.2.4: preserve the existing stable best-fit rank order.
+  let result = getLocaleMap(data.orders, defaultLocale)
   if (!result) {
     if (!data.maximal) {
       data.maximal = data.tags.map(maximal)
@@ -459,8 +471,11 @@ function order(data: Supported, defaultLocale: string): number[] {
       const key = equivalentKey(data.maximal![index])
       return key === defaultKey ? 0 : paradigms!.has(key) ? 1 : 2
     }
-    result = data.tags.map((_, i) => i).sort((a, b) => rank(a) - rank(b))
-    data.orders.set(defaultLocale, result)
+    result = data.tags.map((_, i) => i)
+    apply(sortLocaleIndexes, result, [
+      (a: number, b: number) => rank(a) - rank(b),
+    ])
+    setLocaleMap(data.orders, defaultLocale, result)
   }
   return result
 }
@@ -481,14 +496,10 @@ function equivalentMatch(
   let best: {index: number; distance: number} | undefined
   // Every ordinary equivalent LSR is one of these eight explicit-subtag subsets.
   for (let flags = 0; flags < 8; flags++) {
-    const key = [
-      flags & 4 ? desired.language : 'und',
-      flags & 2 ? desired.script : '',
-      flags & 1 ? desired.region : '',
-    ]
-      .filter(Boolean)
-      .join('-')
-    const index = data.raw.get(key)
+    let key = flags & 4 ? desired.language : 'und'
+    if (flags & 2 && desired.script) key += '-' + desired.script
+    if (flags & 1 && desired.region) key += '-' + desired.region
+    const index = getLocaleMap(data.raw, key)
     if (index === undefined) continue
     const supported = maximal(data.tags[index])
     if (equivalentKey(desired) !== equivalentKey(supported)) continue
@@ -537,9 +548,9 @@ export function findBestMatch(
     const cacheKey = `${canonical}|${defaultLocale}`
     if (!collectDistances) {
       const equivalent =
-        data.best.get(cacheKey) || equivalentMatch(desired, data)
+        getLocaleMap(data.best, cacheKey) || equivalentMatch(desired, data)
       if (equivalent && equivalent.distance < Math.min(1, MIN_LSR_DISTANCE)) {
-        data.best.set(cacheKey, equivalent)
+        setLocaleMap(data.best, cacheKey, equivalent)
         if (equivalent.distance < bestDistance) {
           bestDistance = equivalent.distance
           result.matchedDesiredLocale = desiredTag
@@ -550,7 +561,7 @@ export function findBestMatch(
       }
     }
     const indexes = order(data, defaultLocale)
-    const exact = data.exact!.get(desired.key)
+    const exact = getLocaleMap(data.exact!, desired.key)
     if (exact !== undefined) {
       result.matchedDesiredLocale = desiredTag
       result.matchedSupportedLocale = supportedLocales[exact]
@@ -558,11 +569,12 @@ export function findBestMatch(
         result.distances[desiredTag] = {[supportedLocales[exact]]: i * demotion}
       return result
     }
-    let best = collectDistances ? undefined : data.best.get(cacheKey)
+    let best = collectDistances ? undefined : getLocaleMap(data.best, cacheKey)
     if (!best) {
       best = {index: -1, distance: Infinity}
       const distances: Record<string, number> = {}
-      for (const index of indexes) {
+      for (let candidate = 0; candidate < indexes.length; candidate++) {
+        const index = indexes[candidate]
         const d = collectDistances
           ? findMatchingDistance(desiredTag, supportedLocales[index])
           : distance(desired, data.maximal![index])
@@ -581,7 +593,7 @@ export function findBestMatch(
       if (collectDistances) result.distances[desiredTag] = distances
       else {
         if (data.best.size >= 256) data.best.clear()
-        data.best.set(cacheKey, best)
+        setLocaleMap(data.best, cacheKey, best)
       }
     }
     if (best.distance < bestDistance) {

@@ -3,10 +3,10 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24390,
+  "whole_selected_source_lines": 24484,
   "whole_selected_source_lines_by_language": {
-    "rust": 10386,
-    "typescript": 14004
+    "rust": 10400,
+    "typescript": 14084
   },
   "nonoverlapping_callable_lines": 16824,
   "nonoverlapping_callable_lines_by_language": {
@@ -14,15 +14,15 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 6376,
+    "candidate": 6237,
     "unmapped": 4838,
-    "mapped": 5610
+    "mapped": 5749
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 425,
+    "candidate": 411,
     "unmapped": 384,
-    "mapped": 260
+    "mapped": 274
   },
   "by_language": {
     "typescript": {
@@ -31,9 +31,9 @@
       "unmapped": 161
     },
     "rust": {
-      "candidate": 303,
+      "candidate": 289,
       "unmapped": 223,
-      "mapped": 23
+      "mapped": 37
     }
   },
   "direct_target_assignments": [
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 378,
+    "implementation_dependency": 364,
     "typed_public_operation_candidate": 47
   },
   "proposal_core_section_ids": 170,
@@ -409,10 +409,10 @@
     },
     {
       "file": "crates/temporal/format.rs",
-      "source_lines": 168,
+      "source_lines": 182,
       "callable_rows": 14,
       "nonoverlapping_callable_lines": 139,
-      "sha256": "2e45803ba32dc197970cfa9ccd96a6d2b412a419f5e133814c4b8fae09998b4c",
+      "sha256": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c",
       "unresolved_callable_rows": 0
     },
     {
@@ -705,10 +705,10 @@
     },
     {
       "file": "packages/temporal/intrinsics.ts",
-      "source_lines": 39,
+      "source_lines": 119,
       "callable_rows": 2,
       "nonoverlapping_callable_lines": 10,
-      "sha256": "5e73a52605116615d9f492c0e7270ffb330bcc6f1a172ad381d2f2eafeb243e2",
+      "sha256": "e85f0adcc6b7d2b56173ff70b45d7a12ac53d0361e7dd92c00d60e5c87d5502e",
       "unresolved_callable_rows": 0
     },
     {

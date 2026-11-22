@@ -1,0 +1,38 @@
+{
+  "scope": "Fresh best-fit key parsing, canonicalizer use, stable sorting, equivalent keys and distance cache invocation. Existing scoring and data contracts retained.",
+  "comparison_step": "15.11.1.1/algorithm-1/step-3",
+  "implementation_locations": [
+    "packages/intl-localematcher/abstract/utils.ts:129-157",
+    "packages/intl-localematcher/abstract/utils.ts:159-195",
+    "packages/intl-localematcher/abstract/utils.ts:286-304",
+    "packages/intl-localematcher/abstract/utils.ts:451-481",
+    "packages/intl-localematcher/abstract/utils.ts:492-516",
+    "packages/intl-localematcher/abstract/utils.ts:519-607"
+  ],
+  "source_sha256": {
+    "packages/intl-localematcher/abstract/utils.ts": "344b8a973468f4ac924bcbdf57beea1fae11960d2e3a0876db5f778200084df2",
+    "packages/intl-localematcher/abstract/intrinsics.ts": "d941e0fcefbb4e473dd505ab243292aa36fc8f96947ff12ca7f2883f35ef3fc6",
+    "packages/intl-localematcher/abstract/CanonicalizeUValue.ts": "a055513be8c47af2cb0e9c2b9c27141a10e1ed520483caa5d0cabb5fdc54e6c7",
+    "packages/temporal/tests/durationformat.test.ts": "f59fd957e6967a7121f2a9b177ebf4f41e856902b420d84a3a438711aa3262cf"
+  },
+  "public_red_failures": 16,
+  "public_passes": 93,
+  "red_log_sha256": "b8350dc2befcd5460e4c81b9685fd8520004679b0e40dde310f68a496a815569",
+  "diagnostic_reconciliation": "Existing matcher diagnostic caught inner candidate index shadowing the request index. Candidate index has a distinct name, restoring requested-order demotion. Diagnostic test passes.",
+  "remaining": "Best-fit prepared-cache allocation, native Locale provider maximization, private ordered Lists and distance partitions/cache eviction remain open.",
+  "validation_targets": [
+    "//packages/intl-localematcher:intl-localematcher_test",
+    "//packages/intl-localematcher:typecheck_typecheck_test",
+    "//packages/temporal:typecheck_typecheck_test",
+    "//packages/intl-durationformat:intl-durationformat_test",
+    "//packages/temporal:durationformat_hermes_bytecode_test262",
+    "//packages/temporal:durationformat_hermes_source_test262",
+    "//packages/temporal:durationformat_test",
+    "//packages/temporal:installation_hermes_host_test",
+    "//packages/temporal:instant_hermes_bytecode_test262_strict",
+    "//packages/temporal:instant_hermes_test262_strict",
+    "//packages/temporal:instant_test"
+  ],
+  "validation_result": "Executed 8 out of 11 tests: 11 tests pass.",
+  "final_log_sha256": "10ef3340b3e0f55878095bcf653e3c11e20962365888d246f7570dbaac1fd659"
+}

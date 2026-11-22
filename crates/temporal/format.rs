@@ -15,6 +15,7 @@ pub struct FormattedInstant {
     offset: Option<i64>,
 }
 impl Instant {
+    // Proposal comparison §8.5.8 step 4: project the rounded epoch using the supplied offset.
     pub fn format(
         self,
         precision: Precision,
@@ -40,6 +41,7 @@ impl Instant {
     }
 }
 impl fmt::Display for Instant {
+    // Proposal comparison §8.5.8 steps 2, 5–6.a: display UTC with automatic precision.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(Precision::Auto, RoundingMode::Trunc, None)
             .map_err(|_| fmt::Error)?
@@ -51,20 +53,24 @@ pub(crate) struct IsoString {
     len: usize,
 }
 impl IsoString {
+    // Proposal comparison §5.5.9 step 7: start an empty buffer for ISO text.
     fn new() -> Self {
         Self {
             bytes: [0; 64],
             len: 0,
         }
     }
+    // Proposal comparison §5.5.9 step 7: append one ASCII byte to the ISO text.
     fn push(&mut self, byte: u8) {
         self.bytes[self.len] = byte;
         self.len += 1;
     }
+    // Proposal comparison §13.26 steps 2–3, 5: write two decimal digits.
     fn pair(&mut self, value: u32) {
         self.push(b'0' + (value / 10) as u8);
         self.push(b'0' + (value % 10) as u8);
     }
+    // Proposal comparison §3.5.10 steps 1, 3: write the year at its selected width.
     fn number(&mut self, mut value: u32, width: usize) {
         let end = self.len + width;
         for byte in self.bytes[self.len..end].iter_mut().rev() {
@@ -73,6 +79,7 @@ impl IsoString {
         }
         self.len = end;
     }
+    // Proposal comparison §5.5.9 steps 1–3: write the year, month and day.
     pub(crate) fn date((year, month, day): (i32, u8, u8)) -> Self {
         let mut output = Self::new();
         if (0..=9999).contains(&year) {
@@ -87,6 +94,7 @@ impl IsoString {
         output.pair(u32::from(day));
         output
     }
+    // Proposal comparison §5.5.9 steps 5, 7: join the date and clock with T.
     pub(crate) fn date_time(fields: IsoDateTime, precision: Precision) -> Self {
         let mut output = Self::date((fields.year, fields.month, fields.day));
         output.push(b'T');
@@ -96,11 +104,13 @@ impl IsoString {
         );
         output
     }
+    // Proposal comparison §4.5.13 step 2: format a plain clock at the chosen precision.
     pub(crate) fn time(fields: (u8, u8, u8, u32), precision: Precision) -> Self {
         let mut output = Self::new();
         output.append_time(fields, precision);
         output
     }
+    // Proposal comparison §13.26 steps 2–7: write the clock at the selected precision.
     fn append_time(&mut self, fields: (u8, u8, u8, u32), precision: Precision) {
         self.pair(u32::from(fields.0));
         self.push(b':');
@@ -131,11 +141,13 @@ impl IsoString {
             }
         }
     }
+    // Proposal comparison §5.5.9 step 7: read the completed ISO text prefix.
     pub(crate) fn as_str(&self) -> Result<&str, fmt::Error> {
         core::str::from_utf8(&self.bytes[..self.len]).map_err(|_| fmt::Error)
     }
 }
 impl fmt::Display for FormattedInstant {
+    // Proposal comparison §8.5.8 steps 5–8: append Z or the rounded offset to the ISO text.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut output = IsoString::date_time(self.fields, self.precision);
         match self.offset {
@@ -153,9 +165,11 @@ impl fmt::Display for FormattedInstant {
     }
 }
 
+// Proposal comparison §11.1.7 steps 1–2: round a signed offset to whole minutes.
 pub(crate) fn offset_minutes(offset: i128) -> i128 {
     offset.signum() * ((offset.abs() + 30_000_000_000) / 60_000_000_000)
 }
+// Proposal comparison §11.1.7 step 3: write the rounded offset as signed hours and minutes.
 pub(crate) fn write_offset(f: &mut fmt::Formatter<'_>, offset: i128) -> fmt::Result {
     let minutes = offset_minutes(offset);
     write!(

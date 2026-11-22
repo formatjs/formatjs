@@ -32,10 +32,11 @@ It traverses Proxy targets without property reads or descriptor traps. The
 resulting TypeError supplies the revocation part of §7.3.24. The boolean result
 is unused. [Current source ranges and validation](temporal-constructor-revocation-validation.json).
 
-IsArray stops at a bound function. GetFunctionRealm unwraps it under §7.3.24
-step 2. A bound constructor around a revoked Proxy can therefore still succeed
-incorrectly. A live foreign constructor with primitive prototype still needs
-the intrinsic prototype from its realm. Existing `host-exotic` Bazel test wiring is packages/temporal/BUILD.bazel:1007.
+The original IsArray check stops at a bound function. The current capability
+checks use the native Array species operation or the pinned Hermes
+constructibility check to follow bound chains after the single prototype Get.
+The direct Proxy check remains the fallback on hosts without those capabilities.
+[Bound revocation proof and validation](temporal-bound-constructor-realm-audit.md).
 
 ## Rejected partial runtime fix
 
@@ -49,7 +50,7 @@ Read-only Node v26.5.1 probe with a node:vm foreign ordinary constructor having 
 
 Engine realm records and intrinsic tables lack general JavaScript reflection. Prototype-chain/global/eval inference adds user hooks and cannot reliably recover them. Capturing native Temporal allocation could delegate correctly on engines already supplying compatible native classes, but current NativeInstant is a private JavaScript facade, not native Temporal.Instant. Brand, provider, installation, and duplicate-Get behavior need a separately bounded design. Cooperative realm registration/host hooks would require an explicit contract; none assumed here.
 
-Unwrapping bound functions and selecting the foreign intrinsic remain open within the current runtime interface. Runtime support or agreed installation architecture required; no whole-family promotion.
+Selecting the foreign intrinsic remains open. Hosts lacking bound-chain validation and Hermes pre-entry rejection are separately documented. Runtime support or agreed installation architecture required; no whole-family promotion.
 
 ## Affected checklist IDs
 
