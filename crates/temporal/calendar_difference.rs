@@ -159,8 +159,8 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
         return Ok(Duration::from_time_nanoseconds(end - origin, TimeUnit::Hour)?.fields());
     }
     let anchor = loop {
-        // Proposal comparison §6.5.6 steps 11.a–c: Resolve the raw ISO probe before calendar difference.
-        // https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime
+        // ECMA-262 preview §22.9.5.6 steps 11.a–c resolve the original wall clock on the probe date.
+        // https://tc39.es/ecma262/pr/3966/#sec-differencezoneddatetime
         let candidate =
             start.resolve_compatible(i128::from(day) * NANOSECONDS_PER_DAY + origin_clock)?;
         if (candidate - end) * sign <= 0 {
@@ -429,8 +429,8 @@ pub(crate) fn difference<A: RelativeAnchor>(
         let mut value = since_sign * round_duration_nanoseconds(time * since_sign, quantum, mode)?;
         let mut date = fields;
         date[4..].fill(0);
-        // Proposal comparison §7.5.35 step 5: Resolve the origin wall clock even for zero date fields.
-        // https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime
+        // ECMA-262 preview §22.15.5.14 step 5 resolves the origin wall clock even for zero date fields.
+        // https://tc39.es/ecma262/pr/3966/#sec-nudgetozonedtime
         let base = if date[..4].iter().all(|field| *field == 0) {
             start.resolve_compatible(
                 i128::from(start.date_at(origin)?) * NANOSECONDS_PER_DAY
@@ -441,7 +441,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
         };
         let mut next = date;
         next[3] += sign;
-        // Proposal comparison §7.5.35 step 6: The signed day step ensures compatible resolution.
+        // Steps 6–7 measure the span to the next signed day.
         let span = endpoint(start, next)? - base;
         fields = date;
         expanded = (value - span) * sign >= 0;

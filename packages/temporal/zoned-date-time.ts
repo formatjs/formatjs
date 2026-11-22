@@ -593,7 +593,8 @@ export function unroundedZonedDifference(
     endLocal = local({...start, epochNanoseconds: end}),
     begin = epochDayOf(beginLocal),
     finish = epochDayOf(endLocal)
-  // Proposal comparison §6.5.6 steps 4.a–b: Use elapsed time on the same ISO date.
+  // ECMA-262 preview §22.9.5.6 steps 4.a–b use elapsed time on the same ISO date.
+  // https://tc39.es/ecma262/pr/3966/#sec-differencezoneddatetime
   if (begin === finish)
     return balanceDurationTime(end - start.epochNanoseconds, 4)
   const originClock = timeOf(beginLocal),
@@ -605,7 +606,8 @@ export function unroundedZonedDifference(
   const zone = zonedKernel(start.timeZone)
   let anchor: bigint
   while (true) {
-    // Proposal comparison §6.5.6 steps 11.a–c: Resolve the raw ISO probe before calendar difference.
+    // ECMA-262 preview §22.9.5.6 steps 11.a–c resolve the original wall clock on the probe date.
+    // https://tc39.es/ecma262/pr/3966/#sec-differencezoneddatetime
     anchor = zone.resolve(
       epochNanosecondsToISO(bigIntFrom(day) * nsPerDay + originClock)
     )

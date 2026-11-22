@@ -349,14 +349,16 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     dataGeneration,
   } = createHostTimeZoneProvider(timeZone)
 
-  // ECMA-262 §21.4.1.20: Return matching epoch nanoseconds in ascending order.
-  // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
+  // ECMA-262 preview §22.2.15 steps 3.b and 4.a use sorted, bounded named-zone candidates.
+  // https://tc39.es/ecma262/pr/3966/#sec-getpossibleepochnanoseconds
   const candidatesFor = (local: bigint): bigint[] => {
-    // Proposal comparison §11.1.13 steps 3.a and 4.a: use exact owned candidates.
     const query = ownedCandidates?.(local)
     const owned = typeof query === 'bigint' ? undefined : query
     const candidates = owned ?? []
     if (!owned) {
+      // Host offsets are subday. These probes cover both offsets when adjacent
+      // transitions are more than two days apart. At Instant limits, this also
+      // assumes a constant offset across each clipped window.
       const before = offsetNanoseconds(clamp(local - day)),
         middle = offsetNanoseconds(clamp(local)),
         after = offsetNanoseconds(clamp(local + day))
@@ -415,7 +417,9 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
     const earlier = disambiguation === 'earlier'
-    // Proposal comparison §11.1.12 steps 6–25: Resolve owned gaps through exact timezone data.
+    // ECMA-262 preview §22.2.14 steps 6–7 supply the epochs on either side of a gap.
+    // https://tc39.es/ecma262/pr/3966/#sec-disambiguatepossibleepochnanoseconds
+    // Owned providers resolve the shifted local time using the exact transitions.
     const exact = ownedCandidates?.(local, earlier ? 'earlier' : 'later')
     if (typeof exact === 'bigint') return exact
     const before = offsetNanoseconds(clamp(local - day)),

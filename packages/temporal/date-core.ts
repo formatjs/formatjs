@@ -1249,14 +1249,14 @@ export function roundRelativeDifference(
     const date = {...result}
     for (let index = 4; index < differenceUnits.length; index++)
       date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
-    // Proposal comparison §7.5.35 step 5: Resolve the origin wall clock even for zero date fields.
-    // https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime
+    // ECMA-262 preview §22.15.5.14 step 5 resolves the origin wall clock even for zero date fields.
+    // https://tc39.es/ecma262/pr/3966/#sec-nudgetozonedtime
     const origin =
         date.years || date.months || date.weeks || date.days
           ? anchor.endpoint(date)
           : anchor.compatibleOrigin(),
       next = {...date, days: date.days + sign},
-      // Proposal comparison §7.5.35 step 6: The signed day step ensures compatible resolution.
+      // Steps 6–7 measure the span to the next signed day.
       span = anchor.endpoint(next) - origin
     expanded = (value - span) * physicalSign >= 0n
     if (expanded) {

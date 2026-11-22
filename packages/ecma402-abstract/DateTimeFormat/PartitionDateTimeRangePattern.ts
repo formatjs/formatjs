@@ -171,7 +171,9 @@ export function PartitionDateTimeRangePattern(
   let rangePattern: RangePatterns | undefined
   for (let index = 0; index <= lastField; index++) {
     const field = TABLE_2_FIELDS[index]
-    // Hidden day periods must not override an hour or minute interval.
+    // Temporal amendment §15.6.8 steps 23.c–d.i: keep scanning displayed fields
+    // past absent period fields. An equal date prefix can still hide unequal seconds.
+    // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
     if (
       (field === 'ampm' || field === 'dayPeriod') &&
       !arraySome(parts, part => part.type === field)
