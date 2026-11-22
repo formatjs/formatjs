@@ -1,3 +1,4 @@
+import {zeroPadDecimal} from '#packages/temporal/format-digits.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -13,6 +14,7 @@ import {
 } from '#packages/temporal/fallback-data.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import {
+  isTimeZoneOffsetString,
   parseTimeZoneString,
   parseOffsetNanoseconds,
 } from '#packages/temporal/instant-string.js'
@@ -113,7 +115,7 @@ export function timeZone(name: string): TimeZoneKernel {
   const existing = namedKernels.get(name)
   if (existing) return existing
   const identifier = timeZoneIdentifier(name)
-  if (/^[+-]/.test(identifier))
+  if (isTimeZoneOffsetString(identifier))
     throw new RangeErrorConstructor('Expected named timezone')
   let zone = namedKernels.get(identifier)
   if (!zone) {
@@ -132,7 +134,7 @@ export function resolveTimeZone(
   if (typeof value !== 'string')
     throw new TypeErrorConstructor('Timezone must be a string')
   const identifier = parseTimeZoneString(value)
-  if (/^[+-]/.test(identifier) || identifier.toUpperCase() === 'UTC')
+  if (isTimeZoneOffsetString(identifier) || identifier.toUpperCase() === 'UTC')
     return zonedKernel(timeZoneIdentifier(identifier))
   return timeZone(identifier)
 }
@@ -147,16 +149,16 @@ export function timeZoneIdentifier(value: unknown): string {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.timeZoneIdentity(name).identifier
-  if (/^[+-]/.test(name)) {
+  if (isTimeZoneOffsetString(name)) {
     const offset = parseOffsetNanoseconds(name, true)
     const minutes = numberFrom(
       (offset < 0n ? -offset : offset) / 60_000_000_000n
     )
     return (
       (offset < 0n ? '-' : '+') +
-      String(floor(minutes / 60)).padStart(2, '0') +
+      zeroPadDecimal(floor(minutes / 60), 2) +
       ':' +
-      String(minutes % 60).padStart(2, '0')
+      zeroPadDecimal(minutes % 60, 2)
     )
   }
   if (!spellings) {
@@ -179,7 +181,7 @@ export function timeZoneIdentifier(value: unknown): string {
 const fixedKernels = new Map<string, TimeZoneKernel>()
 export function zonedKernel(identifier: string): TimeZoneKernel {
   const utc = identifier === 'UTC'
-  if (!utc && !/^[+-]/.test(identifier)) return timeZone(identifier)
+  if (!utc && !isTimeZoneOffsetString(identifier)) return timeZone(identifier)
   const key = utc ? 'UTC' : identifier
   const existing = fixedKernels.get(key)
   if (existing) return existing

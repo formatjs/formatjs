@@ -1,3 +1,7 @@
+import {
+  isTimeZoneOffsetString,
+  parseOffsetNanoseconds,
+} from '#packages/temporal/instant-string.js'
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
@@ -653,5 +657,190 @@ it.each([
           reference.Instant.from(text).epochNanoseconds
         )
       }
+  }
+)
+
+it.each([
+  [
+    'offset helper',
+    'exec',
+    () => parseOffsetNanoseconds('+23:59:59.999999999'),
+    86_399_999_999_999n,
+  ],
+  [
+    'offset helper',
+    'test',
+    () => parseOffsetNanoseconds('+23:59:59.999999999'),
+    86_399_999_999_999n,
+  ],
+  [
+    'fixed zone',
+    'exec',
+    () => new Temporal.ZonedDateTime(0n, '+02:03').timeZoneId,
+    '+02:03',
+  ],
+  [
+    'fixed zone',
+    'test',
+    () => new Temporal.ZonedDateTime(0n, '+02:03').timeZoneId,
+    '+02:03',
+  ],
+  [
+    'fixed zone',
+    'String',
+    () => new Temporal.ZonedDateTime(0n, '+02:03').timeZoneId,
+    '+02:03',
+  ],
+  [
+    'fixed zone',
+    'padStart',
+    () => new Temporal.ZonedDateTime(0n, '+02:03').timeZoneId,
+    '+02:03',
+  ],
+] as const)('%s avoids private %s hooks', (_name, key, run, expected) => {
+  const target =
+    key === 'String'
+      ? globalThis
+      : key === 'padStart'
+        ? String.prototype
+        : RegExp.prototype
+  const original = Object.getOwnPropertyDescriptor(target, key)!
+  let actual: unknown
+  try {
+    Object.defineProperty(target, key, {
+      configurable: true,
+      get() {
+        throw new Error('Private offset grammar hook reached')
+      },
+    })
+    actual = run()
+  } finally {
+    Object.defineProperty(target, key, original)
+  }
+  expect(actual).toBe(expected)
+})
+
+it('matches the complete offset grammar at clock and fraction boundaries', () => {
+  let count = 0
+  const check = (text: string) => {
+    const expected = -reference.Instant.from('1970-01-01T00:00:00' + text)
+      .epochNanoseconds
+    expect(isTimeZoneOffsetString(text), text).toBe(true)
+    expect(parseOffsetNanoseconds(text), text).toBe(expected)
+    count++
+  }
+  const pair = (value: number) => String(value).padStart(2, '0')
+  for (const sign of ['+', '-'])
+    for (const hour of [0, 9, 10, 23]) {
+      check(sign + pair(hour))
+      for (const separator of ['', ':'])
+        for (const minute of [0, 9, 10, 59]) {
+          const prefix = sign + pair(hour) + separator + pair(minute)
+          check(prefix)
+          for (const second of [0, 9, 10, 59]) {
+            const base = prefix + separator + pair(second)
+            check(base)
+            for (const decimal of ['.', ','])
+              for (const digits of [
+                '0',
+                '1',
+                '000000001',
+                '123456789',
+                '999999999',
+              ])
+                check(base + decimal + digits)
+          }
+        }
+    }
+  expect(count).toBe(2888)
+})
+
+it.each([
+  '',
+  '+',
+  '-',
+  '+0',
+  '00',
+  'Z',
+  'UTC',
+  '  +01',
+  '+01 ',
+  '+01\n',
+  '+01\u0000',
+  '\u221201',
+  '+\u0661\u0662',
+  '+24',
+  '-24',
+  '+99',
+  '+01:',
+  '+010',
+  '+01:0',
+  '+0160',
+  '+01:60',
+  '+010260',
+  '+01:02:60',
+  '+0102:03',
+  '+01:0203',
+  '+01.5',
+  '+01:02.5',
+  '+010203.',
+  '+01:02:03,',
+  '+01:02:03.1234567890',
+  '+01:02:03.1x',
+  '+01:02:03.1\n',
+  '+01:02:03.+1',
+  '+01:02:03.\u0661',
+  '+01[UTC]',
+  '+01:02:03Z',
+  '++01',
+  '--01',
+  '+01::02',
+  '+01:02::03',
+])('rejects an entire malformed UTCOffset %s', text => {
+  expect(isTimeZoneOffsetString(text)).toBe(false)
+  expect(() => parseOffsetNanoseconds(text)).toThrow(RangeError)
+})
+
+it('keeps minute-only timezone contexts separate from the full offset grammar', () => {
+  for (const text of ['+00', '-00', '+23', '-2359', '+23:59'])
+    expect(parseOffsetNanoseconds(text, true)).toBe(
+      parseOffsetNanoseconds(text)
+    )
+  for (const text of [
+    '+000000',
+    '+00:00:00',
+    '+010203.1',
+    '+01:02:03,000000001',
+  ]) {
+    expect(isTimeZoneOffsetString(text)).toBe(true)
+    expect(() => parseOffsetNanoseconds(text, true)).toThrow(RangeError)
+    expect(() => new Temporal.ZonedDateTime(0n, text)).toThrow(RangeError)
+  }
+})
+
+it.each(['0', '1', '2', '3', '19'])(
+  'never reads inherited offset digit %s',
+  key => {
+    const original = Object.getOwnPropertyDescriptor(String.prototype, key)
+    let actual: unknown
+    try {
+      Object.defineProperty(String.prototype, key, {
+        configurable: true,
+        get() {
+          throw new Error('Out-of-bounds offset digit read')
+        },
+      })
+      actual = [
+        isTimeZoneOffsetString(''),
+        isTimeZoneOffsetString('+'),
+        isTimeZoneOffsetString('+0'),
+        parseOffsetNanoseconds('+00'),
+        parseOffsetNanoseconds('+23:59:59.999999999'),
+      ]
+    } finally {
+      if (original) Object.defineProperty(String.prototype, key, original)
+      else Reflect.deleteProperty(String.prototype, key)
+    }
+    expect(actual).toEqual([false, false, false, 0n, 86_399_999_999_999n])
   }
 )

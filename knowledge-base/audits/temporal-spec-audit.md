@@ -20,26 +20,38 @@ off. These are proposal inventory counts, not ECMA-262 section completion.
 ## ECMA-262 dependency sections touched
 
 This is a partial dependency index, not a complete Temporal chapter inventory.
-No section below is fully signed off.
+Reviewed operation contracts below do not sign off their Temporal callers.
+The historical/provisional Temporal inventory above remains unchanged.
 
-| Section                                                                                          | Status  | Evidence or gap                                                                                                                |
-| ------------------------------------------------------------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Partial | Steps 15.a, 16.b–16.d: [private fraction padding](temporal-offset-fraction-audit.md). Remaining parsing and integrations open. |
-| [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Open    | Grammar recognition and every caller need review.                                                                              |
-| [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open    | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).              |
-| [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open    | Range checked as issue evidence; implementation coverage remains open.                                                         |
+| Section                                                                                          | Status             | Evidence or gap                                                                                                                     |
+| ------------------------------------------------------------------------------------------------ | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings)            | Reviewed grammar   | [Production mapping, ASCII bounds and full-input recognition](temporal-offset-grammar-audit.md). Other ISO productions remain open. |
+| [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Reviewed operation | All three steps mapped to TS/Rust recognition; caller contracts remain open.                                                        |
+| [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Reviewed operation | All 17 top-level steps and substeps mapped to TS/Rust parsing and exact arithmetic. Caller algorithms remain open.                  |
+| [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open               | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).                   |
+| [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open               | Range checked as issue evidence; implementation coverage remains open.                                                              |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- ECMA-262 [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings),
+  §21.4.1.33.1 steps 1–3 and §21.4.1.33.2 steps 1–17:
+  [complete helper contract mapping](temporal-offset-grammar-audit.md).
+  Bounded ASCII scanning removes private RegExp hooks; fixed-zone constructor
+  gates and canonicalization avoid mutable RegExp/String methods. Rust parser,
+  full-input FFI guard and minute-only registry paths reviewed. Public caller
+  clauses remain open. All 75 Bazel targets and Temporal package assembly pass
+  (61 executed, 14 cached); no historical Temporal line credit added.
 
 - ECMA-262 [§21.4.1.33.2 steps 15.a and 16.b–16.d](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring):
   private nine-digit fraction padding replaces mutable padEnd calls in four
   shared parser sites. Five public mutation regressions reproduced the gap.
   The [offset fraction audit](temporal-offset-fraction-audit.md) records the
   bounded-digit equivalence and independent controls. This dependency review
-  adds no credit to historical Temporal source-line counts; full sections and
-  remaining parser hooks stay open.
+  adds no credit to historical Temporal source-line counts. The later helper
+  review above supersedes its offset-specific open status; other parser hooks
+  remain open.
   All 75 validation targets and Temporal package assembly pass.
 
 - `ParseMonthCode` syntax and coercion, `calendar.html` lines 83–85.
@@ -756,7 +768,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [private unit-name matching](https://github.com/formatjs/formatjs/pull/8090),
 [rounding-increment validation audit](https://github.com/formatjs/formatjs/pull/8091),
 [intrinsic fractional formatting](https://github.com/formatjs/formatjs/pull/8092),
-[private parsed fraction padding](https://github.com/formatjs/formatjs/pull/8093).
+[private parsed fraction padding](https://github.com/formatjs/formatjs/pull/8093),
+[UTC-offset grammar and operation audit](https://github.com/formatjs/formatjs/pull/8094).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

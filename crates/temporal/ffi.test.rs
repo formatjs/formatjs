@@ -503,3 +503,49 @@ fn each_clock_field_clamps_before_narrowing_and_rejects_outside_bounds() {
         }
     }
 }
+
+#[test]
+fn prepared_offsets_require_complete_utc_offset_strings() {
+    let mut request = json!({"op":"resolveZonedDateTime","nanoseconds":"0","identifier":"UTC","calendar":"iso8601","offset":"+00","behavior":"use","disambiguation":"compatible","matchMinute":false,"dateOnly":false});
+    for (offset, expected) in [
+        ("+00", "0"),
+        ("-00", "0"),
+        ("+23", "-82800000000000"),
+        ("-2359", "86340000000000"),
+        ("+23:59", "-86340000000000"),
+        ("+235959", "-86399000000000"),
+        ("-23:59:59", "86399000000000"),
+        ("+235959,000000001", "-86399000000001"),
+        ("-23:59:59.999999999", "86399999999999"),
+    ] {
+        request["offset"] = json!(offset);
+        assert_eq!(
+            query(request.to_string().as_bytes()),
+            Ok(json!(expected)),
+            "{offset}"
+        );
+    }
+    for offset in [
+        "",
+        "+",
+        "+0",
+        "+24",
+        "+01:60",
+        "+01:02:60",
+        "+0102:03",
+        "+01:0203",
+        "+01.5",
+        "+01:02.5",
+        "+01:02:03.",
+        "+01:02:03.1234567890",
+        "+01:02:03.1x",
+        "+01\n",
+        "+01[UTC]",
+        "+01:02:03Z",
+        "−01",
+        "+١٢",
+    ] {
+        request["offset"] = json!(offset);
+        assert_eq!(query(request.to_string().as_bytes()), Err(1), "{offset:?}");
+    }
+}
