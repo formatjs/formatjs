@@ -89,3 +89,59 @@ fn ties_use_registration_order_and_cyclic_year_ranges_require_calendar_fields() 
         Err(Error::InvalidPattern)
     );
 }
+
+#[test]
+fn unknown_pattern_fields_retain_position_and_epoch_in_their_ilnd_value() {
+    use formatjs_intl_datetimeformat::{
+        registry::{Registry, ResolutionOptions},
+        render::RenderData,
+        selection::{Options, Snapshot},
+        timezone::TimeZoneRegistry,
+    };
+    use serde_json::json;
+    let mut registry = Registry::default();
+    registry
+        .add_locale_data(include_str!(env!("FORMATJS_DATETIME_EN")))
+        .unwrap();
+    let resolution = registry
+        .resolve(&["en".into()], &ResolutionOptions::default())
+        .unwrap();
+    let components = Components {
+        year: Some(NumericWidth::TwoDigit),
+        ..Components::default()
+    };
+    let config = Snapshot::capture(&registry, resolution, components)
+        .unwrap()
+        .select(&Options::default())
+        .unwrap();
+    let profile = config.profile();
+    let render = RenderData::capture(&registry, &config, profile).unwrap();
+    let zones = TimeZoneRegistry::default().snapshot();
+    let zone = zones.resolve("UTC").unwrap();
+    let local = render
+        .local_time(&zones, &zone, 1_704_164_645_987_000_000, false)
+        .unwrap();
+    let pattern = "A{customField}B{year}C{anotherField}";
+    let parts = render
+        .pattern(
+            &config,
+            profile,
+            pattern,
+            pattern,
+            &local,
+            "UTC",
+            profile.components,
+        )
+        .unwrap();
+    assert_eq!(
+        serde_json::to_value(parts).unwrap(),
+        json!([
+            {"type":"literal","value":"A"},
+            {"type":"unknown","value":"customField:1704164645987000000"},
+            {"type":"literal","value":"B"},
+            {"type":"year","value":"24"},
+            {"type":"literal","value":"C"},
+            {"type":"unknown","value":"anotherField:1704164645987000000"}
+        ])
+    );
+}

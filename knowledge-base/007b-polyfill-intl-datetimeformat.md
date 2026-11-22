@@ -4,6 +4,13 @@
 
 ## Purpose
 
+The central date-pattern loop uses private indexed traversal and own List writes.
+Fractional seconds use captured floor; two-digit fields use private Unicode
+truncation without mutable array methods. TS and Rust preserve
+unknown pattern fields with matching exact-epoch fallback text. The [producer
+step map](audits/temporal-date-pattern-audit.md) retains constructor, calendar and
+locale-data dependencies as open.
+
 Shared Pattern String parsing follows ECMA-402 §9.2.15 through captured String
 operations and own private-list writes. See the [seven-step parser audit](audits/temporal-pattern-partition-audit.md)
 for source mapping and remaining formatter producer work.
