@@ -27,10 +27,10 @@ AST call inventory finds exactly two TS calls to roundRelativeDifference:
   PlainYearMonth.until/since
   [plain-year-month.ts:260](../../packages/temporal/plain-year-month.ts#L260),
   and plain-relative Duration.round
-  [relative-duration.ts:305](../../packages/temporal/relative-duration.ts#L311).
+  [relative-duration.ts:305](../../packages/temporal/relative-duration.ts#L313).
 - [zoned-date-time.ts:628](../../packages/temporal/zoned-date-time.ts#L631), through
   differenceZonedDuration. Public ZonedDateTime.until/since and zoned-relative
-  Duration.round [relative-duration.ts:281](../../packages/temporal/relative-duration.ts#L283).
+  Duration.round [relative-duration.ts:281](../../packages/temporal/relative-duration.ts#L285).
 
 Presence on this call graph does not guarantee bubbling: time largest unit returns
 before date bubbling; zoned nanosecond/increment 1 returns unrounded; no expansion skips

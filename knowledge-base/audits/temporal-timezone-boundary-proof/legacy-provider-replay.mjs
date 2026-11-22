@@ -90,6 +90,7 @@ const packed = (at, index) =>
   `${at === null ? '' : at.toString(36)},0,${index},0`
 const fold = 'America/Phoenix'
 const gap = 'America/Boise'
+const shiftedFold = 'America/Detroit'
 const upper = 'America/New_York'
 const lower = 'America/Denver'
 formatter.__addTZData({
@@ -98,6 +99,13 @@ formatter.__addTZData({
   zones: [
     `${fold}|${packed(null, 0)}|${packed(0n, 1)}|${packed(6n * hour, 0)}`,
     `${gap}|${packed(null, 0)}|${packed(0n, 2)}|${packed(6n * hour, 0)}`,
+    [
+      shiftedFold,
+      packed(null, 0),
+      packed(0n, 2),
+      packed(3n * hour, 3),
+      packed(8n * hour, 2),
+    ].join('|'),
     `${upper}|${packed(null, 3)}|${packed(max + 900n, 0)}`,
     `${lower}|${packed(null, 3)}|${packed(-max - 900n, 0)}`,
   ],
@@ -149,6 +157,10 @@ assert.deepEqual(
   [offset(gap, -1n), offset(gap, hour), offset(gap, 6n * hour)],
   [0, 14_400, 0]
 )
+assert.deepEqual(
+  [-1n, 0n, 3n * hour, 8n * hour].map(time => offset(shiftedFold, time)),
+  [0, 14_400, 7200, 14_400]
+)
 assert.equal(offset(upper, max), 7200)
 assert.equal(offset(lower, -max), 0)
 assert.equal(formatter.tzData[upper].at(-1)[0], Number(max + 900n))
@@ -171,6 +183,18 @@ const outcomes = local =>
     }
   })
 const epoch = seconds => (seconds * second).toString()
+assert.deepEqual(outcomes(`1970-01-01T06:00[${shiftedFold}]`), [
+  epoch(2n * hour),
+  epoch(4n * hour),
+  epoch(2n * hour),
+  rejected,
+])
+assert.deepEqual(outcomes(`1970-01-01T02:00[${shiftedFold}]`), [
+  epoch(-2n * hour),
+  epoch(4n * hour),
+  epoch(4n * hour),
+  rejected,
+])
 const actual = {
   fold: outcomes(`1970-01-01T15:00[${fold}]`),
   gap: outcomes(`1970-01-01T01:00[${gap}]`),

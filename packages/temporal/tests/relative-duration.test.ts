@@ -148,6 +148,19 @@ it('validates the full calendar window for exact totals at the date limits', () 
   }
 })
 
+it.each([
+  ['-271821-05-20', '-P29DT12H', 'month', -59 / 60],
+  ['-271821-04-27', '-P6DT12H', 'week', -13 / 14],
+  ['-271820-04-20', '-P365DT12H', 'year', -731 / 732],
+] as const)(
+  'borrows the trailing clock before validating %s total endpoints',
+  (relativeTo, duration, unit, expected) => {
+    expect(Temporal.Duration.from(duration).total({relativeTo, unit})).toBe(
+      expected
+    )
+  }
+)
+
 it('validates zero zoned calendar totals while preserving the plain zero shortcut', () => {
   const zero = new Temporal.Duration()
   const maximum = new Temporal.ZonedDateTime(

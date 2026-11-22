@@ -28,9 +28,10 @@ satisfy this requirement.
 
 Exclude realm-specific behavior from fixes, verification and estimates. The
 fixed ledger retains 16 historical constructor-realm steps under `out_of_scope`.
-15 of 31 conditional numbered steps remain in scope. Of those, nine track
-published comparison conflicts, two track relative-window premises and four
-track timezone-provider applicability. The ordinary `index.js` and
+15 of 31 conditional numbered steps remain in scope. Eight track published
+comparison conflicts, one tracks the confirmed reverse-fold implementation
+divergence, two track relative-window premises, and four track timezone-provider
+applicability. The ordinary `index.js` and
 `standalone.js` cases pass with shared private epoch and calendar slots.
 
 ## Source and finite scope
@@ -242,11 +243,14 @@ retains 1,069 identities, including 1,063 live bindings and six retired callback
 [Earlier mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-That checkpoint includes 996 reviewed local scopes and 12 narrow transport caller links. Current mapping states are 1,035 mapped,
-12 candidate and 22 unmapped, including six retired identities. Annotation
-presence is 1,034 direct,
-29 without a numbered anchor, and six retired. No enclosing-only anchors remain. These are
-ownership/annotation queues, not missing functionality or step-verification counts.
+Current helper dispositions include 1,034 exact local anchors, 29 reviewed
+implementation helpers without an exact numbered step, and six retired
+callbacks. The last applicability pass checked the 29 live helper ranges
+and assigned their provider, test, transport or compatibility roles.
+No helper remains in candidate status. The register keeps 35 unmapped
+identities for the 29 reviewed helpers and six retired callbacks.
+Behavioral verification remains tracked at the owning operation.
+[Residual helper owners](temporal-helper-residual-owners.tsv).
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
 about2minutes root application/rescan/evidence, excluding commit hooks. Sample
@@ -423,7 +427,7 @@ endpoint bounds for all four host timezone conditions. Replacement data still
 need their own proof. The native Intl candidate path now appends private
 candidates without calling inherited index setters.
 [Legacy dataset proof](temporal-timezone-boundary-proof/README.md#released-formatter-with-its-shipped-data).
-[Host regression](../../packages/temporal/tests/host-timezone.test.ts#L147).
+[Host regression](../../packages/temporal/tests/host-timezone.test.ts#L192).
 The Debian JavaScriptCoreGTK 2.54.3 and ICU 76.1 binding now has exact
 candidate, gap, endpoint and six-day spread bounds, plus public controls.
 Other JavaScriptCore builds remain conditional.
@@ -482,9 +486,16 @@ A second witness puts the nearest later candidate beyond the maximum
 Instant. The comparison's infallible lookup fails, and owned and compact
 providers differ on fallback.
 [Auxiliary candidate](temporal-timezone-boundary-proof/README.md#gap-auxiliary-candidate-outside-the-instant-range).
+Plain calendar totals now borrow the clock remainder before checking their
+initial window. The sampled host rechecks the shifted local clock before
+committing to an occurrence in a visible fold.
+[Clock borrow](temporal-relative-rounding-contract-audit.md#plain-and-zoned-caller-arguments).
+[Shifted-fold replay](temporal-timezone-boundary-proof/legacy-provider-replay.mjs#L186).
 The finite retained-week count now has an explicit provider-bound proof.
-A separate public replay isolates the month bubbling policy after a valid
-directed rounding window. The numbered conditions keep their current scope.
+A separate public replay isolates month bubbling after a valid directed rounding
+window. Both the packaged and native UTC controls also cross the original
+target after ordinary end-of-month constraint, so a general directional guard
+would change those results. The numbered conditions keep their current scope.
 [Week count](temporal-relative-rounding-contract-audit.md#retained-week-count-under-finite-calendar-projection).
 [Bubbling](temporal-relative-rounding-contract-audit.md#bubbling-can-reverse-the-directed-result).
 Three exact helper comments now cover the Object branch, cached ISO projection

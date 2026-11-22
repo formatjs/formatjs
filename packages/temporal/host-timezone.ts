@@ -340,16 +340,21 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       throw new RangeErrorConstructor('Ambiguous or nonexistent local time')
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
+    const earlier = disambiguation === 'earlier'
     // Proposal comparison §11.1.12 steps 6–25: Resolve owned gaps through exact timezone data.
-    const exact = ownedCandidates?.(
-      local,
-      disambiguation === 'earlier' ? 'earlier' : 'later'
-    )
+    const exact = ownedCandidates?.(local, earlier ? 'earlier' : 'later')
     if (typeof exact === 'bigint') return exact
     const before = offsetNanoseconds(clamp(local - day)),
       after = offsetNanoseconds(clamp(local + day))
-    if (after <= before) throw new RangeErrorConstructor('No matching instant')
-    return check(local - (disambiguation === 'earlier' ? after : before))
+    const shift = after - before
+    if (shift <= 0n) throw new RangeErrorConstructor('No matching instant')
+    const fallback = check(local - (earlier ? after : before))
+    // Proposal comparison §11.1.12 steps 16.e–g and 22–25: Recheck sampled candidates at the shifted clock.
+    if (!ownedCandidates && shift <= day) {
+      const shifted = candidatesFor(local + (earlier ? -shift : shift))
+      if (shifted.length) return shifted[earlier ? 0 : shifted.length - 1]
+    }
+    return fallback
   }
   const {links, primary} = timeZoneMetadata()
   const canonical = links[timeZone] ?? primary[timeZone] ?? timeZone

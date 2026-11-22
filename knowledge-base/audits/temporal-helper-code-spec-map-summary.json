@@ -3,37 +3,33 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27616,
+  "whole_selected_source_lines": 27623,
   "whole_selected_source_lines_by_language": {
     "rust": 11346,
-    "typescript": 16270
+    "typescript": 16277
   },
-  "nonoverlapping_callable_lines": 17979,
+  "nonoverlapping_callable_lines": 17986,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8421,
-    "typescript": 9558
+    "typescript": 9565
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17738,
-    "candidate": 104,
-    "unmapped": 137
+    "mapped": 17731,
+    "unmapped": 255
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "mapped": 1035,
-    "candidate": 12,
-    "unmapped": 22
+    "mapped": 1034,
+    "unmapped": 35
   },
   "by_language": {
     "typescript": {
-      "mapped": 503,
-      "unmapped": 13,
-      "candidate": 4
+      "mapped": 502,
+      "unmapped": 18
     },
     "rust": {
       "mapped": 532,
-      "candidate": 8,
-      "unmapped": 9
+      "unmapped": 17
     }
   },
   "direct_target_assignments": [
@@ -213,9 +209,7 @@
     "timeZoneEquals",
     "toPlainTimeNanoseconds"
   ],
-  "candidate_relationship_counts": {
-    "implementation_dependency": 12
-  },
+  "candidate_relationship_counts": {},
   "proposal_core_section_ids": 170,
   "proposal_amendment_section_ids": 5,
   "shared_published_dependency_ids": 9,
@@ -276,7 +270,7 @@
       "callable_rows": 20,
       "nonoverlapping_callable_lines": 297,
       "sha256": "bc29fb0df19e1578ba6f81bce233c88a56dd20fe97b8f1c17716f5553cc48a79",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 1
     },
     {
       "file": "crates/intl_datetimeformat_calendars/arithmetic.rs",
@@ -332,7 +326,7 @@
       "callable_rows": 5,
       "nonoverlapping_callable_lines": 61,
       "sha256": "612bdd5d09dfaa9d29685d7320a236979291ca4a136c8e1de2fb1825c1b13384",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 1
     },
     {
       "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
@@ -364,7 +358,7 @@
       "callable_rows": 24,
       "nonoverlapping_callable_lines": 202,
       "sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 2
     },
     {
       "file": "crates/temporal/calendar_registry.rs",
@@ -372,7 +366,7 @@
       "callable_rows": 7,
       "nonoverlapping_callable_lines": 61,
       "sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 1
     },
     {
       "file": "crates/temporal/context.rs",
@@ -508,7 +502,7 @@
       "callable_rows": 10,
       "nonoverlapping_callable_lines": 46,
       "sha256": "93bb14d5d0ba17d3dc97dffac128c6d5f30a57bd7aefd400c549814cfd781a99",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 1
     },
     {
       "file": "crates/temporal/timezone_registry.rs",
@@ -516,7 +510,7 @@
       "callable_rows": 21,
       "nonoverlapping_callable_lines": 147,
       "sha256": "b02c1a900fe73b7ed2450150c218840b4d770e7eeb8297fad30424e9071bade3",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 2
     },
     {
       "file": "crates/temporal/zoned.rs",
@@ -564,7 +558,7 @@
       "callable_rows": 33,
       "nonoverlapping_callable_lines": 593,
       "sha256": "8aa9316688ff5346159ebb8a0b6641a48f6419dd97d60e70ff825b3ca3b229d3",
-      "unresolved_callable_rows": 2
+      "unresolved_callable_rows": 4
     },
     {
       "file": "packages/temporal/compact-timezone.ts",
@@ -587,7 +581,7 @@
       "source_lines": 1272,
       "callable_rows": 38,
       "nonoverlapping_callable_lines": 1018,
-      "sha256": "6feb2a722c95356245e7a268e24cb6b75bdbc1eb6facefdf5ba387ddcdcb7371",
+      "sha256": "01bca283e1ec88cd1beaf8b74c54cc37e740268b345ecf118437fef3ea2dd9d9",
       "unresolved_callable_rows": 1
     },
     {
@@ -636,7 +630,7 @@
       "callable_rows": 8,
       "nonoverlapping_callable_lines": 41,
       "sha256": "773df550626979d4221ff41527003546e6ed37e7a73aea46b9e49fd6e071c370",
-      "unresolved_callable_rows": 1
+      "unresolved_callable_rows": 2
     },
     {
       "file": "packages/temporal/format-digits.ts",
@@ -664,10 +658,10 @@
     },
     {
       "file": "packages/temporal/host-timezone.ts",
-      "source_lines": 483,
+      "source_lines": 488,
       "callable_rows": 13,
-      "nonoverlapping_callable_lines": 301,
-      "sha256": "5426bab93a9f76d692c1ab0a2fa71773d7f93822e189830b59b7384f8d74e82b",
+      "nonoverlapping_callable_lines": 306,
+      "sha256": "ecde2a7dc2961cd537ce6bc15d5e7a86207ba4b92654e9d3332e7abe1585273e",
       "unresolved_callable_rows": 0
     },
     {
@@ -740,7 +734,7 @@
       "callable_rows": 22,
       "nonoverlapping_callable_lines": 191,
       "sha256": "231d2b176b2d5bfb2622a049ccb5e71f124a71a4fec6c8eea29e5a2f3efc339a",
-      "unresolved_callable_rows": 1
+      "unresolved_callable_rows": 2
     },
     {
       "file": "packages/temporal/legacy-intl.ts",
@@ -748,7 +742,7 @@
       "callable_rows": 14,
       "nonoverlapping_callable_lines": 298,
       "sha256": "411438a1d8b9f09a0033a2c79269ad18c83b3de93f5ee6cb9b424f71588e3d70",
-      "unresolved_callable_rows": 0
+      "unresolved_callable_rows": 1
     },
     {
       "file": "packages/temporal/legacy-lunisolar-date.ts",
@@ -856,10 +850,10 @@
     },
     {
       "file": "packages/temporal/relative-duration.ts",
-      "source_lines": 330,
+      "source_lines": 332,
       "callable_rows": 6,
-      "nonoverlapping_callable_lines": 271,
-      "sha256": "74767df73e567154789f1dc8a47fdf0a6ad49870a60400711f21d163e510779c",
+      "nonoverlapping_callable_lines": 273,
+      "sha256": "c9bf727c6cf5dd838daac6fa5953d50e98cfebd73819f9bce225b490a831d1a4",
       "unresolved_callable_rows": 0
     },
     {

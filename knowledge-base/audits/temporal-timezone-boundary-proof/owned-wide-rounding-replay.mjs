@@ -62,6 +62,29 @@ Intl.DateTimeFormat.__addTZData({
 })
 
 const {Temporal} = await import(moduleUrl(temporal, 'index.js'))
+for (const [backend, implementation] of [
+  ['FormatJS', Temporal],
+  ['native', globalThis.Temporal],
+]) {
+  if (!implementation) continue
+  const target = implementation.ZonedDateTime.from('2023-02-28T12:00[UTC]')
+  for (const [start, roundingMode, expected] of [
+    ['2023-01-31T00:00[UTC]', 'ceil', 'P1M'],
+    ['2023-03-31T00:00[UTC]', 'floor', '-P1M'],
+  ]) {
+    const origin = implementation.ZonedDateTime.from(start)
+    const rounded = origin.until(target, {
+      largestUnit: 'month',
+      smallestUnit: 'day',
+      roundingMode,
+    })
+    assert.equal(rounded.toString(), expected)
+    const result = origin.add(rounded)
+    assert.equal(result.epochNanoseconds, target.epochNanoseconds - 12n * hour)
+    console.log(JSON.stringify({backend, start, roundingMode, expected}))
+  }
+}
+
 for (const [zone, first, second, increment, endpoints, modes, expected] of [
   [
     'America/Phoenix',

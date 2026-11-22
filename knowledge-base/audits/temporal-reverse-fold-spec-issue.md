@@ -1,6 +1,7 @@
 # Reverse-fold intermediate instant
 
-Unresolved published-comparison divergence, reviewed 2026-11-22. Requested
+Confirmed implementation divergence from the published comparison,
+reviewed 2026-11-22. Requested
 ECMA-262 lacks Temporal API chapters; proposal references here do not adopt a
 replacement authority. No runtime change or disputed-value regression.
 
@@ -22,8 +23,10 @@ returns it without nudge for nanosecond/increment 1.
 [AddZonedDateTime §6.5.5 step 1](https://tc39.es/proposal-temporal/#sec-temporal-addzoneddatetime)
 requires exact Instant arithmetic when date fields are zero. Adding that result
 to the actual start lands at 1604125800000000000 ns, one hour after target.
-This is arithmetic tension between the specified algorithms; a separate normative
-universal add-back requirement has not been established here.
+The different add-back result helps explain the current implementation policy.
+No separate normative universal add-back requirement has been established.
+The literal algorithm is executable on this witness, so the ledger records
+an open implementation divergence alongside the comparison-policy question.
 
 Inspected TS unroundedZonedDifference and Rust RelativeAnchor::endpoint reuse
 public addition for intermediate date fields. Zero date addition preserves the

@@ -46,6 +46,51 @@ it('preserves nanoseconds across gaps, folds and negative-epoch transitions', ()
   expect(() => zone.resolve(gap, 'reject')).toThrow(RangeError)
 })
 
+it.each([
+  {label: 'shifted fold', change: 3, offset: 2, shifted: [2n, 4n], later: 4n},
+  {label: 'empty shifted list', change: 1, offset: 8, shifted: [], later: 2n},
+])(
+  'resolves a sampled gap with a $label',
+  async ({change, offset, shifted, later}) => {
+    const Original = Intl.DateTimeFormat
+    const hourMilliseconds = 3_600_000
+    const hour = 3_600_000_000_000n
+    vi.resetModules()
+    try {
+      Intl.DateTimeFormat = class extends Original {
+        constructor(
+          locales?: Intl.LocalesArgument,
+          options?: Intl.DateTimeFormatOptions
+        ) {
+          super(locales, {...options, timeZone: 'UTC'})
+        }
+        formatToParts(value?: number | Date) {
+          const milliseconds = Number(value)
+          const hours = milliseconds / hourMilliseconds
+          const shift =
+            hours < 0 ? 0 : hours >= change && hours < 8 ? offset : 4
+          return super.formatToParts(milliseconds + shift * hourMilliseconds)
+        }
+      } as typeof Original
+      const {createHostTimeZone: create} =
+        await import('#packages/temporal/host-timezone.js')
+      const zone = create('America/Phoenix')
+      const gap = {year: 1970, month: 1, day: 1, hour: 2}
+      expect(zone.possibleInstants(gap)).toEqual([])
+      expect(zone.possibleInstants({...gap, hour: 6})).toEqual(
+        shifted.map(value => value * hour)
+      )
+      expect(zone.resolve(gap, 'earlier')).toBe(-2n * hour)
+      expect(zone.resolve(gap, 'compatible')).toBe(later * hour)
+      expect(zone.resolve(gap, 'later')).toBe(later * hour)
+      expect(() => zone.resolve(gap, 'reject')).toThrow(RangeError)
+    } finally {
+      Intl.DateTimeFormat = Original
+      vi.resetModules()
+    }
+  }
+)
+
 it('handles non-hour changes, skipped dates, aliases and full instant bounds', () => {
   const lordHowe = createHostTimeZone('Australia/Lord_Howe'),
     fold = {year: 2020, month: 4, day: 5, hour: 1, minute: 45}

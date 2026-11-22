@@ -850,7 +850,7 @@ export function dateUntil(
     ),
   }
 }
-function unroundedDifference(
+export function unroundedDifference(
   start: bigint,
   end: bigint,
   calendar: string,

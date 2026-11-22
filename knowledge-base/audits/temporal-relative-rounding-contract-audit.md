@@ -216,6 +216,16 @@ separate.
 [Rust adjusted day](../../crates/temporal/calendar_difference.rs#L145).
 [Temporal comparison §5.5.12 step 9](https://tc39.es/proposal-temporal/#sec-temporal-differenceisodatetime).
 
+Plain calendar totals now use the same clock-aware difference. For a
+negative partial-day target near the lower date limit, using only its
+civil day counted an extra calendar unit and triggered a range error
+on an unused adjacent endpoint. The corrected year, month and week
+controls return exact ratios rounded once to Number. Both initial
+endpoints still validate after choosing the count.
+[Temporal comparison §5.5.14 step 3](https://tc39.es/proposal-temporal/#sec-temporal-differenceplaindatetimewithtotal).
+[TypeScript total](../../packages/temporal/relative-duration.ts#L202).
+[Boundary controls](../../packages/temporal/tests/relative-duration.test.ts#L151).
+
 For unequal zoned instants and date-largest units, the public difference
 passes both exact instants, the receiver's zone and calendar, both units,
 increment and rounding mode. The FFI forwards the same values. Reversing
@@ -244,7 +254,7 @@ difference has fewer than seven residual days. The fused window can use
 the selected count with the exact endpoints to represent the remaining
 fraction. Its endpoint retries and final quotient retain their separate
 requirements.
-[TypeScript total inputs](../../packages/temporal/relative-duration.ts#L206).
+[TypeScript total inputs](../../packages/temporal/relative-duration.ts#L208).
 [Rust total inputs](../../crates/temporal/relative_duration.rs#L90).
 [Temporal comparison §6.5.8 step 4](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithtotal).
 
@@ -282,7 +292,7 @@ The second week extends beyond the maximum. The former total moved
 inward before validating that endpoint, returning `167/168`. Both
 kernels now validate the first pair before retrying. The upper endpoint
 throws and the total propagates the error.
-[TypeScript initial endpoint](../../packages/temporal/relative-duration.ts#L215).
+[TypeScript initial endpoint](../../packages/temporal/relative-duration.ts#L217).
 [Rust initial endpoint](../../crates/temporal/relative_duration.rs#L98).
 [Public Rust total](../../crates/temporal/calendar.test.rs#L122).
 [Temporal comparison §7.5.33 steps 8–12](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
@@ -310,7 +320,7 @@ case to the existing shared retry. The next endpoint is checked before
 rounding proceeds. Exact first endpoints still perform the initial
 validation. The lower-side case is covered below. The separate
 published window assertions remain open.
-[TypeScript retained-week branch](../../packages/temporal/relative-duration.ts#L289).
+[TypeScript retained-week branch](../../packages/temporal/relative-duration.ts#L291).
 [Rust retained-week branch](../../crates/temporal/relative_duration.rs#L166).
 
 ## Retained-week lower bound
@@ -431,6 +441,17 @@ earlier bracket assertion remains a separate conflict. The output is
 recorded as current behavior pending a contract for bubbling across
 a nonmonotone zoned boundary.
 [Owned public replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
+
+An ordinary UTC control limits any directional guard on bubbling. From
+2023-01-31 at midnight to 2023-02-28 at noon, day rounding with largest
+unit month and mode ceil selects the March 1 day endpoint. The next
+constrained month endpoint is February 28 at midnight, so the rendered
+bubbling rule returns `P1M` there. Packaged FormatJS and pinned Node
+26.8.1 both do so. The reverse March 31 control returns `-P1M` for floor.
+Both returned endpoints are 12 hours before the target. A general rule
+requiring a bubbled epoch to retain the nudge direction would change an
+ordinary constrained-month result, including in a fixed timezone.
+[UTC controls](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs#L65).
 
 The replay passed on Node 26.8.1 with package index SHA-256
 `da61a787bea39ad1106aa618f3cd12cc24536d092d93a72d46d61e124a904891`.

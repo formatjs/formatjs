@@ -117,6 +117,17 @@ synthetic custom data accepted by the released formatter. The shipped IANA
 data and the other certified profiles retain their own evidence.
 [Replay fixture](legacy-provider-replay.mjs).
 
+The same replay checks a gap whose shifted clock falls in a sampled fold.
+Offsets change from zero to +04:00 at epoch hour zero, to +02:00 at
+hour three, then to +04:00 at hour eight. Local 02:00 is missing.
+The observed +04:00 shift gives local 06:00, with candidates at epoch
+hours two and four. The sampled lookup now returns hour four for
+`compatible` and `later`. `earlier` returns hour −2, and `reject` throws.
+An empty shifted list retains the existing fallback. The requery covers
+observable shifted candidates and still depends on provider sampling for
+the original gap and complete candidate lists.
+[Proposal comparison §11.1.12 steps 16.e–g and 22–25](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
 The 7.8.1 root export and `polyfill-force.js` create different constructors,
 `formatToParts` functions, and timezone registries. The force entry installs
 its constructor without exporting it. Registration replaces that
@@ -419,7 +430,7 @@ The bridge now checks the descriptor's own fields. The regression observes
 zero getter calls and the same Kathmandu offset of 19,800,000,000,000 ns.
 
 [Descriptor check](../../../packages/temporal/host-timezone.ts#L64).
-[Regression](../../../packages/temporal/tests/host-timezone.test.ts#L98).
+[Regression](../../../packages/temporal/tests/host-timezone.test.ts#L143).
 [ECMA-262 §7.3.12 steps 1–3](https://tc39.es/ecma262/#sec-hasownproperty).
 
 - Before-fix SHA-256 `55082834f541861ed229a117a7b1f0aafb54475ab8f9b058c2de8fa640a65bb7`
@@ -440,7 +451,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L214).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L558).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L375).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L380).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The implementation-defined boundary contract is in
@@ -522,7 +533,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L401).
+[Host search](../../../packages/temporal/host-timezone.ts#L406).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary
@@ -546,8 +557,8 @@ unchanged interval. Both used the captured Array push, which still calls an
 inherited index setter. Both now append an own data property to the private
 array. The first and repeated lookups return the transition at the exact
 nanosecond in both cases.
-[Host cache writes](../../../packages/temporal/host-timezone.ts#L457).
-[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L452).
+[Host cache writes](../../../packages/temporal/host-timezone.ts#L462).
+[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L497).
 
 ## Reproduce analysis
 
@@ -681,7 +692,7 @@ The +20h shift then returns M−19h for earlier and rejects M+1h for
 compatible and later. Both compact profiles reject the original gap in
 reject mode.
 [Owned Intl gap lookup](../../../packages/intl-datetimeformat/core.ts#L490).
-[Host day samples](../../../packages/temporal/host-timezone.ts#L349).
+[Host day samples](../../../packages/temporal/host-timezone.ts#L347).
 [Compact gap lookup](../../../packages/temporal/kernel.ts#L386).
 
 A clipped retry can reproduce the compact result in the second profile

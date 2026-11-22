@@ -279,7 +279,7 @@ profile, subject to the same calendar contracts.
 The earlier Duration.round with largest year or month and smallest week used a
 separate quotient shortcut. It validates the first week endpoint and
 rounds the original ratio even when the target exceeds that endpoint.
-[TS shortcut](../../packages/temporal/relative-duration.ts#L255)
+[TS shortcut](../../packages/temporal/relative-duration.ts#L257)
 [Rust shortcut](../../crates/temporal/relative_duration.rs#L133).
 
 A public nonzero-prefix witness uses America/New_York:

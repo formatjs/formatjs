@@ -19,9 +19,9 @@ import {
   object,
   nsPerDay,
   addDate,
-  dateUntil,
   epochDayOf,
   roundedDateTimeDifference,
+  unroundedDifference,
   checkDateTime,
 } from '#packages/temporal/date-core.js'
 import {
@@ -199,10 +199,12 @@ export function relativeTotal(
     (unit !== 'day' || 'date' in relative)
   )
     return durationTotalNumber(end - start, factors[unit])
+  // Proposal comparison §5.5.14 step 3 and §5.5.12 steps 3–9:
+  // Include the clock borrow before selecting the plain calendar bounds.
   const difference =
     'zoned' in relative
       ? unroundedZonedDifference(relative.zoned, end, unit)
-      : dateUntil(relative.date, epochDayOf(end), unit)
+      : unroundedDifference(start, end, relative.date.calendar, unit)
   // Proposal comparison §6.5.8 step 4 uses the unrounded count, exact
   // endpoints and original anchor for the zoned total.
   let count = difference[(unit + 's') as keyof DurationFields]

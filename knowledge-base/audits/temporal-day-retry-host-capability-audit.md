@@ -35,7 +35,7 @@ verifies capability admission and retains the four open exactness
 conditions for unbound Intl profiles.
 [ECMA-262 §7.2.3 step 2](https://tc39.es/ecma262/#sec-iscallable).
 [Capability reader](../../packages/temporal/host-timezone.ts#L64).
-[Host regressions](../../packages/temporal/tests/host-timezone.test.ts#L147).
+[Host regressions](../../packages/temporal/tests/host-timezone.test.ts#L192).
 
 ## Exact helper locations
 
