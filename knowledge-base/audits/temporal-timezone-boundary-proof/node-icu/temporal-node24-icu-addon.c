@@ -49,6 +49,7 @@ static const Symbol symbols[] = {
     {"_ZNK6icu_7821TimeArrayTimeZoneRule14getStartTimeAtEiRd", SIG(I8, POINTER, I32, POINTER, VOID, VOID)},
     {"_ZNK6icu_7821TimeArrayTimeZoneRule11getTimeTypeEv", SIG(I32, POINTER, VOID, VOID, VOID, VOID)},
     {"_ZNK6icu_7818AnnualTimeZoneRule12getStartYearEv", SIG(I32, POINTER, VOID, VOID, VOID, VOID)},
+    {"_ZNK6icu_7818AnnualTimeZoneRule14getStartInYearEiiiRd", SIG(I8, POINTER, I32, I32, I32, POINTER)},
     {"_ZNK6icu_7818AnnualTimeZoneRule10getEndYearEv", SIG(I32, POINTER, VOID, VOID, VOID, VOID)},
 };
 
@@ -172,6 +173,7 @@ static napi_value call(napi_env env, napi_callback_info info) {
     case SIG(I32,POINTER,I32,POINTER,VOID,VOID): out.i32 = ((int32_t (*)(void *,int32_t,void *))fn)(P(0),I(1),P(2)); break;
     case SIG(I32,POINTER,POINTER,I32,POINTER,VOID): out.i32 = ((int32_t (*)(void *,void *,int32_t,void *))fn)(P(0),P(1),I(2),P(3)); break;
     case SIG(I8,POINTER,I32,POINTER,POINTER,VOID): out.i32 = ((int8_t (*)(void *,int32_t,void *,void *))fn)(P(0),I(1),P(2),P(3)); break;
+    case SIG(I8,POINTER,I32,I32,I32,POINTER): out.i32 = ((int8_t (*)(void *,int32_t,int32_t,int32_t,void *))fn)(P(0),I(1),I(2),I(3),P(4)); break;
     case SIG(I8,POINTER,I32,POINTER,VOID,VOID): out.i32 = ((int8_t (*)(void *,int32_t,void *))fn)(P(0),I(1),P(2)); break;
     case SIG(F64,POINTER,POINTER,VOID,VOID,VOID): out.f64 = ((double (*)(void *,void *))fn)(P(0),P(1)); break;
     case SIG(VOID,POINTER,F64,POINTER,VOID,VOID): ((void (*)(void *,double,void *))fn)(P(0),F(1),P(2)); break;

@@ -88,8 +88,17 @@ that registry or supplying a different host formatter changes the proof inputs.
 Use the pinned Linux x64 executables selected by Bazel. If starting from
 the generated launcher, `node -p process.execPath` prints the ELF path.
 Set `node26_bin` to that path and `node24_prefix` to the Node 24
-distribution containing `bin/node` and `include/node`. Run from this
-directory in a clean environment.
+distribution containing `bin/node`. From the repository root, build the
+Node 24 diagnostic addon and resolve its output with Bazel.
+
+```sh
+addon_target=//knowledge-base/audits/temporal-timezone-boundary-proof/node-icu:node24_icu_addon
+bazel build -c opt "$addon_target"
+addon_file=$(bazel cquery -c opt --output=files "$addon_target")
+export FORMATJS_TEMPORAL_ICU_AUDIT_ADDON="$(realpath "$addon_file")"
+```
+
+Run the scans from this directory in a clean environment.
 
 ```sh
 "$node26_bin" --experimental-ffi temporal-node-icu-endpoint-scan.mjs > node26-endpoint-2d.json
@@ -97,17 +106,14 @@ directory in a clean environment.
 "$node26_bin" --experimental-ffi temporal-node-icu-rule-spread.mjs > node26-spread-6d.json
 bash temporal-pinned-node-icu-binding.sh "$node26_bin" | sed 's/[[:space:]]*$//' > node26-binding.txt
 
-scratch="$(mktemp -d)"
-cc -Wall -Wextra -Werror -O2 -fPIC -shared -I"$node24_prefix/include/node" \
-  temporal-node24-icu-addon.c -ldl -o "$scratch/icu-audit.node"
-export FORMATJS_TEMPORAL_ICU_AUDIT_ADDON="$scratch/icu-audit.node"
 "$node24_prefix/bin/node" temporal-node-icu-endpoint-scan.mjs > node24-endpoint-2d.json
 "$node24_prefix/bin/node" temporal-node-icu-endpoint-scan.mjs 11 > node24-endpoint-11d.json
 "$node24_prefix/bin/node" temporal-node-icu-rule-spread.mjs > node24-spread-6d.json
+"$node24_prefix/bin/node" temporal-node-icu-transition-separation.mjs --direct-annual > node24-direct-spacing.json
 bash temporal-pinned-node-icu-binding.sh "$node24_prefix/bin/node" | sed 's/[[:space:]]*$//' > node24-binding.txt
 ```
 
-The optional scratch addon supplies the read-only ICU calls on Node 24.
+The diagnostic addon supplies the read-only ICU calls on Node 24.
 It checks symbol names and signatures against a fixed list and resolves ICU
 symbols from the pinned executable. Both scanners check the executable
 hash before loading runtime-specific bindings.
