@@ -257,8 +257,8 @@ This arithmetic does not depend on FormatJS rounding output.
 
 [Existing Casey controls](../../packages/temporal/tests/zoned.test.ts#L241)
 already cover this receiver. The
-[TS day branch](../../packages/temporal/zoned-date-time.ts#L965) and
-[Rust day branch](../../crates/temporal/zoned.rs#L211) clamp the receiver to
+[TS day branch](../../packages/temporal/zoned-date-time.ts#L1028) and
+[Rust day branch](../../crates/temporal/zoned.rs#L232) clamp the receiver to
 `endNs - 1 ns` before rounding. That is an existing fallback, not a consequence
 of the failed assertion. Keep its behavior separate from the ordinary-day proof;
 this finding does not prescribe a replacement rule or establish a new runtime
@@ -277,6 +277,11 @@ give a reachable backward difference of -1 day and -2 hours. Initial day counts
 -1/-2 resolve to the same instant; retry recomputes that identical pair, still
 not bracketing the destination. Step 6.a.ii's bracket assertion fails; step 13's
 distinct-endpoint assertion would also fail if execution continued.
+
+The initial upper count agrees with step 4.d. On retry, the source advances
+the upper count too, while the published formula still evaluates
+`days + increment × sign`. [TypeScript retry](../../packages/temporal/date-core.ts#L1027).
+[Rust retry](../../crates/temporal/calendar_difference.rs#L227).
 
 FormatJS already advances both counts for every irregular date unit. Its -2/-3
 window brackets this destination; new TS/native Hermes controls preserve that

@@ -37,9 +37,9 @@
   "review_status_counts": {
     "verified": 152,
     "informative": 234,
-    "verified_local_step": 4101,
+    "verified_local_step": 4100,
     "conditional": 231,
-    "spec_issue": 90
+    "spec_issue": 91
   },
   "status_note": "unreconciled means review evidence not yet entered into this register, not missing implementation. existing_evidence_pending preserves current audit references; reviewed/conditional record exact local-step reconciliation, not whole-method compliance.",
   "public_code_binding_rows": 268,
@@ -174,5 +174,10 @@
       "reviewed": 18
     },
     "scope": "Local leaves and fully reconciled style gates only; reader iteration, provider contracts and published issues preserved."
+  },
+  "latest_spec_issue_reconciliation": {
+    "rows": ["7.5.33/algorithm-1/step-4.d"],
+    "evidence": "temporal-spec-issues.md#day-window-retry-ignores-shift-after-apias-skipped-date",
+    "scope": "Upper day retry bound. Initial application remains locally verified."
   }
 }

@@ -56,6 +56,30 @@ adds exact Linux x64 Node 24.14.0 and 26.8.1 builds and the compiled Hermes
 formatter. Other host binaries, timezone resources and replacement Intl providers
 keep their own boundary premise. The full row stays conditional.
 
+## Unbound host Intl provider
+
+Numeric `formatToParts` applies `TimeClip`. On Node 26.5.1, both exact limits
+±8,640,000,000,000,000 ms are accepted and the adjacent outside millisecond
+throws at each end. The [host offset provider](../../../packages/temporal/host-timezone.ts)
+uses numeric parts. Its probes cannot read the offset outside those limits.
+[ECMA-402 §11.5.5 steps 1–2](https://tc39.es/ecma402/#sec-partitiondatetimepattern).
+[ECMA-262 §21.4.1.31 step 2](https://tc39.es/ecma262/#sec-timeclip).
+
+At the upper limit E, consider two synthetic offset models. Both report +02:00
+at every permitted instant. The second changes to +00:00 at E+15 minutes.
+The local time E+30 minutes maps to valid instant E−90 minutes in both models.
+Only the second model also maps it to invalid instant E+30 minutes.
+The lower limit has a symmetric witness. Numeric Intl observations agree for
+the two models, while comparison §11.1.13 step 4.a requires different results.
+The exact integers for both witnesses are in [host-unbound-witness.json](host-unbound-witness.json).
+
+An unbound host profile needs an out-of-range candidate capability or an exact
+certificate for its actual data and overrides. No backward offset change within
+two days of either limit, with the existing single-invalid rejection proof,
+suffices. The shipped and pinned profile proofs already have those guarantees.
+The default package also accepts other installed Intl providers and timezone
+resources, so the full provider premise remains open. [Default provider contract](../../../packages/temporal/README.md#L18).
+
 ## Reproduce analysis
 
 Use `bazel cquery --output=files` for the three targets above; do not guess

@@ -181,7 +181,9 @@ Generated profiles, both configured Linux x64 Node binaries, and the tested
 Hermes compiled formatter supply endpoint and spread proofs. Both pinned runtime-relative tests pass. The manual strict Node24 test reports
 290 fixture differences reproduced by its own Intl data and the independent
 reference.
-Other host profiles remain conditional.
+Other host profiles remain conditional. Numeric Intl cannot observe an outside
+transition that creates an invalid second candidate.
+[Unbound host proof](temporal-timezone-boundary-proof/README.md#unbound-host-intl-provider).
 [Timezone evidence](temporal-timezone-boundary-proof/node-icu/temporal-pinned-node-icu-proof.md). Helper annotation
 work remains separately tracked. An ETA for full in-scope compliance remains unresolved. Published-comparison
 conflicts and remaining provider assumptions need reconciliation. The [same-loader epoch fix](temporal-cross-copy-brand/same-loader-epoch-fix.md) closes §8.5.3 step 1.a.

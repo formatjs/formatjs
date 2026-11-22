@@ -1,0 +1,32 @@
+[
+  {
+    "endpoint": "upper",
+    "localEpochNanoseconds": "8640000001800000000000",
+    "hostObservableOffsetNanoseconds": "7200000000000",
+    "modelA": {
+      "offsetNanoseconds": "7200000000000",
+      "possible": ["8639999994600000000000"]
+    },
+    "modelB": {
+      "offsetBeforeNanoseconds": "7200000000000",
+      "offsetAfterNanoseconds": "0",
+      "transitionNanoseconds": "8640000000900000000000",
+      "possible": ["8639999994600000000000", "8640000001800000000000"]
+    }
+  },
+  {
+    "endpoint": "lower",
+    "localEpochNanoseconds": "-8639999998200000000000",
+    "hostObservableOffsetNanoseconds": "0",
+    "modelA": {
+      "offsetNanoseconds": "0",
+      "possible": ["-8639999998200000000000"]
+    },
+    "modelB": {
+      "offsetBeforeNanoseconds": "7200000000000",
+      "offsetAfterNanoseconds": "0",
+      "transitionNanoseconds": "-8640000000900000000000",
+      "possible": ["-8640000005400000000000", "-8639999998200000000000"]
+    }
+  }
+]
