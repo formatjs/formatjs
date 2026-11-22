@@ -2,13 +2,12 @@
 
 This proof supplies a local-resolution premise for the frozen Temporal
 comparison's [§7.5.34 steps 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
-Spacing is proved for the shipped generated data and two exact Node 26
-profiles. The assertions remain conditional across the default package's
-provider scope.
+Spacing is proved for the shipped generated data and three pinned Node
+profiles. Other installed Intl providers remain conditional.
 
 ## Transition separation
 
-The [host candidate search](../../../packages/temporal/host-timezone.ts#L181)
+The [host candidate search](../../../packages/temporal/host-timezone.ts#L234)
 samples at the local nanosecond scalar and one day on either side, clipping
 the probes to Instant limits. All certified offsets have magnitude less than
 one day. Every valid candidate lies between the two extremal probes. A
@@ -26,12 +25,11 @@ adjacent spacing is 601,200 seconds. Existing packed, compact and native
 parity binds these results to consumed timezone data.
 [Generated endpoint and parity evidence](README.md#consumed-generated-profiles).
 
-The Node 26 spacing proof enumerates finite UTC starts and computes the annual
+The pinned Node spacing proof enumerates finite UTC starts and computes the annual
 starts directly. It also tests a conservative set of dates around the possible
-month and rule-clock boundaries in the actual ICU offset comparator. The two
-exact Node builds each cover 638 IDs and prove at least 597,600 seconds between
-actual offset changes. Neither proof relies on the forward transition API to
-emit every recurring change.
+month and rule-clock boundaries in the actual ICU offset comparator. Each
+build covers 638 IDs and has no offset transitions within two days of one
+another. The proof enumerates annual rules directly.
 [Direct recurrence proof](node-icu/temporal-node26-direct-spacing-proof.md).
 [Pinned provider and ICU resource binding](node-icu/temporal-pinned-node-icu-proof.md).
 
@@ -63,14 +61,14 @@ For day length D, a provider with offset D/2 on [0,D/4) and zero elsewhere
 meets the spread bound. For local L in [D/2,3D/4), the three probes all see
 zero, missing candidate L−D/2. Other runtime data and installed formatter
 overrides need their own spacing certificate or exact candidate lookup.
-Node 24's chronology evidence here does not extend the offset-spacing scan.
 
 ## Reproduce
 
 Use the artifact returned by Bazel cquery for `//packages/intl-datetimeformat:tz_all_tz`.
 Pass it after `proof.py` to [transition-separation.py](transition-separation.py).
 Run [the ICU probe](node-icu/temporal-node-icu-transition-separation.mjs)
-with the bound Node 26 executable, `--experimental-ffi`, and the script
-argument `--direct-annual`.
+with either bound Node 26 executable, `--experimental-ffi`, and the script
+argument `--direct-annual`. Node 24 uses the
+[Bazel-built addon](node-icu/temporal-pinned-node-icu-proof.md#reproduce).
 The [calendar probe](node-icu/temporal-host-umm-finite-profile.mjs) uses
 the same executable without FFI. [Summary and artifact hashes](transition-separation-summary.json).

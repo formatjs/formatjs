@@ -1,0 +1,160 @@
+{
+  "checkedSpacingMilliseconds": 604800000,
+  "wholeSecondBoundaries": true,
+  "metadataSha256": {
+    "temporal-names.ts": "d8b1ed18ee458654508bd123b39c16a83520bfec80501ac7dbf3f805674e9812",
+    "primary.ts": "c20371219696c673363931abad0dc0641b5856db41843fe01404ff2fb3ceeb60",
+    "links.ts": "6c6692f674b8a0f7be6b2b36cb625e4b2bfc37997572feaad86313bfdbb97b83"
+  },
+  "pairs": [
+    {
+      "zone": "America/Boa_Vista",
+      "canonical": "America/Boa_Vista",
+      "probeSeconds": 300600,
+      "events": [
+        {
+          "t0": 970977600000,
+          "t": 971578800000,
+          "before": -10800000,
+          "after": -14400000
+        }
+      ]
+    },
+    {
+      "zone": "America/Noronha",
+      "canonical": "America/Noronha",
+      "probeSeconds": 300600,
+      "events": [
+        {
+          "t0": 970970400000,
+          "t": 971571600000,
+          "before": -3600000,
+          "after": -7200000
+        }
+      ]
+    },
+    {
+      "zone": "America/Recife",
+      "canonical": "America/Recife",
+      "probeSeconds": 300600,
+      "events": [
+        {
+          "t0": 970974000000,
+          "t": 971575200000,
+          "before": -7200000,
+          "after": -10800000
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Gaza",
+      "canonical": "Asia/Gaza",
+      "probeSeconds": 300600,
+      "events": [
+        {
+          "t0": 2234304000000,
+          "t": 2234905200000,
+          "before": 10800000,
+          "after": 7200000
+        },
+        {
+          "t0": 2658268800000,
+          "t": 2658870000000,
+          "before": 10800000,
+          "after": 7200000
+        },
+        {
+          "t0": 3244320000000,
+          "t": 3244921200000,
+          "before": 10800000,
+          "after": 7200000
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Hebron",
+      "canonical": "Asia/Hebron",
+      "probeSeconds": 300600,
+      "events": [
+        {
+          "t0": 2234304000000,
+          "t": 2234905200000,
+          "before": 10800000,
+          "after": 7200000
+        },
+        {
+          "t0": 2658268800000,
+          "t": 2658870000000,
+          "before": 10800000,
+          "after": 7200000
+        },
+        {
+          "t0": 3244320000000,
+          "t": 3244921200000,
+          "before": 10800000,
+          "after": 7200000
+        }
+      ]
+    },
+    {
+      "zone": "Brazil/DeNoronha",
+      "canonical": "America/Noronha",
+      "probeSeconds": 300600,
+      "events": [
+        {
+          "t0": 970970400000,
+          "t": 971571600000,
+          "before": -3600000,
+          "after": -7200000
+        }
+      ]
+    }
+  ],
+  "runtimes": [
+    {
+      "runtime": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "tz": "2025c"
+      },
+      "binarySha256": "e237a2839d0cbdc9a9a2adda1a184afc0f5b20306ffbe923af5686550472d8a8",
+      "zoneCount": 638,
+      "minimumOffsetChangeSpacingMilliseconds": 601200000,
+      "earliestFiniteMilliseconds": -3944631116000,
+      "latestFiniteMilliseconds": 3717874800000,
+      "latestRecurringJoinYear": 2088,
+      "recurringZoneYearsChecked": 5969,
+      "fullResultSha256": "5c5c3c882a19a717a11dfa93936edf3dc44d0ed250aba2059abc46570c2a3105"
+    },
+    {
+      "runtime": {
+        "node": "v26.5.1",
+        "icu": "78.3",
+        "tz": "2026b"
+      },
+      "binarySha256": "fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6",
+      "zoneCount": 638,
+      "minimumOffsetChangeSpacingMilliseconds": 601200000,
+      "earliestFiniteMilliseconds": -3944631116000,
+      "latestFiniteMilliseconds": 3717874800000,
+      "latestRecurringJoinYear": 2088,
+      "recurringZoneYearsChecked": 5913,
+      "fullResultSha256": "85fdee2f12907cab5fdf5e7eb1808a0864fb67fda34ce12fc4eec523727cfed7"
+    },
+    {
+      "runtime": {
+        "node": "v26.8.1",
+        "icu": "78.3",
+        "tz": "2026c"
+      },
+      "binarySha256": "19235a9b678f84729464c52623f92de130a165452747c6826d3fdc13df3abcc3",
+      "zoneCount": 638,
+      "minimumOffsetChangeSpacingMilliseconds": 601200000,
+      "earliestFiniteMilliseconds": -3944631116000,
+      "latestFiniteMilliseconds": 3717874800000,
+      "latestRecurringJoinYear": 2088,
+      "recurringZoneYearsChecked": 5829,
+      "fullResultSha256": "27eba5ea759013b9cd6804851465ba3b6e9192ff06323820b371c957bcc5f1b3"
+    }
+  ]
+}

@@ -5,22 +5,16 @@ implementation defects or missing code. Existing implementation/tests remain the
 baseline. Numbers refer to the pinned Temporal comparison, with the requested
 ECMA-262 authority distinction retained in the execution plan.
 
-- **Fresh Duration construction**, §15.11.1.1 step3: slot/cache and precreated
-  invocation corrections pass18targets. Fresh construction retains the exact
-  owned locale-matcher List/string/cache dependency. Three invocation gates
-  close; actual construction step and containing clauses remain conditional.
-  [Current evidence](temporal-duration-invocation-private-operations-audit.md).
-- **Selected Temporal kind profiles**, §§15.6.5/15.6.7: Map/field Lists and cold
-  explicit-pattern corrections pass. Six caller rows retain matchRangeWidths
-  Object.keys/map/private iteration/String suffix operations. Producer and
-  facade corrections close21 other steps; real Intl/CLDR remains supplied.
-  [Current evidence](temporal-intl-producer-state-facade-audit.md).
-
-**Confirmed constructor realm gap:** eight public revoked-newTarget/primitive
-prototype witnesses fail required TypeError. Sixteen rows stay conditional;
-foreign intrinsic fallback also remains unresolved. [Reproducer and rejected
-partial bridges](temporal-constructor-realm-proof.md). This is an implementation
-gap, not an applicability exclusion or published-text inconsistency.
+- Fresh Duration construction §15.11.1.1 step 3 and its three enclosing
+  gates now pass under the supplied provider contract.
+  [Fresh constructor evidence](temporal-duration-fresh-constructor-closure-evidence.json).
+- The six selected-kind caller steps in §§15.6.5 and 15.6.7 now pass with
+  the owned width matching corrections.
+  [Selected-kind evidence](temporal-selected-locale-adapter-audit.md).
+- The 16 constructor realm rows remain in the fixed ledger for reference.
+  Revoked-bound validation passes on the tested paths. Foreign intrinsic
+  selection remains unresolved and outside the active scope.
+  [Realm evidence](temporal-bound-constructor-realm-audit.md).
 
 Closed reader/calendar batch: direct native-brand reader iteration/call hooks,
 Duration ordinary-bag/sign/validation hooks, private formatting Lists and three

@@ -46,6 +46,7 @@ The existing proof methods apply to both providers with independent scans.
 [Candidate proof](temporal-node-icu-endpoint-proof.md).
 [Six-day method](temporal-node-icu-six-day-spread-proof.md).
 [Retained week proof](../../temporal-retained-week-endpoint-validity.md).
+[Direct spacing proof](temporal-node26-direct-spacing-proof.md).
 
 Both pinned Bazel reference targets pass. An additional run compared
 17,640 offsets on each binary with its raw Intl formatter and reproduced
@@ -110,13 +111,14 @@ bash temporal-pinned-node-icu-binding.sh "$node26_bin" | sed 's/[[:space:]]*$//'
 "$node24_prefix/bin/node" temporal-node-icu-endpoint-scan.mjs 11 > node24-endpoint-11d.json
 "$node24_prefix/bin/node" temporal-node-icu-rule-spread.mjs > node24-spread-6d.json
 "$node24_prefix/bin/node" temporal-node-icu-transition-separation.mjs --direct-annual > node24-direct-spacing.json
+"$node24_prefix/bin/node" temporal-node-icu-transition-separation.mjs --direct-annual --week > node24-week-spacing.json
 bash temporal-pinned-node-icu-binding.sh "$node24_prefix/bin/node" | sed 's/[[:space:]]*$//' > node24-binding.txt
 ```
 
 The diagnostic addon supplies the read-only ICU calls on Node 24.
-It checks symbol names and signatures against a fixed list and resolves ICU
-symbols from the pinned executable. Both scanners check the executable
-hash before loading runtime-specific bindings.
+It verifies each symbol's executable provenance once per thread and
+checks each call's signature against the fixed list. The scanners check the
+executable hash before loading runtime-specific bindings.
 
 For Hermes, build with Bazel and take the oracle's runfiles manifest from
 its output. Resolve `//packages/intl-datetimeformat:tz_all_json` and

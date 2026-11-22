@@ -2,7 +2,11 @@ import assert from 'node:assert/strict'
 import {loadPinnedIcu} from './temporal-pinned-icu-runtime.mjs'
 
 const direct = process.argv[2] === '--direct-annual'
-assert.deepEqual(process.argv.slice(2), direct ? ['--direct-annual'] : [])
+const week = direct && process.argv[3] === '--week'
+assert.deepEqual(
+  process.argv.slice(2),
+  week ? ['--direct-annual', '--week'] : direct ? ['--direct-annual'] : []
+)
 const {binarySha256, icuMajor, lib, toString} = await loadPinnedIcu()
 function bind(name, result, args) {
   return lib.getFunction(`${name}_${icuMajor}`, {
@@ -70,6 +74,7 @@ for (const requested of Intl.supportedValuesOf('timeZone'))
   assert.ok(zones.includes(requested), requested)
 
 const DAY = 86_400_000
+const spacing = (week ? 7 : 2) * DAY
 const locale = Buffer.from('en_US@calendar=gregorian\0')
 function bindCpp(sig, result, args) {
   const name = sig.replaceAll('@', icuMajor)
@@ -293,6 +298,11 @@ for (const id of zones) {
   }
   const short = []
   const wholeDayGaps = []
+  const recurringStart =
+    week && annual.length ? Date.UTC(recurringYear + 1, 0, 1) : Infinity
+  const recurringEnd =
+    week && annual.length ? Date.UTC(coveredThrough + 2, 0, 1) : Infinity
+  const activeYears = new Set()
   let t0 = firstRelevant - 1
   let transitions = 0
   let minimum = Infinity
@@ -301,19 +311,23 @@ for (const id of zones) {
     (a, b) => a - b
   )
   for (const [index, t] of times.entries()) {
+    if (week) assert.ok(Number.isSafeInteger(t) && t % 1000 === 0, id)
     const supplemental = !candidateTimes.has(t)
+    const recurring = t >= recurringStart && t < recurringEnd
     const check =
       supplemental ||
       !direct ||
+      recurring ||
       spread >= DAY ||
-      t - times[index - 1] <= 2 * DAY ||
-      times[index + 1] - t <= 2 * DAY
+      t - times[index - 1] <= spacing ||
+      times[index + 1] - t <= spacing
     const before = check ? actual(c, t - 1) : undefined
     const after = check ? actual(c, t) : undefined
     if (check && before === after) continue
+    if (recurring) activeYears.add(new Date(t).getUTCFullYear())
     if (supplemental) supplementalEffective.push({t, before, after})
     if (transitions) minimum = Math.min(minimum, t - t0)
-    if (transitions && t - t0 <= 2 * DAY) short.push({t0, t, before, after})
+    if (transitions && t - t0 <= spacing) short.push({t0, t, before, after})
     if (before !== undefined && after - before === DAY)
       wholeDayGaps.push({t, before, after})
     transitions++
@@ -321,6 +335,17 @@ for (const id of zones) {
   }
   Object.assign(row, {
     lastFinite,
+    ...(week
+      ? {
+          earliestFinite: events.length
+            ? Math.min(...events.map(([time]) => time))
+            : null,
+          recurringYearsChecked: annual.length
+            ? coveredThrough - recurringYear + 1
+            : 0,
+          recurringYearsWithTransitions: activeYears.size,
+        }
+      : {}),
     cut,
     recurringYear,
     ...(direct
@@ -352,7 +377,7 @@ console.log(
             ),
           }
         : {}),
-      checkedSpacingMilliseconds: 2 * DAY,
+      checkedSpacingMilliseconds: spacing,
       firstCoveredMilliseconds: firstRelevant,
       evaluatedEvents: rows.reduce((sum, row) => sum + row.transitions, 0),
       minGap: Math.min(

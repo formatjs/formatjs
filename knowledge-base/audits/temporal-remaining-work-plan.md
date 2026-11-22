@@ -28,9 +28,10 @@ satisfy this requirement.
 
 Realm-specific work is out of scope. The fixed ledger records the 16 shared
 constructor-realm steps for reference.
-60 of 76 conditional numbered steps remain in scope. The ordinary
-`index.js` and `standalone.js` failures reproduced inside one realm are now
-verified with shared private epoch and calendar slots. Audit completion is measured against the non-realm scope.
+60 of 76 conditional numbered steps remain in scope. Of those, 54 track
+published comparison conflicts, two track relative-window premises and four
+track timezone-provider applicability. The ordinary `index.js` and
+`standalone.js` cases pass with shared private epoch and calendar slots.
 
 ## Source and finite scope
 
@@ -181,10 +182,12 @@ Hermes compiled formatter supply endpoint and spread proofs. Both pinned runtime
 290 fixture differences reproduced by its own Intl data and the independent
 reference.
 Transition-spacing checks establish sample completeness for shipped zone data
-and the two audited Node 26 builds. The Node 26 proof directly enumerates
-annual rule starts and checks ICU’s possible offset boundaries. All three Node
-builds pass the Umm al-Qura chronology check. Node 24 still needs the direct
-spacing replay. [Sampling proof](temporal-timezone-boundary-proof/relative-window-sampler.md).
+and the three pinned Node builds. The ICU proof directly enumerates annual
+starts and checks candidate offset boundaries. All three Node builds pass the
+Umm al-Qura chronology check. The seven-day scan also verifies each generated
+transition probe interval against the corresponding pinned ICU rules.
+[Sampling proof](temporal-timezone-boundary-proof/relative-window-sampler.md).
+[Transition probe proof](temporal-timezone-boundary-proof/node-icu/temporal-node26-direct-spacing-proof.md#native-transition-lookup).
 Other host profiles remain conditional. Numeric Intl cannot observe an outside
 transition that creates an invalid second candidate.
 [Unbound host proof](temporal-timezone-boundary-proof/README.md#unbound-host-intl-provider).

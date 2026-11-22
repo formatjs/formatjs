@@ -53,6 +53,9 @@ static const Symbol symbols[] = {
     {"_ZNK6icu_7818AnnualTimeZoneRule10getEndYearEv", SIG(I32, POINTER, VOID, VOID, VOID, VOID)},
 };
 
+/* The pinned executable keeps its symbols for the process lifetime. */
+static _Thread_local void *resolved_symbols[sizeof symbols / sizeof symbols[0]];
+
 static Type read_type(napi_env env, napi_value value) {
   char name[16];
   napi_get_value_string_utf8(env, value, name, sizeof name, NULL);
@@ -100,6 +103,8 @@ static void *get_symbol(napi_env env, napi_value name_value, unsigned signature,
     napi_throw_error(env, NULL, "Unexpected ICU proof symbol or signature");
     return NULL;
   }
+  void **resolved = &resolved_symbols[entry - symbols];
+  if (*resolved) return *resolved;
   void *address = dlsym(RTLD_DEFAULT, name);
   if (!address) {
     napi_throw_error(env, NULL, name);
@@ -115,6 +120,7 @@ static void *get_symbol(napi_env env, napi_value name_value, unsigned signature,
       return NULL;
     }
   }
+  *resolved = address;
   return address;
 }
 

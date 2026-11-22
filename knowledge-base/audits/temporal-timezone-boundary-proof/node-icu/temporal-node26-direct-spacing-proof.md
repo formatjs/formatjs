@@ -1,8 +1,7 @@
 # Pinned ICU recurring offset spacing
 
-Scope is the two hash-bound Linux x64 Node 26 executables in
+Scope is the three hash-bound Linux x64 Node executables in
 [the existing runtime binding](temporal-pinned-icu-runtime.mjs).
-Node 24 still requires a direct replay with the diagnostic ABI.
 The generated registry and separate endpoint and six-day certificates
 keep their existing scope.
 
@@ -51,7 +50,7 @@ clamp a day or use an unshifted month length after adjusting the clock.
   [Rule date adjustment and comparison](https://github.com/unicode-org/icu/blob/release-78.3/icu4c/source/i18n/simpletz.cpp#L532).
 - After the joins, weekday of January 1 and that year's Gregorian length
   determine the year's rule clocks and all monthly boundaries. A pair
-  within two days lies in one UTC year or two adjacent years. The
+  within seven days lies in one UTC year or two adjacent years. The
   adjacent-year signature adds the next year's length. December and
   January lengths stay fixed, so the UTC/standard/daylight shifts across
   the outer edges need no extra leap bit. Start representative signatures
@@ -73,15 +72,19 @@ existing runtime binding, run the scanner once for each exact Node ELF.
 ```sh
 "$node26_bin" --experimental-ffi temporal-node-icu-transition-separation.mjs \
   --direct-annual > node26-direct-spacing.json
+"$node26_bin" --experimental-ffi temporal-node-icu-transition-separation.mjs \
+  --direct-annual --week > node26-week-spacing.json
 ```
 
-The [compact result](node26-direct-spacing-summary.json) lists executable and
-complete output hashes. Each Node
-26 run has zero effective pairs within two days and 13 positive whole-day
-jumps, counting aliases. The lower bound on spacing is 597,600,000 ms.
-The minimum nominal-start distance to a UTC year edge is 4,712,400,000 ms.
+Use the [Bazel-built diagnostic addon](temporal-pinned-node-icu-proof.md#reproduce)
+for Node 24 and omit `--experimental-ffi`. The [Node 24 result](node24-direct-spacing-summary.json)
+and [Node 26 results](node26-direct-spacing-summary.json) bind the executable
+and output hashes. Each run covers 638 IDs, finds zero effective pairs within
+two days, and finds 13 positive whole-day jumps including aliases. The
+minimum nominal-start distance to a UTC year edge is 4,712,400,000 ms.
 
-Pass both complete outputs to this reduction to reproduce the compact JSON.
+Pass the complete two-day outputs to this reduction to reproduce the
+compact JSON. The Node 24 summary stores its single result as an object.
 
 ```sh
 python3 - node2651-direct-spacing.json node2681-direct-spacing.json <<'PY'
@@ -108,3 +111,28 @@ for name in sys.argv[1:]:
 print(json.dumps(results, indent=2))
 PY
 ```
+
+## Native transition lookup
+
+The `--week` mode checks effective pairs within seven days and verifies whole
+seconds for every candidate boundary. It checks a complete set of recurring
+years, as described above. Each annual zone has at least one effective change
+in every checked year. The latest recurrence join is January 1, 2088. The
+earliest finite candidate is in 1844 and the finite-history bound covers the
+latest finite candidate. [Finite-history proof](../README.md#finite-future-history-in-native-intl).
+
+The [host adapter](../../../../packages/temporal/host-timezone.ts#L300) takes
+the minimum of seven days and the generated interval for the identifier or
+its alias target. All ten effective short pairs in the week scan have
+300,600-second probes. The scan binds the actual generated links, primary
+identifiers and intervals by hash. A probe interval therefore crosses at
+most one offset change, so an equal-offset span contains none. A changed
+span is resolved to its first new-offset second by
+[bisection](../../../../packages/temporal/host-timezone.ts#L376).
+[Week-spacing results](pinned-node-week-spacing-summary.json).
+
+This verifies the lookup prerequisites for these pinned providers, including
+the current lower history bound and recurring-tail search. Other installed
+Intl profiles require their own transition evidence.
+[Proposal comparison §11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
+[Proposal comparison §11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
