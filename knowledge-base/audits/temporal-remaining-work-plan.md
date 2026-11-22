@@ -1,80 +1,135 @@
-# Temporal remaining work, 2026-11-22
+# Temporal audit goal and execution plan
 
-Working estimate: **7–14 calendar days of continuous parallel work**, low
-confidence. This is an engineering forecast, not a compliance claim or a promise
-to resolve conflicting standards text by a date. Large calendar/timezone defects
-can extend the range. Eight-hour staffed workdays imply a longer schedule.
+Updated 2026-11-22. Existing working polyfill is the baseline. Goal remains full
+Temporal spec compliance, including observable ordering, precision, grammar,
+attributes, supported backends and Temporal-specific Intl integration. This is an
+audit and correction of existing code, not a fresh implementation.
 
-Historical source-line counts no longer estimate remaining effort. New operation
-maps and reusable proofs close dependencies without adding historical traces.
-PR counts, audit file counts and passing tests also cannot measure compliance.
+## Source and finite scope
 
-## Approach and completion rule
+Requested authority: [ECMA-262](https://tc39.es/ecma262/), cited by section and
+step. Rechecked 2026-11-22: published document has no Temporal API chapters.
+Temporal API numbers in the registers therefore explicitly identify the
+separately published [Temporal comparison](https://tc39.es/proposal-temporal/),
+not an adopted replacement authority. Keep this distinction until resolved.
 
-Scope is finite. Freeze the published spec snapshot and enumerate every numbered
-step, prose requirement, grammar rule, table and attribute in that snapshot.
-Use section and nested step numbers as stable checklist identifiers. Keep the
-requested ECMA-262 authority and separately labelled Temporal comparison distinct.
+Comparison snapshot retrieved 2026-11-21; SHA-256
+`fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e`.
+Freeze that text for this pass. A newer edition requires an explicit diff and
+scope update, not an automatic restart.
 
-Each row records current implementation lines, evidence and one outcome:
-unreviewed, verified, fix needed, or spec issue. Work through sections in order;
-parallel reviewers own disjoint ranges. Reconcile existing evidence into these
-rows before repeating analysis. Audit only dependencies required by those rows.
-Reopen a verified row only when changed code or a demonstrated counterexample
-invalidates its evidence. New spec editions require an explicit scope update.
+| Register                                                            | Measured scope                                                                                                           |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                     |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,068 existing callables: 174 explicit target assignments, 495 candidate/dependency assignments, 399 unresolved mappings |
+| [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
+| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability pending                                 |
 
-Report the fixed total, remaining unreviewed rows, unresolved fixes and spec
-issues separately. Forecast from reviewed rows per elapsed work interval, with
-remaining bug-fix work estimated separately. Section links, PR counts and new
-audit documents do not close checklist rows.
+Code maps cover 82 distinct selected source files and 23,709 physical lines.
+Public entries and helper callables are different units; do not add their counts
+as functions. File/line counts include declarations and supporting material;
+they are scope measures, not remaining work or compliance percentages.
 
-Reproduce witnessed defects, correct them, validate focused controls and affected
-backends, update the operation's ledger, then publish and land green stacked PRs.
-Parallel reviewers own separate operation families; source edits, Bazel and stack
-integration share one checkout and remain coordinated. Tests supplement source
-analysis and proofs; passing tests alone cannot close a contract.
+The checklists contain 4,085 active numbered steps in 484 algorithms, plus
+explicit prose, grammar, table, equation, attribute, note and clause-scope rows.
+A prose/table block can contain multiple obligations. Informative rows do not
+become normative requirements. Nested step IDs remain stable within this
+snapshot. Deleted text is excluded; published numbering gaps are preserved.
 
-An operation stays conditional only for a named missing obligation with a concrete
-next action. Broad caveats about all providers or realms must not erase completed
-analysis. Reconcile parent documents when a dependency closes. Group related
-fixes to reduce repeated broad validation and stack overhead.
+## Runtime and Intl first
 
-## Remaining deliverables
+Use existing JavaScript runtime operations and Intl where their contracts match:
+coercion, object semantics, exact BigInt arithmetic, calendar projection and time
+zone data. Map the delegated contract and its Temporal caller. Do not reimplement
+ECMA-262/402 operations or replace working providers without a demonstrated gap.
 
-These are estimated agent work-hours, not measured counts of remaining tasks.
+Add only Temporal-specific behavior or necessary compatibility/precision fixes.
+Keep existing fallback paths where supported environments need them. Use captured
+runtime operations where required to preserve specified observable behavior.
+Number conversions need exactness evidence and precision regressions; use existing
+numeric support when needed rather than inventing another arithmetic layer.
 
-| Workstream                        | Exit criteria                                                                                                                                                      | Hours |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----: |
-| Public operations and conversions | Exhaustive constructor/static/instance/getter/Now inventory; conversions, with/merge, differences, comparison, rounding, arithmetic caller order and bounds mapped | 40–75 |
-| Coercion, attributes and realms   | Per-operation brand/option/argument order, abrupt identity, descriptors, length/name, fresh allocation and supported cross-realm installation reviewed             | 24–45 |
-| Calendar, zone and data           | Named zones, possible instants, gaps/folds, start of day, future rules and host/data dependencies closed; reuse calendar partition and shipped-join proofs         | 35–65 |
-| Temporal Intl interop             | Temporal input types, ranges, calendar compatibility, locale-list and formatter producer/exposure contracts reviewed                                               | 18–35 |
-| Grammar and output                | Entrypoint acceptance, annotations, leap seconds, ambiguity, precision, rounding, negative zero and TS/Rust correspondence reviewed                                | 15–30 |
-| Source/native parity              | Optional native/generic paths and fallback profiles mapped to the same operation contracts; missing branches covered                                               | 20–35 |
-| Reconciliation and integration    | Current operation matrix, source anchors, original in-progress PR reconciliation, final heads validated and changes landed                                         | 12–25 |
+## Tracking and completion rule
 
-Base 164–310 agent-hours; reserve 35–75 for bugs and integration: approximately
-**200–385 agent-hours**. Effective 2–2.5-fold concurrency gives roughly 80–190
-wall-hours of active progress. Serialized CI, review and landing justify the
-7–14 calendar-day planning range. These assumptions are not statistical bounds.
+Each spec row records section/step, current source ranges, existing evidence and
+review status. Maintain implementation, review and fix states separately:
 
-## Checkpoints
+- **Implementation:** present, confirmed missing, or mapping unresolved.
+- **Review:** unreconciled, existing evidence pending, reviewed, conditional,
+  verified, or spec issue. Local reviewed steps do not close complete callers.
+- **Fix:** confirmed gap, correction PR, validation result and landing state.
+  Only demonstrated absent/incorrect behavior enters the fix backlog.
 
-Within 24 hours: finish the public-operation inventory; reconcile recent
-addition, difference and provider proofs; name each open operation's missing
-obligation, source owner and next witness/proof. Report reviewed, conditional and
-unreviewed operation counts separately, then revise the forecast.
+Unmapped/unreconciled never means missing or broken. Preserve existing tests,
+source proofs, inherited traces and in-progress PR work. Reconcile them into the
+same rows before repeating analysis. The first migration carries forward 1,747
+core rows with existing evidence references; 45 exact algorithm rows have already
+been reconciled from two current audits: 29 local reviewed, 16 conditional. These
+are migration counts, not a claim that other code was never reviewed.
 
-Following 2–4 days: parallel queues for public conversion/callers, zone/window
-contracts, and grammar/output plus Temporal Intl. Realm/native checks follow
-each operation family. Timebox a review slice to 2–4 hours: deliver a closed
-bounded contract, reproducible defect, or concrete unresolved dependency.
+Review numbered sections in order; parallel reviewers own disjoint ranges.
+Map each obligation to code, reuse established runtime/helper contracts, then
+record verified behavior, a reproducible implementation gap, or a separate spec
+issue. A conditional row must name its actual unresolved premise and next action.
+Reopen completed rows only when changed code or a counterexample invalidates
+existing evidence. Do not launch unrelated dependency or mutable-intrinsic sweeps.
 
-Remaining window: finish uncovered families, fix witnessed defects, validate the
-final backend/engine matrix and reconcile landed code with the ledger. Document
-standards inconsistencies separately.
+For confirmed gaps: reproduce, fix, run focused Bazel validation and affected
+backend checks, update those rows, publish with `gh stack`, and land when required
+checks pass. Batch related fixes. Keep spec inconsistencies separate; do not
+silently implement contradictory text or report an unresolved issue as compliant.
 
-Requested authority remains [ECMA-262](https://tc39.es/ecma262/). Its checked
-document lacks Temporal API chapters; separately labelled proposal comparisons
-support engineering work. Resolving that authority mismatch is a final signoff
-gate, separate from the engineering forecast. No silent substitution of sources.
+Completion requires every applicable normative obligation reconciled and verified
+against landed code, with backend coverage and remaining standards issues stated
+explicitly. Mapping or passing tests alone does not establish completion.
+
+## Progress and estimate
+
+Report fixed scope, rows with reconciled evidence, remaining review rows,
+conditional obligations, confirmed implementation gaps and unlanded corrections
+separately. Candidate source assignments require confirmation; 399 unresolved
+helper mappings are a mapping queue, not 399 missing functions.
+
+First finish importing existing evidence, then measure newly reviewed obligations
+per elapsed interval. Estimate remaining review from that rate; estimate confirmed
+fixes and integration separately. Do not use citation growth, PR counts, source-line
+extrapolation or checklist migration speed as review throughput. Earlier 7–14-day
+forecast was provisional and is not a measured completion estimate.
+
+Source hashes and extraction limits:
+[public map manifest](temporal-public-code-spec-map-manifest.json),
+[helper scope](temporal-helper-code-spec-map-summary.json),
+[core extraction/reconciliation](temporal-core-requirement-checklist-summary.json),
+[amendments](temporal-amendment-requirement-checklist-summary.json).
+
+## Register provenance
+
+Public binding ranges come from `ast-grep scan` method definitions, constructor
+proxy calls, descriptor definitions and getter registrations. Shared getter
+factories and native Instant descriptor forwarding are included. Helper/backend
+ranges come from TS callable nodes and qualified Rust function nodes. Nested
+ranges can overlap; totals use file unions or nonoverlapping callable lines.
+Target assignments identify ownership, not equivalence of every numbered step.
+Candidate/dependency assignments stay distinct from direct targets.
+
+The [extractor](temporal-extract-checklist.py) reads saved official rendered HTML,
+not GitHub. Given the matching snapshot, regenerate into a temporary directory:
+
+```bash
+python3 knowledge-base/audits/temporal-extract-checklist.py \
+  --html /path/to/temporal-published.html --scope all \
+  --output /tmp/temporal-extracted-checklist.tsv
+```
+
+Extraction asserts clause ownership and independently checks active algorithm
+list-item counts. Parent text excludes nested steps, which have their own rows.
+Whitespace normalization cannot preserve mathematical typography or grammar
+layout; retain the rendered source when reviewing those blocks. Unclassified
+text stays explicit. Do not overwrite reconciled registers with fresh extraction:
+join on stable row IDs and preserve source mappings, evidence and decisions.
+
+Validation for this register change: all row IDs unique, all source ranges within
+current files, source hashes checked, independent numbered-step counts agree,
+and core IDs/text unchanged when amendment extraction was added. No runtime
+behavior changed; this documentation update does not require another full
+Temporal test run. Runtime validation remains attached to its correction PRs.

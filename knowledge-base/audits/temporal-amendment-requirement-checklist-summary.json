@@ -1,0 +1,46 @@
+{
+  "source": "https://tc39.es/proposal-temporal/",
+  "snapshot_retrieved": "2026-11-21",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "selected_scope": "amendments",
+  "scope_note": "Core chapters1\u201313 and amendments14\u201315 are finite comparison sections; amendment applicability remains pending.",
+  "selected_clauses": 101,
+  "core_clauses": 0,
+  "amendment_clauses": 101,
+  "rows": 1057,
+  "kind_counts": {
+    "clause_scope": 101,
+    "unclassified_nonalgorithm_text": 25,
+    "informative_note": 21,
+    "prose": 113,
+    "table_block": 4,
+    "algorithm_step": 760,
+    "prose_list_item": 33
+  },
+  "active_algorithm_blocks": 55,
+  "numbered_step_rows": 760,
+  "independent_active_algorithm_list_item_count": 760,
+  "step_count_agrees": true,
+  "empty_or_wholly_deleted_list_items_excluded": 57,
+  "max_step_depth": 6,
+  "algorithm_structure_diagnostics": [],
+  "uncovered_algorithm_li_positions": [],
+  "uncovered_active_nonempty_text_nodes": [],
+  "limits": [
+    "Mechanical extraction is not a normative-requirement count or semantic completeness proof.",
+    "Each prose/grammar/table block may contain multiple obligations; rows need manual decomposition during review.",
+    "Clause gates explicitly retain property-attribute, realm and dependency obligations not mechanically separable.",
+    "Nested step labels follow rendered ecmarkup numeric/alpha/roman cycle; counts cross-checked against all active algorithm list items.",
+    "Snapshot contains inserted/deleted amendment markup; deleted text excluded, inserted text included. Numbered paths retain published list positions, including gaps left by wholly deleted steps; these empty/deleted items are counted separately.",
+    "Unclassified text rows remain explicit review obligations, not silently dropped.",
+    "Snapshot is pinned Nov21; live TOC rechecked Nov22 separately, full-body future changes require regeneration."
+  ],
+  "review_status_counts": {
+    "unreconciled": 1030,
+    "existing_evidence_pending": 27
+  },
+  "status_note": "Applicability and existing evidence reconciliation pending; no missing implementation inferred.",
+  "checklist_rows_with_implementation_locations": 39,
+  "implementation_status_note": "present records a source binding or helper correspondence, not verified behavior. mapping_unresolved never means implementation missing.",
+  "fix_status_note": "not_reconciled preserves historical corrections and in-progress PRs for row-level import; it does not mean no defects or no fixes exist. Current fixes and validation remain in the linked audit ledger."
+}

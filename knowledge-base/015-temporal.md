@@ -1,5 +1,11 @@
 # Temporal implementation
 
+[Finite audit plan](audits/temporal-remaining-work-plan.md) maps existing code to
+numbered spec comparisons. Preserve the working polyfill and reuse JS runtime
+and Intl contracts; distinguish implementation gaps from unreconciled evidence.
+Public bindings, helper/backend ranges and fixed step checklists retain source
+hashes and prior review references.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out
