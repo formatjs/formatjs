@@ -35,7 +35,6 @@
     "./should-polyfill.js": "./should-polyfill.js"
   },
   "dependencies": {
-    "@formatjs/bigdecimal": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*"
   }
 }

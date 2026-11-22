@@ -1,5 +1,3 @@
-import type Decimal from '@formatjs/bigdecimal'
-import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {
   DayFromYear,
   DaysInYear,
@@ -65,11 +63,12 @@ const dateGetTime = Date.prototype.getTime
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 
 // Temporal §15.6.11 preserves Temporal brands; other inputs use ToNumber.
+// Numeric conversion delegates to unary + (ECMA-262 §7.1.4 and §13.5.4.1).
 // Normalizing branded values to records here is an internal implementation choice.
 // https://tc39.es/proposal-temporal/#sec-todatetimeformattable
 export function ToDateTimeFormattable(
   value: unknown
-): Decimal | TemporalDateTimeValue {
+): number | TemporalDateTimeValue {
   if (value !== null && typeof value === 'object' && readers.length) {
     let isDate = false
     try {
@@ -78,7 +77,7 @@ export function ToDateTimeFormattable(
     } catch {
       // A non-Date may still carry a Temporal brand.
     }
-    if (isDate) return ToNumber(value)
+    if (isDate) return +(value as unknown as number)
     for (const {kind, read} of readers) {
       let result: string | bigint
       try {
@@ -139,5 +138,5 @@ export function ToDateTimeFormattable(
       return {kind, calendar, epochNanoseconds}
     }
   }
-  return ToNumber(value)
+  return +(value as number)
 }

@@ -1,3 +1,4 @@
+import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
 import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {expect, it} from 'vitest'
 import {
@@ -186,4 +187,54 @@ it('counts year origins beyond Date constructor clipping', () => {
   const lastYearOrigin = new Date(0)
   lastYearOrigin.setUTCFullYear(275760, 0, 1)
   expect(DayFromYear(275760)).toBe(lastYearOrigin.getTime() / 86_400_000)
+})
+
+it.each([
+  NaN,
+  Infinity,
+  -Infinity,
+  Number.MAX_VALUE,
+  -Number.MAX_VALUE,
+  -8_640_000_000_000_001,
+  -8_640_000_000_000_000,
+  -8_639_999_999_999_999,
+  -1.9,
+  -1,
+  -0.9,
+  -Number.MIN_VALUE,
+  -0,
+  0,
+  Number.MIN_VALUE,
+  0.9,
+  1,
+  1.9,
+  8_639_999_999_999_999,
+  8_640_000_000_000_000,
+  8_640_000_000_000_001,
+])('TimeClip matches builtin Date for %s', value => {
+  expect(TimeClip(value)).toBe(new Date(value).getTime())
+})
+
+it('TimeClip uses captured arithmetic without reconverting its Number input', () => {
+  const originalFinite = Number.isFinite
+  const originalAbs = Math.abs
+  const originalTrunc = Math.trunc
+  const poison = () => {
+    throw new Error('Mutable clipping intrinsic reached')
+  }
+  let actual: number[]
+  try {
+    Number.isFinite = Math.abs = Math.trunc = poison
+    actual = [
+      TimeClip(-1.9),
+      TimeClip(-0.9),
+      TimeClip(8_640_000_000_000_000),
+      TimeClip(Infinity),
+    ]
+  } finally {
+    Number.isFinite = originalFinite
+    Math.abs = originalAbs
+    Math.trunc = originalTrunc
+  }
+  expect(actual!).toEqual([-1, 0, 8_640_000_000_000_000, NaN])
 })
