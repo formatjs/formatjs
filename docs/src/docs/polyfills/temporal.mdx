@@ -53,6 +53,10 @@ This preserves an existing Temporal implementation. Use
 The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 `PlainMonthDay`, `PlainTime`, `PlainYearMonth`, `ZonedDateTime`, and `Now`.
 Temporal uses a captured `Object.create` for its own internal allocations.
+Singular and plural unit names use exact private matching. Replacing
+`String.prototype.endsWith` or `slice` does not intercept that matching;
+public option getters and string coercion hooks still run normally.
+
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`
 or inherited option getters/setters. Object-form options retain inherited
