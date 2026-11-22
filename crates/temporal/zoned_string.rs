@@ -25,6 +25,7 @@ pub struct ZonedParseOptions {
     pub offset: OffsetOption,
 }
 impl Default for ZonedParseOptions {
+    // Proposal comparison §6.5.2 steps 5.n, 5.o: supply typed compatible and reject defaults.
     fn default() -> Self {
         Self {
             disambiguation: Disambiguation::Compatible,
@@ -54,6 +55,7 @@ pub struct ZonedFormatOptions {
     pub calendar_name: CalendarName,
 }
 impl Default for ZonedFormatOptions {
+    // Proposal comparison §6.3.43 step 3: prepare default zoned rendering options.
     fn default() -> Self {
         Self {
             precision: Precision::Auto,
@@ -67,6 +69,7 @@ impl Default for ZonedFormatOptions {
 
 impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     /// ISO local fields and an offset hint, resolved through the selected zone.
+    // Proposal comparison §6.5.1 step 2: compose validated local fields before offset interpretation.
     pub fn from_local_with_offset(
         fields: IsoDateTime,
         zone: Z,
@@ -82,6 +85,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
             options,
         )
     }
+    // Proposal comparison §6.5.1 steps 3.a, 4.a, 10.b–12: interpret the typed offset hint.
     pub(crate) fn from_local_nanoseconds_with_offset(
         local: i128,
         zone: Z,
@@ -152,6 +156,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
 }
 impl<'a> ZonedDateTime<ResolvedTimeZone<'a>> {
+    // Proposal comparison §6.5.2 steps 5.h–5.j: select the arithmetic provider before typed parsing.
     pub fn parse(
         value: &str,
         registry: TimeZoneRegistry<'a>,
@@ -166,6 +171,7 @@ impl<'a> ZonedDateTime<ResolvedTimeZone<'a>> {
     }
 }
 impl<'a, C: CalendarProvider> ZonedDateTime<ResolvedTimeZone<'a>, C> {
+    // Proposal comparison §6.5.2 steps 5.b, 5.e, 11–12: parse and resolve a typed zoned string.
     pub fn parse_in(
         value: &str,
         registry: TimeZoneRegistry<'a>,
@@ -188,6 +194,7 @@ impl<'a, C: CalendarProvider> ZonedDateTime<ResolvedTimeZone<'a>, C> {
         }
         Self::from_local_with_offset(parsed.fields, zone, calendar, parsed.offset, options)
     }
+    // Proposal comparison §6.5.4 steps 5, 7–8: round before querying offset and local fields.
     pub fn format(&self, options: ZonedFormatOptions) -> Result<FormattedZonedDateTime<'_>, Error> {
         let quantum = match options.precision {
             Precision::Auto => 1,
@@ -214,6 +221,7 @@ impl<'a, C: CalendarProvider> ZonedDateTime<ResolvedTimeZone<'a>, C> {
 #[cfg(feature = "compiled_time_zones")]
 impl core::str::FromStr for ZonedDateTime<ResolvedTimeZone<'static>> {
     type Err = Error;
+    // Proposal comparison §6.5.2 step 5.b: route a typed string through the compiled registry.
     fn from_str(value: &str) -> Result<Self, Error> {
         Self::parse(
             value,
@@ -223,6 +231,7 @@ impl core::str::FromStr for ZonedDateTime<ResolvedTimeZone<'static>> {
     }
 }
 impl<C: CalendarProvider> fmt::Display for ZonedDateTime<ResolvedTimeZone<'_>, C> {
+    // Proposal comparison §6.3.43 step 3: delegate default zoned rendering.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(ZonedFormatOptions::default())
             .map_err(|_| fmt::Error)?
@@ -237,6 +246,7 @@ pub struct FormattedZonedDateTime<'a> {
     options: ZonedFormatOptions,
 }
 impl fmt::Display for FormattedZonedDateTime<'_> {
+    // Proposal comparison §6.5.4 steps 9–15: write zoned date-time text and selected annotations.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let fields = self.fields;
         crate::date::write_date(f, (fields.year, fields.month, fields.day))?;

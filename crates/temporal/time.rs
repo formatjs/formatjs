@@ -49,6 +49,7 @@ impl PlainTime {
     pub fn from_fields(fields: TimeFields, overflow: Overflow) -> Result<Self, Error> {
         Self(0).with_fields(fields, overflow)
     }
+    // Proposal comparison §4.3.11 steps 5–16, 19–20: merge and regulate typed clock fields.
     pub fn with_fields(self, fields: TimeFields, overflow: Overflow) -> Result<Self, Error> {
         let updates = [
             fields.hour,
@@ -143,14 +144,17 @@ impl PlainTime {
             (value % 1_000_000_000) as u32,
         )
     }
+    // Proposal comparison §4.5.18 steps 3–5: add the clock span modulo one day.
     pub fn checked_add(self, duration: Duration) -> Result<Self, Error> {
         Ok(Self(
             (self.0 + duration.time_nanoseconds(false)?).rem_euclid(NANOSECONDS_PER_DAY),
         ))
     }
+    // Proposal comparison §4.5.18 step 2: negate duration fields before adding the clock span.
     pub fn checked_subtract(self, duration: Duration) -> Result<Self, Error> {
         self.checked_add(duration.negated())
     }
+    // Proposal comparison §4.3.14 steps 14–15: round the typed clock and drop the day carry.
     pub fn round(self, unit: TimeUnit, increment: u32, mode: RoundingMode) -> Result<Self, Error> {
         Ok(Self(
             self.rounded_nanoseconds(unit, increment, mode)?
@@ -180,6 +184,7 @@ impl PlainTime {
                 mode,
             ))
     }
+    // Proposal comparison §4.5.17 steps 4–7: round the exact clock difference.
     pub fn until(
         self,
         other: Self,
@@ -211,6 +216,7 @@ impl PlainTime {
             largest,
         )
     }
+    // Proposal comparison §4.5.17 step 8: reverse the typed clock difference for since.
     pub fn since(
         self,
         other: Self,

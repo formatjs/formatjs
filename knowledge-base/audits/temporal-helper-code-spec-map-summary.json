@@ -3,9 +3,9 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24631,
+  "whole_selected_source_lines": 24669,
   "whole_selected_source_lines_by_language": {
-    "rust": 10521,
+    "rust": 10559,
     "typescript": 14110
   },
   "nonoverlapping_callable_lines": 16824,
@@ -14,14 +14,14 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 4431,
-    "mapped": 7599,
+    "candidate": 3889,
+    "mapped": 8141,
     "unmapped": 4794
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 284,
-    "mapped": 408,
+    "candidate": 246,
+    "mapped": 446,
     "unmapped": 377
   },
   "by_language": {
@@ -31,8 +31,8 @@
       "unmapped": 154
     },
     "rust": {
-      "candidate": 168,
-      "mapped": 158,
+      "candidate": 130,
+      "mapped": 196,
       "unmapped": 223
     }
   },
@@ -214,8 +214,8 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 237,
-    "typed_public_operation_candidate": 47
+    "implementation_dependency": 227,
+    "typed_public_operation_candidate": 19
   },
   "proposal_core_section_ids": 170,
   "proposal_amendment_section_ids": 5,
@@ -385,10 +385,10 @@
     },
     {
       "file": "crates/temporal/date.rs",
-      "source_lines": 518,
+      "source_lines": 530,
       "callable_rows": 63,
       "nonoverlapping_callable_lines": 421,
-      "sha256": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
+      "sha256": "1b5259eefb666b21a62515ac8b5fea97271c1e38e2bb9589d4fbc35202876c8d",
       "unresolved_callable_rows": 51
     },
     {
@@ -481,18 +481,18 @@
     },
     {
       "file": "crates/temporal/short_dates.rs",
-      "source_lines": 611,
+      "source_lines": 621,
       "callable_rows": 56,
       "nonoverlapping_callable_lines": 536,
-      "sha256": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
+      "sha256": "47b747390e377fbdf3a62837f80f3dae43a99772628b64e260ccde62aff16920",
       "unresolved_callable_rows": 46
     },
     {
       "file": "crates/temporal/time.rs",
-      "source_lines": 272,
+      "source_lines": 278,
       "callable_rows": 18,
       "nonoverlapping_callable_lines": 222,
-      "sha256": "cd2eebc1449b9eb8a38de8bbafc4b379b0c81ccca9bb084b425036bb02a44c9e",
+      "sha256": "1241c679243e47a9484b1400b4d5457c9b481ecf1a0c9549cb127df35d47b054",
       "unresolved_callable_rows": 12
     },
     {
@@ -537,10 +537,10 @@
     },
     {
       "file": "crates/temporal/zoned_string.rs",
-      "source_lines": 282,
+      "source_lines": 292,
       "callable_rows": 10,
       "nonoverlapping_callable_lines": 208,
-      "sha256": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
+      "sha256": "c883ba2ab73f4fbdbe827862c3e1307a4f246c42a90beccd343d25d402aabb57",
       "unresolved_callable_rows": 0
     },
     {

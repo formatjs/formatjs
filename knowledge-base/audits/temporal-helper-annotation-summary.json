@@ -4,19 +4,19 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 284,
-    "mapped": 408,
+    "candidate": 246,
+    "mapped": 446,
     "unmapped": 377
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 735,
-    "direct_numbered": 318,
+    "no_numbered_anchor": 697,
+    "direct_numbered": 356,
     "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 194,
+  "direct_with_step_wording": 232,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 295,
+    "overlap": 333,
     "no_overlap_or_no_prior_mapping": 23
   },
   "no_numbered_anchor_by_kind": {
@@ -30,8 +30,8 @@
       "rows": 180,
       "files": 12,
       "coverage": {
-        "no_numbered_anchor": 144,
-        "direct_numbered": 32,
+        "no_numbered_anchor": 134,
+        "direct_numbered": 42,
         "enclosing_numbered": 4
       }
     },
@@ -47,8 +47,8 @@
       "rows": 248,
       "files": 13,
       "coverage": {
-        "no_numbered_anchor": 196,
-        "direct_numbered": 52
+        "no_numbered_anchor": 168,
+        "direct_numbered": 80
       }
     },
     "native_transport_with_temporal_adapters_review": {
@@ -91,7 +91,7 @@
     "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
     "crates/temporal/calendar_registry.rs": "e996fcad1b3638299e89c3580048ada3a5bd6dfbe8b9bd63784dfcfa6d494660",
     "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
-    "crates/temporal/date.rs": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
+    "crates/temporal/date.rs": "1b5259eefb666b21a62515ac8b5fea97271c1e38e2bb9589d4fbc35202876c8d",
     "crates/temporal/duration.rs": "e3ff55c7752266faa900d31d6a04d92293200084744971bac14aae81103de711",
     "crates/temporal/ffi.rs": "b264e4473589a4cd2d210940b8a3ad14ab3811b160df30533cb39de880f3bf0e",
     "crates/temporal/format.rs": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c",
@@ -102,14 +102,14 @@
     "crates/temporal/plain_relative.rs": "2180a18fb2672442343ef2e5da471fe98adb30029d31736a7269928f4eed2af2",
     "crates/temporal/relative_duration.rs": "ea47ab8079505a274c1f0478e549097a45ce3f987a2b2621e0edab31033176b7",
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
-    "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
-    "crates/temporal/time.rs": "cd2eebc1449b9eb8a38de8bbafc4b379b0c81ccca9bb084b425036bb02a44c9e",
+    "crates/temporal/short_dates.rs": "47b747390e377fbdf3a62837f80f3dae43a99772628b64e260ccde62aff16920",
+    "crates/temporal/time.rs": "1241c679243e47a9484b1400b4d5457c9b481ecf1a0c9549cb127df35d47b054",
     "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
     "crates/temporal/timezone_identity.rs": "04e2620d630e9e6942f95616d8a3548893ca803d8b5ba6497d9d609ae5fe85e9",
     "crates/temporal/timezone_registry.rs": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
     "crates/temporal/zoned.rs": "9152152a6fbda5ff016c37d32fbe786d306290ee9730582e8845cfe1e96436db",
     "crates/temporal/zoned_difference.rs": "61346edc1dcebfec4bf7f32a0a53f0ab2120ebba6309edeeaef1324e22125fe4",
-    "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
+    "crates/temporal/zoned_string.rs": "c883ba2ab73f4fbdbe827862c3e1307a4f246c42a90beccd343d25d402aabb57",
     "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
     "packages/temporal/calendar.ts": "6989f4ef43f5fac774a77fb59e146514b675122309bf6ab325ef0226a4debf87",
@@ -307,10 +307,11 @@
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
         "unmapped": 51,
-        "candidate": 12
+        "mapped": 12
       },
       "coverage": {
-        "no_numbered_anchor": 63
+        "no_numbered_anchor": 51,
+        "direct_numbered": 12
       }
     },
     {
@@ -434,11 +435,11 @@
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
         "unmapped": 46,
-        "candidate": 10
+        "mapped": 10
       },
       "coverage": {
-        "no_numbered_anchor": 55,
-        "direct_numbered": 1
+        "no_numbered_anchor": 45,
+        "direct_numbered": 11
       }
     },
     {
@@ -447,10 +448,11 @@
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
         "unmapped": 12,
-        "candidate": 6
+        "mapped": 6
       },
       "coverage": {
-        "no_numbered_anchor": 18
+        "no_numbered_anchor": 12,
+        "direct_numbered": 6
       }
     },
     {
@@ -516,10 +518,10 @@
       "rows": 10,
       "work_bundle": "time_zone_and_zoned_algorithm_review",
       "mapping_status": {
-        "candidate": 10
+        "mapped": 10
       },
       "coverage": {
-        "no_numbered_anchor": 10
+        "direct_numbered": 10
       }
     },
     {
@@ -1024,8 +1026,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 253,
-  "reviewed_mapping_rows_this_batch": 35,
+  "reviewed_mapping_rows_cumulative": 291,
+  "reviewed_mapping_rows_this_batch": 38,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0

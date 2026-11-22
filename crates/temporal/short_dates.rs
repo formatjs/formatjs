@@ -45,6 +45,7 @@ impl PlainYearMonth {
     }
 }
 impl<C: CalendarProvider> PlainYearMonth<C> {
+    // Proposal comparison §9.3.13 steps 7, 10–11: merge typed year-month updates.
     pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
         Self::from_calendar_fields(
             self.calendar,
@@ -149,12 +150,14 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             _ => self.days_in_year()? == 366,
         })
     }
+    // Proposal comparison §9.3.18 steps 4–5: compare the reference day and calendar identity.
     pub fn equals<D: CalendarProvider>(self, other: PlainYearMonth<D>) -> bool {
         self.epoch_day == other.epoch_day && self.calendar_id() == other.calendar_id()
     }
     pub fn compare<D: CalendarProvider>(self, other: PlainYearMonth<D>) -> Ordering {
         self.epoch_day.cmp(&other.epoch_day)
     }
+    // Proposal comparison §9.3.23 steps 7–9: add the supplied day to the year-month fields.
     pub fn to_plain_date(self, day: u8, overflow: Overflow) -> Result<PlainDate<C>, Error> {
         PlainDate::from_calendar_fields(
             self.calendar,
@@ -168,6 +171,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     fn first_day(self) -> Result<i64, Error> {
         Ok(self.epoch_day - i64::from(self.calendar_fields()?.day) + 1)
     }
+    // Proposal comparison §9.5.8 steps 7, 11–14: add years and months from the first day.
     pub fn checked_add(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         if fields[2..].iter().any(|value| *value != 0) {
@@ -187,9 +191,11 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         PlainDate::from_epoch_day(epoch)?;
         Self::from_epoch_day_in(epoch, self.calendar)
     }
+    // Proposal comparison §9.5.8 step 2: negate the years and months before addition.
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
+    // Proposal comparison §9.3.16 step 3: route the typed year-month until difference.
     pub fn until(
         self,
         other: Self,
@@ -200,6 +206,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     ) -> Result<Duration, Error> {
         self.difference(other, largest, smallest, increment, mode, false)
     }
+    // Proposal comparison §9.3.17 step 3: route the typed year-month since difference.
     pub fn since(
         self,
         other: Self,
@@ -318,6 +325,7 @@ impl PlainMonthDay {
     }
 }
 impl<C: CalendarProvider> PlainMonthDay<C> {
+    // Proposal comparison §10.3.6 steps 7, 10–11: merge typed month-day fields.
     pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
         Self::from_calendar_fields(
             self.calendar,
@@ -499,6 +507,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
     ) -> Result<PlainMonthDay<D>, Error> {
         PlainMonthDay::from_epoch_day_in(self.epoch_day, calendar)
     }
+    // Proposal comparison §10.3.7 steps 4–5: compare the reference date and calendar identity.
     pub fn equals<D: CalendarProvider>(self, other: PlainMonthDay<D>) -> bool {
         self.epoch_day == other.epoch_day && self.calendar_id() == other.calendar_id()
     }
@@ -510,6 +519,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
     pub fn calendar_fields(self) -> Result<Date, Error> {
         self.calendar.date(self.epoch_day).map_err(error)
     }
+    // Proposal comparison §10.3.12 steps 7–9: supply the typed year for date construction.
     pub fn to_plain_date(self, year: i32, overflow: Overflow) -> Result<PlainDate<C>, Error> {
         self.to_plain_date_fields(
             DateFields {

@@ -43,6 +43,7 @@ impl PlainDate {
     }
 }
 impl<C: CalendarProvider> PlainDate<C> {
+    // Proposal comparison §3.3.23 steps 7, 10–11: merge typed updates and construct the date.
     pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
         Self::from_calendar_fields(
             self.1,
@@ -79,6 +80,7 @@ impl<C: CalendarProvider> PlainDate<C> {
     pub fn calendar_id(self) -> &'static str {
         self.1.id()
     }
+    // Proposal comparison §3.3.27 steps 4–5: compare the epoch day and calendar identity.
     pub fn equals<D: CalendarProvider>(self, other: PlainDate<D>) -> bool {
         self.0 == other.0 && self.calendar_id() == other.calendar_id()
     }
@@ -162,6 +164,7 @@ impl<C: CalendarProvider> PlainDate<C> {
         .unwrap();
         (fields.year, fields.month, fields.day)
     }
+    // Proposal comparison §3.5.15 steps 4, 7–8: add the date fields and whole clock days.
     pub fn checked_add(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         let extra_days = duration.time_nanoseconds(false)? / NANOSECONDS_PER_DAY;
@@ -172,6 +175,7 @@ impl<C: CalendarProvider> PlainDate<C> {
             overflow,
         )
     }
+    // Proposal comparison §3.5.15 step 3: negate the typed duration before date addition.
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
@@ -202,6 +206,7 @@ impl<C: CalendarProvider> PlainDate<C> {
             self.1,
         )
     }
+    // Proposal comparison §3.3.29 steps 5.a, 6.b–7: resolve the selected local clock or day start.
     pub fn to_zoned_date_time<Z: crate::TimeZone>(
         self,
         time_zone: Z,
@@ -299,6 +304,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
         };
         date.to_date_time(time)
     }
+    // Proposal comparison §5.3.25 steps 13, 16–17: merge typed date and clock updates.
     pub fn with_fields(
         self,
         fields: DateTimeFields<'_>,
@@ -338,6 +344,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     pub fn calendar_id(self) -> &'static str {
         self.1.id()
     }
+    // Proposal comparison §5.3.33 steps 4–5: compare encoded date-time and calendar identity.
     pub fn equals<D: CalendarProvider>(self, other: PlainDateTime<D>) -> bool {
         self.0 == other.0 && self.calendar_id() == other.calendar_id()
     }
@@ -372,6 +379,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     pub fn with_time(self, time: PlainTime) -> Result<Self, Error> {
         self.date().to_date_time(time)
     }
+    // Proposal comparison §5.5.16 steps 5–10: add the clock carry and date duration.
     pub fn checked_add(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         let time = self.time().nanoseconds() + duration.time_nanoseconds(false)?;
@@ -385,9 +393,11 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             time.rem_euclid(NANOSECONDS_PER_DAY),
         )?)
     }
+    // Proposal comparison §5.5.16 step 2: negate the typed duration before addition.
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
+    // Proposal comparison §5.5.11 steps 2–4: round the clock and carry into the date.
     pub fn round(self, unit: TimeUnit, increment: u32, mode: RoundingMode) -> Result<Self, Error> {
         let rounded = self.time().rounded_nanoseconds(unit, increment, mode)?;
         Self::from_epoch_nanoseconds_in(
@@ -403,6 +413,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             self.1,
         )
     }
+    // Proposal comparison §5.3.30 step 3: forward the prepared until difference.
     pub fn until(
         self,
         other: Self,
@@ -421,6 +432,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             false,
         )
     }
+    // Proposal comparison §5.3.31 step 3: forward the prepared since difference.
     pub fn since(
         self,
         other: Self,

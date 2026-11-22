@@ -8,12 +8,12 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit.
-Comment-only batches reconcile 253 mappings for ISO scanners, PlainTime, Rust parsers, Rust formatting,
+Comment-only batches reconcile 291 mappings for ISO scanners, PlainTime, Rust parsers, Rust formatting,
 plain-relative arithmetic,
 rounding, calendar and timezone providers, and native Duration transport. Transport12 now have narrow inline caller/dependency links; numbered
 anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code. Current fixed inventory has318
-direct anchors,13 enclosing anchors,735 without numbered anchors and3 retired.
+binds source hashes and unchanged noncomment code. Current fixed inventory has356
+direct anchors,13 enclosing anchors,697 without numbered anchors and3 retired.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup

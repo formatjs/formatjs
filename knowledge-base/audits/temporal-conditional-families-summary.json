@@ -11,7 +11,32 @@
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. No status changes or fresh implementation audit. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "f41a4205c6d9e99d33a43b294d979b1a16f1ba440940b82c25675a599aa9b422",
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "409b7d0d13807c3d838a0c738385374e02d478ca8368dfbc26baa027f46995f1",
     "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "b9c3e43b0db5062696d90841bbc985ea87c183aa1788d439e71a233a3804aecf"
+  },
+  "scope_decision": {
+    "deferred_family": "constructor-realm-fallback",
+    "deferred_algorithm_rows": 16,
+    "active_conditional_algorithm_rows": 61,
+    "deferred_requirement_ids": [
+      "3.1.1/algorithm-1/step-10",
+      "3.5.3/algorithm-1/step-3",
+      "4.1.1/algorithm-1/step-10",
+      "4.5.11/algorithm-1/step-2",
+      "5.1.1/algorithm-1/step-19",
+      "5.5.8/algorithm-1/step-3",
+      "6.1.1/algorithm-1/step-11",
+      "6.5.3/algorithm-1/step-3",
+      "7.1.1/algorithm-1/step-12",
+      "7.5.19/algorithm-1/step-3",
+      "8.1.1/algorithm-1/step-4",
+      "8.5.2/algorithm-1/step-3",
+      "9.1.1/algorithm-1/step-11",
+      "9.5.5/algorithm-1/step-3",
+      "10.1.1/algorithm-1/step-11",
+      "10.5.2/algorithm-1/step-3"
+    ],
+    "evidence_retained": true,
+    "remaining_package_scope": "Ordinary index and standalone use within one realm and module loader."
   }
 }
