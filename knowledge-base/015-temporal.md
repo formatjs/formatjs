@@ -8,12 +8,12 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit.
-Comment-only batches reconcile 187 mappings for ISO scanners, PlainTime, Rust parsers, Rust formatting,
+Comment-only batches reconcile 218 mappings for ISO scanners, PlainTime, Rust parsers, Rust formatting,
 plain-relative arithmetic,
 rounding, calendar and timezone providers, and native Duration transport. Transport12 now have narrow inline caller/dependency links; numbered
 anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code. Current fixed inventory has252
-direct anchors,13 enclosing anchors,801 without numbered anchors and3 retired.
+binds source hashes and unchanged noncomment code. Current fixed inventory has283
+direct anchors,13 enclosing anchors,770 without numbered anchors and3 retired.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup
@@ -34,6 +34,12 @@ The fresh Duration constructor comparison step and its three containing
 clauses now pass with the supplied engine contract. Private memoizer options,
 cache storage and CLDR lookup preserve normal public callback order.
 [Closure evidence](audits/temporal-duration-fresh-constructor-closure-evidence.json).
+
+Signed nonexact day, week, month and year windows now have a shared-source
+proof for generated timezone profiles and the exact Node ICU profile,
+subject to calendar and successful endpoint contracts. The retained-prefix
+week shortcut and unexamined host providers keep two steps conditional.
+[Window proof](audits/temporal-year-month-week-nonexact-window.md).
 
 Four public controls reproduce cross-copy slot failures in independent realms and
 between ordinary index and standalone imports. They confirm four open numbered

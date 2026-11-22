@@ -1,0 +1,18 @@
+{
+  "runtime": {
+    "node": "v26.5.1",
+    "icu": "78.3",
+    "tz": "2026b"
+  },
+  "binarySha256": "fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6",
+  "windowMilliseconds": 518400000,
+  "firstCoveredMilliseconds": -8640000345600000,
+  "historicalZones": 16,
+  "maximumCertifiedSpread": 86400000,
+  "zones": 638,
+  "absoluteFiniteRuleStarts": 30947,
+  "checkedActualTransitions": 500,
+  "rawScanSha256": "fa9ec20ab73ec91d8db78ced20ca815bd656e99cd7fc710ef2cb6df467eee1d4",
+  "recordsSha256": "f5381633cb0e457e38bb75009b36c8f2d847ca0c9eb06108b389083fa2c56118",
+  "scriptSha256": "3ab044da510a5b296641e73de24e5ececb75ad3652c274f629a59b15091dde42"
+}

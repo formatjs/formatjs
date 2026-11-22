@@ -40,7 +40,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 342 mapped, 350 candidate/dependency assignments, 377 unmapped (including 3 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 373 mapped, 319 candidate/dependency assignments, 377 unmapped (including 3 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
@@ -186,17 +186,22 @@ The [Apia exact-target assertion conflict](temporal-apia-exact-target-spec-issue
 is recorded separately from the two nonexact-window conditions. The
 [generated-zone spread proof](temporal-zoned-day-window-spread-proof.md) supplies
 the packed, compact and native day subdomain under its calendar and endpoint
-contracts. Host and remaining calendar-unit comparisons stay conditional.
+contracts. The [shared nonexact proof](temporal-year-month-week-nonexact-window.md)
+extends that result to week, month and year and incorporates the exact
+Node ICU host spread certificate. The retained-prefix week shortcut reaches
+337/336 in a New York fold. Its public result matches the intended retry
+on the certified valid endpoints. The shortcut endpoint and unexamined
+provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[187 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[218 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-175 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:342 mapped,350 candidate,
+206 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:373 mapped,319 candidate,
 377 unmapped, including three retired identities. Annotation presence alone
-is252 direct,13 enclosing,801 without numbered anchors,3 retired; these are
+is283 direct,13 enclosing,770 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -213,6 +218,8 @@ A further 42 mappings cover TypeScript clock/ISO helpers and Rust timezone
 registry routing. Seven Bazel targets pass.
 [Clock evidence](temporal-ts-clock26-annotation-source-proof.json)
 [Registry evidence](temporal-native-zoneregistry16-annotation-source-proof.json).
+The next 31 mappings cover Rust table-calendar pack validation and math.
+[Table calendar evidence](temporal-table-calendar31-annotation-source-proof.json).
 Keep the 3–5 hour annotation estimate provisional because review time
 varies by source and the timezone timing excludes its preliminary review.
 

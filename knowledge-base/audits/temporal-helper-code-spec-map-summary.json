@@ -3,9 +3,9 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24565,
+  "whole_selected_source_lines": 24596,
   "whole_selected_source_lines_by_language": {
-    "rust": 10455,
+    "rust": 10486,
     "typescript": 14110
   },
   "nonoverlapping_callable_lines": 16824,
@@ -14,14 +14,14 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 5375,
-    "mapped": 6655,
+    "candidate": 4966,
+    "mapped": 7064,
     "unmapped": 4794
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 350,
-    "mapped": 342,
+    "candidate": 319,
+    "mapped": 373,
     "unmapped": 377
   },
   "by_language": {
@@ -31,8 +31,8 @@
       "unmapped": 154
     },
     "rust": {
-      "candidate": 234,
-      "mapped": 92,
+      "candidate": 203,
+      "mapped": 123,
       "unmapped": 223
     }
   },
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 303,
+    "implementation_dependency": 272,
     "typed_public_operation_candidate": 47
   },
   "proposal_core_section_ids": 170,
@@ -337,10 +337,10 @@
     },
     {
       "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
-      "source_lines": 452,
+      "source_lines": 483,
       "callable_rows": 31,
       "nonoverlapping_callable_lines": 409,
-      "sha256": "0a54e89a7c66600f7b5878a5cdbe1666b603001dc1d472b4ac957560d5286092",
+      "sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b",
       "unresolved_callable_rows": 0
     },
     {

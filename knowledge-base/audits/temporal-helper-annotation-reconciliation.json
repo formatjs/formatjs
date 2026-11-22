@@ -1,5 +1,5 @@
 {
-  "scope": "187 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
+  "scope": "218 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
   "fixed_inventory_rows": 1069,
   "live_rebound_rows": 1066,
   "retired_identities": [
@@ -6129,6 +6129,926 @@
       "annotation_line": 414,
       "annotation": "// Temporal comparison \u00a74.3.16 steps 11\u201312. Round and format the selected precision.",
       "evidence": "Handles native formatting or exact fallback rounding, then renders two-digit fields and the chosen fraction. JSON uses the same formatter at automatic precision."
+    },
+    {
+      "inventory_row": 75,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "module::digit",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "40",
+        "end_line": "49",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 39,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: decode one digit of a packed lunisolar year index.",
+      "evidence": "Private Base64URL digit reader maps ASCII to 0\u201363 or returns InvalidDate. It supplies the year dictionary index used in non-ISO calendar projection."
+    },
+    {
+      "inventory_row": 76,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "module::pattern",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "51",
+        "end_line": "64",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 50,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: read the encoded year pattern from the table.",
+      "evidence": "Checked index multiplication locates two digit bytes. Decoded index selects a dictionary entry by bounds-checked read. Calendar semantics depend on the validated supplied table."
+    },
+    {
+      "inventory_row": 77,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "module::year_length",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "66",
+        "end_line": "68",
+        "comparison_sections": "3.3.16|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinyear|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinyear|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "3.3.16/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 65,
+      "annotation": "// Proposal comparison \u00a73.3.16 step 3: count 29-day months and their extra days.",
+      "evidence": "For a validated packing, leap position selects 12 or 13 base months. Set bits in the low 13 positions add one day each. Caller enforces the admitted encoding."
+    },
+    {
+      "inventory_row": 78,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::lunisolar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "71",
+        "end_line": "120",
+        "comparison_sections": "12.3.26|12.3.22",
+        "section_ids": "sec-temporal-calendarisotodate|sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-2",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 70,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: validate lunisolar year and month checkpoints.",
+      "evidence": "Accepts only Chinese/Dangi data and validates dictionary indices, month and leap bits, year bounds, recomputed checkpoint sums and the end sentinel. These are structural premises for conversion, with astronomical accuracy supplied by the data."
+    },
+    {
+      "inventory_row": 79,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::umm_al_qura",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "122",
+        "end_line": "143",
+        "comparison_sections": "12.3.26|12.3.22",
+        "section_ids": "sec-temporal-calendarisotodate|sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-umm-shipped-joins-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-2",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 121,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: validate the supplied Umm al-Qura table shape.",
+      "evidence": "Checks one end sentinel, bounded year count, 12-bit month lengths and adjacent start-day sums. Structural checks alone do not prove agreement with civil fallback. The shipped join proof supplies that separate premise."
+    },
+    {
+      "inventory_row": 80,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "145",
+        "end_line": "148",
+        "comparison_sections": "3.3.4|3.3.5",
+        "section_ids": "sec-get-temporal.plaindate.prototype.era|sec-get-temporal.plaindate.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["3.3.4/algorithm-1/step-3", "3.3.5/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 144,
+      "annotation": "// Proposal comparison \u00a73.3.4 and \u00a73.3.5 step 3: check the day before reading era fields.",
+      "evidence": "Normal-range typed accessor checks the epoch day before delegating era projection. JS receiver and result construction are external."
+    },
+    {
+      "inventory_row": 81,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::era_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "150",
+        "end_line": "163",
+        "comparison_sections": "12.3.26|3.3.4|3.3.5|9.3.4|9.3.5",
+        "section_ids": "sec-temporal-calendarisotodate|sec-get-temporal.plaindate.prototype.era|sec-get-temporal.plaindate.prototype.erayear|sec-get-temporal.plainyearmonth.prototype.era|sec-get-temporal.plainyearmonth.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.erayear|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-2",
+        "3.3.4/algorithm-1/step-3",
+        "3.3.5/algorithm-1/step-3",
+        "9.3.4/algorithm-1/step-3",
+        "9.3.5/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 149,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: project era fields for the selected table.",
+      "evidence": "Chinese and Dangi return no era after date projection. Umm al-Qura uses AH for positive years and BH with era year 1 minus the projected year otherwise. Extended reference-day caller supplies its own range policy."
+    },
+    {
+      "inventory_row": 82,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::year_from_era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "165",
+        "end_line": "170",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-umm-shipped-joins-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.31/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 164,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve an Umm al-Qura era year.",
+      "evidence": "Era-year input is supported only for Umm al-Qura in this table provider. The existing IslamicCivil resolver supplies accepted era aliases and the integer conversion."
+    },
+    {
+      "inventory_row": 83,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "172",
+        "end_line": "174",
+        "comparison_sections": "3.3.3",
+        "section_ids": "sec-get-temporal.plaindate.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["3.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 171,
+      "annotation": "// Proposal comparison \u00a73.3.3 step 3: expose the selected table calendar identity.",
+      "evidence": "Returns the stored enum unchanged. CalendarProvider maps the three table IDs to their public name strings. Identifier acceptance and object-slot validation are caller-owned."
+    },
+    {
+      "inventory_row": 84,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::index",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "176",
+        "end_line": "186",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 175,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: check the year lies in the lunisolar dictionary span.",
+      "evidence": "Subtracts first_year in i64 and checks the zero-based offset before narrowing/indexing. The end sentinel can supply a year start but is not a valid packed-year lookup."
+    },
+    {
+      "inventory_row": 85,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::packed",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "188",
+        "end_line": "193",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 187,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: fetch the validated lunisolar pattern for a year.",
+      "evidence": "Uses checked year index and dictionary decode on the lunisolar branch. Consumers use the same pattern for month count, month length and leap code."
+    },
+    {
+      "inventory_row": 86,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::start_of_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "195",
+        "end_line": "220",
+        "comparison_sections": "3.3.11|9.3.9|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.dayofyear|sec-get-temporal.plainyearmonth.prototype.daysinyear|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.dayofyear|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinyear|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-umm-shipped-joins-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "3.3.11/algorithm-1/step-3",
+        "9.3.9/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 194,
+      "annotation": "// Proposal comparison \u00a73.3.11 step 3: find the year start used for day-of-year.",
+      "evidence": "Lunisolar lookup uses the checkpoint plus up to 63 year lengths, with explicit year-start sentinel. Umm al-Qura selects table start when supplied and civil fallback elsewhere. Shipped join behavior has separate proof."
+    },
+    {
+      "inventory_row": 87,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::months_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "222",
+        "end_line": "234",
+        "comparison_sections": "3.3.17|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.monthsinyear|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthsinyear|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "3.3.17/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 221,
+      "annotation": "// Proposal comparison \u00a73.3.17 step 3: read the month count of a calendar year.",
+      "evidence": "Returns 12/13 based on the validated lunisolar leap position, or 12 for Umm al-Qura. Checks the supported year before lookup."
+    },
+    {
+      "inventory_row": 88,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::days_in_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "236",
+        "end_line": "251",
+        "comparison_sections": "3.3.15|9.3.10",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinmonth|sec-get-temporal.plainyearmonth.prototype.daysinmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinmonth|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-umm-shipped-joins-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "3.3.15/algorithm-1/step-3",
+        "9.3.10/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 235,
+      "annotation": "// Proposal comparison \u00a73.3.15 step 3: read the table month length.",
+      "evidence": "Checks the ordinal against the selected year. Packed month bit chooses 29 or 30 days. Umm al-Qura delegates to IslamicCivil outside its table."
+    },
+    {
+      "inventory_row": 89,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::month_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "253",
+        "end_line": "265",
+        "comparison_sections": "3.3.8|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.monthcode|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthcode|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "3.3.8/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 252,
+      "annotation": "// Proposal comparison \u00a73.3.8 step 3: derive the month code from its ordinal and leap position.",
+      "evidence": "Validates ordinal then subtracts the inserted month from subsequent ordinal-to-code offsets. The month immediately after the leap position is flagged as the leap instance. Umm al-Qura has no leap month."
+    },
+    {
+      "inventory_row": 90,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::month_from_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "267",
+        "end_line": "296",
+        "comparison_sections": "12.3.31|12.3.22",
+        "section_ids": "sec-temporal-calendarresolvefields|sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields|https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-2.a",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 266,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve a calendar month code to its ordinal.",
+      "evidence": "Validates code range. Chinese/Dangi adjust ordinals for the inserted leap month and constrain an absent leap code to its ordinary number or reject. Umm al-Qura rejects leap codes outright."
+    },
+    {
+      "inventory_row": 91,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::to_epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "298",
+        "end_line": "306",
+        "comparison_sections": "12.3.12",
+        "section_ids": "sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.12/algorithm-1/step-2",
+        "12.3.12/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 297,
+      "annotation": "// Proposal comparison \u00a712.3.12 steps 2\u20133: convert date fields and check the epoch-day limit.",
+      "evidence": "Delegates ordinal fields with chosen overflow to raw conversion, then checks the ordinary epoch-day range. Frontend field preparation and JS abrupt completion remain external."
+    },
+    {
+      "inventory_row": 92,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::to_epoch_day_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "308",
+        "end_line": "321",
+        "comparison_sections": "12.3.31|12.3.12",
+        "section_ids": "sec-temporal-calendarresolvefields|sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields|https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-2.a",
+        "12.3.12/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 307,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve the month code before converting the date.",
+      "evidence": "Typed month-code entrypoint resolves the ordinal with the supplied overflow and reuses checked epoch-day conversion. It does not implement public field-record reads or optional month agreement."
+    },
+    {
+      "inventory_row": 93,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::from_epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "323",
+        "end_line": "325",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 322,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: project a checked epoch day through the table.",
+      "evidence": "Normal-range projection validates the day first, then delegates to raw calendar conversion. NumericCalendar owner supplies the actual fields."
+    },
+    {
+      "inventory_row": 94,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::months_before_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "327",
+        "end_line": "343",
+        "comparison_sections": "12.3.7|12.3.9",
+        "section_ids": "sec-temporal-calendardateadd|sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd|https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-2.a",
+        "12.3.9/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 326,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a: get the serial month at the start of the year.",
+      "evidence": "Lunisolar prefix sum uses the cached 64-year month checkpoint plus 12 or 13 for each intervening year. Umm al-Qura uses year times 12. These are private month movement and difference coordinates."
+    },
+    {
+      "inventory_row": 95,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::add",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "345",
+        "end_line": "348",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-2.a",
+        "12.3.7/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 344,
+      "annotation": "// Proposal comparison \u00a712.3.7 steps 2.a, 3: apply table calendar addition and check the result.",
+      "evidence": "Checks ordinary input day, forwards to NumericCalendar arithmetic with the prepared duration and overflow, then checks the result day. It does not reimplement calendar addition or option reads."
+    },
+    {
+      "inventory_row": 96,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::from_epoch_day_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "351",
+        "end_line": "353",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 350,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: project an extended reference day.",
+      "evidence": "Delegates to raw table projection with its wider date guard. This route serves private YearMonth reference days. Public object-specific limits remain caller-owned."
+    },
+    {
+      "inventory_row": 97,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::to_epoch_day_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "355",
+        "end_line": "363",
+        "comparison_sections": "12.3.13|12.3.14",
+        "section_ids": "sec-temporal-calendaryearmonthfromfields|sec-temporal-calendarmonthdayfromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendaryearmonthfromfields|https://tc39.es/proposal-temporal/#sec-temporal-calendarmonthdayfromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.13/algorithm-1/step-3",
+        "12.3.14/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 354,
+      "annotation": "// Proposal comparison \u00a712.3.13 step 3: convert a reference date in the extended range.",
+      "evidence": "Converts ordinal fields through the raw owner and checks the wider epoch-day limit. Short-date callers choose the representative fields and check final short-date limits."
+    },
+    {
+      "inventory_row": 98,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::add_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "365",
+        "end_line": "372",
+        "comparison_sections": "9.5.8",
+        "section_ids": "sec-temporal-adddurationtoyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtoyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["9.5.8/algorithm-1/step-12"],
+      "annotation_placement": "leading",
+      "annotation_line": 364,
+      "annotation": "// Proposal comparison \u00a79.5.8 step 12: add a duration to the prepared reference day.",
+      "evidence": "Uses shared calendar addition and checks the extended result day. Caller supplies the YearMonth reference-day construction and bound checks."
+    },
+    {
+      "inventory_row": 99,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::until",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "374",
+        "end_line": "378",
+        "comparison_sections": "12.3.9",
+        "section_ids": "sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.9/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 373,
+      "annotation": "// Proposal comparison \u00a712.3.9 step 4: check input days before non-ISO difference.",
+      "evidence": "Typed normal-range entry checks both endpoints before invoking raw table date difference. Provider proof applies only within supported data and caller policy."
+    },
+    {
+      "inventory_row": 100,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl<'a> TableCalendar<'a>::until_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "380",
+        "end_line": "382",
+        "comparison_sections": "12.3.9",
+        "section_ids": "sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.9/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 379,
+      "annotation": "// Proposal comparison \u00a712.3.9 step 4: route date difference to shared calendar arithmetic.",
+      "evidence": "Forwards days and largest unit unchanged to NumericCalendar::until_raw. The callee owns count decomposition and non-ISO difference policy."
+    },
+    {
+      "inventory_row": 101,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl NumericCalendar for TableCalendar<'_>::from_epoch_day_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "386",
+        "end_line": "428",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md|knowledge-base/audits/temporal-umm-shipped-joins-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 385,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: recover year, month, day and month code.",
+      "evidence": "Checks the extended range. Lunisolar selects the greatest checkpoint not after the day; Umm al-Qura seeds from civil year. Walks to the enclosing year, then subtracts month lengths and emits one-based fields. Shipped table consistency follows from separate chronology/join proof."
+    },
+    {
+      "inventory_row": 102,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl NumericCalendar for TableCalendar<'_>::to_epoch_day_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "430",
+        "end_line": "449",
+        "comparison_sections": "12.3.22|12.3.21",
+        "section_ids": "sec-temporal-calendardatetoiso|sec-temporal-nonisocalendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso|https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.22/algorithm-1/step-2", "12.3.21/prose-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 429,
+      "annotation": "// Proposal comparison \u00a712.3.22 step 2: regulate calendar fields and accumulate epoch days.",
+      "evidence": "Regulates ordinal month, then day using that month length, with supplied constrain or reject. Adds prior month lengths and day minus one to the year start. Caller owns month-code resolution and object limits."
+    },
+    {
+      "inventory_row": 103,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl NumericCalendar for TableCalendar<'_>::month_from_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "451",
+        "end_line": "453",
+        "comparison_sections": "12.3.31|12.3.7",
+        "section_ids": "sec-temporal-calendarresolvefields|sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields|https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-2.a",
+        "12.3.7/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 450,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: share the table month-code mapping with arithmetic.",
+      "evidence": "Forwards typed year, code and overflow to the inherent method so retained-year arithmetic observes the same leap-month mapping."
+    },
+    {
+      "inventory_row": 104,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl NumericCalendar for TableCalendar<'_>::months_before_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "455",
+        "end_line": "457",
+        "comparison_sections": "12.3.7|12.3.9",
+        "section_ids": "sec-temporal-calendardateadd|sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd|https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-2.a",
+        "12.3.9/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 454,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a: supply the table month prefix to shared arithmetic.",
+      "evidence": "Passes through the inherent month prefix sum for movement and difference. The inherent method owns the checkpoint arithmetic and associated limits."
+    },
+    {
+      "inventory_row": 105,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+        "symbol": "impl NumericCalendar for TableCalendar<'_>::year_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "459",
+        "end_line": "482",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+        "unresolved_mapping": "",
+        "source_sha256": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b"
+      },
+      "spec_row_ids": ["12.3.7/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 458,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a: convert a serial month back to year and ordinal.",
+      "evidence": "Umm al-Qura uses Euclidean quotient/remainder. Lunisolar locates the greatest eligible month checkpoint then subtracts whole year month counts until the containing year. Rejects negative or out-of-table serials on the lunisolar path."
     }
   ],
   "comment_only_source_evidence": [
@@ -6193,19 +7113,19 @@
     "active_rebound_rows": 1066,
     "retired_replaced_callbacks": 3,
     "mapping_status": {
-      "candidate": 350,
-      "mapped": 342,
+      "candidate": 319,
+      "mapped": 373,
       "unmapped": 377
     },
     "annotation_coverage": {
-      "no_numbered_anchor": 801,
-      "direct_numbered": 252,
+      "no_numbered_anchor": 770,
+      "direct_numbered": 283,
       "enclosing_numbered": 13,
       "retired_callback": 3
     },
-    "direct_with_step_wording": 128,
+    "direct_with_step_wording": 159,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 229,
+      "overlap": 260,
       "no_overlap_or_no_prior_mapping": 23
     },
     "no_numbered_anchor_by_kind": {
@@ -6228,8 +7148,8 @@
         "rows": 247,
         "files": 19,
         "coverage": {
-          "no_numbered_anchor": 201,
-          "direct_numbered": 46
+          "no_numbered_anchor": 170,
+          "direct_numbered": 77
         }
       },
       "rust_value_parser_arithmetic_algorithm_review": {
@@ -6275,7 +7195,7 @@
     "crates/intl_datetimeformat_calendars/date_math.rs": "67a13ce8a86b11fa671dd68eba5f540d98f6cea98bcbbadacd568911ad79c1c1",
     "crates/intl_datetimeformat_calendars/ffi.rs": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
     "crates/intl_datetimeformat_calendars/provider.rs": "9e9babca20cf719ed0e4a5b64f7d0213371f5654f4be89dc8c80cda21e3603b0",
-    "crates/intl_datetimeformat_calendars/table_calendar.rs": "0a54e89a7c66600f7b5878a5cdbe1666b603001dc1d472b4ac957560d5286092",
+    "crates/intl_datetimeformat_calendars/table_calendar.rs": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b",
     "crates/intl_datetimeformat_calendars/tables.rs": "dbe6e0825b2dcc3080eb75974d56f346ec81f45f799ede86f5e49def2f7fc4ee",
     "crates/temporal/calendar_difference.rs": "060914fe63f0c170d927f4d09a3ab842079d0d4f2bddc65b724b515f66f361f3",
     "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
@@ -6577,6 +7497,10 @@
     "ts_clock26": [
       713, 714, 715, 717, 718, 719, 722, 979, 980, 981, 982, 983, 984, 985, 986,
       987, 989, 990, 991, 992, 993, 994, 995, 996, 997, 998
+    ],
+    "table_calendar31": [
+      75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92,
+      93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105
     ]
   },
   "inline_caller_dependency_link_reviews": [

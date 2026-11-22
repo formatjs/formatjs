@@ -46,6 +46,9 @@ Node 26.5.1 built-in Intl and ICU transition enumeration to the same loaded
 2026b resource. The 638 system identifiers contain no transitions in either
 complete endpoint interval, including outside Instant bounds.
 [Provider proof and reproduction](node-icu/temporal-node-icu-endpoint-proof.md).
+The same bound binary and resource also supply a
+[six-day offset-spread certificate](node-icu/temporal-node-icu-six-day-spread-proof.md)
+for relative rounding.
 
 Other host binaries, timezone resources and replacement Intl providers
 keep their own boundary premise. The full row stays conditional.
