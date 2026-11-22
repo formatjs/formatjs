@@ -1,0 +1,1101 @@
+{
+  "scope": "35 local Rust arithmetic calendar conversion, era, field limit and typed calendar arithmetic dependencies. Implementation and requirement statuses unchanged.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "crates/intl_datetimeformat_calendars/core.rs",
+      "before_sha256": "37f88fd15cb3eac034fb1c28f4fbb2cb0490ee082d21773c6a46a69beae382b5",
+      "after_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf",
+      "verified_callable_count": 40,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+    43, 44, 45, 46, 47, 48, 49, 51, 52, 53, 54, 55, 56, 57, 58, 59
+  ],
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 24,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::name",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "90",
+        "end_line": "106",
+        "comparison_sections": "3.3.3",
+        "section_ids": "sec-get-temporal.plaindate.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["3.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 89,
+      "annotation": "// Proposal comparison \u00a73.3.3 step 3: expose the selected arithmetic calendar name.",
+      "evidence": "Returns the static canonical name of each of the 13 arithmetic enum variants. CalendarProvider uses it as its ID transport; the public slot read and string conversion are separately owned."
+    },
+    {
+      "inventory_row": 25,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::from_name",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "108",
+        "end_line": "125",
+        "comparison_sections": "12.3.10",
+        "section_ids": "sec-temporal-totemporalcalendaridentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["12.3.10/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 107,
+      "annotation": "// Proposal comparison \u00a712.3.10 step 4: select the arithmetic calendar for a prepared name.",
+      "evidence": "Exact match selects a supported arithmetic enum, including finite aliases for ethioaa and islamic-civil. Unknown names return None. Case handling, table calendar discovery and complete Unicode calendar canonicalization belong to callers."
+    },
+    {
+      "inventory_row": 26,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::start_of_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "127",
+        "end_line": "153",
+        "comparison_sections": "3.3.11|3.3.16|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.dayofyear|sec-get-temporal.plaindate.prototype.daysinyear|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.dayofyear|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinyear|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "3.3.11/algorithm-1/step-3",
+        "3.3.16/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 126,
+      "annotation": "// Proposal comparison \u00a73.3.11 step 3: compute the year boundary used by day-of-year.",
+      "evidence": "Checks supported year then computes an exact year start using civil offsets, arithmetic cycles or the Hebrew postponement helper. Native day-of-year and days-in-year callers use one or two such starts. Provider accuracy and finite chronology proofs remain distinct."
+    },
+    {
+      "inventory_row": 27,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::months_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "155",
+        "end_line": "162",
+        "comparison_sections": "3.3.17|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.monthsinyear|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthsinyear|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "3.3.17/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 154,
+      "annotation": "// Proposal comparison \u00a73.3.17 step 3: read the arithmetic calendar month count.",
+      "evidence": "Checks supported year and returns 13 for the fixed thirteen-month calendars and Hebrew leap years; otherwise 12. Field transport and public getter behavior remain separate."
+    },
+    {
+      "inventory_row": 28,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::days_in_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "164",
+        "end_line": "241",
+        "comparison_sections": "3.3.15|12.3.17",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinmonth|sec-temporal-isodaysinmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinmonth|https://tc39.es/proposal-temporal/#sec-temporal-isodaysinmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "3.3.15/algorithm-1/step-3",
+        "12.3.17/algorithm-1/step-1",
+        "12.3.17/algorithm-1/step-2",
+        "12.3.17/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 163,
+      "annotation": "// Proposal comparison \u00a73.3.15 step 3: calculate month length for the validated calendar month.",
+      "evidence": "Validates ordinal and calendar year. Gregorian-family branch uses standard month lengths and the adjusted civil leap year. Other branches reuse their year length or defining month rules; their implementation-defined semantics are separate."
+    },
+    {
+      "inventory_row": 29,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::month_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "243",
+        "end_line": "259",
+        "comparison_sections": "3.3.8|12.3.26",
+        "section_ids": "sec-get-temporal.plaindate.prototype.monthcode|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthcode|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "3.3.8/algorithm-1/step-3",
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 242,
+      "annotation": "// Proposal comparison \u00a73.3.8 step 3: map the ordinal to its month code.",
+      "evidence": "Checks ordinal, then emits the leap instance M05L for Hebrew leap ordinal six and adjusts later ordinary codes. Other calendars preserve their ordinal as an ordinary code."
+    },
+    {
+      "inventory_row": 30,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::month_from_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "261",
+        "end_line": "286",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-1.h.ii",
+        "12.3.31/algorithm-1/step-1.h.iv",
+        "12.3.31/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 260,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve the month code to an ordinal.",
+      "evidence": "Validates code range/calendar support. Hebrew M05L resolves to ordinal six and rejects an absent leap month in reject mode. Ordinary codes shift after the inserted month in a leap year. Caller checks explicit month agreement."
+    },
+    {
+      "inventory_row": 31,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::to_epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "288",
+        "end_line": "296",
+        "comparison_sections": "12.3.12",
+        "section_ids": "sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.12/algorithm-1/step-2",
+        "12.3.12/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 287,
+      "annotation": "// Proposal comparison \u00a712.3.12 steps 2\u20133: convert fields and check the ordinary date range.",
+      "evidence": "Delegates typed fields and overflow to raw epoch-day conversion then validates the ordinary result day. Object allocation and exception conversion remain outside."
+    },
+    {
+      "inventory_row": 32,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::to_epoch_day_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "298",
+        "end_line": "311",
+        "comparison_sections": "12.3.31|12.3.12",
+        "section_ids": "sec-temporal-calendarresolvefields|sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields|https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-2.a",
+        "12.3.12/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 297,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve the month code before date conversion.",
+      "evidence": "Typed entrypoint resolves code and reuses checked ordinary conversion with the same overflow. Field-record preparation and mismatch policy belong to higher-level callers."
+    },
+    {
+      "inventory_row": 33,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::to_epoch_day_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "313",
+        "end_line": "332",
+        "comparison_sections": "12.3.22",
+        "section_ids": "sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.22/algorithm-1/step-1.b",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 312,
+      "annotation": "// Proposal comparison \u00a712.3.22 steps 1.b, 2: regulate fields and accumulate the epoch day.",
+      "evidence": "Select ordinal month under overflow before computing its day bound. Sum year start, lengths of prior months and one-based day offset. This supplies carried ISO-day representation without public coercion or object-range validation."
+    },
+    {
+      "inventory_row": 34,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::from_epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "334",
+        "end_line": "336",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 333,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2: project a checked epoch day.",
+      "evidence": "Checks the ordinary day range and delegates exact calendar field projection. Additional public calendar fields are assembled by callers."
+    },
+    {
+      "inventory_row": 35,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::from_epoch_day_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "338",
+        "end_line": "400",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 337,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2: extract civil or arithmetic calendar fields.",
+      "evidence": "Checks the extended domain and uses ISO inverse fields directly for Gregorian-based calendars, applying year-label offsets where needed. Other branches correct their estimate against year starts then subtract month lengths. Proofs bound the accepted chronology and termination."
+    },
+    {
+      "inventory_row": 36,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::months_before_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "402",
+        "end_line": "409",
+        "comparison_sections": "12.3.7|12.3.9",
+        "section_ids": "sec-temporal-calendardateadd|sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd|https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md|knowledge-base/audits/temporal-noniso-date-until-policy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-2.a",
+        "12.3.9/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 401,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a: get the serial month prefix for calendar arithmetic.",
+      "evidence": "Checks supported year and returns the fixed-count product or Hebrew 235-month/19-year prefix. Shared add/difference use these private coordinates; the epoch order proof is separate."
+    },
+    {
+      "inventory_row": 37,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::year_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "411",
+        "end_line": "431",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["12.3.7/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 410,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a: recover calendar year and month from a serial.",
+      "evidence": "Checks serial magnitude, estimates year by fixed count or Hebrew cycle, and adjusts to the enclosing prefix. Converts the residual to one-based ordinal. Finite bounds and exact inverse are in the chronology proof."
+    },
+    {
+      "inventory_row": 38,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::add_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "434",
+        "end_line": "436",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-1",
+        "12.3.7/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 433,
+      "annotation": "// Proposal comparison \u00a712.3.7 steps 1, 2.a: delegate calendar addition on raw days.",
+      "evidence": "Routes typed date duration, epoch and overflow into shared NumericCalendar arithmetic. Raw path leaves final object range checks to caller."
+    },
+    {
+      "inventory_row": 39,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::add",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "438",
+        "end_line": "441",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-1",
+        "12.3.7/algorithm-1/step-2.a",
+        "12.3.7/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 437,
+      "annotation": "// Proposal comparison \u00a712.3.7 steps 2.a, 3: add calendar fields and check the result day.",
+      "evidence": "Checks ordinary input day, performs the shared typed addition and rejects an out-of-range result day. Shared owner handles balancing/constraining."
+    },
+    {
+      "inventory_row": 40,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::from_epoch_day_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "444",
+        "end_line": "446",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 443,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2: project a private extended reference day.",
+      "evidence": "Forwards to raw inverse with its wider guard rather than ordinary day range. Short-date callers retain their own YearMonth/MonthDay object limits."
+    },
+    {
+      "inventory_row": 41,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::to_epoch_day_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "448",
+        "end_line": "456",
+        "comparison_sections": "12.3.13|12.3.14",
+        "section_ids": "sec-temporal-calendaryearmonthfromfields|sec-temporal-calendarmonthdayfromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendaryearmonthfromfields|https://tc39.es/proposal-temporal/#sec-temporal-calendarmonthdayfromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.13/algorithm-1/step-3",
+        "12.3.14/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 447,
+      "annotation": "// Proposal comparison \u00a712.3.13 step 3: convert fields in the wider reference-day range.",
+      "evidence": "Applies raw calendar conversion and the wider coordinate guard. Caller chooses representative fields and checks object-specific limits."
+    },
+    {
+      "inventory_row": 42,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::add_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "458",
+        "end_line": "465",
+        "comparison_sections": "9.5.8",
+        "section_ids": "sec-temporal-adddurationtoyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtoyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["9.5.8/algorithm-1/step-12"],
+      "annotation_placement": "leading",
+      "annotation_line": 457,
+      "annotation": "// Proposal comparison \u00a79.5.8 step 12: add a duration to an extended reference date.",
+      "evidence": "Delegates to shared raw addition and checks the wider result coordinate. YearMonth logic owns construction of the starting reference day and the final object."
+    },
+    {
+      "inventory_row": 43,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::until",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "467",
+        "end_line": "471",
+        "comparison_sections": "12.3.9",
+        "section_ids": "sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-date-until-prefix-proof-audit.md|knowledge-base/audits/temporal-noniso-date-until-policy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.9/algorithm-1/step-3",
+        "12.3.9/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 466,
+      "annotation": "// Proposal comparison \u00a712.3.9 steps 3\u20134: check input days and route date difference.",
+      "evidence": "Validates both ordinary day endpoints, forwards largest unit to raw difference. Does not resolve known ISO comparison issues or prove provider-wide policy."
+    },
+    {
+      "inventory_row": 44,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::until_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "474",
+        "end_line": "476",
+        "comparison_sections": "12.3.9",
+        "section_ids": "sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-date-until-prefix-proof-audit.md|knowledge-base/audits/temporal-noniso-date-until-policy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.9/algorithm-1/step-3",
+        "12.3.9/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 473,
+      "annotation": "// Proposal comparison \u00a712.3.9 steps 3\u20134: delegate date difference on typed endpoints.",
+      "evidence": "Routes ISO and non-ISO day difference to shared NumericCalendar arithmetic. Result decomposition and prefix behavior are callee-owned and have separate audits."
+    },
+    {
+      "inventory_row": 45,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "478",
+        "end_line": "481",
+        "comparison_sections": "3.3.4|3.3.5",
+        "section_ids": "sec-get-temporal.plaindate.prototype.era|sec-get-temporal.plaindate.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["3.3.4/algorithm-1/step-3", "3.3.5/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 477,
+      "annotation": "// Proposal comparison \u00a73.3.4 and \u00a73.3.5 step 3: check the day before projecting era fields.",
+      "evidence": "Validates an ordinary epoch day, then reuses extended era projection. JS receiver checking and primitive result creation remain caller-owned."
+    },
+    {
+      "inventory_row": 46,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::era_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "483",
+        "end_line": "485",
+        "comparison_sections": "9.3.4|9.3.5",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.era|sec-get-temporal.plainyearmonth.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["9.3.4/algorithm-1/step-3", "9.3.5/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 482,
+      "annotation": "// Proposal comparison \u00a79.3.4 and \u00a79.3.5 step 3: project era fields on an extended day.",
+      "evidence": "Converts the extended date and forwards it alongside the epoch to era selection. The original epoch enables precise Japanese transition-day comparison."
+    },
+    {
+      "inventory_row": 47,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::era_of",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "487",
+        "end_line": "529",
+        "comparison_sections": "12.3.26|3.3.4|3.3.5",
+        "section_ids": "sec-temporal-calendarisotodate|sec-get-temporal.plaindate.prototype.era|sec-get-temporal.plaindate.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2",
+        "3.3.4/algorithm-1/step-3",
+        "3.3.5/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 486,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2: supply era name and year for the projected date.",
+      "evidence": "Uses selected calendar and date to choose era fields. ISO has no era. Japanese compares day boundaries, while named negative-era calendars map nonpositive years to one minus the year. Caller owns the public record representation."
+    },
+    {
+      "inventory_row": 48,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "impl Calendar::year_from_era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "531",
+        "end_line": "559",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["12.3.31/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 530,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve an era year to the calendar year.",
+      "evidence": "Maps supported typed era names to calendar years, applying negative-era, Ethiopic or Japanese offsets and rejecting unknown eras. Checks result bounds before narrowing. Frontend name normalization and explicit year agreement stay separate."
+    },
+    {
+      "inventory_row": 49,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::regulate",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "562",
+        "end_line": "568",
+        "comparison_sections": "3.5.7|12.3.22",
+        "section_ids": "sec-temporal-regulateisodate|sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-regulateisodate|https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "3.5.7/algorithm-1/step-1.a",
+        "3.5.7/algorithm-1/step-1.c",
+        "3.5.7/algorithm-1/step-2.b",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 561,
+      "annotation": "// Proposal comparison \u00a73.5.7 steps 1.a, 1.c, 2.b: clamp or reject a bounded field.",
+      "evidence": "Typed constrain clamps to supplied bounds; reject errors when out of bounds. Raw conversion chooses month bound first and day bound from the resulting month."
+    },
+    {
+      "inventory_row": 51,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::check_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "577",
+        "end_line": "583",
+        "comparison_sections": "3.5.12|12.3.12|12.3.7",
+        "section_ids": "sec-temporal-isodatewithinlimits|sec-temporal-calendardatefromfields|sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatewithinlimits|https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields|https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "3.5.12/algorithm-1/step-2",
+        "12.3.12/algorithm-1/step-3",
+        "12.3.7/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 576,
+      "annotation": "// Proposal comparison \u00a73.5.12 step 2: check the inclusive ordinary epoch-day range.",
+      "evidence": "Returns the day within inclusive \u2212100000001 through 100000000, otherwise a typed range failure. This encodes the ordinary noon-based PlainDate limit, distinct from Instant and extended caller ranges."
+    },
+    {
+      "inventory_row": 52,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::check_extended_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "585",
+        "end_line": "591",
+        "comparison_sections": "9.5.8|12.3.13",
+        "section_ids": "sec-temporal-adddurationtoyearmonth|sec-temporal-calendaryearmonthfromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtoyearmonth|https://tc39.es/proposal-temporal/#sec-temporal-calendaryearmonthfromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "9.5.8/algorithm-1/step-12",
+        "12.3.13/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 584,
+      "annotation": "// Proposal comparison \u00a79.5.8 step 12: guard private reference-day arithmetic.",
+      "evidence": "Checks implementation-internal \u00b1110000000 result coordinates. This wider guard supplies short-date and rounding helpers without substituting for public object limits."
+    },
+    {
+      "inventory_row": 53,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::leap",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "593",
+        "end_line": "595",
+        "comparison_sections": "12.3.17|12.3.26",
+        "section_ids": "sec-temporal-isodaysinmonth|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodaysinmonth|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.17/algorithm-1/step-4",
+        "12.3.26/algorithm-1/step-1.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 592,
+      "annotation": "// Proposal comparison \u00a712.3.17 step 4: detect a Gregorian leap year.",
+      "evidence": "Uses exact Euclidean divisibility by four with century exclusion and four-hundred-year inclusion. Works for negative as well as positive civil years."
+    },
+    {
+      "inventory_row": 54,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::hebrew_leap",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "597",
+        "end_line": "599",
+        "comparison_sections": "12.3.26|3.3.17",
+        "section_ids": "sec-temporal-calendarisotodate|sec-get-temporal.plaindate.prototype.monthsinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthsinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-arithmetic-provider-proof-notebook.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-2",
+        "3.3.17/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 596,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: determine whether a Hebrew year adds a month.",
+      "evidence": "Tests the 19-year cycle by exact Euclidean remainder. Supplies the Hebrew month count, month-code conversion and date projection branch."
+    },
+    {
+      "inventory_row": 55,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::hebrew_delay",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "601",
+        "end_line": "605",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-arithmetic-provider-proof-notebook.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 600,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: compute the Hebrew year-start postponement input.",
+      "evidence": "Builds the Hebrew month serial and base molad day by exact Euclidean integer arithmetic, then applies the local weekday correction consumed by hebrew_start."
+    },
+    {
+      "inventory_row": 56,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::hebrew_start",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "607",
+        "end_line": "618",
+        "comparison_sections": "12.3.26|3.3.11",
+        "section_ids": "sec-temporal-calendarisotodate|sec-get-temporal.plaindate.prototype.dayofyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.dayofyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-arithmetic-provider-proof-notebook.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-2",
+        "3.3.11/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 606,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: compute the Hebrew year boundary.",
+      "evidence": "Applies the epoch shift and adjacent-year postponement conditions. Finite Hebrew proof checks year lengths and alignment across the supported domain."
+    },
+    {
+      "inventory_row": 57,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::iso_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "621",
+        "end_line": "631",
+        "comparison_sections": "13.1",
+        "section_ids": "sec-isodatetoepochdays",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isodatetoepochdays",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["13.1/algorithm-1/step-3", "13.1/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 620,
+      "annotation": "// Proposal comparison \u00a713.1 steps 3\u20134: convert prepared civil fields to a Unix epoch day.",
+      "evidence": "March-based Gregorian 400-year eras and exact month prefixes recover the Unix day count for normalized civil fields. Caller owns month normalization and validation."
+    },
+    {
+      "inventory_row": 58,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::iso_year_blocks",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "636",
+        "end_line": "653",
+        "comparison_sections": "11.1.10",
+        "section_ids": "sec-temporal-getisodatetimefor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisodatetimefor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": ["11.1.10/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 635,
+      "annotation": "// Proposal comparison \u00a711.1.10 step 2: precompute year blocks for inverse ISO projection.",
+      "evidence": "Each 128-day checkpoint stores bounded within-era year, day ordinal and leap flag. The existing comparison proof derives the civil inverse from these packed coordinates."
+    },
+    {
+      "inventory_row": 59,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/core.rs",
+        "symbol": "module::iso_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "658",
+        "end_line": "676",
+        "comparison_sections": "11.1.10|12.3.26",
+        "section_ids": "sec-temporal-getisodatetimefor|sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisodatetimefor|https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-gregorian-closure-audit.md|knowledge-base/audits/temporal-iso-calendar-add-bounds-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf"
+      },
+      "spec_row_ids": [
+        "11.1.10/algorithm-1/step-2",
+        "12.3.26/algorithm-1/step-1.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 657,
+      "annotation": "// Proposal comparison \u00a711.1.10 step 2: recover ISO date fields from an exact epoch day.",
+      "evidence": "Euclidean division selects 400-year era and bounded block. At most one year boundary occurs in a 128-day block. Integer month extraction reverses the March-origin shift without float conversion."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//crates/intl_datetimeformat_calendars:table_calendar_test",
+      "//crates/intl_datetimeformat_calendars:compiled_calendars_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/intl_datetimeformat_calendars:calendar_core_test"
+    ],
+    "log_sha256": "ebda710c5598524b18336e8978b29636986c1dceba433423883c6f514574234a",
+    "result": "4 Bazel targets passed."
+  }
+}

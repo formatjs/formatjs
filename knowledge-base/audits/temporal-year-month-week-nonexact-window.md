@@ -145,9 +145,9 @@ rebased week spans exceed 5D. The target is less than halfway into the
 rebased interval, and the shortcut's extra positive progress beyond
 one is likewise below 1/2. Nearest modes choose B either way; signed
 directed modes choose B or the same next whole-week count. This only
-applies when the rebased upper construction succeeds. The shortcut
-does not validate that second retry endpoint. No supported public
-range or output defect was established from the New York witness.
+applies when the rebased upper construction succeeds. The [endpoint proof](temporal-retained-week-endpoint-validity.md)
+supplies that range guarantee for the certified profiles. The New York
+witness establishes an assertion divergence and matching intended output.
 
 Keep the bracketing assertion separate from output equivalence. Step 17
 has a concrete source exception in this path and a separately documented

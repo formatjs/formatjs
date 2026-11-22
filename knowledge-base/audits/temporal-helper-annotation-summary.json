@@ -4,19 +4,19 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 319,
-    "mapped": 373,
+    "candidate": 284,
+    "mapped": 408,
     "unmapped": 377
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 770,
-    "direct_numbered": 283,
+    "no_numbered_anchor": 735,
+    "direct_numbered": 318,
     "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 159,
+  "direct_with_step_wording": 194,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 260,
+    "overlap": 295,
     "no_overlap_or_no_prior_mapping": 23
   },
   "no_numbered_anchor_by_kind": {
@@ -39,8 +39,8 @@
       "rows": 247,
       "files": 19,
       "coverage": {
-        "no_numbered_anchor": 170,
-        "direct_numbered": 77
+        "no_numbered_anchor": 135,
+        "direct_numbered": 112
       }
     },
     "rust_value_parser_arithmetic_algorithm_review": {
@@ -81,7 +81,7 @@
     "crates/intl_datetimeformat/timezone.rs": "e9aadad30d1ca73153e54aee7634b6069868ac8d87ef1fa22cd6b1d1ac9a07ff",
     "crates/intl_datetimeformat_calendars/arithmetic.rs": "e66f3ba273c4101b6c3203afa40557178dabbb7be1806942c890418a13a0f75c",
     "crates/intl_datetimeformat_calendars/compiled.rs": "3f566cef3f11727ac6cc554f99df8abd6c213754679cf7a00a719481331d5eb4",
-    "crates/intl_datetimeformat_calendars/core.rs": "37f88fd15cb3eac034fb1c28f4fbb2cb0490ee082d21773c6a46a69beae382b5",
+    "crates/intl_datetimeformat_calendars/core.rs": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf",
     "crates/intl_datetimeformat_calendars/date_math.rs": "67a13ce8a86b11fa671dd68eba5f540d98f6cea98bcbbadacd568911ad79c1c1",
     "crates/intl_datetimeformat_calendars/ffi.rs": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
     "crates/intl_datetimeformat_calendars/provider.rs": "9e9babca20cf719ed0e4a5b64f7d0213371f5654f4be89dc8c80cda21e3603b0",
@@ -192,10 +192,12 @@
       "rows": 36,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 36
+        "mapped": 35,
+        "candidate": 1
       },
       "coverage": {
-        "no_numbered_anchor": 36
+        "direct_numbered": 35,
+        "no_numbered_anchor": 1
       }
     },
     {
@@ -1022,8 +1024,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 218,
-  "reviewed_mapping_rows_this_batch": 31,
+  "reviewed_mapping_rows_cumulative": 253,
+  "reviewed_mapping_rows_this_batch": 35,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0

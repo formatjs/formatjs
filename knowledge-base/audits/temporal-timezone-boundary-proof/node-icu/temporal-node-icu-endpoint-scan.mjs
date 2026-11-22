@@ -20,6 +20,13 @@ for (const variable of [
 }
 assert.equal(process.config.variables.icu_system, false)
 assert.equal(process.config.variables.icu_small, false)
+const binarySha256 = createHash('sha256')
+  .update(readFileSync(process.execPath))
+  .digest('hex')
+assert.equal(
+  binarySha256,
+  'fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6'
+)
 const icuMajor = process.versions.icu.split('.')[0]
 const lib = new DynamicLibrary(null)
 function bind(name, result, args) {
@@ -90,7 +97,9 @@ for (const requested of Intl.supportedValuesOf('timeZone'))
 
 const DAY = 86_400_000
 const LIMIT = 8_640_000_000_000_000
-const WINDOW = 2 * DAY
+const windowDays = Number(process.argv[2] ?? 2)
+assert.ok(windowDays === 2 || windowDays === 11)
+const WINDOW = windowDays * DAY
 assert.ok(Number.isSafeInteger(LIMIT + WINDOW))
 const locale = Buffer.from('en_US@calendar=gregorian\0')
 const UCAL_GREGORIAN = 1
@@ -165,7 +174,10 @@ lib.close()
 const failures = rows.flatMap(row =>
   ['lower', 'upper'].flatMap(key =>
     row[key].nearby
-      .filter(event => event.after < event.before)
+      .filter(
+        event =>
+          event.after < event.before || (windowDays === 11 && key === 'lower')
+      )
       .map(event => ({id: row.id, key, ...event}))
   )
 )
@@ -173,9 +185,7 @@ console.log(
   JSON.stringify(
     {
       runtime: {node: process.version, icu: process.versions.icu, tz: version},
-      binarySha256: createHash('sha256')
-        .update(readFileSync(process.execPath))
-        .digest('hex'),
+      binarySha256,
       zones: n,
       openedIdentifierAndOlsonTimeZoneControls: n,
       windowMilliseconds: WINDOW,

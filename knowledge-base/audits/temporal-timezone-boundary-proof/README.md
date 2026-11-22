@@ -48,7 +48,8 @@ complete endpoint interval, including outside Instant bounds.
 [Provider proof and reproduction](node-icu/temporal-node-icu-endpoint-proof.md).
 The same bound binary and resource also supply a
 [six-day offset-spread certificate](node-icu/temporal-node-icu-six-day-spread-proof.md)
-for relative rounding.
+for relative rounding. Its [11-day endpoint scan](retained-week-window-summary.json)
+also establishes the [retained-prefix week range bound](../temporal-retained-week-endpoint-validity.md).
 
 Other host binaries, timezone resources and replacement Intl providers
 keep their own boundary premise. The full row stays conditional.
