@@ -1,12 +1,129 @@
-# Nonexact year, month and week source windows
+# Nonexact day, week, month and year rounding windows
 
-This source argument covers the shared TypeScript and Rust one-retry
-engines for plain anchors and generated zoned profiles. It classifies a
-separate Duration week path below. It uses the existing provider
-chronology/add-back proofs and the six-day offset-spread certificate.
-The published zero-component and retry conflicts retain their own scope.
+## Current source proof
 
-## Inputs and local anchors
+The current TypeScript and Rust engines both repair a first endpoint that
+overshoots and keep advancing a last endpoint that falls short. The proof
+covers successful nonexact internal calendar rounding windows for plain
+anchors and supported zoned providers. It applies to date-unit
+`until` and `since`, relative `Duration.round`, and the retained-prefix
+week shortcut after its bracket check. Relative `Duration.total` has its
+own equivalent final-bound checks. [TypeScript shared rounding](../../packages/temporal/date-core.ts#L1029),
+[Rust shared rounding](../../crates/temporal/calendar_difference.rs#L259),
+[TypeScript relative rounding and total](../../packages/temporal/relative-duration.ts),
+[Rust relative rounding and total](../../crates/temporal/relative_duration.rs).
+
+### Provider premises
+
+Let D be one civil day, s the direction of the span, and T the target
+instant. Dates are valid within the owning calendar and Instant ranges.
+Calendar date addition and difference use the same chronology, constrained
+addition, and signed date fields. The full unrounded date fields add back
+to the nominal origin-clock date N of the instant selected by the
+unrounded difference. That instant is at or before T in signed order.
+Providers can reject a failed endpoint and no result is claimed for a
+throwing path. [Calendar date difference contract](temporal-calendar-date-until-contract-audit.md),
+[table chronology](temporal-table-provider-chronology-audit.md).
+
+A nominal zoned endpoint differs from its resolved instant by its effective
+offset, whose magnitude is less than D. This holds for a compatible fold
+candidate, a gap shifted using its effective offset, and the preserved exact
+origin for zero date fields. Thus two origin-clock nominal dates at least 2D apart
+have strictly ordered resolved instants in either travel direction. Plain
+endpoints use zero offset. The proof uses this bound for generated or
+certified named-zone profiles and validated borrowed transition zones with
+stable lookup. Host or custom providers require the same chronology,
+offset, and endpoint contracts. [Timezone provider evidence](temporal-timezone-boundary-proof/README.md).
+
+### Inward repair
+
+Dropping smaller date fields and truncating the active field keeps the
+first nominal endpoint at or before N in signed order. Equal nonzero
+date endpoints use the same original clock and compatible resolution.
+A zero date duration preserves the origin, which is already on the
+correct side of T. If the first endpoint overshoots, its nominal date U
+must therefore be exactly one signed civil day before N. A separation
+of at least two days could not reverse under the offset bound.
+
+For day increment one the first endpoint reconstructs the complete
+unrounded date and cannot overshoot. A nonzero active count on any other
+inward retry moves one signed quantum toward the origin. Day increments
+of at least two move at least 2D nominally. Week, month and year quanta
+move at least 7D, 5D and 50D under the calendar bounds below. The new
+lower instant is before the accepted instant for N. The old overshooting
+first endpoint then supplies the upper bound.
+
+If the active count is zero, the first endpoint must have a nonzero
+retained prefix to overshoot. Both kernels preserve that endpoint as the
+upper bound and shorten the last nonzero prefix field to obtain homogeneous
+signed fields. The shortened base is at least 5D earlier than U, so it
+is physically before T. Any lower candidate nominally before U is at
+least 2D before N and physically before T. A candidate on U is the
+overshooting endpoint, while a candidate on N reproduces the accepted
+instant. Every candidate after N is at least 2D past U and cannot improve
+the lower bound.
+
+Day rebase takes the last requested day increment at or before N and
+skips U if that increment lands on it. Month rebase counts ordinal months
+between day-one dates, then takes the last requested increment and steps
+inward if its constrained nominal day equals U or passes N. This month
+probe is no farther nominally than the already validated original next
+endpoint, even where a month or year changes length. Week rebase advances
+only through candidates at or before T and can stop once the remaining
+distance is no greater than the minimum physical week stride. Original
+adjacent endpoints still validate before any lower rebase.
+[Retained-prefix runtime and public controls](temporal-relative-rounding-contract-audit.md).
+
+### Outward retry and final bracket
+
+After the first-endpoint check, the lower instant is at or before T.
+Each outward retry runs only when the upper instant is strictly before
+T and uses that checked instant as the new lower bound. Every retry
+advances the signed nominal date by a positive calendar quantum in the
+finite date range. It reaches a bracket or fails endpoint validation.
+This reasoning allows a one-day physical reversal between successive
+nominal dates and does not depend on the six-day spread certificate.
+
+When all discarded unrounded probes resolve to instants, a sharper
+bound follows. Before any probe correction the local clock adjustment
+leaves less than D in signed nominal distance to T's local scalar.
+An origin clamp can only reduce that distance. With a resolved rejected
+probe the next nominal day after N was past T, less than 3D physically
+from the accepted N. For day rounding the initial upper is at least
+one nominal day beyond N. Two outward retries take it more than 2D
+beyond T's local scalar in the first case. In the rejected-probe case,
+the initial upper either coincides with the rejected day, is two days
+beyond N, or is already at least two days beyond that rejected day.
+Only the middle case can still fall short and one more retry suffices.
+For week, month and year rounding the second upper lies at least 5D
+beyond N under the calendar bounds below. Its physical distance from
+N exceeds 3D, so one outward retry suffices. A probe rejected for
+range does not supply an instant for this sharper count.
+
+On a successful nonexact result the checked lower instant A is strictly
+before T in signed order and the upper instant B is at or beyond it.
+Therefore s(B−A)>0 and 0<s(T−A)≤s(B−A). This proves distinctness and the
+progress interval for that final source window. The shared engine can
+compare twice the signed distance to the span without dividing.
+The retained-prefix week shortcut uses a quotient only behind its
+signed bracket check, otherwise it delegates to the same retry.
+Relative totals retain a lower bound at or before T and validate their
+next bound before exact-return or ratio selection. These are source
+invariants and do not establish the literal published retry or
+zero-component rules. [Temporal comparison §7.5.34 steps 13–17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
+
+The exact Apia case can still have A=B=T. Both source kernels validate
+the original adjacent endpoint and return the exact first count without
+division. This leaves the published distinctness assertion false and its
+progress undefined for that case. [Exact Apia controls](temporal-day-window-engine-audit.md).
+
+## Earlier one-retry proof
+
+This earlier argument covered plain anchors and generated zoned profiles
+using the six-day offset-spread certificate. The calendar length bounds
+and public witness remain useful for the current proof.
+
+### Inputs and local anchors
 
 Let D be a civil day, s the signed direction, T the target instant, and y
 its local epoch scalar. Unrounded difference begins with the origin-clock
@@ -32,7 +149,7 @@ retry. The retry keeps that bound as its new lower endpoint.
 [TS shared rounding](../../packages/temporal/date-core.ts#L971)
 [Rust unrounded and rounding](../../crates/temporal/calendar_difference.rs#L111).
 
-## Unit lengths and a second upper bound
+### Unit lengths and a second upper bound
 
 For signed active count n and increment k≥1, the initial count q discards
 fewer than k whole units. Hence q + 2ks is at least n + 2s in the signed
@@ -98,9 +215,9 @@ steps 13 and 17's distinctness and progress assertions follow on the
 scoped nonexact shared path. The Node ICU certificate extends the timezone premise to the exact host
 profile, subject to the same calendar contracts.
 
-## Duration.round retained-prefix week exception
+## Historical Duration.round retained-prefix week exception
 
-Duration.round with largest year or month and smallest week uses a
+The earlier Duration.round with largest year or month and smallest week used a
 separate quotient shortcut. It validates the first week endpoint and
 rounds the original ratio even when the target exceeds that endpoint.
 [TS shortcut](../../packages/temporal/relative-duration.ts#L255)
@@ -149,11 +266,10 @@ applies when the rebased upper construction succeeds. The [endpoint proof](tempo
 supplies that range guarantee for the certified profiles. The New York
 witness establishes an assertion divergence and matching intended output.
 
-Keep the bracketing assertion separate from output equivalence. Step 17
-has a concrete source exception in this path and a separately documented
-rendered assertion conflict. A global exact-target proof remains blocked
-by Apia's zero denominator. Other host/provider profiles need their own
-six-day and calendar contracts.
+This example historically violated the source progress interval. Current
+code delegates when a retained-prefix week window misses the target,
+as described above. The rendered assertion conflict and Apia's zero
+denominator remain separate.
 
 ## Reproduction
 

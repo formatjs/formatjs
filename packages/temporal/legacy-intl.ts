@@ -228,10 +228,10 @@ export function installLegacyDateTimeFormat(
       if (!state) return apply(nativeRange, this, [start, end])
       // ECMA-402 §11.3.4 step 6: Return the formatted range for the prepared
       // endpoints.
-      const [first, last] = range(state, start, end)
+      const endpoints = range(state, start, end)
       return legacyDateTimeRangeFormat(
-        first,
-        last,
+        endpoints[0],
+        endpoints[1],
         nativeRange,
         nativeRangeParts,
         nativeResolved
@@ -245,10 +245,10 @@ export function installLegacyDateTimeFormat(
       if (!state) return apply(nativeRangeParts, this, [start, end])
       // ECMA-402 §11.3.5 step 6: Return the range parts for the prepared
       // endpoints.
-      const [first, last] = range(state, start, end)
+      const endpoints = range(state, start, end)
       return legacyDateTimeRangeParts(
-        first,
-        last,
+        endpoints[0],
+        endpoints[1],
         nativeRangeParts,
         nativeResolved
       )

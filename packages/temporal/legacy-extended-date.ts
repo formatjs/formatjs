@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   mathAbs,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
@@ -31,6 +32,31 @@ type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
 const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
+
+// ECMA-402 §11.5.7 steps 2–5 and §11.5.10 steps 2–5: Copy the parts in order.
+function replacePartValues<T extends Intl.DateTimeFormatPart>(
+  parts: T[],
+  type: T['type'],
+  value: (part: T) => string
+): T[] {
+  const result: T[] = []
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index]
+    setDataProperty(
+      result,
+      index,
+      part.type === type ? {...part, value: value(part)} : part
+    )
+  }
+  return result
+}
+
+// ECMA-402 §11.5.6 and §11.5.9 steps 2–4: Concatenate part values in order.
+function joinPartValues(parts: Intl.DateTimeFormatPart[]): string {
+  let text = ''
+  for (let index = 0; index < parts.length; index++) text += parts[index].value
+  return text
+}
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   // ECMA-262 §21.4.1.31 step 2: detect plain values that need a surrogate.
@@ -83,14 +109,14 @@ export function legacyDateTimeParts(
 ): Intl.DateTimeFormatPart[] {
   // ECMA-402 §11.5.4 steps 15.e.iv–v: restore the projected timezone label.
   if (value[legacyTimeZoneName] !== undefined)
-    return legacyDateTimeParts(
-      {...value, [legacyTimeZoneName]: undefined},
-      parts,
-      resolved
-    ).map(part =>
-      part.type === 'timeZoneName'
-        ? {...part, value: value[legacyTimeZoneName]!}
-        : part
+    return replacePartValues(
+      legacyDateTimeParts(
+        {...value, [legacyTimeZoneName]: undefined},
+        parts,
+        resolved
+      ),
+      'timeZoneName',
+      () => value[legacyTimeZoneName]!
     )
   const calendar = legacyCalendarParts(value, parts, resolved)
   if (calendar) return calendar
@@ -104,11 +130,11 @@ export function legacyDateTimeParts(
   const delta = shift(value),
     rewrite = years(value, delta, resolved)
   // ECMA-402 §11.5.7 step 1: partition the surrogate and restore its year.
-  return parts
-    .call(value.formatter, value.milliseconds + delta)
-    .map(part =>
-      part.type === 'year' ? {...part, value: rewrite(part.value)} : part
-    )
+  return replacePartValues(
+    parts.call(value.formatter, value.milliseconds + delta),
+    'year',
+    part => rewrite(part.value)
+  )
 }
 
 export function legacyDateTimeFormat(
@@ -119,12 +145,10 @@ export function legacyDateTimeFormat(
 ): string {
   // ECMA-402 §11.5.6 steps 2–4: concatenate the corrected part values.
   if (value[legacyTimeZoneName] !== undefined)
-    return legacyDateTimeParts(value, parts, resolved)
-      .map(part => part.value)
-      .join('')
+    return joinPartValues(legacyDateTimeParts(value, parts, resolved))
   const calendar = legacyCalendarParts(value, parts, resolved)
   // ECMA-402 §11.5.6 steps 2–4: Concatenate corrected calendar part values.
-  if (calendar) return calendar.map(part => part.value).join('')
+  if (calendar) return joinPartValues(calendar)
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
     const calendar = resolved.call(value.formatter).calendar
     if (calendar !== 'chinese' && calendar !== 'dangi')
@@ -136,13 +160,11 @@ export function legacyDateTimeFormat(
     // host labels changed.
     return corrected === raw
       ? format.call(value.formatter)(value.milliseconds)
-      : corrected.map(part => part.value).join('')
+      : joinPartValues(corrected)
   }
   // ECMA-402 §11.5.6 steps 2–4: Concatenate restored parts for the extended
   // Gregorian projection.
-  return legacyDateTimeParts(value, parts, resolved)
-    .map(part => part.value)
-    .join('')
+  return joinPartValues(legacyDateTimeParts(value, parts, resolved))
 }
 
 function rangeShifts(
@@ -183,22 +205,21 @@ export function legacyDateTimeRangeParts(
   )
     // ECMA-402 §11.5.10 step 1: delegate range partitioning on the native path.
     return parts.call(first.formatter, first.milliseconds, last.milliseconds)
-  const [start, end] = rangeShifts(first, last),
+  const shifts = rangeShifts(first, last),
+    start = shifts[0],
+    end = shifts[1],
     rewriteStart = years(first, start, resolved),
     rewriteEnd = years(last, end, resolved)
   // ECMA-402 §11.5.8 steps 19.c–e: choose the year rewrite by part source.
-  return parts
-    .call(first.formatter, first.milliseconds + start, last.milliseconds + end)
-    .map(part =>
-      part.type === 'year'
-        ? {
-            ...part,
-            value: (part.source === 'endRange' ? rewriteEnd : rewriteStart)(
-              part.value
-            ),
-          }
-        : part
-    )
+  return replacePartValues(
+    parts.call(
+      first.formatter,
+      first.milliseconds + start,
+      last.milliseconds + end
+    ),
+    'year',
+    part => (part.source === 'endRange' ? rewriteEnd : rewriteStart)(part.value)
+  )
 }
 
 export function legacyDateTimeRangeFormat(
@@ -216,10 +237,10 @@ export function legacyDateTimeRangeFormat(
     resolved
   )
   // ECMA-402 §11.5.9 steps 2–4: concatenate the corrected range values.
-  if (extended) return extended.map(part => part.value).join('')
+  if (extended) return joinPartValues(extended)
   const lunar = lunisolarRangeParts(first, last, parts, resolved)
   // ECMA-402 §11.5.9 steps 2–4: Concatenate the corrected lunar range values.
-  if (lunar) return lunar.map(part => part.value).join('')
+  if (lunar) return joinPartValues(lunar)
   if (
     (!clipped(first) && !clipped(last)) ||
     !gregorian(first.formatter, resolved)
@@ -228,7 +249,5 @@ export function legacyDateTimeRangeFormat(
     return format.call(first.formatter, first.milliseconds, last.milliseconds)
   // ECMA-402 §11.5.9 steps 2–4: Concatenate the corrected extended range
   // values.
-  return legacyDateTimeRangeParts(first, last, parts, resolved)
-    .map(part => part.value)
-    .join('')
+  return joinPartValues(legacyDateTimeRangeParts(first, last, parts, resolved))
 }

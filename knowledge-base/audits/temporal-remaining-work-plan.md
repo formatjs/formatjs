@@ -389,6 +389,10 @@ Day and month rounding now retain a valid lower grid when a zero component
 overshoots. Both signs and variable month counts pass public replay. The
 Duration and ZonedDateTime full Test262 targets still pass.
 [Retained day and month lower bounds](temporal-relative-rounding-contract-audit.md#retained-day-and-month-lower-bounds).
+The final nonexact-window proof now covers bounded borrowed zones whose
+calendar add-back, compatible offset and endpoint contracts are established.
+Exact Apia and published retry rules are separate open requirements.
+[Nonexact window proof](temporal-year-month-week-nonexact-window.md#current-source-proof).
 The exact Apia target is now a shared public oracle across TypeScript and
 native Hermes. Its endpoint policy is verified independently of the published
 zero-span assertion. The Intl witnesses isolate two separate prerequisites,
@@ -427,6 +431,10 @@ The surrounding comparison loop remains conditional.
 Combined-style construction now keeps private component and interval work
 independent of the eight observed Object, Array and String hooks.
 [Combined style evidence](temporal-selected-locale-adapter-audit.md#combined-date-and-time-styles).
+The legacy Intl bridge now keeps extended Gregorian endpoint and part
+lists private. The packed public regression covers both strings and
+both parts methods, and all six focused Bazel targets pass.
+[Legacy bridge evidence](temporal-legacy-bridge-state-audit.md#reproduced-gap).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

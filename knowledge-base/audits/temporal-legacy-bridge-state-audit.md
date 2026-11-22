@@ -7,6 +7,22 @@ complete public methods or projection semantics.
 
 ## Reproduced gap
 
+Extended Gregorian formatting produced a separate public failure. An installed
+legacy Intl formatter with a PlainDateTime before TimeClip invoked replaced
+Array methods while restoring the year or joining the parts. Range callers
+also read the iterator while opening private endpoint and surrogate tuples.
+
+The adapter now opens those tuples by index, copies the dense part lists
+in order with own array properties, and joins the strings directly. Numeric
+host calls still supply the formatting patterns. The public test checks
+both strings and both kinds of parts with Array map, join, iterator and
+species hooks present. The existing ICU boundary corpus continues to
+verify the restored fields and range source tags.
+[Part copying](../../packages/temporal/legacy-extended-date.ts#L36).
+[String concatenation](../../packages/temporal/legacy-extended-date.ts#L54).
+[Range dispatch](../../packages/temporal/legacy-intl.ts#L231).
+[Public regression](../../packages/temporal/tests/legacy-extended-date.test.mjs#L233).
+
 After package installation, replacing WeakMap.prototype.get intercepted the
 installed DateTimeFormat format getter's private bound-state lookup. Private
 state writes, projection-cache Map methods, lazy Map construction and mutable

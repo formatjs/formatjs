@@ -226,6 +226,44 @@ for (const [index, profile] of profiles.entries()) {
 }
 assert.equal(cases, 360)
 assert.equal(ranges, 80)
+
+{
+  const first = Temporal.PlainDateTime.from('-271821-04-19T12:00')
+  const last = Temporal.PlainDateTime.from('-271821-04-20T12:00')
+  const formatter = new Intl.DateTimeFormat('en', options)
+  const calls = [
+    ['format', () => formatter.format(first)],
+    ['formatToParts', () => formatter.formatToParts(first)],
+    ['formatRange', () => formatter.formatRange(first, last)],
+    ['formatRangeToParts', () => formatter.formatRangeToParts(first, last)],
+  ]
+  for (const [method, call] of calls) {
+    const expected = call()
+    for (const [target, key] of [
+      [Array.prototype, 'map'],
+      [Array.prototype, 'join'],
+      [Array.prototype, Symbol.iterator],
+      [Array, Symbol.species],
+    ]) {
+      const descriptor = Object.getOwnPropertyDescriptor(target, key)
+      const label = `${method} with replaced ${String(key)}`
+      let actual
+      try {
+        Object.defineProperty(target, key, {
+          configurable: true,
+          get() {
+            throw new Error(label)
+          },
+        })
+        actual = call()
+      } finally {
+        Object.defineProperty(target, key, descriptor)
+      }
+      assert.deepEqual(actual, expected, label)
+    }
+  }
+}
+
 console.log(
   JSON.stringify({
     icuGregorianFields: cases,
