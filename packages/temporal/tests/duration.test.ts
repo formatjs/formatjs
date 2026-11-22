@@ -523,3 +523,114 @@ it('rounds duration strings without observing array search', () => {
     'PT0.000S',
   ])
 })
+
+it('keeps zoned relativeTo preparation private during duration rounding and totals', () => {
+  expect(nativeTemporal()).toBeUndefined()
+  const duration = Duration.from('PT1H')
+  const relativeTo = Object.assign(Object.create(null), {
+    year: 2000,
+    month: 1,
+    day: 1,
+    timeZone: 'UTC',
+  })
+  const descriptor = Object.getOwnPropertyDescriptor(Object.prototype, 'hour')
+  const sentinel = new Error('Observable private relativeTo hour')
+  let hooks = 0
+  const receivers: unknown[] = []
+  let total: number | undefined
+  let rounded: ReturnType<typeof duration.round> | undefined
+  let totalError: unknown
+  let roundError: unknown
+  try {
+    Object.defineProperty(Object.prototype, 'hour', {
+      configurable: true,
+      get() {
+        hooks++
+        receivers.push(this)
+        throw sentinel
+      },
+    })
+    try {
+      total = duration.total({relativeTo, unit: 'hour'})
+    } catch (error) {
+      totalError = error
+    }
+    try {
+      rounded = duration.round({relativeTo, smallestUnit: 'hour'})
+    } catch (error) {
+      roundError = error
+    }
+  } finally {
+    if (descriptor) Object.defineProperty(Object.prototype, 'hour', descriptor)
+    else Reflect.deleteProperty(Object.prototype, 'hour')
+  }
+  expect({hooks, receivers, totalError, roundError}).toEqual({
+    hooks: 0,
+    receivers: [],
+    totalError: undefined,
+    roundError: undefined,
+  })
+  expect(total).toBe(1)
+  expect(rounded!.hours).toBe(1)
+})
+
+it('keeps inherited public relativeTo getters and numeric coercion observable', () => {
+  const duration = Duration.from('PT1H')
+  const order: string[] = []
+  const prototype = Object.create(null)
+  const relativeTo = Object.assign(Object.create(prototype), {
+    year: 2000,
+    month: 1,
+    day: 1,
+    timeZone: 'UTC',
+  })
+  Object.defineProperties(prototype, {
+    calendar: {
+      get() {
+        expect(this).toBe(relativeTo)
+        order.push('get calendar')
+        return 'iso8601'
+      },
+    },
+    hour: {
+      configurable: true,
+      get() {
+        expect(this).toBe(relativeTo)
+        order.push('get hour')
+        return {
+          [Symbol.toPrimitive](hint: string) {
+            order.push('convert hour:' + hint)
+            return 1
+          },
+        }
+      },
+    },
+  })
+  expect(duration.total({relativeTo, unit: 'hour'})).toBe(1)
+  expect(duration.round({relativeTo, smallestUnit: 'hour'}).hours).toBe(1)
+  expect(order).toEqual([
+    'get calendar',
+    'get hour',
+    'convert hour:number',
+    'get calendar',
+    'get hour',
+    'convert hour:number',
+  ])
+  const sentinel = new Error('Public relativeTo hour failure')
+  Object.defineProperty(prototype, 'hour', {
+    get() {
+      expect(this).toBe(relativeTo)
+      throw sentinel
+    },
+  })
+  for (const operation of ['total', 'round'] as const) {
+    let caught: unknown
+    try {
+      if (operation === 'total') duration.total({relativeTo, unit: 'hour'})
+      else duration.round({relativeTo, smallestUnit: 'hour'})
+    } catch (error) {
+      caught = error
+    }
+    expect(caught).toBe(sentinel)
+  }
+})

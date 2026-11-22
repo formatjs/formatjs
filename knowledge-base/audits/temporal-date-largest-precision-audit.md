@@ -15,11 +15,11 @@ below 24; subsequent minutes/seconds are below 60 and subsecond fields below 100
 [Rust:122](../../crates/temporal/calendar_difference.rs#L122) uses the same
 Euclidean day remainder and borrow, then balances at hour.
 
-[Zoned TS:532](../../packages/temporal/zoned-date-time.ts#L532) also balances at
+[Zoned TS:533](../../packages/temporal/zoned-date-time.ts#L533) also balances at
 hour. This scan does not assume its remainder is below one day: repeated dates,
 calendar anchoring and overshoot correction need separate proofs. A coarser
 public-domain bound is enough for precision. Both the end and a successful
-anchor are bounded instants; the overshoot sentinel at line 514 is also bounded
+anchor are bounded instants; the overshoot sentinel at line 515 is also bounded
 by the epoch limit plus one day. Therefore the remainder's magnitude is below
 `1.729e22 ns`, and its hour quotient is below `4.81e9`, well below `2**53`.
 Subsequent fields have the same small remainder bounds. Rust's

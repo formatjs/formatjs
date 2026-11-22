@@ -96,8 +96,10 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
       prepared[key] = primitive
     } else prepared[key] = dateFieldValue(key, raw)
   }
-  if (prepared.timeZone !== undefined)
-    return {zoned: toZonedDateTimeSlot({...prepared, calendar})}
+  if (prepared.timeZone !== undefined) {
+    prepared.calendar = calendar
+    return {zoned: toZonedDateTimeSlot(prepared)}
+  }
   return {
     date: {calendar, epochDay: dayFromFields(calendar, prepared, 'constrain')},
   }

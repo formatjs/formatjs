@@ -12,15 +12,15 @@ or add chapter completion credit.
 
 ## Source contract
 
-- [Receiver/options:889](../../packages/temporal/zoned-date-time.ts#L889) retains
+- [Receiver/options:890](../../packages/temporal/zoned-date-time.ts#L890) retains
   the brand check, required argument, string shorthand and options-object path.
-- [Ordered conversion:900](../../packages/temporal/zoned-date-time.ts#L900)
+- [Ordered conversion:901](../../packages/temporal/zoned-date-time.ts#L901)
   gets and validates increment, rounding mode and smallest unit before returning.
-  The remaining unit-specific increment check necessarily accepts nanosecond
-  increment 1: one is below the exclusive maximum and divides it.
-- [Identity return:903](../../packages/temporal/zoned-date-time.ts#L903) passes
+  Unit-specific increment validation now precedes the identity return. Nanosecond
+  increment 1 is below the exclusive maximum and divides it.
+- [Identity return:908](../../packages/temporal/zoned-date-time.ts#L908) passes
   already validated private epoch/time-zone/calendar fields to
-  [createZonedDateTime:212](../../packages/temporal/zoned-date-time.ts#L212).
+  [createZonedDateTime:213](../../packages/temporal/zoned-date-time.ts#L213).
   The factory checks inclusive epoch bounds, creates an intrinsic-prototype
   object and installs private slots. It does not reconstruct local clock fields.
 - Other increments/units continue through their existing backend and rounding

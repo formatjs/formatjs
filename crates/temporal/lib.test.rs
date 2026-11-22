@@ -3607,3 +3607,38 @@ fn clock_differences_round_exact_leading_microseconds_and_milliseconds() {
         );
     }
 }
+
+#[test]
+fn zoned_round_rejects_invalid_increments_before_offset_queries() {
+    use core::cell::Cell;
+    use formatjs_temporal::{
+        Error, RoundingMode, TimeZone, TransitionDirection, ZonedDateTime, ZonedUnit,
+    };
+    #[derive(Clone, Copy)]
+    struct CountingZone<'a>(&'a Cell<usize>);
+    impl TimeZone for CountingZone<'_> {
+        fn offset_nanoseconds(&self, _: Instant) -> i128 {
+            self.0.set(self.0.get() + 1);
+            0
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            visitor(0);
+        }
+        fn transition(&self, _: Instant, _: TransitionDirection) -> Option<Instant> {
+            None
+        }
+    }
+    let queries = Cell::new(0);
+    let value = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(0).unwrap(),
+        CountingZone(&queries),
+    );
+    for (unit, increment) in [(ZonedUnit::Nanosecond, 3), (ZonedUnit::Hour, 24)] {
+        queries.set(0);
+        assert_eq!(
+            value.round(unit, increment, RoundingMode::HalfExpand).err(),
+            Some(Error::InvalidRoundingOptions)
+        );
+        assert_eq!(queries.get(), 0, "{unit:?} increment {increment}");
+    }
+}

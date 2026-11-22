@@ -29,6 +29,7 @@ import {
 import {
   PlainTime,
   roundTime,
+  validateTimeIncrement,
   type PlainTimeObject,
 } from '#packages/temporal/plain-time.js'
 import {
@@ -900,6 +901,10 @@ class ZonedDateTimeValue {
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
+    if (unit === 'day') {
+      if (increment !== 1)
+        throw new RangeErrorConstructor('Invalid day increment')
+    } else validateTimeIncrement(timeUnit(unit), increment)
     if (unit === 'nanosecond' && increment === 1)
       return createZonedDateTime(
         slot.epochNanoseconds,
@@ -920,8 +925,6 @@ class ZonedDateTimeValue {
       )
     let value: bigint
     if (unit === 'day') {
-      if (increment !== 1)
-        throw new RangeErrorConstructor('Invalid day increment')
       const start = startOfDay(slot),
         end = startOfDay(slot, epochDayOf(local(slot)) + 1)
       const current =
