@@ -172,6 +172,8 @@ export function PartitionDateTimeRangePattern(
       continue
     }
     let equal
+    // Temporal comparison §15.6.8 steps 23.d.ii, 23.d.iii, 23.d.iv and 23.d.v
+    // dispatch the encountered field by its private table key.
     if (field === 'ampm') {
       // Step 15.d.ii: noon starts at hour 12, including an 11 AM endpoint.
       // Temporal comparison §15.6.8 steps 23.d.ii.1–2 encode am/pm as Booleans.
@@ -192,7 +194,7 @@ export function PartitionDateTimeRangePattern(
       equal = first === second
     } else if (field === 'fractionalSecondDigits') {
       // ECMA-402 §11.5.8 steps 15.d.iv.3–5: floor at the selected precision.
-      // Temporal comparison §15.6.8 steps 23.d.iv.2.a and 23.d.iv.3–5.
+      // Temporal comparison §15.6.8 steps 23.d.iv.2, 23.d.iv.2.a and 23.d.iv.3–5.
       const digits = internalSlots.fractionalSecondDigits ?? 3
       equal =
         floor(tm1.millisecond * 10 ** (digits - 3)) ===
@@ -202,12 +204,16 @@ export function PartitionDateTimeRangePattern(
       equal = SameValue(tm1[field], tm2[field])
     }
     if (!equal) {
+      // Temporal comparison §15.6.8 step 23.d.vi.1 encodes inequality with
+      // a selected pattern and ends the search.
       rangePattern = rangePatterns[field] || fallback
       break
     }
   }
   if (rangePattern === undefined) {
     // ECMA-402 §11.5.8 step 16.b: pass the selected local time privately.
+    // Temporal comparison §15.6.8 step 24.b reuses the rendering local time.
+    // Both render paths use +00:00 for Plain endpoints.
     const rangeFormatOptions = {__proto__: null, localTime: tm1}
     // Temporal comparison §15.6.8 step 24.a reuses the formatter's fresh List.
     // The records stay private until the public wrapper creates its own parts.

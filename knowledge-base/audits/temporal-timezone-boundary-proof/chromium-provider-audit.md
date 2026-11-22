@@ -61,6 +61,39 @@ and recurring rules. Applying the Node scan's exhaustive bounds to Chromium
 still requires equivalence of the rule readers across all intervals.
 [Hashes, edited words and controls](chromium-provider-summary.json).
 
+## Direct reader replay
+
+PPLX Chromium 156.0.8078.48 and Debian Chromium 156.0.8078.47 share the same
+2026e ICU data bytes. Each exact executable passed 131,471 native checks
+with zero mismatches against the pinned Node ICU scan.
+
+- Native Intl checked offsets one millisecond before and at each of 43,198
+  per-identifier candidate boundaries. It also checked eight positions near
+  the two TimeClip endpoints for each of 638 supported identifiers.
+- Native Temporal walked strict-next transitions at exact nanosecond
+  positions for the 597 accepted identifiers. The walks found 39,374
+  effective transitions. Each confirmed no additional native transition
+  through its inclusive cutoff. Native Temporal rejects 41 legacy names
+  accepted by Intl.
+- The candidate fixtures include every finite start and cover all 21 adjacent
+  Gregorian recurrence signatures observed across 400 years. For 206
+  recurring identifiers, each per-zone representative cutoff is January 10
+  two years after its selected through-year, which lies between 2004 and 2128.
+  For the other 432 identifiers, the cutoff is three days after the last
+  finite start or the Unix epoch, whichever is later.
+
+With the historical and recurring word changes combined, native Intl and
+native Temporal in both builds report New York's 1880 offset changing from
+−04:56:02 to −04:46:02 and its July 2026 offset from −04:00 to −03:50.
+Native Temporal also moves the November 2026 rollback from 06:00Z to 05:50Z.
+These cases tie both native readers to the pinned explicit and recurring
+resources.
+
+The direct walks establish transition coverage through the tested cutoffs
+for the accepted names. Coverage between sampled offsets, outside TimeClip,
+and on other builds remains conditional.
+[Replay hashes and counts](chromium-provider-summary.json).
+
 ## Reproduce
 
 Build `//packages/temporal:pkg` and take its output path from
@@ -90,4 +123,21 @@ Set `ICU_TIMEZONE_FILES_DIR` to that absolute output directory. From
 "$node_bin" --experimental-ffi temporal-node-icu-endpoint-scan.mjs 11
 "$node_bin" --experimental-ffi temporal-node-icu-rule-spread.mjs
 "$node_bin" --experimental-ffi temporal-node-icu-transition-separation.mjs --direct-annual --week
+```
+
+For the native reader replay, use the same pinned Node binary and extracted
+resources. `ICU_TIMEZONE_FILES_DIR` must point to the extracted directory.
+Start each browser in a fresh local profile with timezone overrides unset.
+
+```sh
+python3 "$proof/chromium-reader-replay.py" prepare "$run_dir"
+(cd "$run_dir" && "$node_bin" --experimental-ffi collect.mjs --direct-annual --week >reference.json)
+env -u ICU_TIMEZONE_FILES_DIR -u TZ "$pplx_bin" --headless --no-proxy-server \
+  --user-data-dir="$run_dir/pplx-profile" --allow-file-access-from-files \
+  --dump-dom "file://$run_dir/probe.html" >"$run_dir/pplx.html"
+env -u ICU_TIMEZONE_FILES_DIR -u TZ "$debian_bin" --headless --no-proxy-server \
+  --user-data-dir="$run_dir/debian-profile" --allow-file-access-from-files \
+  --dump-dom "file://$run_dir/probe.html" >"$run_dir/debian.html"
+python3 "$proof/chromium-reader-replay.py" verify "$run_dir" \
+  --pplx "$pplx_bin" --debian "$debian_bin"
 ```

@@ -99,6 +99,8 @@ test.each([
   ['distinct', 'localTime', 'formatRangeToParts', 'set'],
   ['collapsed', 'numberFormatters', 'formatRange', 'set'],
   ['distinct', 'numberFormatters', 'formatRangeToParts', 'get'],
+  ['collapsed', 'fractionalSecondDigits', 'formatRangeToParts', 'get'],
+  ['distinct', 'fractionalSecondDigits', 'formatRange', 'get'],
 ] as const)(
   'formats %s Temporal ranges without inherited %s (%s, %s)',
   (kind, property, method, accessor) => {

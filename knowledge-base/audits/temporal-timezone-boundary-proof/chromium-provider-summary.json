@@ -129,5 +129,62 @@
       }
     },
     "remainingPremise": "Full equivalence of Chromium and the pinned Node ICU rule traversal and coverage of other host profiles."
+  },
+  "readerReplay": {
+    "referenceSha256": "bc581c942b1b23dd486d612124255e5a6efdfd3397c81ffbc1f4058f2078006f",
+    "fixtureSha256": "43aa148a769be6f1a07228da4c9d754e9c48087333c78898dae166b123b12a92",
+    "dataSha256": "02a01b3188b6a41a756f7322fdb5e6b5ca6573b327b01dfc8ed662d571a6f769",
+    "binaries": [
+      {
+        "build": "PPLX Chromium",
+        "version": "156.0.8078.48",
+        "binarySha256": "7ccca93a192f7fc808244ff68a04f0cb3a548d1c2cf3facd11199ba39643d50f",
+        "resultSha256": "30d3f446e4c2d98331b609a2f3e0a72c7692f09777585c05bc7e64463e7d5406",
+        "mismatches": 0
+      },
+      {
+        "build": "Debian Chromium",
+        "version": "156.0.8078.47",
+        "binarySha256": "240a189df25934b7191e35bda7a62e76ffb3decac4a454b0a0bf67f8462c8c92",
+        "resultSha256": "b9ca3b82a26d7ae3d1b9a1f4ab415835a1ba6a6c50118f74a56106c296173167",
+        "mismatches": 0
+      }
+    ],
+    "caseCounts": {
+      "distinctBoundaries": 43198,
+      "intlBoundary": 86396,
+      "intlEndpoint": 5104,
+      "nativeTransition": 39374,
+      "nativeCutoff": 597,
+      "totalPerBrowser": 131471
+    },
+    "identifierCounts": {
+      "intl": 638,
+      "nativeTemporal": 597,
+      "finiteOrFixed": 432,
+      "recurring": 206
+    },
+    "recurrence": {
+      "rawFiniteStarts": 30734,
+      "adjacentGregorianSignatures": 21,
+      "sampleThroughYears": [2004, 2128]
+    },
+    "nativeAndIntlResourceUse": {
+      "resultSha256": "c30069184b0aceda3b112f04f481872122c495cb53f5842d9d75b79f038e5283",
+      "combinedEditedDataSha256": "46992b769949745467ec4a6977ecbf6acf5c5771cd565c9b167e4c91f87189e6",
+      "bothBuilds": {
+        "original": {
+          "historical": ["-04:56:02", "GMT-04:56:02"],
+          "summer": ["-04:00", "GMT-04:00"],
+          "next": [1793512800000, "-05:00", "GMT-05:00"]
+        },
+        "edited": {
+          "historical": ["-04:46:02", "GMT-04:46:02"],
+          "summer": ["-03:50", "GMT-03:50"],
+          "next": [1793512200000, "-05:00", "GMT-05:00"]
+        }
+      }
+    },
+    "remainingPremise": "Coverage between sampled boundaries and beyond TimeClip, untested rule readers and other host profiles."
   }
 }

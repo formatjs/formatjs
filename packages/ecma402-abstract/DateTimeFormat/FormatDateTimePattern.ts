@@ -8,6 +8,7 @@ import {
   floor,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
@@ -343,8 +344,16 @@ export function FormatDateTimePattern(
   // ECMA-402 §11.5.4, steps 1-11 use identical NumberFormat options for
   // every call with this profile. Retain the existing memoized formatters.
   // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // Optional precision comes from own fields of the private format records.
+  const rangeDigits =
+    format && HasOwnProperty(format, 'fractionalSecondDigits')
+      ? format.fractionalSecondDigits
+      : undefined
   const fractionalSecondDigits =
-    format?.fractionalSecondDigits ?? internalSlots.fractionalSecondDigits
+    rangeDigits ??
+    (HasOwnProperty(internalSlots, 'fractionalSecondDigits')
+      ? internalSlots.fractionalSecondDigits
+      : undefined)
   const numberFormatters =
     rangeFormatOptions?.numberFormatters ||
     createNumberFormatters(internalSlots, fractionalSecondDigits)

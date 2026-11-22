@@ -1,0 +1,98 @@
+<!doctype html>
+<script src="fixtures.js"></script>
+<pre id="result"></pre>
+<script>
+  const max = 8_640_000_000_000_000
+  const millis = 1_000_000n
+  const result = {
+    browser: navigator.userAgent,
+    zones: {bound: 0, unsupported: [], nativeUnsupported: []},
+    checks: {finiteOrRepresentative: 0, endpoints: 0, nativeTransitions: 0},
+    errors: {intl: 0, temporal: 0},
+    mismatches: [],
+  }
+  const problem = (kind, ...detail) => {
+    result.errors[kind]++
+    if (result.mismatches.length < 30) result.mismatches.push([kind, ...detail])
+  }
+  const formatter = timeZone =>
+    new Intl.DateTimeFormat('en-US-u-ca-iso8601-nu-latn', {
+      timeZone,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23',
+      timeZoneName: 'longOffset',
+    })
+  const offsetAt = (formatter, t) => {
+    const name = formatter
+      .formatToParts(t)
+      .find(part => part.type === 'timeZoneName').value
+    if (name === 'GMT') return 0
+    const match = /^GMT([+-])(\d{2}):(\d{2})(?::(\d{2}))?$/.exec(name)
+    if (!match) throw new Error('Unexpected UTC offset ' + name)
+    return (
+      (match[1] === '-' ? -1 : 1) *
+      (Number(match[2]) * 3600 +
+        Number(match[3]) * 60 +
+        Number(match[4] || 0)) *
+      1000
+    )
+  }
+  for (const {id, cut, expectedBoundaries, endpoints} of fixtures) {
+    let fmt
+    try {
+      fmt = formatter(id)
+    } catch {
+      result.zones.unsupported.push(id)
+      continue
+    }
+    result.zones.bound++
+    for (const [t, before, after] of expectedBoundaries) {
+      for (const [ms, offset] of [
+        [t - 1, before],
+        [t, after],
+      ]) {
+        const observed = offsetAt(fmt, ms)
+        result.checks.finiteOrRepresentative++
+        if (observed !== offset) problem('intl', id, ms, offset, observed)
+      }
+    }
+    for (const [t, offset] of endpoints) {
+      const observed = offsetAt(fmt, t)
+      result.checks.endpoints++
+      if (observed !== offset) problem('intl', id, t, offset, observed)
+    }
+    let zoned
+    try {
+      zoned = new Temporal.ZonedDateTime(-BigInt(max) * millis, id)
+    } catch {
+      result.zones.nativeUnsupported.push(id)
+      continue
+    }
+    let skip = false
+    for (const [t, before, after] of expectedBoundaries) {
+      if (before === after) continue
+      const next = zoned.getTimeZoneTransition('next')
+      result.checks.nativeTransitions++
+      if (!next || next.epochNanoseconds !== BigInt(t) * millis) {
+        problem('temporal', id, t, next ? next.epochMilliseconds : null)
+        skip = true
+        break
+      }
+      zoned = next
+    }
+    if (skip) continue
+    const extra = zoned.getTimeZoneTransition('next')
+    result.checks.nativeTransitions++
+    if (extra && extra.epochNanoseconds <= BigInt(cut) * millis)
+      problem(
+        'temporal',
+        id,
+        'unexpected before cutoff',
+        cut,
+        extra.epochMilliseconds
+      )
+  }
+  document.querySelector('#result').textContent = JSON.stringify(result)
+</script>
