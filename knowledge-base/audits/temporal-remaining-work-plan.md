@@ -181,9 +181,10 @@ Generated profiles, both configured Linux x64 Node binaries, and the tested
 Hermes compiled formatter supply endpoint and spread proofs. Both pinned runtime-relative tests pass. The manual strict Node24 test reports
 290 fixture differences reproduced by its own Intl data and the independent
 reference.
-Transition-spacing checks now establish host sample completeness for shipped
-zone data and the two audited Node 26 builds. All three Node builds pass the
-Umm al-Qura chronology check. [Sampling proof](temporal-timezone-boundary-proof/relative-window-sampler.md).
+Transition-spacing checks establish sample completeness for shipped zone data.
+The two Node 26 scans still need direct annual rules to certify the observed
+recurring transitions. All three Node builds pass the Umm al-Qura chronology
+check. [Sampling proof](temporal-timezone-boundary-proof/relative-window-sampler.md).
 Other host profiles remain conditional. Numeric Intl cannot observe an outside
 transition that creates an invalid second candidate.
 [Unbound host proof](temporal-timezone-boundary-proof/README.md#unbound-host-intl-provider).

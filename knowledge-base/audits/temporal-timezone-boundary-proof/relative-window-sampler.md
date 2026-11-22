@@ -2,12 +2,13 @@
 
 This proof supplies a local-resolution premise for the frozen Temporal
 comparison's [§7.5.34 steps 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
-It covers the bound generated data and two exact Node/ICU profiles. The
+Generated data have a complete spacing proof. Node/ICU results below
+cover observed events and retain a recurring-transition premise. The
 assertions remain conditional across the default package's provider scope.
 
 ## Transition separation
 
-The [host candidate search](../../../packages/temporal/host-timezone.ts#L153)
+The [host candidate search](../../../packages/temporal/host-timezone.ts#L181)
 samples at the local nanosecond scalar and one day on either side, clipping
 the probes to Instant limits. All certified offsets have magnitude less than
 one day. Every valid candidate lies between the two extremal probes. A
@@ -26,9 +27,13 @@ parity binds these results to consumed timezone data.
 [Generated endpoint and parity evidence](README.md#consumed-generated-profiles).
 
 The ICU scan uses finite UTC rule starts, the historical/final January 1
-join, and a full Gregorian recurrence cycle with outer joins. It checks
-actual offsets on both sides of every potential event. Node 26.5.1 and
-26.8.1 each report a minimum spacing of 601,200 seconds across 638 IDs.
+join, and the transitions reported by ICU over a full Gregorian recurrence
+cycle with outer joins. Node 26.5.1 and 26.8.1 each report a minimum spacing
+of 601,200 seconds across 638 IDs. The recurrence proof still needs direct
+annual-rule enumeration. ICU’s next-start search begins with the query’s UTC
+year and then checks the next nominal year. A rule from the previous nominal
+year can spill forward. The observed stream alone leaves that case unverified.
+[ICU annual rule search](https://raw.githubusercontent.com/unicode-org/icu/release-78.2/icu4c/source/i18n/tzrule.cpp).
 [Pinned provider and ICU resource binding](node-icu/temporal-pinned-node-icu-proof.md).
 [ICU historical and final-rule dispatch](https://raw.githubusercontent.com/unicode-org/icu/release-78.2/icu4c/source/i18n/olsontz.cpp).
 
