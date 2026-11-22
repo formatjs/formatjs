@@ -8,7 +8,7 @@ or historical line credit.
 
 ## Observable hook and correction
 
-[roundRelativeDifference:928](../../packages/temporal/date-core.ts#L928) formerly
+[roundRelativeDifference:952](../../packages/temporal/date-core.ts#L952) formerly
 called mode.startsWith('half'). Even though mode is a validated primitive enum,
 that property lookup consulted mutable String.prototype.startsWith. Two public
 regressions failed with the replaced method's exact exception through

@@ -60,6 +60,9 @@ public option getters and string coercion hooks still run normally.
 Shared ISO string parsing also avoids mutable RegExp/String methods and legacy
 RegExp match-state changes. Clock fractions retain all nine digits. Calendar and
 timezone preparation outside the parser retains its separate validation.
+Calendar identifier preparation retains its original lowercase operation; zoned
+conversion classifies date-only input and offset precision without mutable
+String/RegExp methods.
 
 Duration strings parse without calling mutable RegExp or String methods or
 changing legacy RegExp match state. Fractions preserve all nine digits, including

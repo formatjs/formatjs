@@ -7,7 +7,7 @@ No runtime edits or new test runs belong to this scan.
 
 ## Clock intermediates stay exact
 
-[Plain TS unroundedDifference:783](../../packages/temporal/date-core.ts#L783)
+[Plain TS unroundedDifference:807](../../packages/temporal/date-core.ts#L807)
 subtracts within-day clocks, then borrows one day when the remainder opposes the
 overall sign. Both clocks are in `[0, day)`, so the adjusted signed clock
 remainder has magnitude below one day. Balancing at hour starts with a quotient
@@ -15,7 +15,7 @@ below 24; subsequent minutes/seconds are below 60 and subsecond fields below 100
 [Rust:122](../../crates/temporal/calendar_difference.rs#L122) uses the same
 Euclidean day remainder and borrow, then balances at hour.
 
-[Zoned TS:553](../../packages/temporal/zoned-date-time.ts#L553) also balances at
+[Zoned TS:561](../../packages/temporal/zoned-date-time.ts#L561) also balances at
 hour. This scan does not assume its remainder is below one day: repeated dates,
 calendar anchoring and overshoot correction need separate proofs. A coarser
 public-domain bound is enough for precision. Both the end and a successful
@@ -38,7 +38,7 @@ field itself exceeded `2**53` before rounding.
 ## Plain fixed-day rounding
 
 With plain date/day largest units and time/day smallest units, the
-[TS fixed-length branch:979](../../packages/temporal/date-core.ts#L979) combines
+[TS fixed-length branch:1003](../../packages/temporal/date-core.ts#L1003) combines
 integer day and clock fields through BigInt. After exact rounding, line 987
 converts only the quotient by one day back to Number. For time smallest units,
 bounded public endpoints and sub-day rounding keep that day quotient below
@@ -55,7 +55,7 @@ returned the right day count.
 
 ## Irregular date-unit counts
 
-[TS:903](../../packages/temporal/date-core.ts#L903) uses Number counts and
+[TS:927](../../packages/temporal/date-core.ts#L927) uses Number counts and
 `trunc(count / increment) * increment` before BigInt endpoint comparisons.
 A sufficient precision contract is an integral count with magnitude below
 `2**34`, and a positive integral increment at most `10**9`. This comfortably
