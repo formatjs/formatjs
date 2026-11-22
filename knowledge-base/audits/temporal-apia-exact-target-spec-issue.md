@@ -7,8 +7,10 @@ missing December 30 noon to December 31 noon. The origin is
 `1325368800000000000n` and both endpoints are `1325282400000000000n`.
 [Shipped tzdb 2026f](https://data.iana.org/time-zones/tzdb-2026f/australasia).
 
-With that common endpoint as the target, the unrounded difference is −1 day
-and zero time. The day branch of §7.5.33 steps 4.b–f and 8–12 builds the −1 and
+With that common endpoint as the target, ordinary Gregorian date difference
+gives −1 day and zero time. The literal ISO path stalls before rounding. The
+ISO public replay below uses the implementation’s bounded date difference.
+[ISO nontermination proof](temporal-isodatesurpasses-zero-month-spec-issue.md). The day branch of §7.5.33 steps 4.b–f and 8–12 builds the −1 and
 −2 day endpoints. Their equality with the target satisfies the inclusive
 backward bracket in §7.5.34 step 6.a, so there is no retry. The distinctness
 assertion in step 13 fails. Step 14 would divide 0 by 0 and therefore supplies
@@ -22,9 +24,9 @@ Current FormatJS picks the exact first endpoint before distance arithmetic.
 The TypeScript and Rust rounders return −1 day, and their total paths validate
 the second endpoint before returning −1. These observations record FormatJS's
 current behavior while the published assertion remains unresolved.
-[TS unrounded decomposition](../../packages/temporal/zoned-date-time.ts#L520)
-[TS rounding](../../packages/temporal/date-core.ts#L962)
-[Rust rounding](../../crates/temporal/calendar_difference.rs#L190)
+[TS unrounded decomposition](../../packages/temporal/zoned-date-time.ts#L545)
+[TS rounding](../../packages/temporal/date-core.ts#L1024)
+[Rust rounding](../../crates/temporal/calendar_difference.rs#L226)
 [TS total](../../packages/temporal/relative-duration.ts#L198)
 [Rust total](../../crates/temporal/relative_duration.rs#L77).
 

@@ -28,7 +28,10 @@ At candidateDays=2 the intended added date is January 3, beyond January 2, yet
 its predicate still returns false. This finite two-candidate trace demonstrates
 the defect without executing an unbounded literal loop. largestUnit=week gets
 stuck in step 3.g for the same reason, before residual days are calculated.
-Reverse direction has the analogous problem.
+The same January 1 to January 2 pair also stalls in step 3.j when the largest
+unit is month or year. The first positive year and month both overshoot,
+leaving the year and month counts at zero before the day loop. Reverse
+direction has the analogous problem.
 
 ## Current implementation and evidence
 
