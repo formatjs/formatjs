@@ -211,7 +211,10 @@ export function PartitionDateTimeRangePattern(
     if (!equal) {
       // Temporal comparison §15.6.8 step 23.d.vi.1 encodes inequality with
       // a selected pattern and ends the search.
-      rangePattern = rangePatterns[field] || fallback
+      // ECMA-402 §11.5.8 step 15.b and Temporal comparison §15.6.8 step 23.b.
+      // A missing field on the private interval map yields undefined.
+      const interval = rangePatterns[field]
+      rangePattern = interval || fallback
       break
     }
   }

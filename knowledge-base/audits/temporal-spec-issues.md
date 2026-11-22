@@ -53,6 +53,12 @@ policy question open; reassess when the normative text changes. Do not silently
 implement unpublished alias policy merely to satisfy the older Test262 fixture.
 No upstream issue or PR was filed by this audit.
 
+A fresh full Temporal Intl Test262 run on 2026-11-22 passed 4,078 of 4,080
+executions. Its only failures are the default and strict executions of
+`intl402/Temporal/ZonedDateTime/links.js`. Both expect `CST6CDT` to equal
+`America/Chicago`. They remain in the full target. The rendered §6.5 rule was
+rechecked and still preserves the primary identity of the pinned Zone.
+
 ## Range-guard removal note versus lower-bound offset behavior
 
 Status: editorial inconsistency in pinned Temporal revision

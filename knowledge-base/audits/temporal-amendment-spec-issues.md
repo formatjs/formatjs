@@ -34,10 +34,18 @@ representation or resolution of the cutoff rule.
 [Temporal comparison §15.6.8 steps 23.b–d and 24](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
 [Source and endpoint evidence](temporal-pattern-partition-audit.md#day-period-values-and-private-interval-metadata).
 
-The prepared lookup itself returns the own interval or undefined. Source
-uses that lookup when it reaches an unequal field, then supplies the fallback
-if needed. The comparison also uses the presence value on earlier equal
-fields to control the cutoff. That scheduling and selection stay open.
+The lookup value in step 23.b is independently verified. Skeleton and style
+preparation use null-prototype maps of own data fields. Width adaptation
+retains the map or copies its own fields to a new null-prototype map. For a
+supplied table key, reading that map returns its interval or undefined.
+The value depends only on the map and key. Its read has no caller-visible
+effect. The implementation reads it on an unequal field before applying
+fallback. The published loop also needs the value on equal fields to control
+the cutoff. Scheduling and selection stay open.
+[Skeleton map](../../packages/ecma402-abstract/DateTimeFormat/skeleton.ts#L450).
+[Style map](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L14).
+[Width adaptation](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L67).
+[Lookup](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L216).
 
 ### Hidden AmPm prevents a record-only reconciliation
 
