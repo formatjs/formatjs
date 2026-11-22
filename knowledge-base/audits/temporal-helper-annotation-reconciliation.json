@@ -1,5 +1,5 @@
 {
-  "scope": "337 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
+  "scope": "415 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
   "fixed_inventory_rows": 1069,
   "live_rebound_rows": 1066,
   "retired_identities": [
@@ -10868,6 +10868,2337 @@
       "annotation_line": 223,
       "annotation": "// Temporal comparison \u00a76.5.3 steps 1\u20137. Allocate with the local ZonedDateTime prototype.",
       "evidence": "Uses the local ZonedDateTime prototype for fresh allocation. Native storage and optional snapshot data retain their existing branch."
+    },
+    {
+      "inventory_row": 145,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_registry.rs",
+        "symbol": "impl<'a> CalendarRegistry<'a>::arithmetic",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "14",
+        "end_line": "16",
+        "comparison_sections": "12.3.10",
+        "section_ids": "sec-temporal-totemporalcalendaridentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70"
+      },
+      "spec_row_ids": ["12.3.10/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 13,
+      "annotation": "// Proposal comparison \u00a712.3.10 step 4: Build the arithmetic-only registry for calendar resolution.",
+      "evidence": "The arithmetic registry leaves the three optional table slots empty. Its resolve method can still supply the arithmetic providers."
+    },
+    {
+      "inventory_row": 146,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_registry.rs",
+        "symbol": "impl<'a> CalendarRegistry<'a>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "18",
+        "end_line": "31",
+        "comparison_sections": "12.3.10",
+        "section_ids": "sec-temporal-totemporalcalendaridentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70"
+      },
+      "spec_row_ids": ["12.3.10/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 17,
+      "annotation": "// Proposal comparison \u00a712.3.10 step 4: Register one validated table per supported table ID.",
+      "evidence": "The registry assigns already validated tables to the Chinese, Dangi, or Islamic Umm al-Qura slots and rejects a repeated slot. The table constructor owns chronology validation."
+    },
+    {
+      "inventory_row": 147,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_registry.rs",
+        "symbol": "impl<'a> CalendarRegistry<'a>::resolve",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "33",
+        "end_line": "54",
+        "comparison_sections": "12.3.10",
+        "section_ids": "sec-temporal-totemporalcalendaridentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70"
+      },
+      "spec_row_ids": ["12.3.10/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 32,
+      "annotation": "// Proposal comparison \u00a712.3.10 step 4: Resolve aliases and available providers for a typed calendar ID.",
+      "evidence": "Resolves two documented aliases and ASCII-insensitive names through arithmetic and table registries. Known uninstalled tables remain distinguishable from invalid identifiers."
+    },
+    {
+      "inventory_row": 148,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_registry.rs",
+        "symbol": "impl<'a> CalendarRegistry<'a>::calendars",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "56",
+        "end_line": "61",
+        "comparison_sections": "12.3.10",
+        "section_ids": "sec-temporal-totemporalcalendaridentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70"
+      },
+      "spec_row_ids": ["12.3.10/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 55,
+      "annotation": "// Proposal comparison \u00a712.3.10 step 4: Enumerate the providers available for calendar resolution.",
+      "evidence": "The private runtime provider inventory consists of the supported arithmetic calendars and supplied optional tables. This iterator supplies that registry view."
+    },
+    {
+      "inventory_row": 149,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_registry.rs",
+        "symbol": "impl<'a> CalendarRegistry<'a>::for_string",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "63",
+        "end_line": "65",
+        "comparison_sections": "13.36|12.3.10",
+        "section_ids": "sec-temporal-parsetemporalcalendarstring|sec-temporal-totemporalcalendaridentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring|https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70"
+      },
+      "spec_row_ids": [
+        "13.36/algorithm-1/step-2.a",
+        "13.36/algorithm-1/step-2.b",
+        "13.36/algorithm-1/step-2.c",
+        "12.3.10/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 62,
+      "annotation": "// Proposal comparison \u00a713.36 steps 2.a\u20132.c and \u00a712.3.10 step 4: Resolve the parsed calendar annotation or ISO default.",
+      "evidence": "The caller supplies a parsed Temporal string shape. Calendar annotation selects the registry key and an absent annotation picks iso8601. String grammar and coercion belong to the caller."
+    },
+    {
+      "inventory_row": 151,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_registry.rs",
+        "symbol": "impl CalendarRegistry<'static>::compiled",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "76",
+        "end_line": "85",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md|knowledge-base/audits/temporal-umm-shipped-joins-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70"
+      },
+      "spec_row_ids": ["12.3.26/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 75,
+      "annotation": "// Proposal comparison \u00a712.3.26 step 2: Validate the compiled table providers before calendar projection.",
+      "evidence": "With compiled_calendars, typed constructors validate the shipped Chinese, Dangi and Umm al-Qura tables before registry assembly. Their subsequent projection is owned by TableCalendar."
+    },
+    {
+      "inventory_row": 454,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "module::monthly_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "21",
+        "end_line": "37",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 20,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Compute the monthly weekday used by a named-zone footer.",
+      "evidence": "Gregorian weekday arithmetic finds the requested occurrence. A fifth occurrence that falls after month end selects the preceding occurrence, implementing the last-week form."
+    },
+    {
+      "inventory_row": 455,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl TransitionRule::valid",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "40",
+        "end_line": "55",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 39,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Check the footer rule fields used for named-zone offsets.",
+      "evidence": "Checks month/week/weekday, day/Julian index and signed transition-time bounds before footer rule evaluation. The checks validate the local shape only."
+    },
+    {
+      "inventory_row": 456,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl TransitionRule::event",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "57",
+        "end_line": "80",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 56,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Convert a footer rule into local transition seconds.",
+      "evidence": "Monthly, zero-based day and Julian rules select a Gregorian day. Julian rules skip leap day. The supplied transition seconds are added to the local day."
+    },
+    {
+      "inventory_row": 457,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl FutureRule::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "90",
+        "end_line": "103",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 89,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Validate standard and daylight offsets before footer evaluation.",
+      "evidence": "The constructor bounds offsets below one day in magnitude and validates both optional switch rules. The generated evidence supplies the distinct recurrence assumptions for shipped data."
+    },
+    {
+      "inventory_row": 458,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl FutureRule::events",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "105",
+        "end_line": "111",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 104,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Convert footer switches to UTC using the prior offsets.",
+      "evidence": "The daylight start subtracts the standard offset from its local switch. The end subtracts the daylight offset. The pair is absent for a fixed footer."
+    },
+    {
+      "inventory_row": 459,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl FutureRule::changes_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "113",
+        "end_line": "151",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 112,
+      "annotation": "// Proposal comparison \u00a76.3.46 steps 9.a and 10.b: Check whether a footer event changes the offset.",
+      "evidence": "Rejects equal-offset daylight and standard states. Checks the offset immediately before and at an event, with explicit handling for a year-boundary shortcut and neighboring-year events."
+    },
+    {
+      "inventory_row": 460,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl FutureRule::offset_current_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "154",
+        "end_line": "162",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 153,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Select the offset in the applicable footer year.",
+      "evidence": "Compares epoch seconds with the two UTC events. The daylight interval is half-open and wraps across the year for southern rules. The caller selects the applicable year."
+    },
+    {
+      "inventory_row": 461,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl FutureRule::offset_near_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "165",
+        "end_line": "180",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 164,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Resolve the latest footer switch across neighboring years.",
+      "evidence": "Checks events in year minus one through year plus one and records the most recent switch at or before the input. Tied event ordering follows the local start/end predicates."
+    },
+    {
+      "inventory_row": 462,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl FutureRule::offset",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "182",
+        "end_line": "238",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 181,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Select named-zone footer offset for epoch seconds.",
+      "evidence": "Fixed rules return the standard offset. Month-shaped daylight rules can use the guarded window shortcut, with year or neighboring-year comparison for remaining inputs. Mapping is local to the generated provider premises."
+    },
+    {
+      "inventory_row": 463,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl<'a> TransitionZone<'a>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "256",
+        "end_line": "283",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 255,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Validate offsets and ordered events for named-zone lookup.",
+      "evidence": "Initial and transition offsets must lie strictly within one day. Explicit events must be strictly increasing and in Instant range. A supplied FutureRule already has typed construction checks."
+    },
+    {
+      "inventory_row": 464,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl<'a> TransitionZone<'a>::cutoff",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "285",
+        "end_line": "289",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 284,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Mark the final explicit event before footer lookup.",
+      "evidence": "Returns the final explicit event in epoch seconds or i64::MIN. Offset lookup compares the floored epoch second to this cutoff before using the supplied footer."
+    },
+    {
+      "inventory_row": 465,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl TimeZone for TransitionZone<'_>::offset_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "293",
+        "end_line": "323",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 292,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Look up a named-zone offset with exact instant boundaries.",
+      "evidence": "Floors exact Instant nanoseconds to a whole epoch second with integer arithmetic. Looks up the last explicit offset at or before that second, or uses the footer strictly after the cutoff. Returns exact offset nanoseconds."
+    },
+    {
+      "inventory_row": 466,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl TimeZone for TransitionZone<'_>::visit_offsets",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "325",
+        "end_line": "327",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 324,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Supply the full offset list for named-zone candidate checks.",
+      "evidence": "Delegates to the explicit and footer offset visitor. Caller checks candidate round trips, range and ordering separately."
+    },
+    {
+      "inventory_row": 467,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl TimeZone for TransitionZone<'_>::visit_offsets_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "329",
+        "end_line": "356",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 328,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Supply offsets near the requested local timestamp.",
+      "evidence": "A sub-day offset bounds potential candidate seconds to the local second plus or minus 86400. Visits baseline and in-window explicit offsets and relevant footer offsets. Empty clipped windows use the full list. Endpoint straddle premises remain separate."
+    },
+    {
+      "inventory_row": 468,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "impl TimeZone for TransitionZone<'_>::transition",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "359",
+        "end_line": "463",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 358,
+      "annotation": "// Proposal comparison \u00a76.3.46 steps 9.a and 10.b: Search strict next or previous offset changes.",
+      "evidence": "Searches exact explicit and generated recurrence events in the requested direction and skips no-op events. The mapping concerns the installed native data contract, with recurrence and endpoint premises scoped by existing proof."
+    },
+    {
+      "inventory_row": 469,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone.rs",
+        "symbol": "module::visit_distinct_offsets",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "467",
+        "end_line": "495",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-timezone-boundary-proof/generated-summary.json",
+        "unresolved_mapping": "",
+        "source_sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 466,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Visit possible initial, explicit and footer offsets.",
+      "evidence": "Converts offsets to nanoseconds and forwards each encountered value, suppressing repeats while values fit the fixed cache. Candidate validity and any remaining duplicate candidates are checked by the consumer."
+    },
+    {
+      "inventory_row": 470,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "module::named_time_zone_identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "13",
+        "end_line": "28",
+        "comparison_sections": "11.1.1",
+        "section_ids": "sec-getavailablenamedtimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-getavailablenamedtimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": [
+        "11.1.1/algorithm-1/step-1.a",
+        "11.1.1/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 12,
+      "annotation": "// Proposal comparison \u00a711.1.1 steps 1.a and 2: Look up spelling and primary ID by ASCII-insensitive name.",
+      "evidence": "Uses ASCII-folded byte order in the generated sorted records, returns record spelling and independent primary or None for absence."
+    },
+    {
+      "inventory_row": 471,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z> NamedTimeZone<Z>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "38",
+        "end_line": "43",
+        "comparison_sections": "11.1.8",
+        "section_ids": "sec-temporal-totemporaltimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": [
+        "11.1.8/algorithm-1/step-7",
+        "11.1.8/algorithm-1/step-8",
+        "11.1.8/algorithm-1/step-9"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 37,
+      "annotation": "// Proposal comparison \u00a711.1.8 steps 7\u20139: Bind a recognized name to the supplied provider.",
+      "evidence": "Looks up the named record and rejects absence. The wrapper requires the injected provider to describe that named zone."
+    },
+    {
+      "inventory_row": 472,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z> NamedTimeZone<Z>::identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "45",
+        "end_line": "47",
+        "comparison_sections": "11.1.8",
+        "section_ids": "sec-temporal-totemporaltimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": ["11.1.8/algorithm-1/step-9"],
+      "annotation_placement": "leading",
+      "annotation_line": 44,
+      "annotation": "// Proposal comparison \u00a711.1.8 step 9: Return the stored identifier spelling.",
+      "evidence": "Returns the Identifier spelling from the stored named-zone record, preserving an alias spelling when applicable."
+    },
+    {
+      "inventory_row": 473,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z> NamedTimeZone<Z>::primary_identifier",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "49",
+        "end_line": "51",
+        "comparison_sections": "11.1.15",
+        "section_ids": "sec-temporal-timezoneequals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timezoneequals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": ["11.1.15/algorithm-1/step-2.e"],
+      "annotation_placement": "leading",
+      "annotation_line": 48,
+      "annotation": "// Proposal comparison \u00a711.1.15 step 2.e: Read the primary ID used for named-zone comparison.",
+      "evidence": "Exposes the PrimaryIdentifier stored separately from Identifier in the named-zone record."
+    },
+    {
+      "inventory_row": 475,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z, W> PartialEq<NamedTimeZone<W>> for NamedTimeZone<Z>::eq",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "58",
+        "end_line": "60",
+        "comparison_sections": "11.1.15",
+        "section_ids": "sec-temporal-timezoneequals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timezoneequals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": [
+        "11.1.15/algorithm-1/step-2.e",
+        "11.1.15/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 57,
+      "annotation": "// Proposal comparison \u00a711.1.15 steps 2.e and 4: Compare named zones by primary ID.",
+      "evidence": "Compares the primary strings of two already resolved named zones, independent of the attached provider representations. Fixed-offset comparison belongs elsewhere."
+    },
+    {
+      "inventory_row": 476,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z: TimeZone> TimeZone for NamedTimeZone<Z>::offset_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "65",
+        "end_line": "67",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 64,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 3: Delegate exact named-zone offset lookup.",
+      "evidence": "Forwards the typed Instant unchanged to the provider bound to the resolved name."
+    },
+    {
+      "inventory_row": 477,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z: TimeZone> TimeZone for NamedTimeZone<Z>::visit_offsets",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "69",
+        "end_line": "71",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 68,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Delegate full offset enumeration for candidate checks.",
+      "evidence": "Forwards the visitor unchanged to the named zone provider. Candidate evaluation and deduplication belong to the consumer."
+    },
+    {
+      "inventory_row": 478,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z: TimeZone> TimeZone for NamedTimeZone<Z>::visit_offsets_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "73",
+        "end_line": "75",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 72,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Delegate local offset enumeration for candidate checks.",
+      "evidence": "Forwards the exact local nanoseconds and visitor unchanged to the named zone provider."
+    },
+    {
+      "inventory_row": 479,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/timezone_identity.rs",
+        "symbol": "impl<Z: TimeZone> TimeZone for NamedTimeZone<Z>::transition",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "77",
+        "end_line": "79",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zone-primary-reconciliation.json|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790"
+      },
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 76,
+      "annotation": "// Proposal comparison \u00a76.3.46 steps 9.a and 10.b: Delegate named-zone transition lookup.",
+      "evidence": "Forwards the exact Instant and requested transition direction unchanged to the named zone provider."
+    },
+    {
+      "inventory_row": 532,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C>::until",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "9",
+        "end_line": "18",
+        "comparison_sections": "6.3.37",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.until",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.until",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-difference-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": ["6.3.37/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 8,
+      "annotation": "// Proposal comparison \u00a76.3.37 step 3: Dispatch typed until to zoned difference.",
+      "evidence": "Forwards typed arguments to the shared date/time difference with the until flag. Public receiver and options evaluation are separate."
+    },
+    {
+      "inventory_row": 533,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C>::since",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "20",
+        "end_line": "29",
+        "comparison_sections": "6.3.38",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.since",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.since",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-difference-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": ["6.3.38/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 19,
+      "annotation": "// Proposal comparison \u00a76.3.38 step 3: Dispatch typed since to zoned difference.",
+      "evidence": "Forwards typed arguments to the shared date/time difference with the since flag. Public receiver and options evaluation are separate."
+    },
+    {
+      "inventory_row": 534,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C>::difference",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "31",
+        "end_line": "59",
+        "comparison_sections": "6.5.9",
+        "section_ids": "sec-temporal-differencetemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-difference-precision-audit.md|knowledge-base/audits/temporal-zone-primary-reconciliation.json",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": [
+        "6.5.9/algorithm-1/step-2",
+        "6.5.9/algorithm-1/step-7",
+        "6.5.9/algorithm-1/step-8",
+        "6.5.9/algorithm-1/step-9"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 30,
+      "annotation": "// Proposal comparison \u00a76.5.9 steps 2, 7\u20139: Check typed calendar and date-unit zone equality, then take the difference.",
+      "evidence": "Rejects different calendar IDs, validates typed settings, checks provider equality only for date units, then returns zero or delegates exact target nanoseconds to the shared difference. Generic provider PartialEq is a caller premise."
+    },
+    {
+      "inventory_row": 535,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<Z, C>::calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "65",
+        "end_line": "67",
+        "comparison_sections": "6.5.6",
+        "section_ids": "sec-temporal-differencezoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": ["6.5.6/algorithm-1/step-14"],
+      "annotation_placement": "leading",
+      "annotation_line": 64,
+      "annotation": "// Proposal comparison \u00a76.5.6 step 14: Supply the provider used for calendar date difference.",
+      "evidence": "Returns the already selected calendar provider. Its date_until operation owns calendar difference."
+    },
+    {
+      "inventory_row": 536,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<Z, C>::origin",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "70",
+        "end_line": "72",
+        "comparison_sections": "6.5.7",
+        "section_ids": "sec-temporal-differencezoneddatetimewithrounding",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-difference-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": ["6.5.7/algorithm-1/step-2", "6.5.7/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 69,
+      "annotation": "// Proposal comparison \u00a76.5.7 steps 2 and 5: Supply the anchor instant in exact nanoseconds.",
+      "evidence": "Supplies the exact start epoch nanoseconds for the relative arithmetic and rounding calls."
+    },
+    {
+      "inventory_row": 537,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<Z, C>::date_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "74",
+        "end_line": "82",
+        "comparison_sections": "6.5.6",
+        "section_ids": "sec-temporal-differencezoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": [
+        "6.5.6/algorithm-1/step-2",
+        "6.5.6/algorithm-1/step-3",
+        "6.5.6/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 73,
+      "annotation": "// Proposal comparison \u00a76.5.6 steps 2\u20134: Project an exact instant to its local ISO day.",
+      "evidence": "Validates and projects an Instant with the same zone provider, then extracts the ISO epoch day used by the shared date comparison."
+    },
+    {
+      "inventory_row": 538,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<Z, C>::endpoint",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "84",
+        "end_line": "89",
+        "comparison_sections": "6.5.5",
+        "section_ids": "sec-temporal-addzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-addzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": [
+        "6.5.5/algorithm-1/step-3",
+        "6.5.5/algorithm-1/step-6",
+        "6.5.5/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 83,
+      "annotation": "// Proposal comparison \u00a76.5.5 steps 3, 6 and 7: Supply exact constrained zoned endpoints for relative arithmetic.",
+      "evidence": "Validates typed duration fields and delegates constrained zoned addition. Returns the resulting exact Instant, leaving date, compatible resolution and time addition to checked_add."
+    },
+    {
+      "inventory_row": 539,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned_difference.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<Z, C>::clock_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "91",
+        "end_line": "99",
+        "comparison_sections": "6.5.6",
+        "section_ids": "sec-temporal-differencezoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-count-window-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353"
+      },
+      "spec_row_ids": ["6.5.6/algorithm-1/step-8"],
+      "annotation_placement": "leading",
+      "annotation_line": 90,
+      "annotation": "// Proposal comparison \u00a76.5.6 step 8: Project the local clock for time difference.",
+      "evidence": "Validates and projects an Instant in the same zone provider and extracts exact time-of-day nanoseconds. The consumer computes the clock difference."
+    },
+    {
+      "inventory_row": 334,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/now.rs",
+        "symbol": "impl<C: SystemClock> Now<C>::instant",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "17",
+        "end_line": "24",
+        "comparison_sections": "2.3.1|2.2.2",
+        "section_ids": "sec-hostsystemutcepochnanoseconds|sec-temporal.now.instant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-hostsystemutcepochnanoseconds|https://tc39.es/proposal-temporal/#sec-temporal.now.instant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-ts-clock26-annotation-source-proof.json|knowledge-base/audits/temporal-object-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e"
+      },
+      "spec_row_ids": [
+        "2.3.1/algorithm-1/step-1",
+        "2.3.1/algorithm-1/step-2",
+        "2.2.2/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 16,
+      "annotation": "// Proposal comparison \u00a72.3.1 steps 1\u20132 and \u00a72.2.2 step 2: Read and clamp the injected clock.",
+      "evidence": "Reads the injected clock once, clamps exact epoch nanoseconds to the Instant bounds and wraps them as an Instant. The injected clock owns the current UTC approximation."
+    },
+    {
+      "inventory_row": 335,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/now.rs",
+        "symbol": "impl<C: SystemClock> Now<C>::zoned_date_time_iso",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "26",
+        "end_line": "28",
+        "comparison_sections": "2.2.4",
+        "section_ids": "sec-temporal.now.zoneddatetimeiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.now.zoneddatetimeiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-ts-clock26-annotation-source-proof.json|knowledge-base/audits/temporal-bound-constructor-realm-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e"
+      },
+      "spec_row_ids": ["2.2.4/algorithm-1/step-3", "2.2.4/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 25,
+      "annotation": "// Proposal comparison \u00a72.2.4 steps 3\u20134: Read the instant and wrap it with the supplied zone and ISO calendar.",
+      "evidence": "Uses self.instant and the provided typed zone to create a ZonedDateTime whose default calendar is ISO. Zone selection is outside this entry point."
+    },
+    {
+      "inventory_row": 336,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/now.rs",
+        "symbol": "impl<C: SystemClock> Now<C>::plain_date_time_iso",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "30",
+        "end_line": "32",
+        "comparison_sections": "2.2.3",
+        "section_ids": "sec-temporal.now.plaindatetimeiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.now.plaindatetimeiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-ts-clock26-annotation-source-proof.json|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e"
+      },
+      "spec_row_ids": ["2.2.3/algorithm-1/step-1", "2.2.3/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 29,
+      "annotation": "// Proposal comparison \u00a72.2.3 steps 1\u20132: Project the injected clock into a local ISO date-time.",
+      "evidence": "Reads the same source through zoned_date_time_iso, then delegates exact local projection using the supplied typed zone and ISO calendar."
+    },
+    {
+      "inventory_row": 337,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/now.rs",
+        "symbol": "impl<C: SystemClock> Now<C>::plain_date_iso",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "34",
+        "end_line": "36",
+        "comparison_sections": "2.2.5",
+        "section_ids": "sec-temporal.now.plaindateiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.now.plaindateiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-ts-clock26-annotation-source-proof.json|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e"
+      },
+      "spec_row_ids": ["2.2.5/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 33,
+      "annotation": "// Proposal comparison \u00a72.2.5 step 2: Take the ISO date from the current local date-time.",
+      "evidence": "Reads and projects one instant with the supplied zone before extracting the date component of the ISO date-time."
+    },
+    {
+      "inventory_row": 338,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/now.rs",
+        "symbol": "impl<C: SystemClock> Now<C>::plain_time_iso",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "38",
+        "end_line": "40",
+        "comparison_sections": "2.2.6",
+        "section_ids": "sec-temporal.now.plaintimeiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.now.plaintimeiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-ts-clock26-annotation-source-proof.json|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e"
+      },
+      "spec_row_ids": ["2.2.6/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 37,
+      "annotation": "// Proposal comparison \u00a72.2.6 step 2: Take the time from the current local date-time.",
+      "evidence": "Reads and projects one instant with the supplied zone before extracting its local clock component."
+    },
+    {
+      "inventory_row": 501,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl Default for ZonedWithOptions::default",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "21",
+        "end_line": "27",
+        "comparison_sections": "6.3.31",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.with",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.with",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-offset-match-audit.md|knowledge-base/audits/temporal-record-copy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.31/algorithm-1/step-20",
+        "6.3.31/algorithm-1/step-21",
+        "6.3.31/algorithm-1/step-22"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 20,
+      "annotation": "// Proposal comparison \u00a76.3.31 steps 20\u201322: Supply typed zoned with defaults.",
+      "evidence": "The typed option record defaults to Compatible, Prefer, and Constrain, which are the zoned with algorithm default values. JS option reads remain outside this type."
+    },
+    {
+      "inventory_row": 502,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "pub trait TimeZone::visit_offsets_at",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "51",
+        "end_line": "53",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 50,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Fall back to full offset enumeration for candidates.",
+      "evidence": "The generic trait default delegates candidate offset enumeration to the full-history visitor. Consumers validate candidate instants. Specific providers may override the search."
+    },
+    {
+      "inventory_row": 504,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl TimeZone for FixedOffset::transition",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "69",
+        "end_line": "71",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-transition-lookup-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.46/algorithm-1/step-8"],
+      "annotation_placement": "leading",
+      "annotation_line": 68,
+      "annotation": "// Proposal comparison \u00a76.3.46 step 8: Fixed offsets have no transition.",
+      "evidence": "Always returns None for a fixed-offset provider regardless of instant or direction."
+    },
+    {
+      "inventory_row": 505,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl TimeZone for FixedOffset::offset_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "73",
+        "end_line": "75",
+        "comparison_sections": "11.1.9",
+        "section_ids": "sec-temporal-getoffsetnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-local-offset-precision-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["11.1.9/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 72,
+      "annotation": "// Proposal comparison \u00a711.1.9 step 2: Return the stored fixed offset in nanoseconds.",
+      "evidence": "Returns the exact offset already stored in nanoseconds. Minute-aligned public offset parsing occurs elsewhere."
+    },
+    {
+      "inventory_row": 506,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl TimeZone for FixedOffset::visit_offsets",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "77",
+        "end_line": "79",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 76,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 2.a: Supply the only offset for a fixed-zone candidate.",
+      "evidence": "Offers the single configured offset as a dependency of typed local candidate reconstruction. Candidate construction and range validation are performed by the visitor."
+    },
+    {
+      "inventory_row": 507,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone> ZonedDateTime<Z>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "90",
+        "end_line": "96",
+        "comparison_sections": "6.5.3",
+        "section_ids": "sec-temporal-createtemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.5.3/algorithm-1/step-4",
+        "6.5.3/algorithm-1/step-5",
+        "6.5.3/algorithm-1/step-6"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 89,
+      "annotation": "// Proposal comparison \u00a76.5.3 steps 4\u20136: Store a typed instant and zone with the ISO calendar.",
+      "evidence": "Creates the typed record from an already checked Instant and supplied zone, storing ISO as the calendar."
+    },
+    {
+      "inventory_row": 508,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone> ZonedDateTime<Z>::from_local",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "98",
+        "end_line": "107",
+        "comparison_sections": "11.1.11",
+        "section_ids": "sec-temporal-getepochnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getepochnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "11.1.11/algorithm-1/step-1",
+        "11.1.11/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 97,
+      "annotation": "// Proposal comparison \u00a711.1.11 steps 1\u20132: Resolve an ISO local date-time before storing it.",
+      "evidence": "Delegates exact local fields and the selected disambiguation to resolve_local, then stores the resulting instant together with the zone and ISO calendar."
+    },
+    {
+      "inventory_row": 509,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::new_in_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "111",
+        "end_line": "117",
+        "comparison_sections": "6.5.3",
+        "section_ids": "sec-temporal-createtemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.5.3/algorithm-1/step-4",
+        "6.5.3/algorithm-1/step-5",
+        "6.5.3/algorithm-1/step-6"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 110,
+      "annotation": "// Proposal comparison \u00a76.5.3 steps 4\u20136: Store the typed instant, zone and calendar.",
+      "evidence": "Creates the native zoned record from validated typed dependencies. No public constructor behavior is inferred."
+    },
+    {
+      "inventory_row": 510,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "119",
+        "end_line": "121",
+        "comparison_sections": "6.3.31",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.with",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.with",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-record-copy-audit.md|knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.31/algorithm-1/step-6"],
+      "annotation_placement": "leading",
+      "annotation_line": 118,
+      "annotation": "// Proposal comparison \u00a76.3.31 step 6: Read the stored calendar provider.",
+      "evidence": "Returns the typed provider stored on the native ZonedDateTime."
+    },
+    {
+      "inventory_row": 511,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::calendar_id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "123",
+        "end_line": "125",
+        "comparison_sections": "6.3.3",
+        "section_ids": "sec-get-temporal.zoneddatetime.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 122,
+      "annotation": "// Proposal comparison \u00a76.3.3 step 3: Return the stored calendar provider ID.",
+      "evidence": "The provider supplies its canonical ID for the typed getter."
+    },
+    {
+      "inventory_row": 512,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::instant",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "127",
+        "end_line": "129",
+        "comparison_sections": "6.3.47",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.toinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.toinstant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-bound-constructor-realm-audit.md|knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.47/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 126,
+      "annotation": "// Proposal comparison \u00a76.3.47 step 3: Return the typed instant stored by the zoned value.",
+      "evidence": "Returns the existing validated native Instant without offset or calendar transformations. JS object creation is handled separately."
+    },
+    {
+      "inventory_row": 513,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::time_zone",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "131",
+        "end_line": "133",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-transition-lookup-audit.md|knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.46/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 130,
+      "annotation": "// Proposal comparison \u00a76.3.46 step 3: Read the stored zone provider.",
+      "evidence": "Returns the typed zone that owns transition and offset data. Public identifier spelling has a separate owner."
+    },
+    {
+      "inventory_row": 514,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::with_time_zone",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "135",
+        "end_line": "137",
+        "comparison_sections": "6.3.33",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.withtimezone",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withtimezone",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.33/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 134,
+      "annotation": "// Proposal comparison \u00a76.3.33 step 4: Replace the typed zone while preserving instant and calendar.",
+      "evidence": "Creates a new native zoned value with the supplied zone provider and retains the exact instant and calendar."
+    },
+    {
+      "inventory_row": 515,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::local",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "139",
+        "end_line": "144",
+        "comparison_sections": "11.1.10",
+        "section_ids": "sec-temporal-getisodatetimefor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisodatetimefor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "11.1.10/algorithm-1/step-1",
+        "11.1.10/algorithm-1/step-2",
+        "11.1.10/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 138,
+      "annotation": "// Proposal comparison \u00a711.1.10 steps 1\u20133: Project the exact instant into local date-time.",
+      "evidence": "Adds the provider offset in exact nanoseconds and constructs the local date-time in the stored calendar. Provider and local-range premises remain scoped."
+    },
+    {
+      "inventory_row": 516,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C>::from_local_in_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "146",
+        "end_line": "154",
+        "comparison_sections": "11.1.11|6.5.3",
+        "section_ids": "sec-temporal-getepochnanosecondsfor|sec-temporal-createtemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getepochnanosecondsfor|https://tc39.es/proposal-temporal/#sec-temporal-createtemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md|knowledge-base/audits/temporal-bound-constructor-realm-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "11.1.11/algorithm-1/step-1",
+        "11.1.11/algorithm-1/step-2",
+        "6.5.3/algorithm-1/step-4",
+        "6.5.3/algorithm-1/step-5",
+        "6.5.3/algorithm-1/step-6"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 145,
+      "annotation": "// Proposal comparison \u00a711.1.11 steps 1\u20132 and \u00a76.5.3 steps 4\u20136: Resolve a typed local date-time and store its calendar.",
+      "evidence": "Resolves ISO local fields through the supplied zone and disambiguation. Stores the resulting Instant and the selected calendar provider."
+    },
+    {
+      "inventory_row": 517,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::with_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "158",
+        "end_line": "188",
+        "comparison_sections": "6.3.31",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.with",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.with",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-record-copy-audit.md|knowledge-base/audits/temporal-zoned-offset-match-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.31/algorithm-1/step-18",
+        "6.3.31/algorithm-1/step-23",
+        "6.3.31/algorithm-1/step-25",
+        "6.3.31/algorithm-1/step-26"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 157,
+      "annotation": "// Proposal comparison \u00a76.3.31 steps 18, 23 and 25\u201326: Merge typed fields and resolve with an exact offset hint.",
+      "evidence": "Validates presence of a partial field or offset, delegates typed local update, defaults the offset hint to the source zone offset, and delegates exact offset interpretation. JS field/property reads remain separate."
+    },
+    {
+      "inventory_row": 518,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::with_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "190",
+        "end_line": "192",
+        "comparison_sections": "6.3.34",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.withcalendar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withcalendar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-identity-rounding-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.34/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 189,
+      "annotation": "// Proposal comparison \u00a76.3.34 step 4: Replace the typed calendar while preserving instant and zone.",
+      "evidence": "Changes the calendar provider and retains the exact instant and zone."
+    },
+    {
+      "inventory_row": 519,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::with_time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "194",
+        "end_line": "204",
+        "comparison_sections": "6.3.32",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.withplaintime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withplaintime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.32/algorithm-1/step-6.a",
+        "6.3.32/algorithm-1/step-7.b",
+        "6.3.32/algorithm-1/step-7.c",
+        "6.3.32/algorithm-1/step-8"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 193,
+      "annotation": "// Proposal comparison \u00a76.3.32 steps 6.a, 7.b\u20137.c and 8: Replace the local clock or use start of day.",
+      "evidence": "Uses day boundary lookup for an absent time. Combines the given time with the current local date for compatible resolution and preserves the zone and calendar."
+    },
+    {
+      "inventory_row": 520,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::start_of_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "206",
+        "end_line": "213",
+        "comparison_sections": "6.3.45",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.startofday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.startofday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.45/algorithm-1/step-5",
+        "6.3.45/algorithm-1/step-6",
+        "6.3.45/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 205,
+      "annotation": "// Proposal comparison \u00a76.3.45 steps 5\u20137: Resolve the start of the current local day.",
+      "evidence": "Projects to the local ISO epoch day, delegates start-of-day lookup and reconstructs with the existing zone and calendar."
+    },
+    {
+      "inventory_row": 521,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::hours_in_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "215",
+        "end_line": "220",
+        "comparison_sections": "6.3.23",
+        "section_ids": "sec-get-temporal.zoneddatetime.prototype.hoursinday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.hoursinday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.23/algorithm-1/step-5",
+        "6.3.23/algorithm-1/step-6",
+        "6.3.23/algorithm-1/step-7",
+        "6.3.23/algorithm-1/step-8",
+        "6.3.23/algorithm-1/step-9",
+        "6.3.23/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 214,
+      "annotation": "// Proposal comparison \u00a76.3.23 steps 5\u201310: Take the span between consecutive local day boundaries in hours.",
+      "evidence": "Subtracts exact boundary nanoseconds before conversion to hours. Local day window assumptions remain with the provider."
+    },
+    {
+      "inventory_row": 522,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::round",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "222",
+        "end_line": "265",
+        "comparison_sections": "6.3.39",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.round",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.round",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-round-contract-audit.md|knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.39/algorithm-1/step-19.c",
+        "6.3.39/algorithm-1/step-19.e",
+        "6.3.39/algorithm-1/step-19.i",
+        "6.3.39/algorithm-1/step-20.a",
+        "6.3.39/algorithm-1/step-20.b",
+        "6.3.39/algorithm-1/step-20.c"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 221,
+      "annotation": "// Proposal comparison \u00a76.3.39 steps 19.c, 19.e, 19.i and 20.a\u201320.c: Supply typed zoned rounding branches.",
+      "evidence": "Day branch resolves actual boundaries before rounding within the day. Clock branch rounds local time and prefers a matching exact source offset before compatible fallback. Scope excludes JS option reads and conditional endpoint/zero-span proposal premises."
+    },
+    {
+      "inventory_row": 523,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::day_boundary",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "267",
+        "end_line": "269",
+        "comparison_sections": "6.3.45",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.startofday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.startofday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["6.3.45/algorithm-1/step-6"],
+      "annotation_placement": "leading",
+      "annotation_line": 266,
+      "annotation": "// Proposal comparison \u00a76.3.45 step 6: Delegate day boundary lookup for the stored zone.",
+      "evidence": "Supplies the ISO epoch day and stored provider to the common day boundary resolver."
+    },
+    {
+      "inventory_row": 524,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::transition",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "271",
+        "end_line": "275",
+        "comparison_sections": "6.3.46",
+        "section_ids": "sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-transition-lookup-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.3.46/algorithm-1/step-9.a",
+        "6.3.46/algorithm-1/step-10.b",
+        "6.3.46/algorithm-1/step-11",
+        "6.3.46/algorithm-1/step-12"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 270,
+      "annotation": "// Proposal comparison \u00a76.3.46 steps 9.a, 10.b and 11\u201312: Query a typed transition and preserve zone and calendar.",
+      "evidence": "Delegates direction and exact instant to the typed provider. Absent result stays None. Present result creates a typed zoned value with the unchanged zone/calendar."
+    },
+    {
+      "inventory_row": 525,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::checked_add",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "277",
+        "end_line": "298",
+        "comparison_sections": "6.5.5",
+        "section_ids": "sec-temporal-addzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-addzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-plain-date-time-add-contract-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.5.5/algorithm-1/step-1",
+        "6.5.5/algorithm-1/step-3",
+        "6.5.5/algorithm-1/step-6",
+        "6.5.5/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 276,
+      "annotation": "// Proposal comparison \u00a76.5.5 steps 1, 3, 6 and 7: Add date units locally and clock units on the instant.",
+      "evidence": "Adds the calendar part to local fields when present and resolves compatible. Adds the exact clock part to the resulting instant, or to the source instant for a clock-only duration."
+    },
+    {
+      "inventory_row": 526,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C>::checked_subtract",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "300",
+        "end_line": "302",
+        "comparison_sections": "6.5.10",
+        "section_ids": "sec-temporal-adddurationtozoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtozoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-plain-date-time-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "6.5.10/algorithm-1/step-2",
+        "6.5.10/algorithm-1/step-8"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 299,
+      "annotation": "// Proposal comparison \u00a76.5.10 steps 2 and 8: Negate the typed duration and delegate zoned addition.",
+      "evidence": "Negates all validated duration fields before delegating to checked_add with unchanged overflow."
+    },
+    {
+      "inventory_row": 527,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "module::visit_possible_instants",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "305",
+        "end_line": "312",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 304,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Convert typed ISO fields before visiting candidate instants.",
+      "evidence": "Converts typed ISO fields to exact local nanoseconds and forwards them into the provider candidate visitor. Scope follows valid Instant candidate contract."
+    },
+    {
+      "inventory_row": 528,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "module::visit_possible_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "314",
+        "end_line": "330",
+        "comparison_sections": "11.1.13",
+        "section_ids": "sec-temporal-getpossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 313,
+      "annotation": "// Proposal comparison \u00a711.1.13 step 3.a: Keep in-range candidates whose provider offset round-trips.",
+      "evidence": "Subtracts each strictly sub-day candidate offset from exact local nanoseconds, accepts valid instants only when their offset matches the offset used. Any mixed-validity endpoint premise is separate."
+    },
+    {
+      "inventory_row": 529,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "module::day_boundary",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "333",
+        "end_line": "359",
+        "comparison_sections": "11.1.14",
+        "section_ids": "sec-temporal-getstartofday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getstartofday",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-day-window-engine-audit.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "11.1.14/algorithm-1/step-1",
+        "11.1.14/algorithm-1/step-2",
+        "11.1.14/algorithm-1/step-3",
+        "11.1.14/algorithm-1/step-5",
+        "11.1.14/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 332,
+      "annotation": "// Proposal comparison \u00a711.1.14 steps 1\u20133, 5 and 7: Resolve midnight or find the containing forward transition.",
+      "evidence": "Uses compatible resolution for midnight, checks whether it round-trips, then searches the preceding transition interval for the gap containing midnight. Scope limited to the existing provider premises."
+    },
+    {
+      "inventory_row": 530,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "module::resolve_local",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "362",
+        "end_line": "368",
+        "comparison_sections": "11.1.11",
+        "section_ids": "sec-temporal-getepochnanosecondsfor",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getepochnanosecondsfor",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-zoned-day-window-generated-parity.md|knowledge-base/audits/temporal-timezone-boundary-proof/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "11.1.11/algorithm-1/step-1",
+        "11.1.11/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 361,
+      "annotation": "// Proposal comparison \u00a711.1.11 steps 1\u20132: Convert local fields and delegate candidate disambiguation.",
+      "evidence": "Converts exact typed ISO fields to epoch-like local nanoseconds and delegates with the same zone/disambiguation."
+    },
+    {
+      "inventory_row": 531,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/zoned.rs",
+        "symbol": "module::resolve_local_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "370",
+        "end_line": "425",
+        "comparison_sections": "11.1.12",
+        "section_ids": "sec-temporal-disambiguatepossibleepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-timezone-boundary-proof/README.md|knowledge-base/audits/temporal-zoned-day-window-generated-parity.md",
+        "unresolved_mapping": "",
+        "source_sha256": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd"
+      },
+      "spec_row_ids": [
+        "11.1.12/algorithm-1/step-2",
+        "11.1.12/algorithm-1/step-3.a",
+        "11.1.12/algorithm-1/step-3.b",
+        "11.1.12/algorithm-1/step-3.c",
+        "11.1.12/algorithm-1/step-3.d",
+        "11.1.12/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 369,
+      "annotation": "// Proposal comparison \u00a711.1.12 steps 2, 3.a\u20133.d and 5: Select the requested candidate or apply reject.",
+      "evidence": "Selects the minimum and maximum validated candidates, handles one candidate and distinguishes earlier/later/reject. The separate containing-gap transition fallback requires the local provider premise."
+    },
+    {
+      "inventory_row": 962,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-date-time.ts",
+        "symbol": "createPlainDateTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "160",
+        "end_line": "177",
+        "comparison_sections": "5.5.8",
+        "section_ids": "sec-temporal-createtemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57"
+      },
+      "spec_row_ids": [
+        "5.5.8/algorithm-1/step-1",
+        "5.5.8/algorithm-1/step-2",
+        "5.5.8/algorithm-1/step-3",
+        "5.5.8/algorithm-1/step-4",
+        "5.5.8/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 159,
+      "annotation": "// Temporal comparison \u00a75.5.8 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    },
+    {
+      "inventory_row": 969,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-date.ts",
+        "symbol": "createPlainDate",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "145",
+        "end_line": "160",
+        "comparison_sections": "3.5.3",
+        "section_ids": "sec-temporal-createtemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3"
+      },
+      "spec_row_ids": [
+        "3.5.3/algorithm-1/step-1",
+        "3.5.3/algorithm-1/step-2",
+        "3.5.3/algorithm-1/step-3",
+        "3.5.3/algorithm-1/step-4",
+        "3.5.3/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 144,
+      "annotation": "// Temporal comparison \u00a73.5.3 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    },
+    {
+      "inventory_row": 975,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-month-day.ts",
+        "symbol": "createPlainMonthDay",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "74",
+        "end_line": "81",
+        "comparison_sections": "10.5.2",
+        "section_ids": "sec-temporal-createtemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b"
+      },
+      "spec_row_ids": [
+        "10.5.2/algorithm-1/step-1",
+        "10.5.2/algorithm-1/step-2",
+        "10.5.2/algorithm-1/step-3",
+        "10.5.2/algorithm-1/step-4",
+        "10.5.2/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 73,
+      "annotation": "// Temporal comparison \u00a710.5.2 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    },
+    {
+      "inventory_row": 1000,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-year-month.ts",
+        "symbol": "createPlainYearMonth",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "114",
+        "end_line": "120",
+        "comparison_sections": "9.5.5",
+        "section_ids": "sec-temporal-createtemporalyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7"
+      },
+      "spec_row_ids": [
+        "9.5.5/algorithm-1/step-1",
+        "9.5.5/algorithm-1/step-2",
+        "9.5.5/algorithm-1/step-3",
+        "9.5.5/algorithm-1/step-4",
+        "9.5.5/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 113,
+      "annotation": "// Temporal comparison \u00a79.5.5 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
     }
   ],
   "comment_only_source_evidence": [
@@ -10932,24 +13263,24 @@
     "active_rebound_rows": 1066,
     "retired_replaced_callbacks": 3,
     "mapping_status": {
-      "candidate": 220,
-      "mapped": 488,
-      "unmapped": 361
+      "candidate": 177,
+      "mapped": 562,
+      "unmapped": 330
     },
     "annotation_coverage": {
-      "no_numbered_anchor": 653,
-      "direct_numbered": 400,
+      "no_numbered_anchor": 575,
+      "direct_numbered": 478,
       "enclosing_numbered": 13,
       "retired_callback": 3
     },
-    "direct_with_step_wording": 278,
+    "direct_with_step_wording": 356,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 379,
+      "overlap": 457,
       "no_overlap_or_no_prior_mapping": 21
     },
     "no_numbered_anchor_by_kind": {
-      "function": 311,
-      "named-function": 186,
+      "function": 237,
+      "named-function": 182,
       "callback": 148,
       "method": 8
     },
@@ -10958,8 +13289,8 @@
         "rows": 180,
         "files": 12,
         "coverage": {
-          "no_numbered_anchor": 133,
-          "direct_numbered": 43,
+          "no_numbered_anchor": 70,
+          "direct_numbered": 106,
           "enclosing_numbered": 4
         }
       },
@@ -10967,16 +13298,16 @@
         "rows": 247,
         "files": 19,
         "coverage": {
-          "no_numbered_anchor": 125,
-          "direct_numbered": 122
+          "no_numbered_anchor": 119,
+          "direct_numbered": 128
         }
       },
       "rust_value_parser_arithmetic_algorithm_review": {
         "rows": 248,
         "files": 13,
         "coverage": {
-          "no_numbered_anchor": 137,
-          "direct_numbered": 111
+          "no_numbered_anchor": 132,
+          "direct_numbered": 116
         }
       },
       "native_transport_with_temporal_adapters_review": {
@@ -10998,8 +13329,8 @@
         "rows": 240,
         "files": 24,
         "coverage": {
-          "no_numbered_anchor": 117,
-          "direct_numbered": 111,
+          "no_numbered_anchor": 113,
+          "direct_numbered": 115,
           "enclosing_numbered": 9,
           "retired_callback": 3
         }
@@ -11018,7 +13349,7 @@
     "crates/intl_datetimeformat_calendars/tables.rs": "dbe6e0825b2dcc3080eb75974d56f346ec81f45f799ede86f5e49def2f7fc4ee",
     "crates/temporal/calendar_difference.rs": "7744b66434f7bcb41db5a1fe5e421a2a83ad368946bebca2cf596b9a1df3caec",
     "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
-    "crates/temporal/calendar_registry.rs": "e996fcad1b3638299e89c3580048ada3a5bd6dfbe8b9bd63784dfcfa6d494660",
+    "crates/temporal/calendar_registry.rs": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70",
     "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
     "crates/temporal/date.rs": "1b5259eefb666b21a62515ac8b5fea97271c1e38e2bb9589d4fbc35202876c8d",
     "crates/temporal/duration.rs": "f70628d9db8cb92a5e8a9ac8e26dede09d2fd602722ba201867c1a3b59326ef4",
@@ -11026,18 +13357,18 @@
     "crates/temporal/format.rs": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c",
     "crates/temporal/iso.rs": "fbf7adcea2393345d629c5525b8e320446b33dd8a8d0ca0ab136ad0c0105e27b",
     "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
-    "crates/temporal/now.rs": "661f0a5cb156470bd31bea56d3b76ee9e18c24cf08f45fcef456585c517e5749",
+    "crates/temporal/now.rs": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e",
     "crates/temporal/parse.rs": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4",
     "crates/temporal/plain_relative.rs": "2180a18fb2672442343ef2e5da471fe98adb30029d31736a7269928f4eed2af2",
     "crates/temporal/relative_duration.rs": "dda8d638d0e5ebda82aa6b41b6153a3b174ee94a5188ac7e11a914d7f911ea7f",
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
     "crates/temporal/short_dates.rs": "47b747390e377fbdf3a62837f80f3dae43a99772628b64e260ccde62aff16920",
     "crates/temporal/time.rs": "1241c679243e47a9484b1400b4d5457c9b481ecf1a0c9549cb127df35d47b054",
-    "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
-    "crates/temporal/timezone_identity.rs": "04e2620d630e9e6942f95616d8a3548893ca803d8b5ba6497d9d609ae5fe85e9",
+    "crates/temporal/timezone.rs": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2",
+    "crates/temporal/timezone_identity.rs": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790",
     "crates/temporal/timezone_registry.rs": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
-    "crates/temporal/zoned.rs": "9152152a6fbda5ff016c37d32fbe786d306290ee9730582e8845cfe1e96436db",
-    "crates/temporal/zoned_difference.rs": "61346edc1dcebfec4bf7f32a0a53f0ab2120ebba6309edeeaef1324e22125fe4",
+    "crates/temporal/zoned.rs": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd",
+    "crates/temporal/zoned_difference.rs": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353",
     "crates/temporal/zoned_string.rs": "c883ba2ab73f4fbdbe827862c3e1307a4f246c42a90beccd343d25d402aabb57",
     "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
@@ -11068,20 +13399,20 @@
     "packages/temporal/legacy-zoned-date.ts": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
     "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
-    "packages/temporal/native.ts": "877e205eb0e48721c6ae2d328059940a231ac1d36c13727c4e215f84be728250",
-    "packages/temporal/plain-date-time.ts": "b73fe57fbcfeba8eb1e20ce5651ac0d01dbe30a8f05c5552a803c07d658248a3",
-    "packages/temporal/plain-date.ts": "ac07072869eee090ed45fac7af65590776954f270c7162b6ea0ffcdd4b13fe86",
-    "packages/temporal/plain-month-day.ts": "af1a02119f94ebdf4149318e330d24d9012d0525eef8c086b6f4a8b814a402b2",
-    "packages/temporal/plain-slots.ts": "40ef43d1fc5f405c2d638587c1edf3ceab79a6cff7b9c4653d0e719099207c18",
+    "packages/temporal/native.ts": "9d0a2bed50d35ca4e0dbf9ee7cac010c9d6bda641891fa4dda37eceb7f94089f",
+    "packages/temporal/plain-date-time.ts": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57",
+    "packages/temporal/plain-date.ts": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3",
+    "packages/temporal/plain-month-day.ts": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b",
+    "packages/temporal/plain-slots.ts": "ac765b5e666e0ba3fc92bab3d8ab8a90d5daf74bc492b413019a73ff45c9be7a",
     "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
-    "packages/temporal/plain-year-month.ts": "a07bb9982dac43842b830732a3e8a407193736bfea137b1d4fec15e080c6c6bd",
+    "packages/temporal/plain-year-month.ts": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7",
     "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
     "packages/temporal/zoned-date-time.ts": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72",
     "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176",
-    "packages/temporal/epoch-slots.ts": "4f35c0173aebcdf1eacd3c95b9a3223205cd102e92ee77f2ab0dfdd8c6ae1704"
+    "packages/temporal/epoch-slots.ts": "9580c5573978e5efbf0e131179be8982ec3e84810fcbdc780220be4af7b84a73"
   },
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "measurement": {
@@ -11336,7 +13667,18 @@
       230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244,
       245, 246, 247, 248, 249, 250, 369, 370, 371, 372, 373
     ],
-    "epoch_annotations": [663, 730, 734, 735, 1032]
+    "epoch_annotations": [663, 730, 734, 735, 1032],
+    "native_zonecal39": [
+      145, 146, 147, 148, 149, 151, 454, 455, 456, 457, 458, 459, 460, 461, 462,
+      463, 464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 475, 476, 477, 478,
+      479, 532, 533, 534, 535, 536, 537, 538, 539
+    ],
+    "native_zoned_now35": [
+      334, 335, 336, 337, 338, 501, 502, 504, 505, 506, 507, 508, 509, 510, 511,
+      512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 524, 525, 526,
+      527, 528, 529, 530, 531
+    ],
+    "calendar_entry": [962, 969, 975, 1000]
   },
   "inline_caller_dependency_link_reviews": [
     {

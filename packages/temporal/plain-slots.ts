@@ -1,10 +1,17 @@
 import {
+  allocateSharedDateTime,
+  allocateSharedDay,
+  getSharedDateTimeSlot,
+  getSharedDaySlot,
   getSharedZonedSlot,
+  nativeTemporal,
+  type DaySlotKind,
   type NativeDateSnapshot,
   type NativeTimeResult,
 } from '#packages/temporal/native.js'
 import {zonedKernel} from '#packages/temporal/zones.js'
 import type {CalendarDate} from '#packages/temporal/calendar.js'
+import {createObject} from '#packages/temporal/intrinsics.js'
 export const isoDateFields: unique symbol = Symbol()
 export interface DateSlot {
   [isoDateFields]?: Readonly<CalendarDate>
@@ -18,7 +25,6 @@ export interface DateTimeSlot {
   readonly epochNanoseconds: bigint
   readonly calendar: string
 }
-const dates = new WeakMap<object, DateSlot>()
 const dateTimes = new WeakMap<object, DateTimeSlot>()
 const times = new WeakMap<object, bigint | NativeTimeResult>()
 const ToBigInt = BigInt
@@ -26,14 +32,91 @@ const nativeTimeLookup =
   import.meta.formatjsTemporalNativeData === true
     ? times.get.bind(times)
     : undefined!
-export const getDateSlot: (value: object) => DateSlot | undefined =
-  dates.get.bind(dates)
-export const setDateSlot: (value: object, slot: DateSlot) => unknown =
-  dates.set.bind(dates)
-export const getDateTimeSlot: (value: object) => DateTimeSlot | undefined =
-  dateTimes.get.bind(dateTimes)
-export const setDateTimeSlot: (value: object, slot: DateTimeSlot) => unknown =
-  dateTimes.set.bind(dateTimes)
+interface DaySlots {
+  get(value: object): DateSlot | undefined
+  allocate(prototype: object, slot: DateSlot): object
+}
+
+// Temporal comparison §§12.3.10–11 step 1. Keep per-kind slot reads and caches.
+function daySlots(kind: DaySlotKind): DaySlots {
+  const slots = new WeakMap<object, DateSlot>()
+  const getLocal = slots.get.bind(slots)
+  const setLocal = slots.set.bind(slots)
+
+  function get(value: object): DateSlot | undefined {
+    const local = getLocal(value)
+    if (import.meta.formatjsTemporalNativeData === true || local) return local
+    const shared = getSharedDaySlot(value, kind)
+    if (!shared) return undefined
+    // Cache ISO projections locally. The shared slot holds only immutable scalars.
+    const slot = {
+      __proto__: null,
+      epochDay: shared.epochDay,
+      calendar: shared.calendar,
+    }
+    setLocal(value, slot)
+    return slot
+  }
+
+  function allocate(prototype: object, slot: DateSlot): object {
+    const value =
+      import.meta.formatjsTemporalNativeData === true || nativeTemporal()
+        ? createObject(prototype)
+        : allocateSharedDay(prototype, kind, slot.epochDay, slot.calendar)
+    setLocal(value, slot)
+    return value
+  }
+  return {get, allocate}
+}
+
+const dates = daySlots('date')
+const yearMonths = daySlots('year-month')
+const monthDays = daySlots('month-day')
+
+export const getDateSlot: DaySlots['get'] = dates.get
+export const allocateDate: DaySlots['allocate'] = dates.allocate
+export const getYearMonthSlot: DaySlots['get'] = yearMonths.get
+export const allocateYearMonth: DaySlots['allocate'] = yearMonths.allocate
+export const getMonthDaySlot: DaySlots['get'] = monthDays.get
+export const allocateMonthDay: DaySlots['allocate'] = monthDays.allocate
+
+const getLocalDateTime = dateTimes.get.bind(dateTimes)
+const setLocalDateTime = dateTimes.set.bind(dateTimes)
+export const setNativeDateTimeSlot: (
+  value: object,
+  slot: DateTimeSlot
+) => unknown =
+  import.meta.formatjsTemporalNativeData === true
+    ? setLocalDateTime
+    : undefined!
+
+// Temporal comparison §§12.3.10–11 step 1. Read initialized date-time slots.
+export function getDateTimeSlot(value: object): DateTimeSlot | undefined {
+  const local = getLocalDateTime(value)
+  if (import.meta.formatjsTemporalNativeData === true || local) return local
+  const shared = getSharedDateTimeSlot(value)
+  if (!shared) return undefined
+  const slot = {
+    __proto__: null,
+    epochNanoseconds: shared.epochNanoseconds,
+    calendar: shared.calendar,
+  }
+  setLocalDateTime(value, slot)
+  return slot
+}
+
+// Temporal comparison §5.5.8 steps 3–5. Initialize the selected storage path.
+export function allocateDateTime(
+  prototype: object,
+  slot: DateTimeSlot
+): object {
+  const value =
+    import.meta.formatjsTemporalNativeData === true || nativeTemporal()
+      ? createObject(prototype)
+      : allocateSharedDateTime(prototype, slot.epochNanoseconds, slot.calendar)
+  setLocalDateTime(value, slot)
+  return value
+}
 export const getTimeSlot: (value: object) => bigint | undefined =
   import.meta.formatjsTemporalNativeData === true
     ? value => {
@@ -59,17 +142,6 @@ export const setNativeTimeSlot: (
     : undefined!
 export const setTimeSlot: (value: object, slot: bigint) => unknown =
   times.set.bind(times)
-
-const yearMonths = new WeakMap<object, DateSlot>()
-const monthDays = new WeakMap<object, DateSlot>()
-export const getYearMonthSlot: (value: object) => DateSlot | undefined =
-  yearMonths.get.bind(yearMonths)
-export const setYearMonthSlot: (value: object, slot: DateSlot) => unknown =
-  yearMonths.set.bind(yearMonths)
-export const getMonthDaySlot: (value: object) => DateSlot | undefined =
-  monthDays.get.bind(monthDays)
-export const setMonthDaySlot: (value: object, slot: DateSlot) => unknown =
-  monthDays.set.bind(monthDays)
 
 export interface ZonedSlot extends DateTimeSlot {
   readonly timeZone: string

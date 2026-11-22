@@ -1,0 +1,162 @@
+{
+  "scope": "Four fixed TypeScript helper mappings for the Plain calendar constructors.",
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "sources": {
+    "packages/temporal/plain-date-time.ts": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57",
+    "packages/temporal/plain-date.ts": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3",
+    "packages/temporal/plain-month-day.ts": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b",
+    "packages/temporal/plain-year-month.ts": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7"
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 962,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-date-time.ts",
+        "symbol": "createPlainDateTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "160",
+        "end_line": "177",
+        "comparison_sections": "5.5.8",
+        "section_ids": "sec-temporal-createtemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57"
+      },
+      "spec_row_ids": [
+        "5.5.8/algorithm-1/step-1",
+        "5.5.8/algorithm-1/step-2",
+        "5.5.8/algorithm-1/step-3",
+        "5.5.8/algorithm-1/step-4",
+        "5.5.8/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 159,
+      "annotation": "// Temporal comparison \u00a75.5.8 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    },
+    {
+      "inventory_row": 969,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-date.ts",
+        "symbol": "createPlainDate",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "145",
+        "end_line": "160",
+        "comparison_sections": "3.5.3",
+        "section_ids": "sec-temporal-createtemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3"
+      },
+      "spec_row_ids": [
+        "3.5.3/algorithm-1/step-1",
+        "3.5.3/algorithm-1/step-2",
+        "3.5.3/algorithm-1/step-3",
+        "3.5.3/algorithm-1/step-4",
+        "3.5.3/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 144,
+      "annotation": "// Temporal comparison \u00a73.5.3 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    },
+    {
+      "inventory_row": 975,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-month-day.ts",
+        "symbol": "createPlainMonthDay",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "74",
+        "end_line": "81",
+        "comparison_sections": "10.5.2",
+        "section_ids": "sec-temporal-createtemporalmonthday",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalmonthday",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b"
+      },
+      "spec_row_ids": [
+        "10.5.2/algorithm-1/step-1",
+        "10.5.2/algorithm-1/step-2",
+        "10.5.2/algorithm-1/step-3",
+        "10.5.2/algorithm-1/step-4",
+        "10.5.2/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 73,
+      "annotation": "// Temporal comparison \u00a710.5.2 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    },
+    {
+      "inventory_row": 1000,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-year-month.ts",
+        "symbol": "createPlainYearMonth",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "114",
+        "end_line": "120",
+        "comparison_sections": "9.5.5",
+        "section_ids": "sec-temporal-createtemporalyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_calendar_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/same-loader-calendar-fix.md",
+        "unresolved_mapping": "",
+        "source_sha256": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7"
+      },
+      "spec_row_ids": [
+        "9.5.5/algorithm-1/step-1",
+        "9.5.5/algorithm-1/step-2",
+        "9.5.5/algorithm-1/step-3",
+        "9.5.5/algorithm-1/step-4",
+        "9.5.5/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 113,
+      "annotation": "// Temporal comparison \u00a79.5.5 steps 1\u20135. Allocate with the local prototype.",
+      "evidence": "Local factory retains its selected prototype, shares only validated calendar scalars, and retains the native or local cache representation."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//packages/temporal:package_test",
+      "//packages/temporal:plain_date_test262",
+      "//packages/temporal:plain_date_time_test262",
+      "//packages/temporal:year_month_test262",
+      "//packages/temporal:month_day_test262"
+    ],
+    "log_sha256": "8557247cf1a6a50806dccd3c921cf2fbe45446c68060c794cdc157e4b835913f",
+    "result": "12 Bazel targets passed in the same validation batch."
+  }
+}

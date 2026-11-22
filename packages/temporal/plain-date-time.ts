@@ -36,7 +36,8 @@ import {
   getDateSlot,
   getZonedDateTimeSlot,
   getDateTimeSlot,
-  setDateTimeSlot,
+  allocateDateTime,
+  setNativeDateTimeSlot,
   type DateTimeSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -153,8 +154,9 @@ const NativePlainDateTime = function (
   this: PlainDateTimeObject,
   slot: DateTimeSlot
 ) {
-  setDateTimeSlot(this, slot)
+  setNativeDateTimeSlot(this, slot)
 }
+// Temporal comparison §5.5.8 steps 1–5. Allocate with the local prototype.
 export function createPlainDateTime(
   input: bigint | DateTimeSlot,
   calendar: string
@@ -168,14 +170,10 @@ export function createPlainDateTime(
     ) => PlainDateTimeObject)(input)
   const value = typeof input === 'bigint' ? input : input.epochNanoseconds
   checkDateTime(value)
-  const result = createObject(
-    PlainDateTimeValue.prototype
-  ) as PlainDateTimeObject
-  setDateTimeSlot(
-    result,
+  return allocateDateTime(
+    PlainDateTimeValue.prototype,
     typeof input === 'bigint' ? {epochNanoseconds: value, calendar} : input
-  )
-  return result
+  ) as PlainDateTimeObject
 }
 const dateSlots = new WeakMap<
   DateTimeSlot,
@@ -644,9 +642,7 @@ export const PlainDateTime: PlainDateTimeConstructor = createProxy(
       const calendar = constructorCalendar(argumentAt(args, 9))
       const value = isoToEpochNanoseconds({year, month, day, ...clock})
       const prototype = constructorPrototype(newTarget, target)
-      const result = createObject(prototype)
-      setDateTimeSlot(result, {epochNanoseconds: value, calendar})
-      return result
+      return allocateDateTime(prototype, {epochNanoseconds: value, calendar})
     },
   }
 ) as unknown as PlainDateTimeConstructor

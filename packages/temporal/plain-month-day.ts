@@ -6,7 +6,6 @@ import {
 import {
   argumentAt,
   constructorPrototype,
-  createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -14,7 +13,7 @@ import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   getMonthDaySlot,
-  setMonthDaySlot,
+  allocateMonthDay,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -71,14 +70,14 @@ function read(item: unknown): DateSlot {
   if (!slot) throw new TypeErrorConstructor('Invalid PlainMonthDay receiver')
   return slot
 }
+// Temporal comparison §10.5.2 steps 1–5. Allocate with the local prototype.
 export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
   if (slot.epochDay < -100000001 || slot.epochDay > 100000000)
     throw new RangeErrorConstructor('Month-day out of range')
-  const result = createObject(
-    PlainMonthDayValue.prototype
+  return allocateMonthDay(
+    PlainMonthDayValue.prototype,
+    slot
   ) as PlainMonthDayObject
-  setMonthDaySlot(result, slot)
-  return result
 }
 export function toMonthDaySlot(item: unknown, options?: unknown): DateSlot {
   const existing = getMonthDaySlot(item as object)
@@ -248,10 +247,8 @@ export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
       const epochDay = isoReferenceDay(year, month, day)
       if (epochDay < -100000001 || epochDay > 100000000)
         throw new RangeErrorConstructor('Month-day out of range')
-      const prototype = constructorPrototype(newTarget, target),
-        result = createObject(prototype)
-      setMonthDaySlot(result, {epochDay, calendar})
-      return result
+      const prototype = constructorPrototype(newTarget, target)
+      return allocateMonthDay(prototype, {epochDay, calendar})
     },
   }
 ) as unknown as PlainMonthDayConstructor

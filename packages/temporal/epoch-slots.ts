@@ -4,6 +4,7 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayIncludes,
+  numberIsInteger,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {calendarIds} from '#packages/temporal/calendar-ids.js'
 import links from '@formatjs_generated/tz/links.js'
@@ -30,6 +31,7 @@ const setSlot = Function.prototype.call.bind(WeakMap.prototype.set) as <T>(
 ) => void
 let instants: WeakMap<object, bigint> | undefined
 let zonedDates: WeakMap<object, ZonedEpoch> | undefined
+let plainDates: WeakMap<object, PlainEpoch> | undefined
 
 const limit = 8_640_000_000_000_000_000_000n
 
@@ -63,6 +65,100 @@ export function allocateInstant(
 // Temporal comparison §8.5.3 step 1.a. Read the Instant slot without public Gets.
 export function getSharedInstantSlot(value: object): bigint | undefined {
   return instants && getSlot(instants, value)
+}
+
+export type DaySlotKind = 'date' | 'year-month' | 'month-day'
+
+interface DayEpoch {
+  readonly kind: DaySlotKind
+  readonly epochDay: number
+  readonly calendar: string
+}
+
+interface DateTimeEpoch {
+  readonly kind: 'date-time'
+  readonly epochNanoseconds: bigint
+  readonly calendar: string
+}
+
+type PlainEpoch = DayEpoch | DateTimeEpoch
+
+// Temporal comparison §3.5.3 steps 3–5, §9.5.5 steps 3–5 and §10.5.2 steps 3–5.
+// Allocate a prepared ISO date slot.
+// https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldate
+export function allocateSharedDay(
+  prototype: object | null,
+  kind: DaySlotKind,
+  epochDay: unknown,
+  calendar: unknown
+): object {
+  if (kind !== 'date' && kind !== 'year-month' && kind !== 'month-day')
+    throw new TypeErrorConstructor('Invalid Temporal date kind')
+  if (typeof epochDay !== 'number' || typeof calendar !== 'string')
+    throw new TypeErrorConstructor('Invalid Temporal date fields')
+  // Temporal comparison §§3.5.12, 9.5.3: short year-months span two edge months.
+  const yearMonth = kind === 'year-month'
+  if (
+    !numberIsInteger(epochDay) ||
+    epochDay < (yearMonth ? -100000019 : -100000001) ||
+    epochDay > (yearMonth ? 100000017 : 100000000) ||
+    !arrayIncludes(calendarIds, calendar)
+  )
+    throw new RangeErrorConstructor('Invalid Temporal date fields')
+  const object = createObject(prototype)
+  setSlot(
+    (plainDates ??= new WeakMapConstructor()),
+    object,
+    freeze({__proto__: null, kind, epochDay, calendar})
+  )
+  return object
+}
+
+// Temporal comparison §5.5.8 steps 3–5. Allocate the prepared local epoch.
+// https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldatetime
+export function allocateSharedDateTime(
+  prototype: object | null,
+  epochNanoseconds: unknown,
+  calendar: unknown
+): object {
+  if (typeof epochNanoseconds !== 'bigint' || typeof calendar !== 'string')
+    throw new TypeErrorConstructor('Invalid Temporal date-time fields')
+  const bound = 8_640_000_086_400_000_000_000n
+  if (
+    epochNanoseconds <= -bound ||
+    epochNanoseconds >= bound ||
+    !arrayIncludes(calendarIds, calendar)
+  )
+    throw new RangeErrorConstructor('Invalid Temporal date-time fields')
+  const object = createObject(prototype)
+  setSlot(
+    (plainDates ??= new WeakMapConstructor()),
+    object,
+    freeze({
+      __proto__: null,
+      kind: 'date-time' as const,
+      epochNanoseconds,
+      calendar,
+    })
+  )
+  return object
+}
+
+// Temporal comparison §§12.3.10–11 step 1. Identify an initialized date slot.
+export function getSharedDaySlot(
+  object: object,
+  kind: DaySlotKind
+): DayEpoch | undefined {
+  const slot = plainDates && getSlot(plainDates, object)
+  return slot?.kind === kind ? slot : undefined
+}
+
+// Temporal comparison §§12.3.10–11 step 1. Identify an initialized date-time slot.
+export function getSharedDateTimeSlot(
+  object: object
+): DateTimeEpoch | undefined {
+  const slot = plainDates && getSlot(plainDates, object)
+  return slot?.kind === 'date-time' ? slot : undefined
 }
 
 interface TimeZoneMetadata {

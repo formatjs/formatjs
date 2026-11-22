@@ -11,7 +11,6 @@ import {
 import {
   argumentAt,
   constructorPrototype,
-  createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -42,7 +41,7 @@ import {
 import {
   getDateSlot,
   getZonedDateTimeSlot,
-  setDateSlot,
+  allocateDate,
   getDateTimeSlot,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
@@ -142,6 +141,7 @@ function read(item: unknown): DateSlot {
   if (!slot) throw new TypeErrorConstructor('Invalid PlainDate receiver')
   return slot
 }
+// Temporal comparison §3.5.3 steps 1–5. Allocate with the local prototype.
 export function createPlainDate(
   value: number | DateSlot,
   calendar: string
@@ -153,9 +153,10 @@ export function createPlainDate(
     epochDay > 100000000
   )
     throw new RangeErrorConstructor('Date out of range')
-  const result = createObject(PlainDateValue.prototype) as PlainDateObject
-  setDateSlot(result, typeof value === 'number' ? {epochDay, calendar} : value)
-  return result
+  return allocateDate(
+    PlainDateValue.prototype,
+    typeof value === 'number' ? {epochDay, calendar} : value
+  ) as PlainDateObject
 }
 export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   const date = getDateSlot(item as object),
@@ -501,9 +502,7 @@ export const PlainDate: PlainDateConstructor = createProxy(PlainDateValue, {
       calendar = constructorCalendar(argumentAt(args, 3))
     const epochDay = isoDay(year, month, day)
     const prototype = constructorPrototype(newTarget, target)
-    const result = createObject(prototype)
-    setDateSlot(result, {epochDay, calendar})
-    return result
+    return allocateDate(prototype, {epochDay, calendar})
   },
 }) as unknown as PlainDateConstructor
 Object.defineProperties(PlainDateValue.prototype, {

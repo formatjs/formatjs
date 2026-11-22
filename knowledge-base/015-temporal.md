@@ -8,12 +8,12 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit.
-Comment-only batches reconcile 337 mappings for ISO scanners, PlainTime, Rust parsers, Rust formatting,
+Comment-only batches reconcile 415 mappings for ISO scanners, PlainTime, Rust parsers, Rust formatting,
 plain-relative arithmetic,
 rounding, calendar and timezone providers, and native Duration transport. Transport12 now have narrow inline caller/dependency links; numbered
 anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code. Current fixed inventory has400
-direct anchors,13 enclosing anchors,653 without numbered anchors and3 retired.
+binds source hashes and unchanged noncomment code. Current fixed inventory has478
+direct anchors,13 enclosing anchors,575 without numbered anchors and3 retired.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup
@@ -48,7 +48,7 @@ steps across Instant and calendar conversion. A shared reader needs trusted
 setup and must preserve observable Proxy behavior.
 [Cross-copy proof](audits/temporal-cross-copy-brand/README.md).
 [Shared epoch allocation](audits/temporal-cross-copy-brand/same-loader-epoch-fix.md) fixes Instant and ZonedDateTime copies
-between the packaged entry points. Plain calendar-slot conversions remain open.
+between the packaged entry points. [Shared Plain slots](audits/temporal-cross-copy-brand/same-loader-calendar-fix.md) now supply all calendar-bearing types across the same entries.
 
 All eight constructors reject directly revoked newTarget proxies on the
 primitive-prototype branch. Bound chains use native validation on Node and

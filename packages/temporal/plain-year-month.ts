@@ -6,7 +6,6 @@ import {
 import {
   argumentAt,
   constructorPrototype,
-  createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -15,7 +14,7 @@ import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getYearMonthSlot,
-  setYearMonthSlot,
+  allocateYearMonth,
   isoDateFields,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
@@ -111,13 +110,13 @@ function read(item: unknown): DateSlot {
   if (!slot) throw new TypeErrorConstructor('Invalid PlainYearMonth receiver')
   return slot
 }
+// Temporal comparison §9.5.5 steps 1–5. Allocate with the local prototype.
 export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
   checkYearMonth(slot.epochDay)
-  const result = createObject(
-    PlainYearMonthValue.prototype
+  return allocateYearMonth(
+    PlainYearMonthValue.prototype,
+    slot
   ) as PlainYearMonthObject
-  setYearMonthSlot(result, slot)
-  return result
 }
 export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
   const existing = getYearMonthSlot(item as object)
@@ -435,9 +434,7 @@ export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
           argumentAt(args, 3) === undefined ? 1 : integer(argumentAt(args, 3))
       const epochDay = checkYearMonth(isoReferenceDay(year, month, day)),
         prototype = constructorPrototype(newTarget, target)
-      const result = createObject(prototype)
-      setYearMonthSlot(result, {epochDay, calendar})
-      return result
+      return allocateYearMonth(prototype, {epochDay, calendar})
     },
   }
 ) as unknown as PlainYearMonthConstructor

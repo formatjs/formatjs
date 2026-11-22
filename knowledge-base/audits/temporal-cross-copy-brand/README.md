@@ -1,8 +1,8 @@
 # Cross-copy Temporal brand failures
 
 The [same-loader epoch fix](same-loader-epoch-fix.md) resolves the packaged
-Instant and ZonedDateTime copy failures below. The Plain calendar cases
-remain open. This document preserves the original failing comparison.
+Instant and ZonedDateTime copy failures below. The [same-loader calendar fix](same-loader-calendar-fix.md) resolves the Plain
+calendar cases. This document preserves the original failing comparison.
 
 Node 26.5.1 and ICU 78.3 reproduce four failing public controls against the
 packaged FormatJS entry points. Native Temporal across two VM realms and FormatJS

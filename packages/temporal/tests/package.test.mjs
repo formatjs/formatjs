@@ -37,6 +37,60 @@ for (const [source, target] of [
   [owned.Temporal, otherEntry.Temporal],
   [otherEntry.Temporal, owned.Temporal],
 ]) {
+  const calendar = 'gregory'
+  for (const [Constructor, original] of [
+    [source.PlainDate, new source.PlainDate(2024, 2, 29, calendar)],
+    [
+      source.PlainDateTime,
+      new source.PlainDateTime(2024, 2, 29, 0, 0, 0, 0, 0, 0, calendar),
+    ],
+    [source.PlainYearMonth, new source.PlainYearMonth(2024, 2, calendar, 29)],
+    [source.PlainMonthDay, new source.PlainMonthDay(2, 29, calendar, 2024)],
+    [source.ZonedDateTime, new source.ZonedDateTime(epoch, '+00:00', calendar)],
+  ]) {
+    const ShortDate =
+      Constructor === source.PlainYearMonth
+        ? target.PlainMonthDay
+        : target.PlainYearMonth
+    const date = new target.PlainDate(2024, 1, 2)
+    for (const value of [original, Constructor.from(original)]) {
+      const reads = []
+      const publicCalendarGet = new Error('Expected public calendar Get')
+      Object.setPrototypeOf(value, null)
+      Object.defineProperties(value, {
+        year: {value: 2024},
+        day: {value: 29},
+        monthCode: {value: 'M02'},
+        calendar: {
+          get() {
+            reads.push('calendar')
+            throw publicCalendarGet
+          },
+        },
+        calendarId: {
+          get() {
+            reads.push('calendarId')
+            throw new Error('Unexpected public calendarId Get')
+          },
+        },
+      })
+      Object.freeze(value)
+
+      assert.equal(date.withCalendar(value).calendarId, calendar)
+      assert.equal(ShortDate.from(value).calendarId, calendar)
+      assert.deepEqual(reads, [])
+
+      const proxy = new Proxy(value, {})
+      assert.throws(() => date.withCalendar(proxy), TypeError)
+      assert.deepEqual(reads, [])
+      assert.throws(
+        () => ShortDate.from(proxy),
+        error => error === publicCalendarGet
+      )
+      assert.deepEqual(reads, ['calendar'])
+    }
+  }
+
   const foreignInstant = source.Instant.fromEpochNanoseconds(epoch)
   const foreignZoned = new source.ZonedDateTime(epoch, '+00:00', 'gregory')
   for (const value of [foreignInstant, foreignZoned]) {

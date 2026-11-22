@@ -17,6 +17,7 @@ pub struct ZonedWithOptions {
     pub overflow: Overflow,
 }
 impl Default for ZonedWithOptions {
+    // Proposal comparison §6.3.31 steps 20–22: Supply typed zoned with defaults.
     fn default() -> Self {
         Self {
             disambiguation: Disambiguation::Compatible,
@@ -46,6 +47,7 @@ pub trait TimeZone {
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128));
     /// Include candidate offsets and both sides of any containing gap/fold.
     /// Extra offsets are allowed; the default scans the full history.
+    // Proposal comparison §11.1.13 step 3.a: Fall back to full offset enumeration for candidates.
     fn visit_offsets_at(&self, _local_nanoseconds: i128, visitor: &mut dyn FnMut(i128)) {
         self.visit_offsets(visitor);
     }
@@ -63,12 +65,15 @@ impl FixedOffset {
     }
 }
 impl TimeZone for FixedOffset {
+    // Proposal comparison §6.3.46 step 8: Fixed offsets have no transition.
     fn transition(&self, _: Instant, _: TransitionDirection) -> Option<Instant> {
         None
     }
+    // Proposal comparison §11.1.9 step 2: Return the stored fixed offset in nanoseconds.
     fn offset_nanoseconds(&self, _: Instant) -> i128 {
         self.0
     }
+    // Proposal comparison §11.1.13 step 2.a: Supply the only offset for a fixed-zone candidate.
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
         visitor(self.0)
     }
@@ -81,6 +86,7 @@ pub struct ZonedDateTime<Z, C = crate::calendar::Calendar> {
     calendar: C,
 }
 impl<Z: TimeZone> ZonedDateTime<Z> {
+    // Proposal comparison §6.5.3 steps 4–6: Store a typed instant and zone with the ISO calendar.
     pub const fn new(instant: Instant, time_zone: Z) -> Self {
         Self {
             instant,
@@ -88,6 +94,7 @@ impl<Z: TimeZone> ZonedDateTime<Z> {
             calendar: crate::calendar::Calendar::Iso8601,
         }
     }
+    // Proposal comparison §11.1.11 steps 1–2: Resolve an ISO local date-time before storing it.
     pub fn from_local(
         fields: IsoDateTime,
         time_zone: Z,
@@ -100,6 +107,7 @@ impl<Z: TimeZone> ZonedDateTime<Z> {
     }
 }
 impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
+    // Proposal comparison §6.5.3 steps 4–6: Store the typed instant, zone and calendar.
     pub const fn new_in_calendar(instant: Instant, time_zone: Z, calendar: C) -> Self {
         Self {
             instant,
@@ -107,27 +115,34 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
             calendar,
         }
     }
+    // Proposal comparison §6.3.31 step 6: Read the stored calendar provider.
     pub const fn calendar(&self) -> C {
         self.calendar
     }
+    // Proposal comparison §6.3.3 step 3: Return the stored calendar provider ID.
     pub fn calendar_id(&self) -> &'static str {
         self.calendar.id()
     }
+    // Proposal comparison §6.3.47 step 3: Return the typed instant stored by the zoned value.
     pub const fn instant(&self) -> Instant {
         self.instant
     }
+    // Proposal comparison §6.3.46 step 3: Read the stored zone provider.
     pub const fn time_zone(&self) -> &Z {
         &self.time_zone
     }
+    // Proposal comparison §6.3.33 step 4: Replace the typed zone while preserving instant and calendar.
     pub fn with_time_zone<T: TimeZone>(&self, time_zone: T) -> ZonedDateTime<T, C> {
         ZonedDateTime::new_in_calendar(self.instant, time_zone, self.calendar)
     }
+    // Proposal comparison §11.1.10 steps 1–3: Project the exact instant into local date-time.
     pub fn local(&self) -> Result<PlainDateTime<C>, Error> {
         PlainDateTime::from_epoch_nanoseconds_in(
             self.instant.epoch_nanoseconds() + self.time_zone.offset_nanoseconds(self.instant),
             self.calendar,
         )
     }
+    // Proposal comparison §11.1.11 steps 1–2 and §6.5.3 steps 4–6: Resolve a typed local date-time and store its calendar.
     pub fn from_local_in_calendar(
         fields: IsoDateTime,
         time_zone: Z,
@@ -139,6 +154,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
 }
 impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
+    // Proposal comparison §6.3.31 steps 18, 23 and 25–26: Merge typed fields and resolve with an exact offset hint.
     pub fn with_fields(
         &self,
         fields: ZonedFields<'_>,
@@ -170,9 +186,11 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             },
         )
     }
+    // Proposal comparison §6.3.34 step 4: Replace the typed calendar while preserving instant and zone.
     pub fn with_calendar<D: CalendarProvider>(&self, calendar: D) -> ZonedDateTime<Z, D> {
         ZonedDateTime::new_in_calendar(self.instant, self.time_zone.clone(), calendar)
     }
+    // Proposal comparison §6.3.32 steps 6.a, 7.b–7.c and 8: Replace the local clock or use start of day.
     pub fn with_time(&self, time: Option<PlainTime>) -> Result<Self, Error> {
         match time {
             None => self.start_of_day(),
@@ -184,6 +202,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             ),
         }
     }
+    // Proposal comparison §6.3.45 steps 5–7: Resolve the start of the current local day.
     pub fn start_of_day(&self) -> Result<Self, Error> {
         let day = self.local()?.date().epoch_day();
         Ok(Self::new_in_calendar(
@@ -192,12 +211,14 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             self.calendar,
         ))
     }
+    // Proposal comparison §6.3.23 steps 5–10: Take the span between consecutive local day boundaries in hours.
     pub fn hours_in_day(&self) -> Result<f64, Error> {
         let day = self.local()?.date().epoch_day();
         Ok((self.day_boundary(day + 1)?.epoch_nanoseconds()
             - self.day_boundary(day)?.epoch_nanoseconds()) as f64
             / 3_600_000_000_000.0)
     }
+    // Proposal comparison §6.3.39 steps 19.c, 19.e, 19.i and 20.a–20.c: Supply typed zoned rounding branches.
     pub fn round(
         &self,
         unit: crate::DateTimeUnit,
@@ -242,14 +263,17 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             self.calendar,
         ))
     }
+    // Proposal comparison §6.3.45 step 6: Delegate day boundary lookup for the stored zone.
     pub(crate) fn day_boundary(&self, day: i64) -> Result<Instant, Error> {
         day_boundary(day, &self.time_zone)
     }
+    // Proposal comparison §6.3.46 steps 9.a, 10.b and 11–12: Query a typed transition and preserve zone and calendar.
     pub fn transition(&self, direction: TransitionDirection) -> Option<Self> {
         self.time_zone
             .transition(self.instant, direction)
             .map(|instant| Self::new_in_calendar(instant, self.time_zone.clone(), self.calendar))
     }
+    // Proposal comparison §6.5.5 steps 1, 3, 6 and 7: Add date units locally and clock units on the instant.
     pub fn checked_add(&self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         let mut value = self.instant;
@@ -272,10 +296,12 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             self.calendar,
         ))
     }
+    // Proposal comparison §6.5.10 steps 2 and 8: Negate the typed duration and delegate zoned addition.
     pub fn checked_subtract(&self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
 }
+// Proposal comparison §11.1.13 step 3.a: Convert typed ISO fields before visiting candidate instants.
 pub(crate) fn visit_possible_instants<Z: TimeZone>(
     fields: IsoDateTime,
     zone: &Z,
@@ -284,6 +310,7 @@ pub(crate) fn visit_possible_instants<Z: TimeZone>(
     visit_possible_nanoseconds(fields.to_epoch_nanoseconds()?, zone, visitor);
     Ok(())
 }
+// Proposal comparison §11.1.13 step 3.a: Keep in-range candidates whose provider offset round-trips.
 fn visit_possible_nanoseconds<Z: TimeZone>(
     local: i128,
     zone: &Z,
@@ -302,6 +329,7 @@ fn visit_possible_nanoseconds<Z: TimeZone>(
     });
 }
 
+// Proposal comparison §11.1.14 steps 1–3, 5 and 7: Resolve midnight or find the containing forward transition.
 pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, Error> {
     let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
     crate::iso::check_local(midnight)?;
@@ -330,6 +358,7 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
     Err(Error::InvalidDateTime)
 }
 
+// Proposal comparison §11.1.11 steps 1–2: Convert local fields and delegate candidate disambiguation.
 pub(crate) fn resolve_local<Z: TimeZone>(
     fields: IsoDateTime,
     zone: &Z,
@@ -337,6 +366,7 @@ pub(crate) fn resolve_local<Z: TimeZone>(
 ) -> Result<Instant, Error> {
     resolve_local_nanoseconds(fields.to_epoch_nanoseconds()?, zone, disambiguation)
 }
+// Proposal comparison §11.1.12 steps 2, 3.a–3.d and 5: Select the requested candidate or apply reject.
 pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     local: i128,
     zone: &Z,

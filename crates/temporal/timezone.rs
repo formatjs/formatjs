@@ -17,6 +17,7 @@ pub enum TransitionRule {
         seconds: i32,
     },
 }
+// Proposal comparison §11.1.9 step 3: Compute the monthly weekday used by a named-zone footer.
 fn monthly_day(first: i64, year: i32, month: u8, week: u8, weekday: u8) -> i64 {
     let mut day = i64::from(weekday) - (first + 4).rem_euclid(7);
     // Validated weekdays keep this difference between -6 and 6.
@@ -35,6 +36,7 @@ fn monthly_day(first: i64, year: i32, month: u8, week: u8, weekday: u8) -> i64 {
     first + day
 }
 impl TransitionRule {
+    // Proposal comparison §11.1.9 step 3: Check the footer rule fields used for named-zone offsets.
     const fn valid(self) -> bool {
         let (valid, seconds) = match self {
             Self::Month {
@@ -51,6 +53,7 @@ impl TransitionRule {
         };
         valid && seconds >= -604_799 && seconds <= 604_799
     }
+    // Proposal comparison §11.1.9 step 3: Convert a footer rule into local transition seconds.
     fn event(self, year: i32) -> i64 {
         let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
         let (day, seconds) = match self {
@@ -83,6 +86,7 @@ pub struct FutureRule {
     daylight: Option<(i32, TransitionRule, TransitionRule)>,
 }
 impl FutureRule {
+    // Proposal comparison §11.1.9 step 3: Validate standard and daylight offsets before footer evaluation.
     pub const fn new(
         standard: i32,
         daylight: Option<(i32, TransitionRule, TransitionRule)>,
@@ -97,6 +101,7 @@ impl FutureRule {
         }
         Ok(Self { standard, daylight })
     }
+    // Proposal comparison §11.1.9 step 3: Convert footer switches to UTC using the prior offsets.
     fn events(self, year: i32) -> Option<(i64, i64)> {
         let (offset, start, end) = self.daylight?;
         Some((
@@ -104,6 +109,7 @@ impl FutureRule {
             end.event(year) - i64::from(offset),
         ))
     }
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: Check whether a footer event changes the offset.
     fn changes_at(self, instant: Instant, before: Instant) -> bool {
         let Some((offset, _, _)) = self.daylight else {
             return false;
@@ -144,6 +150,7 @@ impl FutureRule {
         was_dst != is_dst
     }
     #[cold]
+    // Proposal comparison §11.1.9 step 3: Select the offset in the applicable footer year.
     fn offset_current_year(&self, year: i32, seconds: i64, offset: i32) -> i32 {
         let (begin, end) = self.events(year).unwrap();
         let dst = if begin < end {
@@ -154,6 +161,7 @@ impl FutureRule {
         if dst { offset } else { self.standard }
     }
     #[cold]
+    // Proposal comparison §11.1.9 step 3: Resolve the latest footer switch across neighboring years.
     fn offset_near_year(&self, year: i32, seconds: i64, offset: i32) -> i32 {
         let mut latest = i64::MIN;
         let mut dst = false;
@@ -170,6 +178,7 @@ impl FutureRule {
         }
         if dst { offset } else { self.standard }
     }
+    // Proposal comparison §11.1.9 step 3: Select named-zone footer offset for epoch seconds.
     fn offset(&self, seconds: i64) -> i32 {
         let Some((offset, start, end)) = self.daylight else {
             return self.standard;
@@ -243,6 +252,7 @@ pub struct TransitionZone<'a> {
     future: Option<FutureRule>,
 }
 impl<'a> TransitionZone<'a> {
+    // Proposal comparison §11.1.9 step 3: Validate offsets and ordered events for named-zone lookup.
     pub const fn new(
         initial: i32,
         transitions: &'a [OffsetTransition],
@@ -271,6 +281,7 @@ impl<'a> TransitionZone<'a> {
             future,
         })
     }
+    // Proposal comparison §11.1.9 step 3: Mark the final explicit event before footer lookup.
     fn cutoff(self) -> i64 {
         self.transitions
             .last()
@@ -278,6 +289,7 @@ impl<'a> TransitionZone<'a> {
     }
 }
 impl TimeZone for TransitionZone<'_> {
+    // Proposal comparison §11.1.9 step 3: Look up a named-zone offset with exact instant boundaries.
     fn offset_nanoseconds(&self, instant: Instant) -> i128 {
         let nanoseconds = instant.epoch_nanoseconds();
         let seconds = if let Ok(value) = u64::try_from(nanoseconds) {
@@ -309,9 +321,11 @@ impl TimeZone for TransitionZone<'_> {
             self.transitions[index - 1].offset_seconds
         }) * 1_000_000_000
     }
+    // Proposal comparison §11.1.13 step 3.a: Supply the full offset list for named-zone candidate checks.
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
         visit_distinct_offsets(self.initial, self.transitions, self.future, visitor);
     }
+    // Proposal comparison §11.1.13 step 3.a: Supply offsets near the requested local timestamp.
     fn visit_offsets_at(&self, local: i128, visitor: &mut dyn FnMut(i128)) {
         let seconds = local.div_euclid(1_000_000_000);
         let limit = MAX_EPOCH_NANOSECONDS / 1_000_000_000;
@@ -341,6 +355,7 @@ impl TimeZone for TransitionZone<'_> {
         visit_distinct_offsets(initial, &self.transitions[first..last], future, visitor);
     }
 
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: Search strict next or previous offset changes.
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         let next = direction == TransitionDirection::Next;
         let value = instant.epoch_nanoseconds();
@@ -448,6 +463,7 @@ impl TimeZone for TransitionZone<'_> {
     }
 }
 
+// Proposal comparison §11.1.13 step 3.a: Visit possible initial, explicit and footer offsets.
 fn visit_distinct_offsets(
     initial: i32,
     transitions: &[OffsetTransition],

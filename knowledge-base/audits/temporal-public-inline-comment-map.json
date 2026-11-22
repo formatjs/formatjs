@@ -6,11 +6,11 @@
     "packages/temporal/index.ts": "eff29c356b773d0906c77a7b2b9b1232ccf51ad4c3fd91a031551a72152f9eae",
     "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
     "packages/temporal/now.ts": "0e4766a9b82c409e3134a9f0ddffdb25fa9c109645f9f3bdb49e4c25a1b1a89d",
-    "packages/temporal/plain-date-time.ts": "b73fe57fbcfeba8eb1e20ce5651ac0d01dbe30a8f05c5552a803c07d658248a3",
-    "packages/temporal/plain-date.ts": "ac07072869eee090ed45fac7af65590776954f270c7162b6ea0ffcdd4b13fe86",
-    "packages/temporal/plain-month-day.ts": "af1a02119f94ebdf4149318e330d24d9012d0525eef8c086b6f4a8b814a402b2",
+    "packages/temporal/plain-date-time.ts": "9ac2c4ea03756d1177fb1d896e1e92e4490664853aa6e634a6023b569d15cf57",
+    "packages/temporal/plain-date.ts": "913935da6626d31fabf986d132ba61f1616bbb4582f711e49e6792bd322eefe3",
+    "packages/temporal/plain-month-day.ts": "f2b4e49d0c461a35f1d60c47a2ce4a4b4c983cc293d75a5d6da1ce0a2d81f38b",
     "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
-    "packages/temporal/plain-year-month.ts": "a07bb9982dac43842b830732a3e8a407193736bfea137b1d4fec15e080c6c6bd",
+    "packages/temporal/plain-year-month.ts": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7",
     "packages/temporal/zoned-date-time.ts": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72"
   },
   "entries": [
@@ -105,200 +105,200 @@
     {
       "section": "3.1.1",
       "spec_anchor": "sec-temporal.plaindate",
-      "comment_locations": ["packages/temporal/plain-date.ts:496"]
+      "comment_locations": ["packages/temporal/plain-date.ts:497"]
     },
     {
       "section": "3.2.1",
       "spec_anchor": "sec-temporal.plaindate.prototype",
-      "comment_locations": ["packages/temporal/plain-date.ts:492"]
+      "comment_locations": ["packages/temporal/plain-date.ts:493"]
     },
     {
       "section": "3.2.2",
       "spec_anchor": "sec-temporal.plaindate.from",
-      "comment_locations": ["packages/temporal/plain-date.ts:333"]
+      "comment_locations": ["packages/temporal/plain-date.ts:334"]
     },
     {
       "section": "3.2.3",
       "spec_anchor": "sec-temporal.plaindate.compare",
-      "comment_locations": ["packages/temporal/plain-date.ts:339"]
+      "comment_locations": ["packages/temporal/plain-date.ts:340"]
     },
     {
       "section": "3.3.1",
       "spec_anchor": "sec-temporal.plaindate.prototype.constructor",
-      "comment_locations": ["packages/temporal/plain-date.ts:510"]
+      "comment_locations": ["packages/temporal/plain-date.ts:509"]
     },
     {
       "section": "3.3.2",
       "spec_anchor": "sec-temporal.plaindate.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/plain-date.ts:513"]
+      "comment_locations": ["packages/temporal/plain-date.ts:512"]
     },
     {
       "section": "3.3.3",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.calendarid",
-      "comment_locations": ["packages/temporal/plain-date.ts:517"]
+      "comment_locations": ["packages/temporal/plain-date.ts:516"]
     },
     {
       "section": "3.3.4",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.era",
-      "comment_locations": ["packages/temporal/plain-date.ts:519"]
+      "comment_locations": ["packages/temporal/plain-date.ts:518"]
     },
     {
       "section": "3.3.5",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.erayear",
-      "comment_locations": ["packages/temporal/plain-date.ts:521"]
+      "comment_locations": ["packages/temporal/plain-date.ts:520"]
     },
     {
       "section": "3.3.6",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.year",
-      "comment_locations": ["packages/temporal/plain-date.ts:523"]
+      "comment_locations": ["packages/temporal/plain-date.ts:522"]
     },
     {
       "section": "3.3.7",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.month",
-      "comment_locations": ["packages/temporal/plain-date.ts:525"]
+      "comment_locations": ["packages/temporal/plain-date.ts:524"]
     },
     {
       "section": "3.3.8",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.monthcode",
-      "comment_locations": ["packages/temporal/plain-date.ts:527"]
+      "comment_locations": ["packages/temporal/plain-date.ts:526"]
     },
     {
       "section": "3.3.9",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.day",
-      "comment_locations": ["packages/temporal/plain-date.ts:529"]
+      "comment_locations": ["packages/temporal/plain-date.ts:528"]
     },
     {
       "section": "3.3.10",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.dayofweek",
-      "comment_locations": ["packages/temporal/plain-date.ts:531"]
+      "comment_locations": ["packages/temporal/plain-date.ts:530"]
     },
     {
       "section": "3.3.11",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.dayofyear",
-      "comment_locations": ["packages/temporal/plain-date.ts:533"]
+      "comment_locations": ["packages/temporal/plain-date.ts:532"]
     },
     {
       "section": "3.3.12",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.weekofyear",
-      "comment_locations": ["packages/temporal/plain-date.ts:535"]
+      "comment_locations": ["packages/temporal/plain-date.ts:534"]
     },
     {
       "section": "3.3.13",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.yearofweek",
-      "comment_locations": ["packages/temporal/plain-date.ts:537"]
+      "comment_locations": ["packages/temporal/plain-date.ts:536"]
     },
     {
       "section": "3.3.14",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.daysinweek",
-      "comment_locations": ["packages/temporal/plain-date.ts:539"]
+      "comment_locations": ["packages/temporal/plain-date.ts:538"]
     },
     {
       "section": "3.3.15",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.daysinmonth",
-      "comment_locations": ["packages/temporal/plain-date.ts:541"]
+      "comment_locations": ["packages/temporal/plain-date.ts:540"]
     },
     {
       "section": "3.3.16",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.daysinyear",
-      "comment_locations": ["packages/temporal/plain-date.ts:543"]
+      "comment_locations": ["packages/temporal/plain-date.ts:542"]
     },
     {
       "section": "3.3.17",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.monthsinyear",
-      "comment_locations": ["packages/temporal/plain-date.ts:545"]
+      "comment_locations": ["packages/temporal/plain-date.ts:544"]
     },
     {
       "section": "3.3.18",
       "spec_anchor": "sec-get-temporal.plaindate.prototype.inleapyear",
-      "comment_locations": ["packages/temporal/plain-date.ts:547"]
+      "comment_locations": ["packages/temporal/plain-date.ts:546"]
     },
     {
       "section": "3.3.19",
       "spec_anchor": "sec-temporal.plaindate.prototype.toplainyearmonth",
       "comment_locations": [
-        "packages/temporal/plain-date.ts:299",
-        "packages/temporal/plain-date.ts:301"
+        "packages/temporal/plain-date.ts:300",
+        "packages/temporal/plain-date.ts:302"
       ]
     },
     {
       "section": "3.3.20",
       "spec_anchor": "sec-temporal.plaindate.prototype.toplainmonthday",
       "comment_locations": [
-        "packages/temporal/plain-date.ts:312",
-        "packages/temporal/plain-date.ts:314"
+        "packages/temporal/plain-date.ts:313",
+        "packages/temporal/plain-date.ts:315"
       ]
     },
     {
       "section": "3.3.21",
       "spec_anchor": "sec-temporal.plaindate.prototype.add",
-      "comment_locations": ["packages/temporal/plain-date.ts:389"]
+      "comment_locations": ["packages/temporal/plain-date.ts:390"]
     },
     {
       "section": "3.3.22",
       "spec_anchor": "sec-temporal.plaindate.prototype.subtract",
-      "comment_locations": ["packages/temporal/plain-date.ts:394"]
+      "comment_locations": ["packages/temporal/plain-date.ts:395"]
     },
     {
       "section": "3.3.23",
       "spec_anchor": "sec-temporal.plaindate.prototype.with",
-      "comment_locations": ["packages/temporal/plain-date.ts:356"]
+      "comment_locations": ["packages/temporal/plain-date.ts:357"]
     },
     {
       "section": "3.3.24",
       "spec_anchor": "sec-temporal.plaindate.prototype.withcalendar",
-      "comment_locations": ["packages/temporal/plain-date.ts:381"]
+      "comment_locations": ["packages/temporal/plain-date.ts:382"]
     },
     {
       "section": "3.3.25",
       "spec_anchor": "sec-temporal.plaindate.prototype.until",
-      "comment_locations": ["packages/temporal/plain-date.ts:399"]
+      "comment_locations": ["packages/temporal/plain-date.ts:400"]
     },
     {
       "section": "3.3.26",
       "spec_anchor": "sec-temporal.plaindate.prototype.since",
-      "comment_locations": ["packages/temporal/plain-date.ts:404"]
+      "comment_locations": ["packages/temporal/plain-date.ts:405"]
     },
     {
       "section": "3.3.27",
       "spec_anchor": "sec-temporal.plaindate.prototype.equals",
-      "comment_locations": ["packages/temporal/plain-date.ts:409"]
+      "comment_locations": ["packages/temporal/plain-date.ts:410"]
     },
     {
       "section": "3.3.28",
       "spec_anchor": "sec-temporal.plaindate.prototype.toplaindatetime",
       "comment_locations": [
-        "packages/temporal/plain-date.ts:438",
-        "packages/temporal/plain-date.ts:440"
+        "packages/temporal/plain-date.ts:439",
+        "packages/temporal/plain-date.ts:441"
       ]
     },
     {
       "section": "3.3.29",
       "spec_anchor": "sec-temporal.plaindate.prototype.tozoneddatetime",
       "comment_locations": [
-        "packages/temporal/plain-date.ts:416",
-        "packages/temporal/plain-date.ts:424",
-        "packages/temporal/plain-date.ts:427"
+        "packages/temporal/plain-date.ts:417",
+        "packages/temporal/plain-date.ts:425",
+        "packages/temporal/plain-date.ts:428"
       ]
     },
     {
       "section": "3.3.30",
       "spec_anchor": "sec-temporal.plaindate.prototype.tostring",
-      "comment_locations": ["packages/temporal/plain-date.ts:449"]
+      "comment_locations": ["packages/temporal/plain-date.ts:450"]
     },
     {
       "section": "3.3.31",
       "spec_anchor": "sec-temporal.plaindate.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/plain-date.ts:458"]
+      "comment_locations": ["packages/temporal/plain-date.ts:459"]
     },
     {
       "section": "3.3.32",
       "spec_anchor": "sec-temporal.plaindate.prototype.tojson",
-      "comment_locations": ["packages/temporal/plain-date.ts:474"]
+      "comment_locations": ["packages/temporal/plain-date.ts:475"]
     },
     {
       "section": "3.3.33",
       "spec_anchor": "sec-temporal.plaindate.prototype.valueof",
-      "comment_locations": ["packages/temporal/plain-date.ts:479"]
+      "comment_locations": ["packages/temporal/plain-date.ts:480"]
     },
     {
       "section": "4.1.1",
@@ -418,231 +418,231 @@
     {
       "section": "5.1.1",
       "spec_anchor": "sec-temporal.plaindatetime",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:633"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:631"]
     },
     {
       "section": "5.2.1",
       "spec_anchor": "sec-temporal.plaindatetime.prototype",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:627"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:625"]
     },
     {
       "section": "5.2.2",
       "spec_anchor": "sec-temporal.plaindatetime.from",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:382"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:380"]
     },
     {
       "section": "5.2.3",
       "spec_anchor": "sec-temporal.plaindatetime.compare",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:388"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:386"]
     },
     {
       "section": "5.3.1",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.constructor",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:654"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:650"]
     },
     {
       "section": "5.3.2",
       "spec_anchor": "sec-temporal.plaindatetime.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:657"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:653"]
     },
     {
       "section": "5.3.3",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.calendarid",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:661"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:657"]
     },
     {
       "section": "5.3.4",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.era",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:663"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:659"]
     },
     {
       "section": "5.3.5",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.erayear",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:665"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:661"]
     },
     {
       "section": "5.3.6",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.year",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:667"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:663"]
     },
     {
       "section": "5.3.7",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.month",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:669"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:665"]
     },
     {
       "section": "5.3.8",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.monthcode",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:671"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:667"]
     },
     {
       "section": "5.3.9",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.day",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:673"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:669"]
     },
     {
       "section": "5.3.10",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.hour",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:675"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:671"]
     },
     {
       "section": "5.3.11",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.minute",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:677"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:673"]
     },
     {
       "section": "5.3.12",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.second",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:679"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:675"]
     },
     {
       "section": "5.3.13",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.millisecond",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:681"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:677"]
     },
     {
       "section": "5.3.14",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.microsecond",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:683"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:679"]
     },
     {
       "section": "5.3.15",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.nanosecond",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:685"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:681"]
     },
     {
       "section": "5.3.16",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.dayofweek",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:687"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:683"]
     },
     {
       "section": "5.3.17",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.dayofyear",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:689"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:685"]
     },
     {
       "section": "5.3.18",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.weekofyear",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:691"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:687"]
     },
     {
       "section": "5.3.19",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.yearofweek",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:693"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:689"]
     },
     {
       "section": "5.3.20",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.daysinweek",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:695"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:691"]
     },
     {
       "section": "5.3.21",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.daysinmonth",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:697"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:693"]
     },
     {
       "section": "5.3.22",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.daysinyear",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:699"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:695"]
     },
     {
       "section": "5.3.23",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.monthsinyear",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:701"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:697"]
     },
     {
       "section": "5.3.24",
       "spec_anchor": "sec-get-temporal.plaindatetime.prototype.inleapyear",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:703"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:699"]
     },
     {
       "section": "5.3.25",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.with",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:401"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:399"]
     },
     {
       "section": "5.3.26",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.withplaintime",
       "comment_locations": [
-        "packages/temporal/plain-date-time.ts:440",
-        "packages/temporal/plain-date-time.ts:442"
+        "packages/temporal/plain-date-time.ts:438",
+        "packages/temporal/plain-date-time.ts:440"
       ]
     },
     {
       "section": "5.3.27",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.withcalendar",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:432"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:430"]
     },
     {
       "section": "5.3.28",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.add",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:451"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:449"]
     },
     {
       "section": "5.3.29",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.subtract",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:459"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:457"]
     },
     {
       "section": "5.3.30",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.until",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:464"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:462"]
     },
     {
       "section": "5.3.31",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.since",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:469"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:467"]
     },
     {
       "section": "5.3.32",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.round",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:508"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:506"]
     },
     {
       "section": "5.3.33",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.equals",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:474"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:472"]
     },
     {
       "section": "5.3.34",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.tostring",
       "comment_locations": [
-        "packages/temporal/plain-date-time.ts:548",
-        "packages/temporal/plain-date-time.ts:589"
+        "packages/temporal/plain-date-time.ts:546",
+        "packages/temporal/plain-date-time.ts:587"
       ]
     },
     {
       "section": "5.3.35",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:596"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:594"]
     },
     {
       "section": "5.3.36",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.tojson",
       "comment_locations": [
-        "packages/temporal/plain-date-time.ts:357",
-        "packages/temporal/plain-date-time.ts:607"
+        "packages/temporal/plain-date-time.ts:355",
+        "packages/temporal/plain-date-time.ts:605"
       ]
     },
     {
       "section": "5.3.37",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.valueof",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:612"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:610"]
     },
     {
       "section": "5.3.38",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.tozoneddatetime",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:486"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:484"]
     },
     {
       "section": "5.3.39",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.toplaindate",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:497"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:495"]
     },
     {
       "section": "5.3.40",
       "spec_anchor": "sec-temporal.plaindatetime.prototype.toplaintime",
-      "comment_locations": ["packages/temporal/plain-date-time.ts:503"]
+      "comment_locations": ["packages/temporal/plain-date-time.ts:501"]
     },
     {
       "section": "6.1.1",
@@ -1188,217 +1188,217 @@
     {
       "section": "9.1.1",
       "spec_anchor": "sec-temporal.plainyearmonth",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:429"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:428"]
     },
     {
       "section": "9.2.1",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:423"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:422"]
     },
     {
       "section": "9.2.2",
       "spec_anchor": "sec-temporal.plainyearmonth.from",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:286"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:285"]
     },
     {
       "section": "9.2.3",
       "spec_anchor": "sec-temporal.plainyearmonth.compare",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:291"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:290"]
     },
     {
       "section": "9.3.1",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.constructor",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:445"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:442"]
     },
     {
       "section": "9.3.2",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:448"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:445"]
     },
     {
       "section": "9.3.3",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.calendarid",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:452"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:449"]
     },
     {
       "section": "9.3.4",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.era",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:454"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:451"]
     },
     {
       "section": "9.3.5",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.erayear",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:456"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:453"]
     },
     {
       "section": "9.3.6",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.year",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:458"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:455"]
     },
     {
       "section": "9.3.7",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.month",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:460"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:457"]
     },
     {
       "section": "9.3.8",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.monthcode",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:462"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:459"]
     },
     {
       "section": "9.3.9",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.daysinyear",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:464"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:461"]
     },
     {
       "section": "9.3.10",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.daysinmonth",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:466"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:463"]
     },
     {
       "section": "9.3.11",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.monthsinyear",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:468"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:465"]
     },
     {
       "section": "9.3.12",
       "spec_anchor": "sec-get-temporal.plainyearmonth.prototype.inleapyear",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:470"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:467"]
     },
     {
       "section": "9.3.13",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.with",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:298"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:297"]
     },
     {
       "section": "9.3.14",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.add",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:324"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:323"]
     },
     {
       "section": "9.3.15",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.subtract",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:332"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:331"]
     },
     {
       "section": "9.3.16",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.until",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:337"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:336"]
     },
     {
       "section": "9.3.17",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.since",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:342"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:341"]
     },
     {
       "section": "9.3.18",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.equals",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:347"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:346"]
     },
     {
       "section": "9.3.19",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.tostring",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:376"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:375"]
     },
     {
       "section": "9.3.20",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:389"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:388"]
     },
     {
       "section": "9.3.21",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.tojson",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:405"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:404"]
     },
     {
       "section": "9.3.22",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.valueof",
-      "comment_locations": ["packages/temporal/plain-year-month.ts:410"]
+      "comment_locations": ["packages/temporal/plain-year-month.ts:409"]
     },
     {
       "section": "9.3.23",
       "spec_anchor": "sec-temporal.plainyearmonth.prototype.toplaindate",
       "comment_locations": [
-        "packages/temporal/plain-year-month.ts:354",
-        "packages/temporal/plain-year-month.ts:368"
+        "packages/temporal/plain-year-month.ts:353",
+        "packages/temporal/plain-year-month.ts:367"
       ]
     },
     {
       "section": "10.1.1",
       "spec_anchor": "sec-temporal.plainmonthday",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:239"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:238"]
     },
     {
       "section": "10.2.1",
       "spec_anchor": "sec-temporal.plainmonthday.prototype",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:233"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:232"]
     },
     {
       "section": "10.2.2",
       "spec_anchor": "sec-temporal.plainmonthday.from",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:112"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:111"]
     },
     {
       "section": "10.3.1",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.constructor",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:259"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:256"]
     },
     {
       "section": "10.3.2",
       "spec_anchor": "sec-temporal.plainmonthday.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:262"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:259"]
     },
     {
       "section": "10.3.3",
       "spec_anchor": "sec-get-temporal.plainmonthday.prototype.calendarid",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:266"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:263"]
     },
     {
       "section": "10.3.4",
       "spec_anchor": "sec-get-temporal.plainmonthday.prototype.monthcode",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:268"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:265"]
     },
     {
       "section": "10.3.5",
       "spec_anchor": "sec-get-temporal.plainmonthday.prototype.day",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:270"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:267"]
     },
     {
       "section": "10.3.6",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.with",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:117"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:116"]
     },
     {
       "section": "10.3.7",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.equals",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:143"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:142"]
     },
     {
       "section": "10.3.8",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.tostring",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:186"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:185"]
     },
     {
       "section": "10.3.9",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:199"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:198"]
     },
     {
       "section": "10.3.10",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.tojson",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:215"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:214"]
     },
     {
       "section": "10.3.11",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.valueof",
-      "comment_locations": ["packages/temporal/plain-month-day.ts:220"]
+      "comment_locations": ["packages/temporal/plain-month-day.ts:219"]
     },
     {
       "section": "10.3.12",
       "spec_anchor": "sec-temporal.plainmonthday.prototype.toplaindate",
       "comment_locations": [
-        "packages/temporal/plain-month-day.ts:150",
-        "packages/temporal/plain-month-day.ts:154"
+        "packages/temporal/plain-month-day.ts:149",
+        "packages/temporal/plain-month-day.ts:153"
       ]
     }
   ]
