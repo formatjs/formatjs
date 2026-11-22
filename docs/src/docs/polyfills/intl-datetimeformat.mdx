@@ -27,6 +27,9 @@ Nonpositive calendar display years follow
 [ECMA-402 §11.5.4 step 15.f.iv](https://tc39.es/ecma402/#sec-formatdatetimepattern):
 the displayed year is `1 - year`. For example, Buddhist year 0 displays as 1;
 native ICU currently displays 0. Calendar arithmetic keeps its original year.
+Gregorian/ISO local-time records retain signed astronomical years under
+[§11.5.12 Table 17](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records);
+formatting converts year 0 to 1 BC and year −1 to 2 BC.
 
 Internal locale-pattern parsing follows [ECMA-402 §9.2.15](https://tc39.es/ecma402/#sec-partitionpattern)
 using captured string operations. Complete formatter conformance remains tracked

@@ -115,8 +115,6 @@ it.each(['all', 'golden'])(
       for (let position = 0; position < entry.instants.length; position++) {
         const instant = BigInt(entry.instants[position])
         const expected = ToLocalTime(instant, 'gregory', canonical, {tzData})
-        const astronomical =
-          expected.era === 'BC' ? 1 - expected.year : expected.year
         const nanosecond = Number(
           ((instant % 1_000_000_000n) + 1_000_000_000n) % 1_000_000_000n
         )
@@ -124,7 +122,7 @@ it.each(['all', 'golden'])(
           actual[index].samples![position],
           entry.name + ' ' + instant
         ).toEqual([
-          astronomical,
+          expected.year,
           expected.month + 1,
           expected.day,
           expected.weekday,
@@ -240,7 +238,7 @@ it('retains nanosecond carries for fractional offsets near Date limits', () => {
           ToLocalTime(instant, 'gregory', zone, {tzData: {}}),
           `${instant} ${zone}`
         ).toMatchObject({
-          year: year > 0 ? year : 1 - year,
+          year,
           month: expected.getUTCMonth(),
           day: expected.getUTCDate(),
           weekday: expected.getUTCDay(),
@@ -253,3 +251,40 @@ it('retains nanosecond carries for fractional offsets near Date limits', () => {
     }
   }
 })
+
+it.each(['gregory', 'iso8601'])(
+  'keeps signed %s local-time fields across BCE and offset boundaries',
+  calendar => {
+    for (const anchor of [
+      -8_639_999_913_600_000, -62_198_755_200_000, -62_167_219_200_000,
+      -62_135_596_800_000, 0, 8_639_999_913_600_000,
+    ]) {
+      for (const [zone, offset] of [
+        ['+00:00', 0],
+        ['+01:30', 5_400_000],
+        ['-01:30', -5_400_000],
+      ] as const) {
+        for (const delta of [-1n, 0n, 1n]) {
+          const expected = new Date(anchor + (delta < 0n ? -1 : 0))
+          const epoch = BigInt(anchor - offset) * 1_000_000n + delta
+          expect(
+            ToLocalTime(epoch, calendar, zone, {tzData: {}}),
+            `${calendar} ${epoch} ${zone}`
+          ).toEqual({
+            era: expected.getUTCFullYear() < 1 ? 'BC' : 'AD',
+            year: expected.getUTCFullYear(),
+            month: expected.getUTCMonth(),
+            day: expected.getUTCDate(),
+            weekday: expected.getUTCDay(),
+            hour: expected.getUTCHours(),
+            minute: expected.getUTCMinutes(),
+            second: expected.getUTCSeconds(),
+            millisecond: expected.getUTCMilliseconds(),
+            inDST: false,
+            timeZoneOffset: offset,
+          })
+        }
+      }
+    }
+  }
+)

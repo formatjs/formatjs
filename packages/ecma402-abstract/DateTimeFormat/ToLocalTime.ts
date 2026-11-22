@@ -23,8 +23,8 @@ function IsTimeZoneOffsetString(offsetString: string): boolean {
 }
 
 // Internal scanner for validated offsets, returning milliseconds.
-// Arithmetic follows Temporal §14.6.11 ParseDateTimeUTCOffset, steps 5–18.
-// https://tc39.es/proposal-temporal/#sec-parsedatetimeutcoffset
+// ECMA-402 §11.5.11 step 1.a uses the ECMA-262 offset operation.
+// https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
 function ParseTimeZoneOffsetString(offsetString: string): number {
   const sign = offsetString[0] === '+' ? 1 : -1
   let position = 1
@@ -109,9 +109,9 @@ export interface ToLocalTimeImplDetails {
   tzData: Record<string, UnpackedTimeZoneData>
 }
 
-// Temporal §15.6.23, steps 1–3: add the offset before computing calendar fields.
-// Millisecond arithmetic below is an internal representation of epoch nanoseconds.
-// https://tc39.es/proposal-temporal/#sec-tolocaltime
+// ECMA-402 §11.5.11 steps 1–3: add the offset before computing calendar fields.
+// Table 17 in §11.5.12 projects integer milliseconds from epoch nanoseconds.
+// https://tc39.es/ecma402/#sec-tolocaltime
 export function ToLocalTime(
   epochNanoseconds: bigint,
   calendar: string,

@@ -9,7 +9,7 @@ calendar arithmetic, ToLocalTime or the formatter algorithm.
 ## Gap and correction
 
 TS restricted this transformation to Gregorian and ISO calendars; their
-internal providers already supply positive era years. Rust rendered provider
+internal providers supplied positive era years at that checkpoint. Rust rendered provider
 years directly. Buddhist provider years −1 and 0 therefore appeared as −1 and 0
 instead of the algorithm's 2 and 1. The same issue can affect other providers
 that return nonpositive year fields.
@@ -27,14 +27,12 @@ i32 rendering domain; it cannot overflow or panic. Complete custom-provider
 numeric-domain support remains open. Built-in supported date ranges fit within
 the existing integer domains; the transformation is exact there.
 
-Calendar provider output remains unchanged. It represents the calendar fields
-used by Temporal arithmetic as well as locale formatting; display normalization
-belongs to the pattern step. Gregorian providers' existing positive-era-year
-encoding remains an internal representation difference from
-[§11.5.12 Table 17](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records),
-whose Gregorian Year row is signed YearFromTime. Full ToLocalTime record review
-remains open; the existing Gregorian composition still produces the specified
-display year.
+Display normalization leaves non-Gregorian provider fields unchanged. They also
+feed Temporal arithmetic; display normalization belongs to the pattern step. The [Gregorian record follow-up](temporal-local-time-record-audit.md)
+now corrects Gregorian/ISO producer records to signed YearFromTime under
+[§11.5.12 Table 17](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records).
+Their display normalization happens in the pattern step. Non-Gregorian provider
+fields stay unchanged; complete ToLocalTime and caller review remain open.
 
 ## Evidence and native disagreement
 
@@ -137,3 +135,10 @@ and 40,284 assertions per run. After the broad run, a redundant year condition w
 removed from month/day oracle assertions; all five affected oracle/compiler gates
 pass on rerun (four executed, one cached). Runtime, BUILD and other tested source
 hashes remain unchanged. No baseline, exclusions, fixtures or timeout changes.
+
+The follow-up [local-record audit](temporal-local-time-record-audit.md) also fixes
+a missed native-Hermes extended-calendar display assertion. Parent #8109 CI
+exposed its stale raw Buddhist year expectation; the reproduced failure now
+passes with the same published normalization used by the other ICU oracles.
+All 300 checks pass in source and bytecode, with raw fixture data unchanged.
+The gate and its two owning runtime/compiler checks join the validation inventory.

@@ -50,18 +50,41 @@ The historical/provisional Temporal inventory above remains unchanged.
 Projection review below assumes the partition producer's specified private List
 and Record contract. Producers and complete public methods remain open.
 
-| Section                                                                                   | Status                                                                | Evidence or gap                                                                                                                                                                 |
-| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)                 | Reviewed for valid Pattern Strings                                    | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                                                   |
-| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern)       | Record appends and selected numeric steps reviewed; dependencies open | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                                                    |
-| [§11.5.5 PartitionDateTimePattern](https://tc39.es/ecma402/#sec-partitiondatetimepattern) | Numeric steps mapped; dependencies open                               | [Eight-step correspondence and cache proof](temporal-private-format-cache-audit.md); constructor selection and complete producer remain open.                                   |
-| [§11.5.11 ToLocalTime](https://tc39.es/ecma402/#sec-tolocaltime)                          | Precision vectors reviewed; complete operation open                   | [Fractional-offset boundary and deliberate-loss controls](temporal-local-offset-precision-audit.md); parser, range/brand callers and complete calendar computation remain open. |
-| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts)       | Projection reviewed; producer open                                    | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open.                                 |
-| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)          | Projection reviewed; producer open                                    | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                                                           |
+| Section                                                                                         | Status                                                                | Evidence or gap                                                                                                                                                                                  |
+| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)                       | Reviewed for valid Pattern Strings                                    | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                                                                    |
+| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern)             | Record appends and selected numeric steps reviewed; dependencies open | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                                                                     |
+| [§11.5.5 PartitionDateTimePattern](https://tc39.es/ecma402/#sec-partitiondatetimepattern)       | Numeric steps mapped; dependencies open                               | [Eight-step correspondence and cache proof](temporal-private-format-cache-audit.md); constructor selection and complete producer remain open.                                                    |
+| [§11.5.11 ToLocalTime](https://tc39.es/ecma402/#sec-tolocaltime)                                | Bounded Gregorian records/precision reviewed; complete operation open | [Gregorian record mapping](temporal-local-time-record-audit.md) and [precision controls](temporal-local-offset-precision-audit.md); parser, range/brand callers and other calendars remain open. |
+| [§11.5.12 ToLocalTime Records](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records) | Bounded Gregorian correspondence reviewed                             | [All twelve fields mapped](temporal-local-time-record-audit.md); named-zone data policy and non-Gregorian contracts remain open.                                                                 |
+| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts)             | Projection reviewed; producer open                                    | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open.                                                  |
+| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)                | Projection reviewed; producer open                                    | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                                                                            |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- [Gregorian local-time records #8110](https://github.com/formatjs/formatjs/pull/8110):
+  [Record audit](temporal-local-time-record-audit.md) maps ECMA-402 §11.5.11 steps
+  and §11.5.12 Table 17 to TS/Rust. Gregorian/ISO record producers now retain signed
+  years, with separate era labels; display normalization stays in the pattern
+  renderer. New TS and Rust controls failed before correction. All seven focused
+  gates pass, including 108 Date-oracle local records and twelve Rust provider
+  records at BCE/era/date bounds. Existing all-zone/golden-zone comparisons use
+  signed fields directly. Offset/data policy, non-Gregorian records and complete
+  caller contracts remain open. No new spec issue or historical source-line
+  credit. Full 42-case pattern replay passes in isolation (323.5 seconds).
+  Expanded run: 202/204 pass (65 executed, 139 cached); both raw strict failures
+  exactly match existing ListFormat/PluralRules baseline keys/messages. Ten
+  assemblies, 40 Temporal backend/class gates and the unchanged 12,808-case ICU
+  snapshot pass. Native formatter comparison passes 9,440 cases / 40,284 assertions
+  per source/bytecode run. Parent #8109 CI identified a missed extended-calendar
+  Hermes oracle expecting a raw negative Buddhist display year. Reproduced locally,
+  corrected to the published display rule; 300 checks pass in source/bytecode and
+  both owning runtime/compiler gates pass. Those three gates expand the inventory
+  to 207: combined validation covers 205 passing targets and two existing raw
+  strict baseline failures. Runtime/other tested source hashes unchanged after
+  the broad run; no fixture, baseline, exclusion or timeout changes.
 
 - [Native Intl bridge display years #8109](https://github.com/formatjs/formatjs/pull/8109):
   [Year audit follow-up](temporal-calendar-year-audit.md#native-intl-bridge-follow-up)
