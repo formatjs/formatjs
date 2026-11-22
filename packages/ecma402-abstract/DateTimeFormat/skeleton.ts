@@ -384,14 +384,15 @@ export function parseDateTimeSkeleton(
   intervalFormatFallback?: string,
   lazyRanges: boolean = false
 ): Formats {
-  const result: Formats = Object.assign(Object.create(null), {
+  const result = {
+    __proto__: null,
     pattern: '',
     pattern12: '',
     skeleton,
     rawPattern,
     rangePatterns: Object.create(null) as Formats['rangePatterns'],
     rangePatterns12: Object.create(null) as Formats['rangePatterns12'],
-  })
+  } as Formats
 
   // Process skeleton
   replaceDateTimeTokens(skeleton, result)
@@ -427,9 +428,10 @@ export function parseDateTimeSkeleton(
       const info = getRangePatternInfo(rawPattern)
       const reversed = info.reversed ?? defaultReversed
       const key = k === 'fallback' ? 'default' : skeletonTokenToTable2(k)
-      const intervalResult: RangePatterns = Object.assign(Object.create(null), {
+      const intervalResult: RangePatterns = {
+        __proto__: null,
         patternParts: [],
-      })
+      } as RangePatterns
       const [pattern, pattern12] = processDateTimePattern(
         info.pattern,
         intervalResult

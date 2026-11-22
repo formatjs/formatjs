@@ -381,3 +381,59 @@ test.each(['every', 'some', 'includes', 'indexOf'] as const)(
     expect(actual).toEqual(['2024', '2024', '2 hours', expectedRange])
   }
 )
+
+test.each([
+  ['cold constructor', {year: 'numeric'}, true],
+  ['default fields', {}, false],
+  ['basic components', {year: 'numeric', formatMatcher: 'basic'}, false],
+  ['style fields', {dateStyle: 'short'}, false],
+] as const)(
+  '%s private records ignore mutable Object.assign',
+  (_name, options, cold) => {
+    const value = new Temporal.PlainDate(2024, 2, 29)
+    const construct = () =>
+      new DateTimeFormat('en', {timeZone: 'UTC', ...options})
+    const expected = construct().format(value)
+    const ready = cold ? undefined : construct()
+    const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+    let actual: unknown
+    try {
+      Object.defineProperty(Object, 'assign', {
+        configurable: true,
+        get() {
+          throw new Error('Mutable formatter Object.assign reached')
+        },
+      })
+      actual = (ready ?? construct()).format(value)
+    } finally {
+      Object.defineProperty(Object, 'assign', original)
+    }
+    expect(actual).toBe(expected)
+  }
+)
+
+test('Temporal format slots bypass inherited setters', () => {
+  const value = new Temporal.PlainDate(2024, 2, 29)
+  const options = {
+    timeZone: 'UTC',
+    year: 'numeric',
+    formatMatcher: 'basic',
+  } as const
+  const expected = new DateTimeFormat('en', options).format(value)
+  const ready = new DateTimeFormat('en', options)
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'era')
+  let actual: unknown
+  try {
+    Object.defineProperty(Object.prototype, 'era', {
+      configurable: true,
+      set() {
+        throw new Error('Inherited formatter slot setter reached')
+      },
+    })
+    actual = ready.format(value)
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'era', original)
+    else Reflect.deleteProperty(Object.prototype, 'era')
+  }
+  expect(actual).toBe(expected)
+})

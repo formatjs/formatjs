@@ -60,9 +60,7 @@ const temporal = (
   globalThis as typeof globalThis & {Temporal?: TemporalDateTimeNamespace}
 ).Temporal
 if (temporal) registerTemporalDateTimeNamespace(temporal)
-const stringOptions = Object.assign(Object.create(null), {
-  calendarName: 'always',
-})
+const stringOptions = {__proto__: null, calendarName: 'always'}
 const dateGetTime = Date.prototype.getTime
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 

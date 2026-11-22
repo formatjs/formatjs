@@ -4,6 +4,7 @@ import {
   arrayEvery,
   arrayIncludes,
   arraySome,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
@@ -627,9 +628,7 @@ export function InitializeDateTimeFormat(
         )
       }
       for (const key of allowed) {
-        Object.assign(selectedOptions, {
-          [key]: bestFormat[key as keyof Formats],
-        })
+        setDataProperty(selectedOptions, key, bestFormat[key as keyof Formats])
       }
       const conflicting = arraySome(
         DATE_TIME_PROPS,
@@ -644,7 +643,7 @@ export function InitializeDateTimeFormat(
           : BestFitFormatMatcher(selectedOptions, formats)
     } else {
       for (const key of allowed)
-        Object.assign(selectedOptions, {[key]: temporalOptions[key]})
+        setDataProperty(selectedOptions, key, temporalOptions[key])
       if (arrayEvery(required, key => temporalOptions[key] === undefined)) {
         if (
           kind !== 'Instant' &&
@@ -655,7 +654,7 @@ export function InitializeDateTimeFormat(
           )
         }
         for (const key of defaults)
-          Object.assign(selectedOptions, {[key]: 'numeric'})
+          setDataProperty(selectedOptions, key, 'numeric')
         if (
           kind === 'Instant' &&
           localeTimeZone !== undefined &&
@@ -672,7 +671,7 @@ export function InitializeDateTimeFormat(
     }
     const slots = {...internalSlots}
     for (const key of DATE_TIME_PROPS) {
-      Object.assign(slots, {[key]: selected[key]})
+      setDataProperty(slots, key, selected[key])
     }
     if (selectedOptions.dayPeriod !== undefined)
       slots.dayPeriod = selectedOptions.dayPeriod
