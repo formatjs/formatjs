@@ -188,6 +188,10 @@ Umm al-Qura chronology check. The seven-day scan also verifies each generated
 transition probe interval against the corresponding pinned ICU rules.
 [Sampling proof](temporal-timezone-boundary-proof/relative-window-sampler.md).
 [Transition probe proof](temporal-timezone-boundary-proof/node-icu/temporal-node26-direct-spacing-proof.md#native-transition-lookup).
+Chromium 156 matches 3,630 browser probes. Its exact 2026e timezone resources
+pass the spacing, spread and endpoint scans on the pinned ICU reader. Full
+Chromium runtime binding and ordinary Node system ICU builds remain open.
+[Chromium evidence](temporal-timezone-boundary-proof/chromium-provider-audit.md).
 Other host profiles remain conditional. Numeric Intl cannot observe an outside
 transition that creates an invalid second candidate.
 [Unbound host proof](temporal-timezone-boundary-proof/README.md#unbound-host-intl-provider).

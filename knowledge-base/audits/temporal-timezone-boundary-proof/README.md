@@ -56,6 +56,9 @@ adds exact Linux x64 Node 24.14.0 and 26.8.1 builds and the compiled Hermes
 formatter. Other host binaries, timezone resources and replacement Intl providers
 keep their own boundary premise. The full row stays conditional.
 
+[Chromium 156 resource replay and browser comparison](chromium-provider-audit.md)
+record additional 2026e evidence for a browser profile.
+
 ## Unbound host Intl provider
 
 Numeric `formatToParts` applies `TimeClip`. On Node 26.5.1, both exact limits

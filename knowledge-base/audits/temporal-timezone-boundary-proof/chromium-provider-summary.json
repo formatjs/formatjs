@@ -1,0 +1,66 @@
+{
+  "browser": {
+    "version": "156.0.8078.48",
+    "binarySha256": "7ccca93a192f7fc808244ff68a04f0cb3a548d1c2cf3facd11199ba39643d50f",
+    "dataSha256": "02a01b3188b6a41a756f7322fdb5e6b5ca6573b327b01dfc8ed662d571a6f769",
+    "packageSha256": {
+      "index.js": "b86286e607aa4ea9a0b31220fae047d244aab22992624ba21b2663bdc5cf6fd1",
+      "native.js": "8b9c50d2b21c0b54d651ff44cb8205efda087a4bd9b3dbe6509d4aa78474b710"
+    },
+    "zones": 418,
+    "checks": {
+      "offset": 3344,
+      "next": 132,
+      "previous": 132,
+      "history": 6,
+      "gapFold": 16
+    },
+    "mismatches": 0,
+    "resultSha256": "fa9c974901712c628ab85a46aaae545c34dfacfa2453f7accad0572e178d971b"
+  },
+  "resourceReplay": {
+    "runtime": {
+      "node": "v26.5.1",
+      "icu": "78.3",
+      "tz": "2026e"
+    },
+    "resourcesSha256": {
+      "metaZones.res": "5b484c7f02c99d5164208ce84e18fba67c6314d77cf60503e2b19f708b66c6da",
+      "timezoneTypes.res": "a0f9621945e0282d7861b05149cb3db2610ed0a87c4a5e440d8743ec15511582",
+      "windowsZones.res": "b8c3a7adb94fd659f8203ee4af4dc72a4e6b14566baac1855c493096f337184b",
+      "zoneinfo64.res": "5a168fb78cccfc872f9a50e91facf0bf8b7204a6c4f92fe5c64a8165e9e62448"
+    },
+    "scans": {
+      "endpoint": {
+        "zones": 638,
+        "sha256": "afbe0c0961bcc85edf67a8c18a4d2127460aa4d085fd54c5a323b18c72f38253",
+        "windowMilliseconds": 172800000,
+        "lowerChanges": 0,
+        "upperIncreases": 0,
+        "upperDecreases": 0
+      },
+      "endpoint11": {
+        "zones": 638,
+        "sha256": "89c844ed15b71034e54a284769113a7e0c1604eb8dca94793ea5b061a90a1485",
+        "windowMilliseconds": 950400000,
+        "lowerChanges": 0,
+        "upperIncreases": 4,
+        "upperDecreases": 0
+      },
+      "spread": {
+        "zones": 638,
+        "sha256": "4b2fbfdf8d35a7d863a371f4ef6f0e7e96cb9283f7d78c9b39fbfd0799ff8b1c",
+        "windowMilliseconds": 518400000,
+        "maximumOffsetSpreadMilliseconds": 86400000
+      },
+      "week": {
+        "zones": 638,
+        "sha256": "bc581c942b1b23dd486d612124255e5a6efdfd3397c81ffbc1f4058f2078006f",
+        "windowMilliseconds": 604800000,
+        "shortPairs": 10,
+        "minimumOffsetChangeSpacingMilliseconds": 601200000,
+        "recurringZoneYearsChecked": 5717
+      }
+    }
+  }
+}
