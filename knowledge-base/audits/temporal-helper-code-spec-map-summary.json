@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 23895,
+  "whole_selected_source_lines": 23901,
   "whole_selected_source_lines_by_language": {
-    "rust": 10350,
+    "rust": 10356,
     "typescript": 13545
   },
-  "nonoverlapping_callable_lines": 16694,
+  "nonoverlapping_callable_lines": 16700,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8129,
+    "rust": 8135,
     "typescript": 8565
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 7388,
+    "candidate": 7394,
     "unmapped": 4956,
     "mapped": 4350
   },
@@ -464,10 +464,10 @@
     },
     {
       "file": "crates/temporal/relative_duration.rs",
-      "source_lines": 158,
+      "source_lines": 164,
       "callable_rows": 5,
-      "nonoverlapping_callable_lines": 149,
-      "sha256": "2b15e94315fe8fbe2f3ae8986b94e64d68f50015a67f3f3241eb0de166f085cb",
+      "nonoverlapping_callable_lines": 155,
+      "sha256": "ea47ab8079505a274c1f0478e549097a45ce3f987a2b2621e0edab31033176b7",
       "unresolved_callable_rows": 0
     },
     {

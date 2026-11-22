@@ -32,7 +32,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                              |
 
-Code maps cover 82 distinct selected source files and 24,139 physical lines.
+Code maps cover 82 distinct selected source files and 24,145 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
