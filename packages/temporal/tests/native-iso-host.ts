@@ -14,6 +14,8 @@ import {
 import {
   checkPublicCalendarOracle,
   checkCalendarDifferencePolicy,
+  checkYearMonthDifferencePrivateFields,
+  checkDateTimeDifferencePrivateUnits,
   checkUmmAlQuraJoins,
   checkDifferenceOptionOrder,
   checkDateDifferenceUnitGroup,
@@ -64,6 +66,12 @@ check(
 )
 configureNativeTemporal(query)
 checkUmmAlQuraJoins(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkYearMonthDifferencePrivateFields(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDateTimeDifferencePrivateUnits(Temporal, (actual, expected, context) => {
   if (actual !== expected) throw new Error(context)
 })
 checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) => {

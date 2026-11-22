@@ -6,7 +6,7 @@ Numbered comparison uses separately published official Temporal proposal:[§5.3.
 
 ## Receiver and result
 
-[Public wrappers](../../packages/temporal/plain-date-time.ts#L420) call[read](../../packages/temporal/plain-date-time.ts#L140) before duration or options access. Missing private DateTime brand throws intrinsic TypeError. The[factory](../../packages/temporal/plain-date-time.ts#L151) validates local range, allocates a fresh intrinsic-prototype object and preserves calendar. NativeData can consume a validated native slot through its alternate factory branch; full realm/native-slot trust remains a dependency.
+[Public wrappers](../../packages/temporal/plain-date-time.ts#L431) call[read](../../packages/temporal/plain-date-time.ts#L140) before duration or options access. Missing private DateTime brand throws intrinsic TypeError. The[factory](../../packages/temporal/plain-date-time.ts#L151) validates local range, allocates a fresh intrinsic-prototype object and preserves calendar. NativeData can consume a validated native slot through its alternate factory branch; full realm/native-slot trust remains a dependency.
 
 ## AddDurationToDateTime
 

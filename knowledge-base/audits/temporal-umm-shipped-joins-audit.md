@@ -69,7 +69,7 @@ Six literal rows, `islamic-umalqura`, now run through public Temporal classes an
 Controls assert hardcoded year/month/code/day and forward reject-overflow conversion to the literal ISO date (TS) or epoch (Rust). Two public crossing controls add one day at each join and subtract it back; one-day differences also retain P1D. Distinguishes actual table/civil handoff from repeating out-of-range civil samples. The shared public helper uses ISO constructors and hardcoded expected fields. It runs only in implementation profiles; independent ICU reference tests do not inherit this chosen-data policy.
 
 Rust controls reuse the [existing shipped loader](../../crates/intl_datetimeformat_calendars/table_calendar.test.rs#L121). TS controls are a separate
-[checkUmmAlQuraJoins](../../packages/temporal/tests/public-calendar-oracle.ts#L118), explicitly called by
+[checkUmmAlQuraJoins](../../packages/temporal/tests/public-calendar-oracle.ts#L256), explicitly called by
 table-calendars.test.ts, table-calendar-host.ts and native-iso-host.ts. The
 independent reference checker remains unchanged. All nine focused targets pass
 (two executed, seven cached in the final run);

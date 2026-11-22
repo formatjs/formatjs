@@ -62,6 +62,10 @@ Difference options read `largestUnit`, `roundingIncrement`, `roundingMode`, then
 getters run. Recognized units are checked against the method's allowed units
 after those reads.
 
+PlainDateTime differences prepare private unit names without mutable array
+iteration. PlainYearMonth differences isolate private reference-date fields from
+inherited era getters; inherited fields on public input bags remain observable.
+
 Shared ISO string parsing also avoids mutable RegExp/String methods and legacy
 RegExp match-state changes. Clock fractions retain all nine digits. Calendar and
 timezone preparation outside the parser retains its separate validation.

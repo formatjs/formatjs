@@ -2,6 +2,8 @@ import {Temporal} from '#packages/temporal/index.js'
 import {
   checkPublicCalendarOracle,
   checkCalendarDifferencePolicy,
+  checkYearMonthDifferencePrivateFields,
+  checkDateTimeDifferencePrivateUnits,
   checkDifferenceOptionOrder,
   checkDateDifferenceUnitGroup,
 } from '#packages/temporal/tests/public-calendar-oracle.js'
@@ -10,6 +12,12 @@ const fixture = (
   globalThis as unknown as {__formatjsArithmeticCalendarOracle: string}
 ).__formatjsArithmeticCalendarOracle
 checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkYearMonthDifferencePrivateFields(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDateTimeDifferencePrivateUnits(Temporal, (actual, expected, context) => {
   if (actual !== expected) throw new Error(context)
 })
 checkDifferenceOptionOrder(Temporal, (actual, expected, context) => {

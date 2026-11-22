@@ -26,9 +26,9 @@ The exercised language leaves remain [ECMA-262 §7.1.19 ToString](https://tc39.e
 
 ## Controls and validation
 
-[Shared spelling controls](../../packages/temporal/tests/public-calendar-oracle.ts#L192) cover all six difference APIs, until/since, equal/unequal operands, four invalid spellings and a string-hint coercion trace. Later getter sentinel must remain unobserved for invalid spelling. Recognized names, plural names, auto and undefined preserve subsequent getter behavior. An additional trace reaches a throwing smallestUnit getter after increment/mode coercion, preventing an incorrect eager category check.
+[Shared spelling controls](../../packages/temporal/tests/public-calendar-oracle.ts#L330) cover all six difference APIs, until/since, equal/unequal operands, four invalid spellings and a string-hint coercion trace. Later getter sentinel must remain unobserved for invalid spelling. Recognized names, plural names, auto and undefined preserve subsequent getter behavior. An additional trace reaches a throwing smallestUnit getter after increment/mode coercion, preventing an incorrect eager category check.
 
-[Private-index control](../../packages/temporal/tests/public-calendar-oracle.ts#L161) temporarily installs the negative-key getter and restores its exact original descriptor in finally before assertions. It requires zero hooks and RangeError for both date methods.
+[Private-index control](../../packages/temporal/tests/public-calendar-oracle.ts#L299) temporarily installs the negative-key getter and restores its exact original descriptor in finally before assertions. It requires zero hooks and RangeError for both date methods.
 
 Controls run in public_calendar_test, source/bytecode public_calendar_hermes_oracle_test, and native_iso_hermes_oracle_test after native configuration. Independent calendar-policy reference fixtures are unchanged. Five focused gates pass (three executed, two cached). Expanded validation passes all 83 tests (70 executed, 13 cached), plus Temporal and DurationFormat package builds. [Target manifest](temporal-difference-option-validation-targets.txt) records all 85 targets.
 

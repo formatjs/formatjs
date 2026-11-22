@@ -9,7 +9,7 @@ are comparison/navigation only. No authoritative Temporal completion or
 historical line credit follows. Source anchors identify corrected code.
 
 Current code: [TS helper137](../../packages/temporal/plain-year-month.ts#L137),
-[public methods312](../../packages/temporal/plain-year-month.ts#L312),
+[public methods316](../../packages/temporal/plain-year-month.ts#L316),
 [Rust addition171](../../crates/temporal/short_dates.rs#L171),
 [native adapter645](../../packages/temporal/native.ts#L645) and
 [FFI dispatch929](../../crates/temporal/ffi.rs#L929).

@@ -283,7 +283,18 @@ function difference(
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
-  const names = ['year', 'month', 'week', 'day', ...clockNames]
+  const names = [
+    'year',
+    'month',
+    'week',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+    'microsecond',
+    'nanosecond',
+  ]
   const smallIndex = arrayIndexOf(names, smallest)
   const largest =
     largestText === 'auto' ? names[mathMin(3, smallIndex)] : largestOption!
