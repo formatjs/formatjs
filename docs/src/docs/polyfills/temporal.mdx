@@ -134,6 +134,11 @@ date components match. Plain fixed-day/time comparisons do not require a final
 destination date within Temporal bounds. Complete equal durations retain their
 specified shortcut.
 
+PlainYearMonth.toPlainDate keeps inherited era properties out of private calendar
+fields while preserving inherited public day fields. Locale formatting reports
+invalid date/time styles before a conflicting calendar. DurationFormat parts
+always expose their own unit properties.
+
 Without Intl, default `Temporal.Now` timezone offsets remain independent of
 later replacements of `String` or `String.prototype.padStart`.
 

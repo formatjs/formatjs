@@ -37,6 +37,12 @@ export interface SystemClock {
   timeZoneId(): string
 }
 const limit = 8_640_000_000_000_000_000_000n
+// Proposal comparison §2.3.1 steps 1–2.
+// https://tc39.es/proposal-temporal/#sec-hostsystemutcepochnanoseconds
+// Proposal comparison §2.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-temporal-systemutcepochnanoseconds
+// Proposal comparison §2.3.4 steps 1–4.
+// https://tc39.es/proposal-temporal/#sec-temporal-systemdatetime
 export function createNow(clock: SystemClock): NowObject {
   function instant(): bigint {
     const value = clock.epochNanoseconds()
@@ -63,22 +69,34 @@ export function createNow(clock: SystemClock): NowObject {
     return ns + zonedKernel(name).offsetNanoseconds(ns)
   }
   const result: NowObject = {
+    // Proposal comparison §2.2.1 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.now.timezoneid
     timeZoneId() {
       return zone(undefined)
     },
+    // Proposal comparison §2.2.2 steps 1–2.
+    // https://tc39.es/proposal-temporal/#sec-temporal.now.instant
     instant() {
       return createInstant(instant())
     },
+    // Proposal comparison §2.2.3 steps 1–2.
+    // https://tc39.es/proposal-temporal/#sec-temporal.now.plaindatetimeiso
     plainDateTimeISO(timeZone = undefined) {
       return createPlainDateTime(local(timeZone), 'iso8601')
     },
+    // Proposal comparison §2.2.4 steps 1–4.
+    // https://tc39.es/proposal-temporal/#sec-temporal.now.zoneddatetimeiso
     zonedDateTimeISO(timeZone = undefined) {
       const name = zone(timeZone)
       return createZonedDateTime(instant(), name, 'iso8601')
     },
+    // Proposal comparison §2.2.5 steps 1–2.
+    // https://tc39.es/proposal-temporal/#sec-temporal.now.plaindateiso
     plainDateISO(timeZone = undefined) {
       return createPlainDate(epochDayOf(local(timeZone)), 'iso8601')
     },
+    // Proposal comparison §2.2.6 steps 1–2.
+    // https://tc39.es/proposal-temporal/#sec-temporal.now.plaintimeiso
     plainTimeISO(timeZone = undefined) {
       return createPlainTime(timeOf(local(timeZone)))
     },
@@ -86,6 +104,8 @@ export function createNow(clock: SystemClock): NowObject {
   const names = Object.keys(result)
   for (let i = 0; i < names.length; i++)
     Object.defineProperty(result, names[i], {enumerable: false})
+  // Proposal comparison §2.1.1 descriptor.
+  // https://tc39.es/proposal-temporal/#sec-temporal-now-%symbol.tostringtag%
   Object.defineProperty(result, Symbol.toStringTag, {
     value: 'Temporal.Now',
     configurable: true,

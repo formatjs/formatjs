@@ -393,3 +393,45 @@ test('intrinsic ISO parsing retains signed years and fractional seconds', () => 
       )?.value
   ).toBe('123')
 })
+
+test.each(['String', 'BigInt', 'Number', 'indexOf', 'slice'] as const)(
+  'formats captured Temporal serialization without mutable %s',
+  hook => {
+    const values = [
+      new Temporal.PlainDate(1, 2, 3),
+      new Temporal.PlainYearMonth(2020, 2, 'gregory'),
+      new Temporal.PlainMonthDay(2, 3, 'gregory'),
+      new Temporal.PlainTime(12, 34, 56, 123, 456, 789),
+      new Temporal.PlainDateTime(-1, 2, 3, 12, 34, 56, 123, 456, 789),
+      new Temporal.Instant(-1n),
+    ]
+    const dtf = formatter({hourCycle: 'h23'})
+    const render = () => values.map(value => dtf.formatToParts(value))
+    // Warm renderer dependencies before exercising the captured brand bridge.
+    const expected = render()
+    const owner =
+      hook === 'indexOf' || hook === 'slice' ? String.prototype : globalThis
+    const descriptor = Object.getOwnPropertyDescriptor(owner, hook)!
+    const define = Object.defineProperty
+    let actual: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(owner, hook, {
+        ...descriptor,
+        value: () => {
+          calls++
+          throw new Error('Mutable Temporal serialization')
+        },
+      })
+      actual = render()
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, hook, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(calls).toBe(0)
+    expect(actual).toEqual(expected)
+  }
+)

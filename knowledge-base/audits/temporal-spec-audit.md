@@ -10,8 +10,8 @@ numbered algorithm is not signed off by having an empty line inventory.
 
 Requested citation authority: [ECMA-262](https://tc39.es/ecma262/), using numbered
 sections and steps. The fetched 2026-11-21 document has no Temporal API chapters;
-its Temporal-prefixed productions are shared date/time grammar. Temporal chapter
-selection and the broader citation migration remain pending clarification. The
+its Temporal-prefixed productions are shared date/time grammar. Temporal API rows explicitly use the pinned rendered comparison until the
+requested authority contains those chapters. The
 source-line inventory below is historical evidence, not section completion.
 Current [goal and execution plan](temporal-remaining-work-plan.md) replaces the
 old provisional citation count with a fixed code/spec register. All 268 public
@@ -26,8 +26,8 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-403 core and130 amendment rows remain conditional; the separate queue contains
-259 conditional numbered steps. Aggregate counts are not independent defects.
+348 core and105 amendment rows remain conditional; the separate queue contains
+190 conditional numbered steps in33 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
 Inline numbered section/step comments are also required beside audited code.

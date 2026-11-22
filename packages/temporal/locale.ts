@@ -21,6 +21,7 @@ import {
 } from '#packages/temporal/legacy-extended-date.js'
 
 const dateUTC = Date.UTC
+const objectKeys = Object.keys
 
 interface DateTimeConstructor extends Intl.DateTimeFormatConstructor {
   __formatTemporal?: (
@@ -160,6 +161,22 @@ export function legacyDateTimeProjection(
   })
   const first = new Constructor(locales as string | string[] | undefined, proxy)
   const resolved = intrinsics.resolvedOptions.call(first)
+  // Proposal comparison §15.4.1 steps 45.b–c: reject required-style conflicts first.
+  // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+  const dateStyle = snapshot.dateStyle,
+    timeStyle = snapshot.timeStyle
+  if (
+    localeMethod &&
+    ((value.kind === 'PlainTime' && dateStyle !== undefined) ||
+      (value.kind !== 'Instant' &&
+        value.kind !== 'ZonedDateTime' &&
+        value.kind !== 'PlainDateTime' &&
+        value.kind !== 'PlainTime' &&
+        timeStyle !== undefined))
+  )
+    throw new TypeErrorConstructor(
+      'DateTimeFormat style conflicts with required type'
+    )
   if (
     value.calendar !== undefined &&
     value.calendar !== resolved.calendar &&
@@ -204,19 +221,6 @@ export function legacyDateTimeProjection(
   ])
     selected[key] = snapshot[key]
   selected.timeZone = instant ? resolved.timeZone : 'UTC'
-  const dateStyle = snapshot.dateStyle,
-    timeStyle = snapshot.timeStyle
-  if (
-    localeMethod &&
-    ((value.kind === 'PlainTime' && dateStyle !== undefined) ||
-      (!instant &&
-        value.kind !== 'PlainDateTime' &&
-        value.kind !== 'PlainTime' &&
-        timeStyle !== undefined))
-  )
-    throw new TypeErrorConstructor(
-      'DateTimeFormat style conflicts with required type'
-    )
   if (dateStyle !== undefined || timeStyle !== undefined) {
     const plainDate =
       value.kind === 'PlainDate' ||
@@ -237,7 +241,7 @@ export function legacyDateTimeProjection(
       intrinsics.formatToParts
     )
     if (
-      arraySome(Object.keys(styleFields), key => !arrayIncludes(allowed, key))
+      arraySome(objectKeys(styleFields), key => !arrayIncludes(allowed, key))
     ) {
       for (const key of allowed) selected[key] = styleFields[key]
       if (styleFields.hour !== undefined && arrayIncludes(allowed, 'hour'))
@@ -311,7 +315,12 @@ function legacyStyleFields(
   ]
   const field = (type: string): string =>
     type === 'relatedYear' || type === 'yearName' ? 'year' : type
-  const parts = probes.map(probe => formatToParts.call(style, probe))
+  // Proposal comparison §15.4.1 step 45.e: style selection uses private Lists.
+  // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+  const parts = [
+    formatToParts.call(style, probes[0]),
+    formatToParts.call(style, probes[1]),
+  ]
   const defaults: Record<string, string> = {
     weekday: 'long',
     era: 'short',
@@ -324,17 +333,22 @@ function legacyStyleFields(
     timeZoneName: 'short',
   }
   const seed: Record<string, unknown> = createObject(null)
-  for (const part of parts[0]) {
-    const key = field(part.type)
+  for (let index = 0; index < parts[0].length; index++) {
+    const key = field(parts[0][index].type)
     if (defaults[key] !== undefined) seed[key] = defaults[key]
   }
-  const text = (values: Intl.DateTimeFormatPart[], key: string): string =>
-    values
-      .filter(part => field(part.type) === key)
-      .map(part => part.value)
-      .join('')
+  const text = (values: Intl.DateTimeFormatPart[], key: string): string => {
+    let result = ''
+    for (let index = 0; index < values.length; index++) {
+      const part = values[index]
+      if (field(part.type) === key) result += part.value
+    }
+    return result
+  }
   const result: Record<string, unknown> = {...seed}
-  for (const key of Object.keys(seed)) {
+  const keys = objectKeys(seed)
+  for (let index = 0; index < keys.length; index++) {
+    const key = keys[index]
     const widths =
       key === 'year' ||
       key === 'day' ||
@@ -347,7 +361,8 @@ function legacyStyleFields(
           : key === 'timeZoneName'
             ? ['short', 'long']
             : ['long', 'short', 'narrow']
-    for (const width of widths) {
+    for (let index = 0; index < widths.length; index++) {
+      const width = widths[index]
       const candidate = new Constructor(resolved.locale, {
         ...controls,
         ...seed,

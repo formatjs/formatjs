@@ -257,3 +257,116 @@ it('copies legacy zoned options without mutable Object.assign', () => {
   }
   expect(actual).toBe('01/01/1970')
 })
+
+it('keeps host offset cache hits, misses and FIFO eviction private', () => {
+  for (const method of ['get', 'set', 'delete', 'keys'] as const) {
+    const offset = createHostTimeZone('Asia/Kathmandu').offsetNanoseconds
+    offset(0n)
+    const original = Object.getOwnPropertyDescriptor(Map.prototype, method)!
+    let calls = 0
+    let actual: bigint | undefined
+    let error: unknown
+    try {
+      Object.defineProperty(Map.prototype, method, {
+        configurable: true,
+        writable: true,
+        value() {
+          calls++
+          throw new Error('Observable host offset cache')
+        },
+      })
+      try {
+        actual = offset(0n)
+        for (let index = 1; index <= 65; index++)
+          actual = offset(BigInt(index) * 1_000_000_000n)
+        actual = offset(0n)
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(Map.prototype, method, original)
+    }
+    if (error) throw error
+    expect(calls, method).toBe(0)
+    expect(actual, method).toBe(19_800_000_000_000n)
+  }
+})
+
+it('keeps host transition cache search, merge and eviction private', () => {
+  const queries: bigint[] = []
+  for (let year = 1960; year <= 2024; year++)
+    queries[queries.length] = BigInt(Date.UTC(year, 0, 1)) * 1_000_000n
+  for (const method of ['find', 'splice', 'shift', 'push', 'sort'] as const) {
+    const zone = createHostTimeZone('America/New_York')
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, method)!
+    let calls = 0
+    let actual: bigint | null | undefined
+    let fold: bigint | undefined
+    let error: unknown
+    try {
+      Object.defineProperty(Array.prototype, method, {
+        configurable: true,
+        writable: true,
+        value() {
+          calls++
+          throw new Error('Observable host transition cache')
+        },
+      })
+      try {
+        for (let index = 0; index < queries.length; index++)
+          actual = zone.transition!(queries[index], 'next')
+        // Repeated query uses transition cache; fold separately reaches candidate ordering.
+        actual = zone.transition!(queries[queries.length - 1], 'next')
+        fold = zone.resolve(
+          {year: 2024, month: 11, day: 3, hour: 1, minute: 30},
+          'later'
+        )
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(Array.prototype, method, original)
+    }
+    if (error) throw error
+    expect(calls, method).toBe(0)
+    expect(actual, method).toBe(1_710_054_000_000_000_000n)
+    expect(fold, method).toBe(1_730_615_400_000_000_000n)
+  }
+})
+
+it.each([
+  ['constructor', Array.prototype, 'constructor'],
+  ['species', Array, Symbol.species],
+] as const)(
+  'keeps host transition interval removal private from Array %s',
+  (_label, target, key) => {
+    const zone = createHostTimeZone('America/New_York')
+    const instant = 1_704_067_200_000_000_000n // 2024-01-01T00:00Z
+    const original = Object.getOwnPropertyDescriptor(target, key)!
+    let calls = 0
+    let actual: bigint | null | undefined
+    let repeated: bigint | null | undefined
+    let error: unknown
+    try {
+      Object.defineProperty(target, key, {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error('Observable host transition Array species')
+        },
+      })
+      try {
+        actual = zone.transition!(instant, 'next')
+        repeated = zone.transition!(instant, 'next')
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(target, key, original)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(actual).toBe(1_710_054_000_000_000_000n)
+    expect(repeated).toBe(1_710_054_000_000_000_000n)
+  }
+)

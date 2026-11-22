@@ -1,4 +1,7 @@
-import {arraySome} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  arraySome,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {BigDecimal} from '@formatjs/bigdecimal'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
@@ -18,6 +21,8 @@ export function PartitionDurationFormatPattern(
   df: DurationFormat,
   duration: DurationRecord
 ): DurationFormatPart[] {
+  // ECMA-402 §13.5.15: append to private Lists without public Array methods.
+  // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
   const result: DurationFormatPart[][] = []
   let done = false
   let separated = false
@@ -50,7 +55,7 @@ export function PartitionDurationFormatPattern(
     const display = internalSlots[row.displaySlot]
     const {unit, numberFormatUnit} = row
 
-    const nfOpts: NumberFormatOptions = Object.create(null)
+    const nfOpts = {__proto__: null} as unknown as NumberFormatOptions
     if (
       unit === 'seconds' ||
       unit === 'milliseconds' ||
@@ -147,7 +152,7 @@ export function PartitionDurationFormatPattern(
         list = []
       } else {
         list = result[result.length - 1]
-        list.push({
+        setDataProperty(list, `${list.length}`, {
           type: 'literal',
           value: separator,
         })
@@ -160,24 +165,25 @@ export function PartitionDurationFormatPattern(
       let parts = nf.formatToParts(
         value.isZero() && value.isNegative() ? -0 : value
       )
-      parts.forEach(({type, value}) => {
-        list.push({
+      for (let index = 0; index < parts.length; index++) {
+        const {type, value} = parts[index]
+        setDataProperty(list, `${list.length}`, {
           type,
           value,
           unit: numberFormatUnit,
         })
-      })
+      }
       if (!separated) {
         if (style === '2-digit' || style === 'numeric') {
           separated = true
         }
-        result.push(list)
+        setDataProperty(result, `${result.length}`, list)
       }
     } else {
       separated = false
     }
   }
-  const lfOpts: Intl.ListFormatOptions = Object.create(null)
+  const lfOpts = {__proto__: null} as unknown as Intl.ListFormatOptions
   lfOpts.type = 'unit'
   let listStyle = internalSlots.style
   if (listStyle === 'digital') {
@@ -191,23 +197,23 @@ export function PartitionDurationFormatPattern(
     for (const {value} of parts) {
       string += value
     }
-    strings.push(string)
+    setDataProperty(strings, `${strings.length}`, string)
   }
   let formatted = lf.formatToParts(strings)
   let resultIndex = 0
   let resultLength = result.length
-  let flattened = []
+  const flattened: DurationFormatPart[] = []
   for (const {type, value} of formatted) {
     if (type === 'element') {
       invariant(resultIndex < resultLength, 'Index out of bounds')
       let parts = result[resultIndex]
       for (const part of parts) {
-        flattened.push(part)
+        setDataProperty(flattened, `${flattened.length}`, part)
       }
       resultIndex++
     } else {
       invariant(type === 'literal', 'Type must be literal')
-      flattened.push({
+      setDataProperty(flattened, `${flattened.length}`, {
         type: 'literal',
         value,
       })

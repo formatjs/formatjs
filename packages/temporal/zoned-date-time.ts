@@ -1,4 +1,8 @@
 import {
+  zeroPadDecimal,
+  formatFractionalSeconds,
+} from '#packages/temporal/format-digits.js'
+import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayIncludes,
@@ -27,7 +31,8 @@ import {
   type InstantObject,
 } from '#packages/temporal/instant.js'
 import {
-  PlainTime,
+  createPlainTime,
+  toPlainTimeNanoseconds,
   roundTime,
   validateTimeIncrement,
   type PlainTimeObject,
@@ -44,7 +49,6 @@ import {
 import {
   getZonedSlot,
   setZonedSlot,
-  getTimeSlot,
   type ZonedSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -56,6 +60,7 @@ import {
   parseZonedDateTimeString,
   parseOffsetNanoseconds,
   isTimeZoneOffsetString,
+  zoneName,
 } from '#packages/temporal/instant-string.js'
 import {
   epochNanosecondsToISO,
@@ -716,6 +721,12 @@ function numericOffset(slot: ZonedSlot): number {
   return value
 }
 
+const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
+
 function offsetText(slot: ZonedSlot): string {
   const cached = zonedSnapshot(slot)
   if (cached) return cached.value.values.offset as string
@@ -725,17 +736,19 @@ function offsetText(slot: ZonedSlot): string {
   const negative = offset < 0n,
     absolute = negative ? -offset : offset,
     seconds = absolute / 1_000_000_000n
+  // Proposal comparison §11.1.6 steps8–9: private offset digits and fraction.
+  // https://tc39.es/proposal-temporal/#sec-temporal-formatutcoffsetnanoseconds
   let text =
     (negative ? '-' : '+') +
-    String(seconds / 3600n).padStart(2, '0') +
+    zeroPadDecimal(numberFrom(seconds / 3600n), 2) +
     ':' +
-    String((seconds / 60n) % 60n).padStart(2, '0')
+    zeroPadDecimal(numberFrom((seconds / 60n) % 60n), 2)
   if (seconds % 60n || absolute % 1_000_000_000n) {
-    text += ':' + String(seconds % 60n).padStart(2, '0')
-    const fraction = String(absolute % 1_000_000_000n)
-      .padStart(9, '0')
-      .replace(/0+$/, '')
-    if (fraction) text += '.' + fraction
+    text += ':' + zeroPadDecimal(numberFrom(seconds % 60n), 2)
+    text += formatFractionalSeconds(
+      numberFrom(absolute % 1_000_000_000n),
+      'auto'
+    )
   }
   return text
 }
@@ -785,10 +798,12 @@ function format(slot: ZonedSlot, options?: unknown): string {
   const value = roundInstant(slot.epochNanoseconds, quantum, mode),
     shift = zonedKernel(slot.timeZone).offsetNanoseconds(value)
   return (
-    formatInstant(value + shift, precision).slice(0, -1) +
+    // Proposal comparison §6.5.4 steps9,11.a: private ISO and offset substrings.
+    // https://tc39.es/proposal-temporal/#sec-temporal-temporalzoneddatetimetostring
+    stringSlice(formatInstant(value + shift, precision), 0, -1) +
     (offset === 'never'
       ? ''
-      : formatInstant(value, 'minute', shift).slice(-6)) +
+      : stringSlice(formatInstant(value, 'minute', shift), -6)) +
     (zoneName === 'never'
       ? ''
       : `[${zoneName === 'critical' ? '!' : ''}${slot.timeZone}]`) +
@@ -796,6 +811,7 @@ function format(slot: ZonedSlot, options?: unknown): string {
   )
 }
 class ZonedDateTimeValue {
+  // Exported proxy below owns constructor conversion and allocation.
   constructor(
     _epochNanoseconds: unknown,
     _timeZone: unknown,
@@ -803,6 +819,8 @@ class ZonedDateTimeValue {
   ) {
     throw new TypeErrorConstructor('Use exported ZonedDateTime constructor')
   }
+  // Proposal comparison §6.2.2 step 1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.from
   static from(
     item: unknown,
     options: unknown = undefined
@@ -810,6 +828,8 @@ class ZonedDateTimeValue {
     const slot = toZonedDateTimeSlot(item, options)
     return createZonedDateTime(slot, slot.timeZone, slot.calendar)
   }
+  // Proposal comparison §6.2.3 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.compare
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toZonedDateTimeSlot(one).epochNanoseconds,
       b = toZonedDateTimeSlot(two).epochNanoseconds
@@ -821,27 +841,39 @@ class ZonedDateTimeValue {
     // L74: compare private epochs; timezone and calendar do not affect the sign.
     return a < b ? -1 : a > b ? 1 : 0
   }
+  // Proposal comparison §6.3.18 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.epochnanoseconds
   get epochNanoseconds(): bigint {
     return read(this).epochNanoseconds
   }
+  // Proposal comparison §6.3.17 steps 1–5.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.epochmilliseconds
   get epochMilliseconds(): number {
     const value = read(this).epochNanoseconds
     return numberFrom(
       value / 1_000_000n - (value < 0n && value % 1_000_000n !== 0n ? 1n : 0n)
     )
   }
+  // Proposal comparison §6.3.4 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.timezoneid
   get timeZoneId(): string {
     return read(this).timeZone
   }
+  // Proposal comparison §6.3.29 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.offsetnanoseconds
   get offsetNanoseconds(): number {
     const slot = read(this),
       cached = zonedSnapshot(slot)
     if (cached) return cached.value.values.offsetNanoseconds as number
     return numericOffset(slot)
   }
+  // Proposal comparison §6.3.30 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.offset
   get offset(): string {
     return offsetText(read(this))
   }
+  // Proposal comparison §6.3.23 steps 1–10.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.hoursinday
   get hoursInDay(): number {
     const slot = read(this),
       cached = zonedSnapshot(slot)
@@ -859,6 +891,8 @@ class ZonedDateTimeValue {
       ) / 3_600_000_000_000
     )
   }
+  // Proposal comparison §6.3.31 steps 1–26.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.with
   with(item: unknown, options: unknown = undefined): ZonedDateTimeObject {
     const slot = read(this),
       partial = partialObject(item),
@@ -924,6 +958,8 @@ class ZonedDateTimeValue {
       slot.calendar
     )
   }
+  // Proposal comparison §6.3.39 steps 1–21.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.round
   round(roundTo: unknown): ZonedDateTimeObject {
     const slot = read(this)
     if (roundTo === undefined)
@@ -988,6 +1024,8 @@ class ZonedDateTimeValue {
     }
     return createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
+  // Proposal comparison §6.3.33 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withtimezone
   withTimeZone(timeZone: unknown): ZonedDateTimeObject {
     const slot = read(this)
     return createZonedDateTime(
@@ -996,6 +1034,8 @@ class ZonedDateTimeValue {
       slot.calendar
     )
   }
+  // Proposal comparison §6.3.34 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withcalendar
   withCalendar(calendar: unknown): ZonedDateTimeObject {
     const slot = read(this)
     if (calendar === undefined)
@@ -1006,6 +1046,8 @@ class ZonedDateTimeValue {
       calendarId(calendar)
     )
   }
+  // Proposal comparison §6.3.32 steps 1–8.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withplaintime
   withPlainTime(time: unknown = undefined): ZonedDateTimeObject {
     const slot = read(this)
     const value =
@@ -1014,26 +1056,38 @@ class ZonedDateTimeValue {
         : zonedKernel(slot.timeZone).resolve(
             epochNanosecondsToISO(
               bigIntFrom(epochDayOf(local(slot))) * nsPerDay +
-                getTimeSlot(PlainTime.from(time))!
+                // Proposal comparison §6.3.32 step7.a: private ToTemporalTime.
+                // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withplaintime
+                toPlainTimeNanoseconds(time)
             )
           )
     return createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
+  // Proposal comparison §6.3.37 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.until
   until(other: unknown, options: unknown = undefined): DurationObject {
     return differenceZonedDuration(read(this), other, options, false)
   }
+  // Proposal comparison §6.3.38 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.since
   since(other: unknown, options: unknown = undefined): DurationObject {
     return differenceZonedDuration(read(this), other, options, true)
   }
+  // Proposal comparison §6.3.35 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.add
   add(duration: unknown, options: unknown = undefined): ZonedDateTimeObject {
     return add(read(this), duration, options, 1)
   }
+  // Proposal comparison §6.3.36 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.subtract
   subtract(
     duration: unknown,
     options: unknown = undefined
   ): ZonedDateTimeObject {
     return add(read(this), duration, options, -1)
   }
+  // Proposal comparison §6.3.46 steps 1–12.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition
   getTimeZoneTransition(direction: unknown): ZonedDateTimeObject | null {
     const slot = read(this)
     if (direction === undefined)
@@ -1052,6 +1106,8 @@ class ZonedDateTimeValue {
       ? null
       : createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
+  // Proposal comparison §6.3.45 steps 1–7.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.startofday
   startOfDay(): ZonedDateTimeObject {
     const slot = read(this)
     const native = nativeTemporal()
@@ -1063,6 +1119,8 @@ class ZonedDateTimeValue {
       slot.calendar
     )
   }
+  // Proposal comparison §6.3.40 steps 1–6.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.equals
   equals(other: unknown): boolean {
     const a = read(this),
       b = toZonedDateTimeSlot(other)
@@ -1072,23 +1130,37 @@ class ZonedDateTimeValue {
       timeZoneEquals(a.timeZone, b.timeZone)
     )
   }
+  // Proposal comparison §6.3.47 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.toinstant
   toInstant(): InstantObject {
     return createInstant(read(this).epochNanoseconds)
   }
+  // Proposal comparison §6.3.50 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.toplaindatetime
   toPlainDateTime(): PlainDateTimeObject {
     const slot = read(this)
     return createPlainDateTime(local(slot), slot.calendar)
   }
+  // Proposal comparison §6.3.48 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.toplaindate
   toPlainDate(): PlainDateObject {
     const slot = read(this)
     return createPlainDate(epochDayOf(local(slot)), slot.calendar)
   }
+  // Proposal comparison §6.3.49 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.toplaintime
   toPlainTime(): PlainTimeObject {
-    return PlainTime.from(epochNanosecondsToISO(local(read(this))))
+    // Proposal comparison §6.3.49 step4: private CreateTemporalTime.
+    // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.toplaintime
+    return createPlainTime(timeOf(local(read(this))))
   }
+  // Proposal comparison §6.3.41 steps 1–14.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.tostring
   toString(options: unknown = undefined): string {
     return format(read(this), options)
   }
+  // Proposal comparison §6.3.42 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.tolocalestring
   toLocaleString(
     locales: unknown = undefined,
     options: unknown = undefined
@@ -1102,9 +1174,13 @@ class ZonedDateTimeValue {
       () => local(slot)
     )
   }
+  // Proposal comparison §6.3.43 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.tojson
   toJSON(): string {
     return format(read(this))
   }
+  // Proposal comparison §6.3.44 step 1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.valueof
   valueOf(): never {
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.ZonedDateTime to primitive'
@@ -1121,9 +1197,13 @@ if (import.meta.formatjsTemporalNativeData === true)
   NativeZonedDateTime.prototype = ZonedDateTimeValue.prototype
 // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L30-L33
 // L30: ordinary calls reach the class target, which rejects missing NewTarget.
+// Proposal comparison §6.2.1 descriptor.
+// https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype
 export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
   ZonedDateTimeValue,
   {
+    // Proposal comparison §6.1.1 steps 2–11. Constructor call target supplies step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime
     construct(target, args, newTarget) {
       // L31: ToPrimitive uses the number hint; only Boolean/String/BigInt may follow.
       const primitive = ToPrimitive(argumentAt(args, 0), 'number')
@@ -1141,11 +1221,9 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
         throw new TypeErrorConstructor('Timezone must be a string')
       if (isTimeZoneOffsetString(zoneArgument))
         parseOffsetNanoseconds(zoneArgument, true)
-      else if (
-        !/^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*$/.test(
-          zoneArgument
-        )
-      )
+      // Proposal comparison §6.1.1 step5: parse identifier without public RegExp.
+      // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime
+      else if (!zoneName(zoneArgument))
         throw new RangeErrorConstructor('Invalid timezone identifier')
       const zone = timeZoneIdentifier(zoneArgument),
         calendar = constructorCalendar(argumentAt(args, 2))
@@ -1156,10 +1234,37 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
     },
   }
 ) as unknown as ZonedDateTimeConstructor
+// Proposal comparison §6.3.1 descriptor.
+// https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.constructor
+// Proposal comparison §6.3.2 descriptor.
+// https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype-%symbol.tostringtag%
 Object.defineProperties(ZonedDateTimeValue.prototype, {
   constructor: {value: ZonedDateTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.ZonedDateTime', configurable: true},
 })
+// Shared getter registrations; numbered rendered proposal comparisons.
+// §6.3.3 steps 1–3: calendarId.
+// §6.3.5 steps 1–4: era.
+// §6.3.6 steps 1–6: eraYear.
+// §6.3.7 steps 1–4: year.
+// §6.3.8 steps 1–4: month.
+// §6.3.9 steps 1–4: monthCode.
+// §6.3.10 steps 1–4: day.
+// §6.3.11 steps 1–4: hour.
+// §6.3.12 steps 1–4: minute.
+// §6.3.13 steps 1–4: second.
+// §6.3.14 steps 1–4: millisecond.
+// §6.3.15 steps 1–4: microsecond.
+// §6.3.16 steps 1–4: nanosecond.
+// §6.3.19 steps 1–4: dayOfWeek.
+// §6.3.20 steps 1–4: dayOfYear.
+// §6.3.21 steps 1–6: weekOfYear.
+// §6.3.22 steps 1–6: yearOfWeek.
+// §6.3.24 steps 1–4: daysInWeek.
+// §6.3.25 steps 1–4: daysInMonth.
+// §6.3.26 steps 1–4: daysInYear.
+// §6.3.27 steps 1–4: monthsInYear.
+// §6.3.28 steps 1–4: inLeapYear.
 defineGetters(
   ZonedDateTimeValue.prototype,
   [...datePropertyNames, ...clockNames],

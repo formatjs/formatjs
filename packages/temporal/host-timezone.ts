@@ -22,6 +22,24 @@ export type HostTimeZone = Pick<
   'offsetNanoseconds' | 'possibleInstants' | 'resolve'
 > &
   Partial<Pick<TimeZoneKernel, 'transition'>>
+const apply = Reflect.apply
+const arraySort = Array.prototype.sort
+const arrayFind = Array.prototype.find
+const arrayCopyWithin = Array.prototype.copyWithin
+const arrayPop = Array.prototype.pop
+const arrayShift = Array.prototype.shift
+const arrayPush = Array.prototype.push
+const MapConstructor = Map
+const mapGet = MapConstructor.prototype.get
+const mapSet = MapConstructor.prototype.set
+const mapDelete = MapConstructor.prototype.delete
+const mapKeys = MapConstructor.prototype.keys
+const mapSize = Object.getOwnPropertyDescriptor(
+  MapConstructor.prototype,
+  'size'
+)!.get! as () => number
+const mapIteratorNext = Object.getPrototypeOf(new MapConstructor().keys())
+  .next as () => IteratorResult<number>
 const Constructor = globalThis.Intl?.DateTimeFormat
 const parts = Constructor?.prototype.formatToParts
 const nowMilliseconds = Date.now
@@ -59,13 +77,15 @@ export function createHostTimeZoneOffset(
     second: 'numeric',
     hour12: false,
   } as Intl.DateTimeFormatOptions)
-  const offsets = new Map<number, bigint>()
+  // Proposal comparison §11.1.9 step3: named offset memoization stays private.
+  // https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor
+  const offsets = new MapConstructor<number, bigint>()
   const offsetNanoseconds = (instant: bigint): bigint => {
     check(instant)
     const epochSecond =
         instant / second - (instant < 0n && instant % second !== 0n ? 1n : 0n),
       key = numberFrom(epochSecond),
-      cached = offsets.get(key)
+      cached = apply(mapGet, offsets, [key]) as bigint | undefined
     if (cached !== undefined) return cached
     let date = -1,
       hour = -1,
@@ -108,8 +128,15 @@ export function createHostTimeZoneOffset(
     if (mathAbs(offsetSeconds) >= 86400)
       throw new RangeErrorConstructor('Invalid host timezone offset')
     const offset = bigIntFrom(offsetSeconds) * second
-    if (offsets.size >= 64) offsets.delete(offsets.keys().next().value!)
-    offsets.set(key, offset)
+    if (apply(mapSize, offsets, []) >= 64) {
+      const oldest = apply(
+        mapIteratorNext,
+        apply(mapKeys, offsets, []),
+        []
+      ).value
+      apply(mapDelete, offsets, [oldest])
+    }
+    apply(mapSet, offsets, [key, offset])
     return offset
   }
   return offsetNanoseconds
@@ -138,7 +165,9 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       )
         candidates[candidates.length] = instant
     }
-    return candidates.sort((one, two) => (one < two ? -1 : one > two ? 1 : 0))
+    return apply(arraySort, candidates, [
+      (one: bigint, two: bigint) => (one < two ? -1 : one > two ? 1 : 0),
+    ])
   }
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     candidatesFor(isoToEpochNanoseconds(fields))
@@ -173,6 +202,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
   const step = bigIntFrom(
     mathMin(steps[timeZone] ?? steps[canonical] ?? 7 * 86400, 7 * 86400)
   )
+  // Proposal comparison §6.3.46 steps9.a,10.b: private transition search caches.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition
   const transitions: {
     direction: string
     first: bigint
@@ -185,12 +216,12 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     direction: 'next' | 'previous'
   ): bigint | null => {
     check(instant)
-    const known = transitions.find(
-      row =>
+    const known = apply(arrayFind, transitions, [
+      (row: (typeof transitions)[number]) =>
         row.direction === direction &&
         instant >= row.first &&
-        instant <= row.last
-    )
+        instant <= row.last,
+    ]) as (typeof transitions)[number] | undefined
     if (known) return known.value
     const next = direction === 'next'
     const floorSecond = (value: bigint) =>
@@ -209,11 +240,12 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     let value: bigint | null = null
     let initial = cursor
     while (next ? cursor < boundary : cursor > boundary) {
-      const observed = unchanged.find(row =>
-        next
-          ? row.first <= cursor && cursor < row.last
-          : row.first < cursor && cursor <= row.last
-      )
+      const observed = apply(arrayFind, unchanged, [
+        (row: (typeof unchanged)[number]) =>
+          next
+            ? row.first <= cursor && cursor < row.last
+            : row.first < cursor && cursor <= row.last,
+      ]) as (typeof unchanged)[number] | undefined
       let probe = observed
         ? next
           ? observed.last
@@ -240,11 +272,14 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
         if (row.offset === offset && row.first <= last && first <= row.last) {
           if (row.first < first) first = row.first
           if (row.last > last) last = row.last
-          unchanged.splice(index, 1)
+          // Proposal comparison §6.3.46 steps9.a,10.b: discard private cache row.
+          // copyWithin/pop avoid ArraySpeciesCreate on this private List.
+          apply(arrayCopyWithin, unchanged, [index, index + 1])
+          apply(arrayPop, unchanged, [])
         }
       }
-      if (unchanged.length >= 64) unchanged.shift()
-      unchanged.push({first, last, offset})
+      if (unchanged.length >= 64) apply(arrayShift, unchanged, [])
+      apply(arrayPush, unchanged, [{first, last, offset}])
       cursor = probe
       // Future host rules repeat annually or settle at a fixed offset. Search
       // nearby years first, then resume the finite historical record.
@@ -253,13 +288,15 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
         initial = cursor
       }
     }
-    if (transitions.length >= 64) transitions.shift()
-    transitions.push({
-      direction,
-      first: next ? instant : value === null ? -limit : value + 1n,
-      last: next ? (value === null ? instant : value - 1n) : instant,
-      value,
-    })
+    if (transitions.length >= 64) apply(arrayShift, transitions, [])
+    apply(arrayPush, transitions, [
+      {
+        direction,
+        first: next ? instant : value === null ? -limit : value + 1n,
+        last: next ? (value === null ? instant : value - 1n) : instant,
+        value,
+      },
+    ])
     return value
   }
   return {

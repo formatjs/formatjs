@@ -95,6 +95,8 @@ const getSlot =
     : slots.get.bind(slots)
 const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
+// Proposal comparison §8.4.1: inclusive Instant range.
+// https://tc39.es/proposal-temporal/#sec-temporal-instant-range
 export function validateInstant(value: bigint): bigint {
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
   // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
@@ -122,6 +124,7 @@ const NativeInstant =
   import.meta.formatjsTemporalNativeData === true
     ? class {
         #value: bigint
+        // Exported proxy below owns constructor conversion and allocation.
         constructor(value: bigint) {
           this.#value = value
         }
@@ -221,6 +224,8 @@ class InstantValue implements InstantObject {
   constructor(_epochNanoseconds: unknown) {
     throw new TypeErrorConstructor('Use the exported Instant constructor')
   }
+  // Proposal comparison §8.2.5 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.compare
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const left = toInstant(one),
       right = toInstant(two)
@@ -232,26 +237,38 @@ class InstantValue implements InstantObject {
     // L85: compare the private epochs and return a Number sign.
     return left < right ? -1 : left > right ? 1 : 0
   }
+  // Proposal comparison §8.2.2 step 1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.from
   static from(item: unknown): InstantObject {
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeInstant(toInstant(item))
     return createInstant(toInstant(item))
   }
+  // Proposal comparison §8.2.4 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.fromepochnanoseconds
   static fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject {
     return createInstant(toBigInt(epochNanoseconds))
   }
+  // Proposal comparison §8.2.3 steps 1–5.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.fromepochmilliseconds
   static fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject {
     // Unary + is ToNumber; unlike BigInt(), it rejects BigInt/Symbol input.
     const milliseconds = +(epochMilliseconds as number)
     return createInstant(bigIntFrom(milliseconds) * 1_000_000n)
   }
+  // Proposal comparison §8.3.15 steps 1–4.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tozoneddatetimeiso
   toZonedDateTimeISO(timeZone: unknown): ZonedDateTimeObject {
     const value = read(this)
     return createZonedDateTime(value, timeZoneIdentifier(timeZone), 'iso8601')
   }
+  // Proposal comparison §8.3.4 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.instant.prototype.epochnanoseconds
   get epochNanoseconds(): bigint {
     return read(this)
   }
+  // Proposal comparison §8.3.3 steps 1–5.
+  // https://tc39.es/proposal-temporal/#sec-get-temporal.instant.prototype.epochmilliseconds
   get epochMilliseconds(): number {
     const value = read(this)
     const truncated = value / 1_000_000n
@@ -259,15 +276,23 @@ class InstantValue implements InstantObject {
       value < 0n && value % 1_000_000n !== 0n ? truncated - 1n : truncated
     )
   }
+  // Proposal comparison §8.3.10 steps 1–5.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.equals
   equals(other: unknown): boolean {
     return read(this) === toInstant(other)
   }
+  // Proposal comparison §8.3.7 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.until
   until(other: unknown, options: unknown = undefined): DurationObject {
     return difference(read(this), other, options, false)
   }
+  // Proposal comparison §8.3.8 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.since
   since(other: unknown, options: unknown = undefined): DurationObject {
     return difference(read(this), other, options, true)
   }
+  // Proposal comparison §8.3.5 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.add
   add(other: unknown): InstantObject {
     const value = read(this),
       fields =
@@ -285,6 +310,8 @@ class InstantValue implements InstantObject {
         : value + durationNanoseconds(fields, false)
     )
   }
+  // Proposal comparison §8.3.6 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.subtract
   subtract(other: unknown): InstantObject {
     const value = read(this),
       fields =
@@ -302,11 +329,15 @@ class InstantValue implements InstantObject {
         : value - durationNanoseconds(fields, false)
     )
   }
+  // Proposal comparison §8.3.9 steps 1–19.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.round
   round(roundTo: unknown): InstantObject {
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeInstant(roundInstantOptions(read(this), roundTo))
     return createInstant(roundInstantOptions(read(this), roundTo))
   }
+  // Proposal comparison §8.3.11 steps 1–15.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tostring
   toString(options: unknown = undefined): string {
     const value = read(this)
     const resolved = optionsObject(options)
@@ -359,6 +390,8 @@ class InstantValue implements InstantObject {
     const rounded = roundInstant(value, quantum, mode)
     return instantString(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
+  // Proposal comparison §8.3.12 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tolocalestring
   toLocaleString(
     locales: unknown = undefined,
     options: unknown = undefined
@@ -371,9 +404,13 @@ class InstantValue implements InstantObject {
       () => localeStringIntrinsic.call(this)
     )
   }
+  // Proposal comparison §8.3.13 steps 1–3.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tojson
   toJSON(): string {
     return instantString(read(this))
   }
+  // Proposal comparison §8.3.14 step 1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.valueof
   valueOf(): never {
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.Instant to primitive'
@@ -387,11 +424,15 @@ Object.defineProperty(InstantValue, 'name', {
   configurable: true,
 })
 // A normal JS constructor allocates before its body; Temporal coerces first.
+// Proposal comparison §8.2.1 descriptor.
+// https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype
 export const Instant: InstantConstructor = createProxy(
   import.meta.formatjsTemporalNativeData === true
     ? (NativeInstant! as unknown as typeof InstantValue)
     : InstantValue,
   {
+    // Proposal comparison §8.1.1 steps 2–4. Constructor call target supplies step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.instant
     construct(target, args, newTarget) {
       const value = validateInstant(toBigInt(argumentAt(args, 0)))
       const prototype = newTarget.prototype
@@ -410,11 +451,16 @@ export const Instant: InstantConstructor = createProxy(
     },
   }
 )
+// Proposal comparison §8.3.1 descriptor.
+// https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.constructor
+// Proposal comparison §8.3.2 descriptor.
+// https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype-%symbol.tostringtag%
 Object.defineProperties(InstantValue.prototype, {
   constructor: {value: Instant, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Instant', configurable: true},
 })
 
+// Proposal comparison §§8.2.1–5,8.3.1–15: forward the same public descriptors.
 if (import.meta.formatjsTemporalNativeData === true) {
   Object.defineProperty(NativeInstant!, 'name', {
     value: 'Instant',

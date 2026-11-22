@@ -291,7 +291,9 @@ function timeMatch(value: string, allowZ = false): string[] | null {
     offset,
   ] as string[]
 }
-function zoneName(value: string): boolean {
+// Proposal comparison §11.1.16 steps1–2: consume named identifier grammar only.
+// https://tc39.es/proposal-temporal/#sec-parsetimezoneidentifier
+export function zoneName(value: string): boolean {
   let first = true
   for (let index = 0; index < value.length; index++) {
     const character = value[index]
@@ -343,6 +345,8 @@ function suffixOffset(value: string): string | undefined {
   return undefined
 }
 
+// Temporal comparison §13.35 step4.a.ii: calendar and critical annotation rules.
+// https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime
 function validateAnnotations(value: string): {
   timeZone?: string
   calendar?: string
@@ -430,6 +434,8 @@ function validateAnnotations(value: string): {
   return {timeZone, calendar}
 }
 
+// Temporal comparison §8.5.3 steps3–10: parse the instant and subtract its exact offset
+// https://tc39.es/proposal-temporal/#sec-temporal-totemporalinstant
 export function parseInstantString(value: string): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -467,6 +473,8 @@ function isValidDate(year: string, month: string, day: string): boolean {
 export interface ParsedDateFields extends Required<ISODateTime> {
   calendar: string
 }
+// Temporal comparison §13.35 steps7–29: project validated date/time syntax and annotations
+// https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime
 export function parseISODateParts(value: string): ParsedDateFields {
   const match = isoMatch(value)
   if (!match || !isValidDate(match[1], match[3], match[4]))
@@ -492,6 +500,8 @@ export function parseISODateParts(value: string): ParsedDateFields {
     calendar: annotations.calendar ?? 'iso8601',
   }
 }
+// Temporal comparison §13.35 steps4.a.ii.3–4/7–29: short-date calendar restrictions and field defaults
+// https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime
 export function parseShortDateString(
   value: string,
   kind: 'year-month' | 'month-day'
@@ -515,6 +525,8 @@ export function parseShortDateString(
   }
   return parseISODateParts(value)
 }
+// Temporal comparison §13.36 steps1–5: calendar extraction without constructing a bounded date
+// https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring
 export function parseCalendarString(value: string): string {
   const index = bracketIndex(value),
     body = index < 0 ? value : stringPart(value, 0, index)
@@ -530,12 +542,14 @@ export function parseCalendarString(value: string): string {
     if (annotation.calendar !== undefined && !isoCalendar(annotation.calendar))
       throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
   } else if (calendarDatePrefix(body))
-    // ParseTemporalCalendarString 1619: parse fields without creating a bounded date.
+    // Comparison §13.36 step1: parse fields without creating a bounded date.
     parseISODateParts(withoutZ(body))
   else parsePlainTimeString(body)
   return annotation.calendar ?? 'iso8601'
 }
 
+// Temporal comparison §13.35 steps7–23: validated clock fields and exact fraction composition
+// https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime
 export function parsePlainTimeString(value: string): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -581,6 +595,8 @@ export function parsePlainTimeString(value: string): bigint {
   )
 }
 
+// Temporal comparison §13.38 steps1–8: prefer annotation, then Z, then numeric offset
+// https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaltimezonestring
 export function parseTimeZoneString(value: string): string {
   if (isTimeZoneOffsetString(value)) {
     parseOffsetNanoseconds(value, true)
@@ -646,6 +662,8 @@ export function parseTimeZoneString(value: string): string {
   )
 }
 
+// Temporal comparison §13.35 steps24–29: retain annotation and raw offset beside local fields
+// https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime
 export function parseZonedDateTimeString(value: string): {
   fields: ParsedDateFields
   timeZone: string

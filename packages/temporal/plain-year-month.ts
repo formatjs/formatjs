@@ -364,7 +364,8 @@ class PlainYearMonthValue {
     return createPlainDate(
       dayFromFields(
         slot.calendar,
-        {...dateFields(slot, true), day},
+        // Temporal comparison §9.3.23 steps 7–8: merge private field records.
+        {__proto__: null, ...dateFields(slot, true), day},
         'constrain'
       ),
       slot.calendar

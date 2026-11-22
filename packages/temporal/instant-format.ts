@@ -10,6 +10,8 @@ import {
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 import type {Precision} from '#packages/temporal/rounding.js'
 
+// Temporal comparison §8.5.8 steps4–8: format a prepared epoch/offset; caller resolves the zone
+// https://tc39.es/proposal-temporal/#sec-temporal-temporalinstanttostring
 export function formatInstant(
   value: bigint,
   precision: Precision = 'auto',
@@ -33,6 +35,8 @@ export function formatInstant(
     )
   }
   if (offset === undefined) return result + 'Z'
+  // Comparison §11.1.7 steps1–3: half-expand the offset to whole minutes.
+  // https://tc39.es/proposal-temporal/#sec-temporal-formatdatetimeutcoffsetrounded
   const absolute = offset < 0n ? -offset : offset
   const minutes = numberFrom((absolute + 30_000_000_000n) / 60_000_000_000n)
   return (

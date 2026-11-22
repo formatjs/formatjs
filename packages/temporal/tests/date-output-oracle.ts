@@ -71,11 +71,13 @@ export function checkPlainDateShortFields(
   Temporal: typeof TemporalNamespace,
   equal: (actual: unknown, expected: unknown, context: string) => void
 ): void {
-  const date = new Temporal.PlainDate(2020, 2, 29, 'gregory')
+  const date = new Temporal.PlainDate(2020, 2, 29, 'gregory'),
+    sourceYearMonth = new Temporal.PlainYearMonth(2020, 2, 'gregory')
   for (const key of ['era', 'eraYear']) {
     const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
     let yearMonth: ReturnType<typeof date.toPlainYearMonth> | undefined,
-      monthDay: ReturnType<typeof date.toPlainMonthDay> | undefined
+      monthDay: ReturnType<typeof date.toPlainMonthDay> | undefined,
+      destination: ReturnType<typeof sourceYearMonth.toPlainDate> | undefined
     Object.defineProperty(Object.prototype, key, {
       configurable: true,
       get() {
@@ -85,6 +87,7 @@ export function checkPlainDateShortFields(
     try {
       yearMonth = date.toPlainYearMonth()
       monthDay = date.toPlainMonthDay()
+      destination = sourceYearMonth.toPlainDate({day: 3})
     } finally {
       if (original) Object.defineProperty(Object.prototype, key, original)
       else Reflect.deleteProperty(Object.prototype, key)
@@ -99,7 +102,25 @@ export function checkPlainDateShortFields(
       '1972-02-29[u-ca=gregory]',
       'Private MonthDay fields'
     )
+    equal(
+      destination!.toString(),
+      '2020-02-03[u-ca=gregory]',
+      'Private YearMonth destination'
+    )
   }
+  let reads = 0
+  const inherited = Object.create({
+    get day() {
+      reads++
+      return 4
+    },
+  })
+  equal(
+    sourceYearMonth.toPlainDate(inherited).toString(),
+    '2020-02-04[u-ca=gregory]',
+    'Public inherited day'
+  )
+  equal(reads, 1, 'Public day read once')
 }
 
 export function checkPlainDateYearFormatting(

@@ -1,0 +1,12 @@
+//packages/temporal:zoned_difference_test
+//packages/temporal:transition_test
+//packages/temporal:host_timezone_test
+//packages/temporal:legacy_intl_storage_test
+//packages/temporal:durationformat_test
+//packages/intl-datetimeformat:temporal_test
+//packages/temporal:typecheck_typecheck_test
+//packages/intl-durationformat:intl-durationformat_test
+//packages/temporal:native_zoned_hermes_oracle_test
+//packages/temporal:short_date_test
+//packages/temporal:native_date_output_hermes_oracle_test
+//packages/temporal:year_month_test262_full

@@ -27,6 +27,8 @@ import {
 import {ArithmeticGregorianFromEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 
+const arraySort = Array.prototype.sort
+const apply = Reflect.apply
 const second = 1_000_000_000n
 const day = 86400n * second
 const limit = 100_000_000n * day
@@ -267,12 +269,17 @@ function zoneTransition(
 
 /** Caller supplies canonical zone data; offsets are seconds in the shared pack. */
 export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
-  const offsets = new Set<number>()
-  for (let i = 0; i < data.length; i++) offsets.add(data[i][2])
+  // Proposal comparison §11.1.13 steps3.a,5: private candidate collection.
+  // https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds
+  const offsets: number[] = []
+  const addOffset = (value: number): void => {
+    if (!arrayIncludes(offsets, value)) offsets[offsets.length] = value
+  }
+  for (let i = 0; i < data.length; i++) addOffset(data[i][2])
   if (data.future) {
-    offsets.add(data.future.standardOffset)
+    addOffset(data.future.standardOffset)
     if (data.future.daylightOffset !== undefined)
-      offsets.add(data.future.daylightOffset)
+      addOffset(data.future.daylightOffset)
   }
   const offsetNanoseconds = (instant: bigint): bigint => {
     checkInstant(instant)
@@ -284,13 +291,16 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   }
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
-    for (const offset of offsets) {
+    for (let index = 0; index < offsets.length; index++) {
+      const offset = offsets[index]
       const instant = local - bigIntFrom(offset) * second
       if (instant < -limit || instant > limit) continue
       if (instant + offsetNanoseconds(instant) === local)
-        candidates.push(instant)
+        candidates[candidates.length] = instant
     }
-    return candidates.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    return apply(arraySort, candidates, [
+      (a: bigint, b: bigint) => (a < b ? -1 : a > b ? 1 : 0),
+    ])
   }
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
@@ -314,7 +324,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     const local = isoToEpochNanoseconds(fields)
     let minimum = Infinity,
       maximum = -Infinity
-    for (const offset of offsets) {
+    for (let index = 0; index < offsets.length; index++) {
+      const offset = offsets[index]
       minimum = mathMin(minimum, offset)
       maximum = mathMax(maximum, offset)
     }

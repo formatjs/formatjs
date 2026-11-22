@@ -36,10 +36,10 @@
     "Snapshot is pinned Nov21; live TOC rechecked Nov22 separately, full-body future changes require regeneration."
   ],
   "review_status_counts": {
-    "conditional": 130,
+    "conditional": 105,
     "informative": 79,
-    "verified_local_step": 589,
-    "verified": 109,
+    "verified_local_step": 603,
+    "verified": 120,
     "existing_contract_reused": 131,
     "not_applicable": 8,
     "spec_issue": 11
@@ -68,5 +68,20 @@
     "informative": "Non-normative introduction/note/illustration; no compliance credit.",
     "not_applicable": "Excluded relocation/editorial placeholder with recorded concrete reason.",
     "spec_issue": "Rendered comparison inconsistency, separate from implementation gaps."
+  },
+  "latest_correction_reconciliation": {
+    "date": "2026-11-22",
+    "validation_targets": "temporal-zone-intl-yearmonth-validation-targets.txt",
+    "validation": "12 targets pass; final host species/typecheck2pass; preceding regression failures reproduced",
+    "review_status_counts": {
+      "conditional": 105,
+      "informative": 79,
+      "verified_local_step": 603,
+      "verified": 120,
+      "existing_contract_reused": 131,
+      "not_applicable": 8,
+      "spec_issue": 11
+    },
+    "scope": "Local leaves and fully reconciled style gates only; reader iteration, provider contracts and published issues preserved."
   }
 }

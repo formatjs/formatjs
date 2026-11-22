@@ -60,6 +60,8 @@ export function zeroDuration(): DurationFields {
     nanoseconds: 0,
   }
 }
+// Temporal comparison §7.5.13 steps1–2: return the first nonzero component sign
+// https://tc39.es/proposal-temporal/#sec-durationsign
 export function durationSign(fields: DurationFields): -1 | 0 | 1 {
   for (let index = 0; index < durationFieldNames.length; index++) {
     const key = durationFieldNames[index]
@@ -68,14 +70,15 @@ export function durationSign(fields: DurationFields): -1 | 0 | 1 {
   }
   return 0
 }
-// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1327-L1333
+// Temporal comparison §7.5.21 steps1–7: exact time-component fold.
+// https://tc39.es/proposal-temporal/#sec-temporal-timedurationfromcomponents
 // Time-only terms expand the component fold; optional days are separate.
-// L1327: an hour contributes 60 minutes.
-// L1328: a minute contributes 60 seconds.
-// L1329: a second contributes 1000 milliseconds.
-// L1330: a millisecond contributes 1000 microseconds.
-// L1331: a microsecond contributes 1000 nanoseconds.
-// L1333: return the exact integer sum. Caller-bound assertion L1332 remains open.
+// §7.5.21 step1: an hour contributes 60 minutes.
+// §7.5.21 step2: a minute contributes 60 seconds.
+// §7.5.21 step3: a second contributes 1000 milliseconds.
+// §7.5.21 step4: a millisecond contributes 1000 microseconds.
+// §7.5.21 step5: a microsecond contributes 1000 nanoseconds.
+// §7.5.21 step7: return the exact integer sum. Caller owns the step6 bound assertion.
 export function durationNanoseconds(
   fields: DurationFields,
   includeDays = true
@@ -85,6 +88,8 @@ export function durationNanoseconds(
     value += bigIntFrom(fields[durationFieldNames[i]]) * timeFactors[i - 3]
   return value
 }
+// Temporal comparison §7.5.16 steps1–9: reject mixed signs, excessive calendar counts or exact time total
+// https://tc39.es/proposal-temporal/#sec-isvalidduration
 export function validateDuration(fields: DurationFields): DurationFields {
   const sign = durationSign(fields)
   for (let index = 0; index < durationFieldNames.length; index++) {
@@ -108,12 +113,16 @@ export function validateDuration(fields: DurationFields): DurationFields {
     throw new RangeErrorConstructor('Duration out of range')
   return fields
 }
+// Temporal comparison §14.5.1.1 steps1–3: native numeric coercion and finite integrality
+// https://tc39.es/proposal-temporal/#sec-tointegerifintegral
 export function integralDurationNumber(value: unknown): number {
   const number = +(value as number)
   if (!numberIsInteger(number))
     throw new RangeErrorConstructor('Duration fields must be integral')
   return number || 0
 }
+// Temporal comparison §7.5.18 steps1–25: alphabetic Gets with immediate independent conversion
+// https://tc39.es/proposal-temporal/#sec-temporal-totemporalpartialdurationrecord
 export function partialDuration(value: unknown): Partial<DurationFields> {
   if (!IsObject(value))
     throw new TypeErrorConstructor('Duration fields must be an object')
@@ -130,6 +139,8 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
   if (!found) throw new TypeErrorConstructor('Duration fields required')
   return result
 }
+// Temporal comparison §13.37 steps1–44: ordered grammar fields and exact fractional carry
+// https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaldurationstring
 export function parseDurationString(value: string): DurationFields {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -227,6 +238,8 @@ export function parseDurationString(value: string): DurationFields {
     }
   return validateDuration(result)
 }
+// Temporal comparison §7.5.8 steps1–12: decompose exact time into signed component fields
+// https://tc39.es/proposal-temporal/#sec-temporal-temporaldurationfrominternal
 export function balanceDurationTime(
   value: bigint,
   largest: number
@@ -238,6 +251,8 @@ export function balanceDurationTime(
   }
   return validateDuration(fields)
 }
+// Temporal comparison §7.5.17 steps1–10: select the first nonzero unit, else nanosecond
+// https://tc39.es/proposal-temporal/#sec-temporal-defaulttemporallargestunit
 export function largestDurationField(fields: DurationFields): number {
   for (let index = 0; index < durationFieldNames.length; index++)
     if (fields[durationFieldNames[index]] !== 0) return index
@@ -248,6 +263,8 @@ const durationBigIntToString = BigInt.prototype.toString
 const durationApply = Reflect.apply
 
 // Round the exact ratio once; converting the numerator first loses low bits.
+// Temporal comparison §7.5.31 step3: divide exact integers before final Number rounding
+// https://tc39.es/proposal-temporal/#sec-temporal-totaltimeduration
 export function durationTotalNumber(
   nanoseconds: bigint,
   divisor: bigint

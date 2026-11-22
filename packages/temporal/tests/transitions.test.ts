@@ -121,3 +121,45 @@ it('keeps timezone operations independent of user array iteration', () => {
   }
   expect(result).toBe('P115DT10H')
 })
+
+it('keeps cold offset collection and fold candidates private', () => {
+  const fields = {year: 1970, month: 1, day: 1, minute: 30}
+  const data: UnpackedTimeZoneData = [
+    [-Infinity, '', 3600, false],
+    [1000, '', 0, false],
+  ]
+  const profiles: [object, PropertyKey][] = [
+    [Set.prototype, 'add'],
+    [Set.prototype, Symbol.iterator],
+    [Array.prototype, 'push'],
+    [Array.prototype, 'sort'],
+    [Array.prototype, Symbol.iterator],
+  ]
+  for (let index = 0; index < profiles.length; index++) {
+    const [target, key] = profiles[index]
+    const original = Object.getOwnPropertyDescriptor(target, key)!
+    let calls = 0
+    let actual: bigint[] | undefined
+    let error: unknown
+    try {
+      Object.defineProperty(target, key, {
+        configurable: true,
+        writable: true,
+        value() {
+          calls++
+          throw new Error('Observable kernel collection')
+        },
+      })
+      try {
+        actual = createTimeZone(data).possibleInstants(fields)
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(target, key, original)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(actual).toEqual([-1_800_000_000_000n, 1_800_000_000_000n])
+  }
+})

@@ -39,6 +39,16 @@ pass, including shared TS/native and literal Rust boundary controls. First-pass
 registers cover all5,865 rows; [remaining steps](audits/temporal-remaining-condition-steps.tsv)
 and required inline comments stay explicit.
 
+Zoned private time conversion and formatting reuse existing internal helpers.
+Generated candidate lists and host caches use captured runtime operations;
+transition removal avoids ArraySpeciesCreate. YearMonth.toPlainDate merges a
+null-prototype private field record. Locale style validation precedes calendar
+mismatch; DurationFormat creates own part-unit properties. Scalar/string
+serialization uses captured conversions. Private reader iteration remains in
+[the queue](audits/temporal-open-candidates.md).
+[12 focused/backend targets](audits/temporal-zone-intl-yearmonth-validation-targets.txt)
+pass; final host constructor/species and typecheck controls also pass.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

@@ -78,7 +78,9 @@ export function ToTemporalDurationRecord(
       } catch {
         continue
       }
-      const record = Object.create(null) as DurationRecord
+      // Proposal comparison §15.10.1 step 3 / §15.10.2 step 3: read slots into a Record.
+      // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+      const record = {__proto__: null} as unknown as DurationRecord
       record.years = years
       for (let index = 1; index < fields.length; index++)
         record[fields[index]] = apply(reader.getters[index], input, [])

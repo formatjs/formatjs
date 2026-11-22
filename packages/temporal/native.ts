@@ -1048,9 +1048,11 @@ export function configureNativeTemporal(
         identifier,
         fields: isoFields(fields),
       })
+      // Proposal comparison §11.1.13 step5: transport private candidate List.
+      // https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds
       const result: bigint[] = []
       for (let index = 0; index < values.length; index++)
-        result.push(ToBigInt(values[index]))
+        result[index] = ToBigInt(values[index])
       return result
     },
     timeZoneResolve: (identifier, fields, disambiguation) =>

@@ -6,6 +6,158 @@ export function checkZonedArithmeticOracle(
   dayFixture: string,
   equal: (actual: unknown, expected: unknown, context: string) => void
 ): {differences: number; days: number} {
+  const privateUTC = new Temporal.ZonedDateTime(0n, 'UTC')
+  const privateMonrovia = new Temporal.ZonedDateTime(0n, 'Africa/Monrovia')
+  const privateNoon = new Temporal.PlainTime(12)
+  const privateFold = {
+    year: 2024,
+    month: 11,
+    day: 3,
+    hour: 1,
+    minute: 30,
+    offset: '-05:00',
+    timeZone: 'America/New_York',
+  }
+  // Warm providers before replacing hooks; cold kernel creation has its own control.
+  void privateUTC.offsetNanoseconds
+  void privateMonrovia.offsetNanoseconds
+  Temporal.ZonedDateTime.from(privateFold)
+  const privateFailures: string[] = []
+  function privateHook(
+    target: object,
+    key: PropertyKey,
+    context: string,
+    run: () => unknown,
+    expected: unknown
+  ): void {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key)!
+    let calls = 0
+    let actual: unknown
+    let error: unknown
+    try {
+      Object.defineProperty(target, key, {
+        configurable: true,
+        writable: true,
+        value() {
+          calls++
+          throw new Error('Observable private zoned operation')
+        },
+      })
+      try {
+        actual = run()
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(target, key, descriptor)
+    }
+    if (error || calls !== 0 || actual !== expected)
+      privateFailures[privateFailures.length] =
+        context + (error ? ': threw' : ': wrong result')
+  }
+  privateHook(
+    Temporal.PlainTime,
+    'from',
+    'Zoned private time conversion',
+    () => privateUTC.withPlainTime(privateNoon).epochNanoseconds,
+    43_200_000_000_000n
+  )
+  privateHook(
+    Temporal.PlainTime,
+    'from',
+    'Zoned private time extraction',
+    () => privateUTC.toPlainTime().hour,
+    0
+  )
+  equal(
+    privateUTC.withPlainTime().epochNanoseconds,
+    0n,
+    'Zoned omitted clock starts day'
+  )
+  for (const method of ['slice', 'padStart', 'replace'] as const) {
+    privateHook(
+      String.prototype,
+      method,
+      'Zoned private ' + method,
+      () => privateUTC.toJSON() + '|' + privateMonrovia.offset,
+      '1970-01-01T00:00:00+00:00[UTC]|-00:44:30'
+    )
+  }
+  privateHook(
+    globalThis,
+    'String',
+    'Zoned private String conversion',
+    () => privateUTC.offset + '|' + privateMonrovia.offset,
+    '+00:00|-00:44:30'
+  )
+  privateHook(
+    RegExp.prototype,
+    'test',
+    'Zoned constructor named identifier',
+    () => new Temporal.ZonedDateTime(0n, 'UTC').timeZoneId,
+    'UTC'
+  )
+  privateHook(
+    RegExp.prototype,
+    'test',
+    'Zoned constructor fixed identifier',
+    () => new Temporal.ZonedDateTime(0n, '+01:00').offsetNanoseconds,
+    3_600_000_000_000
+  )
+  equal(
+    privateUTC.toString({offset: 'never', timeZoneName: 'never'}),
+    '1970-01-01T00:00:00',
+    'Zoned hidden offset and zone'
+  )
+  for (const method of ['sort', 'push', Symbol.iterator] as const) {
+    privateHook(
+      Array.prototype,
+      method,
+      'Zoned fold private candidate list',
+      () => Temporal.ZonedDateTime.from(privateFold).epochNanoseconds,
+      1_730_615_400_000_000_000n
+    )
+  }
+  privateHook(
+    Set.prototype,
+    Symbol.iterator,
+    'Zoned private offset set',
+    () =>
+      Temporal.ZonedDateTime.from({...privateFold, offset: '-04:00'})
+        .epochNanoseconds,
+    1_730_611_800_000_000_000n
+  )
+  equal(privateFailures.join('|'), '', 'Private zoned operation profiles')
+  const weekOrigin = new Temporal.ZonedDateTime(
+    1_603_603_800_000_000_000n,
+    'America/New_York'
+  )
+  const weekEnd = new Temporal.ZonedDateTime(
+    1_604_210_400_000_000_000n,
+    'America/New_York'
+  )
+  equal(
+    weekOrigin
+      .until(weekEnd, {
+        largestUnit: 'week',
+        smallestUnit: 'week',
+        roundingMode: 'trunc',
+      })
+      .toString(),
+    'P1W',
+    'Week retry crosses New York fold'
+  )
+  equal(
+    weekOrigin
+      .until(weekEnd, {
+        largestUnit: 'week',
+        smallestUnit: 'week',
+        roundingMode: 'ceil',
+      })
+      .toString(),
+    'P2W',
+    'Week retry uses shifted upper bound'
+  )
   const keysStart = Temporal.ZonedDateTime.from('2020-01-01T00:00[UTC]')
   const keysEnd = Temporal.ZonedDateTime.from('2020-01-03T00:00[UTC]')
   const originalKeys = Object.keys

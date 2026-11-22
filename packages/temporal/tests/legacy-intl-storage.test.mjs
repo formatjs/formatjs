@@ -163,3 +163,69 @@ assert.equal(scenarios, 98)
 console.log(
   '98 packaged Temporal/native-Intl private storage and dispatch controls'
 )
+
+// Proposal comparison §15.4.1 steps 45.b–c precede Temporal calendar matching.
+// https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+{
+  const japanese = new Temporal.PlainDate(2020, 1, 2, 'japanese')
+  const reads = []
+  assert.throws(
+    () =>
+      japanese.toLocaleString('en', {
+        get calendar() {
+          reads.push('calendar')
+          return 'gregory'
+        },
+        get timeStyle() {
+          reads.push('timeStyle')
+          return 'short'
+        },
+      }),
+    TypeError
+  )
+  assert.deepEqual(reads, ['calendar', 'timeStyle'])
+  assert.throws(
+    () =>
+      japanese.toLocaleString('en', {calendar: 'gregory', dateStyle: 'full'}),
+    RangeError
+  )
+}
+
+// Style inference must not call replaceable Array methods or Object.keys.
+{
+  const date = new Temporal.PlainDate(2020, 1, 2)
+  const expected = new Native('en', {
+    dateStyle: 'full',
+    timeZone: 'UTC',
+  }).format(Date.UTC(2020, 0, 2, 12))
+  for (const [target, key] of [
+    [Array.prototype, 'map'],
+    [Array.prototype, 'filter'],
+    [Array.prototype, 'join'],
+    [Object, 'keys'],
+  ]) {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key)
+    let calls = 0,
+      actual,
+      error
+    try {
+      Object.defineProperty(target, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('private style hook')
+        },
+      })
+      try {
+        actual = date.toLocaleString('en', {dateStyle: 'full'})
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(target, key, descriptor)
+    }
+    assert.equal(error, undefined, `${key}: ${error?.stack}`)
+    assert.equal(calls, 0, key)
+    assert.equal(actual, expected, key)
+  }
+}

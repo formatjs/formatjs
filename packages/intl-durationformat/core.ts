@@ -5,6 +5,7 @@ import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicod
 
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
+import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
@@ -324,13 +325,16 @@ export class DurationFormat implements DurationFormatType {
     }
     const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
-    const result = []
-    for (const {type, unit, value} of parts) {
+    const result: DurationFormatPart[] = []
+    // Proposal comparison §15.10.2 steps 7.d–e: CreateDataProperty, not Set.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.formatToParts
+    for (let index = 0; index < parts.length; index++) {
+      const {type, unit, value} = parts[index]
       const obj: DurationFormatPart = {type, value}
       if (unit) {
-        obj.unit = unit
+        setDataProperty(obj, 'unit', unit)
       }
-      result.push(obj)
+      setDataProperty(result, `${result.length}`, obj)
     }
     return result
   }

@@ -37,8 +37,8 @@
   "review_status_counts": {
     "verified": 151,
     "informative": 231,
-    "verified_local_step": 3914,
-    "conditional": 403,
+    "verified_local_step": 3969,
+    "conditional": 348,
     "spec_issue": 90,
     "partial": 1,
     "reviewed": 18
@@ -161,5 +161,20 @@
     ],
     "rows_reviewed": 4808,
     "note": "Every fixed core row reconciled; local proofs, informative/editorial rows, conditional premises and standards issues remain distinct. First pass is not full compliance."
+  },
+  "latest_correction_reconciliation": {
+    "date": "2026-11-22",
+    "validation_targets": "temporal-zone-intl-yearmonth-validation-targets.txt",
+    "validation": "12 targets pass; final host species/typecheck2pass; preceding regression failures reproduced",
+    "review_status_counts": {
+      "verified": 151,
+      "informative": 231,
+      "verified_local_step": 3969,
+      "conditional": 348,
+      "spec_issue": 90,
+      "partial": 1,
+      "reviewed": 18
+    },
+    "scope": "Local leaves and fully reconciled style gates only; reader iteration, provider contracts and published issues preserved."
   }
 }

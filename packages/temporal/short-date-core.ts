@@ -40,6 +40,8 @@ export function isoReferenceDay(
 ): number {
   return calendarToEpochDayRaw('iso8601', {year, month, day}, 'reject')
 }
+// Temporal comparison §9.5.3 steps1–4: guard inclusive ISO year-month limits
+// https://tc39.es/proposal-temporal/#sec-temporal-isoyearmonthwithinlimits
 export function checkYearMonth(epochDay: number): number {
   // Inclusive ISO months at Temporal's year-month limits.
   if (
@@ -51,6 +53,8 @@ export function checkYearMonth(epochDay: number): number {
   return epochDay
 }
 
+// Temporal comparison §12.3.13 steps1–5: use day1, resolve fields and guard the reference date
+// https://tc39.es/proposal-temporal/#sec-temporal-calendaryearmonthfromfields
 export function yearMonthFields(
   calendar: string,
   fields: Record<string, unknown>,
@@ -69,6 +73,8 @@ export function yearMonthFields(
   )
   return {epochDay: checkYearMonth(epochDay), calendar}
 }
+// Temporal comparison §12.3.14 steps1–4: resolve fields before reference-year canonicalization
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarmonthdayfromfields
 export function monthDayFields(
   calendar: string,
   fields: Record<string, unknown>,
@@ -78,6 +84,8 @@ export function monthDayFields(
   let year = resolveCalendarYear(calendar, fields, 'month-day')
   let day = fields.day as number,
     code = fields.monthCode as string | undefined
+  // Comparison §12.3.24 steps1.a–1.e: supplied-year regulation, then1972.
+  // https://tc39.es/proposal-temporal/#sec-temporal-calendarmonthdaytoisoreferencedate
   if (calendar === 'iso8601') {
     const monthDay = calendarToEpochDayRaw(
       cal,
@@ -142,6 +150,8 @@ export function monthDayFields(
       code = code![0] + code![1] + code![2]
     }
   }
+  // Comparison §12.3.23 reference-date rule: latest1900–1972, else earliest1973–2035.
+  // https://tc39.es/proposal-temporal/#sec-temporal-nonisomonthdaytoisoreferencedate
   let best: number | undefined,
     maximumDay = 0
   for (let range = 0; range < 2; range++) {
@@ -183,6 +193,8 @@ export function monthDayFields(
   throw new RangeErrorConstructor('Invalid month-day')
 }
 
+// Temporal comparison §9.5.2 steps4–15: parse YearMonth before options, bounds and canonicalization
+// https://tc39.es/proposal-temporal/#sec-temporal-totemporalyearmonth
 export function parseShortSlot(
   value: string,
   kind: 'year-month' | 'month-day',
@@ -197,17 +209,17 @@ export function parseShortSlot(
     return kind === 'year-month'
       ? native!.parsePlainYearMonth(value)
       : native!.parsePlainMonthDay(value)
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L474-L479
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L302-L307
-  // plainyearmonth L474 / plainmonthday L302: parse syntax before touching options.
+  // Comparison §9.5.2 steps4–9 and §10.5.1 steps4–9.
+  // https://tc39.es/proposal-temporal/#sec-temporal-totemporalmonthday
+  // Both step4: parse syntax before touching options.
   const parsed = parseShortDateString(value, kind)
-  // plainyearmonth L475 / plainmonthday L303: retain the parsed calendar.
+  // Both step5: retain the parsed calendar.
   const calendarLike = parsed.calendar
-  // plainyearmonth L476 / plainmonthday L304: default absent calendar to ISO.
-  // plainyearmonth L477 / plainmonthday L305: canonicalize before reading options.
+  // Both step6: default absent calendar to ISO.
+  // Both step7: canonicalize before reading options.
   const calendar = constructorCalendar(calendarLike)
-  // plainyearmonth L478 / plainmonthday L306: normalize options in overflowOption.
-  // plainyearmonth L479 / plainmonthday L307: read overflow before bounds and projection.
+  // Both step8: normalize options in overflowOption.
+  // Both step9: read overflow before bounds and projection.
   overflowOption(options)
   if (import.meta.formatjsTemporalNativeData === true || native)
     return kind === 'year-month'
@@ -254,6 +266,8 @@ export function parseShortSlot(
     ? yearMonthFields(calendar, fields, 'constrain')
     : monthDayFields(calendar, fields, 'constrain')
 }
+// Temporal comparison §9.5.6 steps1–7: format YearMonth reference fields and calendar annotation
+// https://tc39.es/proposal-temporal/#sec-temporal-temporalyearmonthtostring
 export function formatShortDate(
   slot: DateSlot,
   kind: 'year-month' | 'month-day',
@@ -271,6 +285,8 @@ export function formatShortDate(
       : `[${option === 'critical' ? '!' : ''}u-ca=${slot.calendar}]`
   const full =
     slot.calendar !== 'iso8601' || option === 'always' || option === 'critical'
+  // Comparison §10.5.3 steps1–7 applies to the MonthDay branch.
+  // https://tc39.es/proposal-temporal/#sec-temporal-temporalmonthdaytostring
   return (
     formatISODate(
       slot.epochDay,

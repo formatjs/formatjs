@@ -203,3 +203,91 @@ it('reads host-exotic duration fields once in specification order', () => {
     'years',
   ])
 })
+
+it('formats branded durations without private Object.create or Array.push hooks', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const formatter = new DurationFormat('en', {style: 'long'})
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  const expected = [
+    {type: 'integer', value: '1', unit: 'minute'},
+    {type: 'literal', value: ' ', unit: 'minute'},
+    {type: 'unit', value: 'minute', unit: 'minute'},
+  ]
+  expect(formatter.format(duration)).toBe('1 minute')
+  expect(formatter.formatToParts(duration)).toEqual(expected)
+  for (const [target, key] of [
+    [Object, 'create'],
+    [Array.prototype, 'push'],
+  ] as const) {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key)!
+    let calls = 0,
+      text: string | undefined,
+      parts: unknown,
+      error: unknown
+    try {
+      Object.defineProperty(target, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('private duration hook')
+        },
+      })
+      try {
+        text = formatter.format(duration)
+        parts = formatter.formatToParts(duration)
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(target, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(calls).toBe(0)
+    expect(text).toBe('1 minute')
+    expect(parts).toEqual(expected)
+  }
+})
+
+it('creates own DurationFormat part units without inherited setters', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const formatter = new DurationFormat('en', {style: 'long'})
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  const expected = [
+    {type: 'integer', value: '1', unit: 'minute'},
+    {type: 'literal', value: ' ', unit: 'minute'},
+    {type: 'unit', value: 'minute', unit: 'minute'},
+  ]
+  expect(formatter.formatToParts(duration)).toEqual(expected)
+  const descriptor = Object.getOwnPropertyDescriptor(Object.prototype, 'unit')
+  let calls = 0,
+    parts: unknown,
+    error: unknown
+  try {
+    Object.defineProperty(Object.prototype, 'unit', {
+      configurable: true,
+      set() {
+        calls++
+        throw new Error('inherited unit setter')
+      },
+    })
+    try {
+      parts = formatter.formatToParts(duration)
+    } catch (caught) {
+      error = caught
+    }
+  } finally {
+    if (descriptor) Object.defineProperty(Object.prototype, 'unit', descriptor)
+    else Reflect.deleteProperty(Object.prototype, 'unit')
+  }
+  expect(error).toBeUndefined()
+  expect(calls).toBe(0)
+  expect(parts).toEqual(expected)
+  expect(
+    Object.getOwnPropertyDescriptor((parts as object[])[0], 'unit')
+  ).toEqual({
+    value: 'minute',
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  })
+})

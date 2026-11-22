@@ -105,16 +105,19 @@ export function object(value: unknown): value is Record<string, unknown> {
   return IsObject(value)
 }
 export function integer(value: unknown): number {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798
-  // L1796: unary + performs ToNumber, preserving user coercion and throws.
-  // L1798: captured truncation is unobservable; finite inputs become integers.
+  // Temporal comparison §13.40 steps1–3.
+  // https://tc39.es/proposal-temporal/#sec-tointegerwithtruncation
+  // §13.40 step1: unary + performs ToNumber, preserving user coercion and throws.
+  // §13.40 step3: captured truncation is unobservable; finite inputs become integers.
   const result = mathTrunc(+(value as number))
-  // L1797: truncation leaves NaN/infinities nonintegral; reject with intrinsic RangeError.
+  // §13.40 step2: truncation leaves NaN/infinities nonintegral; reject with intrinsic RangeError.
   if (!numberIsInteger(result))
     throw new RangeErrorConstructor('Expected finite number')
-  // L1798: mathematical zero has no negative sign.
+  // §13.40 step3: mathematical zero has no negative sign.
   return result || 0
 }
+// Temporal comparison §13.6 steps1–3: read overflow once, then default and validate
+// https://tc39.es/proposal-temporal/#sec-temporal-gettemporaloverflowoption
 export function overflowOption(options: unknown): Overflow {
   const raw = optionsObject(options).overflow
   const value = raw === undefined ? 'constrain' : ToString(raw)
@@ -132,8 +135,9 @@ function calendarSlot(value: object): {calendar: string} | undefined {
   )
 }
 export function calendarFromObject(item: Record<string, unknown>): string {
-  // GetTemporalCalendarIdentifierWithISODefault 696–697: slots precede public fields.
-  // Steps 698–700: read calendar once; undefined defaults to ISO in calendarId.
+  // Temporal comparison §12.3.11 steps1–4: slots precede the single calendar Get.
+  // https://tc39.es/proposal-temporal/#sec-temporal-gettemporalcalendarslotvaluewithisodefault
+  // Step3: undefined defaults to ISO in calendarId.
   return calendarSlot(item)?.calendar ?? calendarId(item.calendar)
 }
 function bareCalendarIdentifier(value: string): boolean {
@@ -159,18 +163,21 @@ function bareCalendarIdentifier(value: string): boolean {
   return true
 }
 export function calendarId(value: unknown = 'iso8601'): string {
-  // ToTemporalCalendarIdentifier 675: use the five calendar-bearing slots.
+  // Temporal comparison §12.3.10 step1: use the five calendar-bearing slots.
+  // https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier
   const slot = calendarSlot(value as object)
   if (slot) return slot.calendar
-  // Step 676: withCalendar rejects undefined before calling this shared defaulting path.
+  // Step2: withCalendar rejects undefined before this shared defaulting path.
   if (typeof value !== 'string')
     throw new TypeErrorConstructor('Calendar must be a string')
-  // Steps 677–678: parse the identifier, then canonicalize it.
+  // Steps3–4: parse the identifier, then canonicalize it.
   const id = stringToLowerCase(
     bareCalendarIdentifier(value) ? value : parseCalendarString(value)
   )
   return supportedCalendar(id)
 }
+// Temporal comparison §12.1.1 steps1–3: canonicalize the supplied primitive calendar name
+// https://tc39.es/proposal-temporal/#sec-temporal-canonicalizecalendar
 export function constructorCalendar(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
     throw new TypeErrorConstructor('Calendar must be a string')
@@ -200,6 +207,8 @@ function supportedCalendar(value: string): CalendarId {
 function baseCalendar(calendar: string): CalendarId {
   return calendar as CalendarId
 }
+// Temporal comparison §12.3.31 steps1.a–1.g/2.a: resolve required date fields and non-ISO eras
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields
 export function resolveCalendarYear(
   calendar: string,
   fields: Record<string, unknown>,
@@ -247,10 +256,12 @@ export function timeOf(value: bigint): bigint {
   return ((value % nsPerDay) + nsPerDay) % nsPerDay
 }
 export function isoDay(year: number, month: number, day: number): number {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L505
-  // L505: hour 12 plus own-only zero defaults form noon, with zero day carry.
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L890
-  // L890: combine the ISO date with that noon clock before checking local limits.
+  // Temporal comparison §4.5.4 step1: NoonTimeRecord.
+  // https://tc39.es/proposal-temporal/#sec-temporal-noontimerecord
+  // §4.5.4 step1: hour 12 plus own-only zero defaults form noon, with zero day carry.
+  // Temporal comparison §3.5.12 steps1–2.
+  // https://tc39.es/proposal-temporal/#sec-temporal-isodatewithinlimits
+  // §3.5.12 step1: combine the ISO date with that noon clock before checking local limits.
   return epochDayOf(isoToEpochNanoseconds({year, month, day, hour: 12}))
 }
 const dateSnapshots = new WeakMap<
@@ -315,6 +326,8 @@ export function dateFieldsView(
   }
   return dateFields(slot, extended)
 }
+// Temporal comparison §12.3.12 steps1–4: resolve, convert and guard the full date
+// https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields
 export function dayFromFields(
   calendar: string,
   fields: Record<string, unknown>,
@@ -339,6 +352,8 @@ export function dayFromFields(
     overflow
   )
 }
+// Temporal comparison §4.5.8 steps1–3: regulate prepared time fields before exact composition
+// https://tc39.es/proposal-temporal/#sec-temporal-regulatetime
 export function clockNanoseconds(
   fields: Record<string, unknown>,
   overflow: Overflow
@@ -371,6 +386,8 @@ const orderedDateFields = [
   'timeZone',
   'year',
 ] as const
+// Temporal comparison §12.3.3 steps2–8: prepare fixed lexicographic field names
+// https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields
 export function dateFieldNames(
   calendar: string,
   withTime: boolean,
@@ -396,13 +413,14 @@ export function dateFieldNames(
 export function dateFieldValue(key: string, value: unknown): string | number {
   if (key === 'era') return ToString(value)
   if (key === 'monthCode') {
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L83-L85
-    // L83: use the string hint without coercing a primitive to String.
+    // Temporal comparison §12.2.1 steps1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal-parsemonthcode
+    // §12.2.1 step1: use the string hint without coercing a primitive to String.
     const primitive = object(value) ? ToPrimitive(value, 'string') : value
-    // L84: reject non-string primitives.
+    // §12.2.1 step2: reject non-string primitives.
     if (typeof primitive !== 'string')
       throw new TypeErrorConstructor('monthCode must be a string')
-    // L85: consume the whole MonthCode grammar; zero requires the leap suffix.
+    // §12.2.1 step3: consume the whole MonthCode grammar; zero requires the leap suffix.
     const leap = primitive.length === 4 && primitive[3] === 'L'
     if (
       (primitive.length !== 3 && !leap) ||
@@ -416,14 +434,14 @@ export function dateFieldValue(key: string, value: unknown): string | number {
       throw new RangeErrorConstructor('Invalid monthCode syntax')
     return primitive
   }
-  // Month/day: ToPositiveIntegerWithTruncation, abstractops.html L1779–L1781.
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1779-L1781
-  // L1779: propagate ToIntegerWithTruncation's coercion and exceptions.
+  // Temporal comparison §13.39 steps1–3: positive month/day conversion.
+  // https://tc39.es/proposal-temporal/#sec-topositiveintegerwithtruncation
+  // §13.39 step1: propagate ToIntegerWithTruncation's coercion and exceptions.
   const result = integer(value)
-  // L1780: reject nonpositive values after truncation, including signed zero.
+  // §13.39 step2: reject nonpositive values after truncation, including signed zero.
   if ((key === 'month' || key === 'day') && result <= 0)
     throw new RangeErrorConstructor('Month and day must be positive')
-  // L1781: return the positive mathematical integer for month/day.
+  // §13.39 step3: return the positive mathematical integer for month/day.
   return result
 }
 const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
@@ -475,6 +493,8 @@ function readISODateFields(
   return result
 }
 
+// Temporal comparison §12.3.3 steps6–9.c/10–11: ordered Gets and immediate conversion
+// https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
@@ -506,6 +526,8 @@ export function readDateFields(
     throw new TypeErrorConstructor('At least one field required')
   return result
 }
+// Temporal comparison §12.3.5 steps1–6: merge prepared fields with calendar-specific invalidation
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarmergefields
 export function mergeDateFields(
   calendar: string,
   fields: Readonly<CalendarDate> | Record<string, unknown>,
@@ -552,6 +574,8 @@ export function mergeDateFields(
   }
   return {...base, ...updates}
 }
+// Temporal comparison §13.24 steps1–7: reject brands before calendar/timeZone Gets
+// https://tc39.es/proposal-temporal/#sec-temporal-ispartialtemporalobject
 export function partialObject(item: unknown): Record<string, unknown> {
   if (
     !object(item) ||
@@ -567,6 +591,8 @@ export function partialObject(item: unknown): Record<string, unknown> {
     throw new TypeErrorConstructor('Unexpected calendar or timeZone')
   return item
 }
+// Temporal comparison §12.3.7 steps1–4: calendar addition followed by the full-date bound
+// https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd
 export function addDate(
   slot: DateSlot,
   duration: DurationFields,
@@ -582,6 +608,8 @@ export function addDate(
     ).epochDay
   )
 }
+// Temporal comparison §13.10 steps1–5: convert calendarName and preserve its default
+// https://tc39.es/proposal-temporal/#sec-temporal-gettemporalshowcalendarnameoption
 export function calendarNameOption(
   value: unknown
 ): 'auto' | 'always' | 'never' | 'critical' {
@@ -624,6 +652,8 @@ const twoDigitDateParts = [
   '30',
   '31',
 ]
+// Temporal comparison §5.5.9 steps1–3: format the prepared ISO date portion
+// https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring
 export function formatISODate(
   epochDay: number,
   kind: 'date' | 'year-month' | 'month-day' = 'date',
@@ -642,6 +672,8 @@ export function formatISODate(
           zeroPadDecimal(mathAbs(fields.year), 6)
   return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
 }
+// Temporal comparison §12.3.15 steps1–4: omit or mark the canonical calendar annotation
+// https://tc39.es/proposal-temporal/#sec-temporal-formatcalendarannotation
 export function calendarAnnotation(calendar: string, value: unknown): string {
   const option = calendarNameOption(value)
   return option === 'never' || (option === 'auto' && calendar === 'iso8601')
@@ -666,6 +698,8 @@ export const datePropertyNames = [
   'monthsInYear',
   'inLeapYear',
 ] as const
+// Temporal comparison §12.3.26 steps1–2: project calendar fields lazily; providers own their data
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate
 export function dateProperty(
   slot: DateSlot,
   key: string,
@@ -769,17 +803,20 @@ export function dateProperty(
   return undefined
 }
 export function checkDateTime(value: bigint): bigint {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762-L766
-  // L762: prepared day/clock values outside the early day bound fail this interval.
+  // Temporal comparison §5.5.4 steps1–5.
+  // https://tc39.es/proposal-temporal/#sec-temporal-isodatetimewithinlimits
+  // §5.5.4 step1: prepared day/clock values outside the early day bound fail this interval.
   const bound = 8640000086400000000000n
-  // L764: equality at the lower local boundary is rejected.
-  // L765: equality at the upper local boundary is rejected.
+  // §5.5.4 step3: equality at the lower local boundary is rejected.
+  // §5.5.4 step4: equality at the upper local boundary is rejected.
   if (value <= -bound || value >= bound)
     throw new RangeErrorConstructor('Local date out of range')
-  // L766: successful return represents the predicate's true result.
+  // §5.5.4 step5: successful return represents the predicate's true result.
   return value
 }
 
+// Temporal comparison §12.3.9 steps1–4: adapt the calendar date-duration result
+// https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil
 export function dateUntil(
   start: DateSlot,
   end: number,
