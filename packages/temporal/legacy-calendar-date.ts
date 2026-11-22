@@ -52,6 +52,7 @@ interface NumericRangeYear {
 
 interface CalendarRangeFields {
   year: number | undefined
+  narrowMonth: number | undefined
   numericYear: NumericRangeYear | undefined
 }
 
@@ -496,8 +497,11 @@ function restoreCalendarParts(
   }
   // ECMA-402 §11.5.4 step 15.f.x: reuse the month label from the control
   // partition.
-  if (arraySome(raw, part => part.type === 'month'))
+  if (arraySome(raw, part => part.type === 'month')) {
     changes.set('month', firstPart(controls, 'month'))
+    if (rangeFields && calendar === 'buddhist' && options.month === 'narrow')
+      rangeFields.narrowMonth = date.month
+  }
   if (arraySome(raw, part => part.type === 'day')) {
     // ECMA-402 §11.5.4 steps 15.f.viii–ix: preserve the host day width.
     const two = firstPart(controls, 'day') === formatTwo(3)
@@ -672,6 +676,15 @@ function restoreNumericRangeYears(
       start = part
     else if (part.source === 'endRange' && !end && part.value === last.raw)
       end = part
+    else if (
+      part.source === 'shared' &&
+      !start &&
+      !end &&
+      part.value === first.raw &&
+      part.value === last.raw &&
+      first.corrected === last.corrected
+    )
+      start = end = part
     else return undefined
   }
   if (!start || !end) return undefined
@@ -708,10 +721,12 @@ export function legacyCalendarRangeParts(
   // ECMA-402 §11.5.8 steps 7–8 and 19.e: obtain corrected endpoint partitions.
   const firstFields: CalendarRangeFields = {
       year: undefined,
+      narrowMonth: undefined,
       numericYear: undefined,
     },
     lastFields: CalendarRangeFields = {
       year: undefined,
+      narrowMonth: undefined,
       numericYear: undefined,
     }
   const start =
@@ -747,17 +762,31 @@ export function legacyCalendarRangeParts(
       let rawEnd: Intl.DateTimeFormatPart[] | undefined
       if (startUnchanged) {
         rawEnd = parts.call(last.formatter, last.milliseconds)
-        if (same(end, rawEnd)) return undefined
+        // ECMA-402 §11.5.8 step 15.d.v: identical narrow labels do not
+        // establish equality of the native and corrected month fields.
+        if (
+          same(end, rawEnd) &&
+          (firstFields.narrowMonth === undefined ||
+            hostBuddhistMonth(timeZone, first.milliseconds) ===
+              firstFields.narrowMonth) &&
+          (lastFields.narrowMonth === undefined ||
+            hostBuddhistMonth(timeZone, last.milliseconds) ===
+              lastFields.narrowMonth)
+        )
+          return undefined
       }
       const firstYear = firstFields.numericYear,
         lastYear = lastFields.numericYear
-      // ECMA-402 §11.5.8 step 15.d: common era and distinct full years
-      // select the same pattern before any month or day difference matters.
+      // ECMA-402 §11.5.8 steps 15.d.v–vi: a verified common era lets Year
+      // differences or distinct verified months select the host pattern.
       if (
         firstYear &&
         lastYear &&
         firstYear.era === lastYear.era &&
-        firstYear.raw !== lastYear.raw &&
+        (firstYear.raw !== lastYear.raw ||
+          (firstYear.textualMonth !== undefined &&
+            lastYear.textualMonth !== undefined &&
+            firstYear.textualMonth !== lastYear.textualMonth)) &&
         matchesNumericRangeYear(rawStart, start, firstYear) &&
         matchesNumericRangeYear(
           (rawEnd ??= parts.call(last.formatter, last.milliseconds)),
@@ -790,11 +819,14 @@ export function legacyCalendarRangeParts(
         throw error
     }
   }
-  // ECMA-402 §11.5.8 step 15.d.vi: distinct raw years prevent collapse.
+  // ECMA-402 §11.5.8 step 15.d.vi: distinct calendar fields prevent collapse.
   const allowCollapse =
-    firstFields.year === undefined ||
-    lastFields.year === undefined ||
-    firstFields.year === lastFields.year
+    (firstFields.year === undefined ||
+      lastFields.year === undefined ||
+      firstFields.year === lastFields.year) &&
+    (firstFields.narrowMonth === undefined ||
+      lastFields.narrowMonth === undefined ||
+      firstFields.narrowMonth === lastFields.narrowMonth)
   return joinCalendarRangeParts(
     first.formatter,
     start,

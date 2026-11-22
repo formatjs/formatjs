@@ -297,7 +297,40 @@ for (const inputs of [lateJune, lateJuneMilliseconds]) {
   checked++
 }
 
-assert.equal(checked, 161)
+for (const [style, start, end, referenceStart, referenceEnd] of [
+  [{}, [6, 26], [7, 1], [6, 1], [7, 1]],
+  [{}, [6, 1], [6, 26], [6, 1], [6, 1]],
+  [{year: 'numeric', era: 'short'}, [6, 1], [7, 1], [6, 1], [7, 1]],
+]) {
+  const options = {
+    calendar: 'buddhist',
+    timeZone: 'UTC',
+    month: 'narrow',
+    ...style,
+  }
+  const toMilliseconds = ([month, day]) => Date.UTC(-543, month - 1, day)
+  const toPlainDate = ([month, day]) =>
+    new Temporal.PlainDate(-543, month, day, 'buddhist')
+  const expected = new NativeDateTimeFormat('en', options)
+    .formatRangeToParts(
+      toMilliseconds(referenceStart),
+      toMilliseconds(referenceEnd)
+    )
+    .map(part => (part.type === 'year' ? {...part, value: '1'} : part))
+  const formatter = new Intl.DateTimeFormat('en', options)
+  for (const convert of [toMilliseconds, toPlainDate]) {
+    const first = convert(start)
+    const last = convert(end)
+    assert.deepEqual(formatter.formatRangeToParts(first, last), expected)
+    assert.equal(
+      formatter.formatRange(first, last),
+      expected.map(part => part.value).join('')
+    )
+    checked++
+  }
+}
+
+assert.equal(checked, 167)
 console.log(
-  '161 native bridge display-year controls, including cold/warm and range paths'
+  '167 native bridge display-year controls, including cold/warm and range paths'
 )

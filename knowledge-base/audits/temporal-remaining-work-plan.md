@@ -320,6 +320,8 @@ ECMA-402 range-collapse regression is fixed and validated.
 The numeric-year and era path reuses a validated host layout, including
 numeric month and day widths and weekday labels verified against the
 selected range parts, plus Buddhist textual months with verified ordinals.
+Distinct narrow month ordinals prevent collapse, and verified Month patterns
+retain shared year parts.
 Exact layout selection for other corrected fallback parts remains open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 

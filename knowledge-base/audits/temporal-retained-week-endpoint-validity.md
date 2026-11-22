@@ -80,6 +80,21 @@ their own endpoint and six-day certificates.
 Fixed offsets satisfy both conditions directly.
 [Scan summary](temporal-timezone-boundary-proof/retained-week-window-summary.json).
 
+The exact-endpoint replay checks 756 combinations of sign, timezone,
+retained prefix, largest unit and rounding mode. Each origin adds back to
+the selected Instant limit. Both the Bazel package and pinned Node 26.8.1
+reject every boundary case and accept its control 14 days inside the
+limit. The [TypeScript path](../../packages/temporal/relative-duration.ts#L280)
+constructs the adjacent endpoint before returning an exact rounded result.
+[Replay source](temporal-timezone-boundary-proof/retained-week-exact-endpoint-probe.mjs).
+
+Build `//packages/temporal:pkg` and use the directory returned by
+`bazel cquery --output=files //packages/temporal:pkg` for that build.
+
+```sh
+"$node_bin" "$proof/retained-week-exact-endpoint-probe.mjs" "$package_dir/index.js"
+```
+
 The added week preserves retained calendar prefix, duration sign and integral
 day arithmetic. This closes the extra range-check premise where the existing
 calendar and compatible-resolution contracts hold. It does not establish
