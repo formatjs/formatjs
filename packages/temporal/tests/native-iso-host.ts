@@ -1,3 +1,4 @@
+import {checkISODateUntilPrefixes} from '#packages/temporal/tests/arithmetic-calendar-oracle.js'
 import {
   calendarStartOfYear,
   monthsInYear,
@@ -10,7 +11,10 @@ import {
   calendarEra,
   calendarYearFromEra,
 } from '#packages/temporal/calendar.js'
-import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
+import {
+  checkPublicCalendarOracle,
+  checkCalendarDifferencePolicy,
+} from '#packages/temporal/tests/public-calendar-oracle.js'
 import {
   configureNativeTemporal,
   nativeTemporal,
@@ -56,6 +60,12 @@ check(
   'Legacy clock responses must balance midnight'
 )
 configureNativeTemporal(query)
+checkCalendarDifferencePolicy(Temporal, (actual, expected, context) =>
+  check(actual === expected, context)
+)
+checkISODateUntilPrefixes((actual, expected, context) =>
+  check(actual === expected, context)
+)
 let count = 0
 for (const row of __temporalISOOracle) {
   const [milliseconds, year, month, day, hour, minute, second, millisecond] =

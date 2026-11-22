@@ -1,0 +1,12 @@
+//packages/temporal:arithmetic_calendar_test
+//packages/temporal:arithmetic_calendar_test_typecheck_typecheck_test
+//packages/temporal:arithmetic_calendar_hermes_oracle_test
+//packages/temporal:native_iso_hermes_oracle_test
+//packages/temporal:plain_relative_test
+//packages/temporal:plain_relative_hermes_oracle_test
+//crates/intl_datetimeformat_calendars:calendar_core_test
+//crates/intl_datetimeformat_calendars:table_calendar_test
+//packages/temporal:public_calendar_test
+//packages/temporal:public_calendar_test_typecheck_typecheck_test
+//packages/temporal:public_calendar_hermes_oracle_test
+//packages/temporal:typecheck_typecheck_test

@@ -2,7 +2,10 @@ import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import {Temporal} from '#packages/temporal/index.js'
-import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
+import {
+  checkPublicCalendarOracle,
+  checkCalendarDifferencePolicy,
+} from '#packages/temporal/tests/public-calendar-oracle.js'
 
 it('exposes ICU calendar fields, inverse bags and arithmetic through public classes', () => {
   const file = runfiles.resolve(
@@ -285,4 +288,10 @@ it('keeps rounded month quanta while unrounded month-end differences keep days',
       .until('2020-03-01T00:15', {largestUnit: 'year'})
       .toString()
   ).toBe('P29DT45M')
+})
+
+it('keeps leap-month difference policy separate from constrained year addition', () => {
+  checkCalendarDifferencePolicy(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
 })

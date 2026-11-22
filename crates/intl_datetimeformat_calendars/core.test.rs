@@ -318,3 +318,36 @@ fn extended_gregorian_endpoints_have_exact_fields() {
         assert_eq!(iso_day(year, month, day), epoch);
     }
 }
+
+#[test]
+fn iso_differences_keep_maximal_unregulated_prefixes() {
+    for (one, two, largest, years, months, days) in [
+        (18321, 18686, DateUnit::Year, 0, 11, 30),
+        (18686, 18321, DateUnit::Year, 0, -11, -28),
+        (18658, 18716, DateUnit::Month, 0, 1, 30),
+        (18716, 18658, DateUnit::Month, 0, -1, -28),
+        (18321, 18687, DateUnit::Year, 1, 0, 1),
+        (18321, 18687, DateUnit::Month, 0, 12, 1),
+        (-110_000_000, 110_000_000, DateUnit::Year, 602339, 6, 15),
+        (110_000_000, -110_000_000, DateUnit::Year, -602339, -6, -16),
+        (-110_000_000, 110_000_000, DateUnit::Month, 0, 7228074, 15),
+        (110_000_000, -110_000_000, DateUnit::Month, 0, -7228074, -16),
+    ] {
+        let actual = Calendar::Iso8601.until_raw(one, two, largest).unwrap();
+        assert_eq!(
+            actual,
+            DateDuration {
+                years,
+                months,
+                weeks: 0,
+                days
+            }
+        );
+        assert_eq!(
+            Calendar::Iso8601
+                .add_extended(one, actual, Overflow::Constrain)
+                .unwrap(),
+            two
+        );
+    }
+}

@@ -1,5 +1,13 @@
 # Temporal implementation
 
+[Date-difference operation map](audits/temporal-calendar-date-until-contract-audit.md)
+and [ISO prefix proof](audits/temporal-iso-date-until-prefix-proof-audit.md) separate
+maximal unregulated year/month prefixes from constrained addition. Literal
+TS/Hermes/native/Rust controls cover asymmetric leap/month ends and extended raw
+coordinates. [Non-ISO policy](audits/temporal-noniso-date-until-policy-audit.md)
+keeps leap remapping distinct from external reference choices. Runtime arithmetic
+is unchanged; provider data and full public caller contracts remain open.
+
 ISO calendar differences retain direct bounded day/week residual arithmetic.
 A [separate rendered-comparison issue](audits/temporal-isodatesurpasses-zero-month-spec-issue.md)
 records a zero-month shortcut that would make literal candidate loops fail to
