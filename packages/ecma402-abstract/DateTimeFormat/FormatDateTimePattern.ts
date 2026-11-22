@@ -182,7 +182,7 @@ function offsetToGmtString(
 }
 
 // ECMA-402 §11.5.4, step 15.f.ix: preserve the final two code points.
-function lastTwoCodePoints(value: string): string {
+export function lastTwoCodePoints(value: string): string {
   let start = value.length
   for (let count = 0; count < 2 && start > 0; count++) {
     start--

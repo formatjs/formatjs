@@ -8,7 +8,9 @@ import {
   mathAbs,
   mathTrunc,
   numberIsFinite,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
+import {lastTwoCodePoints} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
 import {beforeHijrah} from '@formatjs_generated/datetimeformat.calendars/fallback-eras.js'
 import {
   calendarEra,
@@ -32,6 +34,7 @@ import {
   type LunisolarRangeFields,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
+import {createObject} from '#packages/temporal/intrinsics.js'
 
 type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
@@ -65,6 +68,11 @@ interface CalendarRangeFields extends LunisolarRangeFields {
 // ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
 // https://tc39.es/ecma262/#sec-reflect.apply
 const apply = Reflect.apply
+const weakMapGet = WeakMap.prototype.get
+const weakMapSet = WeakMap.prototype.set
+const stringIndexOf = String.prototype.indexOf
+const stringLastIndexOf = String.prototype.lastIndexOf
+const stringSlice = String.prototype.slice
 const Constructor = globalThis.Intl?.DateTimeFormat
 const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
@@ -74,18 +82,17 @@ const dayMilliseconds = 86400000
 const limit = 8640000000000000
 const cycle = 146097 * dayMilliseconds
 const reference = 1609459200000
-const representatives = new Map<string, number>()
-const numbers = new WeakMap<
-  Intl.DateTimeFormat,
-  Map<number, (value: number) => string>
->()
+const representatives: Record<string, number | undefined> = createObject(null)
+type NumberLabels = Record<number, ((value: number) => string) | undefined>
+type EraLabels = Record<string, string | undefined>
+const numbers = new WeakMap<Intl.DateTimeFormat, NumberLabels>()
 const eraWidths = new WeakMap<
   Intl.DateTimeFormat,
   'long' | 'short' | 'narrow'
 >()
-const eraLabels = new WeakMap<Intl.DateTimeFormat, Map<string, string>>()
+const eraLabels = new WeakMap<Intl.DateTimeFormat, EraLabels>()
 const clockFormatters = new WeakMap<Intl.DateTimeFormat, Intl.DateTimeFormat>()
-const clockTypes = new Set([
+const clockTypes = [
   'weekday',
   'hour',
   'minute',
@@ -93,7 +100,7 @@ const clockTypes = new Set([
   'fractionalSecond',
   'dayPeriod',
   'timeZoneName',
-])
+]
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   // ECMA-262 §21.4.1.31 step 2: detect plain projections outside the Date
@@ -105,12 +112,12 @@ function number(
   options: Intl.ResolvedDateTimeFormatOptions,
   digits: number
 ): (value: number) => string {
-  let cache = numbers.get(source)
+  let cache = apply(weakMapGet, numbers, [source]) as NumberLabels | undefined
   if (!cache) {
-    cache = new Map()
-    numbers.set(source, cache)
+    cache = createObject(null) as NumberLabels
+    apply(weakMapSet, numbers, [source, cache])
   }
-  const existing = cache.get(digits)
+  const existing = cache[digits]
   if (existing) return existing
   if (!NumberConstructor || !numberFormat)
     throw new RangeErrorConstructor(
@@ -128,7 +135,7 @@ function number(
     }),
     []
   )
-  cache.set(digits, result)
+  cache[digits] = result
   return result
 }
 function representative(
@@ -137,7 +144,7 @@ function representative(
   leap: boolean
 ): number {
   const key = `${calendar}:${code}:${leap}`
-  const cached = representatives.get(key)
+  const cached = representatives[key]
   if (cached !== undefined) return cached
   // ECMA-402 §11.5.4 step 15.f.x: pick an in-range control for a localized
   // month label.
@@ -162,19 +169,26 @@ function representative(
       if (error instanceof RangeErrorConstructor) continue
       throw error
     }
-    representatives.set(key, epoch)
+    representatives[key] = epoch
     return epoch
   }
   throw new RangeErrorConstructor('No host calendar label example')
 }
-function firstPart(parts: Intl.DateTimeFormatPart[], type: string): string {
+function findPart(
+  parts: Intl.DateTimeFormatPart[],
+  type: string
+): Intl.DateTimeFormatPart | undefined {
   // ECMA-402 §11.5.7 steps 4.b–c: read the host part with the requested type.
-  const value = parts.find(part => part.type === type)
-  if (!value)
+  for (let index = 0; index < parts.length; index++)
+    if (parts[index].type === type) return parts[index]
+}
+function firstPart(parts: Intl.DateTimeFormatPart[], type: string): string {
+  const part = findPart(parts, type)
+  if (!part)
     throw new RangeErrorConstructor(
       `Unsupported host calendar pattern: ${type}`
     )
-  return value.value
+  return part.value
 }
 function eraOptions(
   options: Intl.ResolvedDateTimeFormatOptions,
@@ -205,7 +219,11 @@ function eraWidth(
   surrogate: number,
   parts: Parts
 ): 'long' | 'short' | 'narrow' {
-  const existing = eraWidths.get(source)
+  const existing = apply(weakMapGet, eraWidths, [source]) as
+    | 'long'
+    | 'short'
+    | 'narrow'
+    | undefined
   if (existing) return existing
   // ECMA-402 §11.5.4 step 15.f.ii: prefer the resolved era width.
   if (
@@ -213,19 +231,21 @@ function eraWidth(
     options.era === 'short' ||
     options.era === 'narrow'
   ) {
-    eraWidths.set(source, options.era)
+    apply(weakMapSet, eraWidths, [source, options.era])
     return options.era
   }
   // ECMA-402 §11.5.4 step 15.f.x: infer style-selected era width from host
   // labels.
   const original = firstPart(raw, 'era')
-  for (const width of ['long', 'short', 'narrow'] as const) {
+  const widths = ['long', 'short', 'narrow'] as const
+  for (let index = 0; index < widths.length; index++) {
+    const width = widths[index]
     const formatter = new Constructor!(
       options.locale,
       eraOptions(options, options.calendar, width)
     )
     if (firstPart(apply(parts, formatter, [surrogate]), 'era') === original) {
-      eraWidths.set(source, width)
+      apply(weakMapSet, eraWidths, [source, width])
       return width
     }
   }
@@ -240,24 +260,32 @@ function eraLabel(
   sample: number,
   parts: Parts
 ): string {
-  let cache = eraLabels.get(source)
+  let cache = apply(weakMapGet, eraLabels, [source]) as EraLabels | undefined
   if (!cache) {
-    cache = new Map()
-    eraLabels.set(source, cache)
+    cache = createObject(null) as EraLabels
+    apply(weakMapSet, eraLabels, [source, cache])
   }
   const key = `${calendar}:${era}:${width}`,
-    existing = cache.get(key)
+    existing = cache[key]
   if (existing !== undefined) return existing
   // ECMA-402 §11.5.4 step 15.f.x: supply the before-Hijrah label from locale
   // data.
   if (era === 'bh') {
-    let locale = options.locale.split('-u-')[0]
-    while (!beforeHijrah[locale] && locale.includes('-'))
-      locale = locale.slice(0, locale.lastIndexOf('-'))
+    const extension = apply(stringIndexOf, options.locale, ['-u-'])
+    let locale =
+      extension < 0
+        ? options.locale
+        : apply(stringSlice, options.locale, [0, extension])
+    for (
+      let index = apply(stringLastIndexOf, locale, ['-']);
+      !beforeHijrah[locale] && index >= 0;
+      index = apply(stringLastIndexOf, locale, ['-'])
+    )
+      locale = apply(stringSlice, locale, [0, index])
     const value = (beforeHijrah[locale] ?? beforeHijrah.en)[
       width === 'long' ? 0 : width === 'short' ? 1 : 2
     ]
-    cache.set(key, value)
+    cache[key] = value
     return value
   }
   // ECMA-402 §11.5.11 step 5.a: choose a control date in the requested era.
@@ -290,7 +318,7 @@ function eraLabel(
     apply(parts, formatter, [sample * dayMilliseconds]),
     'era'
   )
-  cache.set(key, value)
+  cache[key] = value
   return value
 }
 
@@ -358,13 +386,15 @@ export function legacyCalendarParts(
         throw error
       epoch ??= legacyISOEpochDay(options.timeZone, value.milliseconds)
       // Some host calendars fail at valid Date bounds; retain their clock and zone via Gregorian fields.
-      let clock = clockFormatters.get(value.formatter)
+      let clock = apply(weakMapGet, clockFormatters, [value.formatter]) as
+        | Intl.DateTimeFormat
+        | undefined
       if (!clock) {
         clock = new Constructor!(options.locale, {
           ...options,
           calendar: 'gregory',
         } as Intl.DateTimeFormatOptions)
-        clockFormatters.set(value.formatter, clock)
+        apply(weakMapSet, clockFormatters, [value.formatter, clock])
       }
       // ECMA-402 §11.5.4 steps 12 and 15.c–g: take clock and zone parts from
       // the real instant.
@@ -378,16 +408,14 @@ export function legacyCalendarParts(
       surrogate = local - floor((local - 946684800000) / cycle) * cycle
       // ECMA-402 §11.5.4 steps 13–15: use surrogate labels and retain the real
       // clock parts.
-      raw = apply(parts, labels, [surrogate]).map(
-        // ECMA-402 §11.5.7 steps 4.b–c: retain types and restore real clock values.
-        part =>
-          clockTypes.has(part.type)
-            ? (clockParts.find(
-                // ECMA-402 §11.5.7 step 4.b: match the host clock part type.
-                item => item.type === part.type
-              ) ?? part)
-            : part
-      )
+      raw = apply(parts, labels, [surrogate])
+      // ECMA-402 §11.5.7 steps 4.b–c: restore real clock values by type.
+      for (let index = 0; index < raw.length; index++) {
+        const type = raw[index].type
+        if (!arrayIncludes(clockTypes, type)) continue
+        const clockPart = findPart(clockParts, type)
+        if (clockPart) raw[index] = clockPart
+      }
     }
     // Keep the original local day when labels use a UTC surrogate.
     if (lunar)
@@ -476,9 +504,8 @@ function restoreCalendarParts(
     format = number(value.formatter, options, 1),
     formatTwo = number(value.formatter, options, 2),
     // ECMA-402 §11.5.4 step 15.f.ix: take the last two Unicode code points.
-    short = (value: number): string =>
-      Array.from(formatTwo(value)).slice(-2).join(''),
-    changes = new Map<string, string>()
+    short = (value: number): string => lastTwoCodePoints(formatTwo(value))
+  const changes: Record<string, string | undefined> = createObject(null)
   if (
     arraySome(
       raw,
@@ -497,7 +524,7 @@ function restoreCalendarParts(
     // ECMA-402 §11.5.4 steps 15.f.viii–ix: select numeric or two-digit year
     // text.
     const display = two ? short(year) : format(year)
-    changes.set('year', display)
+    changes.year = display
     if (rangeFields && options.year === 'numeric' && era && !clipped(value)) {
       const hostYear = rawYear === year ? display : format(rawYear)
       // A range can use a different year width from the single-date pattern.
@@ -532,15 +559,15 @@ function restoreCalendarParts(
       era?.era !== 'bce' &&
       !clipped(value)
     )
-      changes.set(
-        'year',
-        firstPart(apply(parts, value.formatter, [value.milliseconds]), 'year')
+      changes.year = firstPart(
+        apply(parts, value.formatter, [value.milliseconds]),
+        'year'
       )
   }
   // ECMA-402 §11.5.4 step 15.f.x: reuse the month label from the control
   // partition.
   if (arraySome(raw, part => part.type === 'month')) {
-    changes.set('month', firstPart(controls, 'month'))
+    changes.month = firstPart(controls, 'month')
     if (rangeFields && calendar === 'buddhist' && options.month === 'narrow')
       rangeFields.narrowMonth = date.month
   }
@@ -554,7 +581,7 @@ function restoreCalendarParts(
     // ECMA-402 §11.5.4 steps 15.f.viii–ix: preserve the host day width.
     const two = firstPart(controls, 'day') === formatTwo(3)
     const corrected = two ? formatTwo(date.day) : format(date.day)
-    changes.set('day', corrected)
+    changes.day = corrected
     const year = rangeFields?.numericYear
     if (year && (options.day === 'numeric' || options.day === '2-digit')) {
       year.day = {
@@ -576,36 +603,43 @@ function restoreCalendarParts(
   // ECMA-402 §11.5.4 steps 15.f.ii and 15.f.x: restore the era label at that
   // width.
   if (era && arraySome(raw, part => part.type === 'era'))
-    changes.set(
-      'era',
-      eraLabel(
+    changes.era = eraLabel(
+      value.formatter,
+      calendar,
+      era.era,
+      options,
+      eraWidth(
         value.formatter,
-        calendar,
-        era.era,
         options,
-        eraWidth(
-          value.formatter,
-          options,
-          controls,
-          sample * dayMilliseconds,
-          parts
-        ),
-        sample,
+        controls,
+        sample * dayMilliseconds,
         parts
-      )
+      ),
+      sample,
+      parts
     )
   if (
     arrayEvery(
       raw,
       // ECMA-402 §11.5.7 steps 4.b–c: compare corrected and emitted part values.
-      part => !changes.has(part.type) || changes.get(part.type) === part.value
+      part =>
+        changes[part.type] === undefined || changes[part.type] === part.value
     )
   )
     return raw
-  // ECMA-402 §11.5.7 steps 4.b–c: keep part types and replace corrected values.
-  return raw.map(part =>
-    changes.has(part.type) ? {...part, value: changes.get(part.type)!} : part
-  )
+  // ECMA-402 §11.5.7 steps 4.b–e create parts with their corrected labels.
+  // https://tc39.es/ecma402/#sec-formatdatetimetoparts
+  const result: Intl.DateTimeFormatPart[] = []
+  for (let index = 0; index < raw.length; index++) {
+    const part = raw[index]
+    const value = changes[part.type]
+    setDataProperty(
+      result,
+      index,
+      value === undefined ? part : {...part, value}
+    )
+  }
+  return result
 }
 
 // ECMA-402 §11.5.8 step 15.d: check endpoint labels before reusing the host selection.
