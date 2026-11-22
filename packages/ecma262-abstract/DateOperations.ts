@@ -9,10 +9,12 @@ function mod(x: number, y: number): number {
   return x - floor(x / y) * y
 }
 
+// ECMA-262 §21.4.1.3 step 1: mathematical floor, including pre-epoch days.
 export function Day(t: number): number {
   return floor(t / MS_PER_DAY)
 }
 
+// ECMA-262 §21.4.1.12 step 1: nonnegative weekday remainder.
 export function WeekDay(t: number): number {
   return mod(Day(t) + 4, 7)
 }
@@ -21,7 +23,6 @@ export function DayFromYear(y: number): number {
   // ECMA-262 §21.4.1.5 DayFromYear, steps 2–6: count days arithmetically.
   // The first day of the minimum representable year lies outside Date's range.
   // https://tc39.es/ecma262/#sec-dayfromyear
-  // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34143-L34147
   return (
     365 * (y - 1970) +
     floor((y - 1969) / 4) -
@@ -34,7 +35,6 @@ export function YearFromTime(t: number): number {
   // ECMA-262 §21.4.1.7 YearFromTime, step 1: locate the enclosing year.
   // Local timezone adjustment may move an otherwise valid instant past Date's bounds.
   // https://tc39.es/ecma262/#sec-yearfromtime
-  // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34177
   if (!numberIsFinite(t)) return NaN
   const day = Day(t)
   let year = 1970 + floor(day / 365.2425)
@@ -43,6 +43,7 @@ export function YearFromTime(t: number): number {
   return year
 }
 
+// ECMA-262 §21.4.1.9 steps 1–4: equivalent divisibility order; adapt Boolean to day count.
 export function DaysInYear(y: number): 365 | 366 {
   if (y % 4 !== 0) return 365
   if (y % 100 !== 0) return 366
@@ -50,14 +51,17 @@ export function DaysInYear(y: number): 365 | 366 {
   return 366
 }
 
+// ECMA-262 §21.4.1.8 step 1: subtract the enclosing year origin.
 export function DayWithinYear(t: number): number {
   return Day(t) - DayFromYear(YearFromTime(t))
 }
 
+// ECMA-262 §21.4.1.9 applied to §21.4.1.7: private numeric leap-year offset.
 export function InLeapYear(t: number): 0 | 1 {
   return DaysInYear(YearFromTime(t)) === 365 ? 0 : 1
 }
 
+// ECMA-262 §21.4.1.10 steps 1–16: ordered month thresholds with leap-day adjustment.
 export function MonthFromTime(
   t: number
 ): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 {
@@ -78,6 +82,7 @@ export function MonthFromTime(
   throw new ErrorConstructor('Invalid time')
 }
 
+// ECMA-262 §21.4.1.11 steps 1–17: month-specific subtraction yields one-based date.
 export function DateFromTime(t: number): number {
   const dwy = DayWithinYear(t)
   const mft = MonthFromTime(t)
@@ -104,18 +109,22 @@ const MS_PER_SECOND = 1e3
 const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE
 const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR
 
+// ECMA-262 §21.4.1.13 step 1: floor before nonnegative modulo.
 export function HourFromTime(t: number): number {
   return mod(floor(t / MS_PER_HOUR), HOURS_PER_DAY)
 }
 
+// ECMA-262 §21.4.1.14 step 1: floor before nonnegative modulo.
 export function MinFromTime(t: number): number {
   return mod(floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR)
 }
 
+// ECMA-262 §21.4.1.15 step 1: floor before nonnegative modulo.
 export function SecFromTime(t: number): number {
   return mod(floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE)
 }
 
+// ECMA-262 §21.4.1.16 step 1: nonnegative millisecond remainder.
 export function msFromTime(t: number): number {
   return mod(t, MS_PER_SECOND)
 }
