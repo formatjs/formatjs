@@ -101,6 +101,8 @@ export function durationNanoseconds(
 // Temporal comparison §7.5.16 steps1–9: reject mixed signs, excessive calendar counts or exact time total
 // https://tc39.es/proposal-temporal/#sec-isvalidduration
 export function validateDuration(fields: DurationFields): DurationFields {
+  // ECMA-262 preview §22.3.4.2 steps 1–2: the four date fields use the same sign and bounds checks.
+  // https://tc39.es/ecma262/pr/3966/#sec-createdatedurationrecord
   const sign = durationSign(fields)
   for (let index = 0; index < durationFieldNames.length; index++) {
     const key = durationFieldNames[index]

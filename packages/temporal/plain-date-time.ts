@@ -202,8 +202,8 @@ function dateSlot(slot: DateTimeSlot) {
   }
   return value
 }
-// Temporal comparison §5.5.6 steps 3, 4, 9, 10, 12.
-// Delegate PlainDateTime parsing and assemble its private record.
+// ECMA-262 preview §22.10.5.2: convert a branded value, prepared fields, or a string.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaldatetime
 export function toPlainDateTimeSlot(
   item: unknown,
   options?: unknown
@@ -224,6 +224,8 @@ export function toPlainDateTimeSlot(
     const calendar = calendarFromObject(item)
     const fields = readDateFields(item, true, false, 'date', calendar),
       overflow = overflowOption(options)
+    // ECMA-262 preview §22.10.5.7 steps 2–4: resolve the date before regulating the clock.
+    // https://tc39.es/ecma262/pr/3966/#sec-interprettemporaldatetimefields
     const day = dayFromFields(calendar, fields, overflow),
       clock = clockNanoseconds(fields, overflow)
     return {
@@ -285,8 +287,8 @@ function add(
     slot.calendar
   )
 }
-// Temporal comparison §5.5.15 steps 1, 2, 3, 4, 6, 7.
-// Resolve inputs and forward the prepared difference.
+// ECMA-262 preview §22.10.5.4: prepare both dates, check their calendars, and round the difference.
+// https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplaindatetime
 function difference(
   slot: DateTimeSlot,
   other: unknown,

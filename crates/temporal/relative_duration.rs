@@ -65,7 +65,8 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
 }
 
-// Proposal comparison §7.5.39 steps 1.b–c, 3: total the typed relative span.
+// ECMA-262 preview §22.9.5.8 steps 1–4: total exact time or a calendar-relative span.
+// https://tc39.es/ecma262/pr/3966/#sec-differencezoneddatetimewithtotal
 pub(crate) fn total<A: RelativeAnchor>(
     start: &A,
     finish: i128,

@@ -553,7 +553,8 @@ impl fmt::Display for FormattedDuration {
     }
 }
 
-// Proposal comparison §7.5.27 steps 1–3: round exact nanoseconds and check the result bound.
+// ECMA-262 preview §22.3.14.5 steps 1–3: round exact nanoseconds and check the result bound.
+// https://tc39.es/ecma262/pr/3966/#sec-roundtimedurationtoincrement
 pub fn round_duration_nanoseconds(
     value: i128,
     quantum: i128,

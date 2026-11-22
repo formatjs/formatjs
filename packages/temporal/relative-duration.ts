@@ -65,7 +65,8 @@ function hasTimeZoneAnnotation(value: string): boolean {
 }
 
 export type RelativeTo = {date: DateSlot} | {zoned: ZonedSlot}
-// Proposal comparison §13.19 steps 2 and 5.a.i–5.c.ii: Prepare anchors from initialized Temporal values.
+// ECMA-262 preview §22.3.12.9: normalize the prepared relativeTo option into an anchor.
+// https://tc39.es/ecma262/pr/3966/#sec-gettemporalrelativetooption
 export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (value === undefined) return undefined
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L607-L613
@@ -190,7 +191,8 @@ export function relativeTotal(
   }
   const start = relativeOrigin(relative),
     end = relativeEndpoint(relative, fields)
-  // Temporal comparison §5.5.14 steps1–2 preserve equality before endpoint limits.
+  // ECMA-262 preview §22.10.5.6: preserve equality before checking plain endpoint limits.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceplaindatetimewithtotal
   if ('date' in relative && end !== start) checkDateTime(end)
   if (
     unit !== 'year' &&

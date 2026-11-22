@@ -212,7 +212,8 @@ function zonedSnapshot(slot: ZonedSlot) {
   setZonedSnapshot(slot, entry)
   return entry
 }
-// Proposal comparison §11.1.10 steps 1–3: Project an exact zoned epoch into local nanoseconds.
+// ECMA-262 preview §22.2.12 steps 1–15: add the zone offset before unpacking the local clock.
+// https://tc39.es/ecma262/pr/3966/#sec-getisodatetimefor
 function local(slot: ZonedSlot): bigint {
   const cached = zonedSnapshot(slot)
   if (cached) return cached.local
@@ -300,7 +301,8 @@ export function zonedFromLocal(
     : zonedKernel(zone).resolve(epochNanosecondsToISO(value), ambiguous)
   return createZonedDateTime(epoch, zone, calendar)
 }
-// Proposal comparison §13.7 steps 1–5: Normalize disambiguation with compatible as default.
+// ECMA-262 preview §22.3.12.5 steps 1–5: read, default and validate disambiguation.
+// https://tc39.es/ecma262/pr/3966/#sec-gettemporaldisambiguationoption
 function disambiguation(value: unknown): Disambiguation {
   return option(value, 'compatible', [
     'compatible',
@@ -309,7 +311,8 @@ function disambiguation(value: unknown): Disambiguation {
     'reject',
   ])
 }
-// Proposal comparison §6.5.1 steps 3.a and 4.d–4.e: Resolve wall time or validate an exact UTC instant.
+// ECMA-262 preview §22.9.5.10 steps 2–4: resolve wall time or validate the exact UTC instant.
+// https://tc39.es/ecma262/pr/3966/#sec-interpretisodatetimeoffset
 function resolve(
   localTime: bigint,
   timeZone: string,
@@ -377,7 +380,8 @@ function resolveOffsetNanoseconds(
     throw new RangeErrorConstructor('Offset does not match timezone')
   return kernel.resolve(fields, ambiguous)
 }
-// Proposal comparison §6.5.2 steps 5.b, 5.m–5.p and 11: Prepare zoned strings before offset interpretation.
+// ECMA-262 preview §22.9.5.2: read zoned fields and options, then interpret the offset.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporalzoneddatetime
 export function toZonedDateTimeSlot(
   item: unknown,
   options?: unknown
@@ -415,6 +419,8 @@ export function toZonedDateTimeSlot(
     offset = prepared.offset as string | undefined
     const resolved = optionsObject(options),
       ambiguous = disambiguation(resolved.disambiguation),
+      // ECMA-262 preview §22.3.12.7 steps 1–5: read, default and validate the offset mode.
+      // https://tc39.es/ecma262/pr/3966/#sec-gettemporaloffsetoption
       behavior = option(resolved.offset, 'reject', [
         'prefer',
         'use',
@@ -518,7 +524,8 @@ export function toZonedDateTimeSlot(
     calendar,
   }
 }
-// Proposal comparison §6.5.10 steps 1–4 and 8–9: Prepare duration addition or subtraction and build the zoned result.
+// ECMA-262 preview §22.9.5.5 steps 1–9: prepare the signed duration and overflow.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurationtozoneddatetime
 function add(
   slot: ZonedSlot,
   duration: unknown,
@@ -539,6 +546,8 @@ function add(
   for (let i = 0; i < durationFieldNames.length; i++)
     fields[durationFieldNames[i]] *= sign
   const overflow = overflowOption(options)
+  // ECMA-262 preview §22.9.5.4 steps 1–7: add date fields locally, then add exact time.
+  // https://tc39.es/ecma262/pr/3966/#sec-addzoneddatetime
   let value = slot.epochNanoseconds
   if (fields.years || fields.months || fields.weeks || fields.days) {
     const start = local(slot),
@@ -617,7 +626,8 @@ export function unroundedZonedDifference(
   }
   return fields
 }
-// Proposal comparison §6.5.9 steps 1–4 and 7–9: Prepare zoned difference and dispatch relative rounding.
+// ECMA-262 preview §22.9.5.9: validate the calendars, zone and rounding options.
+// https://tc39.es/ecma262/pr/3966/#sec-differencetemporalzoneddatetime
 export function differenceZonedDuration(
   start: ZonedSlot,
   other: unknown,
@@ -681,6 +691,8 @@ export function differenceZonedDuration(
         since
       )
     )
+  // ECMA-262 preview §22.9.5.7 steps 1–5: choose elapsed time or calendar-relative rounding.
+  // https://tc39.es/ecma262/pr/3966/#sec-differencezoneddatetimewithrounding
   return createDuration(
     roundRelativeDifference(
       start.epochNanoseconds,

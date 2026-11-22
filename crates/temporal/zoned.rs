@@ -158,7 +158,8 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     pub fn with_time_zone<T: TimeZone>(&self, time_zone: T) -> ZonedDateTime<T, C> {
         ZonedDateTime::new_in_calendar(self.instant, time_zone, self.calendar)
     }
-    // Proposal comparison §11.1.10 steps 1–3: Project the exact instant into local date-time.
+    // ECMA-262 preview §22.2.12: add the exact offset, then unpack the local date-time.
+    // https://tc39.es/ecma262/pr/3966/#sec-getisodatetimefor
     pub fn local(&self) -> Result<PlainDateTime<C>, Error> {
         PlainDateTime::from_epoch_nanoseconds_in(
             self.instant.epoch_nanoseconds() + self.time_zone.offset_nanoseconds(self.instant),
@@ -300,7 +301,8 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             .transition(self.instant, direction)
             .map(|instant| Self::new_in_calendar(instant, self.time_zone.clone(), self.calendar))
     }
-    // Proposal comparison §6.5.5 steps 1, 3, 6 and 7: Add date units locally and clock units on the instant.
+    // ECMA-262 preview §22.9.5.4 steps 1–7: add date units locally and clock units on the instant.
+    // https://tc39.es/ecma262/pr/3966/#sec-addzoneddatetime
     pub fn checked_add(&self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         let mut value = self.instant;
@@ -375,7 +377,8 @@ fn local_candidate_bounds<Z: TimeZone>(
     Ok(first.zip(last))
 }
 
-// Proposal comparison §11.1.14 steps 1–3, 5–7: Select midnight or the nearest later local time.
+// ECMA-262 preview §22.2.16 steps 1–5: select midnight or the nearest later local time.
+// https://tc39.es/ecma262/pr/3966/#sec-getstartofday
 pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, Error> {
     let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
     crate::iso::check_local(midnight)?;
@@ -456,7 +459,8 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
     Err(Error::InvalidDateTime)
 }
 
-// Proposal comparison §11.1.11 steps 1–2: Convert local fields and delegate candidate disambiguation.
+// ECMA-262 preview §22.2.13 steps 1–2: find and disambiguate the local-time candidates.
+// https://tc39.es/ecma262/pr/3966/#sec-getepochnanosecondsfor
 pub(crate) fn resolve_local<Z: TimeZone>(
     fields: IsoDateTime,
     zone: &Z,
@@ -464,7 +468,8 @@ pub(crate) fn resolve_local<Z: TimeZone>(
 ) -> Result<Instant, Error> {
     resolve_local_nanoseconds(fields.to_epoch_nanoseconds()?, zone, disambiguation)
 }
-// Proposal comparison §11.1.12 steps 2, 3.a–3.d and 5: Select the requested candidate or apply reject.
+// ECMA-262 preview §22.2.14: select a candidate, reject or look through the gap.
+// https://tc39.es/ecma262/pr/3966/#sec-disambiguatepossibleepochnanoseconds
 pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     local: i128,
     zone: &Z,

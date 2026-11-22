@@ -160,7 +160,8 @@ function toInstant(item: unknown): bigint {
     return parseInstantString(primitive)
   return validateInstant(parseInstantString(primitive))
 }
-// Proposal comparison §8.5.9 steps 1–5: Prepare Instant difference settings and route exact rounding.
+// ECMA-262 preview §22.8.5.5: validate difference settings and round the exact Instant span.
+// https://tc39.es/ecma262/pr/3966/#sec-differencetemporalinstant
 function difference(
   value: bigint,
   other: unknown,
@@ -291,8 +292,8 @@ class InstantValue implements InstantObject {
   since(other: unknown, options: unknown = undefined): DurationObject {
     return difference(read(this), other, options, true)
   }
-  // Proposal comparison §8.3.5 steps 1–3.
-  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.add
+  // ECMA-262 preview §22.8.5.4: reject date units, then add the clock duration.
+  // https://tc39.es/ecma262/pr/3966/#sec-adddurationtoinstant
   add(other: unknown): InstantObject {
     const value = read(this),
       fields =

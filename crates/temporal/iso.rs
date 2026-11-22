@@ -13,6 +13,8 @@ pub struct IsoDateTime {
 impl IsoDateTime {
     // Proposal comparison §5.1.1 steps 14, 16. Check typed ISO date fields and clock bounds.
     pub(crate) fn validate(self) -> Result<(), Error> {
+        // ECMA-262 preview §22.3.9.6 steps 1–3: validate month and day before the clock.
+        // https://tc39.es/ecma262/pr/3966/#sec-isvalidisodate
         let leap = self.year % 4 == 0 && (self.year % 100 != 0 || self.year % 400 == 0);
         let days = match self.month {
             2 => {
@@ -93,7 +95,8 @@ pub(crate) fn iso_from_epoch_nanoseconds_raw(value: i128) -> IsoDateTime {
     }
 }
 
-// Proposal comparison §13.1 steps 3, 4. Encode the prepared one-based ISO fields as an epoch day.
+// ECMA-262 preview §22.3.5.3: use the calendar's epoch-day arithmetic for prepared ISO fields.
+// https://tc39.es/ecma262/pr/3966/#sec-isodatetoepochdays
 pub(crate) fn epoch_day_from_iso(year: i32, month: u8, day: u8) -> i64 {
     crate::calendar::iso_day(year, month, day)
 }

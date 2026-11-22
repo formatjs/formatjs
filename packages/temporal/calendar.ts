@@ -142,7 +142,8 @@ function overflowCheck(overflow: Overflow): void {
   if (overflow !== 'constrain' && overflow !== 'reject')
     throw new RangeErrorConstructor('Invalid overflow')
 }
-// Temporal comparison §3.5.7 steps 1.a, 1.c, 2.b.
+// ECMA-262 preview §22.3.9.7 steps 1–3.
+// https://tc39.es/ecma262/pr/3966/#sec-regulateisodate
 // Clamp or reject a prepared month or day.
 function regulate(
   value: number,
@@ -214,7 +215,8 @@ export function daysInMonth(
     )
   return ArithmeticCalendarDaysInMonth(calendar, year, month)
 }
-// Temporal comparison §12.2.2 steps 2, 3.a, 4, §12.3.26 step 2.
+// ECMA-262 preview §22.3.11.1 steps 2–4.
+// https://tc39.es/ecma262/pr/3966/#sec-createmonthcode
 // Encode the month code after projecting its calendar index.
 function monthCode(calendar: CalendarId, year: number, month: number): string {
   if (isLunisolar(calendar)) {
@@ -330,7 +332,8 @@ export function isoDayFromPreparedFields(
   return dayCheck(ArithmeticCalendarToEpochDay('iso8601', year, month, day))
 }
 
-// Temporal comparison §12.3.22 steps 1.b, 2.
+// ECMA-262 preview §22.3.3.5 steps 1–2.
+// https://tc39.es/ecma262/pr/3966/#sec-calendardatetoiso
 // Convert prepared calendar fields to an epoch day.
 export function calendarToEpochDayRaw(
   calendar: CalendarId,
@@ -446,6 +449,8 @@ function addYearMonth(
   if (calendar !== 'hebrew') {
     const count = monthsInYear(calendar, year)
     const serial = year * count + original.month - 1 + months
+    // ECMA-262 preview §22.13.5.7 steps 1–3: ISO uses twelve months per year.
+    // https://tc39.es/ecma262/pr/3966/#sec-balanceisoyearmonth
     year = yearCheck(floor(serial / count))
     month = mod(serial, count) + 1
   } else {
@@ -523,6 +528,8 @@ function addCalendarEpochDay(
     overflow
   )
   // Temporal comparison §3.5.6 step 11. An ISO week has seven days.
+  // ECMA-262 preview §22.3.9.1 steps 1–3: keep the adjusted date in epoch-day form.
+  // https://tc39.es/ecma262/pr/3966/#sec-adddaystoisodate
   return epoch + integer(7 * values[2] + values[3])
 }
 // Fields must come from this calendar's epoch-day conversion.

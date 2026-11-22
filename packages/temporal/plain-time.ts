@@ -165,13 +165,8 @@ function regulate(values: number[], constrain: boolean): bigint {
   // L629: the other mode leaves each integer field unchanged.
   // L630: the other validated mode is reject.
   // L631: any unchanged field outside its bounds throws RangeError.
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L655-L661
-  // L655: index 0 rejects an hour outside 0..23.
-  // L656: index 1 rejects a minute outside 0..59.
-  // L657: index 2 rejects a second outside 0..59.
-  // L658: index 3 rejects a millisecond outside 0..999.
-  // L659: index 4 rejects a microsecond outside 0..999.
-  // L660: index 5 rejects a nanosecond outside 0..999.
+  // ECMA-262 preview §22.3.15.6 steps 1–7: check the six clock field limits.
+  // https://tc39.es/ecma262/pr/3966/#sec-isvalidtime
   for (let index = 0; index < 6; index++) {
     let value = values[index]
     if (constrain) value = mathMax(0, mathMin(maxima[index] - 1, value))
@@ -179,9 +174,8 @@ function regulate(values: number[], constrain: boolean): bigint {
       throw new RangeErrorConstructor('Time out of range')
     result += bigIntFrom(value) * factors[index]
   }
-  // L661: every field passed; the IsValidTime predicate is true.
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L632
-  // L632: exact within-day nanoseconds encode all six fields with implicit Days 0.
+  // ECMA-262 preview §22.3.15.4 steps 1–3: the validated packed clock has implicit day zero.
+  // https://tc39.es/ecma262/pr/3966/#sec-createtimerecord
   return result
 }
 // Temporal comparison §4.5.6 step 2. Test the property bag branch.
@@ -210,7 +204,8 @@ function timeFields(
   if (!any) throw new TypeErrorConstructor('At least one time field required')
   return result
 }
-// Temporal comparison §4.5.6 steps 2–3. Convert slots, property bags, or strings.
+// ECMA-262 preview §22.12.5.2 steps 2–3: read slots, regulate a property bag, or parse text.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltime
 function toTime(value: unknown, options?: unknown): bigint {
   const existing = getSlot(value as object)
   if (existing !== undefined) {
@@ -256,7 +251,8 @@ function nativeTimeFromValue(value: bigint): NativeTimeResult {
     'trunc'
   )
 }
-// Temporal comparison §4.5.6 steps 2–3. Convert input to the native clock record.
+// ECMA-262 preview §22.12.5.2 steps 2–3: convert to the native clock record.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltime
 function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
   const existing = getNativeTimeSlot(value as object)
   if (existing !== undefined) {
@@ -279,7 +275,8 @@ function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
   overflow(options)
   return result
 }
-// Temporal comparison §4.5.11 steps 1–4. Allocate and initialize the local result.
+// ECMA-262 preview §22.12.5.1 steps 1–4: allocate and initialize the intrinsic result.
+// https://tc39.es/ecma262/pr/3966/#sec-createtemporaltime
 function create(value: bigint | NativeTimeResult): PlainTimeObject {
   if (import.meta.formatjsTemporalNativeData === true) {
     const data = typeof value === 'bigint' ? nativeTimeFromValue(value) : value
@@ -432,6 +429,10 @@ function format(
   remaining %= 3_600_000_000_000
   const minute = floor(remaining / 60_000_000_000)
   remaining %= 60_000_000_000
+  // ECMA-262 preview §22.3.15.11 steps 1–2: format the exact clock and subsecond remainder.
+  // https://tc39.es/ecma262/pr/3966/#sec-timerecordtostring
+  // §22.5.6 steps 1–7: print the colon-separated clock at the requested precision.
+  // https://tc39.es/ecma262/pr/3966/#sec-formattimestring
   const pad = (part: number): string =>
     part < 10 ? '0' + part : ToString(part)
   let result = pad(hour) + ':' + pad(minute)
@@ -602,6 +603,8 @@ class PlainTimeValue implements PlainTimeObject {
     const raw = unitOption(resolved.smallestUnit)
     if (raw !== undefined && timeUnit(raw) === 'hour')
       throw new RangeErrorConstructor('Cannot format hours only')
+    // ECMA-262 preview §22.5.9 steps 1–12: select precision before deriving its quantum in format.
+    // https://tc39.es/ecma262/pr/3966/#sec-tosecondsstringprecisionrecord
     const precision: Precision =
       raw === 'minute'
         ? 'minute'

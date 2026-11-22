@@ -82,6 +82,8 @@ impl IsoString {
     // Proposal comparison §5.5.9 steps 1–3: write the year, month and day.
     pub(crate) fn date((year, month, day): (i32, u8, u8)) -> Self {
         let mut output = Self::new();
+        // ECMA-262 preview §22.5.8 steps 1–4: choose four digits or a signed six-digit year.
+        // https://tc39.es/ecma262/pr/3966/#sec-padisoyear
         if (0..=9999).contains(&year) {
             output.number(year as u32, 4);
         } else {
@@ -104,13 +106,15 @@ impl IsoString {
         );
         output
     }
-    // Proposal comparison §4.5.13 step 2: format a plain clock at the chosen precision.
+    // ECMA-262 preview §22.3.15.11 steps 1–2: format the clock and its packed fraction.
+    // https://tc39.es/ecma262/pr/3966/#sec-timerecordtostring
     pub(crate) fn time(fields: (u8, u8, u8, u32), precision: Precision) -> Self {
         let mut output = Self::new();
         output.append_time(fields, precision);
         output
     }
-    // Proposal comparison §13.26 steps 2–7: write the clock at the selected precision.
+    // ECMA-262 preview §22.5.6 steps 1–7: write the colon-separated clock at the selected precision.
+    // https://tc39.es/ecma262/pr/3966/#sec-formattimestring
     fn append_time(&mut self, fields: (u8, u8, u8, u32), precision: Precision) {
         self.pair(u32::from(fields.0));
         self.push(b':');

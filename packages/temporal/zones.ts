@@ -99,6 +99,8 @@ function withNativeZone(
   const fallbackKernel = (): TimeZoneKernel => (resolved ??= fallback())
   // Proposal comparison §11.1.13 steps 2.d and 3.a: Forward candidate lookup to the active provider.
   const possibleInstants = (fields: ISODateTime): bigint[] => {
+    // ECMA-262 preview §22.2.1: the active provider supplies named-zone candidates.
+    // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneepochnanoseconds
     const native = nativeTemporal()
     return import.meta.formatjsTemporalNativeData === true || native
       ? native!.timeZonePossibleInstants(identifier, fields)
@@ -127,7 +129,8 @@ function withNativeZone(
     },
     // Proposal comparison §11.1.14 step 5: Forward the exact provider's raw boundary lookup.
     nearestLocalAfter: local => fallbackKernel().nearestLocalAfter?.(local),
-    // Proposal comparison §11.1.11 steps 1–2: Forward local fields and disambiguation to the provider.
+    // ECMA-262 preview §22.2.13 steps 1–2: resolve candidates using the requested disambiguation.
+    // https://tc39.es/ecma262/pr/3966/#sec-getepochnanosecondsfor
     resolve: (fields, disambiguation = 'compatible') => {
       const native = nativeTemporal()
       return import.meta.formatjsTemporalNativeData === true || native
@@ -179,7 +182,8 @@ export function resolveTimeZone(
 }
 
 let spellings: Map<string, string> | undefined
-// Proposal comparison §11.1.8 steps 1–5 and 7–9: Return the normalized offset or available named spelling.
+// ECMA-262 preview §22.2.10 steps 1–9: read a zoned slot or normalize a zone string.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltimezoneidentifier
 export function timeZoneIdentifier(value: unknown): string {
   const slot = getZonedSlot(value as object)
   if (slot) return slot.timeZone
@@ -215,6 +219,9 @@ export function timeZoneIdentifier(value: unknown): string {
       mapSet(spellings, stringToLowerCase(aliases[i]), aliases[i])
     mapSet(spellings, 'utc', 'UTC')
   }
+  // ECMA-262 preview §22.2.9 steps 4–6: the immutable lookup supplies canonical spelling.
+  // https://tc39.es/ecma262/pr/3966/#sec-getavailablenamedtimezoneidentifier
+  // Preview cache record field typo: https://github.com/tc39/ecma262/pull/3966#discussion_r4284082377
   const id = mapGet(spellings, stringToLowerCase(name))
   if (!id) throw new RangeErrorConstructor('Unknown timezone')
   if (import.meta.formatjsTemporalHostTimeZones === true) typescriptTimeZone(id)

@@ -24,6 +24,8 @@ export function formatInstant(
   // §13.26 steps 2, 3 and 5. Pad the magnitude to the requested width.
   const pad = (value: number, length = 2): string =>
     zeroPadDecimal(value, length)
+  // ECMA-262 preview §22.5.8 steps 1–4: choose four digits or a signed six-digit year.
+  // https://tc39.es/ecma262/pr/3966/#sec-padisoyear
   const year =
     fields.year >= 0 && fields.year <= 9999
       ? pad(fields.year, 4)

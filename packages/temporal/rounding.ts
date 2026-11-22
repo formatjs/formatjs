@@ -119,6 +119,8 @@ export function unitOption(
 }
 // Proposal comparison §13.18 steps3/5/6: accept the time category only.
 // Required-unit callers also reject unset here; §13.18 step1 is not this contract.
+// ECMA-262 preview §22.3.16.4 steps 4–5: reject values outside the time group.
+// https://tc39.es/ecma262/pr/3966/#sec-validatetemporalunitvalue
 export function timeUnit(unit: string | undefined): TimeUnit {
   if (unit === undefined || !HasOwnProperty(timeUnitNanoseconds, unit))
     throw new RangeErrorConstructor('Expected a time unit')
@@ -247,6 +249,8 @@ export function roundDuration(
   if (value >= 0n) return roundInstant(value, quantum, mode)
   // §13.29 step2.a: this branch implicitly carries the negative sign.
   // §13.29 step4: negating directional modes gives the negative-sign table column.
+  // ECMA-262 preview §22.3.13.2: reverse directional modes for a negative sign.
+  // https://tc39.es/ecma262/pr/3966/#sec-getunsignedroundingmode
   const reversed: Record<RoundingMode, RoundingMode> = {
     // §13.8 step1: ceil becomes floor.
     ceil: 'floor',

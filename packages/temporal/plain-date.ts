@@ -160,8 +160,8 @@ export function createPlainDate(
     typeof value === 'number' ? {epochDay, calendar} : value
   ) as PlainDateObject
 }
-// Temporal comparison §3.5.4 steps 3, 4, 7, 9, 10.
-// Delegate date parsing and build the prepared date record.
+// ECMA-262 preview §22.11.5.2: convert a branded value, prepared fields, or a string.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaldate
 export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   const date = getDateSlot(item as object),
     datetime =
@@ -203,8 +203,8 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
     calendar: fields.calendar,
   }
 }
-// Temporal comparison §3.5.15 steps 2, 3, 4, 6, 7, 8.
-// Route the signed date-duration addition.
+// ECMA-262 preview §22.11.5.4: apply the signed whole-day duration with the chosen overflow.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurationtodate
 function add(
   value: DateSlot,
   duration: unknown,
@@ -302,8 +302,8 @@ function difference(
   )
 }
 
-// Temporal comparison §3.5.11 steps 1, 2, 3, 4, 5.
-// Format the private ISO date with its calendar annotation.
+// ECMA-262 preview §22.11.5.3 steps 1–5: format the ISO date and calendar annotation.
+// https://tc39.es/ecma262/pr/3966/#sec-temporaldatetostring
 function format(slot: DateSlot, calendarName: unknown = undefined): string {
   const show = calendarNameOption(calendarName),
     native = nativeTemporal()

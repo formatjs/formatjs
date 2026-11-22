@@ -13,8 +13,8 @@ import {
   type DurationFields,
 } from '#packages/temporal/duration-core.js'
 
-// Temporal comparison §7.5.40 steps 12–17.
-// Serialize prepared duration fields and the exact seconds fraction.
+// ECMA-262 preview §22.15.5.5: serialize the signed duration and its exact seconds fraction.
+// https://tc39.es/ecma262/pr/3966/#sec-temporaldurationtostring
 export function formatDuration(
   fields: DurationFields,
   digits: number | 'auto' = 'auto'

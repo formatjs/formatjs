@@ -117,8 +117,11 @@ impl PlainTime {
         // L632: exact within-day nanoseconds encode the fields with implicit Days 0.
         Ok(Self(total))
     }
-    // Proposal comparison §4.5.2 steps 1, 2, 3. Validate and encode the typed clock fields.
+    // ECMA-262 preview §22.3.15.4 steps 1–3: validate and encode the clock with implicit day zero.
+    // https://tc39.es/ecma262/pr/3966/#sec-createtimerecord
     pub fn new(hour: u8, minute: u8, second: u8, nanosecond: u32) -> Result<Self, Error> {
+        // §22.3.15.6 steps 1–7: check the clock fields, including the combined fraction.
+        // https://tc39.es/ecma262/pr/3966/#sec-isvalidtime
         if hour > 23 || minute > 59 || second > 59 || nanosecond >= 1_000_000_000 {
             return Err(Error::InvalidDateTime);
         }

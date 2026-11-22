@@ -250,7 +250,8 @@ impl<C: CalendarProvider> PlainDate<C> {
         ))
     }
 }
-// Proposal comparison §12.3.17 steps 1, 2, 4. Return the Gregorian month length for a valid ISO month.
+// ECMA-262 preview §22.3.8.3 steps 1–4: return the Gregorian month length.
+// https://tc39.es/ecma262/pr/3966/#sec-isodaysinmonth
 pub fn month_length(year: i32, month: u8) -> u8 {
     match month {
         2 => 28 + u8::from(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)),
@@ -445,7 +446,8 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
-    // Proposal comparison §5.5.11 steps 2–4: round the clock and carry into the date.
+    // ECMA-262 preview §22.3.10.5 steps 2–4: round the clock and carry into the date.
+    // https://tc39.es/ecma262/pr/3966/#sec-roundisodatetime
     pub fn round(self, unit: TimeUnit, increment: u32, mode: RoundingMode) -> Result<Self, Error> {
         let rounded = self.time().rounded_nanoseconds(unit, increment, mode)?;
         Self::from_epoch_nanoseconds_in(

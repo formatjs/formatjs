@@ -141,7 +141,8 @@ pub fn instant(value: &str) -> Result<Instant, Error> {
         offset,
     )
 }
-// Proposal comparison §4.5.6 steps 3.b, 4: parse clock text and build the typed time.
+// ECMA-262 preview §22.12.5.2 steps 3.b–3.c and 4: parse clock text and build the typed time.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltime
 pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
     let body = &value[..index];

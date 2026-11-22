@@ -9,7 +9,8 @@ pub struct NamedTimeZoneIdentifier {
     pub primary: &'static str,
 }
 
-// Proposal comparison §11.1.1 steps 1.a and 2: Look up spelling and primary ID by ASCII-insensitive name.
+// ECMA-262 preview §22.2.9 steps 4–6: look up spelling and primary ID without case sensitivity.
+// https://tc39.es/ecma262/pr/3966/#sec-getavailablenamedtimezoneidentifier
 pub fn named_time_zone_identifier(value: &str) -> Option<NamedTimeZoneIdentifier> {
     // ECMA-262 preview §22.2.6: generated names pair each available identifier with its primary.
     // https://tc39.es/ecma262/pr/3966/#sec-availablenamedtimezoneidentifiers

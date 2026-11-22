@@ -89,8 +89,8 @@ function read(value: unknown): DurationFields {
   if (!fields) throw new TypeErrorConstructor('Invalid Duration receiver')
   return fields
 }
-// Temporal comparison §7.5.12 steps 1.a, 2.b, 4.
-// Copy a branded record, parse a string, or prepare public fields.
+// ECMA-262 preview §22.15.5.4: copy a branded record, parse a string, or prepare public fields.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporalduration
 export function toDurationFields(value: unknown): DurationFields {
   const existing = getSlot(value as object)
   if (existing) return {...existing}
@@ -130,14 +130,15 @@ export function createNativeDuration(fields: DurationFields): DurationObject {
   setSlot(value, fields)
   return value
 }
-// Temporal comparison §7.5.19 steps 1–14.
-// Validate and store a fresh Duration result record.
+// ECMA-262 preview §22.15.5.1: validate, allocate and initialize a fresh Duration.
+// https://tc39.es/ecma262/pr/3966/#sec-createtemporalduration
 export function createDuration(fields: DurationFields): DurationObject {
   const value = createObject(DurationValue.prototype) as DurationObject
   setSlot(value, validateDuration({...fields}))
   return value
 }
-// Temporal comparison §7.5.41 steps 1–11.
+// ECMA-262 preview §22.15.5.6 steps 1–11: combine fixed-length durations.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurations
 // Add or subtract durations on the prepared 24-hour-day path.
 function addDurations(
   one: DurationFields,
@@ -214,6 +215,8 @@ class DurationValue {
           prefix.years = fields.years
           prefix.months = fields.months
           prefix.weeks = fields.weeks
+          // ECMA-262 preview §22.3.4.3 steps 1–7: count calendar units as days at the anchor.
+          // https://tc39.es/ecma262/pr/3966/#sec-datedurationdays
           days +=
             addDate(relative.date, prefix, 'constrain') - relative.date.epochDay
         }
@@ -363,6 +366,8 @@ class DurationValue {
     // Calendar rows have no fixed cap; time rows use 24, 60, 60, 1000, 1000, 1000.
     // L432-L437: positive integer increments must be smaller divisors of that cap.
     if (smallIndex > 3) {
+      // ECMA-262 preview §22.3.13.3 steps 1–4: only clock units have a maximum.
+      // https://tc39.es/ecma262/pr/3966/#sec-maximumtemporaldurationroundingincrement
       const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
       if (increment >= maximum || maximum % increment)
         throw new RangeErrorConstructor('Invalid rounding increment')
@@ -466,6 +471,8 @@ class DurationValue {
       return native!.formatDuration(fields, precision, mode)
     if (precision === 'auto' || precision === 9)
       return formatDuration(fields, precision)
+    // ECMA-262 preview §22.3.7.3 steps 1–3: retain date fields and round the clock span.
+    // https://tc39.es/ecma262/pr/3966/#sec-tointernaldurationrecord
     const rounded = roundDuration(
       durationNanoseconds(fields, false),
       10n ** bigIntFrom(9 - precision),

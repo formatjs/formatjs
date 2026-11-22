@@ -54,7 +54,8 @@ export interface TimeZoneKernel {
   resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
 }
 
-// Proposal comparison §11.1.14 steps 1–3, 5–7: Select midnight or the nearest later local time.
+// ECMA-262 preview §22.2.16 steps 1–5: select midnight or the nearest later local time.
+// https://tc39.es/ecma262/pr/3966/#sec-getstartofday
 export function startOfTimeZoneDay(
   midnight: bigint,
   zone: TimeZoneKernel
@@ -279,7 +280,8 @@ export function addISODays(
 }
 
 // Temporal comparison §6.3.46 steps 9.a and 10.b.
-// Use the packed formatter's exact transition search, including the footer handoff.
+// ECMA-262 preview §22.2.3: find the first offset transition strictly after the instant.
+// https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezonenexttransition
 // ECMA-262 preview §22.2.4: previous means strictly before the instant and within bounds.
 // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneprevioustransition
 function zoneTransition(
@@ -316,7 +318,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   const offsetNanoseconds = (instant: bigint): bigint =>
     offsetAt(checkInstant(instant))
   // Temporal comparison §11.1.13 steps 3.a, 4.a and 5, §14.6.3 prose.
-  // Collect round-tripping named-zone candidates and sort the private list.
+  // ECMA-262 preview §22.2.1: collect all matching named-zone epochs in ascending order.
+  // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneepochnanoseconds
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
     for (let index = 0; index < offsets.length; index++) {
@@ -339,8 +342,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   // Project prepared ISO fields before named-zone candidate lookup.
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
-  // Temporal comparison §11.1.12 steps 2, 3.a, 3.b and 5.
-  // Choose single or folded candidates and resolve loaded-zone gaps.
+  // ECMA-262 preview §22.2.14: choose a candidate or shift through the gap.
+  // https://tc39.es/ecma262/pr/3966/#sec-disambiguatepossibleepochnanoseconds
   const resolve = (
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'

@@ -72,7 +72,8 @@ function read(item: unknown): DateSlot {
   if (!slot) throw new TypeErrorConstructor('Invalid PlainMonthDay receiver')
   return slot
 }
-// Temporal comparison §10.5.2 steps 1–5. Allocate with the local prototype.
+// ECMA-262 preview §22.14.5.1 steps 1–6: validate the reference date and store it with its calendar.
+// https://tc39.es/ecma262/pr/3966/#sec-createtemporalmonthday
 export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
   if (slot.epochDay < -100000001 || slot.epochDay > 100000000)
     throw new RangeErrorConstructor('Month-day out of range')

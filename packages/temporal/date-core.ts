@@ -872,6 +872,8 @@ export function unroundedDifference(
   calendar: string,
   largest: string
 ): DurationFields {
+  // ECMA-262 preview §22.3.10.3 steps 3–11: subtract clocks and borrow across the date if needed.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceisodatetime
   // Proposal comparison §5.5.12 steps 8–11: combine clock and whole-day
   // nanoseconds before balancing a time-largest result.
   if (HasOwnProperty(timeUnitNanoseconds, largest))
@@ -920,6 +922,8 @@ export function roundedDateTimeDifference(
   mode: RoundingMode,
   since: boolean
 ): DurationFields {
+  // ECMA-262 preview §22.10.5.5: difference and round against the original date and clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceplaindatetimewithrounding
   // Proposal comparison §5.5.13 step 7: Round against the supplied UTC scalars
   // and plain date anchor.
   return roundRelativeDifference(

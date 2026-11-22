@@ -493,6 +493,8 @@ function isValidDate(year: string, month: string, day: string): boolean {
   // https://tc39.es/ecma262/pr/3966/#sec-rfc9557grammar-static-semantics-isvaliddate
   const maximum =
     m === 2 ? 28 + numberFrom(leap) : arrayIncludes([4, 6, 9, 11], m) ? 30 : 31
+  // ECMA-262 preview §22.4.1.3 rejects invalid dates and the negative-zero year.
+  // https://tc39.es/ecma262/pr/3966/#sec-rfc9557grammar-static-semantics-early-errors
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 
@@ -583,6 +585,8 @@ export function parsePlainTimeString(value: string): bigint {
   const index = bracketIndex(value)
   let body = index < 0 ? value : stringPart(value, 0, index)
   validateAnnotations(index < 0 ? '' : stringPart(value, index))
+  // ECMA-262 preview §22.4.1 parses TemporalTimeString as a time or a date with a required clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-rfc9557-grammar
   const date = dateTimePrefixMatch(body)
   if (date) {
     if (!isValidDate(date[1], date[3], date[4]))
@@ -591,6 +595,8 @@ export function parsePlainTimeString(value: string): bigint {
   } else if (body.length !== 0 && (body[0] === 'T' || body[0] === 't'))
     body = stringPart(body, 1)
   else {
+    // ECMA-262 preview §22.4.1.3 rejects an undesignated clock that also parses as a short date.
+    // https://tc39.es/ecma262/pr/3966/#sec-rfc9557grammar-static-semantics-early-errors
     const ym =
       body.length !== 0 && body[0] !== '+' && body[0] !== '-'
         ? yearMonthMatch(body)
