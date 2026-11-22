@@ -1,0 +1,16 @@
+//packages/temporal:instant_test262_full
+//packages/temporal:sdk_hermes_instant_bytecode_test262
+//packages/temporal:sdk_hermes_instant_source_test262
+//packages/temporal:ts_hermes_instant_bytecode_test262
+//packages/temporal:ts_hermes_instant_source_test262
+//packages/temporal:now_test262
+//packages/temporal:sdk_hermes_now_bytecode_test262
+//packages/temporal:sdk_hermes_now_source_test262
+//packages/temporal:ts_hermes_now_bytecode_test262
+//packages/temporal:ts_hermes_now_source_test262
+//packages/temporal:now_test
+//packages/temporal:instant_test
+//packages/temporal:now_hermes_host_test
+//packages/temporal:installation_test
+//packages/temporal:short_date_test
+//packages/temporal:typecheck_typecheck_test

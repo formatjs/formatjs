@@ -35,11 +35,14 @@
     "Snapshot is pinned Nov21; live TOC rechecked Nov22 separately, full-body future changes require regeneration."
   ],
   "review_status_counts": {
-    "unreconciled": 3014,
-    "existing_evidence_pending": 1747,
-    "partial": 2,
-    "conditional": 16,
-    "reviewed": 29
+    "verified": 45,
+    "informative": 58,
+    "verified_local_step": 473,
+    "unreconciled": 2556,
+    "existing_evidence_pending": 1589,
+    "conditional": 68,
+    "partial": 1,
+    "reviewed": 18
   },
   "status_note": "unreconciled means review evidence not yet entered into this register, not missing implementation. existing_evidence_pending preserves current audit references; reviewed/conditional record exact local-step reconciliation, not whole-method compliance.",
   "public_code_binding_rows": 268,
@@ -118,7 +121,28 @@
     "complete_operations_claimed": 0,
     "verification_note": "Existing working polyfill remains baseline; local reviewed steps do not erase conditional premises or verify complete methods"
   },
-  "checklist_rows_with_implementation_locations": 3546,
+  "checklist_rows_with_implementation_locations": 3672,
   "implementation_status_note": "present records a source binding or helper correspondence, not verified behavior. mapping_unresolved never means implementation missing.",
-  "fix_status_note": "not_reconciled preserves historical corrections and in-progress PRs for row-level import; it does not mean no defects or no fixes exist. Current fixes and validation remain in the linked audit ledger."
+  "fix_status_note": "not_reconciled preserves historical corrections and in-progress PRs for row-level import; it does not mean no defects or no fixes exist. Current fixes and validation remain in the linked audit ledger.",
+  "status_definitions": {
+    "verified_local_step": "Exact local source requirement reviewed under explicit callee contracts; no transitive caller closure implied.",
+    "verified": "Assigned clause-local contract closed; cross-referenced target chapters do not inherit credit.",
+    "conditional": "Named remaining premise in review_evidence; mapped code remains implemented.",
+    "informative": "Introduction/cross-reference/note with no independent normative obligation; not compliance credit.",
+    "unreconciled": "Evidence not yet reconciled, not missing implementation.",
+    "existing_evidence_pending": "Prior evidence preserved, exact row reconciliation pending.",
+    "reviewed": "Earlier local step review retained.",
+    "partial": "Earlier clause reconciliation incomplete."
+  },
+  "latest_numbered_pass": {
+    "chapters": ["1", "2", "8", "9"],
+    "rows_reviewed": 641,
+    "step_rows_reviewed": 369,
+    "new_confirmed_gaps": 1,
+    "gap_state": "NOW-NOINTL-PAD corrected; regression red then green",
+    "validation_targets": 16,
+    "validation_executed": 10,
+    "validation_cached": 6,
+    "scope_note": "Existing engine/Intl/helper contracts reused; conditional premises retained, no complete Temporal signoff."
+  }
 }

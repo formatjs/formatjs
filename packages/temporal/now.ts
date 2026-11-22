@@ -22,6 +22,7 @@ import {
   primaryTimeZoneIdentifier,
 } from '#packages/temporal/zones.js'
 import {epochDayOf, timeOf} from '#packages/temporal/date-core.js'
+import {zeroPadDecimal} from '#packages/temporal/format-digits.js'
 
 export interface NowObject {
   timeZoneId(): string
@@ -112,9 +113,9 @@ let systemClock: SystemClock = {
     const absolute = mathAbs(minutes)
     return (
       (minutes < 0 ? '-' : '+') +
-      String(floor(absolute / 60)).padStart(2, '0') +
+      zeroPadDecimal(floor(absolute / 60), 2) +
       ':' +
-      String(absolute % 60).padStart(2, '0')
+      zeroPadDecimal(absolute % 60, 2)
     )
   },
 }

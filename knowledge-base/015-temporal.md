@@ -6,6 +6,12 @@ and Intl contracts; distinguish implementation gaps from unreconciled evidence.
 Public bindings, helper/backend ranges and fixed step checklists retain source
 hashes and prior review references.
 
+First numbered pass reconciles 641 namespace/Now/Instant/YearMonth rows; local
+step proofs retain named dependencies. No-Intl Now host offsets reuse existing
+zeroPadDecimal, preserving default-zone calls when String or padStart changes.
+The public host regression covers UTC and nonzero offsets in source/bytecode;
+[16 focused targets](audits/temporal-numbered-first-pass-validation-targets.txt) pass.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

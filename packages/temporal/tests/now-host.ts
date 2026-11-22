@@ -30,3 +30,52 @@ check(
   Temporal.Now.zonedDateTimeISO('America/New_York').timeZoneId ===
     'America/New_York'
 )
+
+const originalString = Object.getOwnPropertyDescriptor(globalThis, 'String')!,
+  originalPadStart = Object.getOwnPropertyDescriptor(
+    String.prototype,
+    'padStart'
+  )!,
+  stringPrototype = String.prototype
+for (const target of ['String', 'padStart']) {
+  let calls = 0,
+    failure: unknown,
+    zone: string | undefined,
+    completed = 0
+  const poison = function (): never {
+    calls++
+    throw new Error('Mutable host offset formatting reached')
+  }
+  try {
+    if (target === 'String')
+      Object.defineProperty(globalThis, 'String', {
+        ...originalString,
+        value: poison,
+      })
+    else
+      Object.defineProperty(stringPrototype, 'padStart', {
+        ...originalPadStart,
+        value: poison,
+      })
+    Temporal.Now.instant()
+    Temporal.Now.zonedDateTimeISO('UTC')
+    zone = Temporal.Now.timeZoneId()
+    Temporal.Now.plainDateTimeISO()
+    completed++
+    Temporal.Now.zonedDateTimeISO()
+    completed++
+    Temporal.Now.plainDateISO()
+    completed++
+    Temporal.Now.plainTimeISO()
+    completed++
+  } catch (error) {
+    failure = error
+  } finally {
+    Object.defineProperty(globalThis, 'String', originalString)
+    Object.defineProperty(stringPrototype, 'padStart', originalPadStart)
+  }
+  if (failure !== undefined) throw failure
+  check(calls === 0)
+  check(zone === expected)
+  check(completed === 4)
+}

@@ -114,6 +114,9 @@ Host calendar caches retain original Map/iterator operations. Compact and
 approximate year construction avoids replaced array methods and inherited
 indexed setters; private host Intl options ignore inherited formatting fields.
 
+Without Intl, default `Temporal.Now` timezone offsets remain independent of
+later replacements of `String` or `String.prototype.padStart`.
+
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`
 or inherited option getters/setters. Object-form options retain inherited

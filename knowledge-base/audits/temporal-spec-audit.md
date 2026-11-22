@@ -24,9 +24,10 @@ numbered steps, including 760 amendment steps whose applicability is pending.
 [Core rows](temporal-core-requirement-checklist.tsv) and
 [amendment rows](temporal-amendment-requirement-checklist.tsv) retain prose,
 grammar, tables and attributes too. Existing evidence is being reconciled, not
-reset: 1,747 core rows retain prior evidence references; 45 exact algorithm rows
-already carry local reviewed/conditional judgments from current audits. These
-are register migration counts, not implementation completion percentages.
+reset. Initial migration preserved 1,747 evidence references and 45 reviewed
+algorithm rows. First numbered pass now reconciles 641 rows across chapters
+1, 2, 8 and 9; 4,145 core rows await reconciliation, 68 remain conditional.
+Local verified steps do not imply complete caller compliance.
 
 Prefer JavaScript runtime and Intl contracts already exercised by this polyfill.
 Add code only for a demonstrated Temporal-specific gap; do not reimplement the
@@ -35,6 +36,23 @@ Scope: Temporal APIs and dependencies they actually exercise. This is not an
 audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
+
+## First numbered pass, 2026-11-22
+
+Namespace, Now, Instant and PlainYearMonth: 641 rows, including 369 algorithm
+steps, reconciled against current TS/Rust source. Exact BigInt arithmetic,
+negative epoch flooring, rounding bounds and runtime object semantics reuse
+existing contracts. Remaining conditions name parser, calendar, zone, rounding
+or realm premises in the checklist; no blanket chapter signoff.
+
+Confirmed NOW-NOINTL-PAD: nonzero default host offsets called mutable String and
+padStart. Reuse existing zeroPadDecimal. Public regression fails before the
+correction; no-Intl UTC, New York and Kathmandu source/bytecode controls pass
+with each hook replaced. All 16 focused targets pass (10 executed, six cached).
+[Target manifest](temporal-numbered-first-pass-validation-targets.txt).
+Correction and register reconciliation pending push. Further PlainDate candidates
+remain separate until reproduced. Future corrections commit and push directly;
+no new PRs. [Measured review estimate](temporal-remaining-work-plan.md#progress-and-estimate).
 
 ## Private difference preparation, 2026-11-22
 

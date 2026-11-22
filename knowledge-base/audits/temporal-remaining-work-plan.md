@@ -25,7 +25,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability pending                                 |
 
-Code maps cover 82 distinct selected source files and 23,709 physical lines.
+Code maps cover 82 distinct selected source files and 23,710 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -56,8 +56,9 @@ review status. Maintain implementation, review and fix states separately:
 
 - **Implementation:** present, confirmed missing, or mapping unresolved.
 - **Review:** unreconciled, existing evidence pending, reviewed, conditional,
-  verified, or spec issue. Local reviewed steps do not close complete callers.
-- **Fix:** confirmed gap, correction PR, validation result and landing state.
+  verified_local_step, verified, informative, or spec issue. Local verified steps
+  close only their stated requirement, not transitive callers.
+- **Fix:** confirmed gap, correction commit, validation result and push state.
   Only demonstrated absent/incorrect behavior enters the fix backlog.
 
 Unmapped/unreconciled never means missing or broken. Preserve existing tests,
@@ -75,8 +76,8 @@ Reopen completed rows only when changed code or a counterexample invalidates
 existing evidence. Do not launch unrelated dependency or mutable-intrinsic sweeps.
 
 For confirmed gaps: reproduce, fix, run focused Bazel validation and affected
-backend checks, update those rows, publish with `gh stack`, and land when required
-checks pass. Batch related fixes. Keep spec inconsistencies separate; do not
+backend checks, update those rows, commit and push directly. No new PRs. Respect
+repository protection rules; record any rejected push. Batch related fixes. Keep spec inconsistencies separate; do not
 silently implement contradictory text or report an unresolved issue as compliant.
 
 Completion requires every applicable normative obligation reconciled and verified
@@ -90,11 +91,21 @@ conditional obligations, confirmed implementation gaps and unlanded corrections
 separately. Candidate source assignments require confirmation; 399 unresolved
 helper mappings are a mapping queue, not 399 missing functions.
 
-First finish importing existing evidence, then measure newly reviewed obligations
-per elapsed interval. Estimate remaining review from that rate; estimate confirmed
-fixes and integration separately. Do not use citation growth, PR counts, source-line
-extrapolation or checklist migration speed as review throughput. Earlier 7–14-day
-forecast was provisional and is not a measured completion estimate.
+First numbered batch reconciles 641 rows (369 algorithm steps) across chapters
+1, 2, 8 and 9. Current core register: 4,145 rows still await reconciliation,
+68 conditional, one partial; local decisions are not whole-operation signoff.
+One confirmed Now fallback gap is corrected and validated, pending push.
+Chapter 3/4 review continues separately; new candidates require reproductions.
+
+Pilot interval: 03:06:12–03:21:57 UTC on 2026-11-22, including parallel review,
+one correction and validation: about 41 rows/minute. Remaining 4,145 core plus
+1,057 amendment rows would take about 128 minutes at that rate. Plan 3–6 hours
+for the remaining first review pass, allowing slower shared algorithms and
+amendment applicability review. This is a review-pass estimate, not a full
+compliance deadline: 68 named conditional premises, confirmed fixes and external
+spec issues need separate closure. Recalculate after the next disjoint batch;
+row costs vary. Do not derive progress from citations, PR counts or source lines.
+Earlier 7–14-day forecast is retired.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),
@@ -128,8 +139,10 @@ layout; retain the rendered source when reviewing those blocks. Unclassified
 text stays explicit. Do not overwrite reconciled registers with fresh extraction:
 join on stable row IDs and preserve source mappings, evidence and decisions.
 
-Validation for this register change: all row IDs unique, all source ranges within
+Register validation: all row IDs unique, all source ranges within
 current files, source hashes checked, independent numbered-step counts agree,
-and core IDs/text unchanged when amendment extraction was added. No runtime
-behavior changed; this documentation update does not require another full
-Temporal test run. Runtime validation remains attached to its correction PRs.
+and core IDs/text unchanged when amendment extraction was added. Current runtime correction: no-Intl Now host offsets reuse existing
+zeroPadDecimal. Public regression failed before correction; all 16 focused
+Bazel targets pass (10 executed, six cached), covering TS/native Hermes source
+and bytecode, Test262, installation and typechecking.
+[Validation targets](temporal-numbered-first-pass-validation-targets.txt).
