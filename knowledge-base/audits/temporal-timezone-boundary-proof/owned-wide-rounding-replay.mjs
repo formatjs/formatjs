@@ -141,6 +141,23 @@ const retainedOptions = {
 assert.throws(() => retainedDuration.round(retainedOptions), RangeError)
 console.log(JSON.stringify({retainedWeekRound: 'RangeError'}))
 
+const modes = [
+  'trunc',
+  'ceil',
+  'floor',
+  'expand',
+  'halfCeil',
+  'halfFloor',
+  'halfExpand',
+  'halfTrunc',
+  'halfEven',
+]
+const negateMode = new Map([
+  ['ceil', 'floor'],
+  ['floor', 'ceil'],
+  ['halfCeil', 'halfFloor'],
+  ['halfFloor', 'halfCeil'],
+])
 for (const [zone, originHour, targetHour, lowerHour, upperHour, sign] of [
   ['America/Detroit', -574n, 169n, 98n, 170n, 1],
   ['America/Chicago', 812n, 63n, 140n, 59n, -1],
@@ -154,17 +171,7 @@ for (const [zone, originHour, targetHour, lowerHour, upperHour, sign] of [
   const upper = Temporal.Duration.from({months: sign})
   assert.equal(origin.add(lower).epochNanoseconds, lowerHour * hour)
   assert.equal(origin.add(upper).epochNanoseconds, upperHour * hour)
-  for (const roundingMode of [
-    'trunc',
-    'ceil',
-    'floor',
-    'expand',
-    'halfCeil',
-    'halfFloor',
-    'halfExpand',
-    'halfTrunc',
-    'halfEven',
-  ]) {
+  for (const roundingMode of modes) {
     const options = {largestUnit: 'month', smallestUnit: 'week', roundingMode}
     const expected =
       roundingMode === 'trunc' || roundingMode === (sign > 0 ? 'floor' : 'ceil')
@@ -187,4 +194,107 @@ for (const [zone, originHour, targetHour, lowerHour, upperHour, sign] of [
     Temporal.Duration.from({weeks: sign * 3}).toString()
   )
   console.log(JSON.stringify({retainedWeekLowerBound: zone, sign}))
+
+  const dayLower = Temporal.Duration.from({days: sign * 32})
+  assert.equal(
+    origin.add(dayLower).epochNanoseconds,
+    (sign > 0 ? 168n : 77n) * hour
+  )
+  const dayOptions = {largestUnit: 'month', smallestUnit: 'day'}
+  assert.equal(
+    origin.until(target, dayOptions).toString(),
+    Temporal.Duration.from({months: sign, days: sign}).toString()
+  )
+  const dayLowerModes =
+    sign > 0 ? ['trunc', 'floor', 'halfFloor', 'halfTrunc'] : ['trunc', 'ceil']
+  for (const roundingMode of modes) {
+    const options = {...dayOptions, roundingMode, roundingIncrement: 2}
+    const until = dayLowerModes.includes(roundingMode) ? dayLower : upper
+    const since = dayLowerModes.includes(
+      negateMode.get(roundingMode) ?? roundingMode
+    )
+      ? dayLower
+      : upper
+    assert.equal(origin.until(target, options).toString(), until.toString())
+    assert.equal(
+      origin.since(target, options).toString(),
+      since.negated().toString()
+    )
+  }
+  console.log(JSON.stringify({retainedDayLowerBound: zone, sign}))
+
+  const yearOriginHour = sign > 0 ? -8590n : 8828n
+  const yearOrigin = new Temporal.ZonedDateTime(
+    yearOriginHour * hour,
+    zone,
+    'gregory'
+  )
+  const yearElapsed = Temporal.Duration.from({
+    hours: Number(targetHour - yearOriginHour),
+  })
+  const monthLower = Temporal.Duration.from({months: sign * 11})
+  const monthUpper = Temporal.Duration.from({years: sign})
+  assert.equal(yearOrigin.add(monthLower).epochNanoseconds, originHour * hour)
+  assert.equal(yearOrigin.add(monthUpper).epochNanoseconds, upperHour * hour)
+  for (const roundingMode of modes) {
+    const options = {largestUnit: 'year', smallestUnit: 'month', roundingMode}
+    const expected =
+      roundingMode === 'trunc' || roundingMode === (sign > 0 ? 'floor' : 'ceil')
+        ? monthLower
+        : monthUpper
+    assert.equal(
+      yearOrigin.until(target, options).toString(),
+      expected.toString()
+    )
+    assert.equal(
+      yearElapsed.round({...options, relativeTo: yearOrigin}).toString(),
+      expected.toString()
+    )
+  }
+  assert.equal(
+    yearOrigin
+      .until(target, {
+        largestUnit: 'year',
+        smallestUnit: 'month',
+        roundingIncrement: 3,
+        roundingMode: 'trunc',
+      })
+      .toString(),
+    Temporal.Duration.from({months: sign * 9}).toString()
+  )
+  console.log(JSON.stringify({retainedMonthLowerBound: zone, sign}))
+}
+
+for (const [zone, calendar, startDate, months] of [
+  ['America/Detroit', 'hebrew', Date.UTC(2023, 2, 5, 2), 12],
+  ['America/Anchorage', 'chinese', Date.UTC(2023, 8, 20, 2), 11],
+]) {
+  const start = BigInt(startDate) * 1_000_000n
+  const fixed = new Temporal.ZonedDateTime(start, '-05:00', calendar)
+  const upperEpoch = fixed.add({years: 1}).epochNanoseconds
+  Intl.DateTimeFormat.__addTZData({
+    abbrvs: 'TEST',
+    offsets: [(-5n * 3600n).toString(36), (21n * 3600n).toString(36)].join('|'),
+    zones: [
+      zone + '|' + [row(null, 0), row(upperEpoch / hour - 11n, 1)].join('|'),
+    ],
+  })
+  const origin = new Temporal.ZonedDateTime(start, zone, calendar)
+  const target = new Temporal.ZonedDateTime(upperEpoch - hour, zone, calendar)
+  assert.equal(
+    origin.until(target, {largestUnit: 'year'}).toString(),
+    'P1Y1DT1H'
+  )
+  assert.equal(origin.add({years: 1}).epochNanoseconds, upperEpoch)
+  assert.ok(origin.add({months}).epochNanoseconds <= target.epochNanoseconds)
+  assert.ok(
+    origin.add({months: months + 1}).epochNanoseconds > target.epochNanoseconds
+  )
+  assert.equal(
+    origin
+      .until(target, {largestUnit: 'year', smallestUnit: 'month'})
+      .toString(),
+    `P${months}M`
+  )
+  console.log(JSON.stringify({retainedMonthLowerBound: calendar, months}))
 }

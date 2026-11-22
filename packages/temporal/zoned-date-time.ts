@@ -669,8 +669,16 @@ export function differenceZonedDuration(
       since,
       {
         zoned: true,
+        calendar: start.calendar,
         // Proposal comparison §6.5.7 step 2: pass the prepared endpoints to the zoned difference.
         unrounded: value => unroundedZonedDifference(start, value, largest),
+        // Proposal comparison §7.5.33 steps 8.a and 9: build nominal dates before zone resolution.
+        nominalDay: fields =>
+          addDate(
+            {epochDay: epochDayOf(local(start)), calendar: start.calendar},
+            fields,
+            'constrain'
+          ),
         // Step 5 uses the original local clock, zone and calendar.
         endpoint: fields => addZonedDuration(start, fields),
       }

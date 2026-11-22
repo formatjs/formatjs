@@ -8,7 +8,7 @@ or historical line credit.
 
 ## Observable hook and correction
 
-[roundRelativeDifference:967](../../packages/temporal/date-core.ts#L970) formerly
+[roundRelativeDifference:967](../../packages/temporal/date-core.ts#L976) formerly
 called mode.startsWith('half'). Even though mode is a validated primitive enum,
 that property lookup consulted mutable String.prototype.startsWith. Two public
 regressions failed with the replaced method's exact exception through
@@ -79,7 +79,7 @@ endpoints, zone and calendar and the prepared largest unit. If either backend
 uses an identical-endpoint shortcut, it takes the callee's zero-result case.
 The relative rounding call remains separately conditional.
 [Temporal comparison §6.5.7 step 2](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
-[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L672).
+[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L673).
 [Rust dispatch](../../crates/temporal/calendar_difference.rs#L236).
 
 ComputeNudgeWindow step 8.d.i applies only when its first count is nonzero.
@@ -90,8 +90,8 @@ takes the next count in that direction. Both backends therefore take the
 nonzero date-add path and resolve the original local clock compatibly at
 these endpoints. Prefix choice and the retry stay separately open.
 [Temporal comparison §7.5.33 steps 8.d.i and 12.a](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
-[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1026).
-[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1029).
+[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1032).
+[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1035).
 [Rust first endpoint](../../crates/temporal/calendar_difference.rs#L262).
 [Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L265).
 
@@ -102,8 +102,8 @@ signed day. The next endpoint keeps the original clock even if the previous
 endpoint was shifted across a gap. The possible zero-date fold discrepancy
 at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
-[TypeScript signed day](../../packages/temporal/date-core.ts#L1116).
-[Rust signed day](../../crates/temporal/calendar_difference.rs#L350).
+[TypeScript signed day](../../packages/temporal/date-core.ts#L1167).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L409).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L294).
 
@@ -233,7 +233,7 @@ and calendar, the zone, and the prepared rounding settings stay available
 to the fused rounding path. Endpoint construction recovers the base clock
 from the receiver. This verifies argument transport while the round
 window, fold choice and published retry text stay separately governed.
-[TypeScript rounding entry](../../packages/temporal/date-core.ts#L1006).
+[TypeScript rounding entry](../../packages/temporal/date-core.ts#L1012).
 [Rust rounding entry](../../crates/temporal/calendar_difference.rs#L246).
 [Temporal comparison §6.5.7 step 5](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
 
@@ -271,8 +271,8 @@ through the owned TypeScript host path. The two-day endpoint at hour
 72 bounds target hour 61 from origin hour 24, so truncation gives
 zero. Whole-window assertions stay conditional for the remaining
 providers and published comparison.
-[TypeScript retry](../../packages/temporal/date-core.ts#L1061).
-[Rust retry](../../crates/temporal/calendar_difference.rs#L299).
+[TypeScript retry](../../packages/temporal/date-core.ts#L1112).
+[Rust retry](../../crates/temporal/calendar_difference.rs#L358).
 [Public Rust fold](../../crates/temporal/lib.test.rs#L3895).
 [Temporal comparison §7.5.34 steps 5–6 and 13–17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
@@ -337,9 +337,51 @@ repro uses `−P4W` at hour 140 and `−P1M` at hour 59 around a target at hour 
 Both verify all nine modes and a three-week increment. The original adjacent
 endpoint validation still runs first. The broader published retry and
 exact-target assertions remain unresolved.
-[TypeScript retry](../../packages/temporal/date-core.ts#L1032).
+[TypeScript retry](../../packages/temporal/date-core.ts#L1038).
 [Rust retry](../../crates/temporal/calendar_difference.rs#L268).
 [Rust regression](../../crates/temporal/calendar.test.rs#L230).
+[Owned public replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
+
+## Retained day and month lower bounds
+
+The same Gregorian gap makes a two-day increment select the retained
+`P1M` prefix at hour 170 for a target at hour 169. Trying the previous
+increment as `P1M−2D` failed duration validation. The valid lower result is
+`P32D` at hour 168. The negative case has `−P32D` at hour 77 and
+`−P1M` at hour 59 around its target at hour 63. A one-day increment
+retains the unrounded calendar day and has no zero-component overshoot
+in either witness.
+
+With origin hours −8590 and 8828 for those same zone rules, month
+rounding retains a year that overshoots. The valid lower bounds are
+`P11M` and `−P11M`. Before the correction, mixed-sign `P1Y−1M`
+and `−P1Y1M` failed validation. The owned replay checks signed day and
+month directions, all nine modes, and three-month increments. It also
+checks a Hebrew year with 12 whole months before the upper bound and
+a Chinese year with 11.
+
+Write `U` for the nominal retained prefix and `N` for the nominal day
+of the selected unrounded date anchor. They share the origin clock.
+When `U` overshoots after timezone resolution and `N` brackets the
+target from the origin, their positive signed nominal displacement
+must be one day. A displacement of at least two days could never
+reverse under effective offsets with magnitude below one day.
+The corrected lower grid ends at `N`, skipping `U` if the grid
+lands there. Any date strictly before `U` in the rounding direction is
+at least two nominal days before `N` and cannot overshoot. For month
+increments, existing calendar difference counts ordinal months between
+day-one anchors, followed by at most one inward correction for the
+original day-of-month. Only the final lower endpoint needs a timezone
+resolution. The already-built original upper endpoint is retained, and
+its original adjacent endpoint is still validated.
+
+This proof uses calendar date addition and difference that agree on the
+selected date prefix, plus the bounded compatible-offset contract.
+Published step 13 still fails for the exact collapsed Apia witness.
+Step 17 and general provider applicability remain conditional.
+[TypeScript lower grid](../../packages/temporal/date-core.ts#L1065).
+[Rust lower grid](../../crates/temporal/calendar_difference.rs#L301).
+[Rust public regression](../../crates/temporal/calendar.test.rs#L230).
 [Owned public replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
 [Public Rust regression](../../crates/temporal/calendar.test.rs#L168).
 [Temporal comparison §7.5.34 steps 5–6 and §7.5.38 step 5.a](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration).

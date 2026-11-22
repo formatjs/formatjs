@@ -227,7 +227,7 @@ fn zoned_week_rounding_validates_rebased_endpoint() {
 }
 
 #[test]
-fn zoned_week_rounding_rebases_a_retained_prefix_with_no_weeks() {
+fn zoned_rounding_rebases_a_retained_prefix_when_the_first_bound_overshoots() {
     let hour = 3_600_000_000_000;
     let forward = [OffsetTransition {
         epoch_seconds: 159 * 3_600,
@@ -319,6 +319,75 @@ fn zoned_week_rounding_rebases_a_retained_prefix_with_no_weeks() {
                 )
                 .unwrap(),
             toward_three.parse::<Duration>().unwrap()
+        );
+        let (one_day, two_days) = if first < second {
+            ("P1M1D", "P32D")
+        } else {
+            ("-P1M1D", "-P32D")
+        };
+        for (increment, mode, expected) in [
+            (1, RoundingMode::Trunc, one_day),
+            (2, RoundingMode::Trunc, two_days),
+            (2, RoundingMode::Expand, away),
+            (2, RoundingMode::HalfEven, away),
+        ] {
+            assert_eq!(
+                origin
+                    .until(
+                        &target,
+                        DateTimeUnit::Month,
+                        DateTimeUnit::Day,
+                        increment,
+                        mode
+                    )
+                    .unwrap(),
+                expected.parse::<Duration>().unwrap()
+            );
+        }
+        let (year_first, months, year, months_three) = if first < second {
+            (-8_590, "P11M", "P1Y", "P9M")
+        } else {
+            (8_828, "-P11M", "-P1Y", "-P9M")
+        };
+        let year_origin = zoned(year_first);
+        let year_duration =
+            Duration::from_time_nanoseconds((second - year_first) * hour, TimeUnit::Hour).unwrap();
+        for (mode, expected) in [
+            (RoundingMode::Trunc, months),
+            (RoundingMode::Expand, year),
+            (RoundingMode::HalfEven, year),
+        ] {
+            let expected = expected.parse::<Duration>().unwrap();
+            assert_eq!(
+                year_origin
+                    .until(&target, DateTimeUnit::Year, DateTimeUnit::Month, 1, mode)
+                    .unwrap(),
+                expected
+            );
+            assert_eq!(
+                year_origin
+                    .round_duration(
+                        year_duration,
+                        DateTimeUnit::Year,
+                        DateTimeUnit::Month,
+                        1,
+                        mode
+                    )
+                    .unwrap(),
+                expected
+            );
+        }
+        assert_eq!(
+            year_origin
+                .until(
+                    &target,
+                    DateTimeUnit::Year,
+                    DateTimeUnit::Month,
+                    3,
+                    RoundingMode::Trunc
+                )
+                .unwrap(),
+            months_three.parse::<Duration>().unwrap()
         );
     }
 }

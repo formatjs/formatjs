@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27008,
+  "whole_selected_source_lines": 27126,
   "whole_selected_source_lines_by_language": {
-    "rust": 11076,
-    "typescript": 15932
+    "rust": 11135,
+    "typescript": 15991
   },
-  "nonoverlapping_callable_lines": 17658,
+  "nonoverlapping_callable_lines": 17770,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8242,
-    "typescript": 9416
+    "rust": 8301,
+    "typescript": 9469
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17287,
+    "mapped": 17399,
     "candidate": 154,
     "unmapped": 217
   },
@@ -352,10 +352,10 @@
     },
     {
       "file": "crates/temporal/calendar_difference.rs",
-      "source_lines": 437,
+      "source_lines": 496,
       "callable_rows": 9,
-      "nonoverlapping_callable_lines": 389,
-      "sha256": "770fbe40e0b529dbd0eecd0500e172dccbf3ce7dee4e9efa4039756530f724ac",
+      "nonoverlapping_callable_lines": 448,
+      "sha256": "97c01d5fd964c8eb73dca16a1f07286a032e7c87f561947e4a6142589328b39b",
       "unresolved_callable_rows": 0
     },
     {
@@ -584,10 +584,10 @@
     },
     {
       "file": "packages/temporal/date-core.ts",
-      "source_lines": 1183,
+      "source_lines": 1234,
       "callable_rows": 38,
-      "nonoverlapping_callable_lines": 935,
-      "sha256": "984e8d1628536defb57191110a336598c52304fbc543cf372a8a799f0bce1b91",
+      "nonoverlapping_callable_lines": 980,
+      "sha256": "b97c25e2002e2c9edc7dcb5f3107d3f88031a38f243dc9597d41a7dc5ad0b8b7",
       "unresolved_callable_rows": 1
     },
     {
@@ -896,10 +896,10 @@
     },
     {
       "file": "packages/temporal/zoned-date-time.ts",
-      "source_lines": 1325,
+      "source_lines": 1333,
       "callable_rows": 19,
-      "nonoverlapping_callable_lines": 613,
-      "sha256": "a4dc2ce6de634a9045620925b6632a91bbbdbc3aa9016fa0d4f72d91fc524c11",
+      "nonoverlapping_callable_lines": 621,
+      "sha256": "19a1c862e973014699560e193e725ebc8fa35944ecfa6f99d5e9e0148042c86d",
       "unresolved_callable_rows": 0
     },
     {

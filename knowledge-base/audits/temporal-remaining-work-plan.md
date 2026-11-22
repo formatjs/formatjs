@@ -385,6 +385,10 @@ and the published assertions remain open.
 [Mixed-range candidates](temporal-timezone-boundary-proof/README.md#borrowed-mixed-range-candidate).
 [Retained-week upper bound](temporal-relative-rounding-contract-audit.md#retained-week-upper-bound).
 [Retained-week lower bound](temporal-relative-rounding-contract-audit.md#retained-week-lower-bound).
+Day and month rounding now retain a valid lower grid when a zero component
+overshoots. Both signs and variable month counts pass public replay. The
+Duration and ZonedDateTime full Test262 targets still pass.
+[Retained day and month lower bounds](temporal-relative-rounding-contract-audit.md#retained-day-and-month-lower-bounds).
 The exact Apia target is now a shared public oracle across TypeScript and
 native Hermes. Its endpoint policy is verified independently of the published
 zero-span assertion. The Intl witnesses isolate two separate prerequisites,

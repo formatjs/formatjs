@@ -928,11 +928,17 @@ export function roundedDateTimeDifference(
     }
   )
 }
-interface DifferenceAnchor {
-  zoned: boolean
+type DifferenceAnchor = {
   unrounded(end: bigint): DurationFields
   endpoint(fields: DurationFields): bigint
-}
+} & (
+  | {zoned: false}
+  | {
+      zoned: true
+      calendar: string
+      nominalDay(fields: DurationFields): number
+    }
+)
 const differenceUnits = [
   'year',
   'month',
@@ -1033,23 +1039,68 @@ export function roundRelativeDifference(
     // Shift inward if the first endpoint overshoots.
     if ((end - a) * physicalSign < 0n) {
       b = a
-      if (smallest === 'week' && truncated === 0) {
+      if (
+        anchor.zoned &&
+        truncated === 0 &&
+        (smallest === 'month' ||
+          smallest === 'week' ||
+          (smallest === 'day' && increment > 1))
+      ) {
         prefix[key] = 0
         rebasedUpper = {...prefix}
         // Zero fields keep the origin, so an overshoot requires a calendar prefix.
-        // Keep the upper prefix. Borrow from the last nonzero calendar unit
-        // so the lower week's fields have one sign.
-        const unit = prefix.months !== 0 ? 'months' : 'years'
+        // Borrow from the last nonzero calendar unit to keep one sign.
+        const unit =
+          prefix.weeks !== 0
+            ? 'weeks'
+            : prefix.months !== 0
+              ? 'months'
+              : 'years'
         prefix[unit] -= sign
-        a = anchor.endpoint(prefix)
-        // Offsets can shorten the week stride by less than two days.
-        const minStride = (7n * bigIntFrom(increment) - 2n) * nsPerDay
-        while ((end - a) * physicalSign > minStride) {
-          prefix[key] = truncated + stride
-          const next = anchor.endpoint(prefix)
-          if ((end - next) * physicalSign < 0n) break
-          truncated += stride
-          a = next
+        if (smallest !== 'week') {
+          const upperDay = anchor.nominalDay(rebasedUpper)
+          const lowerDay = anchor.nominalDay(prefix)
+          // Offsets differ by less than two days. An overshoot can only
+          // reverse the selected anchor one nominal day beyond this bound.
+          const lastDay = upperDay + sign
+          if (smallest === 'day') {
+            truncated =
+              mathTrunc(((lastDay - lowerDay) * sign) / increment) * stride
+            if (truncated === upperDay - lowerDay) truncated -= stride
+          } else {
+            const calendar = baseCalendar(anchor.calendar)
+            const monthStart = (day: number): number =>
+              day - calendarFromEpochDayRaw(calendar, day).day + 1
+            // Starting each date at day one counts months without day clamping.
+            const months =
+              calendarDateUntilRaw(
+                calendar,
+                monthStart(lowerDay),
+                monthStart(lastDay),
+                'month'
+              ).months ?? 0
+            truncated = mathTrunc(months / increment) * increment
+            prefix[key] = truncated
+            const candidateDay = anchor.nominalDay(prefix)
+            if (
+              candidateDay === upperDay ||
+              (candidateDay - lastDay) * sign > 0
+            )
+              truncated -= stride
+          }
+          prefix[key] = truncated
+          a = anchor.endpoint(prefix)
+        } else {
+          a = anchor.endpoint(prefix)
+          // Offsets can shorten the week stride by less than two days.
+          const minStride = (7n * bigIntFrom(increment) - 2n) * nsPerDay
+          while ((end - a) * physicalSign > minStride) {
+            prefix[key] = truncated + stride
+            const next = anchor.endpoint(prefix)
+            if ((end - next) * physicalSign < 0n) break
+            truncated += stride
+            a = next
+          }
         }
       } else {
         truncated -= stride

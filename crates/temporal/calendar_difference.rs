@@ -1,6 +1,6 @@
 use crate::{
-    CalendarProvider, Duration, Error, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY, RoundingMode,
-    TimeUnit, round_duration_nanoseconds,
+    CalendarProvider, Duration, Error, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY, Overflow,
+    PlainDate, RoundingMode, TimeUnit, round_duration_nanoseconds,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
@@ -269,25 +269,84 @@ pub(crate) fn difference<A: RelativeAnchor>(
         // zone can make the first endpoint overshoot after count truncation.
         if (end - a) * sign < 0 {
             b = a;
-            if smallest == DateTimeUnit::Week && truncated == 0 {
+            if A::ZONED
+                && truncated == 0
+                && (matches!(smallest, DateTimeUnit::Month | DateTimeUnit::Week)
+                    || smallest == DateTimeUnit::Day && increment > 1)
+            {
                 prefix[index] = 0;
-                rebased_upper = Some(prefix);
+                let upper_prefix = prefix;
+                rebased_upper = Some(upper_prefix);
                 // Zero fields keep the origin, so an overshoot requires a calendar prefix.
-                // Keep the upper prefix. Borrow from the last nonzero
-                // calendar unit so the lower week's fields have one sign.
-                let unit = if prefix[1] != 0 { 1 } else { 0 };
+                // Borrow from the last nonzero calendar unit to keep one sign.
+                let unit = if prefix[2] != 0 {
+                    2
+                } else if prefix[1] != 0 {
+                    1
+                } else {
+                    0
+                };
                 prefix[unit] -= sign;
-                a = endpoint(start, prefix)?;
-                // Offsets can shorten the week stride by less than two days.
-                let min_stride = (7 * i128::from(increment) - 2) * NANOSECONDS_PER_DAY;
-                while (end - a) * sign > min_stride {
-                    prefix[index] = truncated + stride;
-                    let next = endpoint(start, prefix)?;
-                    if (end - next) * sign < 0 {
-                        break;
+                if smallest != DateTimeUnit::Week {
+                    let calendar = start.calendar();
+                    let date = PlainDate::from_epoch_day_in(start.date_at(origin)?, calendar)?;
+                    let upper = date
+                        .checked_add(Duration::new(upper_prefix)?, Overflow::Constrain)?
+                        .epoch_day();
+                    let lower = date
+                        .checked_add(Duration::new(prefix)?, Overflow::Constrain)?
+                        .epoch_day();
+                    // Offsets differ by less than two days. An overshoot can only
+                    // reverse the selected anchor one nominal day beyond this bound.
+                    let last_day = upper + sign as i64;
+                    if smallest == DateTimeUnit::Day {
+                        truncated =
+                            i128::from(last_day - lower) * sign / i128::from(increment) * stride;
+                        if truncated == i128::from(upper - lower) {
+                            truncated -= stride;
+                        }
+                    } else {
+                        let month_start = |day| {
+                            calendar
+                                .date_extended(day)
+                                .map(|value| day - i64::from(value.day) + 1)
+                                .map_err(|_| Error::OutOfRange)
+                        };
+                        // Starting each date at day one counts months without day clamping.
+                        let months = calendar
+                            .until_raw(
+                                month_start(lower)?,
+                                month_start(last_day)?,
+                                crate::calendar::DateUnit::Month,
+                            )
+                            .map_err(|_| Error::OutOfRange)?
+                            .months;
+                        truncated =
+                            i128::from(months) / i128::from(increment) * i128::from(increment);
+                        prefix[index] = truncated;
+                        let candidate_day = date
+                            .checked_add(Duration::new(prefix)?, Overflow::Constrain)?
+                            .epoch_day();
+                        if candidate_day == upper || i128::from(candidate_day - last_day) * sign > 0
+                        {
+                            truncated -= stride;
+                        }
                     }
-                    truncated += stride;
-                    a = next;
+                    prefix[index] = truncated;
+                    a = endpoint(start, prefix)?;
+                } else {
+                    a = endpoint(start, prefix)?;
+                    // Offsets can shorten the week stride by less than two days.
+                    let min_stride = (7 * i128::from(increment) - 2) * NANOSECONDS_PER_DAY;
+                    while (end - a) * sign > min_stride {
+                        prefix[index] = truncated + stride;
+                        let next = endpoint(start, prefix)?;
+                        if (end - next) * sign < 0 {
+                            break;
+                        }
+                        truncated += stride;
+                        a = next;
+                    }
                 }
             } else {
                 truncated -= stride;
