@@ -26,8 +26,8 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-307 core and91 amendment rows remain conditional; the separate queue contains
-173 conditional numbered steps in30 shared-premise families. Aggregate counts are not independent defects.
+291 core and91 amendment rows remain conditional; the separate queue contains
+157 conditional numbered steps in26 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
 Inline numbered section/step comments are also required beside audited code.
@@ -65,6 +65,16 @@ revoked-newTarget/primitive-prototype witnesses fail required TypeError. Object
 prototype controls succeed. All16 affected rows remain conditional, with explicit
 inline comments and a [preserved reproduction](temporal-constructor-realm-proof.md).
 Cold Duration NumberFormat/ListFormat constructor lookup remains separately open.
+
+## Calendar caller propagation, 2026-11-22
+
+The [caller reconciliation](temporal-calendar-caller-propagation.json) closes16
+numbered steps using landed field/merge/provider proofs. PlainDateTime conversion,
+with/add and YearMonth conversion/with/toPlainDate reuse those contracts. Exact
+YearMonth bounds lie within established raw provider ranges, making moved private
+projection total for valid slots. Runtime and tests unchanged; ten-target evidence
+from24fd91a55 reused. Two until rows retain the published zero-month conflict;
+one relativeTo preparation row retains only offset/timezone grammar.
 
 ## First numbered pass, 2026-11-22
 

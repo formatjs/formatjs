@@ -37,8 +37,8 @@
   "review_status_counts": {
     "verified": 151,
     "informative": 231,
-    "verified_local_step": 4010,
-    "conditional": 307,
+    "verified_local_step": 4026,
+    "conditional": 291,
     "spec_issue": 90,
     "partial": 1,
     "reviewed": 18
