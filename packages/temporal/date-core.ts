@@ -127,7 +127,10 @@ export function overflowOption(options: unknown): Overflow {
     throw new RangeErrorConstructor('Invalid overflow')
   return value
 }
-// Proposal comparison §12.3.11 steps 1 and 1.a: Find a stored calendar on the five supported slot types.
+// ECMA-262 preview §§22.3.2.3–4 step 1 reads the five Temporal calendar slots.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporalcalendaridentifier
+// https://tc39.es/ecma262/pr/3966/#sec-gettemporalcalendarslotvaluewithisodefault
+// TC39 confirmed the Temporal-only check: https://github.com/tc39/ecma262/pull/3966#discussion_r4284855527
 function calendarSlot(value: object): {calendar: string} | undefined {
   return (
     getZonedSlot(value) ??

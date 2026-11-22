@@ -558,6 +558,7 @@ function add(
         fields,
         overflow
       )
+    // Step 6 can throw near the epoch limit: https://github.com/tc39/ecma262/pull/3966#discussion_r4288358250
     value = zonedKernel(slot.timeZone).resolve(
       epochNanosecondsToISO(bigIntFrom(day) * nsPerDay + timeOf(start))
     )

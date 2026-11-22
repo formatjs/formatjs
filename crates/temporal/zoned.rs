@@ -312,6 +312,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             let local = self
                 .local()?
                 .checked_add(Duration::new(calendar)?, overflow)?;
+            // Step 6 can throw near the epoch limit: https://github.com/tc39/ecma262/pull/3966#discussion_r4288358250
             value = resolve_local(local.fields(), &self.time_zone, Disambiguation::Compatible)?;
         }
         let mut clock = fields;
