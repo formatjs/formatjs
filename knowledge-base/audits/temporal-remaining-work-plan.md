@@ -44,7 +44,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
-Code maps cover 82 distinct selected source files and 24,661 physical lines.
+Code maps cover 82 distinct selected source files and 24,674 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -162,8 +162,9 @@ reconcile six more steps. The queue holds 78 conditional steps across ten
 families. [21 focused Bazel targets](temporal-selected-locale-adapter-validation-targets.txt)
 returned passing cached results for these sources. Fresh Duration prefix lookup and Unicode extension adapters pass public
 controls. Empty extension fields on prefix lookup and best-fit snapshot/request Lists
-pass public controls. Best-fit fallback records, cache, and distance adapters
-remain open. [Focused evidence](temporal-duration-lookup-extension-bestfit-entry-evidence.json). Generated timezone
+pass public controls. Best-fit raw cache and fallback records now pass as well. Provider adapters,
+cache allocation, equivalence and ordered distance remain open.
+[Focused evidence](temporal-duration-bestfit-cache-evidence.json). Generated timezone
 profiles supply the endpoint-window proof. Host data and its boundary property
 remain a separate premise. [Adapter evidence](temporal-selected-locale-adapter-audit.md)
 and [timezone evidence](temporal-timezone-boundary-proof/README.md) record the scope. Helper annotation
@@ -185,13 +186,13 @@ contracts. Host and remaining calendar-unit comparisons stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[Seventy-nine mapping dispositions](temporal-helper-annotation-reconciliation.json)
-cover ISO scanners, TS/Rust rounding, calendar and timezone providers, and
-native Duration transport.
-Sixty-seven receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:247 mapped,438 candidate,
+[Ninety-two mapping dispositions](temporal-helper-annotation-reconciliation.json)
+cover ISO scanners, plain-relative arithmetic, TS/Rust rounding, calendar and
+timezone providers, and native Duration transport.
+Eighty receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:260 mapped,425 candidate,
 384 unmapped, including three retired identities. Annotation presence alone
-is149 direct,13 enclosing,904 without numbered anchors,3 retired; these are
+is159 direct,13 enclosing,894 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,

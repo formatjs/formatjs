@@ -407,22 +407,32 @@ function prepare(locales: readonly string[]): Supported {
   return result
 }
 
+const getLocaleMap = Function.prototype.call.bind(Map.prototype.get) as <K, V>(
+  map: Map<K, V>,
+  key: K
+) => V | undefined
+const hasLocaleMap = Function.prototype.call.bind(Map.prototype.has) as <K, V>(
+  map: Map<K, V>,
+  key: K
+) => boolean
+const setLocaleMap = Function.prototype.call.bind(Map.prototype.set) as <K, V>(
+  map: Map<K, V>,
+  key: K,
+  value: V
+) => void
+
 function rawMatch(data: Supported, key: string): number | undefined {
-  const cached = data.raw.get(key)
+  // ECMA-402 §9.2.7 step 2.a: retain the private best-fit exact-key cache.
+  const cached = getLocaleMap(data.raw, key)
   if (cached !== undefined) return cached
   // A zero-distance match cannot be improved by later supported locales.
   for (let index = data.tags.length; index < data.original.length; index++) {
     const tag = canonicalize(data.original[index])
-    // CreateDataProperty avoids inherited numeric setters on internal arrays.
-    Object.defineProperty(data.tags, index, {
-      value: tag,
-      writable: true,
-      enumerable: true,
-      configurable: true,
-    })
+    setDataProperty(data.tags, `${index}`, tag)
     const candidate = rawKey(tag)
-    if (!data.raw.has(candidate)) data.raw.set(candidate, index)
-    if (candidate === key) return data.raw.get(candidate)
+    if (!hasLocaleMap(data.raw, candidate))
+      setLocaleMap(data.raw, candidate, index)
+    if (candidate === key) return getLocaleMap(data.raw, candidate)
   }
   return undefined
 }
@@ -502,7 +512,8 @@ export function findBestMatch(
   defaultLocale: string = supportedLocales[0] || '',
   collectDistances = true
 ): LocaleMatchingResult {
-  const result: LocaleMatchingResult = {distances: {}}
+  // ECMA-402 §9.2.4: a private no-match result has no inherited fields.
+  const result = {__proto__: null, distances: {}} as LocaleMatchingResult
   if (!supportedLocales.length || !requestedLocales.length || threshold <= 0)
     return result
   const data = prepare(supportedLocales)

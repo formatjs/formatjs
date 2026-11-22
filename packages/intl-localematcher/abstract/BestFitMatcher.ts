@@ -47,7 +47,8 @@ export function BestFitMatcher(
   }
 
   if (!foundLocale) {
-    return {locale: defaultLocale}
+    // ECMA-402 §9.2.7 step 3: the default locale has an empty extension.
+    return {locale: defaultLocale, extension: undefined}
   }
 
   return {

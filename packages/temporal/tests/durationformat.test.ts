@@ -1605,20 +1605,26 @@ it.each([
   ])
 })
 
-it.each(['en', 'zz'] as const)(
-  'fresh Duration lookup keeps the absent extension private for %s',
-  locale => {
+it.each([
+  ['lookup', 'en', 'extension', true],
+  ['lookup', 'zz', 'extension', true],
+  ['best fit', 'en', 'extension', false],
+  ['best fit', 'en', 'matchedSupportedLocale', false],
+  ['best fit', 'en', 'matchedDesiredLocale', true],
+] as const)(
+  'fresh Duration %s keeps the %s result field %s private',
+  (localeMatcher, locale, field, hasCandidate) => {
     DurationFormat.__addTemporalNamespace(Temporal)
     const available = DurationFormat.availableLocales
-    const fresh = new Set(['en'])
+    const fresh = new Set<string>(hasCandidate ? ['en'] : [])
     const define = Object.defineProperty
     const durationDescriptor = Object.getOwnPropertyDescriptor(
       Intl,
       'DurationFormat'
     )
-    const extensionDescriptor = Object.getOwnPropertyDescriptor(
+    const fieldDescriptor = Object.getOwnPropertyDescriptor(
       Object.prototype,
-      'extension'
+      field
     )
     const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
     let actual: string | undefined
@@ -1631,7 +1637,7 @@ it.each(['en', 'zz'] as const)(
         value: DurationFormat,
       })
       configureLocaleFormatting()
-      define(Object.prototype, 'extension', {
+      define(Object.prototype, field, {
         configurable: true,
         get() {
           inheritedReads++
@@ -1639,13 +1645,12 @@ it.each(['en', 'zz'] as const)(
         },
       })
       actual = duration.toLocaleString(locale, {
-        localeMatcher: 'lookup',
+        localeMatcher,
         style: 'long',
       })
     } finally {
-      if (extensionDescriptor)
-        define(Object.prototype, 'extension', extensionDescriptor)
-      else Reflect.deleteProperty(Object.prototype, 'extension')
+      if (fieldDescriptor) define(Object.prototype, field, fieldDescriptor)
+      else Reflect.deleteProperty(Object.prototype, field)
       DurationFormat.availableLocales = available
       if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
       else Reflect.deleteProperty(Intl, 'DurationFormat')
@@ -1662,6 +1667,10 @@ it.each([
   ['snapshot mark', WeakSet.prototype, 'add'],
   ['snapshot check', WeakSet.prototype, 'has'],
   ['requested locale List', Array.prototype, 'map'],
+  ['raw tag append', Object, 'defineProperty'],
+  ['raw cache read', Map.prototype, 'get'],
+  ['raw cache membership', Map.prototype, 'has'],
+  ['raw cache write', Map.prototype, 'set'],
 ] as const)(
   'fresh Duration best fit keeps %s private',
   (_label, owner, key) => {
@@ -1683,6 +1692,7 @@ it.each([
     )
     const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
     const apply = Reflect.apply
+    const mapSize = Object.getOwnPropertyDescriptor(Map.prototype, 'size')!.get!
     const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
     const options = {localeMatcher: 'best fit', style: 'long'} as const
     const locale = 'de-AT-u-nu-arab'
@@ -1707,20 +1717,44 @@ it.each([
       define(
         owner,
         key,
-        key === Symbol.iterator || key === 'map'
-          ? {
+        key === 'freeze' || owner === WeakSet.prototype
+          ? {configurable: true, get: poison}
+          : {
               ...descriptor,
               value(this: readonly unknown[], ...args: unknown[]) {
-                if (
-                  key === 'map'
-                    ? this.length === 1 && this[0] === locale
-                    : this.length === 2 && this[0] === 'en' && this[1] === 'de'
-                )
-                  poison()
+                let ownedCall: boolean
+                switch (key) {
+                  case 'map':
+                    ownedCall = this.length === 1 && this[0] === locale
+                    break
+                  case Symbol.iterator:
+                    ownedCall =
+                      this.length === 2 && this[0] === 'en' && this[1] === 'de'
+                    break
+                  case 'defineProperty':
+                    ownedCall =
+                      Array.isArray(args[0]) &&
+                      args[1] === 0 &&
+                      (args[2] as PropertyDescriptor).value === 'en'
+                    break
+                  case 'get':
+                    // Only the first empty raw cache lookup. Equivalence checks
+                    // later in the pipeline run against a populated cache.
+                    ownedCall =
+                      args[0] === 'de-AT' && apply(mapSize, this, []) === 0
+                    break
+                  case 'has':
+                    ownedCall =
+                      args[0] === 'de' && apply(mapSize, this, []) === 1
+                    break
+                  default:
+                    ownedCall =
+                      key === 'set' && args[0] === 'de' && args[1] === 1
+                }
+                if (ownedCall) poison()
                 return apply(descriptor.value, this, args)
               },
             }
-          : {configurable: true, get: poison}
       )
       actual = duration.toLocaleString(locale, options)
     } finally {

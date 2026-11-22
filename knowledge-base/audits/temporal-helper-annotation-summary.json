@@ -4,23 +4,23 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 438,
+    "candidate": 425,
     "unmapped": 384,
-    "mapped": 247
+    "mapped": 260
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 904,
-    "direct_numbered": 149,
+    "no_numbered_anchor": 894,
+    "direct_numbered": 159,
     "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 21,
+  "direct_with_step_wording": 34,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 123,
-    "no_overlap_or_no_prior_mapping": 26
+    "overlap": 134,
+    "no_overlap_or_no_prior_mapping": 25
   },
   "no_numbered_anchor_by_kind": {
-    "function": 532,
+    "function": 522,
     "named-function": 216,
     "callback": 148,
     "method": 8
@@ -47,8 +47,8 @@
       "rows": 248,
       "files": 13,
       "coverage": {
-        "no_numbered_anchor": 236,
-        "direct_numbered": 12
+        "no_numbered_anchor": 226,
+        "direct_numbered": 22
       }
     },
     "native_transport_with_temporal_adapters_review": {
@@ -99,7 +99,7 @@
     "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
     "crates/temporal/now.rs": "661f0a5cb156470bd31bea56d3b76ee9e18c24cf08f45fcef456585c517e5749",
     "crates/temporal/parse.rs": "13dca67e36f0e1a5fce501cc4ec0e79169063c5d894774d1ff4df1a5d451a75a",
-    "crates/temporal/plain_relative.rs": "1bae4213a46c02604fdac3194edef61002d0da1135b32490fc6dcaa684fa8bfa",
+    "crates/temporal/plain_relative.rs": "2180a18fb2672442343ef2e5da471fe98adb30029d31736a7269928f4eed2af2",
     "crates/temporal/relative_duration.rs": "ea47ab8079505a274c1f0478e549097a45ce3f987a2b2621e0edab31033176b7",
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
     "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
@@ -396,11 +396,10 @@
       "rows": 13,
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "candidate": 13
+        "mapped": 13
       },
       "coverage": {
-        "no_numbered_anchor": 10,
-        "direct_numbered": 3
+        "direct_numbered": 13
       }
     },
     {
@@ -1024,8 +1023,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 79,
-  "reviewed_mapping_rows_this_batch": 16,
+  "reviewed_mapping_rows_cumulative": 92,
+  "reviewed_mapping_rows_this_batch": 13,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0

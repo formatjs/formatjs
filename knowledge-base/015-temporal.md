@@ -7,19 +7,20 @@ Public bindings, helper/backend ranges and fixed step checklists retain source
 hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
-1,069 fixed identities, with three retired callbacks explicit. A comment-only
-batch reconciles79 mappings for ISO scanners, rounding, calendar and timezone
-providers, and native Duration
-transport. Transport12 now have narrow inline caller/dependency links; numbered
+1,069 fixed identities, with three retired callbacks explicit.
+Comment-only batches reconcile 92 mappings for ISO scanners, plain-relative arithmetic,
+rounding, calendar and timezone providers, and native Duration transport. Transport12 now have narrow inline caller/dependency links; numbered
 anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code. Current fixed inventory has149
-direct anchors,13 enclosing anchors,904 without numbered anchors and3 retired.
+binds source hashes and unchanged noncomment code. Current fixed inventory has159
+direct anchors,13 enclosing anchors,894 without numbered anchors and3 retired.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup
 corrects keyword find, outer Set/list adapters, prefix lookup and Unicode
 extension handling. Prefix lookup owns its empty extension fields. Best-fit
 snapshots and requested locale Lists retain private traversal and original order.
+Raw match caches and locale results also keep their operations private.
+[Best-fit cache evidence](audits/temporal-duration-bestfit-cache-evidence.json).
 [Adapter evidence](audits/temporal-duration-lookup-extension-bestfit-entry-evidence.json). Shared DateTimeFormat constants use captured BigInt
 conversion for ES2019 source compatibility, preserving exact bigint composition.
 [Batch evidence](audits/temporal-selected-locale-adapter-audit.md).
