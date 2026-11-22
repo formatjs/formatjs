@@ -1053,9 +1053,10 @@ export function roundRelativeDifference(
     }
   }
   if (since) {
-    const keys = Object.keys(result) as (keyof DurationFields)[]
-    for (let index = 0; index < keys.length; index++)
-      result[keys[index]] = -result[keys[index]] || 0
+    for (let index = 0; index < differenceUnits.length; index++) {
+      const key = `${differenceUnits[index]}s` as keyof DurationFields
+      result[key] = -result[key] || 0
+    }
   }
   return result
 }

@@ -26,7 +26,7 @@ shortcut, distinct from Duration rounding, and has its own preservation controls
 | §6.5.7 steps 4–5                                                                                                                                                                              | [TS:935](../../packages/temporal/date-core.ts#L935), [Rust:203](../../crates/temporal/calendar_difference.rs#L203)               | Other internal zoned date-largest calls continue through shared nudge, including zero Duration rounding. Plain zero shortcut remains.                                                                                                                 |
 | [§7.5.38 steps 1–7](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration)                                                                                                    | [TS shared engine:881](../../packages/temporal/date-core.ts#L881), [Rust:168](../../crates/temporal/calendar_difference.rs#L168) | Zero uses positive sign. Calendar/zoned-day smallest units take irregular branch; other zoned smallest units take time branch. Existing retry/bubbling logic remains separately bounded.                                                              |
 | [§7.5.35 steps 1–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime)                                                                                                         | [TS:995](../../packages/temporal/date-core.ts#L995), [Rust:258](../../crates/temporal/calendar_difference.rs#L258)               | Date-only copies of recomputed difference fields resolve base and next date through original anchor and original clock. Both endpoints are checked and day carry runs even if rounding leaves the time quantity unchanged. Date fields remain intact. |
-| [§6.5.9 step 8](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime)                                                                                              | [TS:606](../../packages/temporal/zoned-date-time.ts#L606), [Rust:44](../../crates/temporal/zoned_difference.rs#L44)              | Public until/since return zero for equal epochs after settings/calendar/zone validation. Internal Duration rounding bypasses this public shortcut; native Duration routing stays separate.                                                            |
+| [§6.5.9 step 8](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime)                                                                                              | [TS:607](../../packages/temporal/zoned-date-time.ts#L607), [Rust:44](../../crates/temporal/zoned_difference.rs#L44)              | Public until/since return zero for equal epochs after settings/calendar/zone validation. Internal Duration rounding bypasses this public shortcut; native Duration routing stays separate.                                                            |
 | [§6.5.8 steps 2–4](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithtotal), [§7.5.39 step 1](https://tc39.es/proposal-temporal/#sec-temporal-totalrelativeduration) | [TS total:143](../../packages/temporal/relative-duration.ts#L143), [Rust:7](../../crates/temporal/relative_duration.rs#L7)       | Remove unrelated preflight. Zoned zero-day total reaches normal positive window. Time-unit zero totals retain shortcut. Existing exact calendar totals still validate next endpoint.                                                                  |
 
 Duration rounding delegates required validation to the shared engine. Its removed
@@ -63,7 +63,7 @@ Unrounded difference is PT24H30M. The next original-clock endpoint is the first
 Nov 1 01:30, only 24 hours after start. Minute rounding does not change the time
 quantity, but §7.5.35 steps 11–15 still carry one date day and leave 30 minutes:
 P1DT30M (since: -P1DT30M). Nanosecond/increment 1 returns the unrounded difference
-before nudge, retaining PT24H30M (since: -PT24H30M). [Literal-epoch shared controls:171](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L171)
+before nudge, retaining PT24H30M (since: -PT24H30M). [Literal-epoch shared controls:201](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L201)
 cover all four results. The separate calendar/day-total retry issue remains open.
 
 ## Boundary controls and limits
@@ -74,7 +74,7 @@ zero/minute equality, Duration zero window checks, invalid increments, exact-min
 maximum difference, and nanosecond identity.
 Until/since preserve positive/negative one minute on the nanosecond path.
 
-[Shared zoned arithmetic controls:196](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L196)
+[Shared zoned arithmetic controls:226](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L226)
 exercise UTC maximum Instant and one minute
 before it across TS/native public routes. Duration zero/day and zero/minute rounding and exact-minute until/since reject
 when next day is out of range. Public zero differences still succeed after

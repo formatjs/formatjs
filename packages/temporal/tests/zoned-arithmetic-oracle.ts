@@ -6,6 +6,36 @@ export function checkZonedArithmeticOracle(
   dayFixture: string,
   equal: (actual: unknown, expected: unknown, context: string) => void
 ): {differences: number; days: number} {
+  const keysStart = Temporal.ZonedDateTime.from('2020-01-01T00:00[UTC]')
+  const keysEnd = Temporal.ZonedDateTime.from('2020-01-03T00:00[UTC]')
+  const originalKeys = Object.keys
+  let privateKeys = 0
+  let keysResult: InstanceType<typeof Temporal.Duration> | undefined
+  let keysError: unknown
+  try {
+    Object.keys = () => {
+      privateKeys++
+      throw new Error('Observable private zoned difference keys')
+    }
+    try {
+      keysResult = keysStart.since(keysEnd, {
+        largestUnit: 'day',
+        smallestUnit: 'minute',
+      })
+    } catch (error) {
+      keysError = error
+    }
+  } finally {
+    Object.keys = originalKeys
+  }
+  if (keysError) throw keysError
+  equal(privateKeys, 0, 'Zoned since avoids private enumeration')
+  equal(keysResult!.toString(), '-P2D', 'Zoned since retains signed result')
+  equal(
+    Object.is(keysResult!.nanoseconds, -0),
+    false,
+    'Zoned since zero stays positive'
+  )
   let differences = 0,
     days = 0
   for (const line of differenceFixture.trim().split('\n')) {

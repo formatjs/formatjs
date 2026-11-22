@@ -41,12 +41,12 @@ Published proposal [§6.5.2 ToTemporalZonedDateTime](https://tc39.es/proposal-te
 is comparison only. Shared offset grammar remains ECMA-262
 [§21.4.1.33](https://tc39.es/ecma262/#sec-time-zone-offset-strings).
 
-[Date-only classification:396](../../packages/temporal/zoned-date-time.ts#L396)
+[Date-only classification:397](../../packages/temporal/zoned-date-time.ts#L397)
 scans until the first annotation bracket. T/t/space in the body means clock input;
 annotation contents cannot affect classification. Parsing has already succeeded,
 so required zone annotation and bounded string indices are established.
 
-[Minute classification:411](../../packages/temporal/zoned-date-time.ts#L411)
+[Minute classification:412](../../packages/temporal/zoned-date-time.ts#L412)
 uses the validated offset domain: +HH, +HHMM and +HH:MM have lengths 3, 5 and 6.
 Second-bearing forms have length 7 or 9 before any fraction; fractions require
 seconds. Absent/Z offsets cannot match. This is not a general offset recognizer.
@@ -54,7 +54,7 @@ Native adaptation retains the same domain: minute offsets use +HH:MM, exact
 offsets include seconds/fraction, UTC is Z, wall input has no offset. Complete
 native/provider transport remains separately owned.
 
-[Shared resolution:291](../../packages/temporal/zoned-date-time.ts#L291) compares
+[Shared resolution:292](../../packages/temporal/zoned-date-time.ts#L292) compares
 Z/z directly, after the existing kernel/local-field preparation and before
 ignore/use handling. Provider queries, numeric parsing and resolution stay in
 place. No epoch Number conversion or fractional arithmetic changes.

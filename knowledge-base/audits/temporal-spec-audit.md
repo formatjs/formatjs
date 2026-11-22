@@ -88,6 +88,14 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- Since result construction now negates fixed private fields without mutable
+  enumeration; nested zoned endpoint addition uses the same fixed field list.
+  [Caller/negation audit](temporal-since-field-negation-audit.md) records public
+  TS regressions and native controls. [Bubbling body map](temporal-bubble-relative-duration-audit.md)
+  covers numbered comparison branches under explicit count/endpoint premises.
+  A new [zero-component prefix issue](temporal-zero-component-prefix-spec-issue.md)
+  stays separate; no disputed runtime policy adopted.
+
 - [Duration.round contract](temporal-duration-round-contract-audit.md) maps all
   34 public comparison steps and caller branches. Exact year/month-to-week
   rounding now checks the next endpoint before returning; TS/native regressions

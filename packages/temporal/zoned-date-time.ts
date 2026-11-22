@@ -97,6 +97,7 @@ import {
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {
+  durationFieldNames,
   durationNanoseconds,
   zeroDuration,
   balanceDurationTime,
@@ -484,8 +485,8 @@ function add(
       slot.timeZone,
       slot.calendar
     )
-  const keys = Object.keys(fields) as (keyof typeof fields)[]
-  for (let i = 0; i < keys.length; i++) fields[keys[i]] *= sign
+  for (let i = 0; i < durationFieldNames.length; i++)
+    fields[durationFieldNames[i]] *= sign
   const overflow = overflowOption(options)
   let value = slot.epochNanoseconds
   if (fields.years || fields.months || fields.weeks || fields.days) {
