@@ -67,6 +67,7 @@ import {
 import {
   epochNanosecondsToISO,
   isoToEpochNanoseconds,
+  startOfTimeZoneDay,
   type Disambiguation,
   type ISODateTime,
   type TimeZoneKernel,
@@ -287,12 +288,14 @@ export function zonedFromLocal(
   const zone = timeZoneIdentifier(timeZone),
     resolved = optionsObject(options),
     ambiguous = disambiguation(resolved.disambiguation)
-  const epoch = zonedKernel(zone).resolve(
-    epochNanosecondsToISO(value),
-    ambiguous
-  )
-  const slot = {epochNanoseconds: epoch, timeZone: zone, calendar}
-  return createZonedDateTime(start ? startOfDay(slot) : epoch, zone, calendar)
+  // Proposal comparison §3.3.29 step 5: Use the requested date for day-only inputs.
+  const epoch = start
+    ? startOfDay(
+        {epochNanoseconds: 0n, timeZone: zone, calendar},
+        epochDayOf(value)
+      )
+    : zonedKernel(zone).resolve(epochNanosecondsToISO(value), ambiguous)
+  return createZonedDateTime(epoch, zone, calendar)
 }
 // Proposal comparison §13.7 steps 1–5: Normalize disambiguation with compatible as default.
 function disambiguation(value: unknown): Disambiguation {
@@ -686,39 +689,16 @@ export function differenceZonedDuration(
   )
 }
 
-// Proposal comparison §11.1.14 steps 1–3: Find the earliest representable midnight candidate.
+// Proposal comparison §11.1.14 steps 1–7: Resolve the selected local date on the active backend.
 function startOfDay(slot: ZonedSlot, day?: number): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.startOfZonedDay(slot, day).epochNanoseconds
   day ??= epochDayOf(local(slot))
-  const kernel = zonedKernel(slot.timeZone),
-    midnight = bigIntFrom(day) * nsPerDay
-  if (
-    midnight <= -8_640_000_000_000_000_000_000n - nsPerDay ||
-    midnight >= 8_640_000_000_000_000_000_000n + nsPerDay
+  return startOfTimeZoneDay(
+    bigIntFrom(day) * nsPerDay,
+    zonedKernel(slot.timeZone)
   )
-    throw new RangeErrorConstructor('Local date out of range')
-  const candidates = kernel.possibleInstantsFromEpochNanoseconds
-    ? kernel.possibleInstantsFromEpochNanoseconds(midnight)
-    : kernel.possibleInstants(epochNanosecondsToISO(midnight))
-  if (candidates.length) return candidates[0]
-  const fields = epochNanosecondsToISO(midnight)
-  let event: bigint | null = kernel.resolve(fields)
-  while (event !== null && event >= midnight - nsPerDay) {
-    if (event > -8_640_000_000_000_000_000_000n) {
-      const before = kernel.offsetNanoseconds(event - 1n),
-        after = kernel.offsetNanoseconds(event)
-      if (
-        after > before &&
-        midnight >= event + before &&
-        midnight < event + after
-      )
-        return event
-    }
-    event = kernel.transition(event, 'previous')
-  }
-  throw new RangeErrorConstructor('No day boundary in instant range')
 }
 
 const numericOffsetSlots: (ZonedSlot | undefined)[] = [

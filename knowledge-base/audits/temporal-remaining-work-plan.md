@@ -438,6 +438,12 @@ whose custom row conflicts with the canonical data zone.
 Host capability checks now require an own data field on the descriptor.
 The regression observes zero inherited getter calls.
 [Capability proof](temporal-timezone-boundary-proof/README.md#host-capability-descriptors).
+Owned Intl now shares the loaded-kernel fallback when a supported exact gap
+shift still lands inside a gap. Start-of-day now searches for the nearest
+reachable local time across intersecting transitions within an unclipped
+interval. Its date-only callers pass the requested date explicitly.
+[Gap replay](temporal-timezone-boundary-proof/README.md#shifted-clock-still-inside-a-gap).
+[Day-start replay](temporal-timezone-boundary-proof/README.md#start-of-day-after-intersecting-transitions).
 The finite retained-week count now has an explicit provider-bound proof.
 A separate public replay isolates the month bubbling policy after a valid
 directed rounding window. The numbered conditions keep their current scope.

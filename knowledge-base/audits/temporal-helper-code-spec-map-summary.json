@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27246,
+  "whole_selected_source_lines": 27317,
   "whole_selected_source_lines_by_language": {
-    "rust": 11136,
-    "typescript": 16110
+    "rust": 11170,
+    "typescript": 16147
   },
-  "nonoverlapping_callable_lines": 17789,
+  "nonoverlapping_callable_lines": 17802,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8301,
-    "typescript": 9488
+    "rust": 8335,
+    "typescript": 9467
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17442,
+    "mapped": 17455,
     "candidate": 159,
     "unmapped": 188
   },
@@ -520,10 +520,10 @@
     },
     {
       "file": "crates/temporal/zoned.rs",
-      "source_lines": 469,
+      "source_lines": 503,
       "callable_rows": 31,
-      "nonoverlapping_callable_lines": 358,
-      "sha256": "e18669c60bcefbaad3026e91634d68f651a5b5398d21fc4fab7cac8728d9d0f0",
+      "nonoverlapping_callable_lines": 392,
+      "sha256": "7c4f0f809f185e731c8efd04a006b7d83cdd63f540de02b2c130289ed9bc0dcd",
       "unresolved_callable_rows": 1
     },
     {
@@ -712,10 +712,10 @@
     },
     {
       "file": "packages/temporal/kernel.ts",
-      "source_lines": 417,
+      "source_lines": 474,
       "callable_rows": 15,
       "nonoverlapping_callable_lines": 336,
-      "sha256": "bf048962fb3f60fa6d2c542e6d46f467e0c40aaa9fc3d16de7b04aef31e8ba6e",
+      "sha256": "16c846ab0d8a674b9c403f9bd3f508427e5a21b6fed1fb8f5c3c64c3118c9237",
       "unresolved_callable_rows": 0
     },
     {
@@ -896,10 +896,10 @@
     },
     {
       "file": "packages/temporal/zoned-date-time.ts",
-      "source_lines": 1333,
+      "source_lines": 1313,
       "callable_rows": 19,
-      "nonoverlapping_callable_lines": 621,
-      "sha256": "19a1c862e973014699560e193e725ebc8fa35944ecfa6f99d5e9e0148042c86d",
+      "nonoverlapping_callable_lines": 600,
+      "sha256": "8b262a59a1d04e083d0fc024634e017ec6843df1bbe2c2346d5e9a47dbb4151a",
       "unresolved_callable_rows": 0
     },
     {

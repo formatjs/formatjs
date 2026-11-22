@@ -37,6 +37,18 @@ const lowerControl = 'America/Los_Angeles'
 const pulse = 'America/Phoenix'
 const ordinaryGap = 'America/Detroit'
 const positiveShiftPulse = 'America/Boise'
+const overlappingGap = 'America/Moncton'
+const gapAtLowerLimit = 'America/Toronto'
+const gapBelowLowerLimit = 'America/Vancouver'
+const overlappingRows = (zone, shift) =>
+  zone +
+  '|' +
+  [
+    packedRow(null, 4),
+    packedRow((shift - 86n) * 3600n, 5),
+    packedRow((shift - 62n) * 3600n, 6),
+    packedRow((shift - 58n) * 3600n, 7),
+  ].join('|')
 
 try {
   const nativeFormatter = Intl.DateTimeFormat
@@ -46,7 +58,9 @@ try {
   assert.notEqual(formatter, nativeFormatter)
   formatter.__addTZData({
     abbrvs: 'TEST',
-    offsets: '0|5k0|xc0|b40',
+    offsets: [0n, 2n, 12n, 4n, 7n, -4n, 16n, -3n]
+      .map(offset => (offset * 3600n).toString(36))
+      .join('|'),
     zones: [
       `${upperMixed}|${packedRow(null, 1)}|${packedRow(maxSeconds + 900n, 0)}`,
       `${upperControl}|${packedRow(null, 0)}|${packedRow(maxSeconds - 10_800n, 1)}`,
@@ -55,6 +69,9 @@ try {
       `${pulse}|${packedRow(null, 0)}|${packedRow(0n, 2)}|${packedRow(21_600n, 0)}`,
       `${ordinaryGap}|${packedRow(null, 0)}|${packedRow(0n, 2)}`,
       `${positiveShiftPulse}|${packedRow(null, 0)}|${packedRow(0n, 3)}|${packedRow(21_600n, 0)}`,
+      overlappingRows(overlappingGap, 0n),
+      overlappingRows(gapAtLowerLimit, -(maxNanoseconds / hour) + 81n),
+      overlappingRows(gapBelowLowerLimit, -(maxNanoseconds / hour) + 80n),
     ],
   })
   const {Temporal} = await load(temporal, 'index.js')
@@ -195,6 +212,54 @@ try {
       RangeError
     )
   }
+
+  // The nearest boundary offsets shift this clock into the same gap.
+  const overlappingLocal = `1969-12-29T07:00:00[${overlappingGap}]`
+  for (const [disambiguation, expected] of [
+    ['earlier', -81n],
+    ['compatible', -61n],
+    ['later', -61n],
+  ])
+    assert.equal(
+      Temporal.ZonedDateTime.from(overlappingLocal, {disambiguation})
+        .epochNanoseconds,
+      expected * hour
+    )
+  assert.throws(
+    () =>
+      Temporal.ZonedDateTime.from(overlappingLocal, {disambiguation: 'reject'}),
+    RangeError
+  )
+  assert.equal(
+    Temporal.ZonedDateTime.from(`-271821-04-20T16:00:00[${gapAtLowerLimit}]`, {
+      disambiguation: 'earlier',
+    }).epochNanoseconds,
+    -maxNanoseconds
+  )
+  const belowLimitLocal = `-271821-04-20T15:00:00[${gapBelowLowerLimit}]`
+  assert.throws(
+    () =>
+      Temporal.ZonedDateTime.from(belowLimitLocal, {disambiguation: 'earlier'}),
+    /Instant out of range/
+  )
+  assert.equal(
+    Temporal.ZonedDateTime.from(belowLimitLocal).epochNanoseconds,
+    -maxNanoseconds + 19n * hour
+  )
+  const roundingOrigin = new Temporal.ZonedDateTime(562n * hour, overlappingGap)
+  const roundingTarget = new Temporal.ZonedDateTime(-33n * hour, overlappingGap)
+  assert.equal(
+    roundingOrigin
+      .until(roundingTarget, {
+        largestUnit: 'day',
+        smallestUnit: 'day',
+        roundingIncrement: 2,
+        roundingMode: 'floor',
+      })
+      .toString(),
+    '-P26D'
+  )
+
   // A warm zone must use the same reloaded offsets as owned candidates.
   const reloadZone = 'America/New_York'
   const registerZone = (initialOffset, transitionSecond) => {
@@ -379,6 +444,31 @@ try {
       () => Temporal.ZonedDateTime.from(upperGap, {disambiguation}),
       RangeError
     )
+
+  formatter.__addTZData({
+    abbrvs: 'TEST',
+    offsets: 'dw0|-dw0|b40',
+    zones: [
+      `${pulse}|${packedRow(null, 0)}|${packedRow(-18_000n, 1)}|${packedRow(-10_800n, 2)}`,
+    ],
+  })
+  const midnight = `1970-01-01T00:00[${pulse}]`
+  assert.equal(
+    Temporal.ZonedDateTime.from(midnight).epochNanoseconds,
+    -6n * hour
+  )
+  const dayStart = -3n * hour
+  const value = new Temporal.ZonedDateTime(-2n * hour, pulse)
+  assert.equal(value.startOfDay().epochNanoseconds, dayStart)
+  assert.equal(
+    Temporal.ZonedDateTime.from(`1970-01-01[${pulse}]`).epochNanoseconds,
+    dayStart
+  )
+  assert.equal(
+    Temporal.PlainDate.from('1970-01-01').toZonedDateTime(pulse)
+      .epochNanoseconds,
+    dayStart
+  )
 } finally {
   hooks.deregister()
 }

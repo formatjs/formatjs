@@ -56,6 +56,63 @@ export interface TimeZoneKernel {
   resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
 }
 
+// Proposal comparison §11.1.14 steps 1–3, 5–7: Select midnight or the nearest later local time.
+export function startOfTimeZoneDay(
+  midnight: bigint,
+  zone: TimeZoneKernel
+): bigint {
+  if (midnight <= -limit - day || midnight >= limit + day)
+    throw new RangeErrorConstructor('Local date out of range')
+  const possible = (local: bigint): bigint[] =>
+    zone.possibleInstantsFromEpochNanoseconds?.(local) ??
+    zone.possibleInstants(epochNanosecondsToISO(local))
+  const candidates = possible(midnight)
+  if (candidates.length) return candidates[0]
+
+  const lower = midnight - day
+  let upper = midnight + 3n * day
+  if (lower >= -limit && upper <= limit) {
+    let cursor = lower
+    let nearest: bigint | undefined
+    // Proposal comparison §11.1.14 step 5. At midnight plus one day,
+    // the offset projects to a local time within two days of midnight.
+    while (true) {
+      const event = zone.transition(cursor, 'next')
+      if (event === null || event <= cursor || event >= upper) break
+      cursor = event
+      const projected = event + zone.offsetNanoseconds(event)
+      if (
+        projected > midnight &&
+        (nearest === undefined || projected < nearest)
+      ) {
+        nearest = projected
+        if (nearest + day < upper) upper = nearest + day
+      }
+    }
+    if (nearest !== undefined) {
+      const after = possible(nearest)
+      if (after.length === 1) return after[0]
+    }
+  }
+
+  // Keep existing treatment at the Instant limits and for unsupported neighbors.
+  let event: bigint | null = zone.resolve(epochNanosecondsToISO(midnight))
+  while (event !== null && event >= lower) {
+    if (event > -limit) {
+      const before = zone.offsetNanoseconds(event - 1n),
+        after = zone.offsetNanoseconds(event)
+      if (
+        after > before &&
+        midnight >= event + before &&
+        midnight < event + after
+      )
+        return event
+    }
+    event = zone.transition(event, 'previous')
+  }
+  throw new RangeErrorConstructor('No day boundary in instant range')
+}
+
 // Temporal comparison §11.1.2 steps 2, 3.
 // Floor the epoch quotient so negative instants keep the correct remainder.
 function floorDivide(value: bigint, divisor: bigint): bigint {

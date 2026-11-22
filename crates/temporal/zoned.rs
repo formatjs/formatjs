@@ -356,10 +356,44 @@ fn local_candidate_bounds<Z: TimeZone>(
     Ok(first.zip(last))
 }
 
-// Proposal comparison §11.1.14 steps 1–3, 5 and 7: Resolve midnight or find the containing forward transition.
+// Proposal comparison §11.1.14 steps 1–3, 5–7: Select midnight or the nearest later local time.
 pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, Error> {
     let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
     crate::iso::check_local(midnight)?;
+    if let Some((first, _)) = local_candidate_bounds(midnight, zone)? {
+        return Instant::from_epoch_nanoseconds(first);
+    }
+    let lower = midnight - NANOSECONDS_PER_DAY;
+    let mut upper = midnight + 3 * NANOSECONDS_PER_DAY;
+    if lower >= -crate::MAX_EPOCH_NANOSECONDS && upper <= crate::MAX_EPOCH_NANOSECONDS {
+        let mut cursor = Instant::from_epoch_nanoseconds(lower)?;
+        let mut nearest = None;
+        // Proposal comparison §11.1.14 step 5. At midnight plus one day,
+        // the offset projects to a local time within two days of midnight.
+        while let Some(next) = zone.transition(cursor, TransitionDirection::Next) {
+            let value = next.epoch_nanoseconds();
+            if next <= cursor || value >= upper {
+                break;
+            }
+            cursor = next;
+            let offset = zone.offset_nanoseconds(next);
+            if offset <= -NANOSECONDS_PER_DAY || offset >= NANOSECONDS_PER_DAY {
+                continue;
+            }
+            let local = value + offset;
+            if local > midnight && nearest.is_none_or(|previous| local < previous) {
+                nearest = Some(local);
+                upper = upper.min(local + NANOSECONDS_PER_DAY);
+            }
+        }
+        if let Some(local) = nearest
+            && let Some((first, last)) = local_candidate_bounds(local, zone)?
+            && first == last
+        {
+            return Instant::from_epoch_nanoseconds(first);
+        }
+    }
+    // Keep existing treatment at the Instant limits and for unsupported neighbors.
     let candidate = resolve_local_nanoseconds(midnight, zone, Disambiguation::Compatible)?;
     if candidate.epoch_nanoseconds() + zone.offset_nanoseconds(candidate) == midnight {
         return Ok(candidate);

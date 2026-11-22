@@ -462,8 +462,10 @@ function resolveTemporalGap(
   direction: 'earlier' | 'later'
 ): bigint | undefined {
   const milliseconds = temporalLocalMilliseconds(local)
+  const earlier = direction === 'earlier'
   let before: bigint | undefined
   let after: bigint | undefined
+  let fallback: bigint | undefined
   let validOffsets = true
   const covered = VisitTimeZoneBoundaries(
     milliseconds - gapWindowMilliseconds,
@@ -482,6 +484,9 @@ function resolveTemporalGap(
       const start = instant + bigIntFrom(newOffset) * candidateSecond
       if (end < local && (before === undefined || end > before)) before = end
       if (start > local && (after === undefined || start < after)) after = start
+      if (fallback === undefined && local > end && local < start)
+        fallback =
+          local - bigIntFrom(earlier ? newOffset : oldOffset) * candidateSecond
     }
   )
   if (!covered || !validOffsets || before === undefined || after === undefined)
@@ -501,11 +506,17 @@ function resolveTemporalGap(
   if (!shift || shift < -gapDay || shift > gapDay) return undefined
 
   // Proposal comparison §11.1.12 steps 16.e–16.g and 22–25: requery and select the first or last instant.
-  const earlier = direction === 'earlier'
   const shifted = checkedTemporalCandidates(
     local + (earlier ? -shift : shift),
     zone
   )
+  // A shifted clock can still be missing when transitions overlap.
+  // Reuse the containing transition, as the loaded Temporal kernels do.
+  if (!shifted.length && fallback !== undefined) {
+    if (!validTemporalInstant(fallback))
+      throw new RangeErrorConstructor('Instant out of range')
+    return fallback
+  }
   let instant = shifted[0]
   for (let index = 1; index < shifted.length; index++) {
     const candidate = shifted[index]

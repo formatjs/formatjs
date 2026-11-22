@@ -58,7 +58,7 @@ fields/unit/anchor; typed Rust does not implement JS coercion. Without relativeT
 
 Special year/month-to-week handling runs before normal plain/zoned rounding.
 Other zoned calls pass isDurationRounding=true to
-[differenceZonedDuration](../../packages/temporal/zoned-date-time.ts#L569).
+[differenceZonedDuration](../../packages/temporal/zoned-date-time.ts#L572).
 That flag prevents the public ZonedDateTime.until equal-epoch shortcut from
 intercepting Duration.round. Plain equality follows
 [comparison §5.5.13](https://tc39.es/proposal-temporal/#sec-temporal-differenceplaindatetimewithrounding);

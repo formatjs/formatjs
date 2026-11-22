@@ -5,7 +5,7 @@ import {
   compactTimeZoneNames,
   unpackCompactTimeZone,
 } from '#packages/temporal/compact-timezone.js'
-import {createTimeZone} from '#packages/temporal/kernel.js'
+import {createTimeZone, startOfTimeZoneDay} from '#packages/temporal/kernel.js'
 
 it('reconstructs every finite IANA offset event, final cutoff and future rule', () => {
   const original = UnpackTimeZoneData(packed),
@@ -59,3 +59,16 @@ it('reconstructs every finite IANA offset event, final cutoff and future rule', 
   expect(rows).toBe(19793)
   expect(() => unpackCompactTimeZone('__proto__')).toThrow(RangeError)
 }, 60000)
+
+it('finds the first local clock after midnight across overlapping transitions', () => {
+  const zone = createTimeZone(
+    UnpackTimeZoneData({
+      abbrvs: 'TEST',
+      offsets: 'dw0|-dw0|b40',
+      zones: ['Test/Gap|,0,0,0|-dw0,0,1,0|-8c0,0,2,0'],
+    })['Test/Gap']
+  )
+  const hour = 3_600_000_000_000n
+  expect(zone.resolve({year: 1970, month: 1, day: 1})).toBe(-6n * hour)
+  expect(startOfTimeZoneDay(0n, zone)).toBe(-3n * hour)
+})

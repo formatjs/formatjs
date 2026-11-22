@@ -12,7 +12,7 @@ Both public regressions failed before repair. Neither correction changes roundin
 
 ## Complete numbered settings map
 
-Comparison: [proposal §13.43 GetDifferenceSettings](https://tc39.es/proposal-temporal/#sec-temporal-getdifferencesettings). Current caller starts: [Instant161](../../packages/temporal/instant.ts#L161), [PlainTime306](../../packages/temporal/plain-time.ts#L306), [PlainDate232](../../packages/temporal/plain-date.ts#L232), [PlainDateTime270](../../packages/temporal/plain-date-time.ts#L270), [PlainYearMonth181](../../packages/temporal/plain-year-month.ts#L181), [ZonedDateTime569](../../packages/temporal/zoned-date-time.ts#L569).
+Comparison: [proposal §13.43 GetDifferenceSettings](https://tc39.es/proposal-temporal/#sec-temporal-getdifferencesettings). Current caller starts: [Instant161](../../packages/temporal/instant.ts#L161), [PlainTime306](../../packages/temporal/plain-time.ts#L306), [PlainDate232](../../packages/temporal/plain-date.ts#L232), [PlainDateTime270](../../packages/temporal/plain-date-time.ts#L270), [PlainYearMonth181](../../packages/temporal/plain-year-month.ts#L181), [ZonedDateTime569](../../packages/temporal/zoned-date-time.ts#L572).
 
 1. Alphabetical independent-read order is preserved: largestUnit, roundingIncrement, roundingMode, smallestUnit.
 2. Largest unit is read once and string-coerced before later reads. Auto is handled separately; [unitOption93](../../packages/temporal/rounding.ts#L93) validates and normalizes exact singular/plural spellings immediately. Reprocessing the resulting primitive string cannot cause another object coercion.

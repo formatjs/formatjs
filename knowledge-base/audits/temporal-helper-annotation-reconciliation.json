@@ -33988,7 +33988,7 @@
     "crates/temporal/timezone.rs": "40588eff315aa93b4f604a7644a860dd71053fd2843e2f65207dc45d90ff2b89",
     "crates/temporal/timezone_identity.rs": "c695d9488a24ac563b414695fa68b7a8ee65d8780895b0eb852dddcf776e4272",
     "crates/temporal/timezone_registry.rs": "9c8a37cc6b36970226abd320da9072c3a2acc88d47ce83c291733126249c966e",
-    "crates/temporal/zoned.rs": "e18669c60bcefbaad3026e91634d68f651a5b5398d21fc4fab7cac8728d9d0f0",
+    "crates/temporal/zoned.rs": "7c4f0f809f185e731c8efd04a006b7d83cdd63f540de02b2c130289ed9bc0dcd",
     "crates/temporal/zoned_difference.rs": "7f61d43aedd2fa256912144d69ded838456f28245c2caad44f6355a73831ca6d",
     "crates/temporal/zoned_string.rs": "ee996d3aeef66c3d3f8aa597cfc8389085daf46673458a010fb48e883c98181e",
     "packages/temporal/accessors.ts": "4d6cc7204e5451cb19339c90e5aa9f9624817317dd44683140d0272091f19a7a",
@@ -34011,7 +34011,7 @@
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
-    "packages/temporal/kernel.ts": "bf048962fb3f60fa6d2c542e6d46f467e0c40aaa9fc3d16de7b04aef31e8ba6e",
+    "packages/temporal/kernel.ts": "16c846ab0d8a674b9c403f9bd3f508427e5a21b6fed1fb8f5c3c64c3118c9237",
     "packages/temporal/legacy-calendar-date.ts": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
@@ -34031,7 +34031,7 @@
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/short-date-core.ts": "873911e54f428df9e1218185e7b67f650581a316dcbce7b15763f9f3c8c78715",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
-    "packages/temporal/zoned-date-time.ts": "19a1c862e973014699560e193e725ebc8fa35944ecfa6f99d5e9e0148042c86d",
+    "packages/temporal/zoned-date-time.ts": "8b262a59a1d04e083d0fc024634e017ec6843df1bbe2c2346d5e9a47dbb4151a",
     "packages/temporal/zones.ts": "67b41bb489b4003a7880198c398ff97f17dd378f52a6464efdf490c2d9c84d40",
     "packages/temporal/epoch-slots.ts": "9580c5573978e5efbf0e131179be8982ec3e84810fcbdc780220be4af7b84a73"
   },
@@ -34602,6 +34602,20 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "nearest_local_day_start": [
+      {
+        "file": "packages/temporal/kernel.ts",
+        "symbol": "startOfTimeZoneDay",
+        "source_sha256": "16c846ab0d8a674b9c403f9bd3f508427e5a21b6fed1fb8f5c3c64c3118c9237",
+        "start_line": 60,
+        "end_line": 113,
+        "anchor_line": 59,
+        "section": "11.1.14",
+        "steps": ["1", "2", "3", "5", "6", "7"],
+        "spec_url": "https://tc39.es/proposal-temporal/#sec-temporal-getstartofday",
+        "scope": "Resolve midnight or find the nearest later projected wall time in the supported interior transition interval."
+      }
+    ],
     "host_timezone_capability_descriptor": [
       {
         "file": "packages/temporal/host-timezone.ts",
@@ -34620,10 +34634,10 @@
       {
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "temporalTimeZoneData",
-        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
-        "start_line": 518,
-        "end_line": 523,
-        "anchor_line": 517,
+        "source_sha256": "2c3c41e2f395d1ac8dae6b71a9857bb194b7c1bf653817f71c0cef000195390f",
+        "start_line": 529,
+        "end_line": 534,
+        "anchor_line": 528,
         "section": "21.4.1.20",
         "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneepochnanoseconds",
         "scope": "Select the same canonical data-zone rows as the formatter before owned Temporal lookup."
@@ -34631,10 +34645,10 @@
       {
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "temporalTimeZoneData",
-        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
-        "start_line": 518,
-        "end_line": 523,
-        "anchor_line": 517,
+        "source_sha256": "2c3c41e2f395d1ac8dae6b71a9857bb194b7c1bf653817f71c0cef000195390f",
+        "start_line": 529,
+        "end_line": 534,
+        "anchor_line": 528,
         "section": "21.4.1.21",
         "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds",
         "scope": "Select the same canonical data-zone rows as the formatter before owned Temporal lookup."
@@ -34846,7 +34860,7 @@
       {
         "file": "crates/temporal/zoned.rs",
         "symbol": "local_candidate_bounds",
-        "source_sha256": "e18669c60bcefbaad3026e91634d68f651a5b5398d21fc4fab7cac8728d9d0f0",
+        "source_sha256": "7c4f0f809f185e731c8efd04a006b7d83cdd63f540de02b2c130289ed9bc0dcd",
         "start_line": 345,
         "end_line": 357,
         "anchor_line": 343,
@@ -34941,7 +34955,7 @@
         "start_line": 416,
         "end_line": 439,
         "anchor_line": 415,
-        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
+        "source_sha256": "2c3c41e2f395d1ac8dae6b71a9857bb194b7c1bf653817f71c0cef000195390f",
         "spec_row_ids": [
           "11.1.13/algorithm-1/step-3.a",
           "11.1.13/algorithm-1/step-4.a"
@@ -34964,9 +34978,9 @@
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "resolveTemporalGap",
         "start_line": 459,
-        "end_line": 515,
+        "end_line": 526,
         "anchor_line": 458,
-        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
+        "source_sha256": "2c3c41e2f395d1ac8dae6b71a9857bb194b7c1bf653817f71c0cef000195390f",
         "spec_row_ids": [
           "11.1.12/algorithm-1/step-6",
           "11.1.12/algorithm-1/step-7",
@@ -35102,7 +35116,7 @@
         "start_line": 442,
         "end_line": 452,
         "anchor_line": 441,
-        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
+        "source_sha256": "2c3c41e2f395d1ac8dae6b71a9857bb194b7c1bf653817f71c0cef000195390f",
         "spec_row_ids": ["11.1.13/algorithm-1/step-4.a"],
         "scope": "Reject actual out-of-range candidates for the initial and shifted public queries."
       }

@@ -28,7 +28,7 @@ AST call inventory finds exactly two TS calls to roundRelativeDifference:
   [plain-year-month.ts:260](../../packages/temporal/plain-year-month.ts#L260),
   and plain-relative Duration.round
   [relative-duration.ts:305](../../packages/temporal/relative-duration.ts#L311).
-- [zoned-date-time.ts:628](../../packages/temporal/zoned-date-time.ts#L628), through
+- [zoned-date-time.ts:628](../../packages/temporal/zoned-date-time.ts#L631), through
   differenceZonedDuration. Public ZonedDateTime.until/since and zoned-relative
   Duration.round [relative-duration.ts:281](../../packages/temporal/relative-duration.ts#L283).
 
@@ -84,7 +84,7 @@ TS plain endpoint closure
 [date-core.ts:855](../../packages/temporal/date-core.ts#L858) adds constrained
 calendar fields to original date, multiplies resulting epoch day by exact
 nsPerDay, then adds original timeOf(start). Zoned closure
-[zoned-date-time.ts:639](../../packages/temporal/zoned-date-time.ts#L639) calls
+[zoned-date-time.ts:639](../../packages/temporal/zoned-date-time.ts#L642) calls
 addZonedDuration on original slot. Candidate has no clock fields, so date
 addition uses original local clock and compatible resolution. Rust
 zoned_difference.rs RelativeAnchor::endpoint delegates original receiver's

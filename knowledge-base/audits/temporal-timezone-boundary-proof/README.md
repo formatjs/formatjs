@@ -368,8 +368,8 @@ have one valid candidate. The shifted public query still throws if any of
 its actual candidates is outside the range. The positive-limit regression
 checks that earlier succeeds while later and compatible throw for that case.
 
-[Public boundary regression](../../../packages/temporal/tests/host-candidate-range.test.mjs#L294).
-[Exact boundary checks](../../../packages/intl-datetimeformat/core.ts#L491).
+[Public boundary regression](../../../packages/temporal/tests/host-candidate-range.test.mjs#L359).
+[Exact boundary checks](../../../packages/intl-datetimeformat/core.ts#L496).
 [Public candidate validation](../../../packages/intl-datetimeformat/core.ts#L441).
 [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
 [Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
@@ -439,7 +439,7 @@ It compares offsets on both sides of each boundary. Direction is strict at
 nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
-[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L546).
+[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L557).
 [Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L360).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
@@ -529,12 +529,59 @@ list. When the comparison's singleton and shifted-list assumptions fail,
 existing gap behavior supplies the fallback. Clipped limits and host
 provider completeness retain their separate evidence.
 
-- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L367).
-- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L423).
+- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L424).
+- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L457).
 - [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
 
 Five focused Bazel gates pass. Before-fix log SHA-256 `060e0dabd0f0a411c115def738840bf7e89fbd85f74c900101fd1614b8e09331`.
 Passing log SHA-256 `fcf449ff0ddbe8ef681dcb22a4a0f280df62199c84cac58c334fea1b35c38bab`.
+
+### Shifted clock still inside a gap
+
+An owned zone changes from +7h to −4h at epoch hour −86, to +16h
+at −62, then to −3h at −58. For local hour −65, the nearest boundary
+offsets are −4h and −3h. Their one-hour shift leaves the clock inside
+the same gap. The owned Intl path used to drop to numeric sampling and
+throw. It now uses the exact containing transition, matching the loaded
+TypeScript and Rust policy. Earlier returns epoch hour −81. Later and
+compatible return −61. Reject still throws.
+
+The regression uses this gap as a day-rounding endpoint and translates
+it to check the minimum Instant and one earlier result. This exercises
+the fallback when the comparison's nonempty shifted-list assertion fails.
+[§11.1.12 steps 16.f and 24](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
+- Before-fix Bazel SHA-256 `cb4c8dc7cc869d3c2b77be248205ef1ca939deaeae0b11611dd9f5f24da5dafc`
+- Pinned Node 26.8.1 package replay SHA-256 `bf5ca9418c93f957cbb62458c7057466006748bbb1007876f5d7c98f39c2306e`
+
+### Start of day after intersecting transitions
+
+With initial offset +5h, an offset change to −5h at epoch hour −5 is
+followed by +4h at −3. Local midnight is absent. The first reachable
+local clock after it is 01:00 at epoch hour −3. Ordinary compatible
+resolution instead selects −6, before that transition. Starting a
+backward scan from −6 misses the day boundary. PlainDate also used to
+rederive the requested date from that disambiguated instant.
+
+The public replay distinguishes those operations and checks ZonedDateTime
+start of day, date-only parsing and PlainDate conversion. The Rust fixture
+uses the same offsets and transitions.
+[§11.1.14 steps 5–7](https://tc39.es/proposal-temporal/#sec-temporal-getstartofday).
+
+With exact transition queries and a fully representable search interval,
+the forward scan projects each transition to local time. UTC midnight
+plus one day projects above midnight and within two local days. Any
+earlier reachable wall time must occur less than three epoch days past
+midnight. The scan tightens that bound when it finds a nearer local
+time, then checks for a sole round-trip candidate. The existing clipped
+endpoint path still applies near the Instant limits.
+[TypeScript scan](../../../packages/temporal/kernel.ts#L72).
+[Rust scan](../../../crates/temporal/zoned.rs#L366).
+
+- Before-fix TypeScript Bazel SHA-256 `7a8d461a2e1b4cad672a83f634c8a67ea2ecf1ec6038ed31998b42ea46cdb650`
+- Before-fix Rust Bazel SHA-256 `fb73f1d84265386c0963821cf5f63f8efec592efb9d045adfd2da26c29361189`
+- Combined nine-target Bazel SHA-256 `c51b8181552a78383751b901b35637d34f906014c8000ec86c686baba53697c2`
+- Passing public replay SHA-256 `1b46c8e3f99ffadea3b5c64f917f8c3fb4ca072d40f395875b9a4d83c6970867`
 
 ### Borrowed mixed-range candidate
 
@@ -560,7 +607,7 @@ raw offset is ignored. The controls keep their one valid candidate on
 both sides. Unknown providers retain bounded enumeration by default and
 the existing provider applicability condition.
 
-- [Compact matching and range check](../../../packages/temporal/kernel.ts#L306).
+- [Compact matching and range check](../../../packages/temporal/kernel.ts#L363).
 - [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L369).
 - [Rust candidate validation](../../../crates/temporal/zoned.rs#L321).
 - [Rust explicit offset matching](../../../crates/temporal/zoned_string.rs#L124).

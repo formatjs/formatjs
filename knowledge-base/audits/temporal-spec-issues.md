@@ -269,7 +269,7 @@ This arithmetic does not depend on FormatJS rounding output.
 
 [Existing Casey controls](../../packages/temporal/tests/zoned.test.ts#L241)
 already cover this receiver. The
-[TS day branch](../../packages/temporal/zoned-date-time.ts#L1039) and
+[TS day branch](../../packages/temporal/zoned-date-time.ts#L1019) and
 [Rust day branch](../../crates/temporal/zoned.rs#L240) clamp the receiver to
 `endNs - 1 ns` before rounding. That is an existing fallback, not a consequence
 of the failed assertion. Keep its behavior separate from the ordinary-day proof;

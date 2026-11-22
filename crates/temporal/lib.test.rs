@@ -41,6 +41,38 @@ fn date_zoned_conversion_distinguishes_day_start_from_explicit_midnight() {
 }
 
 #[test]
+fn day_start_uses_nearest_local_after_overlapping_transitions() {
+    use formatjs_temporal::{
+        OffsetTransition, PlainDate, PlainTime, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let events = [
+        OffsetTransition {
+            epoch_seconds: -18_000,
+            offset_seconds: -18_000,
+        },
+        OffsetTransition {
+            epoch_seconds: -10_800,
+            offset_seconds: 14_400,
+        },
+    ];
+    let zone = TransitionZone::new(18_000, &events, None).unwrap();
+    let date = PlainDate::new(1970, 1, 1).unwrap();
+    let explicit_midnight = date
+        .to_zoned_date_time(zone, Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+        .unwrap();
+    assert_eq!(explicit_midnight.instant().epoch_nanoseconds(), -6 * hour);
+    let date_start = date.to_zoned_date_time(zone, None).unwrap();
+    assert_eq!(date_start.instant().epoch_nanoseconds(), -3 * hour);
+    let instant = Instant::from_epoch_nanoseconds(-2 * hour).unwrap();
+    let zoned = ZonedDateTime::new(instant, zone);
+    assert_eq!(
+        zoned.start_of_day().unwrap().instant(),
+        date_start.instant()
+    );
+}
+
+#[test]
 fn date_zoned_conversion_handles_skipped_dates_and_instant_bounds() {
     use formatjs_temporal::{FixedOffset, PlainDate, PlainTime};
     let zones = iana_registry();
