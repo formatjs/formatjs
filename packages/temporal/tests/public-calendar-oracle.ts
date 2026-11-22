@@ -611,6 +611,19 @@ export function checkPublicCalendarOracle(
 } {
   checkPrivateCalendarFieldNames(Temporal, equal)
   checkLargeCalendarFields(Temporal, equal)
+  const february = new Temporal.PlainMonthDay(2, 28, 'gregory', 2023)
+  equal(
+    february.with({day: 29}, {overflow: 'reject'}).toString(),
+    '1972-02-29[u-ca=gregory]',
+    'Gregorian month-day update does not inherit its reference year'
+  )
+  let rejectedYear = false
+  try {
+    february.with({day: 29, year: 2023}, {overflow: 'reject'})
+  } catch (error) {
+    rejectedYear = error instanceof RangeError
+  }
+  equal(rejectedYear, true, 'Gregorian month-day update checks a supplied year')
   const date = (epoch: number, calendar: string) =>
     new Temporal.PlainDate(1970, 1, 1).add({days: epoch}).withCalendar(calendar)
   for (const line of fixture.trim().split('\n')) {

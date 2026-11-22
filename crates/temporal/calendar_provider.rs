@@ -320,6 +320,8 @@ pub(crate) fn merge_fields<'a, C: CalendarProvider>(
     }
     // YearMonth reference days can lie outside PlainDate's range.
     let date = calendar.date_extended(epoch).map_err(error)?;
+    // ECMA-262 preview §22.3.9.4 steps 3–5 limit fields by shape.
+    // https://tc39.es/ecma262/pr/3966/#sec-isodatetofields
     let mut base = DateFields {
         year: (!matches!(shape, DateFieldShape::MonthDay)).then_some(date.year),
         month_code: Some(date.month_code),

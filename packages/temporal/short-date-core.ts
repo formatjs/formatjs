@@ -303,7 +303,8 @@ export function mergeShortFields(
   kind: 'year-month' | 'month-day' = 'year-month'
 ): Record<string, unknown> {
   // Proposal comparison §9.3.13 steps 5 and 7 and §10.3.6 steps 5 and 7:
-  // Project short-date fields before merging prepared updates.
+  // ECMA-262 preview §22.3.9.4 steps 3–5: retain monthCode and the year or day.
+  // https://tc39.es/ecma262/pr/3966/#sec-isodatetofields
   const fields: Record<string, unknown> = {...dateFields(slot, true)}
   if (kind === 'month-day') fields.year = undefined
   else fields.day = undefined

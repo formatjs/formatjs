@@ -592,8 +592,8 @@ export function mergeDateFields(
   }
   return {...base, ...updates}
 }
-// Temporal comparison §13.24 steps1–7: reject brands before calendar/timeZone Gets
-// https://tc39.es/proposal-temporal/#sec-temporal-ispartialtemporalobject
+// ECMA-262 preview §22.3.17 steps 1–8: check slots before calendar and timeZone.
+// https://tc39.es/ecma262/pr/3966/#sec-ispartialtemporalobject
 export function partialObject(item: unknown): Record<string, unknown> {
   if (
     !object(item) ||

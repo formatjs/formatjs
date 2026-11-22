@@ -188,30 +188,25 @@ function regulate(values: number[], constrain: boolean): bigint {
 function object(value: unknown): value is Record<string, unknown> {
   return IsObject(value)
 }
-// Temporal comparison §4.5.12 steps 4–18. Read fields in spec order.
+// ECMA-262 preview §22.3.15.13 steps 1–17: read and coerce each present field.
+// https://tc39.es/ecma262/pr/3966/#sec-topartialtimerecord
 function timeFields(
   item: Record<string, unknown>,
   initial = [0, 0, 0, 0, 0, 0]
 ): number[] {
   const result = clockValues(index => initial[index])
-  // ToTemporalTimeRecord: complete callers seed zero; with() fuses the later merge.
-  // The partial-record unset/undefined conflict remains in the separate spec-issue log.
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L733-L758
-  // L733: no defined field has been converted yet.
+  // ECMA-262 preview §22.12.3.11 steps 5–16: with() seeds omitted fields from the receiver.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaintime.prototype.with
   let any = false
   for (let position = 0; position < 6; position++) {
     const index = fieldOrder[position]
-    // L734/L738/L742/L746/L750/L754: one Get, in hour/microsecond/millisecond/minute/nanosecond/second order.
     const raw = item[names[index]]
-    // L735/L739/L743/L747/L751/L755: undefined alone means absent; preserve the seed.
     if (raw !== undefined) {
-      // L736/L740/L744/L748/L752/L756: convert before reading the next field; propagate throws.
       result[index] = integer(raw)
-      // L737/L741/L745/L749/L753/L757: even a converted zero counts as a supplied field.
       any = true
     }
   }
-  // L758: finish all six Gets before rejecting a record with no supplied fields.
+  // Step 16 rejects an input with all six fields absent.
   if (!any) throw new TypeErrorConstructor('At least one time field required')
   return result
 }
@@ -473,22 +468,8 @@ class PlainTimeValue implements PlainTimeObject {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     // Temporal comparison §4.2.3 steps 1–3.
     // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.compare
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L833-L845
-    // L833: a greater hour dominates every lower clock field.
-    // L834: a lesser hour dominates every lower clock field.
-    // L835: with equal hours, a greater minute gives greater nanoseconds.
-    // L836: with equal hours, a lesser minute gives lesser nanoseconds.
-    // L837: with equal hours/minutes, a greater second gives greater nanoseconds.
-    // L838: with equal hours/minutes, a lesser second gives lesser nanoseconds.
-    // L839: with equal higher fields, greater milliseconds give greater nanoseconds.
-    // L840: with equal higher fields, lesser milliseconds give lesser nanoseconds.
-    // L841: with equal higher fields, greater microseconds give greater nanoseconds.
-    // L842: with equal higher fields, lesser microseconds give lesser nanoseconds.
-    // L843: with equal higher fields, greater nanoseconds compare greater.
-    // L844: with equal higher fields, lesser nanoseconds compare lesser.
-    // L845: equal clock totals identify all six normalized clock fields.
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L75
-    // L75: both backends compare normalized private clocks and return a Number sign.
+    // ECMA-262 preview §22.3.15.3 steps 1–13: compare normalized clock totals.
+    // https://tc39.es/ecma262/pr/3966/#sec-comparetimerecord
     if (import.meta.formatjsTemporalNativeData === true) {
       const left = toNativeTime(one).nanoseconds,
         right = toNativeTime(two).nanoseconds
