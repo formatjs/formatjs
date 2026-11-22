@@ -897,9 +897,10 @@ Safe host month examples supply localized month/day labels. Related years and
 sexagenary names are restored separately. Captured intrinsics avoid recursion
 after installation. Validated numeric Year ranges reuse the native layout,
 including verified numeric widths, weekday labels and Buddhist textual months.
-Verified UTC Chinese and Dangi Day and Month intervals reuse native source
-tags while restoring corrected days. Other corrected ranges use complete
-endpoint patterns and a captured host separator.
+Verified UTC Chinese and Dangi Year, Month, and Day intervals retain native
+source tags while restoring corrected days. Regular and leap months retain
+both endpoint labels when shown. Other corrected ranges use complete endpoint
+patterns and a captured host separator.
 
 All 130 Temporal DateTimeFormat executions pass on Node TS/WASM and Hermes
 source/bytecode through the legacy adapter, with zero tracked failures. This

@@ -234,6 +234,135 @@ for (const [calendar, dates, month, monthCodes, days] of [
     checked++
   }
 }
+for (const [calendar, dates, years, monthCodes, oldDays, days] of [
+  [
+    'chinese',
+    ['1954-02-02', '1954-02-04'],
+    [1953, 1954],
+    ['M12', 'M01'],
+    [29, 1],
+    [29, 2],
+  ],
+  [
+    'dangi',
+    ['2017-01-27', '2017-02-27'],
+    [2016, 2017],
+    ['M12', 'M02'],
+    [30, 1],
+    [30, 2],
+  ],
+]) {
+  const options = {
+    calendar,
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  const milliseconds = dates.map(date => Date.parse(`${date}T00:00Z`))
+  const plain = dates.map(date =>
+    Temporal.PlainDate.from(date).withCalendar(calendar)
+  )
+  assert.deepEqual(
+    plain.map(date => date.year),
+    years
+  )
+  assert.deepEqual(
+    plain.map(date => date.monthCode),
+    monthCodes
+  )
+  assert.deepEqual(
+    plain.map(date => date.day),
+    days
+  )
+  const raw = new Native('en', options).formatRangeToParts(...milliseconds)
+  for (const type of ['relatedYear', 'yearName']) {
+    assert.deepEqual(
+      raw.filter(part => part.type === type).map(part => part.source),
+      ['startRange', 'endRange']
+    )
+  }
+  const expected = raw.map(part => {
+    if (part.type !== 'day') return part
+    const index = part.source === 'endRange' ? 1 : 0
+    assert.equal(part.value, String(oldDays[index]))
+    return {...part, value: String(days[index])}
+  })
+  const formatter = new Intl.DateTimeFormat('en', options)
+  for (const inputs of [milliseconds, plain]) {
+    assert.deepEqual(formatter.formatRangeToParts(...inputs), expected)
+    assert.equal(
+      formatter.formatRange(...inputs),
+      expected.map(part => part.value).join('')
+    )
+    checked++
+  }
+}
+
+for (const calendar of ['chinese', 'dangi']) {
+  const yearOptions = {calendar, timeZone: 'UTC', year: 'numeric'}
+  const nativeYear = new Native('en', yearOptions)
+  const yearOnly = new Intl.DateTimeFormat('en', yearOptions)
+  for (const [last, reference, month, labels] of [
+    ['2020-05-23', '2020-06-21', 'numeric', ['4', '5', '4bis']],
+    [
+      '2020-05-24',
+      '2020-06-22',
+      'long',
+      ['Fourth Month', 'Fifth Month', 'Fourth Monthbis'],
+    ],
+  ]) {
+    const options = {calendar, timeZone: 'UTC', month, day: 'numeric'}
+    const native = new Native('en', options)
+    const formatter = new Intl.DateTimeFormat('en', options)
+    const dates = ['2020-04-23', last]
+    const milliseconds = dates.map(date => Date.parse(`${date}T00:00Z`))
+    const plain = dates.map(date =>
+      Temporal.PlainDate.from(date).withCalendar(calendar)
+    )
+    assert.deepEqual(
+      plain.map(date => date.monthCode),
+      ['M04', 'M04L']
+    )
+    const raw = native.formatRangeToParts(...milliseconds)
+    assert.deepEqual(
+      raw.filter(part => part.type === 'month'),
+      [{type: 'month', value: labels[0], source: 'shared'}]
+    )
+    const expected = native
+      .formatRangeToParts(milliseconds[0], Date.parse(`${reference}T00:00Z`))
+      .map(part => {
+        if (part.type !== 'month' || part.source !== 'endRange') return part
+        assert.equal(part.value, labels[1])
+        return {...part, value: labels[2]}
+      })
+    const expectedYear = nativeYear.formatRangeToParts(...milliseconds)
+    assert.ok(expectedYear.every(part => part.source === 'shared'))
+    for (const inputs of [milliseconds, plain]) {
+      assert.deepEqual(formatter.formatRangeToParts(...inputs), expected)
+      assert.equal(
+        formatter.formatRange(...inputs),
+        expected.map(part => part.value).join('')
+      )
+      assert.deepEqual(yearOnly.formatRangeToParts(...inputs), expectedYear)
+      checked++
+    }
+  }
+  const twoDigit = {calendar, timeZone: 'UTC', month: '2-digit', day: 'numeric'}
+  const milliseconds = ['2020-04-23', '2020-05-24'].map(date =>
+    Date.parse(`${date}T00:00Z`)
+  )
+  const raw = new Native('en', twoDigit).formatRangeToParts(...milliseconds)
+  assert.deepEqual(
+    raw.filter(part => part.type === 'month').map(part => part.source),
+    ['startRange', 'endRange']
+  )
+  assert.deepEqual(
+    new Intl.DateTimeFormat('en', twoDigit).formatRangeToParts(...milliseconds),
+    raw
+  )
+  checked++
+}
 console.log(
   `${rows.length} independent lunar field rows; ${differences.length} native data differences; ${checked} formatting checks`
 )

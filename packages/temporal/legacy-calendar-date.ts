@@ -27,6 +27,8 @@ import {
   hostBuddhistMonth,
   legacyISOEpochDay,
   lunisolarUtcRangeDays,
+  type LunisolarRangeEndpoint,
+  type LunisolarRangeFields,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
 
@@ -53,7 +55,7 @@ interface NumericRangeYear {
   weekday: string | undefined
 }
 
-interface CalendarRangeFields {
+interface CalendarRangeFields extends LunisolarRangeFields {
   year: number | undefined
   narrowMonth: number | undefined
   numericYear: NumericRangeYear | undefined
@@ -329,7 +331,15 @@ export function legacyCalendarParts(
         )
       )
         return raw
-      if (lunar) return correctLunisolarParts(value, raw, resolved)
+      if (lunar)
+        return correctLunisolarParts(
+          value,
+          raw,
+          resolved,
+          undefined,
+          undefined,
+          rangeFields
+        )
       labels = calendarLabelFormatter(value.formatter, options, raw)
     } catch (error) {
       if (
@@ -374,7 +384,8 @@ export function legacyCalendarParts(
         raw,
         resolved,
         surrogate,
-        epoch
+        epoch,
+        rangeFields
       )
     return restoreCalendarParts(
       value,
@@ -401,7 +412,14 @@ export function legacyCalendarParts(
   )
     return raw
   if (calendar === 'chinese' || calendar === 'dangi')
-    return correctLunisolarParts(value, raw, resolved, surrogate)
+    return correctLunisolarParts(
+      value,
+      raw,
+      resolved,
+      surrogate,
+      undefined,
+      rangeFields
+    )
   return restoreCalendarParts(
     value,
     raw,
@@ -712,14 +730,22 @@ function restoreLunisolarRangeDays(
   last: LegacyDateTimeProjection,
   calendar: 'chinese' | 'dangi',
   options: Intl.ResolvedDateTimeFormatOptions,
-  rangeParts: RangeParts
+  rangeParts: RangeParts,
+  endpoints: [first: LunisolarRangeEndpoint, last: LunisolarRangeEndpoint],
+  labels: [start: Intl.DateTimeFormatPart[], end: Intl.DateTimeFormatPart[]]
 ): Intl.DateTimeRangeFormatPart[] | undefined {
   if (
     options.timeZone !== 'UTC' ||
     (options.day !== 'numeric' && options.day !== '2-digit')
   )
     return undefined
-  const days = lunisolarUtcRangeDays(calendar, first, last)
+  const days = lunisolarUtcRangeDays(
+    calendar,
+    first,
+    last,
+    endpoints[0],
+    endpoints[1]
+  )
   if (!days) return undefined
   const format = number(first.formatter, options, 1)
   const formatTwo = number(first.formatter, options, 2)
@@ -735,8 +761,21 @@ function restoreLunisolarRangeDays(
   let end: {part: Intl.DateTimeRangeFormatPart; value: string} | undefined
   for (let index = 0; index < parts.length; index++) {
     const part = parts[index]
-    if (part.type === 'month' || part.type === 'literal') continue
-    if (part.type !== 'day' || part.source === 'shared') return undefined
+    const type: string = part.type
+    if (type === 'month' || type === 'literal') continue
+    if (type === 'relatedYear' || type === 'yearName') {
+      // ECMA-402 §11.5.4 steps 15.h–i and §11.5.8 steps 19.c–e: keep
+      // native year labels only when the corresponding endpoint agrees.
+      const matches = (label: Intl.DateTimeFormatPart): boolean =>
+        (label.type as string) === type && label.value === part.value
+      if (
+        (part.source !== 'endRange' && !arraySome(labels[0], matches)) ||
+        (part.source !== 'startRange' && !arraySome(labels[1], matches))
+      )
+        return undefined
+      continue
+    }
+    if (type !== 'day' || part.source === 'shared') return undefined
     const isStart = part.source === 'startRange'
     if (isStart ? start : end) return undefined
     const value = correctedRangeDay(isStart ? firstDay : lastDay, part.value)
@@ -837,26 +876,49 @@ export function legacyCalendarRangeParts(
       year: undefined,
       narrowMonth: undefined,
       numericYear: undefined,
+      lunar: undefined,
     },
     lastFields: CalendarRangeFields = {
       year: undefined,
       narrowMonth: undefined,
       numericYear: undefined,
+      lunar: undefined,
     }
   const start =
       legacyCalendarParts(first, parts, resolved, firstFields) ??
       correctLunisolarParts(
         first,
         parts.call(first.formatter, first.milliseconds),
-        resolved
+        resolved,
+        undefined,
+        undefined,
+        firstFields
       ),
     end =
       legacyCalendarParts(last, parts, resolved, lastFields) ??
       correctLunisolarParts(
         last,
         parts.call(last.formatter, last.milliseconds),
-        resolved
+        resolved,
+        undefined,
+        undefined,
+        lastFields
       )
+  const lunarStart = firstFields.lunar
+  const lunarEnd = lastFields.lunar
+  const firstCode = lunarStart?.expected.monthCode
+  const lastCode = lunarEnd?.expected.monthCode
+  // ECMA-402 §11.5.8 step 15.d.v: the same month number can identify
+  // two distinct ordinal months in a regular/leap pair.
+  const regularLeap =
+    timeZone === 'UTC' &&
+    lunarStart?.expected.year === lunarEnd?.expected.year &&
+    firstCode !== undefined &&
+    lastCode !== undefined &&
+    firstCode !== lastCode &&
+    firstCode[1] === lastCode[1] &&
+    firstCode[2] === lastCode[2] &&
+    arraySome(start, part => part.type === 'month' || part.type === 'day')
   if (!clipped(first) && !clipped(last)) {
     try {
       const same = (
@@ -886,8 +948,29 @@ export function legacyCalendarRangeParts(
           (lastFields.narrowMonth === undefined ||
             hostBuddhistMonth(timeZone, last.milliseconds) ===
               lastFields.narrowMonth)
-        )
-          return undefined
+        ) {
+          if (!regularLeap) return undefined
+          const raw = rangeParts.call(
+            first.formatter,
+            first.milliseconds,
+            last.milliseconds
+          )
+          if (
+            !arraySome(
+              raw,
+              part => part.type === 'month' && part.source === 'shared'
+            ) &&
+            arraySome(
+              raw,
+              part => part.type === 'month' && part.source === 'startRange'
+            ) &&
+            arraySome(
+              raw,
+              part => part.type === 'month' && part.source === 'endRange'
+            )
+          )
+            return raw
+        }
       }
       if (
         calendar === 'buddhist' &&
@@ -913,13 +996,20 @@ export function legacyCalendarRangeParts(
           if (projected) return projected
         }
       }
-      if (calendar === 'chinese' || calendar === 'dangi') {
+      if (
+        (calendar === 'chinese' || calendar === 'dangi') &&
+        lunarStart &&
+        lunarEnd &&
+        !regularLeap
+      ) {
         const lunar = restoreLunisolarRangeDays(
           first,
           last,
           calendar,
           options,
-          rangeParts
+          rangeParts,
+          [lunarStart, lunarEnd],
+          [start, end]
         )
         if (lunar) return lunar
       }
@@ -969,6 +1059,7 @@ export function legacyCalendarRangeParts(
   }
   // ECMA-402 §11.5.8 step 15.d.vi: distinct calendar fields prevent collapse.
   const allowCollapse =
+    !regularLeap &&
     (firstFields.year === undefined ||
       lastFields.year === undefined ||
       firstFields.year === lastFields.year) &&

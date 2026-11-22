@@ -10,6 +10,7 @@ import {
 import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
+  type CalendarDate,
 } from '#packages/temporal/calendar.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
 
@@ -150,35 +151,41 @@ function fields(
     monthCode: `M${month[1].padStart(2, '0')}${month[2] ? 'L' : ''}`,
   }
 }
+export interface LunisolarRangeEndpoint {
+  expected: CalendarDate
+  original: ReturnType<typeof fields> | undefined
+}
+export interface LunisolarRangeFields {
+  lunar: LunisolarRangeEndpoint | undefined
+}
+
 type RangeDayPair = [raw: number, corrected: number]
 
 export function lunisolarUtcRangeDays(
   calendar: Calendar,
   first: LegacyDateTimeProjection,
-  last: LegacyDateTimeProjection
+  last: LegacyDateTimeProjection,
+  left: LunisolarRangeEndpoint,
+  right: LunisolarRangeEndpoint
 ): [RangeDayPair, RangeDayPair] | undefined {
-  const rawStart = fields(calendar, 'UTC', first.milliseconds)
-  const rawEnd = fields(calendar, 'UTC', last.milliseconds)
-  const localDay = (value: LegacyDateTimeProjection): number =>
-    value.plain === true
-      ? floor(value.milliseconds / dayMilliseconds)
-      : legacyISOEpochDay('UTC', value.milliseconds)
-  const start = calendarFromEpochDayRaw(calendar, localDay(first))
-  const end = calendarFromEpochDayRaw(calendar, localDay(last))
+  const start = left.expected
+  const end = right.expected
+  const rawStart = left.original ?? fields(calendar, 'UTC', first.milliseconds)
+  const rawEnd = right.original ?? fields(calendar, 'UTC', last.milliseconds)
   if (
-    start.year !== end.year ||
     rawStart.year !== start.year ||
     rawEnd.year !== end.year ||
     rawStart.monthCode !== start.monthCode ||
     rawEnd.monthCode !== end.monthCode
   )
     return undefined
-  // ECMA-402 §11.5.8 steps 15.d.v–vi: match the first difference at Day
-  // or Month. Leave equal numbered regular and leap months to fallback.
+  // ECMA-402 §11.5.8 steps 15.d.v–vi: verify the first difference at
+  // Year, Month or Day. Equal numbered regular and leap months use fallback.
   if (
-    start.monthCode === end.monthCode
+    start.year === end.year &&
+    (start.monthCode === end.monthCode
       ? start.day === end.day || rawStart.day === rawEnd.day
-      : rawStart.month === rawEnd.month
+      : rawStart.month === rawEnd.month)
   )
     return undefined
   return [
@@ -293,7 +300,8 @@ export function correctLunisolarParts(
   raw: Intl.DateTimeFormatPart[],
   resolved: Resolved,
   surrogateMilliseconds?: number,
-  expectedEpochDay?: number
+  expectedEpochDay?: number,
+  rangeFields?: LunisolarRangeFields
 ): Intl.DateTimeFormatPart[] {
   const options = resolved.call(value.formatter),
     calendar = options.calendar
@@ -321,6 +329,11 @@ export function correctLunisolarParts(
       options.timeZone,
       surrogateMilliseconds ?? value.milliseconds
     )
+  if (rangeFields)
+    rangeFields.lunar = {
+      expected,
+      original: surrogateMilliseconds === undefined ? actual : undefined,
+    }
   if (
     actual.year === expected.year &&
     actual.monthCode === expected.monthCode &&

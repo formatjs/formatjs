@@ -325,8 +325,9 @@ retain shared year parts. Verified UTC day-only Buddhist intervals preserve
 month and year fields introduced by the selected host pattern. Verified UTC two-digit
 year ranges preserve shared era and full-year comparisons.
 UTC Chinese and Dangi intervals reuse Day or Month selection when the
-related year, month code and corrected day widths are verified. Other
-corrected fallback layouts remain open.
+related year, month code and corrected day widths are verified. Verified
+year-boundary labels retain their layout. Regular and leap months stay
+distinct at Month or Day precision. Other corrected fallback layouts remain open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
 Source hashes and extraction limits:

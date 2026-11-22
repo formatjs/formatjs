@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 26496,
+  "whole_selected_source_lines": 26600,
   "whole_selected_source_lines_by_language": {
     "rust": 10894,
-    "typescript": 15602
+    "typescript": 15706
   },
-  "nonoverlapping_callable_lines": 17378,
+  "nonoverlapping_callable_lines": 17452,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8137,
-    "typescript": 9241
+    "typescript": 9315
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17007,
+    "mapped": 17081,
     "candidate": 154,
     "unmapped": 217
   },
@@ -720,10 +720,10 @@
     },
     {
       "file": "packages/temporal/legacy-calendar-date.ts",
-      "source_lines": 985,
+      "source_lines": 1076,
       "callable_rows": 24,
-      "nonoverlapping_callable_lines": 636,
-      "sha256": "2965359978c963cf60ea2d444d886db3625e5122f024a6a762004c82a3ab2358",
+      "nonoverlapping_callable_lines": 704,
+      "sha256": "0fef870126f7f65a2a9a1dbe96381a97b14abc5ec77e03add7733306e6847d57",
       "unresolved_callable_rows": 0
     },
     {
@@ -752,10 +752,10 @@
     },
     {
       "file": "packages/temporal/legacy-lunisolar-date.ts",
-      "source_lines": 461,
+      "source_lines": 474,
       "callable_rows": 26,
-      "nonoverlapping_callable_lines": 343,
-      "sha256": "4216e5965eb944f08b285defb221b01e798aafc6df37171c01050f16fcd0f517",
+      "nonoverlapping_callable_lines": 349,
+      "sha256": "b99f93941b1dbd78ca9ad969f2c54d9e4b8427d3f65132f79e4023846fde3baf",
       "unresolved_callable_rows": 0
     },
     {
