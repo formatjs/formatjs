@@ -310,7 +310,7 @@ function disambiguation(value: unknown): Disambiguation {
 function resolve(
   localTime: bigint,
   timeZone: string,
-  offset: string | undefined,
+  offset: string | bigint | undefined,
   behavior: string,
   ambiguous: Disambiguation,
   matchMinute: boolean
@@ -322,7 +322,7 @@ function resolve(
     return kernel.resolve(fields, ambiguous)
   return resolveOffsetNanoseconds(
     localTime,
-    parseOffsetNanoseconds(offset),
+    typeof offset === 'bigint' ? offset : parseOffsetNanoseconds(offset),
     kernel,
     fields,
     behavior,
@@ -903,6 +903,12 @@ class ZonedDateTimeValue {
     const slot = read(this),
       cached = zonedSnapshot(slot)
     if (cached) return cached.value.values.offsetNanoseconds as number
+    // ECMA-262 §21.4.1.21: Query the active host offset at the stored instant.
+    // https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds
+    if (import.meta.formatjsTemporalHostTimeZones === true)
+      return numberFrom(
+        zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
+      )
     return numericOffset(slot)
   }
   // Proposal comparison §6.3.30 steps 1–4.
@@ -933,8 +939,9 @@ class ZonedDateTimeValue {
   // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.with
   with(item: unknown, options: unknown = undefined): ZonedDateTimeObject {
     const slot = read(this),
-      partial = partialObject(item),
-      current = local(slot)
+      partial = partialObject(item)
+    // §6.3.31 steps 7–8 and 16–17 capture the original offset and local time.
+    const current = local(slot)
     const updates = createObject(null) as Record<string, unknown>
     const names = dateFieldNames(slot.calendar, true, 'date', ['offset'])
     let any = false
@@ -987,9 +994,7 @@ class ZonedDateTimeValue {
       bigIntFrom(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
       clockNanoseconds(fields, overflow)
     const offset =
-      updates.offset === undefined
-        ? offsetText(slot)
-        : (updates.offset as string)
+      (updates.offset as string | undefined) ?? current - slot.epochNanoseconds
     return createZonedDateTime(
       resolve(value, slot.timeZone, offset, behavior, ambiguous, false),
       slot.timeZone,

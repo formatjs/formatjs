@@ -302,10 +302,20 @@ try {
     afterTransition.getTimeZoneTransition('previous')?.epochNanoseconds
   assert.equal(formattedHour(), '00')
   assert.equal(existing.offset, '+00:00')
+  for (let read = 0; read < 64; read++)
+    assert.equal(existing.offsetNanoseconds, 0)
   assert.equal(nextTransition(), 10_000n * second)
   assert.equal(previousTransition(), 10_000n * second)
 
-  registerZone(1, 20_000n)
+  const withReload = existing.with(
+    {second: 1},
+    {
+      get offset() {
+        registerZone(1, 20_000n)
+        return 'use'
+      },
+    }
+  )
   assert.equal(formattedHour(), '01')
   const candidate = Temporal.ZonedDateTime.from(
     `1970-01-01T01:00:00[${reloadZone}]`,
@@ -315,12 +325,22 @@ try {
   assert.deepEqual(
     [
       existing.offset,
+      existing.offsetNanoseconds,
+      withReload.epochNanoseconds,
       candidate.offset,
       candidate.hour,
       nextTransition(),
       previousTransition(),
     ],
-    ['+01:00', '+01:00', 1, 20_000n * second, 20_000n * second]
+    [
+      '+01:00',
+      Number(hour),
+      second,
+      '+01:00',
+      1,
+      20_000n * second,
+      20_000n * second,
+    ]
   )
 
   const alias = 'US/Eastern'
