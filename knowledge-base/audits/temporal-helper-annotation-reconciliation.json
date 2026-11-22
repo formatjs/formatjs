@@ -26085,7 +26085,7 @@
     "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
     "packages/temporal/intrinsics.ts": "e85f0adcc6b7d2b56173ff70b45d7a12ac53d0361e7dd92c00d60e5c87d5502e",
     "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
-    "packages/temporal/legacy-calendar-date.ts": "57e9e1efe1a2a453ccbd0bbc9fde0bd1d3bc8d1376decca3d82fc38541ecb707",
+    "packages/temporal/legacy-calendar-date.ts": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
     "packages/temporal/legacy-durationformat.ts": "8afb5875257579392d8b23e1080ffa5b888cde20fb606072cce99297d0fc1489",
     "packages/temporal/legacy-extended-date.ts": "9b4d1c655f572a2a278005672e03077e45ea0298193caead0b22df5fc8997aef",
     "packages/temporal/legacy-intl.ts": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
@@ -26633,5 +26633,33 @@
     }
   ],
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
-  "native_transport_whole_body_step_coverage_claimed": false
+  "native_transport_whole_body_step_coverage_claimed": false,
+  "supplemental_helpers": {
+    "legacy_numeric_range_layout": [
+      {
+        "file": "packages/temporal/legacy-calendar-date.ts",
+        "symbol": "matchesNumericRangeYear",
+        "source_sha256": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
+        "start_line": 514,
+        "end_line": 531,
+        "anchor_line": 513,
+        "section": "11.5.8",
+        "steps": ["15.d"],
+        "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "scope": "Endpoint compatibility check for native range selection."
+      },
+      {
+        "file": "packages/temporal/legacy-calendar-date.ts",
+        "symbol": "restoreNumericRangeYears",
+        "source_sha256": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
+        "start_line": 533,
+        "end_line": 555,
+        "anchor_line": 551,
+        "section": "11.5.8",
+        "steps": ["19.b", "19.c", "19.d", "19.e", "19.f"],
+        "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "scope": "Replace selected Year text while retaining provider pattern and source tags."
+      }
+    ]
+  }
 }

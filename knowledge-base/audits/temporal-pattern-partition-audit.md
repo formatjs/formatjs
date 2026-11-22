@@ -109,11 +109,10 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L425)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L432)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L549) prevents
-collapse for distinct raw years. The existing fallback still supplies the range
-layout. Exact selection of locale-specific compact patterns remains open.
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L651) prevents
+collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 
@@ -124,3 +123,25 @@ Equal-endpoint controls still pass. All seven focused Bazel targets passed.
 
 - Before-fix log SHA-256 `7410a4c9ed0be713a89ff46d4d76ce5a0012a12e7cc97b04137445544074739a`
 - After-fix log SHA-256 `aee459ae57dfdbea159d3a9b2c0d96112b45cde2d527687871325c570d3b4a49`
+
+### Reuse the selected host range
+
+The Buddhist numeric-year witness also showed a layout difference. The host
+selects two year tokens with one shared era. The generic fallback rendered the
+era twice. The native range comparison carries the locale-specific layout.
+
+For unclipped numeric-year and era partitions, the bridge checks a common
+calendar era, distinct raw year labels, and complete endpoint partitions that
+differ only in the normalized year. It reuses the evaluated host pattern when
+native range parts contain identifiable start and end year tokens. It changes
+their text in place and preserves literals, order, era placement and source.
+The two-digit ambiguity check prevents rewriting a token using the wrong
+year width. Other patterns and unverifiable host profiles still rely on the
+generic fallback. [ECMA-402 §11.5.8](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+The Bazel regression failed on the duplicated era before the change. It passed
+afterward for numeric and PlainDate inputs with Latin and mathematical digits.
+All seven focused Bazel targets passed.
+
+- Before-fix log SHA-256 `8fbf1aaa7aad5b04e1e0a847e48bb9e035b288538df5f3b1330c07794a060d80`
+- After-fix log SHA-256 `d66ed1c98879697a5a6cbefb6dd18bce3270ecfa285579f1b13b0d45de424740`

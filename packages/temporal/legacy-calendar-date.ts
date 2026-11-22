@@ -30,8 +30,15 @@ type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 
+interface NumericRangeYear {
+  era: string
+  raw: string
+  corrected: string
+}
+
 interface CalendarRangeFields {
   year: number | undefined
+  numericYear: NumericRangeYear | undefined
 }
 
 const Constructor = globalThis.Intl?.DateTimeFormat
@@ -432,7 +439,22 @@ function restoreCalendarParts(
           sampleText === short(sampleYear))
     // ECMA-402 §11.5.4 steps 15.f.viii–ix: select numeric or two-digit year
     // text.
-    changes.set('year', two ? short(year) : format(year))
+    const display = two ? short(year) : format(year)
+    changes.set('year', display)
+    if (rangeFields && options.year === 'numeric' && era && !clipped(value)) {
+      const hostYear = rawYear === year ? display : format(rawYear)
+      // A range can use a different year width from the single-date pattern.
+      if (
+        hostYear === display ||
+        short(year) === display ||
+        (formatTwo(rawYear) !== hostYear && short(rawYear) !== hostYear)
+      )
+        rangeFields.numericYear = {
+          era: era.era,
+          raw: hostYear,
+          corrected: display,
+        }
+    }
     if (
       calendar === 'japanese' &&
       year === 1 &&
@@ -488,6 +510,50 @@ function restoreCalendarParts(
   )
 }
 
+// ECMA-402 §11.5.8 step 15.d: check endpoint labels before reusing the host selection.
+function matchesNumericRangeYear(
+  raw: Intl.DateTimeFormatPart[],
+  corrected: Intl.DateTimeFormatPart[],
+  year: NumericRangeYear
+): boolean {
+  return (
+    raw.length === corrected.length &&
+    arraySome(raw, part => part.type === 'year') &&
+    arraySome(raw, part => part.type === 'era') &&
+    arrayEvery(raw, ({type, value}, index) => {
+      const after = corrected[index]
+      if (type !== after.type) return false
+      return type === 'year'
+        ? value === year.raw && after.value === year.corrected
+        : (type === 'era' || type === 'literal') && value === after.value
+    })
+  )
+}
+
+function restoreNumericRangeYears(
+  parts: Intl.DateTimeRangeFormatPart[],
+  first: NumericRangeYear,
+  last: NumericRangeYear
+): Intl.DateTimeRangeFormatPart[] | undefined {
+  let start: Intl.DateTimeRangeFormatPart | undefined,
+    end: Intl.DateTimeRangeFormatPart | undefined
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index]
+    if (part.type === 'era' || part.type === 'literal') continue
+    if (part.type !== 'year') return undefined
+    if (part.source === 'startRange' && !start && part.value === first.raw)
+      start = part
+    else if (part.source === 'endRange' && !end && part.value === last.raw)
+      end = part
+    else return undefined
+  }
+  if (!start || !end) return undefined
+  // ECMA-402 §11.5.8 steps 19.b–f: keep the host pattern and source tags.
+  start.value = first.corrected
+  end.value = last.corrected
+  return parts
+}
+
 export function legacyCalendarRangeParts(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
@@ -503,8 +569,14 @@ export function legacyCalendarRangeParts(
   )
     return undefined
   // ECMA-402 §11.5.8 steps 7–8 and 19.e: obtain corrected endpoint partitions.
-  const firstFields: CalendarRangeFields = {year: undefined},
-    lastFields: CalendarRangeFields = {year: undefined}
+  const firstFields: CalendarRangeFields = {
+      year: undefined,
+      numericYear: undefined,
+    },
+    lastFields: CalendarRangeFields = {
+      year: undefined,
+      numericYear: undefined,
+    }
   const start =
       legacyCalendarParts(first, parts, resolved, firstFields) ??
       correctLunisolarParts(
@@ -533,11 +605,41 @@ export function legacyCalendarRangeParts(
         )
       // ECMA-402 §11.5.10 step 1: keep native partitioning for unchanged
       // endpoints.
+      const rawStart = parts.call(first.formatter, first.milliseconds),
+        startUnchanged = same(start, rawStart)
+      let rawEnd: Intl.DateTimeFormatPart[] | undefined
+      if (startUnchanged) {
+        rawEnd = parts.call(last.formatter, last.milliseconds)
+        if (same(end, rawEnd)) return undefined
+      }
+      const firstYear = firstFields.numericYear,
+        lastYear = lastFields.numericYear
+      // ECMA-402 §11.5.8 step 15.d: reuse native selection when only numeric
+      // year display changed. A known common era and distinct full years
+      // identify the same first difference before any smaller field matters.
       if (
-        same(start, parts.call(first.formatter, first.milliseconds)) &&
-        same(end, parts.call(last.formatter, last.milliseconds))
-      )
-        return undefined
+        firstYear &&
+        lastYear &&
+        firstYear.era === lastYear.era &&
+        firstYear.raw !== lastYear.raw &&
+        matchesNumericRangeYear(rawStart, start, firstYear) &&
+        matchesNumericRangeYear(
+          (rawEnd ??= parts.call(last.formatter, last.milliseconds)),
+          end,
+          lastYear
+        )
+      ) {
+        const years = restoreNumericRangeYears(
+          rangeParts.call(
+            first.formatter,
+            first.milliseconds,
+            last.milliseconds
+          ),
+          firstYear,
+          lastYear
+        )
+        if (years) return years
+      }
     } catch (error) {
       if (
         !(error instanceof RangeErrorConstructor) &&

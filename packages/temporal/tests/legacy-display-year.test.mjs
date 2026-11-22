@@ -64,6 +64,7 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
     }
   }
 }
+const NativeDateTimeFormat = Intl.DateTimeFormat
 await load('polyfill-force.js')
 for (const locale of ['en', 'en-u-nu-mathsans']) {
   for (const width of ['numeric', '2-digit']) {
@@ -71,12 +72,20 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
       useGrouping: false,
       minimumIntegerDigits: width === '2-digit' ? 2 : 1,
     })
-    const formatter = new Intl.DateTimeFormat(locale, {
+    const options = {
       calendar: 'buddhist',
       year: width,
       era: 'short',
       timeZone: 'UTC',
-    })
+    }
+    const formatter = new Intl.DateTimeFormat(locale, options)
+    const hostRange =
+      width === 'numeric'
+        ? new NativeDateTimeFormat(locale, options).formatRangeToParts(
+            samples[1].instant.epochMilliseconds,
+            samples[2].instant.epochMilliseconds
+          )
+        : undefined
     assert.equal(formatter.resolvedOptions().calendar, 'buddhist')
     for (const sample of samples) {
       const milliseconds = sample.instant.epochMilliseconds
@@ -116,6 +125,13 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
       ],
     ]) {
       const parts = formatter.formatRangeToParts(start, end)
+      if (hostRange)
+        assert.deepEqual(
+          parts,
+          hostRange.map(part =>
+            part.type === 'year' ? {...part, value: number.format(1)} : part
+          )
+        )
       assert.deepEqual(
         parts
           .filter(part => part.type === 'year')

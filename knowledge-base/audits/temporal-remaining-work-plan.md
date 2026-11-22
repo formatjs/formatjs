@@ -275,8 +275,8 @@ targets pass. [Rust proof](temporal-native-remainder17-annotation-source-proof.j
 Estimated time to triage 173 unreviewed TypeScript helpers without anchors is
 35–85 minutes at the measured review rate. Behavioral review still has
 57 conditional Temporal steps. The published ECMA-402 range-collapse regression is fixed and validated.
-Exact locale range-pattern selection for corrected fallback parts still needs
-separate verification.
+The numeric-year and era path now reuses a validated host range layout.
+Exact layout selection for other corrected fallback parts remains open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
 Source hashes and extraction limits:
