@@ -7,6 +7,7 @@ import {
   arraySome,
   numberFrom,
   objectFrom,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -236,14 +237,15 @@ export function legacyDateTimeProjection(
           : value.kind === 'PlainTime'
             ? time
             : dateTime
-  // Proposal comparison §15.4.1 steps 45.f–j: private option Lists.
+  // Temporal §15.6.1 steps 1–5 use private field lists.
+  // https://tc39.es/proposal-temporal/#sec-getdatetimeformat
   const allowed: string[] = []
   for (let index = 0; index < required.length; index++)
-    allowed[index] = required[index]
+    setDataProperty(allowed, index, required[index])
   if (value.kind !== 'PlainTime' && value.kind !== 'PlainMonthDay')
-    allowed.push('era')
+    setDataProperty(allowed, allowed.length, 'era')
   const instant = value.kind === 'Instant' || value.kind === 'ZonedDateTime'
-  if (instant) allowed.push('timeZoneName')
+  if (instant) setDataProperty(allowed, allowed.length, 'timeZoneName')
   const selected: Record<string, unknown> = createObject(null)
   const optionKeys = [
     'calendar',

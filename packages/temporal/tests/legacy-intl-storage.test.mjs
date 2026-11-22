@@ -152,6 +152,37 @@ assert.notEqual(
   'Exercise installed native-Intl bridge'
 )
 {
+  for (const sample of [cases[0], cases[5]]) {
+    const [first, last] = sample.values(Temporal)
+    for (const [method, expected] of [
+      ['formatRange', sample.expected.range],
+      ['formatRangeToParts', sample.expected.rangeParts],
+    ]) {
+      for (const [key, kind] of [
+        ['push', 'value'],
+        ['0', 'set'],
+      ]) {
+        const formatter = new Intl.DateTimeFormat('en', sample.options)
+        const original = Object.getOwnPropertyDescriptor(Array.prototype, key)
+        let actual
+        try {
+          Object.defineProperty(Array.prototype, key, {
+            configurable: true,
+            [kind]() {
+              throw new Error(`Unexpected Array.prototype[${key}] hook`)
+            },
+          })
+          actual = formatter[method](first, last)
+        } finally {
+          if (original) Object.defineProperty(Array.prototype, key, original)
+          else Reflect.deleteProperty(Array.prototype, key)
+        }
+        assert.deepEqual(actual, expected, `${sample.name} ${method} ${key}`)
+      }
+    }
+  }
+}
+{
   const [first, last] = cases[1].values(Temporal)
   const formatter = new Intl.DateTimeFormat('en', cases[1].options)
   const style = new Temporal.PlainYearMonth(2024, 2, 'gregory')
@@ -357,7 +388,7 @@ console.log(
   }
 }
 
-// Proposal comparison §15.4.1 steps 45.f–j: private option Lists have no iterators.
+// Temporal §15.6.1 steps 1–5 use private field lists.
 {
   const date = new Temporal.PlainDate(2020, 1, 2)
   const yearMonth = new Temporal.PlainYearMonth(2020, 1, 'gregory')
