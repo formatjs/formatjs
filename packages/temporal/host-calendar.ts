@@ -5,6 +5,7 @@ import {
   numberFrom,
   numberIsInteger,
   numberIsSafeInteger,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
@@ -21,13 +22,24 @@ export type HostTableCalendar = 'chinese' | 'dangi' | 'islamic-umalqura'
 const Constructor = globalThis.Intl?.DateTimeFormat
 const parts = Constructor?.prototype.formatToParts
 const resolved = Constructor?.prototype.resolvedOptions
+const apply = Reflect.apply
+const mapGet = Map.prototype.get
+const mapSet = Map.prototype.set
+const mapDelete = Map.prototype.delete
+const mapKeys = Map.prototype.keys
+const mapSize = Object.getOwnPropertyDescriptor(Map.prototype, 'size')!.get!
+const mapNext = Object.getPrototypeOf(new Map().keys()).next
 const dayMilliseconds = 86400000
 const limit = 100000000
 const formatters = new Map<HostTableCalendar, Intl.DateTimeFormat>()
 const years = new Map<string, CalendarYearData>()
 function remember(key: string, value: CalendarYearData): CalendarYearData {
-  if (years.size >= 128) years.delete(years.keys().next().value!)
-  years.set(key, value)
+  if (apply(mapSize, years, []) >= 128) {
+    const iterator = apply(mapKeys, years, [])
+    const first = apply(mapNext, iterator, []) as IteratorResult<string>
+    apply(mapDelete, years, [first.value])
+  }
+  apply(mapSet, years, [key, value])
   return value
 }
 
@@ -38,22 +50,27 @@ function fields(calendar: HostTableCalendar, day: number) {
     throw new RangeErrorConstructor(
       'Temporal requires Intl.DateTimeFormat calendar support'
     )
-  let formatter = formatters.get(calendar)
+  let formatter = apply(mapGet, formatters, [calendar]) as
+    | Intl.DateTimeFormat
+    | undefined
   if (!formatter) {
     formatter = new Constructor('en-US-u-nu-latn', {
+      __proto__: null,
       calendar,
       timeZone: 'UTC',
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
-    })
-    if (resolved.call(formatter).calendar !== calendar)
+    } as Intl.DateTimeFormatOptions)
+    if (apply(resolved, formatter, []).calendar !== calendar)
       throw new RangeErrorConstructor(`Host Intl does not support ${calendar}`)
-    formatters.set(calendar, formatter)
+    apply(mapSet, formatters, [calendar, formatter])
   }
   let year = NaN,
     date = NaN
-  for (const part of parts.call(formatter, day * dayMilliseconds)) {
+  const values = apply(parts, formatter, [day * dayMilliseconds])
+  for (let index = 0; index < values.length; index++) {
+    const part = values[index]
     const type: string = part.type
     if (type === 'relatedYear' || type === 'year') year = numberFrom(part.value)
     else if (type === 'day') date = numberFrom(part.value)
@@ -70,7 +87,7 @@ export function hostCalendarYear(
   if (!numberIsSafeInteger(year))
     throw new RangeErrorConstructor('Invalid calendar year')
   const key = `${calendar}:${year}`,
-    cached = years.get(key)
+    cached = apply(mapGet, years, [key]) as CalendarYearData | undefined
   if (cached) return cached
   if (calendar !== 'islamic-umalqura') {
     const compact = compactCalendarYear(calendar, year)
@@ -97,12 +114,17 @@ export function hostCalendarYear(
       throw new RangeErrorConstructor('Unsupported host calendar year')
     const start = probe - value.day + 1
     if (value.year === year) {
-      starts.push(start)
+      setDataProperty(starts, starts.length, start)
     } else end = start
     probe = start - 1
     value = fields(calendar, probe)
   }
-  starts.reverse()
+  for (let index = 0; index < floor(starts.length / 2); index++) {
+    const opposite = starts.length - index - 1,
+      value = starts[index]
+    starts[index] = starts[opposite]
+    starts[opposite] = value
+  }
   if (starts.length !== 12)
     throw new RangeErrorConstructor('Unsupported host calendar year')
   return remember(key, {starts, end, leap: 0})

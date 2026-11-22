@@ -3,6 +3,7 @@ import {
   bigIntFrom,
   numberFrom,
   numberIsSafeInteger,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 // Adapted from ICU4X 2.3.0, east_asian_traditional/simple.rs.
 // Unicode-3.0; see LICENSE.md.
@@ -78,7 +79,11 @@ export function approximateLunisolarYear(
   ) {
     const index = solarTerm + numberFrom(leap !== 0)
     if (index < 13)
-      lengths[index] = numberFrom(floor(nextMoon, day) - floor(moon, day))
+      setDataProperty(
+        lengths,
+        index,
+        numberFrom(floor(nextMoon, day) - floor(moon, day))
+      )
     if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) {
       hadLeap = true
       leap = solarTerm
@@ -94,7 +99,10 @@ export function approximateLunisolarYear(
       earliest + numberFrom((newYear - bigIntFrom(earliest + 719163)) & 63n),
     ],
     count = leap ? 13 : 12
-  for (let index = 0; index < count; index++)
-    starts.push(starts[index] + lengths[index])
-  return {starts: starts.slice(0, count), end: starts[count], leap}
+  let end = starts[0]
+  for (let index = 0; index < count; index++) {
+    if (index > 0) setDataProperty(starts, index, end)
+    end += lengths[index]
+  }
+  return {starts, end, leap}
 }

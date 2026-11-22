@@ -22,6 +22,20 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Host-calendar private operations, 2026-11-22
+
+[Host-provider execution map](temporal-host-calendar-private-closure-audit.md)
+connects cold compact data, approximation, host Intl and eviction paths to numbered
+ECMA-262 Map/iterator/delegation sections. Captured operations and own indexed
+lists remove observable hooks while preserving provider order and cache policy.
+Fifteen fresh-process hook profiles reproduced failures before correction;
+regressions now include cold/warm years, warm decoder/new year, 1898 approximation,
+Umm formatter reuse and 140-year eviction preparation. Five focused gates pass.
+Expanded validation passes all 80 tests (68 executed, 12 cached) plus Temporal
+and DurationFormat package builds. [Target manifest](temporal-host-calendar-validation-targets.txt).
+Host data, complete non-ISO policy, realms and arbitrary provider contracts remain
+open. No new spec issue or historical completion-count credit claimed.
+
 ## Calendar addition correction, 2026-11-22
 
 [ISO CalendarDateAdd and three arithmetic helper maps](temporal-calendar-date-add-iso-contract-audit.md)
@@ -34,7 +48,8 @@ monthCode or non-ISO regex/string metadata hooks. Four duration Gets still prece
 integer validation. Nine public operations reproduced 47 failing case/profile
 combinations in forced TS; native controls passed. Six valid month-code cases,
 seven rejection cases and one public inherited-getter control preserve semantics.
-Host-provider cold/warm caches and full calendar/data contracts remain open.
+Host-provider cold/warm/eviction hooks are addressed by the follow-up execution
+map above; full calendar/data contracts remain open.
 Seven focused gates pass. Expanded validation: 73 tests pass (60 executed,
 13 cached), plus Temporal and DurationFormat package builds. Target manifest:
 [calendar-add validation](temporal-calendar-add-validation-targets.txt).
