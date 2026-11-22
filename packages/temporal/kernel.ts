@@ -347,23 +347,21 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     let fallback: bigint | undefined
     let event = zoneTransition(
       data,
-      lower < -limit ? -limit : lower - 1n,
+      (lower < -limit ? -limit : lower) - 1n,
       'next'
     )
     // Temporal comparison §11.1.12 steps 6–7.
     // Project nearby segment boundaries to find both nearest local times.
     while (event !== null && event <= upper) {
-      if (event > -limit) {
-        const oldOffset = offsetNanoseconds(event - 1n),
-          newOffset = offsetNanoseconds(event)
-        const end = event - 1n + oldOffset,
-          start = event + newOffset
-        if (end < local && (before === undefined || end > before)) before = end
-        if (start > local && (after === undefined || start < after))
-          after = start
-        if (fallback === undefined && local > end && local < start)
-          fallback = local - (earlier ? newOffset : oldOffset)
-      }
+      // Projection can read the raw predecessor of the minimum Instant.
+      const oldOffset = offsetAt(event - 1n),
+        newOffset = offsetNanoseconds(event)
+      const end = event - 1n + oldOffset,
+        start = event + newOffset
+      if (end < local && (before === undefined || end > before)) before = end
+      if (start > local && (after === undefined || start < after)) after = start
+      if (fallback === undefined && local > end && local < start)
+        fallback = local - (earlier ? newOffset : oldOffset)
       event = zoneTransition(data, event, 'next')
     }
     // Temporal comparison §11.1.12 steps 8–15.

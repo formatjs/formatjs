@@ -452,6 +452,9 @@ the nearest result bounds every competing instant inside the range.
 Borrowed Rust now returns an explicit or recurring previous transition at
 the minimum Instant. Raw predecessor offsets provide the comparison.
 [Minimum transition](temporal-timezone-boundary-proof/README.md#rust-transition-at-the-minimum-instant).
+The compact gap scan also includes the transition at the minimum Instant.
+The regression verifies valid nearest candidates and all four modes.
+[Minimum gap](temporal-timezone-boundary-proof/README.md#compact-gap-crossing-the-minimum-instant).
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).

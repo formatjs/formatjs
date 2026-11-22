@@ -34028,7 +34028,7 @@
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
-    "packages/temporal/kernel.ts": "56e2731215a02f58e82c42258974b21827ae2099073f7530d93168182bbba548",
+    "packages/temporal/kernel.ts": "cd36fd45997dfadfac9b82d1bed2fc95ffc0570592a2104637d1ac6f4eda28c9",
     "packages/temporal/legacy-calendar-date.ts": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
@@ -34623,7 +34623,7 @@
       {
         "file": "packages/temporal/kernel.ts",
         "symbol": "startOfTimeZoneDay",
-        "source_sha256": "56e2731215a02f58e82c42258974b21827ae2099073f7530d93168182bbba548",
+        "source_sha256": "cd36fd45997dfadfac9b82d1bed2fc95ffc0570592a2104637d1ac6f4eda28c9",
         "start_line": 56,
         "end_line": 112,
         "anchor_line": 55,

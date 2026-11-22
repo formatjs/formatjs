@@ -604,6 +604,27 @@ uses the containing transition and returns epoch hour +3 for later.
 Pinned Node 26.8.1 replay SHA-256
 `643e9172bda35b8064159eec5be6f83f9835f283633ed201b36ca31a8c65efa9`.
 
+### Compact gap crossing the minimum Instant
+
+Start at zero offset, then change to +04:00 at the minimum Instant,
+−02:00 one hour after it and +03:00 three hours after it. Local minimum
+plus two hours is missing. The nearest local clocks before and after it
+have unique, valid candidates. The right boundary comes from the
+transition exactly at the minimum. Compact lookup previously skipped
+that transition and resolved later one hour too early.
+
+The compact scan now includes the minimum and reads the raw offset
+before it. Later and compatible return minimum plus five hours, matching
+owned Intl. Earlier selects an out-of-range result and throws. Reject
+continues to throw for the gap.
+[Compact scan](../../../packages/temporal/kernel.ts#L347).
+[Regression](../../../packages/temporal/tests/compact-timezone.test.ts#L89).
+[§11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
+- Before-fix Bazel SHA-256 `b7c774a8bdd1ba433d151fed376a88b57170d3f0d31e06e48eafa02bb84ac975`
+- Passing Bazel SHA-256 `05014b2339970719e62ece5796bb6e117a78e0216f750a91ccd6a8ca6d1121c0`
+- Pinned packaged replay SHA-256 `7991fec1d1a8fa72f1e9bd492e5f225ab9be7f10a4c8e548d1e2821c8236480a`
+
 ### Gap auxiliary candidate outside the Instant range
 
 Let M be the maximum Instant. Start at +02:00 and change to −04:00 at
@@ -627,7 +648,7 @@ compatible and later. Both compact profiles reject the original gap in
 reject mode.
 [Owned Intl gap lookup](../../../packages/intl-datetimeformat/core.ts#L489).
 [Host day samples](../../../packages/temporal/host-timezone.ts#L334).
-[Compact gap lookup](../../../packages/temporal/kernel.ts#L370).
+[Compact gap lookup](../../../packages/temporal/kernel.ts#L368).
 
 A clipped retry can reproduce the compact result in the second profile
 when both clipped boundaries have complete, valid singleton candidate

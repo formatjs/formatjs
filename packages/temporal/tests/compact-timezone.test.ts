@@ -86,6 +86,35 @@ it('finds the first local clock after midnight across overlapping transitions', 
   }
 })
 
+it('uses the exact minimum Instant transition to resolve a gap', () => {
+  const name = 'Test/MinimumGap'
+  const hour = 3_600_000_000_000n
+  const midnight = {year: -271821, month: 4, day: 20}
+  const minimum = isoToEpochNanoseconds(midnight)
+  const rows = [0n, 1n, 3n].map(
+    (offset, index) =>
+      `${((minimum + offset * hour) / 1_000_000_000n).toString(36)},0,${index + 1},0`
+  )
+  const zone = createTimeZone(
+    UnpackTimeZoneData({
+      abbrvs: 'TEST',
+      offsets: [0, 4, -2, 3]
+        .map(offset => (offset * 3600).toString(36))
+        .join('|'),
+      zones: [`${name}|,0,0,0|${rows.join('|')}`],
+    })[name]
+  )
+
+  const gap = {...midnight, hour: 2}
+  expect(zone.resolve({...midnight, hour: 4}, 'reject')).toBe(minimum)
+  expect(zone.resolve(gap, 'compatible')).toBe(minimum + 5n * hour)
+  expect(zone.resolve(gap, 'later')).toBe(minimum + 5n * hour)
+  expect(() => zone.resolve(gap, 'earlier')).toThrow('Instant out of range')
+  expect(() => zone.resolve(gap, 'reject')).toThrow(
+    'Ambiguous or nonexistent local time'
+  )
+})
+
 it('finds the first millisecond of a discontinuous fixed footer', () => {
   const name = 'Test/Cutoff'
   const zone = createTimeZone(

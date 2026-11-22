@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27252,
+  "whole_selected_source_lines": 27250,
   "whole_selected_source_lines_by_language": {
     "rust": 11176,
-    "typescript": 16076
+    "typescript": 16074
   },
-  "nonoverlapping_callable_lines": 17738,
+  "nonoverlapping_callable_lines": 17736,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8341,
-    "typescript": 9397
+    "typescript": 9395
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17395,
+    "mapped": 17393,
     "candidate": 159,
     "unmapped": 184
   },
@@ -712,10 +712,10 @@
     },
     {
       "file": "packages/temporal/kernel.ts",
-      "source_lines": 403,
+      "source_lines": 401,
       "callable_rows": 15,
-      "nonoverlapping_callable_lines": 266,
-      "sha256": "56e2731215a02f58e82c42258974b21827ae2099073f7530d93168182bbba548",
+      "nonoverlapping_callable_lines": 264,
+      "sha256": "cd36fd45997dfadfac9b82d1bed2fc95ffc0570592a2104637d1ac6f4eda28c9",
       "unresolved_callable_rows": 1
     },
     {
