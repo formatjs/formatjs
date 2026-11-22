@@ -1165,6 +1165,8 @@ export function roundRelativeDifference(
     // §7.5.34 step 13 can divide by zero across a skipped day.
     // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
     // https://github.com/tc39/proposal-temporal/issues/3310
+    // ECMA-262 preview §22.15.5.13 steps 14–21: keep the exact inner bound.
+    // https://tc39.es/ecma262/pr/3966/#sec-nudgetocalendarunit
     if (a !== end) {
       const positive = physicalSign * sinceSign > 0n
       expand =

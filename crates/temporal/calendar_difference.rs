@@ -386,6 +386,8 @@ pub(crate) fn difference<A: RelativeAnchor>(
         // §7.5.34 step 13 can divide by zero across a skipped day.
         // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
         // https://github.com/tc39/proposal-temporal/issues/3310
+        // ECMA-262 preview §22.15.5.13 steps 14–21: keep exact bounds and compare half increments exactly.
+        // https://tc39.es/ecma262/pr/3966/#sec-nudgetocalendarunit
         let expand = if a == end {
             false
         } else if b == end {

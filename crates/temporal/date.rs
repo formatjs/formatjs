@@ -414,10 +414,13 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     pub fn with_time(self, time: PlainTime) -> Result<Self, Error> {
         self.date().to_date_time(time)
     }
-    // Proposal comparison §5.5.16 steps 5–10: add the clock carry and date duration.
+    // ECMA-262 preview §22.10.5.3 steps 5–10: add the clock carry and date duration.
+    // https://tc39.es/ecma262/pr/3966/#sec-adddurationtodatetime
     pub fn checked_add(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
+        // Steps 5–7: Euclidean division carries negative clock remainders into the date.
         let time = self.time().nanoseconds() + duration.time_nanoseconds(false)?;
+        // Steps 8–10: add the adjusted calendar duration, then validate the date-time.
         let date = self.date().add_date(
             fields[0],
             fields[1],
@@ -428,7 +431,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             time.rem_euclid(NANOSECONDS_PER_DAY),
         )?)
     }
-    // Proposal comparison §5.5.16 step 2: negate the typed duration before addition.
+    // ECMA-262 preview §22.10.5.3 step 2: negate the typed duration before addition.
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }

@@ -243,14 +243,15 @@ export function toPlainDateTimeSlot(
     calendar: fields.calendar,
   }
 }
-// Temporal comparison §5.5.16 steps 1, 2, 4, 6, 8, 9, 10.
-// Normalize duration and forward calendar and clock addition.
+// ECMA-262 preview §22.10.5.3: add the clock before the calendar date.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurationtodatetime
 function add(
   slot: DateTimeSlot,
   duration: unknown,
   options: unknown,
   sign: number
 ): PlainDateTimeObject {
+  // Steps 1–2: read duration fields before options and negate for subtraction.
   const fields =
     import.meta.formatjsTemporalNativeData === true
       ? toNativeDurationFields(duration)
@@ -270,10 +271,12 @@ function add(
   for (let index = 0; index < durationFieldNames.length; index++)
     fields[durationFieldNames[index]] *= sign
   const overflow = overflowOption(options)
+  // Steps 5–7: fold 24-hour days and the clock carry into the calendar days.
   const time =
     timeOf(slot.epochNanoseconds) + durationNanoseconds(fields, false)
   const carry = epochDayOf(time)
   fields.days += carry
+  // Steps 8–10: check the calendar date, then check the exact date-time.
   const day = addDate(dateSlot(slot), fields, overflow)
   return createPlainDateTime(
     bigIntFrom(day) * nsPerDay + timeOf(time),
