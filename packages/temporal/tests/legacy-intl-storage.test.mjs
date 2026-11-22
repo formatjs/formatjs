@@ -226,6 +226,84 @@ assert.notEqual(
   }
 }
 {
+  const limit = 8_640_000_000_000_000
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3,
+    hourCycle: 'h23',
+    timeZone: 'UTC',
+  }
+  for (const calendar of ['islamic', 'islamic-rgsa']) {
+    const settings = {...options, calendar}
+    const native = new Native('en', settings)
+    if (native.resolvedOptions().calendar !== calendar) continue
+    const west = new Native('en', {...settings, timeZone: 'Etc/GMT+12'})
+    const formatter = new Intl.DateTimeFormat('en', settings)
+    const earliest = Temporal.PlainDateTime.from(
+      '-271821-04-19T00:00:00.000000001'
+    )
+    const latest = Temporal.PlainDateTime.from(
+      '+275760-09-13T23:59:59.999999999'
+    )
+    const dates = ['era', 'year', 'month', 'day', 'weekday']
+    const fields = (parts, date) =>
+      parts.filter(
+        part => dates.includes(part.type) === date && part.type !== 'literal'
+      )
+    formatter.format(Temporal.PlainDateTime.from('2000-01-01'))
+    for (const [value, dateReference, clockReference] of [
+      [earliest, west.formatToParts(-limit), native.formatToParts(0)],
+      [latest, native.formatToParts(limit), native.formatToParts(86_399_999)],
+    ]) {
+      const parts = formatter.formatToParts(value)
+      assert.deepEqual(fields(parts, true), fields(dateReference, true))
+      assert.deepEqual(fields(parts, false), fields(clockReference, false))
+      const text = parts.map(part => part.value).join('')
+      assert.equal(formatter.format(value), text)
+      assert.equal(value.toLocaleString('en', settings), text)
+    }
+    const next = earliest.add({minutes: 1})
+    const compact = formatter.formatRangeToParts(earliest, next)
+    for (const [source, minute] of [
+      ['startRange', '00'],
+      ['endRange', '01'],
+    ])
+      assert.equal(
+        compact.find(part => part.type === 'minute' && part.source === source)
+          ?.value,
+        minute
+      )
+    assert.deepEqual(
+      fields(
+        compact.filter(part => part.source === 'shared'),
+        true
+      ).map(({type, value}) => ({type, value})),
+      fields(west.formatToParts(-limit), true)
+    )
+    const span = formatter.formatRangeToParts(latest, earliest)
+    for (const [source, value] of [
+      ['startRange', latest],
+      ['endRange', earliest],
+    ])
+      assert.deepEqual(
+        span
+          .filter(part => part.source === source)
+          .map(({type, value}) => ({type, value})),
+        formatter.formatToParts(value)
+      )
+    assert.equal(
+      formatter.formatRange(latest, earliest),
+      span.map(part => part.value).join('')
+    )
+  }
+}
+{
   const defineProperty = Object.defineProperty
   const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
   const originalBound = getOwnPropertyDescriptor(Object.prototype, 'bound')
