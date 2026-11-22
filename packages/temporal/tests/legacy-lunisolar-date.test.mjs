@@ -50,6 +50,56 @@ const differences = rows.filter(row => {
   )
 })
 await import(pathToFileURL(join(directory, 'polyfill-force.js')))
+{
+  const hooks = [
+    [Map.prototype, 'get'],
+    [Map.prototype, 'set'],
+    [Map.prototype, 'has'],
+    [WeakMap.prototype, 'get'],
+    [WeakMap.prototype, 'set'],
+    [Array.prototype, 'find'],
+    [Array.prototype, 'findIndex'],
+    [Array.prototype, 'map'],
+    [Array.prototype, 'join'],
+    [Array.prototype, 'slice'],
+  ].map(([target, key]) => [
+    target,
+    key,
+    Object.getOwnPropertyDescriptor(target, key),
+  ])
+  for (const calendar of ['chinese', 'dangi']) {
+    const row = differences.find(row => row[1] === calendar)
+    assert(row, `${calendar} host calendar differs from the fixture`)
+    const options = {...numericOptions, calendar, weekday: 'long'}
+    const first = new Temporal.ZonedDateTime(
+      BigInt(row[2]) * 86_400_000_000_000n,
+      'UTC',
+      calendar
+    ).toPlainDate()
+    const last = first.add({days: 1})
+    const reference = new Intl.DateTimeFormat('en', options)
+    for (const method of ['formatRange', 'formatRangeToParts']) {
+      const expected = reference[method](first, last)
+      const formatter = new Intl.DateTimeFormat('en', options)
+      let actual
+      try {
+        for (const [target, key, descriptor] of hooks) {
+          Object.defineProperty(target, key, {
+            ...descriptor,
+            value() {
+              throw new Error(`Unexpected calendar range hook ${key}`)
+            },
+          })
+        }
+        actual = formatter[method](first, last)
+      } finally {
+        for (const [target, key, descriptor] of hooks)
+          Object.defineProperty(target, key, descriptor)
+      }
+      assert.deepEqual(actual, expected, `${calendar} ${method}`)
+    }
+  }
+}
 const formatters = new Map(
   ['chinese', 'dangi'].map(calendar => [
     calendar,

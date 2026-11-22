@@ -8,6 +8,7 @@ import {
   numberFrom,
   numberIsInteger,
   numberIsSafeInteger,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
   calendarFromEpochDayRaw,
@@ -29,6 +30,8 @@ const mapSet = Map.prototype.set
 const weakMapGet = WeakMap.prototype.get
 const weakMapSet = WeakMap.prototype.set
 const regexpExec = RegExp.prototype.exec
+const stringIndexOf = String.prototype.indexOf
+const stringSlice = String.prototype.slice
 const Constructor = globalThis.Intl?.DateTimeFormat
 const nativeParts = Constructor?.prototype.formatToParts
 const NumberConstructor = globalThis.Intl?.NumberFormat
@@ -53,13 +56,13 @@ const stableRangeFields = [
   'literal',
 ]
 interface Catalog {
-  months: Map<string, number>
+  months: Record<string, number | undefined>
   cursor: number
   count: number
   full?: number
   leap?: string
 }
-const catalogs = new Map<Calendar, Catalog>()
+const catalogs: Partial<Record<Calendar, Catalog>> = createObject(null)
 const utc = new WeakMap<Intl.DateTimeFormat, Intl.DateTimeFormat>()
 const separators = new WeakMap<Intl.DateTimeFormat, string>()
 function isoDay(year: number, month: number, day: number): number {
@@ -335,15 +338,22 @@ export function lunisolarUtcLeapMonthRange(
 }
 
 function catalog(calendar: Calendar, code: string): Catalog {
-  let result = catalogs.get(calendar)
+  let result = catalogs[calendar]
   if (!result) {
     const sample = isoDay(2020, 1, 15),
       value = fields(calendar, 'UTC', sample * dayMilliseconds)
-    result = {months: new Map(), cursor: sample - value.day + 1, count: 0}
-    catalogs.set(calendar, result)
+    result = {
+      __proto__: null,
+      months: createObject(null),
+      cursor: sample - value.day + 1,
+      count: 0,
+    } as Catalog
+    catalogs[calendar] = result
   }
   while (
-    (!result.months.has(code) || result.full === undefined || !result.leap) &&
+    (result.months[code] === undefined ||
+      result.full === undefined ||
+      !result.leap) &&
     result.count < 2400
   ) {
     // ECMA-402 §11.5.11 step 5.a: catalog host month codes by local month
@@ -352,9 +362,9 @@ function catalog(calendar: Calendar, code: string): Catalog {
       value = fields(calendar, 'UTC', start * dayMilliseconds),
       next = start + 32,
       end = next - fields(calendar, 'UTC', next * dayMilliseconds).day + 1
-    result.months.set(value.monthCode, start)
+    result.months[value.monthCode] = start
     if (end - start === 30) result.full = start
-    if (value.monthCode.endsWith('L')) result.leap = value.monthCode
+    if (value.monthCode[3] === 'L') result.leap = value.monthCode
     result.cursor = end
     result.count++
   }
@@ -365,7 +375,9 @@ export function calendarLabelFormatter(
   options: Intl.ResolvedDateTimeFormatOptions,
   raw: Intl.DateTimeFormatPart[]
 ): Intl.DateTimeFormat {
-  let result = utc.get(source)
+  let result = apply(weakMapGet, utc, [source]) as
+    | Intl.DateTimeFormat
+    | undefined
   if (!result) {
     // ECMA-402 §11.5.4 step 15.f.x: keep label options on a UTC sample
     // formatter.
@@ -385,7 +397,7 @@ export function calendarLabelFormatter(
     )
       projected.year = 'numeric'
     result = new Constructor!(options.locale, projected)
-    utc.set(source, result)
+    apply(weakMapSet, utc, [source, result])
   }
   return result
 }
@@ -404,15 +416,13 @@ function part(
   type: string
 ): string {
   // ECMA-402 §11.5.7 step 1: get the requested label from a native partition.
-  const value = apply(nativeParts!, source, [epoch * dayMilliseconds]).find(
+  const parts = apply(nativeParts!, source, [epoch * dayMilliseconds])
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index]
     // ECMA-402 §11.5.7 step 4.b: select the emitted type.
-    part => part.type === type
-  )
-  if (!value)
-    throw new RangeErrorConstructor(
-      `Unsupported host calendar pattern: ${type}`
-    )
-  return value.value
+    if (part.type === type) return part.value
+  }
+  throw new RangeErrorConstructor(`Unsupported host calendar pattern: ${type}`)
 }
 function monthLabel(
   source: Intl.DateTimeFormat,
@@ -422,19 +432,23 @@ function monthLabel(
   // ECMA-402 §11.5.4 step 15.f.x: sample the month label or reconstruct its
   // leap form.
   const data = catalog(calendar, code),
-    epoch = data.months.get(code)
+    epoch = data.months[code]
   if (epoch !== undefined) return part(source, epoch + 14, 'month')
-  if (!code.endsWith('L') || !data.leap)
+  if (code[3] !== 'L' || !data.leap)
     throw new RangeErrorConstructor('Unsupported host calendar month')
-  const normal = monthLabel(source, calendar, data.leap.slice(0, -1)),
-    leap = part(source, data.months.get(data.leap)! + 14, 'month'),
-    index = leap.indexOf(normal)
+  const normal = monthLabel(
+      source,
+      calendar,
+      apply(stringSlice, data.leap, [0, -1])
+    ),
+    leap = part(source, data.months[data.leap]! + 14, 'month'),
+    index = apply(stringIndexOf, leap, [normal])
   if (index < 0)
     throw new RangeErrorConstructor('Unsupported host leap-month pattern')
   return (
-    leap.slice(0, index) +
-    monthLabel(source, calendar, code.slice(0, -1)) +
-    leap.slice(index + normal.length)
+    apply(stringSlice, leap, [0, index]) +
+    monthLabel(source, calendar, apply(stringSlice, code, [0, -1])) +
+    apply(stringSlice, leap, [index + normal.length])
   )
 }
 
@@ -487,8 +501,8 @@ export function correctLunisolarParts(
     actual.day === expected.day
   )
     return raw
-  const labels = calendarLabelFormatter(value.formatter, options, raw),
-    changes = new Map<string, string>()
+  const labels = calendarLabelFormatter(value.formatter, options, raw)
+  const changes: Record<string, string | undefined> = createObject(null)
   if (
     actual.day !== expected.day &&
     arraySome(
@@ -500,7 +514,7 @@ export function correctLunisolarParts(
     // ECMA-402 §11.5.4 steps 15.f.iii and 15.f.viii: restore the day from a
     // control.
     const data = catalog(calendar, 'M01')
-    changes.set('day', part(labels, data.full! + expected.day - 1, 'day'))
+    changes.day = part(labels, data.full! + expected.day - 1, 'day')
   }
   if (
     actual.monthCode !== expected.monthCode &&
@@ -512,15 +526,15 @@ export function correctLunisolarParts(
   )
     // ECMA-402 §11.5.4 step 15.f.x: restore the month label for the true month
     // code.
-    changes.set('month', monthLabel(labels, calendar, expected.monthCode))
+    changes.month = monthLabel(labels, calendar, expected.monthCode)
   if (actual.year !== expected.year) {
     const cycleYear = 2000 + ((((expected.year - 2000) % 60) + 60) % 60)
-    for (const item of raw) {
-      const type: string = item.type
+    for (let index = 0; index < raw.length; index++) {
+      const type: string = raw[index].type
       // ECMA-402 §11.5.4 steps 15.i.i–iii: select the localized cyclical year
       // label.
       if (type === 'yearName')
-        changes.set(item.type, part(labels, isoDay(cycleYear, 7, 1), item.type))
+        changes[type] = part(labels, isoDay(cycleYear, 7, 1), type)
       // ECMA-402 §11.5.4 steps 15.f.viii–ix and 15.h: correct numeric year
       // text.
       else if (type === 'year' || type === 'relatedYear') {
@@ -537,35 +551,38 @@ export function correctLunisolarParts(
             }),
             []
           ),
-          sample = part(labels, isoDay(2001, 7, 1), item.type),
+          sample = part(labels, isoDay(2001, 7, 1), type),
           short = sample !== format(2001)
-        changes.set(
-          item.type,
-          short
-            ? apply(
-                numberFormat,
-                new NumberConstructor(options.locale, {
-                  numberingSystem: options.numberingSystem,
-                  useGrouping: false,
-                  minimumIntegerDigits: 2,
-                  maximumFractionDigits: 0,
-                }),
-                []
-              )(((expected.year % 100) + 100) % 100)
-            : format(expected.year)
-        )
+        changes[type] = short
+          ? apply(
+              numberFormat,
+              new NumberConstructor(options.locale, {
+                numberingSystem: options.numberingSystem,
+                useGrouping: false,
+                minimumIntegerDigits: 2,
+                maximumFractionDigits: 0,
+              }),
+              []
+            )(((expected.year % 100) + 100) % 100)
+          : format(expected.year)
       }
     }
   }
-  return changes.size
-    ? raw.map(
-        // ECMA-402 §11.5.7 steps 4.b–c: keep the type and restore the text.
-        item =>
-          changes.has(item.type)
-            ? {...item, value: changes.get(item.type)!}
-            : item
-      )
-    : raw
+  // ECMA-402 §11.5.7 steps 4.b–e: keep each type and replace its label.
+  // https://tc39.es/ecma402/#sec-formatdatetimetoparts
+  const result: Intl.DateTimeFormatPart[] = []
+  let changed = false
+  for (let index = 0; index < raw.length; index++) {
+    const item = raw[index]
+    const value = changes[item.type]
+    changed ||= value !== undefined
+    setDataProperty(
+      result,
+      index,
+      value === undefined ? item : {...item, value}
+    )
+  }
+  return changed ? result : raw
 }
 
 export function lunisolarRangeParts(
@@ -601,55 +618,56 @@ export function joinCalendarRangeParts(
   parts: RangeParts,
   allowCollapse = true
 ): Intl.DateTimeRangeFormatPart[] {
-  if (
-    allowCollapse &&
-    start
-      .map(
-        // ECMA-402 §11.5.6 step 3.a: compose start text for the fallback check.
-        part => part.value
-      )
-      .join('') ===
-      end
-        .map(
-          // ECMA-402 §11.5.6 step 3.a: compose end text for the fallback check.
-          part => part.value
-        )
-        .join('')
-  )
+  const result: Intl.DateTimeRangeFormatPart[] = []
+  const append = (
+    values: Intl.DateTimeFormatPart[],
+    source: Intl.DateTimeRangeFormatPart['source']
+  ): void => {
+    // ECMA-402 §11.5.10 steps 4.b–e create and append each sourced part.
+    // https://tc39.es/ecma402/#sec-formatdatetimerangetoparts
+    for (let index = 0; index < values.length; index++)
+      setDataProperty(result, result.length, {...values[index], source})
+  }
+  if (allowCollapse && partText(start) === partText(end)) {
     // ECMA-402 §11.5.8 step 16.c: tag the collapsed fallback parts as shared.
-    return start.map(part => ({...part, source: 'shared'}))
-  let separator = separators.get(formatter)
+    append(start, 'shared')
+    return result
+  }
+  let separator = apply(weakMapGet, separators, [formatter]) as
+    | string
+    | undefined
   if (separator === undefined) {
     // ECMA-402 §11.5.8 steps 18–19: sample a separator for the compatibility
     // fallback.
-    const sample = apply(parts, formatter, [946718033000, 1025966286000]),
-      end = sample.findIndex(
-        // ECMA-402 §11.5.10 step 4.d: read the host sample's endpoint tag.
-        part => part.source === 'endRange'
-      )
+    const sample = apply(parts, formatter, [946718033000, 1025966286000])
+    let end = 0
+    // ECMA-402 §11.5.10 step 4.d: read the host sample's endpoint tag.
+    while (end < sample.length && sample[end].source !== 'endRange') end++
     let start = end - 1
     while (start >= 0 && sample[start].source !== 'startRange') start--
-    if (start < 0 || end < 0)
+    if (start < 0 || end === sample.length)
       throw new RangeErrorConstructor('Unsupported host calendar range pattern')
-    separator = sample
-      .slice(start + 1, end)
-      .map(
-        // ECMA-402 §11.5.10 step 4.c: read the host sample's separator text.
-        part => part.value
-      )
-      .join('')
-    separators.set(formatter, separator)
+    separator = partText(sample, start + 1, end)
+    apply(weakMapSet, separators, [formatter, separator])
   }
   // ECMA-402 §11.5.8 step 19.f.i: carry source labels into the fallback parts.
-  return [
-    ...start.map(
-      // ECMA-402 §11.5.10 steps 4.b–d: preserve start parts and tag their source.
-      part => ({...part, source: 'startRange' as const})
-    ),
-    {type: 'literal', value: separator, source: 'shared'},
-    ...end.map(
-      // ECMA-402 §11.5.10 steps 4.b–d: preserve end parts and tag their source.
-      part => ({...part, source: 'endRange' as const})
-    ),
-  ]
+  append(start, 'startRange')
+  setDataProperty(result, result.length, {
+    type: 'literal',
+    value: separator,
+    source: 'shared',
+  })
+  append(end, 'endRange')
+  return result
+}
+
+// ECMA-402 §11.5.6 step 3.a concatenates part values.
+function partText(
+  parts: Intl.DateTimeFormatPart[],
+  start = 0,
+  end = parts.length
+): string {
+  let result = ''
+  for (let index = start; index < end; index++) result += parts[index].value
+  return result
 }
