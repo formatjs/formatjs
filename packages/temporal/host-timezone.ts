@@ -22,6 +22,7 @@ import {
   type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
 import {DateFromTime} from '#packages/ecma262-abstract/DateOperations.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 
 export type HostTimeZone = Pick<
   TimeZoneKernel,
@@ -60,12 +61,21 @@ type OwnedTimeZoneQuery = (
   local: bigint,
   direction?: 'earlier' | 'later'
 ) => bigint[] | bigint | undefined
-const checkHostTemporalCandidates = hostParts
-  ? (Object.getOwnPropertyDescriptor(
-      hostParts,
-      Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates')
-    )?.value as OwnedTimeZoneQuery | undefined)
-  : undefined
+// ECMA-262 §7.3.12 steps 1–3: A capability descriptor must have its own value.
+function hostTimeZoneCapability(
+  method: object | undefined,
+  key: symbol
+): unknown {
+  const descriptor = method && getOwnPropertyDescriptor(method, key)
+  return descriptor && HasOwnProperty(descriptor, 'value')
+    ? descriptor.value
+    : undefined
+}
+
+const checkHostTemporalCandidates = hostTimeZoneCapability(
+  hostParts,
+  Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates')
+) as OwnedTimeZoneQuery | undefined
 const nowMilliseconds = Date.now
 const second = 1000000000n
 const day = 86400n * second
@@ -119,14 +129,14 @@ function createHostTimeZoneProvider(
   // Proposal comparison §11.1.9 step3: named offset memoization stays private.
   // https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor
   const offsets = new MapConstructor<number, bigint>()
-  const dataGeneration = getOwnPropertyDescriptor(
+  const dataGeneration = hostTimeZoneCapability(
     parts,
     timeZoneDataGenerationKey
-  )?.value as (() => object) | undefined
-  const queryTemporalTimeZone = getOwnPropertyDescriptor(
+  ) as (() => object) | undefined
+  const queryTemporalTimeZone = hostTimeZoneCapability(
     parts,
     queryTemporalTimeZoneKey
-  )?.value as
+  ) as
     | ((
         this: Intl.DateTimeFormat,
         instant: bigint,

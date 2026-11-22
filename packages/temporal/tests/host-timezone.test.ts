@@ -95,6 +95,37 @@ it('retains captured host methods after prototype mutation', () => {
   }
 })
 
+it('reads only own data properties for host timezone capabilities', () => {
+  const parts = Intl.DateTimeFormat.prototype.formatToParts
+  const key = Symbol.for('@formatjs/intl-datetimeformat/timeZoneDataGeneration')
+  const capability = Object.getOwnPropertyDescriptor(parts, key)
+  const inherited = Object.getOwnPropertyDescriptor(Object.prototype, 'value')
+  let calls = 0
+  let offset: bigint
+  try {
+    Object.defineProperty(parts, key, {
+      configurable: true,
+      get() {
+        calls++
+      },
+    })
+    Object.defineProperty(Object.prototype, 'value', {
+      configurable: true,
+      get() {
+        calls++
+      },
+    })
+    offset = createHostTimeZone('Asia/Kathmandu').offsetNanoseconds(0n)
+  } finally {
+    Reflect.deleteProperty(Object.prototype, 'value')
+    if (inherited) Object.defineProperty(Object.prototype, 'value', inherited)
+    if (capability) Object.defineProperty(parts, key, capability)
+    else Reflect.deleteProperty(parts, key)
+  }
+  expect(offset).toBe(19800000000000n)
+  expect(calls).toBe(0)
+})
+
 it('collects fold candidates without invoking inherited index setters', () => {
   const zone = createHostTimeZone('America/New_York')
   const local = {year: 2020, month: 11, day: 1, hour: 1, minute: 30}

@@ -34005,7 +34005,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
+    "packages/temporal/host-timezone.ts": "8ae18d5b3b80ae577f17164464bbcc3b4dcad243648abd6f9c971850933ec758",
     "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
@@ -34602,6 +34602,20 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "host_timezone_capability_descriptor": [
+      {
+        "file": "packages/temporal/host-timezone.ts",
+        "symbol": "hostTimeZoneCapability",
+        "source_sha256": "8ae18d5b3b80ae577f17164464bbcc3b4dcad243648abd6f9c971850933ec758",
+        "start_line": 65,
+        "end_line": 73,
+        "anchor_line": 64,
+        "section": "7.3.12",
+        "steps": ["1", "2", "3"],
+        "spec_url": "https://tc39.es/ecma262/#sec-hasownproperty",
+        "scope": "Accept only the own value of the host capability descriptor."
+      }
+    ],
     "owned_temporal_data_zone": [
       {
         "file": "packages/intl-datetimeformat/core.ts",
@@ -34630,10 +34644,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "offsetNanoseconds",
-        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
-        "anchor_line": 145,
-        "start_line": 144,
-        "end_line": 217,
+        "source_sha256": "8ae18d5b3b80ae577f17164464bbcc3b4dcad243648abd6f9c971850933ec758",
+        "anchor_line": 155,
+        "start_line": 154,
+        "end_line": 227,
         "section": "21.4.1.21",
         "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds",
         "scope": "Return nanoseconds east of UTC at the input epoch."
@@ -34641,10 +34655,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "candidatesFor",
-        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
-        "anchor_line": 257,
-        "start_line": 259,
-        "end_line": 290,
+        "source_sha256": "8ae18d5b3b80ae577f17164464bbcc3b4dcad243648abd6f9c971850933ec758",
+        "anchor_line": 267,
+        "start_line": 269,
+        "end_line": 300,
         "section": "21.4.1.20",
         "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneepochnanoseconds",
         "scope": "Collect and sort matching epochs. Exhaustiveness of sampled host candidates still depends on provider evidence."
@@ -34678,10 +34692,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "beginOperation",
-        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
-        "start_line": 137,
-        "end_line": 142,
-        "anchor_line": 136,
+        "source_sha256": "8ae18d5b3b80ae577f17164464bbcc3b4dcad243648abd6f9c971850933ec758",
+        "start_line": 147,
+        "end_line": 152,
+        "anchor_line": 146,
         "section": "11.1.9",
         "steps": ["3"],
         "spec_url": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
@@ -34910,10 +34924,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "createHostTimeZoneProvider",
-        "start_line": 89,
-        "end_line": 237,
-        "anchor_line": 88,
-        "source_sha256": "e0e76f715afa5e939a9d392bb8ed7cd25fc474f9721c648c1c4cff4411ffdd89",
+        "start_line": 99,
+        "end_line": 247,
+        "anchor_line": 98,
+        "source_sha256": "8ae18d5b3b80ae577f17164464bbcc3b4dcad243648abd6f9c971850933ec758",
         "spec_row_ids": [
           "11.1.9/algorithm-1/step-3",
           "11.1.13/algorithm-1/step-3.a",

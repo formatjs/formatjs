@@ -415,7 +415,7 @@ endpoint bounds for all four host timezone conditions. Replacement data still
 need their own proof. The native Intl candidate path now appends private
 candidates without calling inherited index setters.
 [Legacy dataset proof](temporal-timezone-boundary-proof/README.md#released-formatter-with-its-shipped-data).
-[Host regression](../../packages/temporal/tests/host-timezone.test.ts#L98).
+[Host regression](../../packages/temporal/tests/host-timezone.test.ts#L129).
 The Debian JavaScriptCoreGTK 2.54.3 and ICU 76.1 binding now has exact
 candidate, gap, endpoint and six-day spread bounds, plus public controls.
 Other JavaScriptCore builds remain conditional.
@@ -435,6 +435,9 @@ The owned formatter's Temporal hooks now follow the same canonical timezone
 rows as Intl formatting after reload. The packaged regression covers an alias
 whose custom row conflicts with the canonical data zone.
 [Alias reload proof](temporal-timezone-boundary-proof/README.md#canonical-timezone-rows-after-an-alias-reload).
+Host capability checks now require an own data field on the descriptor.
+The regression observes zero inherited getter calls.
+[Capability proof](temporal-timezone-boundary-proof/README.md#host-capability-descriptors).
 The finite retained-week count now has an explicit provider-bound proof.
 A separate public replay isolates the month bubbling policy after a valid
 directed rounding window. The numbered conditions keep their current scope.

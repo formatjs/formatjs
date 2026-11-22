@@ -282,7 +282,7 @@ and loads the synthetic upper and lower folds. Before the fix,
 disambiguation modes. The comparison requires RangeError when either
 actual candidate is outside the Instant limits.
 
-The [offset provider](../../../packages/temporal/host-timezone.ts#L75) reuses
+The [offset provider](../../../packages/temporal/host-timezone.ts#L85) reuses
 the installed formatter's private candidate check within one day of either
 limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L441)
 enumerates decoded historical and recurring offsets and round-trips each
@@ -410,6 +410,21 @@ directions across reloads. Temporal retains the public alias identifier.
 - Packaged after-fix result SHA-256 `0080eac6c3a4e4db32fe079506cfe62cc217de4a78d0a7d79626cdd3c362372a`
 - Six-target Bazel log SHA-256 `4e87cead8a895b596c9ef7876b053e27a5482cc48368f3ae502334ec32ddc61b`
 
+### Host capability descriptors
+
+The host bridge reads three private capabilities from the captured
+`formatToParts` function. Accessor descriptors have no own `value`. The
+old bridge read a getter inherited from `Object.prototype` in that case.
+The bridge now checks the descriptor's own fields. The regression observes
+zero getter calls and the same Kathmandu offset of 19,800,000,000,000 ns.
+
+[Descriptor check](../../../packages/temporal/host-timezone.ts#L64).
+[Regression](../../../packages/temporal/tests/host-timezone.test.ts#L98).
+[ECMA-262 §7.3.12 steps 1–3](https://tc39.es/ecma262/#sec-hasownproperty).
+
+- Before-fix SHA-256 `55082834f541861ed229a117a7b1f0aafb54475ab8f9b058c2de8fa640a65bb7`
+- Six-target Bazel SHA-256 `8fdbfb6500b5246608d777a856663f572468a391262a3b10539375a8bea560f7`
+
 ## Exact owned next and previous transition
 
 A six-hour packed offset pulse returned null from either side even though
@@ -425,7 +440,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L546).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L350).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L360).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
@@ -453,7 +468,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L376).
+[Host search](../../../packages/temporal/host-timezone.ts#L386).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary
@@ -477,8 +492,8 @@ unchanged interval. Both used the captured Array push, which still calls an
 inherited index setter. Both now append an own data property to the private
 array. The first and repeated lookups return the transition at the exact
 nanosecond in both cases.
-[Host cache writes](../../../packages/temporal/host-timezone.ts#L432).
-[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L403).
+[Host cache writes](../../../packages/temporal/host-timezone.ts#L442).
+[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L434).
 
 ## Reproduce analysis
 
