@@ -37,6 +37,8 @@ const catalogs = new Map<Calendar, Catalog>()
 const utc = new WeakMap<Intl.DateTimeFormat, Intl.DateTimeFormat>()
 const separators = new WeakMap<Intl.DateTimeFormat, string>()
 function isoDay(year: number, month: number, day: number): number {
+  // ECMA-262 §21.4.1.28 steps 8–9: derive the epoch day from valid civil
+  // fields.
   return calendarToEpochDayRaw('iso8601', {year, month, day}, 'reject')
 }
 function probe(
@@ -46,6 +48,7 @@ function probe(
   const key = `${calendar}:${timeZone}`
   let result = probes.get(key)
   if (!result) {
+    // ECMA-402 §11.5.11 steps 3–5: ask Intl for local calendar fields.
     result = new Constructor!('en-US-u-nu-latn', {
       calendar: calendar === 'iso8601' ? 'gregory' : calendar,
       numberingSystem: 'latn',
@@ -65,11 +68,13 @@ function fields(
   milliseconds: number
 ) {
   const formatter = probe(calendar, timeZone)
+  // ECMA-402 §11.5.7 steps 4.b–c: read the emitted type/value fields.
   const values = new Map<string, string>(
     nativeParts!
       .call(formatter, milliseconds)
       .map(part => [part.type, part.value])
   )
+  // ECMA-402 §11.5.4 steps 15.f.iii and 15.h.i: recover year and related year.
   const year = numberFrom(
     values.get(calendar === 'iso8601' ? 'year' : 'relatedYear')
   )
@@ -85,6 +90,7 @@ function fields(
     +month[1] > 12
   )
     throw new RangeErrorConstructor('Unsupported host calendar fields')
+  // ECMA-402 §11.5.12 Table 17: recover signed Gregorian year using the era.
   let bce = false
   if (calendar === 'iso8601') {
     let positive = positiveEras.get(formatter)
@@ -117,6 +123,8 @@ function catalog(calendar: Calendar, code: string): Catalog {
     (!result.months.has(code) || result.full === undefined || !result.leap) &&
     result.count < 2400
   ) {
+    // ECMA-402 §11.5.11 step 5.a: catalog host month codes by local month
+    // start.
     const start = result.cursor,
       value = fields(calendar, 'UTC', start * dayMilliseconds),
       next = start + 32,
@@ -136,6 +144,8 @@ export function calendarLabelFormatter(
 ): Intl.DateTimeFormat {
   let result = utc.get(source)
   if (!result) {
+    // ECMA-402 §11.5.4 step 15.f.x: keep label options on a UTC sample
+    // formatter.
     const projected = {
       ...options,
       timeZone: 'UTC',
@@ -159,6 +169,7 @@ export function legacyISOEpochDay(
   timeZone: string,
   milliseconds: number
 ): number {
+  // ECMA-402 §11.5.11 steps 3–4: recover the instant's local Gregorian day.
   const value = fields('iso8601', timeZone, milliseconds)
   return isoDay(value.year, value.month, value.day)
 }
@@ -167,6 +178,7 @@ function part(
   epoch: number,
   type: string
 ): string {
+  // ECMA-402 §11.5.7 step 1: get the requested label from a native partition.
   const value = nativeParts!
     .call(source, epoch * dayMilliseconds)
     .find(part => part.type === type)
@@ -181,6 +193,8 @@ function monthLabel(
   calendar: Calendar,
   code: string
 ): string {
+  // ECMA-402 §11.5.4 step 15.f.x: sample the month label or reconstruct its
+  // leap form.
   const data = catalog(calendar, code),
     epoch = data.months.get(code)
   if (epoch !== undefined) return part(source, epoch + 14, 'month')
@@ -216,6 +230,7 @@ export function correctLunisolarParts(
       surrogateMilliseconds === undefined && expectedEpochDay === undefined
         ? fields('iso8601', options.timeZone, value.milliseconds)
         : undefined,
+    // ECMA-402 §11.5.11 step 5.a: compute fields from the original local day.
     expected = calendarFromEpochDayRaw(
       calendar,
       expectedEpochDay ??
@@ -223,6 +238,8 @@ export function correctLunisolarParts(
           ? isoDay(iso.year, iso.month, iso.day)
           : floor(value.milliseconds / dayMilliseconds))
     ),
+    // ECMA-402 §11.5.4 step 12: recover the fields used by the native
+    // partition.
     actual = fields(
       calendar,
       options.timeZone,
@@ -240,6 +257,8 @@ export function correctLunisolarParts(
     actual.day !== expected.day &&
     arraySome(raw, part => part.type === 'day')
   ) {
+    // ECMA-402 §11.5.4 steps 15.f.iii and 15.f.viii: restore the day from a
+    // control.
     const data = catalog(calendar, 'M01')
     changes.set('day', part(labels, data.full! + expected.day - 1, 'day'))
   }
@@ -247,13 +266,19 @@ export function correctLunisolarParts(
     actual.monthCode !== expected.monthCode &&
     arraySome(raw, part => part.type === 'month')
   )
+    // ECMA-402 §11.5.4 step 15.f.x: restore the month label for the true month
+    // code.
     changes.set('month', monthLabel(labels, calendar, expected.monthCode))
   if (actual.year !== expected.year) {
     const cycleYear = 2000 + ((((expected.year - 2000) % 60) + 60) % 60)
     for (const item of raw) {
       const type: string = item.type
+      // ECMA-402 §11.5.4 steps 15.i.i–iii: select the localized cyclical year
+      // label.
       if (type === 'yearName')
         changes.set(item.type, part(labels, isoDay(cycleYear, 7, 1), item.type))
+      // ECMA-402 §11.5.4 steps 15.f.viii–ix and 15.h: correct numeric year
+      // text.
       else if (type === 'year' || type === 'relatedYear') {
         if (!NumberConstructor || !numberFormat)
           throw new RangeErrorConstructor(
@@ -284,6 +309,7 @@ export function correctLunisolarParts(
       }
     }
   }
+  // ECMA-402 §11.5.7 steps 4.b–c: preserve type while replacing corrected text.
   return changes.size
     ? raw.map(item =>
         changes.has(item.type)
@@ -306,6 +332,7 @@ export function lunisolarRangeParts(
     !parts
   )
     return undefined
+  // ECMA-402 §11.5.10 step 1: retain native range partition when fields agree.
   const raw = parts.call(
       first.formatter,
       first.milliseconds,
@@ -329,9 +356,12 @@ export function joinCalendarRangeParts(
     start.map(part => part.value).join('') ===
     end.map(part => part.value).join('')
   )
+    // ECMA-402 §11.5.8 step 16.c: tag the collapsed fallback parts as shared.
     return start.map(part => ({...part, source: 'shared'}))
   let separator = separators.get(formatter)
   if (separator === undefined) {
+    // ECMA-402 §11.5.8 steps 18–19: sample a separator for the compatibility
+    // fallback.
     const sample = parts.call(formatter, 946718033000, 1025966286000),
       end = sample.findIndex(part => part.source === 'endRange')
     let start = end - 1
@@ -344,6 +374,7 @@ export function joinCalendarRangeParts(
       .join('')
     separators.set(formatter, separator)
   }
+  // ECMA-402 §11.5.8 step 19.f.i: keep start, shared and end source labels.
   return [
     ...start.map(part => ({...part, source: 'startRange' as const})),
     {type: 'literal', value: separator, source: 'shared'},

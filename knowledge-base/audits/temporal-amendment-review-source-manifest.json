@@ -35,7 +35,7 @@
     "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
     "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
     "packages/temporal/legacy-durationformat.ts": "8afb5875257579392d8b23e1080ffa5b888cde20fb606072cce99297d0fc1489",
-    "packages/temporal/legacy-extended-date.ts": "d78ec44737949e1de760d1b0ab08c7a0800b16ca2b62ba4b1b847cd1a94e917b",
+    "packages/temporal/legacy-extended-date.ts": "9b4d1c655f572a2a278005672e03077e45ea0298193caead0b22df5fc8997aef",
     "packages/temporal/legacy-intl.ts": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
     "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
     "packages/temporal/now.ts": "0e4766a9b82c409e3134a9f0ddffdb25fa9c109645f9f3bdb49e4c25a1b1a89d",

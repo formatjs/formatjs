@@ -46,12 +46,12 @@ Comparison snapshot retrieved 2026-11-21; SHA-256
 Freeze that text for this pass. A newer edition requires an explicit diff and
 scope update, not an automatic restart.
 
-| Register                                                            | Measured scope                                                                                                         |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 799 mapped, 161 candidate/dependency assignments, 109 unmapped (including 3 retired callbacks) |
-| [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
-| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
+| Register                                                            | Measured scope                                                                                                        |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                  |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 871 mapped, 96 candidate/dependency assignments, 102 unmapped (including 3 retired callbacks) |
+| [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                   |
+| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                           |
 
 The initial code maps covered 82 distinct selected source files and 24,790 physical lines.
 Public entries and helper callables are different units; do not add their counts
@@ -117,7 +117,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 109 unresolved
+separately. Candidate source assignments require confirmation; 102 unresolved
 helper mappings are a mapping queue, not missing functions.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -207,13 +207,13 @@ retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[665 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[737 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-653 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:799 mapped,161 candidate,
-109 unmapped, including three retired identities. Annotation presence alone
-is 726 direct, 13 enclosing, 327 without numbered anchors, 3 retired; these are
+725 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:871 mapped,96 candidate,
+102 unmapped, including three retired identities. Annotation presence alone
+is 798 direct, 13 enclosing, 255 without numbered anchors, 3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -254,10 +254,16 @@ anchors. Seven focused Bazel targets pass.
 [Short-date proof](temporal-native-shortdates45-annotation-source-proof.json).
 [Bridge proof](temporal-ts-native38-annotation-source-proof.json).
 [Candidate List transport](temporal-ts-native-existing-929-source-proof.json).
-The measured review cost gives a provisional 1–2.5 hour estimate for triaging
-327 remaining helper anchors. This estimate covers legacy calendar and timezone
-providers plus structural helpers that may need an explicit disposition.
-The 57 active conditional spec steps remain a separate audit queue.
+The next 72 helper mappings cover native Intl providers and legacy date
+formatting. The legacy batch binds 65 local comments to rendered ECMA-262 and
+ECMA-402 clauses. Six focused Bazel targets pass.
+[Native provider proof](temporal-native-intlctx36-annotation-source-proof.json).
+[Legacy proof](temporal-legacy-calendar-rendered-annotation-source-proof.json).
+
+Estimated time to triage 255 remaining helper anchors is 45 minutes–2 hours at
+the measured review rate. Behavioral review still has 57 conditional Temporal
+steps and one confirmed published ECMA-402 range-collapse gap.
+[Range witness](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

@@ -35,6 +35,7 @@ pub struct Provider {
     implementation: Implementation,
 }
 impl Provider {
+    // Proposal comparison §15.6.23 step 5.a: Supply an arithmetic calendar projection provider.
     pub fn arithmetic(name: &str) -> Result<Self, Error> {
         let calendar = Calendar::from_name(name)
             .filter(|value| {
@@ -46,6 +47,7 @@ impl Provider {
             implementation: Implementation::Arithmetic(calendar),
         })
     }
+    // Proposal comparison §15.6.23 step 5.a: Decode arithmetic or table calendar projection data.
     pub fn from_json(json: &str) -> Result<Self, Error> {
         let data: RawProvider = serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
         Ok(match data {
@@ -86,11 +88,13 @@ impl Provider {
     pub fn name(&self) -> &str {
         self.name
     }
+    // Proposal comparison §15.6.23 step 5.a: Install the provider used for calendar field projection.
     pub fn register(self, runtime: &Runtime) {
         runtime.register_calendar(self.name.into(), Arc::new(self));
     }
 }
 impl CalendarProvider for Provider {
+    // Proposal comparison §15.6.23 step 5.a: Dispatch shifted milliseconds to the chosen calendar provider.
     fn date_from_time(&self, milliseconds: i64) -> Result<CalendarFields, Error> {
         match &self.implementation {
             Implementation::Arithmetic(calendar) => calendar.date_from_time(milliseconds),

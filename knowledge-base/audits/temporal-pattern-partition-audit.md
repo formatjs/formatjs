@@ -92,3 +92,22 @@ The observed failure keys and messages exactly equal that baseline; no baseline
 or exclusion changed. The corresponding baseline target remains a distinct
 regression gate. These constructor failures are still open and are not parser
 or Temporal compliance credit.
+
+## Legacy corrected range collapse
+
+Confirmed against the Bazel Temporal package on Node. Install
+`polyfill-force.js`, create `Intl.DateTimeFormat('en', {calendar: 'buddhist',
+year: 'numeric', era: 'short', timeZone: 'UTC'})`, then call
+`formatRangeToParts(-79302585600000, -79271049600000)`. The two local calendar
+years are 0 and 1. Both display as 1 BE. The patched formatter produces a single
+shared year part. Constructing matching Buddhist `Temporal.PlainDate` endpoints
+reproduces the same failure. The numeric host range has separate start and end
+year parts.
+
+The compatibility fallback in
+[`joinCalendarRangeParts`](../../packages/temporal/legacy-lunisolar-date.ts)
+compares display text. ECMA-402 §11.5.8 steps 15.d.v–vi compare local fields
+before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
+nonpositive year for display. The fallback needs the original year comparison.
+[Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+[Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).

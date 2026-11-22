@@ -33,16 +33,19 @@ type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
 const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
 
 function clipped(value: LegacyDateTimeProjection): boolean {
+  // ECMA-262 §21.4.1.31 step 2: detect plain values that need a surrogate.
   return value.plain === true && mathAbs(value.milliseconds) > limit
 }
 function gregorian(
   formatter: Intl.DateTimeFormat,
   resolved: Resolved
 ): boolean {
+  // ECMA-402 §11.5.11 step 4.a: identify Gregorian-style projections.
   const calendar = resolved.call(formatter).calendar
   return calendar === 'iso8601' || calendar === 'gregory'
 }
 function shift(value: LegacyDateTimeProjection): number {
+  // ECMA-262 §21.4.1.5 steps 2–6: shift by one whole 400-year cycle.
   return clipped(value) ? (value.milliseconds < 0 ? cycle : -cycle) : 0
 }
 function years(
@@ -55,6 +58,7 @@ function years(
     throw new RangeErrorConstructor(
       'Extended Gregorian dates require Intl.NumberFormat'
     )
+  // ECMA-402 §11.5.4 steps 1 and 3–5: preserve locale and numbering system.
   const options = resolved.call(value.formatter),
     formatter = new NumberConstructor(options.locale, {
       numberingSystem: options.numberingSystem,
@@ -62,8 +66,10 @@ function years(
       maximumFractionDigits: 0,
     }),
     format = numberFormat.call(formatter) as (value: number) => string,
+    // ECMA-262 §21.4.1.7 step 1: find the real and surrogate years.
     year = YearFromTime(value.milliseconds),
     surrogate = YearFromTime(value.milliseconds + delta),
+    // ECMA-402 §11.5.4 step 15.f.iv: convert each signed year to display year.
     original = format(year <= 0 ? 1 - year : year),
     replacement = format(surrogate <= 0 ? 1 - surrogate : surrogate)
   // A 400-year shift preserves month/day/weekday and two-digit years.
@@ -75,6 +81,7 @@ export function legacyDateTimeParts(
   parts: Parts,
   resolved: Resolved
 ): Intl.DateTimeFormatPart[] {
+  // ECMA-402 §11.5.4 steps 15.e.iv–v: restore the projected timezone label.
   if (value[legacyTimeZoneName] !== undefined)
     return legacyDateTimeParts(
       {...value, [legacyTimeZoneName]: undefined},
@@ -87,6 +94,7 @@ export function legacyDateTimeParts(
     )
   const calendar = legacyCalendarParts(value, parts, resolved)
   if (calendar) return calendar
+  // ECMA-402 §11.5.7 step 1: delegate the native numeric partition.
   if (!clipped(value) || !gregorian(value.formatter, resolved))
     return correctLunisolarParts(
       value,
@@ -95,6 +103,7 @@ export function legacyDateTimeParts(
     )
   const delta = shift(value),
     rewrite = years(value, delta, resolved)
+  // ECMA-402 §11.5.7 step 1: partition the surrogate and restore its year.
   return parts
     .call(value.formatter, value.milliseconds + delta)
     .map(part =>
@@ -108,6 +117,7 @@ export function legacyDateTimeFormat(
   parts: Parts,
   resolved: Resolved
 ): string {
+  // ECMA-402 §11.5.6 steps 2–4: concatenate the corrected part values.
   if (value[legacyTimeZoneName] !== undefined)
     return legacyDateTimeParts(value, parts, resolved)
       .map(part => part.value)
@@ -117,6 +127,7 @@ export function legacyDateTimeFormat(
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
     const calendar = resolved.call(value.formatter).calendar
     if (calendar !== 'chinese' && calendar !== 'dangi')
+      // ECMA-402 §11.3.3 step 4.a.ii: forward the ordinary numeric format call.
       return format.call(value.formatter)(value.milliseconds)
     const raw = parts.call(value.formatter, value.milliseconds),
       corrected = correctLunisolarParts(value, raw, resolved)
@@ -134,6 +145,8 @@ function rangeShifts(
   last: LegacyDateTimeProjection
 ): [number, number] {
   const delta = shift(first) || shift(last)
+  // ECMA-402 §11.5.8 steps 1–4: select host-safe endpoints without crossing
+  // eras.
   const fits = (value: LegacyDateTimeProjection): boolean =>
     mathAbs(value.milliseconds + delta) <= limit &&
     YearFromTime(value.milliseconds) <= 0 ===
@@ -163,10 +176,12 @@ export function legacyDateTimeRangeParts(
     (!clipped(first) && !clipped(last)) ||
     !gregorian(first.formatter, resolved)
   )
+    // ECMA-402 §11.5.10 step 1: delegate range partitioning on the native path.
     return parts.call(first.formatter, first.milliseconds, last.milliseconds)
   const [start, end] = rangeShifts(first, last),
     rewriteStart = years(first, start, resolved),
     rewriteEnd = years(last, end, resolved)
+  // ECMA-402 §11.5.8 steps 19.c–e: choose the year rewrite by part source.
   return parts
     .call(first.formatter, first.milliseconds + start, last.milliseconds + end)
     .map(part =>
@@ -195,6 +210,7 @@ export function legacyDateTimeRangeFormat(
     parts,
     resolved
   )
+  // ECMA-402 §11.5.9 steps 2–4: concatenate the corrected range values.
   if (extended) return extended.map(part => part.value).join('')
   const lunar = lunisolarRangeParts(first, last, parts, resolved)
   if (lunar) return lunar.map(part => part.value).join('')
@@ -202,6 +218,7 @@ export function legacyDateTimeRangeFormat(
     (!clipped(first) && !clipped(last)) ||
     !gregorian(first.formatter, resolved)
   )
+    // ECMA-402 §11.3.4 step 6: forward the unchanged numeric range.
     return format.call(first.formatter, first.milliseconds, last.milliseconds)
   return legacyDateTimeRangeParts(first, last, parts, resolved)
     .map(part => part.value)
