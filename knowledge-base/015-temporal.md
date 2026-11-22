@@ -1,5 +1,12 @@
 # Temporal implementation
 
+[Gregorian proof](audits/temporal-calendar-gregorian-closure-audit.md) covers
+raw±110million-day conversion, including negative eras and exact Number/bitwise
+bounds. [Prepared ISO addition bounds](audits/temporal-iso-calendar-add-bounds-audit.md)
+include exact BigInt clock folding and final caller range guards. Direct TS/Rust
+extended-endpoint controls complement existing complete-era tests. Runtime
+arithmetic is unchanged; complete public/provider contracts stay open.
+
 Host calendar providers retain captured cache/iterator and Intl method calls.
 Compact and approximate lunisolar years construct own indexed lists without
 mutable array methods/species; private Intl options have null prototypes.
