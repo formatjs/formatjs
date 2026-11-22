@@ -1018,8 +1018,10 @@ export function roundRelativeDifference(
           : result[key]
     let truncated = mathTrunc(count / increment) * increment
     prefix[key] = truncated
+    // Proposal comparison §7.5.33 step 8.d.i: Resolve compatibly when zoned and the rounded unit is nonzero.
     let a = anchor.endpoint(prefix)
     prefix[key] = truncated + sign * increment
+    // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
     let b = anchor.endpoint(prefix)
     // Proposal comparison §7.5.34 steps 5.a and 6.a: retry an overshooting
     // window. Use the existing shifted day/week policy.
@@ -1077,6 +1079,7 @@ export function roundRelativeDifference(
       date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
     const origin = anchor.endpoint(date),
       next = {...date, days: date.days + sign},
+      // Proposal comparison §7.5.35 step 6: The signed day step ensures compatible resolution.
       span = anchor.endpoint(next) - origin
     expanded = (value - span) * physicalSign >= 0n
     if (expanded) {

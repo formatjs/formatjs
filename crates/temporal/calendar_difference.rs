@@ -168,6 +168,7 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
         }
         fields = date_until(start, begin, day, largest)?;
     }
+    // Proposal comparison §6.5.6 step 11.d: subtract the selected anchor exactly.
     let time = Duration::from_time_nanoseconds(end - anchor, TimeUnit::Hour)?.fields();
     fields[4..].copy_from_slice(&time[4..]);
     Ok(fields)
@@ -197,6 +198,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
     }
     let sign = if end < origin { -1 } else { 1 };
     let since_sign = if since { -1 } else { 1 };
+    // Proposal comparison §6.5.7 step 2: dispatch the zoned date-unit difference.
     let mut fields = unrounded(start, end, largest)?;
     if exact_zoned_nanosecond {
         if since {
@@ -220,8 +222,10 @@ pub(crate) fn difference<A: RelativeAnchor>(
         };
         let mut truncated = count / i128::from(increment) * i128::from(increment);
         prefix[index] = truncated;
+        // Proposal comparison §7.5.33 step 8.d.i: Resolve compatibly when zoned and the rounded unit is nonzero.
         let mut a = endpoint(start, prefix)?;
         prefix[index] = truncated + sign * i128::from(increment);
+        // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
         let mut b = endpoint(start, prefix)?;
         if (end - a) * sign < 0 || (b - end) * sign < 0 {
             truncated += sign * i128::from(increment);
@@ -268,6 +272,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
         let base = endpoint(start, date)?;
         let mut next = date;
         next[3] += sign;
+        // Proposal comparison §7.5.35 step 6: The signed day step ensures compatible resolution.
         let span = endpoint(start, next)? - base;
         fields = date;
         expanded = (value - span) * sign >= 0;

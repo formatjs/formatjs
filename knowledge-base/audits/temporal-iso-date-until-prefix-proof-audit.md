@@ -163,3 +163,44 @@ cover leap/month-end asymmetry, largest-unit
 distinctions and both extended raw endpoints. They assert full components and
 raw add-back through shared TS/Hermes/native controls and typed Rust. All 12 focused targets pass (three executed, nine cached);
 [target manifest](temporal-date-until-validation-targets.txt). No historical trace credit or full method signoff claimed.
+
+## Independent step evidence
+
+The PlainDate entry points pass the validated receiver, original operand and
+options to the shared difference. Both keep the starting operand first.
+`until` passes false for since and `since` passes true. Native preparation
+keeps the same ISO days, calendar, largest date unit and operation.
+[Temporal comparison §3.3.25 step 3](https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.until).
+[Temporal comparison §3.3.26 step 3](https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.since).
+[TypeScript until](../../packages/temporal/plain-date.ts#L415).
+[TypeScript since](../../packages/temporal/plain-date.ts#L421).
+[Rust until](../../crates/temporal/plain_relative.rs#L85).
+[Rust since](../../crates/temporal/plain_relative.rs#L96).
+
+Unequal PlainDate endpoints dispatch CalendarDateUntil with the preserved
+calendar, ordered days and selected largest unit. Where the implementation
+uses midnight scalars, the clock remainder is zero and day borrowing does
+not alter either endpoint. CalendarDateUntil's result and rounding still
+have their own audit obligations.
+[Temporal comparison §3.5.14 step 6](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplaindate).
+[TypeScript arguments](../../packages/temporal/plain-date.ts#L267).
+[Rust arguments](../../crates/temporal/plain_relative.rs#L123).
+
+Both ISO year/month prefix predicates run before week or day fields are
+assigned. A false balanced-month comparison therefore completes the
+zero-week/day case in step 9. After the retained prefix is selected, constrain
+regulates the original day in the balanced ISO year/month. This value is
+invariant across the residual week/day probes. Both backends use seven calendar
+days per week. These facts verify the independent operations in steps 9–11.
+The zero-month shortcut and the published week/day loop stay open.
+[Temporal comparison §3.5.6 steps 9–11](https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses).
+[TypeScript prefix](../../packages/temporal/calendar.ts#L610).
+[Rust prefix](../../crates/intl_datetimeformat_calendars/date_math.rs#L91).
+[TypeScript constrain and week](../../packages/temporal/calendar.ts#L508).
+[Rust constrain and week](../../crates/intl_datetimeformat_calendars/date_math.rs#L52).
+
+Nine focused Bazel gates pass across TypeScript, Rust and Hermes. Only comments
+and audit records changed. The fixture oracles validate existing behavior.
+[Exact test scope](temporal-relative-rounding-contract-audit.md#independent-step-evidence).
+
+- Bazel log SHA-256 `0eb542982068c77ccaf47c7fe3714de93d24d242541616e949e6756931d2fa93`

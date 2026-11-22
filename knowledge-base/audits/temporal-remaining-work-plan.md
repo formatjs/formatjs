@@ -28,7 +28,7 @@ satisfy this requirement.
 
 Realm-specific work is out of scope. The fixed ledger records the 16 shared
 constructor-realm steps for reference.
-55 of 71 conditional numbered steps remain in scope. Of those, 49 track
+44 of 60 conditional numbered steps remain in scope. Of those, 38 track
 published comparison conflicts, two track relative-window premises and four
 track timezone-provider applicability. The ordinary `index.js` and
 `standalone.js` cases pass with shared private epoch and calendar slots.
@@ -125,11 +125,11 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states:231 conditional and90 comparison-issue rows. No reviewed
+Remaining core states include 223 conditional and 94 comparison-issue rows. No reviewed
 or partial rows remain. Amendments:56 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-71 conditional steps (45 core,26 amendment), each with exact source ranges
+60 conditional steps (34 core,26 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -310,7 +310,7 @@ Nine focused Bazel targets pass.
 [Date and short dates](temporal-ts-date-final31-annotation-source-proof.json).
 
 Source review of the fixed helper inventory is complete. Behavioral review
-still has 55 conditional Temporal steps. Both exact owned candidate lookup
+still has 44 conditional Temporal steps. Both exact owned candidate lookup
 and gap disambiguation now pass public packed-data regressions. Owned next
 and previous transition lookup uses exact decoded boundaries. Owned gap resolution
 checks actual boundary candidates near both Instant limits.
@@ -342,6 +342,10 @@ Owned range records use own data properties for sources and selected local time.
 Five independent range steps now have local verification. The configured-zone
 comparison and dependent branch predicates remain open.
 [Local evidence](temporal-pattern-partition-audit.md#owned-private-range-traversal).
+Eleven core steps now have local evidence for dispatch, ISO prefix operations,
+exact subtraction and compatible endpoint resolution.
+[ISO evidence](temporal-iso-date-until-prefix-proof-audit.md#independent-step-evidence).
+[Zoned evidence](temporal-relative-rounding-contract-audit.md#independent-step-evidence).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

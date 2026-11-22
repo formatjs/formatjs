@@ -589,6 +589,7 @@ export function unroundedZonedDifference(
     )
     anchor = anchorFor(fields)
   }
+  // Proposal comparison §6.5.6 step 11.d: subtract the selected anchor exactly.
   const time = balanceDurationTime(end - anchor, 4)
   for (let i = 0; i < clockNames.length; i++) {
     const name = (clockNames[i] + 's') as keyof DurationFields
@@ -666,6 +667,7 @@ export function differenceZonedDuration(
       since,
       {
         zoned: true,
+        // Proposal comparison §6.5.7 step 2: pass the prepared endpoints to the zoned difference.
         unrounded: value => unroundedZonedDifference(start, value, largest),
         endpoint: fields => addZonedDuration(start, fields),
       }

@@ -237,7 +237,7 @@ function add(
   )
 }
 // Temporal comparison §3.5.14 steps 1, 2, 3, 4, 9.
-// Route the prepared PlainDate difference.
+// Temporal comparison §§3.3.25 step 3, 3.3.26 step 3: shared difference dispatch.
 function difference(
   slot: DateSlot,
   other: unknown,
@@ -264,6 +264,10 @@ function difference(
     arrayIndexOf(names, largest) > smallIndex
   )
     throw new RangeErrorConstructor('Invalid date units')
+  // Temporal comparison §3.5.14 step 6, arguments only: preserve calendar,
+  // ordered ISO days and largest unit. Midnight anchors need no day borrow.
+  // CalendarDateUntil's result and later rounding remain separate contracts.
+  // https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplaindate
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return (
@@ -408,11 +412,13 @@ class PlainDateValue {
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
     // Temporal comparison §3.3.25 steps 1–3.
+    // Step 3 forwards the receiver, other and options with since=false.
     // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.until
     return difference(read(this), other, options, false)
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
     // Temporal comparison §3.3.26 steps 1–3.
+    // Step 3 keeps operand order and forwards options with since=true.
     // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.since
     return difference(read(this), other, options, true)
   }

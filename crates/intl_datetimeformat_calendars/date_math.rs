@@ -49,8 +49,10 @@ pub(crate) trait NumericCalendar: Copy {
         let original = self.from_epoch_day_raw(epoch)?;
         let (year, month) =
             self.add_year_month(original, duration.years, duration.months, overflow)?;
+        // Proposal comparison §3.5.6 step 10. Shared ISO day regulation in constrain mode.
         self.to_epoch_day_raw(year, i32::from(month), i32::from(original.day), overflow)?
             .checked_add(
+                // Proposal comparison §3.5.6 step 11. An ISO week has seven days.
                 duration
                     .weeks
                     .checked_mul(7)
@@ -86,6 +88,7 @@ pub(crate) trait NumericCalendar: Copy {
             }
             let (year, month) =
                 self.add_year_month(first, duration.years, duration.months, Overflow::Constrain)?;
+            // Proposal comparison §3.5.6 step 9. A false ISO prefix comparison ends the zero week/day case.
             Ok(exceeds(
                 year.cmp(&last.year)
                     .then_with(|| month.cmp(&last.month))

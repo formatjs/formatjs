@@ -63,3 +63,54 @@ The separately documented
 affects the historical/published proposal comparison. FormatJS's existing
 all-date-unit retry handles this case; it is not a complete derivation from
 that proposal branch or an adopted ECMA-262 finding.
+
+## Independent step evidence
+
+BigInt and i128 subtract the selected intermediate instant from the exact
+destination. The loop tests the equivalent opposite-sign expression before
+balancing clock fields. Fold fixtures distinguish earlier and later candidates.
+The choice of intermediate remains a separate open step.
+[Temporal comparison §6.5.6 steps 11.c–d](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
+[TypeScript subtraction](../../packages/temporal/zoned-date-time.ts#L592).
+[Rust subtraction](../../crates/temporal/calendar_difference.rs#L171).
+
+The date-unit caller uses the unrounded zoned difference with the original
+endpoints, zone and calendar and the prepared largest unit. If either backend
+uses an identical-endpoint shortcut, it takes the callee's zero-result case.
+The relative rounding call remains separately conditional.
+[Temporal comparison §6.5.7 step 2](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
+[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L670).
+[Rust dispatch](../../crates/temporal/calendar_difference.rs#L201).
+
+ComputeNudgeWindow step 8.d.i applies only when its first count is nonzero.
+Step 12.a uses the adjacent signed count, which lies strictly farther from
+zero. Total's count correction stops at zero because the origin cannot
+overshoot a destination in the target direction. The retained-week path also
+takes the next count in that direction. Both backends therefore take the
+nonzero date-add path and resolve the original local clock compatibly at
+these endpoints. Prefix choice and the retry stay separately open.
+[Temporal comparison §7.5.33 steps 8.d.i and 12.a](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
+[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1021).
+[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1024).
+[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L225).
+[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L228).
+
+NudgeToZonedTime step 6 adds the duration sign to a day component that has
+that sign or is zero. The resulting date duration is nonzero. Calendar
+addition regulates the original year/month prefix once, then adds the
+signed day. The next endpoint keeps the original clock even if the previous
+endpoint was shifted across a gap. The possible zero-date fold discrepancy
+at step 5 remains open.
+[Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
+[TypeScript signed day](../../packages/temporal/date-core.ts#L1082).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L275).
+[TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
+[Rust compatible resolution](../../crates/temporal/zoned.rs#L286).
+
+Nine focused Bazel targets passed. The TypeScript plain relative, zoned
+difference and relative Duration gates use the existing signed and precision
+fixtures. Native Rust runs the Temporal and calendar core suites. Hermes
+runs the plain relative and native plain/zoned oracle targets. TypeScript
+declarations also pass. The fixture results support these source proofs.
+
+- Bazel log SHA-256 `0eb542982068c77ccaf47c7fe3714de93d24d242541616e949e6756931d2fa93`

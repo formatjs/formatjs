@@ -505,11 +505,13 @@ function addCalendarEpochDay(
     values[1],
     overflow
   )
+  // Temporal comparison §3.5.6 step 10. Shared ISO day regulation in constrain mode.
   const epoch = calendarToEpochDayRaw(
     calendar,
     {year, month, monthCode: undefined, day: original.day},
     overflow
   )
+  // Temporal comparison §3.5.6 step 11. An ISO week has seven days.
   return epoch + integer(7 * values[2] + values[3])
 }
 // Fields must come from this calendar's epoch-day conversion.
@@ -605,6 +607,7 @@ export function calendarDateUntilRaw(
       result.months,
       'constrain'
     )
+    // Temporal comparison §3.5.6 step 9. A false ISO prefix comparison ends the zero week/day case.
     return (
       sign *
         (candidate.year - last.year ||

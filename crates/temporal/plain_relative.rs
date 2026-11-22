@@ -82,7 +82,7 @@ pub(crate) fn date_time_difference<C: CalendarProvider>(
     )
 }
 impl<C: CalendarProvider> PlainDate<C> {
-    // Proposal comparison §3.3.25 step 3: route the typed until difference.
+    // Proposal comparison §3.3.25 step 3 forwards the operands with since=false.
     pub fn until(
         self,
         other: Self,
@@ -93,7 +93,7 @@ impl<C: CalendarProvider> PlainDate<C> {
     ) -> Result<Duration, Error> {
         self.date_difference(other, largest, smallest, increment, mode, false)
     }
-    // Proposal comparison §3.3.26 step 3: route the typed since difference.
+    // Proposal comparison §3.3.26 step 3 forwards the operands with since=true.
     pub fn since(
         self,
         other: Self,
@@ -120,6 +120,9 @@ impl<C: CalendarProvider> PlainDate<C> {
         if smallest > DateTimeUnit::Day {
             return Err(Error::InvalidRoundingOptions);
         }
+        // Proposal comparison §3.5.14 step 6, arguments only: midnight anchors
+        // preserve calendar, ordered ISO days and largest unit through date_until.
+        // CalendarDateUntil's result and later rounding remain separate contracts.
         difference(
             &PlainAnchor::from(self),
             PlainAnchor::from(other).origin(),
