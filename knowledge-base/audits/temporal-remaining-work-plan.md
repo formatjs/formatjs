@@ -20,6 +20,9 @@ Comments identify the numbered algorithm and relevant steps, with rendered spec
 anchors. Shared helpers cite their actual semantic owner or caller contract;
 do not invent direct spec ownership. Track annotation coverage separately from
 behavior verification. Both must be complete before declaring the audit done.
+Include missing, stale and unlanded inline references in remaining scope and ETA.
+Land comments with their corresponding fixes; documentation-only mappings do not
+satisfy this requirement.
 
 ## Source and finite scope
 
@@ -145,7 +148,7 @@ pass at that checkpoint. Slot/cache corrections now pass the18-target batch;
 fresh-constructor locale adapters remain separate. GetDifferenceSettings now has a complete local settings-operation
 reconciliation, separate from its difference-method callers.
 
-Current owned Intl batch closes21 numbered steps and corrects four previously
+Prior owned Intl batch closes21 numbered steps and corrects four previously
 verified numeric rows after public failures. Six selected-kind rows retain the
 exact matchRangeWidths helper premise. Three precreated Duration method/group
 gates close; fresh construction reopens one actual constructor step and three
@@ -154,8 +157,14 @@ containing clauses. Net queue:84 conditional steps across11 families.
 [Duration invocation](temporal-duration-invocation-private-operations-audit.md)
 and [Intl adapters](temporal-intl-producer-state-facade-audit.md) bind scope.
 
-Next: reconcile the named selected-kind helper and fresh-constructor locale
-adapters, then existing calendar/zone/parser caller conditions. Helper annotation
+Selected-kind matching, range widths and lazy interval initialization now
+reconcile six more steps. The queue holds 78 conditional steps across ten
+families. [21 focused Bazel targets](temporal-selected-locale-adapter-validation-targets.txt)
+returned passing cached results for these sources. Fresh Duration lookup,
+Unicode extension and later best-fit adapters remain open. Generated timezone
+profiles supply the endpoint-window proof. Host data and its boundary property
+remain a separate premise. [Adapter evidence](temporal-selected-locale-adapter-audit.md)
+and [timezone evidence](temporal-timezone-boundary-proof/README.md) record the scope. Helper annotation
 work remains separately tracked. Full compliance ETA remains unresolved:
 constructor realm fallback needs a correct runtime bridge or installation design,
 and published-comparison conflicts need reconciliation. Measured review rates
@@ -164,19 +173,22 @@ Recalculate annotation and local-correction estimates from completed batches.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[Thirty-three mapping dispositions](temporal-helper-annotation-reconciliation.json)
-cover TS/Rust rounding, lunisolar dependencies and native Duration transport.
-Twenty-one receive reviewed local inline scope;12 transport rows are mapping-only
-and still need inline caller links. Current mapping states:201 mapped,484 candidate,
-384 unmapped, including the three retired identities. Annotation presence alone
-is95 direct,17 enclosing,954 without numbered anchors,3 retired; these are
+[Fifty-one mapping dispositions](temporal-helper-annotation-reconciliation.json)
+cover TS/Rust rounding, calendar providers and native Duration transport.
+Thirty-nine receive reviewed local inline scope;12 transport rows now have narrow
+inline caller/dependency links. Current mapping states:219 mapped,466 candidate,
+384 unmapped, including three retired identities. Annotation presence alone
+is125 direct,17 enclosing,924 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
 about2minutes root application/rescan/evidence, excluding commit hooks. Sample
 reuses established proofs. Preliminary annotation-only estimate:3–5hours with
 three parallel reviewers plus root integration, assuming comparable review cost.
-Recalibrate against the next calendar/zone batch; this is not a full-compliance ETA.
+Additional measured reviews:130seconds for18 calendar-provider mappings,131seconds
+for12 existing transport caller links. Both reuse established semantic proofs;
+root integration overlaps runtime work and is not assigned an invented duration.
+Recalibrate against the next zone batch; this is not a full-compliance ETA.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

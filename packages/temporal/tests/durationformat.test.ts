@@ -1188,3 +1188,294 @@ it('Duration construction adopts a later data-valued canonicalizer provider', ()
     Object.defineProperty(Intl, 'getCanonicalLocales', descriptor)
   }
 })
+
+it.each(['lookup', 'best fit'] as const)(
+  'fresh Duration locale constructor preserves caller Gets without private find (%s)',
+  localeMatcher => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const available = DurationFormat.availableLocales
+    // Both matcher paths start without the available-Set snapshot cache.
+    const freshAvailable = new Set(available)
+    const OriginalNumberFormat = Intl.NumberFormat
+    class FreshLocaleNumberFormat extends OriginalNumberFormat {}
+    const numberDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const findDescriptor = Object.getOwnPropertyDescriptor(
+      Array.prototype,
+      'find'
+    )!
+    const define = Object.defineProperty
+    const reads: string[] = []
+    const locales = ['en-u-nu-latn']
+    define(locales, '0', {
+      configurable: true,
+      get() {
+        reads.push('locale:0')
+        return 'en-u-nu-latn'
+      },
+    })
+    const options = new Proxy(
+      {},
+      {
+        get(_target, key) {
+          reads.push(`get:${String(key)}`)
+          if (key === 'localeMatcher' || key === 'style')
+            return {
+              toString() {
+                reads.push(`coerce:${key}`)
+                return key === 'style' ? 'long' : localeMatcher
+              },
+            }
+          return undefined
+        },
+      }
+    )
+    let actual: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      DurationFormat.availableLocales = freshAvailable
+      define(Intl, 'NumberFormat', {
+        ...numberDescriptor,
+        value: FreshLocaleNumberFormat,
+      })
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(Array.prototype, 'find', {
+        ...findDescriptor,
+        value() {
+          hooks++
+          throw new Error('Mutable private locale keyword find')
+        },
+      })
+      actual = duration.toLocaleString(locales, options)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(Array.prototype, 'find', findDescriptor)
+      DurationFormat.availableLocales = available
+      define(Intl, 'NumberFormat', numberDescriptor)
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else delete (Intl as any).DurationFormat
+      configureLocaleFormatting()
+    }
+    if (error) throw error
+    expect(hooks).toBe(0)
+    expect(actual).toBe('1 minute')
+    expect(reads).toEqual([
+      'locale:0',
+      'get:localeMatcher',
+      'coerce:localeMatcher',
+      'get:numberingSystem',
+      'get:style',
+      'coerce:style',
+      'get:years',
+      'get:yearsDisplay',
+      'get:months',
+      'get:monthsDisplay',
+      'get:weeks',
+      'get:weeksDisplay',
+      'get:days',
+      'get:daysDisplay',
+      'get:hours',
+      'get:hoursDisplay',
+      'get:minutes',
+      'get:minutesDisplay',
+      'get:seconds',
+      'get:secondsDisplay',
+      'get:milliseconds',
+      'get:millisecondsDisplay',
+      'get:microseconds',
+      'get:microsecondsDisplay',
+      'get:nanoseconds',
+      'get:nanosecondsDisplay',
+      'get:fractionalDigits',
+    ])
+  }
+)
+
+it.each([
+  ['lookup', 'isArray'],
+  ['lookup', 'setSize'],
+  ['lookup', 'setIterator'],
+  ['lookup', 'setNext'],
+  ['best fit', 'from'],
+  ['best fit', 'keyIterator'],
+  ['lookup', 'keyLowerCase'],
+  ['best fit', 'keywordPush'],
+] as const)(
+  'fresh Duration locale adapter ignores private %s/%s hook',
+  (localeMatcher, hook) => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const available = DurationFormat.availableLocales
+    const freshAvailable = new Set(available)
+    const Original = Intl.NumberFormat
+    class FreshStageOneNumberFormat extends Original {}
+    const numberDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const setIteratorPrototype = Object.getPrototypeOf(new Set().values())
+    const owner =
+      hook === 'isArray' || hook === 'from'
+        ? Array
+        : hook === 'setSize' || hook === 'setIterator'
+          ? Set.prototype
+          : hook === 'setNext'
+            ? setIteratorPrototype
+            : hook === 'keyLowerCase'
+              ? String.prototype
+              : Array.prototype
+    const key =
+      hook === 'isArray'
+        ? 'isArray'
+        : hook === 'from'
+          ? 'from'
+          : hook === 'setSize'
+            ? 'size'
+            : hook === 'setNext'
+              ? 'next'
+              : hook === 'keyLowerCase'
+                ? 'toLowerCase'
+                : hook === 'keywordPush'
+                  ? 'push'
+                  : Symbol.iterator
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const original = descriptor.value
+    const apply = Reflect.apply
+    const define = Object.defineProperty
+    const reads: string[] = []
+    const locales = ['en-u-nu-latn']
+    define(locales, '0', {
+      configurable: true,
+      get() {
+        reads.push('locale:0')
+        return 'en-u-nu-latn'
+      },
+    })
+    const options = new Proxy(
+      {},
+      {
+        get(_target, option) {
+          reads.push(`get:${String(option)}`)
+          if (option === 'numberingSystem') return 'latn'
+          if (option === 'localeMatcher' || option === 'style')
+            return {
+              toString() {
+                reads.push(`coerce:${option}`)
+                return option === 'style' ? 'long' : localeMatcher
+              },
+            }
+          return undefined
+        },
+      }
+    )
+    let actual: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      DurationFormat.availableLocales = freshAvailable
+      define(Intl, 'NumberFormat', {
+        ...numberDescriptor,
+        value: FreshStageOneNumberFormat,
+      })
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(
+        owner,
+        key,
+        hook === 'setSize'
+          ? {
+              ...descriptor,
+              get() {
+                hooks++
+                throw new Error('Mutable private locale Set size')
+              },
+            }
+          : {
+              ...descriptor,
+              value(this: any, ...args: any[]) {
+                if (
+                  hook === 'keyIterator' &&
+                  !(this.length === 1 && this[0] === 'nu')
+                )
+                  return apply(original, this, args)
+                if (hook === 'keyLowerCase' && this !== 'nu')
+                  return apply(original, this, args)
+                // Extension parsing first appends an empty keyword; selection appends
+                // the completed record. Target only the latter owned List boundary.
+                if (
+                  hook === 'keywordPush' &&
+                  !(args[0]?.key === 'nu' && args[0]?.value === 'latn')
+                )
+                  return apply(original, this, args)
+                hooks++
+                throw new Error('Mutable private locale adapter operation')
+              },
+            }
+      )
+      actual = duration.toLocaleString(locales, options)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+      DurationFormat.availableLocales = available
+      define(Intl, 'NumberFormat', numberDescriptor)
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else delete (Intl as any).DurationFormat
+      configureLocaleFormatting()
+    }
+    if (error) throw error
+    expect(hooks).toBe(0)
+    expect(actual).toBe('1 minute')
+    expect(reads).toEqual([
+      'locale:0',
+      'get:localeMatcher',
+      'coerce:localeMatcher',
+      'get:numberingSystem',
+      'get:style',
+      'coerce:style',
+      'get:years',
+      'get:yearsDisplay',
+      'get:months',
+      'get:monthsDisplay',
+      'get:weeks',
+      'get:weeksDisplay',
+      'get:days',
+      'get:daysDisplay',
+      'get:hours',
+      'get:hoursDisplay',
+      'get:minutes',
+      'get:minutesDisplay',
+      'get:seconds',
+      'get:secondsDisplay',
+      'get:milliseconds',
+      'get:millisecondsDisplay',
+      'get:microseconds',
+      'get:microsecondsDisplay',
+      'get:nanoseconds',
+      'get:nanosecondsDisplay',
+      'get:fractionalDigits',
+    ])
+  }
+)

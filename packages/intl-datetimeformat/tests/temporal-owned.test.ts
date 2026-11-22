@@ -918,3 +918,193 @@ test.each(['parts', 'includes', 'replaceAll', 'find', Symbol.replace] as const)(
     expect(parts).toEqual(expectedParts)
   }
 )
+
+for (const warm of [false, true])
+  test.each([
+    'keys',
+    'map',
+    Symbol.iterator,
+    'startsWith',
+    'endsWith',
+  ] as const)(
+    `selected Temporal interval metadata uses private %s operations, warm=${warm}`,
+    key => {
+      // Instant permits all time-style fields, so selection reuses the chosen style
+      // without invoking an unrelated format matcher before interval adaptation.
+      const formatter = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        hourCycle: 'h23',
+        timeStyle: 'long',
+      })
+      const value = new Temporal.Instant(0n)
+      const expectedParts = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        hourCycle: 'h23',
+        timeStyle: 'long',
+      }).formatToParts(value)
+      if (warm) formatter.format(value)
+      const owner =
+        key === 'keys'
+          ? Object
+          : key === 'map' || key === Symbol.iterator
+            ? Array.prototype
+            : String.prototype
+      const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+      const define = Object.defineProperty
+      let text: string | undefined,
+        parts: unknown,
+        error: unknown,
+        calls = 0
+      try {
+        define(owner, key, {
+          ...descriptor,
+          value() {
+            calls++
+            throw new Error('Private selected interval metadata hook')
+          },
+        })
+        text = formatter.format(value)
+        parts = formatter.formatToParts(value)
+      } catch (caught) {
+        error = caught
+      } finally {
+        define(owner, key, descriptor)
+      }
+      if (error) throw error
+      expect(calls).toBe(0)
+      expect(text).toBe('00:00:00 UTC')
+      expect(parts).toEqual(expectedParts)
+    }
+  )
+
+for (const formatMatcher of ['basic', 'best fit'] as const)
+  for (const warm of [false, true])
+    test.each(['iterator', 'isArray', 'min', 'max'] as const)(
+      `Temporal ${formatMatcher} component matching ignores private %s, warm=${warm}`,
+      key => {
+        const options = {
+          formatMatcher,
+          timeZone: 'UTC',
+          hourCycle: 'h23',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        } as const
+        const value = new Temporal.PlainDateTime(2024, 1, 2, 3, 4, 5)
+        const expectedParts = new DateTimeFormat('en', options).formatToParts(
+          value
+        )
+        const formatter = new DateTimeFormat('en', options)
+        if (warm) formatter.format(value)
+        const owner =
+          key === 'iterator'
+            ? Array.prototype
+            : key === 'isArray'
+              ? Array
+              : Math
+        const property = key === 'iterator' ? Symbol.iterator : key
+        const descriptor = Object.getOwnPropertyDescriptor(owner, property)!
+        const define = Object.defineProperty
+        let text: string | undefined,
+          parts: unknown,
+          error: unknown,
+          calls = 0
+        try {
+          define(owner, property, {
+            ...descriptor,
+            value() {
+              calls++
+              throw new Error('Private Temporal component matcher hook')
+            },
+          })
+          text = formatter.format(value)
+          parts = formatter.formatToParts(value)
+        } catch (caught) {
+          error = caught
+        } finally {
+          define(owner, property, descriptor)
+        }
+        if (error) throw error
+        expect(calls).toBe(0)
+        expect(text).toBe(
+          formatMatcher === 'basic'
+            ? '1/2/2024, 3:04:05'
+            : '01/02/2024, 03:04:05'
+        )
+        expect(parts).toEqual(expectedParts)
+      }
+    )
+
+test.each([
+  'defineProperties',
+  'keys',
+  'slice',
+  'get',
+  Symbol.iterator,
+] as const)(
+  'cold Temporal kind interval initialization ignores private %s',
+  key => {
+    // Re-registration creates fresh lazy candidate records. Constructing the
+    // combined Date profile initializes only its chosen interval record.
+    DateTimeFormat.__addLocaleData(en as any)
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      formatMatcher: 'basic',
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+    const value = new Temporal.PlainTime(3, 4, 5)
+    expect(formatter.format(new Date('2024-01-02T03:04:05Z'))).toBe(
+      '1/2/2024, 3:04:05'
+    )
+    const owner =
+      key === 'defineProperties' || key === 'keys'
+        ? Object
+        : key === 'slice'
+          ? String.prototype
+          : key === 'get'
+            ? Map.prototype
+            : Array.prototype
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    let text: string | undefined,
+      parts: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      define(owner, key, {
+        configurable: true,
+        get() {
+          hooks++
+          throw new Error('Mutable lazy interval initializer')
+        },
+      })
+      // PlainTime selects a time-only candidate, not the combined base candidate.
+      text = formatter.format(value)
+      parts = formatter.formatToParts(value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+    }
+    if (error) throw error
+    expect(hooks).toBe(0)
+    expect(text).toBe('3:04:05')
+    expect(parts).toEqual([
+      {type: 'hour', value: '3'},
+      {type: 'literal', value: ':'},
+      {type: 'minute', value: '04'},
+      {type: 'literal', value: ':'},
+      {type: 'second', value: '05'},
+    ])
+    expect(formatter.format(value)).toBe('3:04:05')
+  }
+)

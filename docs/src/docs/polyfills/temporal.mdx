@@ -243,6 +243,9 @@ FormatJS formatters retain selected Intl methods for private formatting work.
 New DurationFormat instances and cold DateTimeFormat numeric profiles can adopt
 later installed NumberFormat providers; initialized instances/profiles retain
 their selected providers. Fractional Duration scaling uses exact bigint divisors.
+Cold Temporal kind selection also retains private matching and interval methods.
+Fresh Duration locale snapshots retain Set order and invalidation without
+observing replaced Set iteration methods; normal locale/option reads stay ordered.
 
 Global installation registers Temporal with FormatJS formatters and adapts legacy
 host formatters. Create formatters after installation. For an isolated namespace,

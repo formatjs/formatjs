@@ -203,9 +203,11 @@ fn precision(request: &Value) -> Result<Precision, Error> {
         ),
     })
 }
+// Proposal comparison §7.5.16: wire input dependency; duration_value calls Duration::new.
 fn duration(request: &Value) -> Result<Duration, Error> {
     duration_value(&request["duration"])
 }
+// Proposal comparison §7.5.16 steps1–9: decode only; Duration::new owns invariants.
 fn duration_value(value: &Value) -> Result<Duration, Error> {
     let mut fields = [0; 10];
     for (index, key) in DURATION_FIELDS.iter().enumerate() {
@@ -213,6 +215,7 @@ fn duration_value(value: &Value) -> Result<Duration, Error> {
     }
     Duration::new(fields)
 }
+// Proposal comparison §7.5.16: validated-field wire output; Duration::new owns invariants.
 fn duration_record(duration: Duration) -> Value {
     let fields = duration.fields();
     Value::Object(
@@ -1225,6 +1228,8 @@ impl DurationAnchor {
         }
     }
 }
+// Proposal comparison §7.3.21 steps12–15: totalDuration caller example only.
+// This dispatcher transports operations; DurationAnchor::total owns anchored totals.
 fn duration_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parseDuration" {
         return Ok(duration_record(
@@ -1275,6 +1280,7 @@ fn duration_operation(op: &str, request: &Value) -> Result<Value, Error> {
             } as i8))
         }
         "totalDuration" => {
+            // §7.3.21 steps12–15: anchored/time total delegates to semantic owners below.
             let unit = unit("unit")?;
             Ok(json!(match relative {
                 Some(anchor) => anchor.total(value, unit)?,

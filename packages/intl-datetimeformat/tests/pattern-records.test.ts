@@ -104,9 +104,11 @@ function renderer(pattern: string, numberingSystem = 'latn') {
   })
   const options = {numberingSystem, useGrouping: false}
   const numberFormatters = {
-    nf: new Intl.NumberFormat('en', options),
-    nf2: new Intl.NumberFormat('en', {...options, minimumIntegerDigits: 2}),
-    nf3: new Intl.NumberFormat('en', {...options, minimumIntegerDigits: 2}),
+    nf: new Intl.NumberFormat('en', options).format,
+    nf2: new Intl.NumberFormat('en', {...options, minimumIntegerDigits: 2})
+      .format,
+    nf3: new Intl.NumberFormat('en', {...options, minimumIntegerDigits: 2})
+      .format,
   }
   return () =>
     FormatDateTimePattern(formatter, patternParts, epoch, false, {

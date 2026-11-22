@@ -1,0 +1,28 @@
+{
+  "scope": "12 already-mapped transport callables gain narrow numbered caller links; no behavior credit",
+  "reviewed_inventory_rows": [
+    258, 259, 260, 294, 919, 920, 921, 922, 923, 924, 925, 926
+  ],
+  "comment_only_source_evidence": [
+    {
+      "file": "packages/temporal/native.ts",
+      "before_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "after_sha256": "b9795d3b01d0a8f4228e4fef0937b6d6742ca8a606033c53570ee579a3ac3c3a",
+      "noncomment_source_sha256": "ea795754bc7661991545845bc46349717bfd60158985e48ddf30233651017216",
+      "noncomment_source_identical": true,
+      "batch": "native-duration-inline12"
+    },
+    {
+      "file": "crates/temporal/ffi.rs",
+      "before_sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+      "after_sha256": "b264e4473589a4cd2d210940b8a3ad14ab3811b160df30533cb39de880f3bf0e",
+      "noncomment_source_sha256": "6cf9d02fd2cb046dd8ebfb14f93498c01bc48cff3b07e1bd376b1615feb7a78b",
+      "noncomment_source_identical": true,
+      "batch": "native-duration-inline12"
+    }
+  ],
+  "current_74_source_hashes_ref": "temporal-helper-annotation-summary.json source_hashes",
+  "review_measurement_seconds": 131,
+  "root_integration_measurement_seconds": null,
+  "whole_body_step_coverage_claimed": false
+}

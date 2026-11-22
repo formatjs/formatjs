@@ -1,0 +1,53 @@
+{
+  "source_sha256": {
+    "crates/temporal/ffi.rs": "b264e4473589a4cd2d210940b8a3ad14ab3811b160df30533cb39de880f3bf0e",
+    "packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.ts": "8cd71ce098a2f54867009feaa6d251cd5677a42fe2449155b211bb8fc41bd818",
+    "packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.ts": "7c8593ef4a121fe619f733b05d5b802dd62ef573aca12e13efb5cad26d4b4dae",
+    "packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts": "e7dc101393005f37e8a9b024a3fcf9fb3a3dd8a920ca4288b52e11fce22aa0dd",
+    "packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.ts": "10e67d5391f1ddce06dbc7108d018d0f1a0d6d413afc125c113b905d0a6ac920",
+    "packages/ecma402-abstract/DateTimeFormat/skeleton.ts": "e014a93b1c3f462275bc2654cfcb9feae6341c086ce872f47ae6dbd6d6f60dce",
+    "packages/intl-datetimeformat/tests/pattern-records.test.ts": "1f08f3bfbd07596679b0c4ce19946269c8ad72e162666bb19562e173944a99d4",
+    "packages/intl-datetimeformat/tests/temporal-owned.test.ts": "4a9a2cac2587ec95707640d9d997afcac95fd44d8312456d5e51d86c04e85bbb",
+    "packages/intl-localematcher/abstract/ResolveLocale.ts": "6b8d7d6b12e73c0d57c69cfa98fd35dbdad2c1ad74767db0bfe9123736e9d812",
+    "packages/intl-localematcher/abstract/UnicodeExtensionComponents.ts": "49199fd7172692abe13f43dd53f0a99bcef1dc8e50c2126e2061f122abdaa72c",
+    "packages/intl-localematcher/abstract/intrinsics.ts": "fb06ecc2483c5923710ddf363a6edfb5fcf345633eece9a3ed32f85f24f6313b",
+    "packages/intl-localematcher/abstract/utils.ts": "7ccba32045928373d2a1404b41bd49dfa405b1805f1c7f86752b39cd1ab73e9e",
+    "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
+    "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
+    "packages/temporal/native.ts": "b9795d3b01d0a8f4228e4fef0937b6d6742ca8a606033c53570ee579a3ac3c3a",
+    "packages/temporal/tests/durationformat.test.ts": "0923af3d96bf5424c6f13fad4b56e9ea8ab488c91eccd3f94feebcb20ee984ee"
+  },
+  "validation_targets": [
+    "//packages/ecma402-abstract/DateTimeFormat:typecheck_typecheck_test",
+    "//packages/ecma402-abstract:ecma402-abstract_test",
+    "//packages/intl-datetimeformat:intl-datetimeformat_test",
+    "//packages/intl-datetimeformat:temporal_owned_test",
+    "//packages/intl-datetimeformat:temporal_test",
+    "//packages/intl-durationformat:intl-durationformat_test",
+    "//packages/intl-getcanonicallocales:intl-getcanonicallocales_test",
+    "//packages/intl-localematcher:intl-localematcher_test",
+    "//packages/intl-localematcher:typecheck_typecheck_test",
+    "//packages/intl-numberformat:intl-numberformat_test",
+    "//packages/temporal:durationformat_hermes_bytecode_test262",
+    "//packages/temporal:durationformat_hermes_source_test262",
+    "//packages/temporal:durationformat_test",
+    "//packages/temporal:partial_intl_absent_test",
+    "//packages/temporal:partial_intl_empty_test",
+    "//packages/temporal:partial_intl_listformat_parts_test",
+    "//packages/temporal:partial_intl_numberformat_parts_test",
+    "//packages/temporal:partial_intl_test",
+    "//packages/temporal:sdk_durationformat_registration_test",
+    "//packages/temporal:ts_durationformat_registration_test",
+    "//packages/temporal:typecheck_typecheck_test"
+  ],
+  "validation_result": "Executed 0 out of 21 tests: 21 tests pass.",
+  "log_sha256": "c32dc61c8a2490b3ac851251880ee257622ef6c9504fb83876f237f92e7f7331",
+  "reconciled_conditional_steps": [
+    "15.6.5/algorithm-1/step-5",
+    "15.6.5/algorithm-1/step-7",
+    "15.6.5/algorithm-1/step-8",
+    "15.6.5/algorithm-1/step-8.a",
+    "15.6.5/algorithm-1/step-9.a",
+    "15.6.7/algorithm-1/step-1"
+  ]
+}

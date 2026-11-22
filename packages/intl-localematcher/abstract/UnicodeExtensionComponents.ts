@@ -1,4 +1,7 @@
-import {arrayIndexOf} from '#packages/intl-localematcher/abstract/intrinsics.js'
+import {
+  arrayFind,
+  arrayIndexOf,
+} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
 import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
@@ -35,7 +38,7 @@ export function UnicodeExtensionComponents(extension: string): {
       }
     } else if (len === 2) {
       keyword = {key: subtag, value: ''}
-      if (keywords.find(k => k.key === keyword?.key) === undefined) {
+      if (arrayFind(keywords, k => k.key === keyword?.key) === undefined) {
         keywords.push(keyword)
       }
     } else if (keyword?.value === '') {

@@ -40,44 +40,79 @@ const temporalFormatMapGet = Map.prototype.get
 const temporalFormatMapSet = Map.prototype.set
 const temporalFormatApply = Reflect.apply
 
+const rangePatternKeys = Object.keys
+const rangePatternStartsWith = String.prototype.startsWith
+const rangePatternEndsWith = String.prototype.endsWith
+const rangeTextWidthFields = ['weekday', 'month'] as const
+
 function matchRangeWidths(
   ranges: Formats['rangePatterns'],
   format: IntlDateTimeFormatInternal,
   options: Opt
 ): Formats['rangePatterns'] {
+  // Temporal comparison §15.6.5 steps8.a–9.a: private selected format records.
+  // https://tc39.es/proposal-temporal/#sec-partitiondatetimepattern
   // CLDR matching adjusts textual date fields; interval time widths stay independent.
   // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
   // Temporal comparison §15.4.1 step46.m: adapt private selected-format records.
   // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
   const widths = {__proto__: null} as unknown as Partial<RangePatterns>
-  for (const field of ['weekday', 'month'] as const) {
+  for (let index = 0; index < rangeTextWidthFields.length; index++) {
+    const field = rangeTextWidthFields[index]
     const width = format[field]
     if (width === 'narrow' || width === 'short' || width === 'long')
       widths[field] = width
   }
   if (format.era === 'narrow') widths.era = 'narrow'
   if (
-    !Object.keys(widths).length &&
+    !rangePatternKeys(widths).length &&
     format.timeZoneName === undefined &&
     options.dayPeriod === undefined &&
     options.fractionalSecondDigits === undefined
   )
     return ranges
   const result = {__proto__: null} as unknown as Formats['rangePatterns']
-  for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
+  const fields = rangePatternKeys(ranges) as Array<TABLE_2 | 'default'>
+  for (let index = 0; index < fields.length; index++) {
+    const field = fields[index]
     const range = ranges[field]
-    const zoneWidth = range.timeZoneName?.startsWith('long') ? 'long' : 'short'
+    const zoneWidth =
+      range.timeZoneName != null &&
+      temporalFormatApply(rangePatternStartsWith, range.timeZoneName, ['long'])
+        ? 'long'
+        : 'short'
     const timeZoneName = arrayIncludes(['era', 'year', 'month', 'day'], field)
       ? format.timeZoneName
       : range.timeZoneName && format.timeZoneName
         ? (`${zoneWidth}${
-            format.timeZoneName.endsWith('Generic')
+            temporalFormatApply(rangePatternEndsWith, format.timeZoneName, [
+              'Generic',
+            ])
               ? 'Generic'
-              : format.timeZoneName.endsWith('Offset')
+              : temporalFormatApply(rangePatternEndsWith, format.timeZoneName, [
+                    'Offset',
+                  ])
                 ? 'Offset'
                 : ''
           }` as RangePatterns['timeZoneName'])
         : range.timeZoneName
+    const adjustedParts: typeof range.patternParts = []
+    for (
+      let partIndex = 0;
+      partIndex < range.patternParts.length;
+      partIndex++
+    ) {
+      const part = range.patternParts[partIndex]
+      setDataProperty(adjustedParts, `${partIndex}`, {
+        ...part,
+        pattern: applyExplicitTimePatternOptions(
+          part.pattern,
+          options,
+          format.locale,
+          format.numberingSystem
+        ),
+      })
+    }
     result[field] = {
       ...range,
       ...widths,
@@ -94,15 +129,7 @@ function matchRangeWidths(
       ...(options.dayPeriod !== undefined && range.dayPeriod === undefined
         ? {dayPeriod: options.dayPeriod}
         : {}),
-      patternParts: range.patternParts.map(part => ({
-        ...part,
-        pattern: applyExplicitTimePatternOptions(
-          part.pattern,
-          options,
-          format.locale,
-          format.numberingSystem
-        ),
-      })),
+      patternParts: adjustedParts,
     }
   }
   return result

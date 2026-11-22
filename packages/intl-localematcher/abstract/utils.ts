@@ -1,9 +1,13 @@
-import {arrayIncludes} from '#packages/intl-localematcher/abstract/intrinsics.js'
+import {
+  arrayFind,
+  arrayIncludes,
+} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {memoize} from '@formatjs/fast-memoize'
 import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
 
 const apply = Reflect.apply
 const some = Array.prototype.some
+const localeArrayFrom = Array.from
 
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
 // A private-use subtag named "u" does not start a Unicode extension.
@@ -150,7 +154,8 @@ function fields(tag: string): LSR {
     parsed.end < tag.length ? tag.slice(parsed.end + 1).split('-') : []
   const extension = parts.findIndex(part => part.length === 1)
   const variants = extension < 0 ? parts : parts.slice(0, extension)
-  const pseudo = variants.find(
+  const pseudo = arrayFind(
+    variants,
     p => p === 'psaccent' || p === 'psbidi' || p === 'pscrack'
   )
   if (!pseudo && !pseudoRegion(region)) {
@@ -354,7 +359,7 @@ let paradigms: Set<string> | undefined
 export function createLocaleListSnapshot(
   locales: Iterable<string>
 ): readonly string[] {
-  const snapshot = Object.freeze(Array.from(locales))
+  const snapshot = Object.freeze(localeArrayFrom(locales))
   immutableLocaleLists.add(snapshot)
   return snapshot
 }

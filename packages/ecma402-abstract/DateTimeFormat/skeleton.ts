@@ -2,6 +2,9 @@ import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   arraySome,
+  mathMin,
+  mathMax,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type Formats,
@@ -12,6 +15,33 @@ import {
   type IntervalFormatsData,
   type IntervalFormatTemplates,
 } from '#packages/ecma402-abstract/types/date-time.js'
+
+// Temporal comparison §15.6.5 steps5–9: selected interval metadata stays private.
+const skeletonCreate = Object.create
+const skeletonDefineProperties = Object.defineProperties
+const skeletonDefineProperty = Object.defineProperty
+const skeletonKeys = Object.keys
+const skeletonApply = Reflect.apply
+const SkeletonMap = Map
+const skeletonMapGet = Map.prototype.get
+const skeletonMapSet = Map.prototype.set
+const skeletonSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
+const skeletonIndexOf = Function.prototype.call.bind(
+  String.prototype.indexOf
+) as (value: string, search: string, start?: number) => number
+const skeletonIncludes = Function.prototype.call.bind(
+  String.prototype.includes
+) as (value: string, search: string) => boolean
+const skeletonStartsWith = Function.prototype.call.bind(
+  String.prototype.startsWith
+) as (value: string, search: string) => boolean
+const skeletonTrim = Function.prototype.call.bind(String.prototype.trim) as (
+  value: string
+) => string
 
 export function expandIntervalFormatTemplates(
   data: IntervalFormatsData,
@@ -28,7 +58,7 @@ export function expandIntervalFormatTemplates(
     ] of templates.dates) {
       const key = connector.replace('{0}', timeKey).replace('{1}', dateKey)
       if (expanded[key] !== undefined) continue
-      const ranges = Object.create(null) as Record<string, string>
+      const ranges = skeletonCreate(null) as Record<string, string>
       for (const field of Object.keys(timeRanges)) {
         const info = getRangePatternInfo(timeRanges[field])
         const pattern = connector
@@ -60,7 +90,7 @@ export function getDateTimePatternFields(
 ): Intl.DateTimeFormatOptions {
   const cached = readPatternFields(format)
   if (cached) return cached
-  const fields: Intl.DateTimeFormatOptions = Object.create(null)
+  const fields: Intl.DateTimeFormatOptions = skeletonCreate(null)
   processDateTimePattern(format.rawPattern, fields)
   writePatternFields(format, fields)
   return fields
@@ -315,19 +345,19 @@ function replaceDateTimeTokens(
       }
       continue
     }
-    const maximum = 'Eec'.includes(c)
+    const maximum = skeletonIncludes('Eec', c)
       ? 6
-      : 'GQqUMLabB'.includes(c)
+      : skeletonIncludes('GQqUMLabB', c)
         ? 5
-        : 'zZOvVxX'.includes(c)
+        : skeletonIncludes('zZOvVxX', c)
           ? 4
           : c === 'D'
             ? 3
-            : 'dhkHKwms'.includes(c)
+            : skeletonIncludes('dhkHKwms', c)
               ? 2
-              : 'FW'.includes(c)
+              : skeletonIncludes('FW', c)
                 ? 1
-                : 'yYur'.includes(c)
+                : skeletonIncludes('yYur', c)
                   ? Infinity
                   : 0
     if (quoted || !maximum) {
@@ -338,7 +368,7 @@ function replaceDateTimeTokens(
     let end = i + 1
     while (end < pattern.length && end - i < maximum && pattern[end] === c)
       end++
-    output += matchSkeletonPattern(pattern.slice(i, end), result)
+    output += matchSkeletonPattern(skeletonSlice(pattern, i, end), result)
     i = end
   }
   return output
@@ -349,33 +379,39 @@ export function processDateTimePattern(
   result: Intl.DateTimeFormatOptions & {
     monthStandalone?: boolean
     weekdayStandalone?: boolean
-  } = Object.create(null)
+  } = skeletonCreate(null)
 ): [string, string] {
   const pattern12 = replaceDateTimeTokens(pattern, result)
-  const period = pattern12.indexOf('{ampm}')
+  const period = skeletonIndexOf(pattern12, '{ampm}')
   let withoutPeriod = pattern12
   if (period >= 0) {
     const after = period + '{ampm}'.length
     const surroundingSpace =
       period > 0 &&
       after < pattern12.length &&
-      !pattern12[period - 1].trim() &&
-      !pattern12[after].trim()
+      !skeletonTrim(pattern12[period - 1]) &&
+      !skeletonTrim(pattern12[after])
     withoutPeriod =
-      pattern12.slice(0, period) +
-      pattern12.slice(after + (surroundingSpace ? 1 : 0))
+      skeletonSlice(pattern12, 0, period) +
+      skeletonSlice(pattern12, after + (surroundingSpace ? 1 : 0))
   }
-  return [withoutPeriod.trim(), pattern12]
+  return [skeletonTrim(withoutPeriod), pattern12]
 }
 
 export function getRangePatternInfo(rawPattern: string): {
   pattern: string
   reversed?: boolean
 } {
-  if (rawPattern.startsWith('latestFirst:'))
-    return {pattern: rawPattern.slice('latestFirst:'.length), reversed: true}
-  if (rawPattern.startsWith('earliestFirst:'))
-    return {pattern: rawPattern.slice('earliestFirst:'.length), reversed: false}
+  if (skeletonStartsWith(rawPattern, 'latestFirst:'))
+    return {
+      pattern: skeletonSlice(rawPattern, 'latestFirst:'.length),
+      reversed: true,
+    }
+  if (skeletonStartsWith(rawPattern, 'earliestFirst:'))
+    return {
+      pattern: skeletonSlice(rawPattern, 'earliestFirst:'.length),
+      reversed: false,
+    }
   return {pattern: rawPattern}
 }
 
@@ -392,78 +428,96 @@ export function parseDateTimeSkeleton(
     pattern12: '',
     skeleton,
     rawPattern,
-    rangePatterns: Object.create(null) as Formats['rangePatterns'],
-    rangePatterns12: Object.create(null) as Formats['rangePatterns12'],
+    rangePatterns: skeletonCreate(null) as Formats['rangePatterns'],
+    rangePatterns12: skeletonCreate(null) as Formats['rangePatterns12'],
   } as Formats
 
   // Process skeleton
   replaceDateTimeTokens(skeleton, result)
-  const fields: Intl.DateTimeFormatOptions = Object.create(null)
-  const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
+  const fields: Intl.DateTimeFormatOptions = skeletonCreate(null)
+  const processedPattern = processDateTimePattern(rawPattern, fields)
+  const pattern = processedPattern[0]
+  const pattern12 = processedPattern[1]
   writePatternFields(result, fields)
   result.pattern = pattern
   result.pattern12 = pattern12
-  for (const field of ['monthStandalone', 'weekdayStandalone'] as const) {
+  const standaloneFields = ['monthStandalone', 'weekdayStandalone'] as const
+  for (let index = 0; index < standaloneFields.length; index++) {
+    const field = standaloneFields[index]
     if ((fields as Formats)[field] !== undefined)
       result[field] = (fields as Formats)[field]
   }
   // Matching inspects many candidates; parse intervals only for selected records.
   function initializeRanges() {
-    Object.defineProperties(result, {
+    const descriptors = {
       rangePatterns: {
-        value: Object.create(null),
+        __proto__: null,
+        value: skeletonCreate(null),
         writable: true,
         configurable: true,
         enumerable: true,
       },
       rangePatterns12: {
-        value: Object.create(null),
+        __proto__: null,
+        value: skeletonCreate(null),
         writable: true,
         configurable: true,
         enumerable: true,
       },
-    })
-    const first = intervalFormatFallback?.indexOf('{0}') ?? -1
-    const last = intervalFormatFallback?.indexOf('{1}') ?? -1
+    }
+    skeletonDefineProperties(result, descriptors)
+    const first =
+      intervalFormatFallback == null
+        ? -1
+        : skeletonIndexOf(intervalFormatFallback, '{0}')
+    const last =
+      intervalFormatFallback == null
+        ? -1
+        : skeletonIndexOf(intervalFormatFallback, '{1}')
     const defaultReversed = first >= 0 && last >= 0 && last < first
     function addRange(k: string, rawPattern: string) {
       const info = getRangePatternInfo(rawPattern)
       const reversed = info.reversed ?? defaultReversed
       const key = k === 'fallback' ? 'default' : skeletonTokenToTable2(k)
-      const intervalResult: RangePatterns = {
+      const intervalResult = {
         __proto__: null,
         patternParts: [],
-      } as RangePatterns
-      const [pattern, pattern12] = processDateTimePattern(
-        info.pattern,
-        intervalResult
-      )
-
+      } as unknown as RangePatterns
+      const processed = processDateTimePattern(info.pattern, intervalResult)
       result.rangePatterns[key] = {
         ...intervalResult,
-        patternParts: splitRangePattern(pattern),
+        patternParts: splitRangePattern(processed[0]),
       }
       result.rangePatterns12[key] = {
         ...intervalResult,
-        patternParts: splitRangePattern(pattern12),
+        patternParts: splitRangePattern(processed[1]),
       }
-      if (reversed)
-        for (const range of [
-          result.rangePatterns[key],
-          result.rangePatterns12[key],
-        ]) {
-          for (const part of range.patternParts) {
+      if (reversed) {
+        const ranges = [result.rangePatterns[key], result.rangePatterns12[key]]
+        for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
+          const parts = ranges[rangeIndex].patternParts
+          for (let partIndex = 0; partIndex < parts.length; partIndex++) {
+            const part = parts[partIndex]
             if (part.source === RangePatternType.startRange)
               part.source = RangePatternType.endRange
             else if (part.source === RangePatternType.endRange)
               part.source = RangePatternType.startRange
           }
         }
+      }
     }
     if (rangePatterns) {
-      for (const key of Object.keys(rangePatterns)) {
+      const keys = skeletonKeys(rangePatterns)
+      const dateFields = ['G', 'y', 'M', 'd']
+      for (let index = 0; index < keys.length; index++) {
+        const key = keys[index]
         if (key === 'date') {
-          for (const field of ['G', 'y', 'M', 'd']) {
+          for (
+            let fieldIndex = 0;
+            fieldIndex < dateFields.length;
+            fieldIndex++
+          ) {
+            const field = dateFields[fieldIndex]
             if (!HasOwnProperty(rangePatterns, field))
               addRange(field, rangePatterns[key])
           }
@@ -472,39 +526,50 @@ export function parseDateTimeSkeleton(
     }
     if (intervalFormatFallback && !result.rangePatterns.default) {
       const patternParts = splitFallbackRangePattern(intervalFormatFallback)
-      result.rangePatterns.default = {
-        ...fields,
-        patternParts,
-      }
-      result.rangePatterns12.default = {
-        ...fields,
-        patternParts,
-      }
+      result.rangePatterns.default = {...fields, patternParts}
+      result.rangePatterns12.default = {...fields, patternParts}
     }
-
-    // Interval data must preserve the selected calendar's year field types.
-    const yearFields = ['{relatedYear}', '{yearName}'].filter(field =>
-      pattern.includes(field)
-    )
+    // Preserve the selected calendar's exact year field types.
+    const yearFields: string[] = []
+    const candidates = ['{relatedYear}', '{yearName}']
+    for (let index = 0; index < candidates.length; index++) {
+      const field = candidates[index]
+      if (skeletonIncludes(pattern, field))
+        setDataProperty(yearFields, `${yearFields.length}`, field)
+    }
     if (yearFields.length) {
-      for (const patterns of [result.rangePatterns, result.rangePatterns12]) {
-        for (const field of Object.keys(patterns) as Array<
-          keyof typeof patterns
-        >) {
+      const allPatterns = [result.rangePatterns, result.rangePatterns12]
+      for (
+        let patternIndex = 0;
+        patternIndex < allPatterns.length;
+        patternIndex++
+      ) {
+        const patterns = allPatterns[patternIndex]
+        const keys = skeletonKeys(patterns) as Array<keyof typeof patterns>
+        for (let keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+          const field = keys[keyIndex]
           if (field === 'default') continue
-          const range = patterns[field]!.patternParts.map(
-            part => part.pattern
-          ).join('')
-          if (arraySome(yearFields, yearField => !range.includes(yearField))) {
+          const parts = patterns[field]!.patternParts
+          let range = ''
+          for (let partIndex = 0; partIndex < parts.length; partIndex++)
+            range += parts[partIndex].pattern
+          if (
+            arraySome(
+              yearFields,
+              yearField => !skeletonIncludes(range, yearField)
+            )
+          )
             delete patterns[field]
-          }
         }
       }
     }
   }
-  if (lazyRanges)
-    for (const field of ['rangePatterns', 'rangePatterns12'] as const) {
-      Object.defineProperty(result, field, {
+  if (lazyRanges) {
+    const rangeFields = ['rangePatterns', 'rangePatterns12'] as const
+    for (let index = 0; index < rangeFields.length; index++) {
+      const field = rangeFields[index]
+      const descriptor = {
+        __proto__: null,
         configurable: true,
         enumerable: true,
         get() {
@@ -515,67 +580,67 @@ export function parseDateTimeSkeleton(
           initializeRanges()
           result[field] = value
         },
-      })
+      }
+      skeletonDefineProperty(result, field, descriptor)
     }
-  else initializeRanges()
+  } else initializeRanges()
   return result
 }
 
 export function splitFallbackRangePattern(
   pattern: string
 ): Array<RangePatternPart> {
-  let parts: RangePatternPart[] = []
+  const parts: RangePatternPart[] = []
   let start = 0
   for (let i = 0; i < pattern.length; i++) {
-    const token = pattern.slice(i, i + 3)
+    const token = skeletonSlice(pattern, i, i + 3)
     if (token !== '{0}' && token !== '{1}') continue
     if (i > start)
-      parts = [
-        ...parts,
-        {source: RangePatternType.shared, pattern: pattern.slice(start, i)},
-      ]
-    parts = [
-      ...parts,
-      {
-        source:
-          token === '{0}'
-            ? RangePatternType.startRange
-            : RangePatternType.endRange,
-        pattern: token,
-      },
-    ]
+      setDataProperty(parts, `${parts.length}`, {
+        source: RangePatternType.shared,
+        pattern: skeletonSlice(pattern, start, i),
+      })
+    setDataProperty(parts, `${parts.length}`, {
+      source:
+        token === '{0}'
+          ? RangePatternType.startRange
+          : RangePatternType.endRange,
+      pattern: token,
+    })
     start = i + 3
     i += 2
   }
   if (start < pattern.length)
-    parts = [
-      ...parts,
-      {source: RangePatternType.shared, pattern: pattern.slice(start)},
-    ]
+    setDataProperty(parts, `${parts.length}`, {
+      source: RangePatternType.shared,
+      pattern: skeletonSlice(pattern, start),
+    })
   return parts
 }
 
 export function splitRangePattern(pattern: string): Array<RangePatternPart> {
-  const fields = new Map<string, {start: number; end: number}>()
+  const fields = new SkeletonMap<string, {start: number; end: number}>()
   let startBegin = pattern.length
   let startEnd = 0
   let endBegin = pattern.length
   let endEnd = 0
-  for (let index = pattern.indexOf('{'); index >= 0;) {
-    const close = pattern.indexOf('}', index + 1)
+  for (let index = skeletonIndexOf(pattern, '{'); index >= 0;) {
+    const close = skeletonIndexOf(pattern, '}', index + 1)
     if (close < 0) break
-    const key = pattern.slice(index + 1, close)
-    const first = fields.get(key)
+    const key = skeletonSlice(pattern, index + 1, close)
+    const first = skeletonApply(skeletonMapGet, fields, [key]) as
+      | {start: number; end: number}
+      | undefined
     const end = close + 1
     if (first) {
-      startBegin = Math.min(startBegin, first.start)
-      startEnd = Math.max(startEnd, first.end)
-      endBegin = Math.min(endBegin, index)
-      endEnd = Math.max(endEnd, end)
+      startBegin = mathMin(startBegin, first.start)
+      startEnd = mathMax(startEnd, first.end)
+      endBegin = mathMin(endBegin, index)
+      endEnd = mathMax(endEnd, end)
     } else {
-      fields.set(key, {start: index, end})
+      skeletonApply(skeletonMapSet, fields, [key, {start: index, end}])
     }
-    index = pattern.indexOf('{', end)
+    index = skeletonIndexOf(pattern, '{', end)
   }
   if (!startEnd) return [{source: RangePatternType.shared, pattern}]
 
@@ -587,10 +652,13 @@ export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
   // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L868-L882
-  let result: RangePatternPart[] = []
+  const result: RangePatternPart[] = []
   function append(begin: number, end: number, source: RangePatternType) {
     if (begin < end)
-      result = [...result, {source, pattern: pattern.slice(begin, end)}]
+      setDataProperty(result, `${result.length}`, {
+        source,
+        pattern: skeletonSlice(pattern, begin, end),
+      })
   }
   append(0, startBegin, RangePatternType.shared)
   append(startBegin, startEnd, RangePatternType.startRange)

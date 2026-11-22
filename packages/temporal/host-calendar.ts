@@ -33,6 +33,7 @@ const dayMilliseconds = 86400000
 const limit = 100000000
 const formatters = new Map<HostTableCalendar, Intl.DateTimeFormat>()
 const years = new Map<string, CalendarYearData>()
+// Proposal comparison §12.3.25: private cache dependency; captured Map methods own ordering.
 function remember(key: string, value: CalendarYearData): CalendarYearData {
   if (apply(mapSize, years, []) >= 128) {
     const iterator = apply(mapKeys, years, [])
@@ -43,6 +44,7 @@ function remember(key: string, value: CalendarYearData): CalendarYearData {
   return value
 }
 
+// Proposal comparison §12.3.25: captured Intl field dependency; resolved calendar must match.
 function fields(calendar: HostTableCalendar, day: number) {
   if (!numberIsInteger(day) || mathAbs(day) > limit)
     throw new RangeErrorConstructor('Host Intl calendar date out of range')
@@ -80,6 +82,7 @@ function fields(calendar: HostTableCalendar, day: number) {
   return {year, day: date}
 }
 
+// Proposal comparison §12.3.25: chosen year-partition dependency; compact/approximation/host policy.
 export function hostCalendarYear(
   calendar: HostTableCalendar,
   year: number
@@ -130,6 +133,7 @@ export function hostCalendarYear(
   return remember(key, {starts, end, leap: 0})
 }
 
+// Proposal comparison §12.3.25: date-coordinate dependency; callers supply supported epoch days.
 export function hostCalendarDate(
   calendar: HostTableCalendar,
   epoch: number
@@ -146,6 +150,7 @@ export function hostCalendarDate(
   return {year, month, day: epoch - data.starts[month - 1] + 1}
 }
 
+// Proposal comparison §12.3.6: month-coordinate dependency; day/overflow remain with callers.
 export function hostCalendarAddMonths(
   calendar: 'chinese' | 'dangi',
   year: number,
@@ -167,6 +172,7 @@ export function hostCalendarAddMonths(
   }
 }
 
+// Proposal comparison §12.3.8: month-distance dependency; callers compose the duration.
 export function hostCalendarMonthDifference(
   calendar: 'chinese' | 'dangi',
   oneYear: number,

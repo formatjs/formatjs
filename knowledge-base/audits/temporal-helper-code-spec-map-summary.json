@@ -3,31 +3,31 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24311,
+  "whole_selected_source_lines": 24343,
   "whole_selected_source_lines_by_language": {
-    "rust": 10367,
-    "typescript": 13944
+    "rust": 10373,
+    "typescript": 13970
   },
-  "nonoverlapping_callable_lines": 16806,
+  "nonoverlapping_callable_lines": 16815,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8136,
-    "typescript": 8670
+    "rust": 8137,
+    "typescript": 8678
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 7416,
-    "unmapped": 5003,
-    "mapped": 4387
+    "candidate": 6873,
+    "unmapped": 4838,
+    "mapped": 5104
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 484,
+    "candidate": 466,
     "unmapped": 384,
-    "mapped": 201
+    "mapped": 219
   },
   "by_language": {
     "typescript": {
-      "candidate": 168,
-      "mapped": 191,
+      "candidate": 150,
+      "mapped": 209,
       "unmapped": 161
     },
     "rust": {
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 435,
+    "implementation_dependency": 417,
     "typed_public_operation_candidate": 49
   },
   "proposal_core_section_ids": 170,
@@ -401,10 +401,10 @@
     },
     {
       "file": "crates/temporal/ffi.rs",
-      "source_lines": 1875,
+      "source_lines": 1881,
       "callable_rows": 54,
-      "nonoverlapping_callable_lines": 1704,
-      "sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+      "nonoverlapping_callable_lines": 1705,
+      "sha256": "b264e4473589a4cd2d210940b8a3ad14ab3811b160df30533cb39de880f3bf0e",
       "unresolved_callable_rows": 48
     },
     {
@@ -553,10 +553,10 @@
     },
     {
       "file": "packages/temporal/calendar-table.ts",
-      "source_lines": 204,
+      "source_lines": 216,
       "callable_rows": 12,
       "nonoverlapping_callable_lines": 172,
-      "sha256": "863686a31b4e3b7055a72a49a75ce06853eb9311b830027e704f9d4a310671b5",
+      "sha256": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
       "unresolved_callable_rows": 0
     },
     {
@@ -657,10 +657,10 @@
     },
     {
       "file": "packages/temporal/host-calendar.ts",
-      "source_lines": 185,
+      "source_lines": 191,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 145,
-      "sha256": "4d098f9f90bc84c245e63ffa41b56d4b2f7878c87466515403b97603f9acc616",
+      "sha256": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
       "unresolved_callable_rows": 0
     },
     {
@@ -785,10 +785,10 @@
     },
     {
       "file": "packages/temporal/native.ts",
-      "source_lines": 1263,
+      "source_lines": 1271,
       "callable_rows": 91,
-      "nonoverlapping_callable_lines": 870,
-      "sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "nonoverlapping_callable_lines": 878,
+      "sha256": "b9795d3b01d0a8f4228e4fef0937b6d6742ca8a606033c53570ee579a3ac3c3a",
       "unresolved_callable_rows": 70
     },
     {

@@ -28,12 +28,15 @@ const alphabet =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
 const apply = Reflect.apply
 const stringIndexOf = String.prototype.indexOf
+// Proposal comparison §12.3.25: provider dispatch predicate; availability stays with callers.
 export function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {
   return calendar === 'chinese' || calendar === 'dangi'
 }
+// Proposal comparison §12.3.25: supplied-table access; pattern decodes each year.
 function data(calendar: 'chinese' | 'dangi') {
   return fallbackLunisolar(calendar)
 }
+// Proposal comparison §12.3.25: packed-year decoder dependency; supplied data stays trusted.
 function pattern(calendar: 'chinese' | 'dangi', year: number): number {
   const table = data(calendar),
     index = year - table.firstYear
@@ -44,6 +47,7 @@ function pattern(calendar: 'chinese' | 'dangi', year: number): number {
       apply(stringIndexOf, alphabet, [table.years[index * 2 + 1]])
   ]
 }
+// Proposal comparison §12.3.25: year-length dependency: 12/13 months of 29 days plus length bits.
 function length(packed: number): number {
   let days = (packed >>> 13 ? 13 : 12) * 29,
     bits = packed & 8191
@@ -53,6 +57,7 @@ function length(packed: number): number {
   }
   return days
 }
+// Proposal comparison §12.3.25: leap-position dependency for month-code/count callers.
 export function tableLeapMonth(
   calendar: 'chinese' | 'dangi',
   year: number
@@ -60,6 +65,7 @@ export function tableLeapMonth(
   if (hostCalendarData) return hostCalendarYear(calendar, year).leap
   return pattern(calendar, year) >>> 13
 }
+// Proposal comparison §12.3.21: year-boundary dependency; callers select civil fallback on undefined.
 export function tableYearStart(
   calendar: TableCalendarId,
   year: number
@@ -86,6 +92,7 @@ export function tableYearStart(
     start += length(pattern(calendar, table.firstYear + i))
   return start
 }
+// Proposal comparison §12.3.21: month-length dependency; callers validate month and civil fallback.
 export function tableMonthLength(
   calendar: TableCalendarId,
   year: number,
@@ -106,6 +113,7 @@ export function tableMonthLength(
   }
   return 29 + ((pattern(calendar, year) >>> (month - 1)) & 1)
 }
+// Proposal comparison §12.3.8: month-coordinate dependency; callers choose duration fields.
 export function tableMonthSerial(
   calendar: 'chinese' | 'dangi',
   year: number,
@@ -122,6 +130,7 @@ export function tableMonthSerial(
     serial += tableLeapMonth(calendar, table.firstYear + i) ? 13 : 12
   return serial + month - 1
 }
+// Proposal comparison §12.3.6: month-coordinate inverse; callers retain day/overflow policy.
 export function tableYearMonth(
   calendar: 'chinese' | 'dangi',
   serial: number
@@ -147,6 +156,7 @@ export function tableYearMonth(
     year++
   }
 }
+// Proposal comparison §12.3.25: date-coordinate dependency; callers build the complete record.
 export function tableDate(
   calendar: 'chinese' | 'dangi',
   epoch: number
@@ -173,6 +183,7 @@ export function tableDate(
   return {year, month, day: remaining + 1}
 }
 
+// Proposal comparison §12.3.6: month-movement dependency; day/overflow remain with callers.
 export function tableAddMonths(
   calendar: 'chinese' | 'dangi',
   year: number,
@@ -184,6 +195,7 @@ export function tableAddMonths(
     : tableYearMonth(calendar, tableMonthSerial(calendar, year, month) + months)
 }
 
+// Proposal comparison §12.3.8: month-distance dependency; callers compose other duration fields.
 export function tableMonthDifference(
   calendar: 'chinese' | 'dangi',
   oneYear: number,

@@ -1,4 +1,8 @@
-import {arrayIndexOf} from '#packages/intl-localematcher/abstract/intrinsics.js'
+import {
+  arrayFind,
+  arrayIndexOf,
+  setDataProperty,
+} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {BestFitMatcher} from '#packages/intl-localematcher/abstract/BestFitMatcher.js'
 import {CanonicalizeUValue} from '#packages/intl-localematcher/abstract/CanonicalizeUValue.js'
 import {InsertUnicodeExtensionAndCanonicalize} from '#packages/intl-localematcher/abstract/InsertUnicodeExtensionAndCanonicalize.js'
@@ -28,26 +32,55 @@ const availableLocaleArrays = new WeakMap<Set<string>, LocaleArraySnapshot>()
 const getLocaleArray = availableLocaleArrays.get.bind(availableLocaleArrays)
 const setLocaleArray = availableLocaleArrays.set.bind(availableLocaleArrays)
 
+const localeApply = Reflect.apply
+const localeIsArray = Array.isArray
+const localeSetValues = Set.prototype.values
+const localeSetSize = Object.getOwnPropertyDescriptor(
+  Set.prototype,
+  'size'
+)!.get!
+const localeSetNext = Object.getPrototypeOf(new Set().values()).next
+const localeLowerCase = String.prototype.toLowerCase
+
 function localeArray(
   locales: Set<string> | readonly string[],
   bestFit: boolean
 ): readonly string[] {
-  if (Array.isArray(locales)) return locales
+  if (localeIsArray(locales)) return locales
   const available = locales as Set<string>
   let cached = getLocaleArray(available)
-  if (cached?.original.length !== available.size) cached = undefined
+  if (cached?.original.length !== localeApply(localeSetSize, available, []))
+    cached = undefined
   if (cached) {
     const original = cached.original
     let index = 0
-    for (const locale of available) {
-      if (original[index++] !== locale) {
+    const iterator = localeApply(localeSetValues, available, [])
+    for (;;) {
+      const next = localeApply(
+        localeSetNext,
+        iterator,
+        []
+      ) as IteratorResult<string>
+      if (next.done) break
+      if (original[index++] !== next.value) {
         cached = undefined
         break
       }
     }
   }
   if (!cached) {
-    cached = {original: Array.from(available), snapshot: undefined}
+    const original: string[] = []
+    const iterator = localeApply(localeSetValues, available, [])
+    for (;;) {
+      const next = localeApply(
+        localeSetNext,
+        iterator,
+        []
+      ) as IteratorResult<string>
+      if (next.done) break
+      setDataProperty(original, `${original.length}`, next.value)
+    }
+    cached = {original, snapshot: undefined}
     setLocaleArray(available, cached)
   }
   if (!bestFit) return cached.original
@@ -112,11 +145,13 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
     keywords = []
   }
   let supportedKeywords: Keyword[] = []
-  for (const key of relevantExtensionKeys) {
+  // ECMA-402 §9.2.7 step13: relevant keys are a private List.
+  for (let keyIndex = 0; keyIndex < relevantExtensionKeys.length; keyIndex++) {
+    const key = relevantExtensionKeys[keyIndex]
     // TODO: Shouldn't default to empty array, see TODO above
     let keyLocaleData: Array<string | null> = foundLocaleData?.[key] ?? []
     invariant(
-      Array.isArray(keyLocaleData),
+      localeIsArray(keyLocaleData),
       `keyLocaleData for ${key} must be an array`
     )
     let value = keyLocaleData[0]
@@ -128,7 +163,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
       `value must be a string, null, or undefined`
     )
     let supportedKeyword: Keyword | undefined
-    let entry = keywords.find(k => k.key === key)
+    let entry = arrayFind(keywords, k => k.key === key)
     if (entry) {
       let requestedValue = entry.value
       if (requestedValue !== '') {
@@ -154,7 +189,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
       `optionsValue must be a string or undefined`
     )
     if (typeof optionsValue === 'string') {
-      let ukey = key.toLowerCase()
+      let ukey = localeApply(localeLowerCase, key, []) as string
       optionsValue = CanonicalizeUValue(ukey, optionsValue)
       if (optionsValue === '') {
         optionsValue = 'true'
@@ -169,7 +204,11 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
       supportedKeyword = undefined
     }
     if (supportedKeyword) {
-      supportedKeywords.push(supportedKeyword)
+      setDataProperty(
+        supportedKeywords,
+        `${supportedKeywords.length}`,
+        supportedKeyword
+      )
     }
     result[key] = value
   }

@@ -990,6 +990,7 @@ export function configureNativeTemporal(
         calendar
       ),
     transformDuration: (fields, absolute) =>
+      // Proposal comparison §§7.3.16–7.3.17 step3: transport to Duration::negated/abs.
       invoke?.transformDuration
         ? invoke.transformDuration(fields, absolute)
         : call('transformDuration', {
@@ -997,13 +998,16 @@ export function configureNativeTemporal(
             absolute,
           }),
     parseDuration: value =>
+      // Proposal comparison §13.37: parser dependency; Rust Duration::from_str owns syntax.
       invoke?.parseDuration
         ? invoke.parseDuration(value)
         : call('parseDuration', {text: value}),
     validateDuration: fields => {
+      // Proposal comparison §7.5.16 steps1–9: transport to Duration::new validation.
       call('validateDuration', {duration: durationFields(fields)})
     },
     formatDuration: (fields, precision, mode) =>
+      // Proposal comparison §7.5.40: formatting dependency; Duration::format owns output.
       invoke?.formatDuration
         ? invoke.formatDuration(fields, precision, mode)
         : call('formatDuration', {
@@ -1012,6 +1016,7 @@ export function configureNativeTemporal(
             mode,
           }),
     addDuration: (one, two, subtract) =>
+      // Proposal comparison §7.5.41 steps2–11: transport to checked_add/checked_subtract.
       invoke?.addDuration
         ? invoke.addDuration(one, two, subtract)
         : call('addDuration', {
@@ -1020,18 +1025,21 @@ export function configureNativeTemporal(
             subtract,
           }),
     compareDuration: (one, two, relative) =>
+      // Proposal comparison §7.2.3 steps12–17: DurationAnchor::compare/compare_time dependency.
       call('compareDuration', {
         duration: durationFields(one),
         other: durationFields(two),
         relative: relativeFields(relative),
       }),
     totalDuration: (fields, unit, relative) =>
+      // Proposal comparison §7.3.21 steps12–15: DurationAnchor::total/Duration::total dependency.
       call('totalDuration', {
         duration: durationFields(fields),
         unit,
         relative: relativeFields(relative),
       }),
     roundDuration: (fields, largest, smallest, increment, mode, relative) =>
+      // Proposal comparison §7.3.20 steps27–34: DurationAnchor::round/Duration::round dependency.
       call('roundDuration', {
         duration: durationFields(fields),
         largest,

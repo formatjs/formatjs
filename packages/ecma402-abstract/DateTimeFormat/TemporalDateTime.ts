@@ -117,7 +117,7 @@ export function ToDateTimeFormattable(
       const yearEnd = text[0] === '+' || text[0] === '-' ? 7 : 4
       // Comparison §15.6.18 step1: anchor PlainTime to 1970-01-01.
       // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaltime
-      let epochNanoseconds = 0n
+      let epochNanoseconds = bigIntFrom(0)
       // Comparison §14.6.1 steps1–5: exact ISO day and clock composition.
       // https://tc39.es/proposal-temporal/#sec-getutcepochnanoseconds
       if (kind !== 'PlainTime') {
@@ -130,7 +130,7 @@ export function ToDateTimeFormattable(
           day -
           1 +
           (month > 2 && DaysInYear(year) === 366 ? 1 : 0)
-        epochNanoseconds = bigIntFrom(days) * 86_400_000_000_000n
+        epochNanoseconds = bigIntFrom(days) * bigIntFrom(86_400_000_000_000)
       }
       if (kind === 'PlainTime' || kind === 'PlainDateTime') {
         const timeStart = kind === 'PlainTime' ? 0 : yearEnd + 7
@@ -150,12 +150,13 @@ export function ToDateTimeFormattable(
               )
             : ''
         epochNanoseconds +=
-          bigIntFrom(hour * 3600 + minute * 60 + second) * 1_000_000_000n +
+          bigIntFrom(hour * 3600 + minute * 60 + second) *
+            bigIntFrom(1_000_000_000) +
           bigIntFrom(stringSlice(fraction + '000000000', 0, 9))
       } else {
         // Comparison §§15.6.15–15.6.17 step2: combine date-only values with noon.
         // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaldate
-        epochNanoseconds += 43_200_000_000_000n
+        epochNanoseconds += bigIntFrom(43_200_000_000_000)
       }
       return {kind, calendar, epochNanoseconds}
     }

@@ -4,25 +4,25 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 484,
+    "candidate": 466,
     "unmapped": 384,
-    "mapped": 201
+    "mapped": 219
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 954,
-    "direct_numbered": 95,
+    "no_numbered_anchor": 924,
+    "direct_numbered": 125,
     "enclosing_numbered": 17,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 89,
+  "direct_with_step_wording": 97,
   "direct_numbered_vs_inventory_sections": {
-    "no_overlap_or_no_prior_mapping": 25,
-    "overlap": 70
+    "overlap": 100,
+    "no_overlap_or_no_prior_mapping": 25
   },
   "no_numbered_anchor_by_kind": {
-    "function": 536,
-    "named-function": 252,
-    "callback": 158,
+    "function": 532,
+    "named-function": 234,
+    "callback": 150,
     "method": 8
   },
   "role_review_bundles": {
@@ -30,8 +30,8 @@
       "rows": 247,
       "files": 19,
       "coverage": {
-        "no_numbered_anchor": 241,
-        "direct_numbered": 6
+        "no_numbered_anchor": 223,
+        "direct_numbered": 24
       }
     },
     "generic_runtime_or_installation_review": {
@@ -45,8 +45,8 @@
       "rows": 145,
       "files": 2,
       "coverage": {
-        "no_numbered_anchor": 144,
-        "direct_numbered": 1
+        "no_numbered_anchor": 132,
+        "direct_numbered": 13
       }
     },
     "rust_value_parser_arithmetic_algorithm_review": {
@@ -93,7 +93,7 @@
     "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
     "crates/temporal/date.rs": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
     "crates/temporal/duration.rs": "e3ff55c7752266faa900d31d6a04d92293200084744971bac14aae81103de711",
-    "crates/temporal/ffi.rs": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+    "crates/temporal/ffi.rs": "b264e4473589a4cd2d210940b8a3ad14ab3811b160df30533cb39de880f3bf0e",
     "crates/temporal/format.rs": "2e45803ba32dc197970cfa9ccd96a6d2b412a419f5e133814c4b8fae09998b4c",
     "crates/temporal/iso.rs": "fbf7adcea2393345d629c5525b8e320446b33dd8a8d0ca0ab136ad0c0105e27b",
     "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
@@ -111,7 +111,7 @@
     "crates/temporal/zoned_difference.rs": "61346edc1dcebfec4bf7f32a0a53f0ab2120ebba6309edeeaef1324e22125fe4",
     "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
     "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
-    "packages/temporal/calendar-table.ts": "863686a31b4e3b7055a72a49a75ce06853eb9311b830027e704f9d4a310671b5",
+    "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
     "packages/temporal/calendar.ts": "6989f4ef43f5fac774a77fb59e146514b675122309bf6ab325ef0226a4debf87",
     "packages/temporal/compact-timezone.ts": "e72841bb8369af3c7f448e42e60d767bc8fe835ae4e44f88356b39fcfd4b8800",
     "packages/temporal/date-bridge.ts": "4a0f658aad39cc9d155d7cd61dc8cba876974751c9ebb30a6c9cacf1b8d5b427",
@@ -123,7 +123,7 @@
     "packages/temporal/fallback-data.ts": "52c397aa0ec202d294d59425df03961197230ac1ccf0b610460934466f487aa1",
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
-    "packages/temporal/host-calendar.ts": "4d098f9f90bc84c245e63ffa41b56d4b2f7878c87466515403b97603f9acc616",
+    "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
     "packages/temporal/host-timezone.ts": "c4c532ee13ed681ea89701ff6d7a1c4b6d4d07233423d04bf99c88a0a360b05a",
     "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
@@ -139,7 +139,7 @@
     "packages/temporal/legacy-zoned-date.ts": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
     "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
-    "packages/temporal/native.ts": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+    "packages/temporal/native.ts": "b9795d3b01d0a8f4228e4fef0937b6d6742ca8a606033c53570ee579a3ac3c3a",
     "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
     "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
     "packages/temporal/plain-month-day.ts": "8047790b7818b8cc8bb09aedefa4e4ba39f9f49c112e51965f2c31d55b1a7ec1",
@@ -331,7 +331,8 @@
         "candidate": 2
       },
       "coverage": {
-        "no_numbered_anchor": 54
+        "no_numbered_anchor": 50,
+        "direct_numbered": 4
       }
     },
     {
@@ -534,10 +535,10 @@
       "rows": 12,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 12
+        "mapped": 12
       },
       "coverage": {
-        "no_numbered_anchor": 12
+        "direct_numbered": 12
       }
     },
     {
@@ -676,10 +677,10 @@
       "rows": 6,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 6
+        "mapped": 6
       },
       "coverage": {
-        "no_numbered_anchor": 6
+        "direct_numbered": 6
       }
     },
     {
@@ -868,8 +869,8 @@
         "mapped": 21
       },
       "coverage": {
-        "no_numbered_anchor": 90,
-        "direct_numbered": 1
+        "no_numbered_anchor": 82,
+        "direct_numbered": 9
       }
     },
     {
@@ -1020,7 +1021,11 @@
       }
     }
   ],
-  "interpretation": "Direct/enclosing anchor counts measure presence only. Owner, applicable step scope and shared-callee contracts still require review. Native transport12 have mapping-only evidence; inline links remain pending. Frozen IDs/order retained; retired callbacks are not live callable locations.",
+  "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_this_batch": 33
+  "reviewed_mapping_rows_cumulative": 51,
+  "reviewed_mapping_rows_this_batch": 18,
+  "reviewed_transport_inline_link_rows": 12,
+  "native_transport_whole_body_step_coverage_claimed": false,
+  "behavioral_status_changes": 0
 }

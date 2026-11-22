@@ -1,4 +1,8 @@
-import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  arrayIndexOf,
+  mathMin,
+  mathMax,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {type Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {
@@ -12,6 +16,8 @@ import {
   offsetPenalty,
 } from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
+const formatListIsArray = Array.isArray
+
 /**
  * https://tc39.es/ecma402/#sec-basicformatmatcher
  * @param options
@@ -21,12 +27,16 @@ export function BasicFormatMatcher(
   options: Intl.DateTimeFormatOptions,
   formats: Formats[]
 ): Formats {
+  // ECMA-402 §11.5.2: score private format/field Lists with captured intrinsics.
+  // https://tc39.es/ecma402/#sec-basicformatmatcher
   let bestScore = -Infinity
   let bestFormat = formats[0]
-  invariant(Array.isArray(formats), 'formats should be a list of things')
-  for (const format of formats) {
+  invariant(formatListIsArray(formats), 'formats should be a list of things')
+  for (let formatIndex = 0; formatIndex < formats.length; formatIndex++) {
+    const format = formats[formatIndex]
     let score = 0
-    for (const prop of DATE_TIME_PROPS) {
+    for (let propIndex = 0; propIndex < DATE_TIME_PROPS.length; propIndex++) {
+      const prop = DATE_TIME_PROPS[propIndex]
       const optionsProp = options[prop]
       const formatProp = format[prop]
       if (optionsProp === undefined && formatProp !== undefined) {
@@ -86,9 +96,9 @@ export function BasicFormatMatcher(
         }
         const optionsPropIndex = arrayIndexOf(values, optionsProp as string)
         const formatPropIndex = arrayIndexOf(values, formatProp as string)
-        const delta = Math.max(
+        const delta = mathMax(
           -2,
-          Math.min(formatPropIndex - optionsPropIndex, 2)
+          mathMin(formatPropIndex - optionsPropIndex, 2)
         )
         if (delta === 2) {
           score -= longMorePenalty

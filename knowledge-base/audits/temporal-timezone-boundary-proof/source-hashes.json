@@ -1,0 +1,15 @@
+{
+  "MODULE.bazel": "04abe28efe8f215883ce466b3fb62bd1011114ba26d93b25771cf5702b1feded",
+  "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts": "9252602ea5a08eab7cbdb4ce805b8eca3147d58c5d136211da1a8d02e6291e83",
+  "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
+  "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176",
+  "packages/temporal/compact-timezone.ts": "e72841bb8369af3c7f448e42e60d767bc8fe835ae4e44f88356b39fcfd4b8800",
+  "packages/temporal/host-timezone.ts": "c4c532ee13ed681ea89701ff6d7a1c4b6d4d07233423d04bf99c88a0a360b05a",
+  "packages/intl-datetimeformat/scripts/temporal-timezones.ts": "6e3763b30c4f46f5aec74b30c8d52f16d0f11dfe9db025bc4c37e5220beff404",
+  "crates/temporal/scripts/timezones.ts": "565eed3f25bc50b41951cece6afe068b8ed87d69107bf5338d6a40a8841ab96a",
+  "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
+  "packages/intl-datetimeformat/BUILD.bazel": "ad9dd7c676f78f91317904ad73ebf2df89e471173a173ddff7c77551f2bb0b78",
+  "crates/temporal/BUILD.bazel": "c6cbf65bfaafdf8a497c5d2505f9b4ec0185190ec5ebfb88f7f38d453ca85024",
+  "knowledge-base/audits/temporal-timezone-boundary-proof/proof.py": "570cdbf056c99bc43e05fb9d1bfdff197774e9f6977086161a1290147feed8a1",
+  "knowledge-base/audits/temporal-timezone-boundary-proof/host.mjs": "eec4a4a53f01551ef41cd357cf1c344ad8f5c46fe8b724194c0d8657c35042a8"
+}

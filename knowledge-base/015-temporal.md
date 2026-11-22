@@ -8,10 +8,18 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit. A comment-only
-batch reconciles33 mappings for rounding, lunisolar dependencies and native
-Duration transport. Transport12 still need inline caller links; numbered anchor
-presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code.
+batch reconciles51 mappings for rounding, calendar providers and native Duration
+transport. Transport12 now have narrow inline caller/dependency links; numbered
+anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
+binds source hashes and unchanged noncomment code. Current fixed inventory has125
+direct anchors,17 enclosing anchors,924 without numbered anchors and3 retired.
+
+Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
+with captured native operations and indexed private Lists. Fresh Duration lookup
+corrects keyword find and outer Set/list adapters; its later constructor chain
+remains explicit audit work. Shared DateTimeFormat constants use captured BigInt
+conversion for ES2019 source compatibility, preserving exact bigint composition.
+[Batch evidence](audits/temporal-selected-locale-adapter-audit.md).
 
 First numbered pass reconciles 641 namespace/Now/Instant/YearMonth rows; local
 step proofs retain named dependencies. No-Intl Now host offsets reuse existing
