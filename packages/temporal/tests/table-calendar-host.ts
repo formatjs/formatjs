@@ -1,9 +1,15 @@
 import {Temporal} from '#packages/temporal/index.js'
-import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
+import {
+  checkPublicCalendarOracle,
+  checkUmmAlQuraJoins,
+} from '#packages/temporal/tests/public-calendar-oracle.js'
 declare function print(value: string): void
 const fixture = (
   globalThis as unknown as {__formatjsTableCalendarOracle: string}
 ).__formatjsTableCalendarOracle
+checkUmmAlQuraJoins(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
 const counts = checkPublicCalendarOracle(
   Temporal,
   fixture,

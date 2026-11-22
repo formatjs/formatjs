@@ -36,6 +36,35 @@ fn lunisolar_checkpoint_and_final_year_boundaries() {
         assert_eq!((value.year, value.month, value.day), (year, month, day));
         assert_eq!(value.month_code, code(month_code));
     }
+    for (origin, months, expected) in [(24202, 1, 24232), (24232, -1, 24202)] {
+        assert_eq!(
+            calendar
+                .add(
+                    origin,
+                    DateDuration {
+                        months,
+                        ..DateDuration::default()
+                    },
+                    Overflow::Constrain
+                )
+                .unwrap(),
+            expected
+        );
+    }
+    for (origin, months) in [(1000, -1), (24551, 1)] {
+        assert!(
+            calendar
+                .add(
+                    origin,
+                    DateDuration {
+                        months,
+                        ..DateDuration::default()
+                    },
+                    Overflow::Constrain
+                )
+                .is_err()
+        );
+    }
     assert!(calendar.from_epoch_day(999).is_err());
     assert!(calendar.from_epoch_day(24580).is_err());
 }
@@ -101,6 +130,27 @@ fn independent_icu_table_calendar_fields_and_arithmetic() {
         TableCalendar::lunisolar(TableCalendarId::Dangi, dangi.data.view()).unwrap(),
         TableCalendar::umm_al_qura(umm.data.view()).unwrap(),
     ];
+    for (epoch, year, month, day, month_code) in [
+        (-32181, 1298, 12, 29, "M12"),
+        (-32180, 1299, 1, 1, "M01"),
+        (-32179, 1299, 1, 2, "M01"),
+        (75546, 1602, 12, 29, "M12"),
+        (75547, 1603, 1, 1, "M01"),
+        (75548, 1603, 1, 2, "M01"),
+    ] {
+        let calendar = calendars[2];
+        let value = calendar.from_epoch_day(epoch).unwrap();
+        assert_eq!(
+            (value.year, value.month, value.month_code, value.day),
+            (year, month, code(month_code), day)
+        );
+        assert_eq!(
+            calendar
+                .to_epoch_day_code(year, code(month_code), i32::from(day), Overflow::Reject)
+                .unwrap(),
+            epoch
+        );
+    }
     let mut fields = 0;
     let mut additions = 0;
     let mut differences = 0;

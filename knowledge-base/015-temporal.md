@@ -1,5 +1,13 @@
 # Temporal implementation
 
+[Arithmetic provider proof](audits/temporal-arithmetic-provider-chronology-audit.md)
+records exact-number bounds, positive month partitions and inverse termination.
+[Table proof](audits/temporal-table-provider-chronology-audit.md) covers checkpoint
+lookup and serial movement under generated/validated metadata. Six literal
+[Umm al-Qura join controls](audits/temporal-umm-shipped-joins-audit.md) exercise both
+shipped table/civil handoffs in TS/Hermes/host/native/Rust. External calendar-data
+accuracy and complete public caller contracts remain separate.
+
 PlainDate, PlainDateTime and ZonedDateTime differences reject unknown largest-unit
 spellings before later option getters. Date-only invalid smallest units reject
 before default-largest indexing, keeping inherited negative array keys private.

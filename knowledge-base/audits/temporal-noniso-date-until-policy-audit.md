@@ -39,11 +39,11 @@ Given chronological conversion and these strictly increasing serials, the sign a
 3. The serial estimate resolves exactly the target year/month. If original day would overshoot, one month correction moves to the immediately preceding month in travel direction. A zero month count cannot require such correction: that would have made the retained-year base itself surpass the target (or would contradict origin/target day order when retained years are zero).
 4. Constraining the original day in that final month cannot cross the target: either target month has original day on the permitted side, or the corrected month lies wholly on the permitted side. Consequently day residual has travel sign. Truncating division/remainder preserves that sign for weeks/days.
 
-This proves decomposition invariants conditional on provider conversion/order contracts; it does not prove every calendar field formula or host data point. Numeric magnitude/float64 exactness is separately bounded by `temporal-calendar-count-window-audit.md`.
+This proves decomposition invariants conditional on provider conversion/order contracts. The [arithmetic provider proof](temporal-arithmetic-provider-chronology-audit.md) now supplies bounded internal chronology for arithmetic engines; the [table proof](temporal-table-provider-chronology-audit.md) supplies structural chronology under its generated/validated metadata premises. Neither establishes every external calendar authority or host data point. Numeric magnitude/float64 exactness is separately bounded by `temporal-calendar-count-window-audit.md`.
 
 ## Public policy controls
 
-[Shared public controls](../../packages/temporal/tests/public-calendar-oracle.ts#L282)
+[Shared public controls](../../packages/temporal/tests/public-calendar-oracle.ts#L325)
 isolate retained-year leap policy in source TS/Hermes and native bridge profiles:
 
 - Chinese/Dangi: 2023 M02L day29 to 2024 M02 day29, largest year. Expected 0 years, 12 months, 0 days, despite adding one constrained year reaching the target. Original M02L sorts after target M02, so the year prefix is not retained. Existing `table-calendars.test.ts:30` proves the add-year fallback, not this difference decomposition.
@@ -62,4 +62,4 @@ unchanged. Targets are listed in `temporal-date-until-validation-targets.txt`.
 - Existing arithmetic controls: `packages/temporal/tests/arithmetic-calendar.test.ts:79`, Rust `core.test.rs:260`; 2,080 signed/endpoint cases include Hebrew, but do not explicitly prove the leap examples or maximal-prefix policy.
 - Existing table fixtures: TS `table-calendars.test.ts:25` counts 6,720 differences. Rust `table_calendar.test.rs:268` checks an extended-endpoint year difference; :299 checks equal-date zero for all units across broad dates. These do not exhaust all distinct leap-remapping pairs.
 - `crates/temporal/calendar_provider.rs:11` seals CalendarProvider; only arithmetic engines, validated tables and CalendarRef wrapper participate. External arbitrary provider outputs are outside the actual public architecture. The count-window audit now identifies this closed provider set.
-- Remaining full closure: generator/host checkpoint integrity, complete conversion chronology/month-code identity, all supported boundary coordinates and caller range policies. No concrete public sign, larger-field, era or leap-remapping violation found. No justification to replace this implementation-defined policy merely to match another provider.
+- Remaining full closure: external calendar-data accuracy, host conversion/checkpoint integrity, all supported boundary coordinates and caller range policies. Arithmetic internal chronology and table structural identities now have the bounded proofs linked above. No concrete public sign, larger-field, era or leap-remapping violation found. No justification to replace this implementation-defined policy merely to match another provider.
