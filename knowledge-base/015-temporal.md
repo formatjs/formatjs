@@ -25,6 +25,10 @@ All eight constructors reject directly revoked newTarget proxies on the
 primitive-prototype branch. Bound target unwrapping and foreign intrinsic
 fallback remain open. [Realm proof](audits/temporal-constructor-realm-proof.md).
 
+Cold named-zone offset reads invoke the captured host formatter through
+Reflect.apply. Offset arithmetic and host data contracts stay exact.
+[Host invocation validation](audits/temporal-host-offset-invocation-evidence.json).
+
 First numbered pass reconciles 641 namespace/Now/Instant/YearMonth rows; local
 step proofs retain named dependencies. No-Intl Now host offsets reuse existing
 zeroPadDecimal, preserving default-zone calls when String or padStart changes.

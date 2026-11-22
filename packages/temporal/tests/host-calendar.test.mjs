@@ -6,6 +6,28 @@ const {Temporal} = await import(
   pathToFileURL(runfiles.resolve(process.argv[2]))
 )
 
+// First offset lookup uses the host formatter for this named zone.
+{
+  const zoned = new Temporal.ZonedDateTime(0n, 'Asia/Kathmandu')
+  const parts = Intl.DateTimeFormat.prototype.formatToParts
+  const call = Object.getOwnPropertyDescriptor(Function.prototype, 'call')
+  const apply = Reflect.apply
+  let actual
+  try {
+    Object.defineProperty(Function.prototype, 'call', {
+      ...call,
+      value(...args) {
+        if (this === parts) throw new Error('Observable host offset call')
+        return apply(call.value, this, args)
+      },
+    })
+    actual = zoned.offsetNanoseconds
+  } finally {
+    Object.defineProperty(Function.prototype, 'call', call)
+  }
+  assert.equal(actual, 19_800_000_000_000)
+}
+
 // Hong Kong Observatory: 2023 leap second month; 2024 lunar new year.
 for (const calendar of ['chinese', 'dangi']) {
   const leap = Temporal.PlainDate.from('2023-03-22').withCalendar(calendar)

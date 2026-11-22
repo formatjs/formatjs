@@ -1,20 +1,20 @@
-# Nonexact zoned day windows on packed timezone data
+# Nonexact zoned day windows on generated timezone data
 
 This proof concerns the existing FormatJS zoned rounding window for
 `smallestUnit: 'day'`, positive integral increment and both signs. It uses
 the calendar's existing dateUntil/add round trip and its fixed-prefix day
-addition law. It is scoped to the packed timezone profile certified below.
+addition law. It is scoped to the generated timezone profiles certified below.
 Successful endpoint computation and its signed date-field contract are
-premises. Native, compact and host profiles require their own binding to the
-same offset property. Month, year and week rounding windows are outside this
-proof.
+premises. The data binding extends the packed result to compact and native
+profiles. Host profiles and month, year and week windows require separate
+proofs. [Data binding](temporal-zoned-day-window-generated-parity.md).
 
 ## Data premise
 
 Each active offset has absolute magnitude strictly less than a day. The
 bundle's offset spread in any six-day UTC interval is at most one day.
 `temporal-zoned-day-window-spread.py` validates the input hash, scans each
-closed window ending at an explicit event and includes both adjacent offsets.
+closed six-day-plus-one-second window ending at an explicit event and includes both adjacent offsets.
 In an interval with an offset change, the first and last enclosed changes
 bound all possible offsets. In an interval without a change, the spread is
 zero. The script conservatively includes both possible footer offsets at each
@@ -96,7 +96,6 @@ conflict open.
 Relevant code: TS `zoned-date-time.ts:490–572` and
 `date-core.ts:962–1030`. Rust `calendar_difference.rs:107–166` and
 `:190–253` have corresponding unrounded/truncation/retry steps. The
-packed kernel's gap/fold provider is `kernel.ts:320–351`, with explicit
-and recurring offsets supplied by `TimeZoneOffset.ts:42–85`. The data
-scan alone does not bind these contracts to native or host data or
-discharge the distinct calendar-unit and prefix issues in §7.5.33.
+TypeScript kernel's gap/fold provider is `kernel.ts:320–351`, with explicit
+and recurring offsets supplied by `TimeZoneOffset.ts:42–85`. The proof retains the signed calendar and successful endpoint premises. Host
+data and the distinct calendar-unit and prefix issues in §7.5.33 stay open.

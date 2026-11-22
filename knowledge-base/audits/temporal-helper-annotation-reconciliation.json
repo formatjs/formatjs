@@ -2446,7 +2446,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "a4009f04e8c86b694e36594d76abcda78b1bb1cace385e30ec6b0d008d162e3b",
+    "packages/temporal/host-timezone.ts": "2cb5324d7f20104efa99b2706bb78a02249502d500770705bc8fbb97795f9a36",
     "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",

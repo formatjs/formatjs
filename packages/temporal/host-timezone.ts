@@ -95,7 +95,9 @@ export function createHostTimeZoneOffset(
       hour = -1,
       minute = -1,
       seconds = -1
-    const fields = parts.call(formatter, key * 1000)
+    const fields = apply(parts, formatter, [
+      key * 1000,
+    ]) as Intl.DateTimeFormatPart[]
     for (let index = 0; index < fields.length; index++) {
       const part = fields[index]
       if (part.type === 'day') date = numberFrom(part.value)

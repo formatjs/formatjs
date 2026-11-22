@@ -4,7 +4,7 @@
   "explicit_rows": 20111,
   "future_profiles": 431,
   "explicit_footer_seams": 431,
-  "window_seconds": 518400,
+  "window_seconds": 518401,
   "maximum_offset_spread_seconds": 86400,
   "maximum_witness": {
     "zone": "America/Adak",

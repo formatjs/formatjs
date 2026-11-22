@@ -5,7 +5,8 @@ import json
 from pathlib import Path
 
 DAY = 86_400
-WINDOW = 6 * DAY
+# Native whole-second lookup can retain the final explicit row for one more second.
+WINDOW = 6 * DAY + 1
 
 
 def scan(packed_path: Path, expected_sha256: str) -> dict:

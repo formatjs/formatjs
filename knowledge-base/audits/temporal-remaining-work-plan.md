@@ -44,7 +44,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
-Code maps cover 82 distinct selected source files and 24,595 physical lines.
+Code maps cover 82 distinct selected source files and 24,645 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -177,8 +177,9 @@ foreign intrinsic fallback keep the 16 realm steps conditional.
 [Realm proof](temporal-constructor-realm-proof.md).
 The [Apia exact-target assertion conflict](temporal-apia-exact-target-spec-issue.md)
 is recorded separately from the two nonexact-window conditions. The
-[packed-zone spread proof](temporal-zoned-day-window-spread-proof.md) supplies
-the day subdomain under its stated calendar and endpoint contracts.
+[generated-zone spread proof](temporal-zoned-day-window-spread-proof.md) supplies
+the packed, compact and native day subdomain under its calendar and endpoint
+contracts. Host and remaining calendar-unit comparisons stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
