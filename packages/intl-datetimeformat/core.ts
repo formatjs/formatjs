@@ -131,10 +131,12 @@ const formatDescriptor = {
     const internalSlots = getInternalSlots(this)
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const dtf = this
-    let boundFormat = internalSlots.boundFormat
-    if (boundFormat === undefined) {
-      // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
-      boundFormat = (date?: Date | number | TemporalDateTimeInput) => {
+    // ECMA-402 §11.3.3 steps 4–5 cache an anonymous, one-argument function.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
+    if (internalSlots.boundFormat === undefined) {
+      internalSlots.boundFormat = (
+        date?: Date | number | TemporalDateTimeInput
+      ) => {
         let x: number | TemporalDateTimeValue
         if (date === undefined) {
           x = now()
@@ -147,21 +149,8 @@ const formatDescriptor = {
           getDateTimeImplementationDetails()
         )
       }
-      try {
-        // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
-        Object.defineProperty(boundFormat, 'name', {
-          configurable: true,
-          enumerable: false,
-          writable: false,
-          value: '',
-        })
-      } catch {
-        // In older browser (e.g Chrome 36 like polyfill-fastly.io)
-        // TypeError: Cannot redefine property: name
-      }
-      internalSlots.boundFormat = boundFormat
     }
-    return boundFormat
+    return internalSlots.boundFormat
   },
 } as const
 try {

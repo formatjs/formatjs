@@ -46,6 +46,30 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test('caches the bound formatter without a mutable Object.defineProperty hook', () => {
+  const options = {timeZone: 'UTC'}
+  const instant = new Temporal.Instant(0n)
+  const expected = new DateTimeFormat('en', options).format(instant)
+  const formatter = new DateTimeFormat('en', options)
+  const originalDefineProperty = Object.defineProperty
+  let calls = 0
+  let bound
+  try {
+    Object.defineProperty = () => {
+      calls++
+      throw new Error('Unexpected mutable Object.defineProperty')
+    }
+    bound = formatter.format
+  } finally {
+    Object.defineProperty = originalDefineProperty
+  }
+  expect(calls).toBe(0)
+  expect(bound).toBe(formatter.format)
+  expect(bound.name).toBe('')
+  expect(bound.length).toBe(1)
+  expect(bound(instant)).toBe(expected)
+})
+
 test('allocates owned Temporal formatters without a mutable Object.create hook', () => {
   const value = new Temporal.ZonedDateTime(0n, 'UTC')
   const expected = value.toLocaleString('en')
