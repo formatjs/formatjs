@@ -232,10 +232,14 @@ function difference(
     })
   const a = yearMonthFields(
       slot.calendar,
-      {...dateFields(slot, true)},
+      {__proto__: null, ...dateFields(slot, true)},
       'constrain'
     ),
-    b = yearMonthFields(end.calendar, {...dateFields(end, true)}, 'constrain')
+    b = yearMonthFields(
+      end.calendar,
+      {__proto__: null, ...dateFields(end, true)},
+      'constrain'
+    )
   if (
     a.epochDay < -100000001 ||
     a.epochDay > 100000000 ||

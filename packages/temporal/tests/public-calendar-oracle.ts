@@ -115,6 +115,144 @@ function checkLargeCalendarFields(
   }
 }
 
+export function checkYearMonthDifferencePrivateFields(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const pairs = [
+    [
+      new Temporal.PlainYearMonth(2020, 1, 'gregory', 31),
+      new Temporal.PlainYearMonth(2020, 2, 'gregory', 29),
+      1,
+    ],
+    [
+      Temporal.PlainYearMonth.from({
+        calendar: 'hebrew',
+        year: 5784,
+        monthCode: 'M05L',
+      }),
+      Temporal.PlainYearMonth.from({
+        calendar: 'hebrew',
+        year: 5784,
+        monthCode: 'M06',
+      }),
+      1,
+    ],
+    [
+      new Temporal.PlainYearMonth(2020, 1, 'gregory', 15),
+      new Temporal.PlainYearMonth(2020, 1, 'gregory', 16),
+      0,
+    ],
+  ] as const
+  const inherited: string[] = []
+  const bag = Object.create({
+    calendar: 'gregory',
+    month: 2,
+    get era() {
+      inherited.push('era')
+      return 'ce'
+    },
+    get eraYear() {
+      inherited.push('eraYear')
+      return 2020
+    },
+  })
+  equal(
+    pairs[0][0].until(bag, {largestUnit: 'month'}).toString(),
+    'P1M',
+    'Public inherited era bag'
+  )
+  equal(
+    inherited.join(','),
+    'era,eraYear',
+    'Public inherited era getters remain observable'
+  )
+  for (const [first, last, months] of pairs) {
+    for (const method of ['until', 'since'] as const) {
+      for (const increment of [1, 2]) {
+        for (const key of ['era', 'eraYear']) {
+          const original = Object.getOwnPropertyDescriptor(
+            Object.prototype,
+            key
+          )
+          let hooks = 0
+          let error: unknown
+          let result: InstanceType<typeof Temporal.Duration> | undefined
+          try {
+            Object.defineProperty(Object.prototype, key, {
+              configurable: true,
+              get() {
+                hooks++
+                throw new Error('Private difference era read')
+              },
+            })
+            try {
+              result = first[method](last, {
+                largestUnit: 'month',
+                smallestUnit: 'month',
+                roundingIncrement: increment,
+                roundingMode: 'expand',
+              })
+            } catch (caught) {
+              error = caught
+            }
+          } finally {
+            if (original) Object.defineProperty(Object.prototype, key, original)
+            else delete (Object.prototype as Record<string, unknown>)[key]
+          }
+          const context = `${first.calendarId}.${method} private ${key}, increment ${increment}`
+          equal(hooks, 0, context)
+          equal(error, undefined, context)
+          equal(
+            result?.toString(),
+            months === 0
+              ? 'PT0S'
+              : `${method === 'since' ? '-' : ''}P${increment}M`,
+            context
+          )
+        }
+      }
+    }
+  }
+}
+
+export function checkDateTimeDifferencePrivateUnits(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const first = Temporal.PlainDateTime.from('2020-01-01T00:00'),
+    last = Temporal.PlainDateTime.from('2020-01-01T01:00')
+  for (const end of [first, last]) {
+    for (const method of ['until', 'since'] as const) {
+      const original = Array.prototype[Symbol.iterator]
+      let hooks = 0
+      let error: unknown
+      let result: InstanceType<typeof Temporal.Duration> | undefined
+      try {
+        Array.prototype[Symbol.iterator] = function () {
+          hooks++
+          throw new Error('Private difference unit iteration')
+        }
+        try {
+          result = first[method](end)
+        } catch (caught) {
+          error = caught
+        }
+      } finally {
+        Array.prototype[Symbol.iterator] = original
+      }
+      const context = `PlainDateTime.${method} private units`
+      equal(hooks, 0, context)
+      equal(error, undefined, context)
+      equal(
+        result?.toString(),
+        end === first ? 'PT0S' : method === 'since' ? '-PT1H' : 'PT1H',
+        context
+      )
+    }
+  }
+}
+
 export function checkUmmAlQuraJoins(
   Temporal: typeof TemporalNamespace,
   equal: (actual: unknown, expected: unknown, context: string) => void

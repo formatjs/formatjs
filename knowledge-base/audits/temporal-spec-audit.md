@@ -22,6 +22,24 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Private difference preparation, 2026-11-22
+
+Two public hook regressions reproduced before correction. PlainDateTime's private
+unit spread invoked replaced Array iteration, including equal operands, before
+its zero shortcut. PlainYearMonth's private reference-date copies read inherited
+era/eraYear state. A literal unit list and null-prototype copies remove those
+hooks without changing arithmetic or public bag inheritance.
+
+[All 18 settings steps](temporal-get-difference-settings-audit.md) are mapped for
+six public callers. [YearMonth's 19-step caller](temporal-year-month-difference-caller-audit.md)
+separates exact reference equality from canonical first-day normalization and
+its public date bounds. Shared TS/Hermes/native controls include positive public
+era inheritance, Gregorian differing reference days and Hebrew leap identity.
+Seven focused targets pass (five executed, two cached). Expanded validation:
+84 tests pass (69 executed, 15 cached), plus Temporal and DurationFormat package
+builds. [Target manifest](temporal-difference-private-validation-targets.txt). Complete conversion/realm/provider contracts and requested Temporal API
+authority remain open; historical completion counts unchanged.
+
 ## Calendar provider chronology, 2026-11-22
 
 [Arithmetic proof](temporal-arithmetic-provider-chronology-audit.md) records
@@ -133,22 +151,24 @@ Seven focused gates pass. Expanded validation: 73 tests pass (60 executed,
 
 ## ECMA-262 dependency sections touched
 
-Execution estimate, 2026-11-21: **7–14 calendar days of sustained parallel work**,
-low confidence; allow 2–3 weeks if calendar/time-zone defects expand the scope.
-This assumes continuous agent work, not eight-hour workdays, and resolution of
-the Temporal chapter authority above. It is a planning range, not a compliance
-deadline. Of 4,221 historical numbered lines, 3,795 remain individually untraced.
-The 252 new traces over roughly 18.5 active hours imply about 279 serial hours
-at the observed rate; inherited traces are excluded from that throughput.
-Effective 2–2.5-fold parallelism plus additional prose/grammar, fixes and
-integration work motivates the range. Historical lines include editorial text;
-this calculation cannot measure compliance or bound undiscovered defects.
+Execution estimate, 2026-11-22: **7–14 calendar days of sustained parallel work**,
+low confidence. This assumes continuous agent work, not eight-hour workdays.
+[Remaining work and exit criteria](temporal-remaining-work-plan.md) replace the
+obsolete historical-line throughput extrapolation. Historical traces, PR counts
+and passing tests do not measure remaining compliance work.
 
-Parallel review now covers Duration conversion/arithmetic/stringification and
-ZonedDateTime rounding/offset matching. Runtime edits, ledger reconciliation and Bazel runs
-remain coordinated in the shared checkout. Re-estimate after the first day of
-parallel results, using completed operation contracts and discovered defects
-alongside historical line counts.
+Planning allowance: about 200–385 agent-hours, including discovered-defect and
+integration reserve, with effective 2–2.5-fold concurrency. These are estimates,
+not measured completion counts. Large calendar/timezone defects can extend the
+range; revise the forecast when evidence changes. Final normative signoff also
+requires resolving the requested Temporal chapter authority above; that is a
+separate gate, not a reason to withhold an engineering estimate.
+
+Next 24-hour checkpoint: exhaustive public-operation inventory, reconciliation
+of completed helper/provider proofs, concrete remaining obligations per open
+operation, then an updated forecast. Parallel reviewers own bounded operation
+families; runtime edits, Bazel validation and stack integration remain coordinated
+in this checkout. Reuse closed helper proofs rather than restarting their audits.
 
 This is a partial dependency index, not a complete Temporal chapter inventory.
 Reviewed operation contracts below do not sign off their Temporal callers.

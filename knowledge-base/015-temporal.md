@@ -1,5 +1,13 @@
 # Temporal implementation
 
+PlainDateTime differences use a literal private unit list; replaced array
+iteration cannot intercept even equal-result preparation. PlainYearMonth
+differences use null-prototype reference fields, keeping inherited era state out
+of private normalization while preserving public bag getters.
+[Settings map](audits/temporal-get-difference-settings-audit.md) and
+[YearMonth caller map](audits/temporal-year-month-difference-caller-audit.md)
+record numbered comparisons, reference-day distinctions and remaining contracts.
+
 [Arithmetic provider proof](audits/temporal-arithmetic-provider-chronology-audit.md)
 records exact-number bounds, positive month partitions and inverse termination.
 [Table proof](audits/temporal-table-provider-chronology-audit.md) covers checkpoint
@@ -1121,7 +1129,7 @@ Clock-bound controls include negative epochs, Instant limits and detached method
 
 All 138 upstream Now built-ins/intl402 executions pass on Node, Hermes source and optimized
 bytecode. Separate real Hermes host tests exercise UTC, New York and Kathmandu.
-No Realm or implementation exclusions added. See [Temporal.Now semantics](https://tc39.es/proposal-temporal/#sec-temporal.now)
+No Realm or implementation exclusions added. See [Temporal.Now semantics](https://tc39.es/proposal-temporal/#sec-temporal-now-object)
 and [SystemTimeZoneIdentifier](https://tc39.es/ecma262/#sec-systemtimezoneidentifier).
 
 The pinned intl402/Temporal tree contains 2,040 files. This layer adds its three

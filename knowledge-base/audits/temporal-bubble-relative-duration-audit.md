@@ -23,9 +23,9 @@ AST call inventory finds exactly two TS calls to roundRelativeDifference:
   roundedDateTimeDifference. Public callers: PlainDate.until/since
   [plain-date.ts:277](../../packages/temporal/plain-date.ts#L277),
   PlainDateTime.until/since
-  [plain-date-time.ts:311](../../packages/temporal/plain-date-time.ts#L311),
+  [plain-date-time.ts:322](../../packages/temporal/plain-date-time.ts#L322),
   PlainYearMonth.until/since
-  [plain-year-month.ts:256](../../packages/temporal/plain-year-month.ts#L256),
+  [plain-year-month.ts:260](../../packages/temporal/plain-year-month.ts#L260),
   and plain-relative Duration.round
   [relative-duration.ts:305](../../packages/temporal/relative-duration.ts#L305).
 - [zoned-date-time.ts:628](../../packages/temporal/zoned-date-time.ts#L628), through

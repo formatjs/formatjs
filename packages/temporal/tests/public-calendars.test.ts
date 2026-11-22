@@ -5,6 +5,8 @@ import {Temporal} from '#packages/temporal/index.js'
 import {
   checkPublicCalendarOracle,
   checkCalendarDifferencePolicy,
+  checkYearMonthDifferencePrivateFields,
+  checkDateTimeDifferencePrivateUnits,
   checkDifferenceOptionOrder,
   checkDateDifferenceUnitGroup,
 } from '#packages/temporal/tests/public-calendar-oracle.js'
@@ -306,6 +308,17 @@ it('validates difference unit spellings before later option getters', () => {
 
 it('rejects date unit groups without reading a private negative array index', () => {
   checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
+})
+
+it('isolates YearMonth difference reference fields from inherited eras', () => {
+  checkYearMonthDifferencePrivateFields(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
+})
+it('prepares DateTime difference units without observable iteration', () => {
+  checkDateTimeDifferencePrivateUnits(Temporal, (actual, expected, context) =>
     expect(actual, context).toBe(expected)
   )
 })
