@@ -3,20 +3,20 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24265,
+  "whole_selected_source_lines": 24274,
   "whole_selected_source_lines_by_language": {
     "rust": 10356,
-    "typescript": 13909
+    "typescript": 13918
   },
-  "nonoverlapping_callable_lines": 16792,
+  "nonoverlapping_callable_lines": 16799,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8135,
-    "typescript": 8657
+    "typescript": 8664
   },
   "disjoint_callable_line_assignment": {
     "candidate": 7415,
     "unmapped": 4998,
-    "mapped": 4379
+    "mapped": 4386
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
@@ -712,10 +712,10 @@
     },
     {
       "file": "packages/temporal/kernel.ts",
-      "source_lines": 362,
+      "source_lines": 364,
       "callable_rows": 15,
-      "nonoverlapping_callable_lines": 296,
-      "sha256": "2ef5edac848e4f6d3b55410e5a3db64e7441d76fa7768ef65aa6857f322997ee",
+      "nonoverlapping_callable_lines": 297,
+      "sha256": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
       "unresolved_callable_rows": 9
     },
     {
@@ -904,10 +904,10 @@
     },
     {
       "file": "packages/temporal/zones.ts",
-      "source_lines": 257,
+      "source_lines": 264,
       "callable_rows": 22,
-      "nonoverlapping_callable_lines": 199,
-      "sha256": "a92f5cc1fdd96480de4db53770af390c905eae93e47bdb86a361be256d0f7cec",
+      "nonoverlapping_callable_lines": 205,
+      "sha256": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176",
       "unresolved_callable_rows": 15
     }
   ]

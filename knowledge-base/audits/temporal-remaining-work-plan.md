@@ -34,7 +34,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                              |
 
-Code maps cover 82 distinct selected source files and 24,549 physical lines.
+Code maps cover 82 distinct selected source files and 24,558 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -106,11 +106,11 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states:291 conditional,90 comparison-issue rows and one partial
+Remaining core states:278 conditional,90 comparison-issue rows and one partial
 gate. Amendments:91 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-157 conditional steps (99 core,58 amendment), each with exact source ranges
+144 conditional steps (86 core,58 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -119,7 +119,7 @@ Measured first pass:03:06–04:04 UTC, about58minutes for5,865 rows with paralle
 review, prior-proof reuse, corrections and backend checks (about101rows/minute).
 First review pass is complete. Landed timezone/Intl corrections closed69 numbered
 steps; the reader/calendar batch closes another17. Reusing those contracts
-closes16 caller steps without runtime changes. Remaining157 steps form26
+closes16 caller steps without runtime changes. Remaining144 steps form22
 shared-premise families. All268 public entries have numbered inline anchors;
 helper/backend annotation remains part of completion. Confirmed constructor realm
 fallback gap spans16 rows across eight constructors; it is not a spec issue.

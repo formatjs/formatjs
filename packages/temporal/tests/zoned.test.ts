@@ -772,3 +772,78 @@ it('rejects invalid offset syntax before zoned string options', () => {
   ).toThrow(RangeError)
   expect(reads).toBe(0)
 })
+
+it.each(['America/New_York', 'US/Eastern'])(
+  'keeps private primary-zone lookups out of difference validation with %s',
+  otherZone => {
+    const first = new Temporal.ZonedDateTime(0n, 'America/New_York')
+    const last = new Temporal.ZonedDateTime(86_400_000_000_000n, otherZone)
+    const key = 'America/New_York'
+    const descriptor = Object.getOwnPropertyDescriptor(Object.prototype, key)
+    let calls = 0,
+      invalid: unknown,
+      valid: unknown,
+      validError: unknown
+    try {
+      Object.defineProperty(Object.prototype, key, {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error('Inherited primary-zone lookup')
+        },
+      })
+      try {
+        first.until(last, {
+          largestUnit: 'day',
+          smallestUnit: 'hour',
+          roundingIncrement: 24,
+        })
+      } catch (caught) {
+        invalid = caught
+      }
+      try {
+        valid = first
+          .until(last, {largestUnit: 'day', smallestUnit: 'hour'})
+          .toString()
+      } catch (caught) {
+        validError = caught
+      }
+    } finally {
+      if (descriptor) Object.defineProperty(Object.prototype, key, descriptor)
+      else Reflect.deleteProperty(Object.prototype, key)
+    }
+    expect(calls).toBe(0)
+    expect(invalid).toBeInstanceOf(RangeError)
+    expect(validError).toBeUndefined()
+    expect(valid).toBe('P1D')
+  }
+)
+
+it('collects both fold candidates without inherited array index setters', () => {
+  const zone = 'America/New_York'
+  void new Temporal.ZonedDateTime(0n, zone).offsetNanoseconds
+  const original = Object.getOwnPropertyDescriptor(Array.prototype, '1')
+  let epoch: bigint | undefined,
+    error: unknown,
+    calls = 0
+  try {
+    Object.defineProperty(Array.prototype, '1', {
+      configurable: true,
+      set() {
+        calls++
+        throw new Error('Inherited private fold candidate')
+      },
+    })
+    epoch = Temporal.ZonedDateTime.from('2024-11-03T01:30[America/New_York]', {
+      disambiguation: 'later',
+    }).epochNanoseconds
+  } catch (caught) {
+    error = caught
+  } finally {
+    if (original) Object.defineProperty(Array.prototype, '1', original)
+    else Reflect.deleteProperty(Array.prototype, '1')
+  }
+  expect(error).toBeUndefined()
+  expect(calls).toBe(0)
+  expect(epoch).toBe(1730615400000000000n)
+})

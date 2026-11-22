@@ -1,0 +1,312 @@
+{
+  "scope": "Finite reconciliation: exact14 requested rows plus5 existing owning-row evidence augmentations. Primary/candidate corrections validated by8focused green gates. Caller transport credit distinct from shared-operation/standards issues; no whole-provider signoff.",
+  "updates": [
+    {
+      "row_id": "5.5.9/algorithm-1/step-7",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-date-time.ts:98-101",
+        "packages/temporal/plain-date-time.ts:340-361",
+        "packages/temporal/plain-date-time.ts:546-590",
+        "packages/temporal/tests/date-output-oracle.ts:367-385"
+      ],
+      "evidence": "Old mutable terminal-Z String.slice premise resolved. Bound original stringSlice applies to both private ISO formatting exits; exact ISO fields/precision/calendar concatenation unchanged. Existing shared checkPlainDateTimeFormattingHooks requires literal 2020-01-02T03:04:00 for toString/toJSON while String.prototype.slice throws. Private ISO fractional/digit proof reused; caller precision preparation independently owned.",
+      "separately_owned_dependency_rows": [],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "6.3.39/algorithm-1/step-20.c",
+      "status_before": "conditional",
+      "proposed_status": "conditional",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:310-335",
+        "packages/temporal/kernel.ts:272-364"
+      ],
+      "evidence": "Private candidate method/iterator hooks closed by prior correction; root additionally reproduced cold offset-list inherited-index setter and NY fold candidate inherited-index setter failures. Current createTimeZone uses existing setDataProperty for both private appends, preserving dense own elements and captured sort order. No custom collection implementation. This closes collection-write subpremise validated by new focused green. Existing lower-local policy/editorial wording is a separate standards issue, not an array/candidate mutation defect.",
+      "separately_owned_dependency_rows": ["11.1.13/algorithm-1/step-4.a"],
+      "remaining_premises": [
+        "Existing lower-local policy/source wording is separately owned, not an uncorrected collection hook. temporal-spec-issues.md now describes guard-removal editorial inconsistency and normative guard behavior as unambiguous; parent may reconcile this residual in its standards-issue pass."
+      ],
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed.",
+      "contingent_on_green": false
+    },
+    {
+      "row_id": "13.43/algorithm-1/step-16",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:574-648",
+        "packages/temporal/zones.ts:249-264",
+        "packages/temporal/fallback-data.ts:60-62",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:59-68",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:80-87",
+        "packages/ecma262-abstract/HasOwnProperty.ts:1-8"
+      ],
+      "evidence": "Root reproduced inherited primary-zone getter failures for identical America/New_York and equivalent US/Eastern aliases, including invalid hour increment24 and valid P1D control. Current timeZoneEquals first returns true for identical identifiers; primaryTimeZoneIdentifier tests HasOwnProperty before reading sparse generated mapping. Thus pre-cap canonical comparison performs only own-record/native-contract operations on already validated scalar slot identifiers; no public getter/coercion/provider lookup hook precedes strict increment validation. Existing maximum/divisibility/equality branches and provided native timeZoneIdentity contract retained. No increment arithmetic change required.",
+      "separately_owned_dependency_rows": [
+        "11.1.15/algorithm-1/step-1",
+        "11.1.15/algorithm-1/step-2.e"
+      ],
+      "remaining_premises": [],
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed.",
+      "contingent_on_green": false,
+      "test_locations": ["packages/temporal/tests/zoned.test.ts:777-805"]
+    },
+    {
+      "row_id": "4.5.6/algorithm-1/step-2.c.i",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-time.ts:209-230",
+        "packages/temporal/plain-slots.ts:82-92"
+      ],
+      "evidence": "Private zoned slot projects exact epoch+offset before overflow option Get; resulting local clock uses Euclidean modulo day. Actual shared GetISODateTimeFor owning clause is already verified.",
+      "separately_owned_dependency_rows": ["11.1.10/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "5.3.38/algorithm-1/step-3",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-date-time.ts:481-494",
+        "packages/temporal/zoned-date-time.ts:262-278",
+        "packages/temporal/zones.ts:169-206"
+      ],
+      "evidence": "Zoned conversion calls private identifier conversion before options/disambiguation. Primitive identifier returned unchanged into resolver. Owning ToTemporalTimeZoneIdentifier clause is already verified.",
+      "separately_owned_dependency_rows": ["11.1.8/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "5.3.38/algorithm-1/step-6",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-date-time.ts:481-494",
+        "packages/temporal/zoned-date-time.ts:262-278"
+      ],
+      "evidence": "Prepared exact local scalar decomposes into ISO fields; selected canonical zone and disambiguation passed once to owned resolve, chosen epoch/calendar retained. Gap/fold/range policy remains in named owning operation; no duplicate caller requirement.",
+      "separately_owned_dependency_rows": ["11.1.11/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "5.5.6/algorithm-1/step-2.b.i",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-date-time.ts:200-240",
+        "packages/temporal/plain-slots.ts:82-92"
+      ],
+      "evidence": "Private zoned projection is evaluated while computing existing slot, before overflow option conversion. Exact local epoch and private calendar returned directly. Owning shared projection clause already verified.",
+      "separately_owned_dependency_rows": ["11.1.10/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "8.3.11/algorithm-1/step-11.a",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:341-392",
+        "packages/temporal/zones.ts:152-166",
+        "packages/temporal/zones.ts:169-206"
+      ],
+      "evidence": "Options Get/coercion sequence preserved. TS resolveTimeZone validates string/private zone input via parser+identifier; native branch transports parsed identifier after same type/slot checks to trusted native formatter. Zone preparation precedes rounding; offset evaluation uses rounded epoch. Owning identifier clause already verified.",
+      "separately_owned_dependency_rows": ["11.1.8/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "8.3.15/algorithm-1/step-3",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:261-264",
+        "packages/temporal/zones.ts:169-206"
+      ],
+      "evidence": "Read branded Instant first, then private timeZoneIdentifier, then createZonedDateTime with exact epoch and literal iso8601 calendar. Owning identifier clause already verified.",
+      "separately_owned_dependency_rows": ["11.1.8/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "8.5.8/algorithm-1/step-4",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant-format.ts:15-49",
+        "packages/temporal/instant.ts:341-392"
+      ],
+      "evidence": "Formatter composes value+offset in BigInt before ISO decomposition; caller obtains named offset at rounded Instant. Native transport retains scalar epoch/offset/precision. Owning projection clause already verified.",
+      "separately_owned_dependency_rows": ["11.1.10/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "8.5.8/algorithm-1/step-7.a",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:341-392",
+        "packages/temporal/zones.ts:152-166",
+        "packages/temporal/zones.ts:208-247"
+      ],
+      "evidence": "Offset kernel receives exact rounded epoch; return bigint passed directly to formatter minute rounding. Fixed and UTC arithmetic bounded, named offset provider separately owned. No second independent provider obligation at this caller.",
+      "separately_owned_dependency_rows": ["11.1.9/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-6.f.i",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/zoned-date-time.ts:336-475"
+      ],
+      "evidence": "Relative string annotation classifier only selects parser; full zoned conversion passes parsed annotation to private identifier conversion. Bag timezone Get/conversion retains ordered preparation. Owning identifier clause already verified.",
+      "separately_owned_dependency_rows": ["11.1.8/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-10",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/zoned-date-time.ts:287-335",
+        "packages/temporal/zoned-date-time.ts:336-475"
+      ],
+      "evidence": "Private zoned conversion preserves wall/exact/option behavior plus compatible/reject disambiguation and exact-versus-minute matching into shared resolver; chosen epoch and calendar retained. Shared integer precision/offset-match proof reused. Remaining shared range/editorial policy is owned by InterpretISODateTimeOffset, not a duplicate adapter defect.",
+      "separately_owned_dependency_rows": ["6.5.1/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-11",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/zoned-date-time.ts:221-244"
+      ],
+      "evidence": "Relative result is private tagged union of validated chosen epoch, zone and calendar; it does not expose a constructed ZonedDateTime. Eliding intermediate allocation with absent newTarget is unobservable: no public getter, subclass or realm callback. External constructor realm fallback is not invoked. Later Duration processing consumes same private slots.",
+      "separately_owned_dependency_rows": ["6.5.3/algorithm-1/step-3"],
+      "remaining_premises": [],
+      "validation": "Read-only current source/AST plus existing audited proof/test reuse. No new tests or builds executed; parent owns red/green and final integration."
+    }
+  ],
+  "source_sha256": {
+    "packages/ecma262-abstract/HasOwnProperty.ts": "0bab51fedddb9f29cacbe196e0621a6ee4462fb1a74dfcffcf0b54df45e7aeb6",
+    "packages/intl-datetimeformat/scripts/primary-zones.ts": "3c7b48307c220ea187395bb2fc7db69f362cbf530eee3b2993ef8eb007286b70",
+    "packages/temporal/fallback-data.ts": "52c397aa0ec202d294d59425df03961197230ac1ccf0b610460934466f487aa1",
+    "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/tests/date-output-oracle.ts": "d1c704218202c7cb432b91e83841301f6c444636a6176b48d21efac47b9131f5",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f",
+    "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176"
+  },
+  "candidate_reopen_rows": [],
+  "candidate_test_patch": "packages/temporal/tests/zoned.test.ts",
+  "ast_artifacts": [
+    "Current source ranges and hashes in this artifact; ast-grep scan used for owning functions."
+  ],
+  "owning_row_evidence_augmentations": [
+    {
+      "row_id": "11.1.15/clause",
+      "proposed_status": "verified",
+      "action": "augment_existing_evidence_after_green",
+      "contingent_on_green": false,
+      "implementation_locations": [
+        "packages/temporal/zones.ts:249-259",
+        "packages/temporal/zones.ts:260-264",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:59-68",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:80-87"
+      ],
+      "evidence": "Identical primitive slot identifiers now compare directly before canonical mapping (\u00a711.1.15 step1). For different identifiers, private sparse generated primary data uses HasOwnProperty before own scalar read; absent identity mapping returns original id without inherited property Get. Primary comparison unchanged, including US/Eastern alias equality. Existing identity data/native contract proof retained. Root reproduced inherited America/New_York getter in two public difference cases before correction; eight focused gates now green. This augments owning operation evidence rather than duplicating provider audit at 11 caller rows.",
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed."
+    },
+    {
+      "row_id": "11.1.15/algorithm-1/step-1",
+      "proposed_status": "verified_local_step",
+      "action": "augment_existing_evidence_after_green",
+      "contingent_on_green": false,
+      "implementation_locations": [
+        "packages/temporal/zones.ts:249-259",
+        "packages/temporal/zones.ts:260-264",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:59-68",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:80-87"
+      ],
+      "evidence": "Identical primitive slot identifiers now compare directly before canonical mapping (\u00a711.1.15 step1). For different identifiers, private sparse generated primary data uses HasOwnProperty before own scalar read; absent identity mapping returns original id without inherited property Get. Primary comparison unchanged, including US/Eastern alias equality. Existing identity data/native contract proof retained. Root reproduced inherited America/New_York getter in two public difference cases before correction; eight focused gates now green. This augments owning operation evidence rather than duplicating provider audit at 11 caller rows.",
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed."
+    },
+    {
+      "row_id": "11.1.15/algorithm-1/step-2.a",
+      "proposed_status": "verified_local_step",
+      "action": "augment_existing_evidence_after_green",
+      "contingent_on_green": false,
+      "implementation_locations": [
+        "packages/temporal/zones.ts:249-259",
+        "packages/temporal/zones.ts:260-264",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:59-68",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:80-87"
+      ],
+      "evidence": "Identical primitive slot identifiers now compare directly before canonical mapping (\u00a711.1.15 step1). For different identifiers, private sparse generated primary data uses HasOwnProperty before own scalar read; absent identity mapping returns original id without inherited property Get. Primary comparison unchanged, including US/Eastern alias equality. Existing identity data/native contract proof retained. Root reproduced inherited America/New_York getter in two public difference cases before correction; eight focused gates now green. This augments owning operation evidence rather than duplicating provider audit at 11 caller rows.",
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed."
+    },
+    {
+      "row_id": "11.1.15/algorithm-1/step-2.b",
+      "proposed_status": "verified_local_step",
+      "action": "augment_existing_evidence_after_green",
+      "contingent_on_green": false,
+      "implementation_locations": [
+        "packages/temporal/zones.ts:249-259",
+        "packages/temporal/zones.ts:260-264",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:59-68",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:80-87"
+      ],
+      "evidence": "Identical primitive slot identifiers now compare directly before canonical mapping (\u00a711.1.15 step1). For different identifiers, private sparse generated primary data uses HasOwnProperty before own scalar read; absent identity mapping returns original id without inherited property Get. Primary comparison unchanged, including US/Eastern alias equality. Existing identity data/native contract proof retained. Root reproduced inherited America/New_York getter in two public difference cases before correction; eight focused gates now green. This augments owning operation evidence rather than duplicating provider audit at 11 caller rows.",
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed."
+    },
+    {
+      "row_id": "11.1.15/algorithm-1/step-2.e",
+      "proposed_status": "verified_local_step",
+      "action": "augment_existing_evidence_after_green",
+      "contingent_on_green": false,
+      "implementation_locations": [
+        "packages/temporal/zones.ts:249-259",
+        "packages/temporal/zones.ts:260-264",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:59-68",
+        "packages/intl-datetimeformat/scripts/primary-zones.ts:80-87"
+      ],
+      "evidence": "Identical primitive slot identifiers now compare directly before canonical mapping (\u00a711.1.15 step1). For different identifiers, private sparse generated primary data uses HasOwnProperty before own scalar read; absent identity mapping returns original id without inherited property Get. Primary comparison unchanged, including US/Eastern alias equality. Existing identity data/native contract proof retained. Root reproduced inherited America/New_York getter in two public difference cases before correction; eight focused gates now green. This augments owning operation evidence rather than duplicating provider audit at 11 caller rows.",
+      "validation": "Root red reproduced four public failures before correction; /tmp/temporal-zone-primary-green.log confirms8/8 targets green (7executed,1cached), including zoned, difference, kernel, compact/host timezone, identity, native Hermes zoned and typecheck; Gazelle green. Subagent source/AST review only, no builds/tests executed."
+    }
+  ],
+  "validation_summary": "temporal-zone-primary-validation-targets.txt:8pass (7executed,1cached); four public pre-fix failures reproduced; same/alias zone, strict cap, valid P1D, cold offsets and exact fold epoch green; Gazelle green"
+}

@@ -1,4 +1,5 @@
 import {zeroPadDecimal} from '#packages/temporal/format-digits.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -250,8 +251,14 @@ export function primaryTimeZoneIdentifier(id: string): string {
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.timeZoneIdentity(id).primary
   const primary = fallbackTimeZonePrimary()
-  return primary[id as keyof typeof primary] ?? id
+  // Temporal comparison §11.1.15 step2.e: sparse private data has no inherited keys.
+  // https://tc39.es/proposal-temporal/#sec-temporal-timezoneequals
+  return HasOwnProperty(primary, id)
+    ? (primary[id as keyof typeof primary] ?? id)
+    : id
 }
 export function timeZoneEquals(one: string, two: string): boolean {
+  // Temporal comparison §11.1.15 step1: identical identifiers compare directly.
+  if (one === two) return true
   return primaryTimeZoneIdentifier(one) === primaryTimeZoneIdentifier(two)
 }

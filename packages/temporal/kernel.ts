@@ -12,6 +12,7 @@ import {
   numberIsFinite,
   numberIsInteger,
   numberIsSafeInteger,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 // Experimental numeric kernel. No Temporal object/coercion/branding semantics.
@@ -273,7 +274,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   // https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds
   const offsets: number[] = []
   const addOffset = (value: number): void => {
-    if (!arrayIncludes(offsets, value)) offsets[offsets.length] = value
+    if (!arrayIncludes(offsets, value))
+      setDataProperty(offsets, `${offsets.length}`, value)
   }
   for (let i = 0; i < data.length; i++) addOffset(data[i][2])
   if (data.future) {
@@ -296,7 +298,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       const instant = local - bigIntFrom(offset) * second
       if (instant < -limit || instant > limit) continue
       if (instant + offsetNanoseconds(instant) === local)
-        candidates[candidates.length] = instant
+        setDataProperty(candidates, `${candidates.length}`, instant)
     }
     return apply(arraySort, candidates, [
       (a: bigint, b: bigint) => (a < b ? -1 : a > b ? 1 : 0),

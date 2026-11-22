@@ -26,8 +26,8 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-291 core and91 amendment rows remain conditional; the separate queue contains
-157 conditional numbered steps in26 shared-premise families. Aggregate counts are not independent defects.
+278 core and91 amendment rows remain conditional; the separate queue contains
+144 conditional numbered steps in22 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
 Inline numbered section/step comments are also required beside audited code.
@@ -75,6 +75,18 @@ YearMonth bounds lie within established raw provider ranges, making moved privat
 projection total for valid slots. Runtime and tests unchanged; ten-target evidence
 from24fd91a55 reused. Two until rows retain the published zero-month conflict;
 one relativeTo preparation row retains only offset/timezone grammar.
+
+## Timezone identity and private entries, 2026-11-22
+
+[Eight focused targets](temporal-zone-primary-validation-targets.txt) pass
+(seven executed, one cached). Four public failures reproduced: inherited primary
+zone lookup in same/alias differences, cold private offset array append and
+second fold candidate append. Identical identifiers now compare directly;
+sparse generated primary data uses HasOwnProperty; private kernel arrays reuse
+captured setDataProperty. Exact fold epoch, required RangeError and valid P1D
+controls pass. Runtime arithmetic and supplied timezone providers remain intact.
+[Exact row reconciliation](temporal-zone-primary-reconciliation.json) closes13
+caller/local conditions; separately owned lower-local policy remains open.
 
 ## First numbered pass, 2026-11-22
 

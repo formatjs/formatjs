@@ -43,3 +43,8 @@ serialization hooks, private Duration record allocation and own final part units
 YearMonth.toPlainDate now uses private null-prototype fields. Public regressions
 failed before corrections;12 focused/backend targets pass plus final host
 species/typecheck controls. Reader iteration is closed by the subsequent reader/calendar batch.
+
+Closed timezone identity batch: sparse primary-zone inherited lookup and private
+kernel offset/candidate index setters. Four public pre-fix failures reproduced;
+eight targets pass. Owning TimeZoneEquals evidence and13 caller/local conditions
+reconciled. Lower-local range/editorial issue remains separately tracked.

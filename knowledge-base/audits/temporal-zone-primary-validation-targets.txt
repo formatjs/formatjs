@@ -1,0 +1,8 @@
+//packages/temporal:zoned_test
+//packages/temporal:zoned_difference_test
+//packages/temporal:kernel_test
+//packages/temporal:timezone_identity_test
+//packages/temporal:host_timezone_test
+//packages/temporal:compact_timezone_test
+//packages/temporal:typecheck_typecheck_test
+//packages/temporal:native_zoned_hermes_oracle_test

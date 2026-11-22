@@ -60,6 +60,14 @@ Era input/output and legacy native-Intl option Lists use private indexed data.
 chronology. Constructor realm fallback remains a
 [confirmed gap](audits/temporal-constructor-realm-proof.md), not a spec exemption.
 
+Timezone equality compares identical slot identifiers directly and uses own keys
+for sparse generated primary-zone data. Private kernel offset/candidate arrays
+reuse setDataProperty, avoiding inherited index setters. Four public failures
+reproduced before correction; [eight focused/backend targets](audits/temporal-zone-primary-validation-targets.txt)
+pass, preserving strict increment errors, valid alias differences and exact fold
+epochs. [Row reconciliation](audits/temporal-zone-primary-reconciliation.json)
+reuses existing shared contracts without duplicating provider audits.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out
