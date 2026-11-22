@@ -345,38 +345,60 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       )
     )
       throw new RangeErrorConstructor('Invalid disambiguation')
-    const candidates = possibleInstants(fields)
+    const local = isoToEpochNanoseconds(fields)
+    const candidates = possibleInstantsFromEpochNanoseconds(local)
     if (candidates.length === 1) return candidates[0]
     if (disambiguation === 'reject')
       throw new RangeErrorConstructor('Ambiguous or nonexistent local time')
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
-    const local = isoToEpochNanoseconds(fields)
-    let minimum = Infinity,
-      maximum = -Infinity
-    for (let index = 0; index < offsets.length; index++) {
-      const offset = offsets[index]
-      minimum = mathMin(minimum, offset)
-      maximum = mathMax(maximum, offset)
-    }
-    const lower = local - bigIntFrom(maximum) * second,
-      upper = local - bigIntFrom(minimum) * second
+    const earlier = disambiguation === 'earlier'
+    const lower = local - 3n * day,
+      upper = local + 3n * day
+    let before: bigint | undefined
+    let after: bigint | undefined
+    let fallback: bigint | undefined
     let event = zoneTransition(
       data,
       lower < -limit ? -limit : lower - 1n,
       'next'
     )
+    // Temporal comparison §11.1.12 steps 6–7.
+    // Project nearby segment boundaries to find both nearest local times.
     while (event !== null && event <= upper) {
       if (event > -limit) {
-        const before = offsetNanoseconds(event - 1n),
-          after = offsetNanoseconds(event)
-        if (after > before && local >= event + before && local < event + after)
-          return checkInstant(
-            local - (disambiguation === 'earlier' ? after : before)
-          )
+        const oldOffset = offsetNanoseconds(event - 1n),
+          newOffset = offsetNanoseconds(event)
+        const end = event - 1n + oldOffset,
+          start = event + newOffset
+        if (end < local && (before === undefined || end > before)) before = end
+        if (start > local && (after === undefined || start < after))
+          after = start
+        if (fallback === undefined && local > end && local < start)
+          fallback = local - (earlier ? newOffset : oldOffset)
       }
       event = zoneTransition(data, event, 'next')
     }
+    // Temporal comparison §11.1.12 steps 8–15.
+    // Derive the shift from the actual singleton boundary candidates.
+    if (before !== undefined && after !== undefined) {
+      const left = possibleInstantsFromEpochNanoseconds(before)
+      const right = possibleInstantsFromEpochNanoseconds(after)
+      if (left.length === 1 && right.length === 1) {
+        const shift = after - right[0] - (before - left[0])
+        if (shift && shift >= -day && shift <= day) {
+          // Temporal comparison §11.1.12 steps 16.e–16.g and 22–25.
+          // Select the requested end of the shifted candidate list.
+          const candidates = possibleInstantsFromEpochNanoseconds(
+            local + (earlier ? -shift : shift)
+          )
+          if (candidates.length)
+            return candidates[earlier ? 0 : candidates.length - 1]
+        }
+      }
+    }
+    // Preserve the existing gap behavior when the boundary assumptions fail.
+    if (fallback !== undefined) return checkInstant(fallback)
     throw new RangeErrorConstructor('No matching instant')
   }
   return {

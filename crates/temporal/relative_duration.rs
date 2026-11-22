@@ -95,15 +95,15 @@ pub(crate) fn total<A: RelativeAnchor>(
     // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908
     // L1908: zero takes the positive nudge window.
     let sign = if finish < origin { -1 } else { 1 };
+    // Proposal comparison §7.5.33 steps 8–12: Validate both initial endpoints before retrying.
+    fields[unit as usize] = count + sign;
+    let mut b = start.endpoint(fields)?;
     while (a - finish) * sign > 0 {
         count -= sign;
+        b = a;
         fields[unit as usize] = count;
         a = start.endpoint(fields)?;
     }
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1631-L1637
-    // L1631: check the other endpoint before an exact total returns.
-    fields[unit as usize] = count + sign;
-    let mut b = start.endpoint(fields)?;
     if a == finish {
         return Ok(count as f64);
     }

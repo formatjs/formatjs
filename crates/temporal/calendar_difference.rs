@@ -271,7 +271,9 @@ pub(crate) fn difference<A: RelativeAnchor>(
             b = a;
             prefix[index] = truncated;
             a = endpoint(start, prefix)?;
-        } else if (b - end) * sign < 0 {
+        }
+        // A wide fold can put more than one successive bound before the target.
+        while a != end && (b - end) * sign < 0 {
             truncated += stride;
             a = b;
             prefix[index] = truncated + stride;

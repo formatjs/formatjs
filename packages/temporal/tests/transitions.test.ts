@@ -6,6 +6,7 @@ import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {
   createTimeZone,
+  epochNanosecondsToISO,
   isoToEpochNanoseconds,
 } from '#packages/temporal/kernel.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
@@ -78,6 +79,66 @@ it('skips abbreviation-only changes and resolves multiple nearby gaps', () => {
   expect(
     zone.resolve({year: 1970, month: 1, day: 1, hour: 3, minute: 30})
   ).toBe(9000_000_000_000n)
+})
+
+it('resolves gaps from the nearest reachable local boundaries', () => {
+  const minute = 60_000_000_000n
+  const second = 1_000_000_000n
+  const limit = 8_640_000_000_000
+  for (const [data, local, earlier, later, origins] of [
+    [
+      [
+        [-Infinity, '', 0, false],
+        [0, '', 14_400, false],
+        [3600, '', 7200, false],
+      ],
+      90n,
+      -30n,
+      90n,
+      [0, -limit + 3600, limit - 7200],
+    ],
+    [
+      [
+        [-Infinity, '', -7200, false],
+        [-3600, '', -14_400, false],
+        [0, '', 0, false],
+      ],
+      -90n,
+      -90n,
+      30n,
+      [0],
+    ],
+    [
+      [
+        [-Infinity, '', 0, false],
+        [0, '', 14_400, false],
+        [21_600, '', 0, false],
+      ],
+      180n,
+      -60n,
+      420n,
+      [0],
+    ],
+  ] satisfies [UnpackedTimeZoneData, bigint, bigint, bigint, number[]][]) {
+    for (const origin of origins) {
+      const zone = createTimeZone(
+        data.map(([at, name, offset, dst]) => [origin + at, name, offset, dst])
+      )
+      const originNs = BigInt(origin) * second
+      const fields = epochNanosecondsToISO(originNs + local * minute)
+      const label = `at ${local} minutes from ${origin}`
+      expect(() => zone.resolve(fields, 'reject')).toThrow(RangeError)
+      expect(zone.resolve(fields, 'earlier'), `earlier ${label}`).toBe(
+        originNs + earlier * minute
+      )
+      expect(zone.resolve(fields, 'later'), `later ${label}`).toBe(
+        originNs + later * minute
+      )
+      expect(zone.resolve(fields), `compatible ${label}`).toBe(
+        originNs + later * minute
+      )
+    }
+  }
 })
 
 it('finds leap-only recurring changes across a non-leap century', () => {

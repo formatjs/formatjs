@@ -329,6 +329,19 @@ fn visit_possible_nanoseconds<Z: TimeZone>(
     });
 }
 
+// Proposal comparison §11.1.12 steps 2, 3.a–3.b, 9 and 11.
+// Track the first and last distinct candidate instants.
+fn local_candidate_bounds<Z: TimeZone>(local: i128, zone: &Z) -> Option<(i128, i128)> {
+    let mut first: Option<i128> = None;
+    let mut last: Option<i128> = None;
+    visit_possible_nanoseconds(local, zone, &mut |instant| {
+        let candidate = instant.epoch_nanoseconds();
+        first = Some(first.map_or(candidate, |old| old.min(candidate)));
+        last = Some(last.map_or(candidate, |old| old.max(candidate)));
+    });
+    first.zip(last)
+}
+
 // Proposal comparison §11.1.14 steps 1–3, 5 and 7: Resolve midnight or find the containing forward transition.
 pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, Error> {
     let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
@@ -372,14 +385,7 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     zone: &Z,
     disambiguation: Disambiguation,
 ) -> Result<Instant, Error> {
-    let mut first: Option<i128> = None;
-    let mut last: Option<i128> = None;
-    visit_possible_nanoseconds(local, zone, &mut |instant| {
-        let candidate = instant.epoch_nanoseconds();
-        first = Some(first.map_or(candidate, |old| old.min(candidate)));
-        last = Some(last.map_or(candidate, |old| old.max(candidate)));
-    });
-    if let (Some(first), Some(last)) = (first, last) {
+    if let Some((first, last)) = local_candidate_bounds(local, zone) {
         if first != last && disambiguation == Disambiguation::Reject {
             return Err(Error::InvalidDateTime);
         }
@@ -392,34 +398,58 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     if disambiguation == Disambiguation::Reject {
         return Err(Error::InvalidDateTime);
     }
-    let mut minimum = i128::MAX;
-    let mut maximum = i128::MIN;
-    zone.visit_offsets_at(local, &mut |offset| {
-        minimum = minimum.min(offset);
-        maximum = maximum.max(offset);
-    });
-    let lower = (local - maximum).max(-crate::MAX_EPOCH_NANOSECONDS);
-    let upper = (local - minimum).min(crate::MAX_EPOCH_NANOSECONDS);
+    let earlier = disambiguation == Disambiguation::Earlier;
+    let window = 3 * NANOSECONDS_PER_DAY;
+    let upper = (local + window).min(crate::MAX_EPOCH_NANOSECONDS);
     let mut cursor =
-        Instant::from_epoch_nanoseconds((lower - 1).max(-crate::MAX_EPOCH_NANOSECONDS))?;
+        Instant::from_epoch_nanoseconds((local - window - 1).max(-crate::MAX_EPOCH_NANOSECONDS))?;
+    let mut before: Option<i128> = None;
+    let mut after: Option<i128> = None;
+    let mut fallback = None;
+    // Proposal comparison §11.1.12 steps 6–7. Project each nearby segment
+    // boundary to find the nearest reachable local time on either side.
     while let Some(event) = zone.transition(cursor, TransitionDirection::Next) {
         let value = event.epoch_nanoseconds();
         if value > upper || value <= cursor.epoch_nanoseconds() {
             break;
         }
-        let before = zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(value - 1)?);
-        let after = zone.offset_nanoseconds(event);
-        if after > before && local >= value + before && local < value + after {
-            return Instant::from_epoch_nanoseconds(
-                local
-                    - if disambiguation == Disambiguation::Earlier {
-                        after
-                    } else {
-                        before
-                    },
-            );
+        let old_offset = zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(value - 1)?);
+        let new_offset = zone.offset_nanoseconds(event);
+        let end = value - 1 + old_offset;
+        let start = value + new_offset;
+        if end < local {
+            before = Some(before.map_or(end, |other| other.max(end)));
+        }
+        if start > local {
+            after = Some(after.map_or(start, |other| other.min(start)));
+        }
+        if fallback.is_none() && local > end && local < start {
+            fallback = Some(local - if earlier { new_offset } else { old_offset });
         }
         cursor = event;
     }
-    Err(Error::InvalidDateTime)
+    // Proposal comparison §11.1.12 steps 8–15. Derive the shift from
+    // the actual singleton candidates at both local boundaries.
+    if let (Some(before), Some(after)) = (before, after) {
+        if let (Some((left, left_last)), Some((right, right_last))) = (
+            local_candidate_bounds(before, zone),
+            local_candidate_bounds(after, zone),
+        ) {
+            let shift = (after - right) - (before - left);
+            if left == left_last
+                && right == right_last
+                && shift != 0
+                && shift.abs() <= NANOSECONDS_PER_DAY
+            {
+                // Proposal comparison §11.1.12 steps 16.e–16.g and 22–25.
+                // The shifted local time can itself have multiple candidates.
+                let shifted = local + if earlier { -shift } else { shift };
+                if let Some((first, last)) = local_candidate_bounds(shifted, zone) {
+                    return Instant::from_epoch_nanoseconds(if earlier { first } else { last });
+                }
+            }
+        }
+    }
+    // Preserve the existing gap behavior when the boundary assumptions fail.
+    Instant::from_epoch_nanoseconds(fallback.ok_or(Error::InvalidDateTime)?)
 }

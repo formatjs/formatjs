@@ -1538,6 +1538,48 @@ fn owned_iana_transitions_match_icu() {
 }
 
 #[test]
+fn borrowed_zones_resolve_nearest_gap_boundaries() {
+    use formatjs_temporal::{Disambiguation, OffsetTransition, TransitionZone, ZonedDateTime};
+    let minute = 60_000_000_000i128;
+    let limit_seconds = (MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64;
+    for (initial, changes, local, earlier, later, origins) in [
+        (
+            0,
+            [(0, 14_400), (3_600, 7_200)],
+            90,
+            -30,
+            90,
+            &[0, -limit_seconds + 3_600, limit_seconds - 7_200][..],
+        ),
+        (-7_200, [(-3_600, -14_400), (0, 0)], -90, -90, 30, &[0]),
+        (0, [(0, 14_400), (21_600, 0)], 180, -60, 420, &[0]),
+    ] {
+        for &origin in origins {
+            let changes = changes.map(|(epoch_seconds, offset_seconds)| OffsetTransition {
+                epoch_seconds: origin + epoch_seconds,
+                offset_seconds,
+            });
+            let zone = TransitionZone::new(initial, &changes, None).unwrap();
+            let origin_ns = i128::from(origin) * 1_000_000_000;
+            let fields = IsoDateTime::from_epoch_nanoseconds(origin_ns + local * minute).unwrap();
+            assert!(ZonedDateTime::from_local(fields, zone, Disambiguation::Reject).is_err());
+            for (mode, expected) in [
+                (Disambiguation::Earlier, earlier),
+                (Disambiguation::Later, later),
+                (Disambiguation::Compatible, later),
+            ] {
+                let result = ZonedDateTime::from_local(fields, zone, mode).unwrap();
+                assert_eq!(
+                    result.instant().epoch_nanoseconds(),
+                    origin_ns + expected * minute,
+                    "{mode:?} at {local} minutes from {origin}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
 fn recurring_leap_only_changes_and_adjacent_gaps() {
     use formatjs_temporal::{
         Disambiguation, FutureRule, OffsetTransition, Overflow, TimeZone, TransitionDirection,
@@ -3730,6 +3772,46 @@ fn day_rounding_retries_toward_origin_when_first_bound_overshoots() {
                 expected
             );
         }
+    }
+}
+
+#[test]
+fn day_rounding_crosses_both_early_occurrences_in_a_wide_fold() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let transitions = [OffsetTransition {
+        epoch_seconds: 72 * 3_600,
+        offset_seconds: -23 * 3_600,
+    }];
+    let zone = TransitionZone::new(23 * 3_600, &transitions, None).unwrap();
+    let zoned =
+        |value| ZonedDateTime::new(Instant::from_epoch_nanoseconds(value * hour).unwrap(), zone);
+    let origin = zoned(23);
+    let target = zoned(73);
+    for (days, endpoint) in [("P1D", 47), ("P2D", 71), ("P3D", 141)] {
+        assert_eq!(
+            origin
+                .checked_add(days.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            endpoint * hour
+        );
+    }
+    for (mode, expected) in [
+        (RoundingMode::Trunc, "P2D"),
+        (RoundingMode::Ceil, "P3D"),
+        (RoundingMode::HalfExpand, "P2D"),
+    ] {
+        assert_eq!(
+            origin
+                .until(&target, DateTimeUnit::Day, DateTimeUnit::Day, 1, mode)
+                .unwrap()
+                .to_string(),
+            expected
+        );
     }
 }
 

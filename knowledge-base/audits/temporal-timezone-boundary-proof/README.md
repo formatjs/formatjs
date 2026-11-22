@@ -337,3 +337,58 @@ replace Bazel conformance tests. Recheck on timezone-data/runtime changes.
 The source hashes above bind the original proof. Later numbered comments in
 the two TypeScript providers preserve their source behavior, as shown by the
 [comment evidence](../temporal-timezone-provider12-annotation-source-proof.json).
+
+## Overlapping owned gap boundaries
+
+Take an initial offset of zero, then +04:00 at 00:00 UTC and +02:00 at
+01:00 UTC. Local 01:30 lies in a gap. The nearest earlier local clock is
+−1 ns and the nearest later local clock is 03:00. Those bounds come from
+different transitions, giving a two-hour shift. Earlier selects 1969-12-31T23:30Z. Later and compatible select
+1970-01-01T01:30Z. The old borrowed
+Rust and compact TypeScript paths selected UTC −02:30 for earlier.
+Mirrored rows test the nearest earlier side. A third control checks a
+later shift with two valid candidates. Translated controls also test both
+Instant limits with every relevant candidate inside the range.
+
+The exact interior search projects segment boundaries within three days
+of the requested local scalar. A valid epoch one day before or after
+projects to the corresponding side, because each offset magnitude is
+less than a day. This bounds the nearest local clock by two days and its
+epoch by three. The shifted local is resolved again through the candidate
+list. When the comparison's singleton and shifted-list assumptions fail,
+existing gap behavior supplies the fallback. Clipped limits and host
+provider completeness retain their separate evidence.
+
+- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L366).
+- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L409).
+- [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
+Five focused Bazel gates pass. Before-fix log SHA-256 `060e0dabd0f0a411c115def738840bf7e89fbd85f74c900101fd1614b8e09331`.
+Passing log SHA-256 `fcf449ff0ddbe8ef681dcb22a4a0f280df62199c84cac58c334fea1b35c38bab`.
+
+### Borrowed mixed-range candidate
+
+A borrowed initial offset of +02:00 changes to zero exactly at the lower
+Instant limit. A local clock 30 minutes above the limit has two raw
+candidates, one 90 minutes before the limit and one 30 minutes after.
+At the upper limit, an explicit +02:00 row followed by a zero footer
+gives the corresponding mixed pair. The Rust borrowed visitor clips the
+offset search and accepts the visible candidate. The compact TypeScript
+reader filters invalid proposals before raw offset round-trip. The owned
+formatter rejects both mixed pairs. Resolving this requirement still
+needs an exact raw candidate lookup for the borrowed and compact paths.
+[Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
+
+### Wide-transition rounding replay
+
+On Node 26.5.1, assemble the four packages with Bazel, then run the public
+replay with synthetic rows in the owned formatter.
+
+```sh
+bazel build //packages/temporal:pkg //packages/intl-datetimeformat:pkg \
+  //packages/intl-localematcher:pkg //packages/fast-memoize:pkg
+pkg() { bazel cquery --output=files "config(//packages/$1:pkg, target)"; }
+node knowledge-base/audits/temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs \
+  "$(pkg temporal)" "$(pkg intl-datetimeformat)" \
+  "$(pkg intl-localematcher)" "$(pkg fast-memoize)"
+```

@@ -25,7 +25,7 @@ shortcut, distinct from Duration rounding, and has its own preservation controls
 | [§6.5.7 steps 1–3](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding)                                                                                       | [TS:905](../../packages/temporal/date-core.ts#L905), [Rust:179](../../crates/temporal/calendar_difference.rs#L214)               | Largest time retains exact epoch-difference rounding. Largest date computes unrounded fields. Smallest nanosecond/increment 1 returns those fields without a nudge; since negates once.                                                               |
 | §6.5.7 steps 4–5                                                                                                                                                                              | [TS:935](../../packages/temporal/date-core.ts#L935), [Rust:203](../../crates/temporal/calendar_difference.rs#L238)               | Other internal zoned date-largest calls continue through shared nudge, including zero Duration rounding. Plain zero shortcut remains.                                                                                                                 |
 | [§7.5.38 steps 1–7](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration)                                                                                                    | [TS shared engine:881](../../packages/temporal/date-core.ts#L881), [Rust:168](../../crates/temporal/calendar_difference.rs#L205) | Zero uses positive sign. Calendar/zoned-day smallest units take irregular branch; other zoned smallest units take time branch. Existing retry/bubbling logic remains separately bounded.                                                              |
-| [§7.5.35 steps 1–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime)                                                                                                         | [TS:995](../../packages/temporal/date-core.ts#L995), [Rust:258](../../crates/temporal/calendar_difference.rs#L302)               | Date-only copies of recomputed difference fields resolve base and next date through original anchor and original clock. Both endpoints are checked and day carry runs even if rounding leaves the time quantity unchanged. Date fields remain intact. |
+| [§7.5.35 steps 1–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime)                                                                                                         | [TS:995](../../packages/temporal/date-core.ts#L995), [Rust:258](../../crates/temporal/calendar_difference.rs#L304)               | Date-only copies of recomputed difference fields resolve base and next date through original anchor and original clock. Both endpoints are checked and day carry runs even if rounding leaves the time quantity unchanged. Date fields remain intact. |
 | [§6.5.9 step 8](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime)                                                                                              | [TS:606](../../packages/temporal/zoned-date-time.ts#L606), [Rust:44](../../crates/temporal/zoned_difference.rs#L45)              | Public until/since return zero for equal epochs after settings/calendar/zone validation. Internal Duration rounding bypasses this public shortcut; native Duration routing stays separate.                                                            |
 | [§6.5.8 steps 2–4](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithtotal), [§7.5.39 step 1](https://tc39.es/proposal-temporal/#sec-temporal-totalrelativeduration) | [TS total:143](../../packages/temporal/relative-duration.ts#L143), [Rust:7](../../crates/temporal/relative_duration.rs#L7)       | Remove unrelated preflight. Zoned zero-day total reaches normal positive window. Time-unit zero totals retain shortcut. Existing exact calendar totals still validate next endpoint.                                                                  |
 
@@ -51,7 +51,7 @@ Total is 1 + 30 minutes / 23 hours = 47/46, finally rounded once to binary64
 retains P1DT30M.
 
 Old preflight adds a day from shifted 03:30, yielding M + 45 minutes and rejecting.
-[Literal endpoint controls:3660](../../crates/temporal/lib.test.rs#L3660) verify
+[Literal endpoint controls:3660](../../crates/temporal/lib.test.rs#L3702) verify
 these coordinates independently of total/round outputs. This is a valid typed
 transition provider witness; no claim that a shipped IANA zone has this transition
 at the extreme year.
@@ -68,7 +68,7 @@ cover all four results. The separate calendar/day-total retry issue remains open
 
 ## Boundary controls and limits
 
-[Ten public Rust tests:3646](../../crates/temporal/lib.test.rs#L3646) independently
+[Ten public Rust tests:3646](../../crates/temporal/lib.test.rs#L3688) independently
 cover witness endpoints, total, three round profiles, public zero/day and
 zero/minute equality, Duration zero window checks, invalid increments, exact-minute
 maximum difference, and nanosecond identity.

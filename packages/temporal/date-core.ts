@@ -1018,18 +1018,26 @@ export function roundRelativeDifference(
           ? result.weeks + mathTrunc(result.days / 7)
           : result[key]
     let truncated = mathTrunc(count / increment) * increment
+    const stride = sign * increment
     prefix[key] = truncated
     // Proposal comparison §7.5.33 step 8.d.i: Resolve compatibly when zoned and the rounded unit is nonzero.
     let a = anchor.endpoint(prefix)
-    prefix[key] = truncated + sign * increment
+    prefix[key] = truncated + stride
     // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
     let b = anchor.endpoint(prefix)
-    // Proposal comparison §7.5.34 steps 5.a and 6.a: retry an overshooting
-    // window. Use the existing shifted day/week policy.
-    if ((end - a) * physicalSign < 0n || (b - end) * physicalSign < 0n) {
-      truncated += sign * increment
+    // Proposal comparison §7.5.34 steps 5.a and 6.a require a bracket.
+    // Shift inward if the first endpoint overshoots.
+    if ((end - a) * physicalSign < 0n) {
+      truncated -= stride
+      b = a
+      prefix[key] = truncated
+      a = anchor.endpoint(prefix)
+    }
+    // A wide fold can put more than one bound before the target.
+    while (a !== end && (b - end) * physicalSign < 0n) {
+      truncated += stride
       a = b
-      prefix[key] = truncated + sign * increment
+      prefix[key] = truncated + stride
       b = anchor.endpoint(prefix)
       expanded = true
     }
@@ -1064,7 +1072,7 @@ export function roundRelativeDifference(
     }
     // Proposal comparison §7.5.34 steps 22–24: keep the selected endpoint and
     // duration.
-    prefix[key] = (expand ? truncated + sign * increment : truncated) || 0
+    prefix[key] = (expand ? truncated + stride : truncated) || 0
     result = prefix
     rounded = expand ? b : a
     expanded ||= expand

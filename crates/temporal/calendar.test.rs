@@ -118,6 +118,52 @@ fn zoned_difference_on_same_day_needs_no_calendar_coverage() {
     }
 }
 
+#[test]
+fn zoned_total_checks_initial_week_endpoint_before_retreating() {
+    use formatjs_temporal::{Error, MAX_EPOCH_NANOSECONDS};
+
+    let hour = 3_600_000_000_000;
+    let limit = MAX_EPOCH_NANOSECONDS;
+    let transitions = [OffsetTransition {
+        epoch_seconds: ((limit - 33 * hour) / 1_000_000_000) as i64,
+        offset_seconds: 21 * 3_600,
+    }];
+    let zone = TransitionZone::new(-5 * 3_600, &transitions, None).unwrap();
+    let origin = ZonedDateTime::new_in_calendar(
+        Instant::from_epoch_nanoseconds(limit - 190 * hour).unwrap(),
+        zone,
+        Calendar::Gregory,
+    );
+    let duration = "PT167H".parse::<Duration>().unwrap();
+    let target = origin.checked_add(duration, Overflow::Constrain).unwrap();
+    assert_eq!(target.instant().epoch_nanoseconds(), limit - 23 * hour);
+    assert_eq!(
+        origin
+            .until(
+                &target,
+                DateTimeUnit::Week,
+                DateTimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+            .unwrap()
+            .to_string(),
+        "P1W1DT1H"
+    );
+    assert_eq!(
+        origin
+            .checked_add("P1W".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        limit - 22 * hour
+    );
+    assert_eq!(
+        origin.total_duration(duration, DateTimeUnit::Week),
+        Err(Error::OutOfRange)
+    );
+}
+
 fn unit(text: &str) -> DateTimeUnit {
     text.parse().unwrap()
 }

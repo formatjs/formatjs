@@ -90,8 +90,8 @@ takes the next count in that direction. Both backends therefore take the
 nonzero date-add path and resolve the original local clock compatibly at
 these endpoints. Prefix choice and the retry stay separately open.
 [Temporal comparison §7.5.33 steps 8.d.i and 12.a](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
-[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1022).
-[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1025).
+[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1023).
+[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1026).
 [Rust first endpoint](../../crates/temporal/calendar_difference.rs#L262).
 [Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L265).
 
@@ -102,8 +102,8 @@ signed day. The next endpoint keeps the original clock even if the previous
 endpoint was shifted across a gap. The possible zero-date fold discrepancy
 at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
-[TypeScript signed day](../../packages/temporal/date-core.ts#L1083).
-[Rust signed day](../../crates/temporal/calendar_difference.rs#L319).
+[TypeScript signed day](../../packages/temporal/date-core.ts#L1091).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L321).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L286).
 
@@ -182,7 +182,7 @@ uses an effective offset within the same bounds. The two controls verify
 the signed retry for this branch. The wider provider/window and published
 assertion issues remain in the ledger.
 [Signed retry](../../crates/temporal/calendar_difference.rs#L269).
-[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3685).
+[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3727).
 [Temporal comparison §7.5.34 steps 5–6, 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
 The PlainDate caller passes both exact UTC midnight scalars, calendar,
@@ -252,3 +252,45 @@ Nine focused Bazel targets pass across TypeScript, public Rust, FFI and
 Hermes plain, zoned and duration paths.
 
 - Passing Bazel log SHA-256 `371268cb3578192ae42c258e196c5653b13802650b8a60fd5b215b6898050a4b`
+
+## Wide transitions and initial total validation
+
+For a +23:00 to −23:00 fold, the origin is UTC hour 23 and the target
+is hour 73. The one-, two- and three-day candidates are hours 47, 71
+and 141. The initial and once-shifted windows both end before the target.
+The former truncation returned `P1D`. The correct final bracket gives
+`P2D` for truncation and nearest rounding, and `P3D` for ceil. The
+reverse control uses a wide gap with target hour −20 and candidates
+16, −8 and −32. It gives `-P2D` for truncation and half-even, and
+`-P3D` for floor.
+
+Both engines repeat the outward retry, while retaining an exact first
+bound. A first bound past the target moves one stride inward. The
+public replay also checks the existing borrowed Rust inward example
+through the owned TypeScript host path. The two-day endpoint at hour
+72 bounds target hour 61 from origin hour 24, so truncation gives
+zero. Whole-window assertions stay conditional for the remaining
+providers and published comparison.
+[TypeScript retry](../../packages/temporal/date-core.ts#L1037).
+[Rust retry](../../crates/temporal/calendar_difference.rs#L276).
+[Public Rust fold](../../crates/temporal/lib.test.rs#L3779).
+[Temporal comparison §7.5.34 steps 5–6 and 13–17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
+
+A Gregorian borrowed zone can put the first week endpoint at maximum
+Instant minus 22 hours and the target at maximum Instant minus 23 hours.
+The second week extends beyond the maximum. The former total moved
+inward before validating that endpoint, returning `167/168`. Both
+kernels now validate the first pair before retrying. The upper endpoint
+throws and the total propagates the error.
+[TypeScript initial endpoint](../../packages/temporal/relative-duration.ts#L215).
+[Rust initial endpoint](../../crates/temporal/relative_duration.rs#L98).
+[Public Rust total](../../crates/temporal/calendar.test.rs#L122).
+[Temporal comparison §7.5.33 steps 8–12](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
+
+Seven Bazel targets pass across TypeScript, Rust, FFI and Hermes.
+[Owned package replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
+
+- Failing Rust fold log SHA-256 `9442cc60f94f6dd6aac8425510caed13910d8fbb9f95e5e28c550c373ad717a2`
+- Passing integration log SHA-256 `8c619151998ab2b63cf99c7b20bbd902f7abcceea34146afe735057a4e5fb932`
+- Public package before-fix replay SHA-256 `faf2c1a065b4a48d397d75ec57c0fa11cdd65707c8b5afb7aff50e4ef85c3635`
+- Public package passing replay SHA-256 `80e47e7d297a654a887aef69688e4ac361b69d492022bddcf65f1f30f239c0d5`

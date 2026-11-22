@@ -372,6 +372,12 @@ Four more caller steps preserve the calendar dates, exact instants, original
 zone, units and rounding settings. Their calendar and window contracts stay
 separate. Nine Bazel targets pass.
 [Caller arguments](temporal-relative-rounding-contract-audit.md#plain-and-zoned-caller-arguments).
+Wide-transition controls now verify repeated outward retries, inward rounding
+and initial weekly total endpoint validation. Overlapping gaps use their
+nearest reachable local boundaries. The mixed-range borrowed candidate
+capability and comparison assertions remain open.
+[Wide windows](temporal-relative-rounding-contract-audit.md#wide-transitions-and-initial-total-validation).
+[Owned gap boundaries](temporal-timezone-boundary-proof/README.md#overlapping-owned-gap-boundaries).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

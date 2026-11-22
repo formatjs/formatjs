@@ -212,15 +212,15 @@ export function relativeTotal(
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908
   // L1908: zero uses the positive window.
   const sign = end < start ? -1 : 1
+  // Proposal comparison §7.5.33 steps 8–12: Validate both initial endpoints before retrying.
+  candidate[(unit + 's') as keyof DurationFields] = count + sign
+  let b = relativeEndpoint(relative, candidate)
   while ((a - end) * bigIntFrom(sign) > 0n) {
     count -= sign
+    b = a
     candidate[(unit + 's') as keyof DurationFields] = count
     a = relativeEndpoint(relative, candidate)
   }
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1631-L1637
-  // L1631: validate the window's other endpoint even when a equals end.
-  candidate[(unit + 's') as keyof DurationFields] = count + sign
-  let b = relativeEndpoint(relative, candidate)
   if (a === end) return count || 0
   while ((end - b) * bigIntFrom(sign) >= 0n) {
     count += sign
