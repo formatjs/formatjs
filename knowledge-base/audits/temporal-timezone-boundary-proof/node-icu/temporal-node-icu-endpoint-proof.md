@@ -42,7 +42,7 @@ relevant call sites with GNU objdump and nm.
 FormatJS's host offset adapter supplies an explicit named timezone and
 numeric milliseconds to that formatter. Its integer offset decoding uses
 ISO calendar fields and rejects magnitudes of a day or more.
-[Adapter](../../../../packages/temporal/host-timezone.ts#L72).
+[Adapter](../../../../packages/temporal/host-timezone.ts#L71).
 
 ## Interval certificate
 

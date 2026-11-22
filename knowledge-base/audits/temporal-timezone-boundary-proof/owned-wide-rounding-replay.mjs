@@ -27,7 +27,7 @@ const row = (hours, index) =>
   ',0'
 Intl.DateTimeFormat.__addTZData({
   abbrvs: 'TEST',
-  offsets: [23n, -23n, 17n, 12n, -5n, 21n, 16n, -20n, 2n, -18n, -21n]
+  offsets: [23n, -23n, 17n, 12n, -5n, 21n, 16n, -20n, 2n, -18n, -21n, 0n]
     .map(offset => (offset * 3600n).toString(36))
     .join('|'),
   zones: [
@@ -37,6 +37,7 @@ Intl.DateTimeFormat.__addTZData({
     'America/New_York|' + [row(null, 4), row(max / hour - 33n, 5)].join('|'),
     'America/Los_Angeles|' + [row(null, 6), row(max / hour - 50n, 7)].join('|'),
     'America/Detroit|' + [row(null, 4), row(159, 5)].join('|'),
+    'America/Winnipeg|' + [row(null, 11), row(-30, 0), row(0, 1)].join('|'),
     'America/Chicago|' +
       [row(null, 8), row(-234, 9), row(46, 5), row(62, 10), row(111, 3)].join(
         '|'
@@ -264,6 +265,34 @@ for (const [zone, originHour, targetHour, lowerHour, upperHour, sign] of [
   )
   console.log(JSON.stringify({retainedMonthLowerBound: zone, sign}))
 }
+
+const exactZone = 'America/Winnipeg'
+const exactOrigin = new Temporal.ZonedDateTime(
+  -45n * hour,
+  exactZone,
+  'gregory'
+)
+const exactTarget = new Temporal.ZonedDateTime(2n * hour, exactZone, 'gregory')
+const exactElapsed = Temporal.Duration.from({hours: 47})
+assert.equal(exactOrigin.add({days: 1}).epochNanoseconds, 2n * hour)
+assert.equal(exactOrigin.add({days: 2}).epochNanoseconds, -20n * hour)
+for (const roundingMode of modes) {
+  const options = {largestUnit: 'day', smallestUnit: 'day', roundingMode}
+  assert.equal(exactOrigin.until(exactTarget, options).toString(), 'P1D')
+  assert.equal(exactOrigin.since(exactTarget, options).toString(), '-P1D')
+  assert.equal(
+    exactElapsed.round({...options, relativeTo: exactOrigin}).toString(),
+    'P1D'
+  )
+}
+assert.equal(exactElapsed.total({unit: 'day', relativeTo: exactOrigin}), 1)
+console.log(
+  JSON.stringify({
+    exactFirstReversedSpan: exactZone,
+    endpointHours: [2, -20],
+    roundingModes: modes.length,
+  })
+)
 
 for (const [zone, calendar, startDate, months] of [
   ['America/Detroit', 'hebrew', Date.UTC(2023, 2, 5, 2), 12],

@@ -86,6 +86,33 @@ This verifies the implementation's exact-endpoint policy on both backends.
 The published assertion remains unresolved.
 [Shared oracle](../../packages/temporal/tests/zoned-arithmetic-oracle.ts#L292).
 
+## Exact first endpoint with reversed span
+
+A separate synthetic owned-zone fixture has offset zero until UTC hour −30,
++23h until UTC hour 0, then −23h. Take Gregorian origin UTC hour −45 and
+target UTC hour +2. Their local clocks are both 03:00, one civil day apart.
+The one-day candidate's local hour −21 resolves only to UTC +2. The
+two-day candidate's local hour +3 has candidates UTC −20 and UTC +26,
+so compatible resolution chooses −20.
+
+The first bound equals the target and the second lies before it. FormatJS
+validates both endpoints and selects the first count. All nine modes
+produce `P1D` from `until` and `Duration.round`, and `-P1D` from
+`since`. `Duration.total` with the 47-hour elapsed duration and
+`unit: 'day'` returns 1. [Packaged replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
+
+The packaged replay passed on Node 26.8.1. Package index SHA-256 is
+`aa74c4ad728960128385db500274ba25cd46dcd1d0245c203be03d8531f5e01b`.
+Replay output SHA-256 is
+`24e1ffe0b479f110d831bd4faeab016fe3097cbda8963312c06aabf3830d8f46`.
+
+The forward bracket fails in §7.5.34 step 5.a. The published day branch
+ignores the additional shift and step 5.a.ii receives the same bounds.
+This fixture exercises the exact-first rule with distinct endpoints.
+Apia exercises that rule with equal endpoints and an undefined ratio.
+[§7.5.33](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow)
+[§7.5.34](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
+
 For nonexact windows, exact arithmetic gives progress in [0,1] given a
 nonzero signed span and final bracketing. For fixed-clock zoned day increment
 one, finite closure still requires checking transition cells where compatible

@@ -32,7 +32,6 @@ const arrayFind = Array.prototype.find
 const arrayCopyWithin = Array.prototype.copyWithin
 const arrayPop = Array.prototype.pop
 const arrayShift = Array.prototype.shift
-const arrayPush = Array.prototype.push
 const MapConstructor = Map
 const mapGet = MapConstructor.prototype.get
 const mapSet = MapConstructor.prototype.set
@@ -402,7 +401,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
         }
       }
       if (unchanged.length >= 64) apply(arrayShift, unchanged, [])
-      apply(arrayPush, unchanged, [{first, last, offset}])
+      // Proposal comparison §6.3.46 steps 9.a and 10.b: store a private search interval.
+      setDataProperty(unchanged, unchanged.length, {first, last, offset})
       cursor = probe
       // Future host rules repeat annually or settle at a fixed offset. Search
       // nearby years first, then resume the finite historical record.
@@ -410,14 +410,13 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
         cursor = historyEnd
     }
     if (transitions.length >= 64) apply(arrayShift, transitions, [])
-    apply(arrayPush, transitions, [
-      {
-        direction,
-        first: next ? instant : value === null ? -limit : value + 1n,
-        last: next ? (value === null ? instant : value - 1n) : instant,
-        value,
-      },
-    ])
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: store the checked result privately.
+    setDataProperty(transitions, transitions.length, {
+      direction,
+      first: next ? instant : value === null ? -limit : value + 1n,
+      last: next ? (value === null ? instant : value - 1n) : instant,
+      value,
+    })
     return value
   }
   return {

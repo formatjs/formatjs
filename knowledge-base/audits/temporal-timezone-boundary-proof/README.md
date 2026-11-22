@@ -236,7 +236,7 @@ and loads the synthetic upper and lower folds. Before the fix,
 disambiguation modes. The comparison requires RangeError when either
 actual candidate is outside the Instant limits.
 
-The [offset provider](../../../packages/temporal/host-timezone.ts#L73) reuses
+The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
 the installed formatter's private candidate check within one day of either
 limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L441)
 enumerates decoded historical and recurring offsets and round-trips each
@@ -362,7 +362,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L539).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L321).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L320).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
@@ -390,7 +390,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L349).
+[Host search](../../../packages/temporal/host-timezone.ts#L348).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary
@@ -405,6 +405,17 @@ reports these inputs as `lastFinite` and `tailStarts`.
 
 - Finite future history before-fix log SHA-256 `ace686c3c2001058594d9ed9c068fbc116de86dc76a6a7f671e41f95ff760119`
 - Finite future history after-fix log SHA-256 `b2ccf02c9ced5c729d7536fb6b27219a07dfb93af3165fead6e600f129da0557`
+
+### Host transition cache writes
+
+A native New York lookup one nanosecond before the spring 2024 change
+reaches the result cache directly. A January lookup also writes an
+unchanged interval. Both used the captured Array push, which still calls an
+inherited index setter. Both now append an own data property to the private
+array. The first and repeated lookups return the transition at the exact
+nanosecond in both cases.
+[Host cache writes](../../../packages/temporal/host-timezone.ts#L404).
+[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L403).
 
 ## Reproduce analysis
 

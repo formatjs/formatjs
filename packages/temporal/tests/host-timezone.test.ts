@@ -395,3 +395,31 @@ it.each([
     expect(repeated).toBe(1_710_054_000_000_000_000n)
   }
 )
+
+it.each([
+  ['transition result', 1_710_053_999_999_999_999n],
+  ['unchanged interval', 1_704_067_200_000_000_000n],
+] as const)(
+  'stores a host %s without invoking index setters',
+  (_label, start) => {
+    const zone = createHostTimeZone('America/New_York')
+    const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, '0')
+    let result: bigint | null
+    let repeated: bigint | null
+    try {
+      Object.defineProperty(Array.prototype, '0', {
+        configurable: true,
+        set() {
+          throw new Error('Observable host transition cache index')
+        },
+      })
+      result = zone.transition!(start, 'next')
+      repeated = zone.transition!(start, 'next')
+    } finally {
+      if (descriptor) Object.defineProperty(Array.prototype, '0', descriptor)
+      else Reflect.deleteProperty(Array.prototype, '0')
+    }
+    expect(result).toBe(1_710_054_000_000_000_000n)
+    expect(repeated).toBe(result)
+  }
+)

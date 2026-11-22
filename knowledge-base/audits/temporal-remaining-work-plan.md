@@ -393,6 +393,9 @@ The final nonexact-window proof now covers bounded borrowed zones whose
 calendar add-back, compatible offset and endpoint contracts are established.
 Exact Apia and published retry rules are separate open requirements.
 [Nonexact window proof](temporal-year-month-week-nonexact-window.md#current-source-proof).
+The exact-first replay also covers an owned zone whose second endpoint
+precedes its exact first endpoint. The published retry still lacks a bracket.
+[Reversed exact window](temporal-apia-exact-target-spec-issue.md#exact-first-endpoint-with-reversed-span).
 The exact Apia target is now a shared public oracle across TypeScript and
 native Hermes. Its endpoint policy is verified independently of the published
 zero-span assertion. The Intl witnesses isolate two separate prerequisites,
