@@ -460,6 +460,41 @@ Current pass:
   kernel/ICU controls, locale profiles and Intl consumer/accepted-failure gates.
   Five package assemblies pass. No exclusions or accepted-failure baselines changed.
 
+- PlainTime private six-field lists no longer use array map, spread or for-of.
+  A six-element literal evaluates private field callbacks in index order;
+  field-bag reads use an indexed private order list. Construction, field access
+  and with() therefore avoid mutable map/iterator/next hooks and Array species.
+  Four Node mutation regressions and the installed-native Hermes regression
+  failed before the fix. Controls retain one public Get per supplied clock field
+  in hour/microsecond/millisecond/minute/nanosecond/second order. Other private
+  lists, array methods and provider dependencies remain open.
+  RegulateTime lines 622–632 and IsValidTime lines 655–661 gain 18 individual
+  TS/Rust traces. The six bounds are 23/59/59/999/999/999; constrain clamps each
+  integer separately before packing, reject leaves inputs unchanged and throws
+  on any invalid field. Finite/integer coercion remains a caller precondition.
+  Independent indexed guards use the same predicate; the exact weighted total
+  lies in 0..86399999999999, encoding six fields and implicit Days 0 without carry.
+  Private Boolean/enum modes exhaust constrain/reject. The Rust FFI's saturating
+  f64-to-i128 conversion preserves both choices: out-of-i128 values remain outside
+  every clock bound under reject; constrain chooses the same endpoint. Every
+  already-bounded integer converts exactly. Rust error mapping retains RangeError.
+  New Node and JSON-FFI controls cover every field at zero, its upper bound,
+  one step outside and huge signed finite values, including the largest finite
+  JS Number. Installed-native controls test huge signed values; exact boundaries
+  also retain existing construction/oracle/Test262 coverage.
+  Other record producers, calendar regulation and full public conversions remain
+  open. CreateTimeRecord's other callers and nonzero day-carry behavior are not
+  signed off by the within-day result proof.
+  The unnumbered descriptions at [617–618](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L617-L618)
+  and [650–651](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L650-L651)
+  also agree with these integer guards: clamp versus RangeError, ordinary
+  time-of-day bounds and exclusion of numeric second 60. Leap-second string
+  parsing remains separate work. These prose checks do not inflate numbered counts.
+  All 109 test gates pass: mutation/boundary regressions and typechecks, every
+  Rust Temporal test, native Hermes, all 40 Temporal class Test262 backend gates,
+  kernel/ICU controls, locale profiles and Intl consumer/accepted-failure gates.
+  Five package assemblies pass. Exclusions and accepted-failure baselines unchanged.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -478,9 +513,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [private-list predicates](https://github.com/formatjs/formatjs/pull/8076),
 [zoned string option order and range audit](https://github.com/formatjs/formatjs/pull/8077),
 [private defaults and constructor order](https://github.com/formatjs/formatjs/pull/8080),
-[chronological comparison audit](https://github.com/formatjs/formatjs/pull/8081).
+[chronological comparison audit](https://github.com/formatjs/formatjs/pull/8081),
+[private clock lists and regulation audit](https://github.com/formatjs/formatjs/pull/8082).
 
-New traces: 153 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 171 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -509,7 +545,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 | [plaindate](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html)           |                   272 |                       41 |                         231 |
 | [plaindatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html)   |                   315 |                       20 |                         295 |
 | [plainmonthday](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html)   |                   103 |                        6 |                          97 |
-| [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                       18 |                         267 |
+| [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                       36 |                         249 |
 | [plainyearmonth](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html) |                   183 |                        6 |                         177 |
 | [temporal](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/temporal.html)             |                    29 |                        0 |                          29 |
 | [timezone](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html)             |                   132 |                       16 |                         116 |
@@ -1408,9 +1444,9 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-totimerecordormidnight`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L584)
   - Traced: [595–597](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L595-L597).
 - [`sec-temporal-regulatetime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L601)
-  - Open: [622–632](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L622-L632).
+  - Traced: [622–632](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L622-L632).
 - [`sec-temporal-isvalidtime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L636)
-  - Open: [655–661](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L655-L661).
+  - Traced: [655–661](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L655-L661).
 - [`sec-temporal-balancetime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L665)
   - Open: [681–693](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L681-L693).
 - [`sec-temporal-createtemporaltime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L697)
