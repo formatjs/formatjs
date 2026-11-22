@@ -110,7 +110,7 @@ Both range arguments still convert before partitioning/clipping; existing
 abrupt-completion controls retain that ordering.
 
 The default clock now captures Date.now once in
-[core.ts:59](../../packages/intl-datetimeformat/core.ts#L59). This supplies the
+[core.ts:59](../../packages/intl-datetimeformat/core.ts#L60). This supplies the
 intrinsic call required by published ECMA-402
 [§11.3.3 step 4.a.i](https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format)
 and [§11.3.6 step 3.a](https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts),

@@ -125,6 +125,8 @@ function withNativeZone(
         zone.possibleInstants(epochNanosecondsToISO(local))
       )
     },
+    // Proposal comparison §11.1.14 step 5: Forward the exact provider's raw boundary lookup.
+    nearestLocalAfter: local => fallbackKernel().nearestLocalAfter?.(local),
     // Proposal comparison §11.1.11 steps 1–2: Forward local fields and disambiguation to the provider.
     resolve: (fields, disambiguation = 'compatible') => {
       const native = nativeTemporal()

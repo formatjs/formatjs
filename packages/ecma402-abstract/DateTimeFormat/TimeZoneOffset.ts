@@ -162,6 +162,43 @@ export function VisitTimeZoneBoundaries(
   return true
 }
 
+// Proposal comparison §11.1.14 step 5: Find the first reachable local time.
+export function NearestTimeZoneLocalAfter(
+  local: bigint,
+  data: UnpackedTimeZoneData
+): bigint | undefined {
+  const millisecond = bigIntFrom(1_000_000)
+  const second = bigIntFrom(1_000_000_000)
+  const day = 86_400_000
+  const milliseconds = numberFrom(
+    (local - (((local % millisecond) + millisecond) % millisecond)) /
+      millisecond
+  )
+  const first = milliseconds - day
+  const valid = (offset: number): boolean =>
+    numberIsInteger(offset) && offset > -86_400 && offset < 86_400
+  let validOffsets = valid(TimeZoneOffset(first, data)[0])
+  let nearest: bigint | undefined
+  // Offsets are under one day. Any closer wall time must occur in this window.
+  const covered = VisitTimeZoneBoundaries(
+    first,
+    milliseconds + 3 * day,
+    data,
+    boundary => {
+      const offset = TimeZoneOffset(boundary, data)[0]
+      if (!valid(offset)) {
+        validOffsets = false
+        return
+      }
+      const projected =
+        bigIntFrom(boundary) * millisecond + bigIntFrom(offset) * second
+      if (projected > local && (nearest === undefined || projected < nearest))
+        nearest = projected
+    }
+  )
+  return covered && validOffsets ? nearest : undefined
+}
+
 const instantLimitMilliseconds = 8_640_000_000_000_000
 const gregorianCycleMilliseconds = 146_097 * 86_400_000
 const nearbyMilliseconds = 366 * 86_400_000

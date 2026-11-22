@@ -44,6 +44,10 @@ falsifies the infallible candidate lookup in §11.1.12 step 10. The nearest
 later wall time has a sole raw candidate beyond the maximum Instant.
 Owned Intl and compact fallback behavior differs.
 
+[Out-of-range earlier gap neighbor](temporal-timezone-boundary-proof/README.md#compact-gap-crossing-the-minimum-instant)
+similarly falsifies §11.1.12 step 8. The closest earlier local clock in the
+custom profile maps to one nanosecond before the minimum Instant.
+
 [Amendment issues](temporal-amendment-spec-issues.md) record inconsistent Plain
 range comparison timezones (§15.6.8) and duplicate digital Duration group appends
 (§15.9.8). These remain separate from runtime defects and pending candidate tests.
@@ -280,7 +284,7 @@ This arithmetic does not depend on FormatJS rounding output.
 [Existing Casey controls](../../packages/temporal/tests/zoned.test.ts#L241)
 already cover this receiver. The
 [TS day branch](../../packages/temporal/zoned-date-time.ts#L1019) and
-[Rust day branch](../../crates/temporal/zoned.rs#L240) clamp the receiver to
+[Rust day branch](../../crates/temporal/zoned.rs#L248) clamp the receiver to
 `endNs - 1 ns` before rounding. That is an existing fallback, not a consequence
 of the failed assertion. Keep its behavior separate from the ordinary-day proof;
 this finding does not prescribe a replacement rule or establish a new runtime

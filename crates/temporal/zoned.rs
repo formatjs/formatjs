@@ -59,6 +59,14 @@ pub trait TimeZone {
     fn has_out_of_range_candidate(&self, _local_nanoseconds: i128) -> bool {
         false
     }
+    /// Return the first reachable local time after a gap, including raw epochs.
+    ///
+    /// Override only when the provider covers the complete candidate window,
+    /// including epochs outside the Instant range. The default uses the
+    /// bounded day-start fallback.
+    fn nearest_local_after(&self, _local_nanoseconds: i128) -> Option<i128> {
+        None
+    }
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant>;
 }
 
@@ -367,9 +375,11 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
     let mut upper = midnight + 3 * NANOSECONDS_PER_DAY;
     let clipped = upper > crate::MAX_EPOCH_NANOSECONDS;
     upper = upper.min(crate::MAX_EPOCH_NANOSECONDS);
-    if lower >= -crate::MAX_EPOCH_NANOSECONDS
-        && midnight + NANOSECONDS_PER_DAY < crate::MAX_EPOCH_NANOSECONDS
-    {
+    let nearest = if lower < -crate::MAX_EPOCH_NANOSECONDS {
+        // Proposal comparison §11.1.14 step 5: Include raw starts before the minimum Instant.
+        zone.nearest_local_after(midnight)
+            .filter(|&local| midnight < local && local < midnight + 2 * NANOSECONDS_PER_DAY)
+    } else if midnight + NANOSECONDS_PER_DAY < crate::MAX_EPOCH_NANOSECONDS {
         let mut cursor = Instant::from_epoch_nanoseconds(lower)?;
         let mut nearest = None;
         // Proposal comparison §11.1.14 step 5. At midnight plus one day,
@@ -391,13 +401,17 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
             }
         }
         // Proposal comparison §11.1.14 step 5: Exclude earlier local times beyond the scan.
-        if let Some(local) = nearest
-            && (!clipped || local + NANOSECONDS_PER_DAY <= crate::MAX_EPOCH_NANOSECONDS)
-            && let Some((first, last)) = local_candidate_bounds(local, zone)?
-            && first == last
-        {
-            return Instant::from_epoch_nanoseconds(first);
-        }
+        nearest
+            .filter(|local| !clipped || local + NANOSECONDS_PER_DAY <= crate::MAX_EPOCH_NANOSECONDS)
+    } else {
+        None
+    };
+    // Proposal comparison §11.1.14 steps 6–7: Return the sole candidate if representable.
+    if let Some(local) = nearest
+        && let Some((first, last)) = local_candidate_bounds(local, zone)?
+        && first == last
+    {
+        return Instant::from_epoch_nanoseconds(first);
     }
     // Preserve fallback behavior when the bounded search cannot confirm the nearest local time.
     let candidate = resolve_local_nanoseconds(midnight, zone, Disambiguation::Compatible)?;

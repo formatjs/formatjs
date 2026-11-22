@@ -17,9 +17,9 @@ is added. Relevant native dependencies are
 All eight reads and nine writes now delegate through those captured methods.
 All five stores use the captured constructor: [kernel cache:51](../../packages/temporal/zones.ts#L51),
 [identifier table:62](../../packages/temporal/zones.ts#L62),
-[named kernels:135](../../packages/temporal/zones.ts#L135),
-[spelling table:191](../../packages/temporal/zones.ts#L191), and
-[fixed kernels:206](../../packages/temporal/zones.ts#L206). Identifier and spelling
+[named kernels:135](../../packages/temporal/zones.ts#L137),
+[spelling table:191](../../packages/temporal/zones.ts#L193), and
+[fixed kernels:206](../../packages/temporal/zones.ts#L208). Identifier and spelling
 tables initialize lazily, so capturing only methods would leave a constructor
 hook after import. Constructor calls supply no iterable.
 

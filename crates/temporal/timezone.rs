@@ -386,6 +386,57 @@ impl TimeZone for TransitionZone<'_> {
         found
     }
 
+    // Proposal comparison §11.1.14 step 5: Find the nearest projected raw boundary after a gap.
+    fn nearest_local_after(&self, local: i128) -> Option<i128> {
+        if !(-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&local) {
+            return None;
+        }
+        // Every offset is shorter than a day. The epoch one day after the gap
+        // projects within two local days, bounding all candidate epochs by three days.
+        let lower = (local - NANOSECONDS_PER_DAY).div_euclid(1_000_000_000) as i64;
+        let upper = (local + 3 * NANOSECONDS_PER_DAY).div_euclid(1_000_000_000) as i64;
+        let mut nearest = None;
+        let mut consider = |at| {
+            if at <= lower || at > upper {
+                return;
+            }
+            let projected = i128::from(at + i64::from(self.offset_seconds(at))) * 1_000_000_000;
+            if projected > local && nearest.is_none_or(|previous| projected < previous) {
+                nearest = Some(projected);
+            }
+        };
+        let start = self
+            .transitions
+            .partition_point(|event| event.epoch_seconds <= lower);
+        let end = self
+            .transitions
+            .partition_point(|event| event.epoch_seconds <= upper);
+        for event in &self.transitions[start..end] {
+            consider(event.epoch_seconds);
+        }
+        let cutoff = self.cutoff();
+        if let Some(future) = self.future
+            && cutoff < upper
+        {
+            consider(cutoff + 1);
+            let (first_year, _, _) = crate::calendar::iso_fields(lower.div_euclid(86_400));
+            let (last_year, _, _) = crate::calendar::iso_fields(upper.div_euclid(86_400));
+            // Rule times can spill into the neighboring UTC year.
+            for year in first_year - 1..=last_year + 1 {
+                let Some((start, end)) = future.events(year) else {
+                    break;
+                };
+                let new_year = crate::iso::epoch_day_from_iso(year, 1, 1) * 86_400;
+                for at in [new_year, start, end] {
+                    if at > cutoff {
+                        consider(at);
+                    }
+                }
+            }
+        }
+        nearest
+    }
+
     // Proposal comparison §6.3.46 steps 9.a and 10.b: Search strict next or previous offset changes.
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         let next = direction == TransitionDirection::Next;

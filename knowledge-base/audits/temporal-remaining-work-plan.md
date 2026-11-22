@@ -132,7 +132,7 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states include 215 conditional and 96 comparison-issue rows. No reviewed
+Remaining core states include 215 conditional and 97 comparison-issue rows. No reviewed
 or partial rows remain. Amendments have 35 conditional and 11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
@@ -455,6 +455,9 @@ the minimum Instant. Raw predecessor offsets provide the comparison.
 The compact gap scan also includes the transition at the minimum Instant.
 The regression verifies valid nearest candidates and all four modes.
 [Minimum gap](temporal-timezone-boundary-proof/README.md#compact-gap-crossing-the-minimum-instant).
+Owned, compact and Rust providers can now prove a missing-midnight
+day start near the minimum using raw boundaries.
+[Lower day-start proof](temporal-timezone-boundary-proof/README.md#exact-start-of-day-at-the-minimum-instant).
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).

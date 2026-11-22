@@ -76,6 +76,14 @@ const checkHostTemporalCandidates = hostTimeZoneCapability(
   hostParts,
   Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates')
 ) as OwnedTimeZoneQuery | undefined
+const nearestHostLocalAfter = checkHostTemporalCandidates
+  ? (hostTimeZoneCapability(
+      hostParts,
+      Symbol.for('@formatjs/intl-datetimeformat/nearestTemporalLocalAfter')
+    ) as
+      | ((this: Intl.DateTimeFormat, local: bigint) => bigint | undefined)
+      | undefined)
+  : undefined
 const nowMilliseconds = Date.now
 const second = 1000000000n
 const day = 86400n * second
@@ -104,6 +112,7 @@ function createHostTimeZoneProvider(
   offsetAt: HostTimeZone['offsetNanoseconds']
   beginOperation(): boolean
   ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
+  nearestLocalAfter?: TimeZoneKernel['nearestLocalAfter']
   dataGeneration?: () => object
   ownedTransition?: (
     instant: bigint,
@@ -234,6 +243,10 @@ function createHostTimeZoneProvider(
     },
     beginOperation,
     dataGeneration,
+    nearestLocalAfter:
+      parts === hostParts && nearestHostLocalAfter
+        ? local => apply(nearestHostLocalAfter, formatter, [local])
+        : undefined,
     ownedTransition: queryTemporalTimeZone
       ? (instant, direction) =>
           apply(queryTemporalTimeZone, formatter, [instant, direction])
@@ -260,6 +273,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     offsetAt,
     beginOperation,
     ownedCandidates,
+    nearestLocalAfter,
     ownedTransition,
     dataGeneration,
   } = createHostTimeZoneProvider(timeZone)
@@ -461,6 +475,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     offsetNanoseconds: offsetAt,
     possibleInstants,
     possibleInstantsFromEpochNanoseconds,
+    nearestLocalAfter,
     resolve,
     transition,
   }

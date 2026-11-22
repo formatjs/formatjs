@@ -51,7 +51,7 @@ Total is 1 + 30 minutes / 23 hours = 47/46, finally rounded once to binary64
 retains P1DT30M.
 
 Old preflight adds a day from shifted 03:30, yielding M + 45 minutes and rejecting.
-[Literal endpoint controls:3660](../../crates/temporal/lib.test.rs#L3861) verify
+[Literal endpoint controls:3660](../../crates/temporal/lib.test.rs#L3953) verify
 these coordinates independently of total/round outputs. This is a valid typed
 transition provider witness; no claim that a shipped IANA zone has this transition
 at the extreme year.
@@ -68,7 +68,7 @@ cover all four results. The separate calendar/day-total retry issue remains open
 
 ## Boundary controls and limits
 
-[Ten public Rust tests:3646](../../crates/temporal/lib.test.rs#L3847) independently
+[Ten public Rust tests:3646](../../crates/temporal/lib.test.rs#L3939) independently
 cover witness endpoints, total, three round profiles, public zero/day and
 zero/minute equality, Duration zero window checks, invalid increments, exact-minute
 maximum difference, and nanosecond identity.

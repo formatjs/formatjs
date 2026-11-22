@@ -84,6 +84,98 @@ fn day_start_uses_nearest_local_after_overlapping_transitions() {
 }
 
 #[test]
+fn minimum_day_start_uses_the_first_reachable_local_time() {
+    use formatjs_temporal::{
+        NamedTimeZone, OffsetTransition, PlainDate, TimeZoneRecord, TimeZoneRegistry,
+        TransitionZone, ZonedDateTime, ZonedParseOptions,
+    };
+    let midnight = -MAX_EPOCH_NANOSECONDS;
+    let seconds = (midnight / 1_000_000_000) as i64;
+    let hour = 3_600_000_000_000;
+    let jump = [OffsetTransition {
+        epoch_seconds: seconds,
+        offset_seconds: 3600,
+    }];
+    let overlap = [
+        OffsetTransition {
+            epoch_seconds: seconds + 3600,
+            offset_seconds: -39_600,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds + 10_800,
+            offset_seconds: -7200,
+        },
+    ];
+    let date = PlainDate::new(-271821, 4, 20).unwrap();
+    let name = "America/Denver";
+    for (initial, events, expected) in [
+        (0, &jump[..], midnight),
+        (-3600, &overlap[..], midnight + 3 * hour),
+    ] {
+        let zone = TransitionZone::new(initial, events, None).unwrap();
+        let start = date.to_zoned_date_time(zone, None).unwrap().instant();
+        assert_eq!(start.epoch_nanoseconds(), expected);
+        let later = Instant::from_epoch_nanoseconds(expected + hour).unwrap();
+        let named = NamedTimeZone::new(name, zone).unwrap();
+        assert_eq!(
+            ZonedDateTime::new(later, named)
+                .start_of_day()
+                .unwrap()
+                .instant(),
+            start
+        );
+        let records = [TimeZoneRecord::new(name, zone).unwrap()];
+        let registry = TimeZoneRegistry::new(&records).unwrap();
+        let date_only = ZonedDateTime::parse(
+            "-271821-04-20[America/Denver]",
+            registry,
+            ZonedParseOptions::default(),
+        )
+        .unwrap();
+        assert_eq!(date_only.instant(), start);
+    }
+}
+
+#[test]
+fn minimum_day_start_rejects_an_earlier_raw_footer_candidate() {
+    use formatjs_temporal::{
+        Disambiguation, Error, FutureRule, PlainDate, TransitionRule, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let future = FutureRule::new(
+        0,
+        Some((
+            18_000,
+            // April 19 at 20:00 UTC in the minimum year, four hours before the limit.
+            TransitionRule::Day {
+                day: 108,
+                seconds: 72_000,
+            },
+            TransitionRule::Day {
+                day: 111,
+                seconds: 18_000,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(future)).unwrap();
+    let first_wall = IsoDateTime::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS + hour).unwrap();
+    assert_eq!(
+        ZonedDateTime::from_local(first_wall, zone, Disambiguation::Reject).unwrap_err(),
+        Error::OutOfRange,
+    );
+    let limit = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap();
+    let valid_later = ZonedDateTime::new(limit, zone);
+    assert_eq!(valid_later.local().unwrap().time().fields(), (5, 0, 0, 0));
+    let date = PlainDate::new(-271821, 4, 20).unwrap();
+    assert_eq!(
+        date.to_zoned_date_time(zone, None).unwrap_err(),
+        Error::OutOfRange
+    );
+    assert_eq!(valid_later.start_of_day().unwrap_err(), Error::OutOfRange);
+}
+
+#[test]
 fn date_zoned_conversion_handles_skipped_dates_and_instant_bounds() {
     use formatjs_temporal::{FixedOffset, PlainDate, PlainTime};
     let zones = iana_registry();

@@ -53,6 +53,7 @@ import {
   expandIntervalFormatTemplates,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {
+  NearestTimeZoneLocalAfter,
   TimeZoneOffset,
   TimeZoneTransition,
   VisitTimeZoneBoundaries,
@@ -574,6 +575,19 @@ Object.defineProperty(
 )
 
 let timeZoneDataGeneration = {}
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/nearestTemporalLocalAfter'),
+  {
+    value(this: Intl.DateTimeFormat, local: bigint): bigint | undefined {
+      const zone = temporalTimeZoneData(this)
+      if (!zone?.length || local <= -localLimit || local >= localLimit)
+        return undefined
+      return NearestTimeZoneLocalAfter(local, zone)
+    },
+  }
+)
 
 Object.defineProperty(
   formatToParts,

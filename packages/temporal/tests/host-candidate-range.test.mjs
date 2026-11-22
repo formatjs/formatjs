@@ -474,6 +474,46 @@ try {
       dayStart
     )
   }
+  const minimum = -maxNanoseconds
+  const minimumSecond = minimum / second
+  const firstDate = '-271821-04-20'
+  const installMinimumZone = (offsets, events) =>
+    formatter.__addTZData({
+      abbrvs: 'TEST',
+      offsets: offsets.map(offset => (offset * 3600).toString(36)).join('|'),
+      zones: [
+        pulse +
+          '|' +
+          [
+            packedRow(null, 0),
+            ...events.map((offset, index) =>
+              packedRow(minimumSecond + offset * 3600n, index + 1)
+            ),
+          ].join('|'),
+      ],
+    })
+  for (const [offsets, events, start] of [
+    [[0, 1], [0n], minimum],
+    [[-1, -11, -2], [1n, 3n], minimum + 3n * hour],
+  ]) {
+    installMinimumZone(offsets, events)
+    const value = new Temporal.ZonedDateTime(start + 1n, pulse)
+    assert.equal(value.startOfDay().epochNanoseconds, start)
+    assert.equal(
+      Temporal.ZonedDateTime.from(`${firstDate}[${pulse}]`).epochNanoseconds,
+      start
+    )
+    assert.equal(
+      Temporal.PlainDate.from(firstDate).toZonedDateTime(pulse)
+        .epochNanoseconds,
+      start
+    )
+  }
+  installMinimumZone([0, 5], [-4n])
+  assert.throws(
+    () => Temporal.ZonedDateTime.from(`${firstDate}[${pulse}]`),
+    RangeError
+  )
 } finally {
   hooks.deregister()
 }

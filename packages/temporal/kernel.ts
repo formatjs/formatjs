@@ -18,6 +18,7 @@ import {
   DaysInYear,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
+  NearestTimeZoneLocalAfter,
   TimeZoneOffset,
   TimeZoneTransition,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
@@ -49,6 +50,7 @@ export interface TimeZoneKernel {
   possibleInstants(fields: ISODateTime): bigint[]
   // Internal callers validate local nanoseconds before using this shortcut.
   possibleInstantsFromEpochNanoseconds?(local: bigint): bigint[]
+  nearestLocalAfter?(local: bigint): bigint | undefined
   resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
 }
 
@@ -89,6 +91,19 @@ export function startOfTimeZoneDay(
     }
     // Proposal comparison §11.1.14 step 5: Exclude earlier local times beyond the scan.
     if (nearest !== undefined && (!clipped || nearest + day <= limit)) {
+      const after = possible(nearest)
+      if (after.length === 1) return after[0]
+    }
+  }
+
+  if (lower < -limit) {
+    // Proposal comparison §11.1.14 steps 5–7: Check the raw lower boundary before returning its instant.
+    const nearest = zone.nearestLocalAfter?.(midnight)
+    if (
+      nearest !== undefined &&
+      nearest > midnight &&
+      nearest < midnight + 2n * day
+    ) {
       const after = possible(nearest)
       if (after.length === 1) return after[0]
     }
@@ -390,6 +405,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     offsetNanoseconds,
     possibleInstants,
     possibleInstantsFromEpochNanoseconds,
+    nearestLocalAfter: local => NearestTimeZoneLocalAfter(local, data),
     resolve,
     // Temporal comparison §6.3.46 steps 9.a, 10.b, 11.
     // Dispatch the direction to the bounded named-zone transition search.

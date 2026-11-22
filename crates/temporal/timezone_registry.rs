@@ -163,6 +163,13 @@ impl TimeZone for ResolvedTimeZone<'_> {
         matches!(self.identity, Identity::Named(_))
             && self.provider.has_out_of_range_candidate(local)
     }
+    // Proposal comparison §11.1.14 step 5: Delegate raw named-zone day-start lookup.
+    fn nearest_local_after(&self, local: i128) -> Option<i128> {
+        match self.identity {
+            Identity::Named(_) => self.provider.nearest_local_after(local),
+            Identity::Offset(_) => None,
+        }
+    }
     // Proposal comparison §6.3.46 steps 9.a, 10.b: dispatch the selected transition direction.
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         self.provider.transition(instant, direction)
