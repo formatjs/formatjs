@@ -289,6 +289,58 @@ export function checkZonedArithmeticOracle(
     'PT0S',
     'zero zoned nanosecond duration round needs no next day'
   )
+  for (const [relativeTo, months, weeks, largestUnit, expected] of [
+    ['+275760-08-06', 1, 1, 'month', 'P1M7D'],
+    ['+275760-08-06T00:00[UTC]', 1, 1, 'month', 'P1M7D'],
+    ['-271821-05-27', -1, -1, 'year', '-P1M7D'],
+    ['-271821-05-27T00:00[UTC]', -1, -1, 'year', '-P1M7D'],
+  ] as const) {
+    const duration = Temporal.Duration.from({months, weeks})
+    let rangeError = false
+    try {
+      duration.round({relativeTo, largestUnit, smallestUnit: 'week'})
+    } catch (error) {
+      rangeError = error instanceof RangeError
+    }
+    equal(
+      rangeError,
+      true,
+      `Exact week window validates next endpoint ${relativeTo}`
+    )
+    equal(
+      duration
+        .round({relativeTo, largestUnit, smallestUnit: 'nanosecond'})
+        .toString(),
+      expected,
+      `Exact nanosecond identity remains valid ${relativeTo}`
+    )
+  }
+  let zeroZonedWeekRangeError = false
+  try {
+    new Temporal.Duration().round({
+      relativeTo: '+275760-09-13T00:00[UTC]',
+      largestUnit: 'year',
+      smallestUnit: 'week',
+    })
+  } catch (error) {
+    zeroZonedWeekRangeError = error instanceof RangeError
+  }
+  equal(
+    zeroZonedWeekRangeError,
+    true,
+    'Zero zoned week window has positive direction'
+  )
+  equal(
+    new Temporal.Duration()
+      .round({
+        relativeTo: '+275760-09-13',
+        largestUnit: 'year',
+        smallestUnit: 'week',
+      })
+      .toString(),
+    'PT0S',
+    'Zero plain week difference keeps equality shortcut'
+  )
   equal(differences, 19440, 'Complete ICU zoned difference fixture')
   equal(days, 5292, 'Complete ICU zoned day fixture')
   return {differences, days}

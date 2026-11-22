@@ -137,12 +137,17 @@ pub(crate) fn round<A: RelativeAnchor>(
         let count = full[2] + full[3] / 7;
         fields[2] = count;
         let a = start.endpoint(fields)?;
-        if a == finish {
+        if !A::ZONED && start.origin() == finish {
             return Duration::new(fields);
         }
-        let sign = (finish - start.origin()).signum();
+        let sign = if finish < start.origin() { -1 } else { 1 };
         fields[2] = count + sign;
         let b = start.endpoint(fields)?;
+        // Exact calendar results still validate the next nudge endpoint.
+        if a == finish {
+            fields[2] = count;
+            return Duration::new(fields);
+        }
         let span = (b - a) * sign;
         fields[2] = crate::rounding::round_duration(count * span + finish - a, span, mode) / span;
         return Duration::new(fields);

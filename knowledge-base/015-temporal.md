@@ -1,5 +1,10 @@
 # Temporal implementation
 
+Duration year/month-to-week rounding validates both calendar window endpoints,
+even for exact results. Zoned zero uses a positive week window; plain zero keeps
+its equality shortcut. See [public caller map](audits/temporal-duration-round-contract-audit.md)
+for numbered comparison steps and remaining obligations.
+
 Zoned date-largest differences validate required day windows from the original
 anchor/clock, including Duration zero and exact subday rounding. Public equal-epoch
 until/since still return zero after validation. Unchanged clock quantities still
