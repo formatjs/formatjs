@@ -464,3 +464,100 @@ it('uses intrinsic TypeError for invalid locale-list entries and null input', ()
   expect(errors).toHaveLength(3)
   for (const error of errors) expect(error).toBeInstanceOf(Expected)
 })
+
+it('does not read a replaced Intl.Locale property during locale-list conversion', () => {
+  const original = Object.getOwnPropertyDescriptor(Intl, 'Locale')!
+  let actual: unknown
+  try {
+    Object.defineProperty(Intl, 'Locale', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable Locale constructor lookup reached')
+      },
+    })
+    actual = getCanonicalLocales({0: 'en', length: 1} as any)
+  } finally {
+    Object.defineProperty(Intl, 'Locale', original)
+  }
+  expect(actual).toEqual(['en'])
+})
+
+it('does not let a replacement Locale method brand ordinary objects', () => {
+  const original = Object.getOwnPropertyDescriptor(Intl, 'Locale')!
+  function Replacement() {}
+  Replacement.prototype.toString = () => 'fr'
+  let actual: unknown
+  try {
+    Object.defineProperty(Intl, 'Locale', {...original, value: Replacement})
+    actual = getCanonicalLocales({0: 'en', length: 1} as any)
+  } finally {
+    Object.defineProperty(Intl, 'Locale', original)
+  }
+  expect(actual).toEqual(['en'])
+})
+
+it('retains native Locale brand access after prototype replacement', () => {
+  const value = new Intl.Locale('en-US')
+  const prototype = Intl.Locale.prototype
+  const original = Object.getOwnPropertyDescriptor(prototype, 'toString')!
+  let actual: unknown
+  try {
+    Object.defineProperty(prototype, 'toString', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable Locale prototype lookup reached')
+      },
+    })
+    actual = getCanonicalLocales(value)
+  } finally {
+    Object.defineProperty(prototype, 'toString', original)
+  }
+  expect(actual).toEqual(['en-US'])
+})
+
+it.each([
+  ['iterator', Array.prototype, Symbol.iterator],
+  ['iterator next', Object.getPrototypeOf([][Symbol.iterator]()), 'next'],
+] as const)(
+  'brand checks ignore private array %s hooks',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        configurable: true,
+        get() {
+          throw new Error('Mutable Locale reader traversal reached')
+        },
+      })
+      actual = getCanonicalLocales({length: 0} as any)
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual([])
+  }
+)
+
+it.each([
+  ['call', Function.prototype, 'call'],
+  ['apply', Reflect, 'apply'],
+] as const)(
+  'native brand access retains its %s intrinsic',
+  (_name, owner, key) => {
+    const value = new Intl.Locale('en-US')
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...original,
+        value() {
+          throw new Error('Mutable Locale call intrinsic reached')
+        },
+      })
+      actual = getCanonicalLocales(value)
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual(['en-US'])
+  }
+)

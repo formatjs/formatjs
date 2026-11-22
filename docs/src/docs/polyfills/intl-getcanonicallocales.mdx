@@ -92,7 +92,10 @@ The Bazel `:test262` target runs the upstream suite against a reviewed failure b
 `getCanonicalLocales` rejects `null`, coerces array-like lengths once with
 `ToLength`, and accepts string-coercible object entries. Native Locale values
 and values from the installed Locale polyfill use their intrinsic locale tag,
-ignoring overridden instance properties. Objects that merely expose `language`
+ignoring overridden instance properties. Brand readers are connected during
+package initialization, including across separately bundled FormatJS copies.
+Replacing `Intl.Locale` or its prototype methods afterward does not change
+these brand checks. Objects that merely expose `language`
 and `baseName` are treated as ordinary array-like inputs.
 
 Locale identifier casing is normalized before CLDR alias lookup, including

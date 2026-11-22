@@ -120,8 +120,14 @@ Locale-list input classification now includes undetectable host objects and
 uses intrinsic TypeError. Shared ToObject retains original primitive boxing;
 locale-list length conversion reads once, uses the number hint, then captured
 truncation/clamping. The [ECMA-402 companion audit](audits/temporal-locale-list-audit.md)
-traces three dependency substeps separately from Temporal's numbered-line count.
-Current-Intl Locale brand probes and complete caller algorithms remain open.
+traces six dependency substeps separately from Temporal's numbered-line count.
+Locale brand checks use captured native access and registered private slot readers;
+ordinary calls no longer inspect mutable Intl.Locale or its prototype. Independent
+bundles exchange leaf-reader snapshots during setup. Locale installation connects
+its brand registry and replaces an incompatible global canonicalizer with the
+imported FormatJS implementation. Ponyfill imports preserve native globals.
+Trusted initialization and completed registered instances bound this proof;
+constructor production, unregistered brands, realms and complete callers remain open.
 
 ## Native performance direction
 
