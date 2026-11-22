@@ -95,6 +95,31 @@ it('retains captured host methods after prototype mutation', () => {
   }
 })
 
+it('collects fold candidates without invoking inherited index setters', () => {
+  const zone = createHostTimeZone('America/New_York')
+  const local = {year: 2020, month: 11, day: 1, hour: 1, minute: 30}
+  const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, '0')
+  let calls = 0
+  let candidates: bigint[]
+  try {
+    Object.defineProperty(Array.prototype, '0', {
+      configurable: true,
+      set() {
+        calls++
+      },
+    })
+    candidates = zone.possibleInstants(local)
+  } finally {
+    if (descriptor) Object.defineProperty(Array.prototype, '0', descriptor)
+    else Reflect.deleteProperty(Array.prototype, '0')
+  }
+  expect(calls).toBe(0)
+  expect(candidates).toEqual([
+    isoToEpochNanoseconds({...local, hour: 5}),
+    isoToEpochNanoseconds({...local, hour: 6}),
+  ])
+})
+
 it('extracts offsets when the host falls back to an Arabic locale', async () => {
   const Original = Intl.DateTimeFormat
   vi.resetModules()

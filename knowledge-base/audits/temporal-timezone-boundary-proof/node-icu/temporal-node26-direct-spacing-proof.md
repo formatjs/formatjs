@@ -121,14 +121,14 @@ in every checked year. The latest recurrence join is January 1, 2088. The
 earliest finite candidate is in 1844 and the finite-history bound covers the
 latest finite candidate. [Finite-history proof](../README.md#finite-future-history-in-native-intl).
 
-The [host adapter](../../../../packages/temporal/host-timezone.ts#L300) takes
+The [host adapter](../../../../packages/temporal/host-timezone.ts#L303) takes
 the minimum of seven days and the generated interval for the identifier or
 its alias target. All ten effective short pairs in the week scan have
 300,600-second probes. The scan binds the actual generated links, primary
 identifiers and intervals by hash. A probe interval therefore crosses at
 most one offset change, so an equal-offset span contains none. A changed
 span is resolved to its first new-offset second by
-[bisection](../../../../packages/temporal/host-timezone.ts#L376).
+[bisection](../../../../packages/temporal/host-timezone.ts#L379).
 [Week-spacing results](pinned-node-week-spacing-summary.json).
 
 This verifies the lookup prerequisites for these pinned providers, including

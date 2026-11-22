@@ -147,6 +147,68 @@ node "$replay" legacy "$replay_dir/node_modules/@formatjs/intl-datetimeformat" "
 node "$replay" owned "$datetime_pkg" "$temporal_pkg" "$matcher_pkg" "$memoize_pkg"
 ```
 
+### Released formatter with its shipped data
+
+The custom rows in the replay above exercise capabilities beyond the two
+datasets shipped with 7.8.1. A separate scan loads the published force entry,
+English locale and one data entry per Node 26.5.1 process. It reads the actual
+decoded table on the installed constructor. The pinned tarball is
+[intl-datetimeformat-7.8.1.tgz](https://registry.npmjs.org/@formatjs/intl-datetimeformat/-/intl-datetimeformat-7.8.1.tgz)
+with npm integrity
+`sha512-tGVZ3KdbHQwmA8wBn7gEJeOE9zo0InoyrbJWsD4VYdHGJfXykflOpdNC69+QaZShxfEQ6dwUfXjDfNzxe4AO4A==`.
+The scanner pins the installed formatter, locale and data file bytes.
+
+- `add-all-tz.js` has 452 tables and 43,846 effective offset changes.
+  SHA-256 `a7742ee85beefcdae55f60cafcab5caabf9d1101b6009d2c1415e06aece8ef2d`.
+- `add-golden-tz.js` has 246 tables and 26,726 effective offset changes.
+  SHA-256 `2c2094c54fc26c8b43f1afae3748e939d06520f6d327b7e81c08eac149c22e2d`.
+
+The released formatter takes the row preceding the first timestamp greater
+than the input. The scan collapses raw rows sharing the same running timestamp
+maximum before counting changes. This preserves the formatter's lookup for
+the 311 non-increasing rows in the full table and 205 in the golden table.
+A resolved alias uses its target table, and a missing target gives zero offset.
+Public `formatToParts` probes check both sides of the closest changes and
+whole-day jumps, plus four Instant-limit positions per installed table key.
+All 1,886 full-table probes and 1,030 golden-table probes pass.
+
+Both tables have minimum effective change separation 601,200 seconds, maximum
+offset magnitude 57,368 seconds, maximum jump 86,400 seconds and zero changes
+within two days of either Instant limit. This supplies the four conditional
+premises for those fixed formatter/data pairs:
+
+- Every candidate for local epoch scalar `x` lies in `(x − day, x + day)`.
+  Over that interval the rule changes at most once, so the endpoint offsets
+  include every possible offset and the runtime round-trip filters the list.
+  Near either Instant limit the corresponding two-day neighborhoods are
+  constant, so a clipped probe still reads the offset that applies outside.
+  A single outside candidate leaves an empty list and equal fallback offsets,
+  producing RangeError. No mixed valid/invalid fold is possible.
+  [Proposal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
+- For a forward change at `t` from offset `a` to `b`, a gap input `x` lies in
+  `[t + a, t + b)`. The two day-radius probes straddle `t` and see `a` and `b`.
+  Earlier segments end before `t − day` in local time, and later segments start
+  after `t + day`, because adjacent changes are more than two days away and
+  every offset magnitude is below one day. Thus the latest reachable local
+  before the gap is `t + a − 1 ns`, and the earliest after is `t + b`. Both
+  have one candidate. The shift is `b − a`, and the exact earlier/later epochs
+  are `x − b` and `x − a`. The no-change endpoint neighborhoods ensure these
+  gap windows stay inside the Instant range.
+  [Proposal comparison §11.1.12 steps 6 and 7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
+Reproduce with the same npm install command above. Run each data entry in
+a fresh process.
+
+```sh
+scan=knowledge-base/audits/temporal-timezone-boundary-proof/legacy-shipped-data-scan.mjs
+legacy_pkg="$replay_dir/node_modules/@formatjs/intl-datetimeformat"
+node "$scan" "$legacy_pkg" add-all-tz.js
+node "$scan" "$legacy_pkg" add-golden-tz.js
+```
+
+The bounds describe the shipped legacy data as read by that release. Replacing
+the table can invalidate them, as the custom replay demonstrates.
+
 ## Owned FormatJS candidate validation
 
 A public package-to-package regression installs the FormatJS DateTimeFormat
@@ -155,7 +217,7 @@ and loads the synthetic upper and lower folds. Before the fix,
 disambiguation modes. The comparison requires RangeError when either
 actual candidate is outside the Instant limits.
 
-The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
+The [offset provider](../../../packages/temporal/host-timezone.ts#L73) reuses
 the installed formatter's private candidate check within one day of either
 limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L441)
 enumerates decoded historical and recurring offsets and round-trips each
@@ -281,7 +343,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L539).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L318).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L321).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
@@ -309,7 +371,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L346).
+[Host search](../../../packages/temporal/host-timezone.ts#L349).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary

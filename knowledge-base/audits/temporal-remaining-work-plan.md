@@ -390,6 +390,13 @@ Plain timezone projection and the comparison cutoff for numeric ranges.
 [Apia exact target](temporal-apia-exact-target-spec-issue.md).
 [Intl witnesses](temporal-amendment-spec-issues.md).
 
+The two shipped DateTimeFormat 7.8.1 datasets now have checked spacing and
+endpoint bounds for all four host timezone conditions. Replacement data still
+need their own proof. The native Intl candidate path now appends private
+candidates without calling inherited index setters.
+[Legacy dataset proof](temporal-timezone-boundary-proof/README.md#released-formatter-with-its-shipped-data).
+[Host regression](../../packages/temporal/tests/host-timezone.test.ts#L98).
+
 From 16:35 to 17:47 UTC, 44 numbered conditions closed in 71 minutes. The
 final two batches in that interval each landed a validated local correction
 in about eight minutes, with 16 in-scope conditions still open. The earlier

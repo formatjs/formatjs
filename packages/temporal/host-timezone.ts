@@ -5,6 +5,7 @@ import {
   mathAbs,
   mathMin,
   numberFrom,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
   lastExplicitTransition,
@@ -252,8 +253,10 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
           instant >= -limit &&
           instant <= limit &&
           instant + offsetNanoseconds(instant) === local
-        )
-          candidates[candidates.length] = instant
+        ) {
+          // Proposal comparison §11.1.13 step 3.a: Append to the private candidate List.
+          setDataProperty(candidates, `${candidates.length}`, instant)
+        }
       }
     }
     return apply(arraySort, candidates, [
