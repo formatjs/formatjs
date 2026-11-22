@@ -26,6 +26,8 @@ export const hostCalendarData: boolean =
 export type TableCalendarId = 'chinese' | 'dangi' | 'islamic-umalqura'
 const alphabet =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
+const apply = Reflect.apply
+const stringIndexOf = String.prototype.indexOf
 export function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {
   return calendar === 'chinese' || calendar === 'dangi'
 }
@@ -38,8 +40,8 @@ function pattern(calendar: 'chinese' | 'dangi', year: number): number {
   if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)
     throw new RangeErrorConstructor('Calendar year out of range')
   return table.dictionary[
-    alphabet.indexOf(table.years[index * 2]) * 64 +
-      alphabet.indexOf(table.years[index * 2 + 1])
+    apply(stringIndexOf, alphabet, [table.years[index * 2]]) * 64 +
+      apply(stringIndexOf, alphabet, [table.years[index * 2 + 1]])
   ]
 }
 function length(packed: number): number {

@@ -22,6 +22,23 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Calendar addition correction, 2026-11-22
+
+[ISO CalendarDateAdd and three arithmetic helper maps](temporal-calendar-date-add-iso-contract-audit.md)
+and [non-ISO provider map](temporal-noniso-calendar-add-contract-audit.md) cover
+all numbered comparison branches, bounds and exact-integer obligations. These
+are proposal comparisons; requested authority and historical counts stay unchanged.
+
+Common addition no longer invokes mutable Array.map/species, inherited private
+monthCode or non-ISO regex/string metadata hooks. Four duration Gets still precede
+integer validation. Nine public operations reproduced 47 failing case/profile
+combinations in forced TS; native controls passed. Six valid month-code cases,
+seven rejection cases and one public inherited-getter control preserve semantics.
+Host-provider cold/warm caches and full calendar/data contracts remain open.
+Seven focused gates pass. Expanded validation: 73 tests pass (60 executed,
+13 cached), plus Temporal and DurationFormat package builds. Target manifest:
+[calendar-add validation](temporal-calendar-add-validation-targets.txt).
+
 ## ECMA-262 dependency sections touched
 
 Execution estimate, 2026-11-21: **7–14 calendar days of sustained parallel work**,

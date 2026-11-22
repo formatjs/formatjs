@@ -93,7 +93,7 @@ durationFieldNames by index. Negation no longer calls mutable Object.keys or
 Array iteration. Same ten normalized fields receive the same sign; conversion,
 whole-day truncation and overflow ordering remain unchanged.
 
-Shared [plain arithmetic controls](../../packages/temporal/tests/plain-arithmetic-oracle.ts#L39)
+Shared [plain arithmetic controls](../../packages/temporal/tests/plain-arithmetic-oracle.ts#L75)
 exercise private-key and iterator mutation across PlainDate, PlainDateTime and
 PlainYearMonth. Before correction, the TS gate reproduced six Object.keys and
 four iterator failures; native control passed. All nine focused gates pass.

@@ -204,10 +204,12 @@ export function daysInMonth(
 }
 function monthCode(calendar: CalendarId, year: number, month: number): string {
   if (isLunisolar(calendar)) {
-    const leap = tableLeapMonth(calendar, year)
+    const leap = tableLeapMonth(calendar, year),
+      code = month - numberFrom(leap > 0 && month > leap)
     return (
       'M' +
-      String(month - numberFrom(leap > 0 && month > leap)).padStart(2, '0') +
+      (code < 10 ? '0' : '') +
+      code +
       (leap > 0 && month === leap + 1 ? 'L' : '')
     )
   }
@@ -224,17 +226,16 @@ function monthFromCode(
   overflow: Overflow
 ): number {
   if (isLunisolar(calendar)) {
-    if (!/^M(0[1-9]|1[0-2])L?$/.test(code))
+    const leapCode = code.length === 4 && code[3] === 'L'
+    if (code.length !== 3 && !leapCode)
       throw new RangeErrorConstructor('Invalid month code')
-    const number = numberFrom(code.slice(1, 3)),
+    const number = isoMonthFromCode(code[0] + code[1] + code[2]),
       leap = tableLeapMonth(calendar, year)
-    if (code.endsWith('L') && leap !== number && overflow === 'reject')
+    if (leapCode && leap !== number && overflow === 'reject')
       throw new RangeErrorConstructor('Leap month absent')
     return (
       number +
-      numberFrom(
-        leap > 0 && (number > leap || (number === leap && code.endsWith('L')))
-      )
+      numberFrom(leap > 0 && (number > leap || (number === leap && leapCode)))
     )
   }
   if (calendar === 'hebrew' && code === 'M05L') {
@@ -242,13 +243,10 @@ function monthFromCode(
       throw new RangeErrorConstructor('Leap month absent')
     return 6
   }
-  if (
-    !/^M(0[1-9]|1[0-3])$/.test(code) ||
-    (code === 'M13' &&
-      !arrayIncludes(['coptic', 'ethiopic', 'ethioaa'], calendar))
-  )
-    throw new RangeErrorConstructor('Invalid month code')
-  const month = numberFrom(code.slice(1))
+  const month =
+    code === 'M13' && arrayIncludes(['coptic', 'ethiopic', 'ethioaa'], calendar)
+      ? 13
+      : isoMonthFromCode(code)
   return (
     month + numberFrom(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
   )
@@ -460,7 +458,9 @@ function addCalendarEpochDay(
     duration.months ?? 0,
     duration.weeks ?? 0,
     duration.days ?? 0,
-  ].map(integer)
+  ]
+  for (let index = 0; index < values.length; index++)
+    values[index] = integer(values[index])
   if (arraySome(values, x => x < 0) && arraySome(values, x => x > 0))
     throw new RangeErrorConstructor('Mixed duration signs')
   const {year, month} = addYearMonth(
@@ -472,7 +472,7 @@ function addCalendarEpochDay(
   )
   const epoch = calendarToEpochDayRaw(
     calendar,
-    {year, month, day: original.day},
+    {year, month, monthCode: undefined, day: original.day},
     overflow
   )
   return epoch + integer(7 * values[2] + values[3])
