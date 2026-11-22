@@ -181,6 +181,48 @@ assert.notEqual(
     for (const hook of nativeFormatterMethods) delete hook.call
   }
 }
+{
+  const value = new Temporal.ZonedDateTime(0n, 'UTC')
+  const options = {year: 'numeric'}
+  const operations = [
+    () => value.toLocaleString('en', options),
+    () => new Intl.DateTimeFormat('en', options).format(0),
+    () => new Intl.DateTimeFormat('en', 0).format(0),
+  ]
+  const expected = operations.map(run => run())
+  const OriginalObject = Object
+  let actual
+  try {
+    globalThis.Object = new Proxy(OriginalObject, {
+      apply() {
+        throw new Error('Unexpected global Object call')
+      },
+    })
+    actual = operations.map(run => run())
+  } finally {
+    globalThis.Object = OriginalObject
+  }
+  assert.deepEqual(actual, expected)
+  const reads = []
+  const conflictingZone = {
+    get calendar() {
+      reads.push('calendar')
+      return 'iso8601'
+    },
+    get timeZone() {
+      reads.push('timeZone')
+      return 'UTC'
+    },
+    get hour() {
+      reads.push('hour')
+      return 'numeric'
+    },
+  }
+  assert.throws(() => value.toLocaleString('a', conflictingZone), RangeError)
+  assert.deepEqual(reads, [])
+  assert.throws(() => value.toLocaleString('en', conflictingZone), TypeError)
+  assert.deepEqual(reads, ['calendar', 'timeZone'])
+}
 let scenarios = 0
 for (const sample of cases) {
   const [first, last] = sample.values(Temporal)

@@ -2,6 +2,7 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   numberFrom,
+  objectFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
@@ -172,9 +173,12 @@ export function installLegacyDateTimeFormat(
       get(_target, key) {
         // ECMA-402 §11.1.2 step 4: Record options as the host resolves them.
         if (source === undefined) {
+          // ECMA-402 §9.2.10 steps 1–2: default or coerce the options object.
+          // https://tc39.es/ecma402/#sec-coerceoptionstoobject
           if (options === null)
             throw new TypeErrorConstructor('Invalid options')
-          source = options === undefined ? createObject(null) : Object(options)
+          source =
+            options === undefined ? createObject(null) : objectFrom(options)
         }
         const raw = source![key]
         if (typeof key !== 'string' || raw === undefined) return raw

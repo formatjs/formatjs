@@ -6,6 +6,7 @@ import {
   arrayIncludes,
   arraySome,
   numberFrom,
+  objectFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -150,12 +151,17 @@ export function legacyDateTimeProjection(
       // Temporal comparison §15.4.1 step 3 and ECMA-262 §7.3.2: coerce options
       // lazily, then capture each string option's Get and conversion once.
       if (source === undefined) {
+        // ECMA-402 §9.2.10 steps 1–2: default or coerce the options object.
+        // https://tc39.es/ecma402/#sec-coerceoptionstoobject
         if (options === null) throw new TypeErrorConstructor('Invalid options')
-        source = options === undefined ? createObject(null) : Object(options)
+        source =
+          options === undefined ? createObject(null) : objectFrom(options)
       }
       if (typeof key !== 'string') return source![key]
       if (!HasOwnProperty(snapshot, key)) {
         const raw = source![key]
+        // §15.4.1 steps 27–29 reject an explicit zone before coercion.
+        // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
         if (
           key === 'timeZone' &&
           value.kind === 'ZonedDateTime' &&
