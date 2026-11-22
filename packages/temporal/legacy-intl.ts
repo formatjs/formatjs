@@ -19,6 +19,7 @@ import {
 } from '#packages/temporal/locale.js'
 import type {TemporalNamespace} from '#packages/temporal/index.js'
 import {
+  hostDateBoundary,
   legacyDateTimeFormat,
   legacyDateTimeParts,
   legacyDateTimeRangeFormat,
@@ -104,7 +105,8 @@ export function installLegacyDateTimeFormat(
       state.projections,
       [value.kind]
     )
-    if (cached) {
+    const boundary = hostDateBoundary(value, state.calendar)
+    if (cached && boundary === undefined) {
       const ns = value.epochNanoseconds
       return {
         formatter: cached,
@@ -124,7 +126,8 @@ export function installLegacyDateTimeFormat(
       false,
       intrinsics
     )
-    apply(mapSet, state.projections, [value.kind, result.formatter])
+    if (boundary === undefined)
+      apply(mapSet, state.projections, [value.kind, result.formatter])
     return result
   }
   function single(state: State, input: unknown): Projection | undefined {

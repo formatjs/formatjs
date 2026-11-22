@@ -1,25 +1,31 @@
 import {
   RangeErrorConstructor,
+  arrayIncludes,
   mathAbs,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
+import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
+import {calendarIds, type CalendarId} from '#packages/temporal/calendar.js'
 import {
   legacyCalendarParts,
   legacyCalendarRangeParts,
 } from '#packages/temporal/legacy-calendar-date.js'
 import {
   correctLunisolarParts,
+  joinCalendarRangeParts,
   lunisolarRangeParts,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 
 export const legacyTimeZoneName: unique symbol = Symbol()
+export const legacyHostDateBoundary: unique symbol = Symbol()
 
 export interface LegacyDateTimeProjection {
   formatter: Intl.DateTimeFormat
   milliseconds: number
   plain?: boolean
   [legacyTimeZoneName]?: string
+  [legacyHostDateBoundary]?: number
 }
 const limit = 8640000000000000
 const cycle = 146097 * 86400000
@@ -35,6 +41,20 @@ type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
 const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
+
+// Temporal §15.6.15 steps 2–6 format the PlainDate's ISO civil date.
+// https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaldate
+export function hostDateBoundary(
+  value: TemporalDateTimeValue,
+  calendar: string
+): number | undefined {
+  if (value.kind !== 'PlainDate') return undefined
+  const milliseconds = value.epochNanoseconds / 1_000_000n
+  if (milliseconds >= -limit && milliseconds <= limit) return undefined
+  // Keep local calendar arithmetic for calendars Temporal implements.
+  if (arrayIncludes(calendarIds, calendar as CalendarId)) return undefined
+  return milliseconds < 0n ? -limit : limit
+}
 
 // ECMA-402 §11.5.7 steps 2–5 and §11.5.10 steps 2–5: Copy the parts in order.
 function replacePartValues<T extends Intl.DateTimeFormatPart>(
@@ -188,12 +208,42 @@ function rangeShifts(
     : [shift(first), shift(last)]
 }
 
+function hostBoundaryRangeParts(
+  first: LegacyDateTimeProjection,
+  last: LegacyDateTimeProjection,
+  parts: RangeParts
+): Intl.DateTimeRangeFormatPart[] | undefined {
+  const start = first[legacyHostDateBoundary]
+  const end = last[legacyHostDateBoundary]
+  if (start === undefined && end === undefined) return undefined
+  if (start !== undefined && end !== undefined && start !== end) {
+    // Opposite Date limits need different host zones. Use the locale's
+    // fallback interval with the independently formatted endpoint labels.
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+    return joinCalendarRangeParts(
+      first.formatter,
+      apply(nativeParts!, first.formatter, [first.milliseconds]),
+      apply(nativeParts!, last.formatter, [last.milliseconds]),
+      parts,
+      false
+    )
+  }
+  // Ordinary PlainDate projections use noon, which stays on the same date
+  // in either UTC or the lower boundary formatter's UTC−12 zone.
+  return apply(parts, end === -limit ? last.formatter : first.formatter, [
+    first.milliseconds,
+    last.milliseconds,
+  ])
+}
+
 export function legacyDateTimeRangeParts(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] {
+  const boundary = hostBoundaryRangeParts(first, last, parts)
+  if (boundary) return boundary
   const extended = legacyCalendarRangeParts(
     first,
     last,
@@ -237,6 +287,8 @@ export function legacyDateTimeRangeFormat(
   parts: RangeParts,
   resolved: Resolved
 ): string {
+  const boundary = hostBoundaryRangeParts(first, last, parts)
+  if (boundary) return joinPartValues(boundary)
   const extended = legacyCalendarRangeParts(
     first,
     last,

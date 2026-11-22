@@ -18,7 +18,9 @@ import {
   legacyZonedProjection,
 } from '#packages/temporal/legacy-zoned-date.js'
 import {
+  hostDateBoundary,
   legacyDateTimeFormat,
+  legacyHostDateBoundary,
   type LegacyDateTimeProjection,
 } from '#packages/temporal/legacy-extended-date.js'
 
@@ -333,6 +335,11 @@ export function legacyDateTimeProjection(
         selected.timeZoneName = 'short'
     }
   }
+  const boundary = hostDateBoundary(value, resolved.calendar)
+  // The lower Date limit is UTC midnight one day after the target PlainDate.
+  // UTC−12 places the host at noon on that date. UTC midnight at the upper
+  // limit already has the target calendar date.
+  if (boundary !== undefined && boundary < 0) selected.timeZone = 'Etc/GMT+12'
   const formatter = new Constructor(resolved.locale, selected)
   const ns = value.epochNanoseconds
   if (zoned) {
@@ -348,7 +355,12 @@ export function legacyDateTimeProjection(
       )
   }
   const ms = ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
-  return {formatter, milliseconds: numberFrom(ms), plain: !instant}
+  return {
+    formatter,
+    milliseconds: boundary ?? numberFrom(ms),
+    plain: !instant,
+    [legacyHostDateBoundary]: boundary,
+  }
 }
 
 function legacyStyleFields(

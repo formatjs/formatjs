@@ -152,6 +152,80 @@ assert.notEqual(
   'Exercise installed native-Intl bridge'
 )
 {
+  const minimum = -8_640_000_000_000_000
+  const maximum = -minimum
+  const day = 86_400_000
+  const first = Temporal.PlainDate.from('-271821-04-19')
+  const second = first.add({days: 1})
+  const last = Temporal.PlainDate.from('+275760-09-13')
+  const penultimate = last.subtract({days: 1})
+  for (const calendar of ['islamic', 'islamic-rgsa']) {
+    const options = {
+      calendar,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      weekday: 'long',
+      timeZone: 'UTC',
+    }
+    const utc = new Native('en', options)
+    if (utc.resolvedOptions().calendar !== calendar) continue
+    const west = new Native('en', {...options, timeZone: 'Etc/GMT+12'})
+    const formatter = new Intl.DateTimeFormat('en', options)
+    // Warm the ordinary PlainDate projection before exercising either edge.
+    formatter.format(second)
+    for (const [date, host, milliseconds] of [
+      [first, west, minimum],
+      [last, utc, maximum],
+    ]) {
+      assert.equal(formatter.format(date), host.format(milliseconds))
+      assert.deepEqual(
+        formatter.formatToParts(date),
+        host.formatToParts(milliseconds)
+      )
+      assert.equal(
+        date.toLocaleString('en', options),
+        host.format(milliseconds)
+      )
+    }
+    for (const [start, end, host, startMs, endMs] of [
+      [first, second, west, minimum, minimum + day],
+      [second, first, west, minimum + day, minimum],
+      [penultimate, last, utc, maximum - day, maximum],
+    ]) {
+      assert.equal(
+        formatter.formatRange(start, end),
+        host.formatRange(startMs, endMs)
+      )
+      assert.deepEqual(
+        formatter.formatRangeToParts(start, end),
+        host.formatRangeToParts(startMs, endMs)
+      )
+    }
+    for (const [start, end, startParts, endParts] of [
+      [first, last, west.formatToParts(minimum), utc.formatToParts(maximum)],
+      [last, first, utc.formatToParts(maximum), west.formatToParts(minimum)],
+    ]) {
+      const parts = formatter.formatRangeToParts(start, end)
+      for (const [source, reference] of [
+        ['startRange', startParts],
+        ['endRange', endParts],
+      ]) {
+        assert.deepEqual(
+          parts
+            .filter(part => part.source === source)
+            .map(({type, value}) => ({type, value})),
+          reference
+        )
+      }
+      assert.equal(
+        formatter.formatRange(start, end),
+        parts.map(part => part.value).join('')
+      )
+    }
+  }
+}
+{
   const defineProperty = Object.defineProperty
   const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
   const originalBound = getOwnPropertyDescriptor(Object.prototype, 'bound')
