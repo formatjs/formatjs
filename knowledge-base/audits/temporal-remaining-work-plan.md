@@ -178,9 +178,11 @@ locale invariants and generated-table fallbacks now pass as well. §15.11.1.1
 step 3 and its three containing clause gates are verified under the supplied
 provider contract. The queue now holds 77 conditional steps across nine
 families. [Fresh constructor evidence](temporal-duration-fresh-constructor-closure-evidence.json).
-Generated profiles and the hashed Node native Intl provider supply the
-endpoint-window proof. Other host profiles remain conditional.
-[Timezone evidence](temporal-timezone-boundary-proof/node-icu/temporal-node-icu-endpoint-proof.md). Helper annotation
+Generated profiles, both configured Linux x64 Node binaries, and the tested
+Hermes compiled formatter supply endpoint and spread proofs. The manual
+strict Node24 test reports 290 differences against newer ICU fixtures.
+Other host profiles remain conditional.
+[Timezone evidence](temporal-timezone-boundary-proof/node-icu/temporal-pinned-node-icu-proof.md). Helper annotation
 work remains separately tracked. An ETA for full in-scope compliance remains unresolved. Published-comparison
 conflicts need reconciliation, and same-realm package failures need a validated
 fix. Annotation timing estimates cover the numbered source comments.

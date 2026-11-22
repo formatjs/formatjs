@@ -14,5 +14,6 @@
   "checkedActualTransitions": 500,
   "rawScanSha256": "fa9ec20ab73ec91d8db78ced20ca815bd656e99cd7fc710ef2cb6df467eee1d4",
   "recordsSha256": "f5381633cb0e457e38bb75009b36c8f2d847ca0c9eb06108b389083fa2c56118",
-  "scriptSha256": "3ab044da510a5b296641e73de24e5ececb75ad3652c274f629a59b15091dde42"
+  "scriptSha256": "724cb7e802391e04edbc9274e80090465f1108f8bedd29d5092d0b37b4a82e87",
+  "runtimeLoaderSha256": "dc086bae1355cdb5f7e99b305dcb3fc2309cfd3fad326980ddf70cc69f761190"
 }

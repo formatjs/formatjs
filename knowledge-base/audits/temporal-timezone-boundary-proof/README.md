@@ -51,7 +51,9 @@ The same bound binary and resource also supply a
 for relative rounding. Its [11-day endpoint scan](retained-week-window-summary.json)
 also establishes the [retained-prefix week range bound](../temporal-retained-week-endpoint-validity.md).
 
-Other host binaries, timezone resources and replacement Intl providers
+The [pinned-toolchain proof](node-icu/temporal-pinned-node-icu-proof.md)
+adds exact Linux x64 Node 24.14.0 and 26.8.1 builds and the compiled Hermes
+formatter. Other host binaries, timezone resources and replacement Intl providers
 keep their own boundary premise. The full row stays conditional.
 
 ## Reproduce analysis

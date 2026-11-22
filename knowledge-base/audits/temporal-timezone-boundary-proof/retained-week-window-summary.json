@@ -63,6 +63,7 @@
       }
     ],
     "rawScanSha256": "754497f31c68b50dbc65eae9c39860893d2827f214793e90d92ecb4dd36d790d",
-    "scriptSha256": "ea473aecaf79b2b77bc574ca365552b1260ca44167af89027c1202db6ea0c81a"
+    "scriptSha256": "2c3297eb6896e544d36e3c10010e4d0fd63e6fdd0b65590cc75d2f2555d4e2b5",
+    "runtimeLoaderSha256": "dc086bae1355cdb5f7e99b305dcb3fc2309cfd3fad326980ddf70cc69f761190"
   }
 }

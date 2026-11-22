@@ -1,0 +1,28 @@
+{
+  "scope": "Exact Bazel Linux x64 host_calendar_hermes_test runfiles executable with --native-datetimeformat",
+  "executableSha256": "383bbd1a09c1ad7a823491dfc357e0e2a3f07bff0d399dbbb92c320b944d4e8a",
+  "embeddedTimeZoneJsonSha256": "27c865546d28bf55197ca487c8c5763ad3fe3877ceebad6546c69e8cf86e7ebf",
+  "embeddedOffset": 688496135,
+  "packedTsSha256": "c62e83781c612170917463fac92be16e174510edfc6a84c66bcec67dc10beb0d",
+  "matchedObjects": true,
+  "linkedIcuSharedLibraries": false,
+  "proofSourceSha256": {
+    "temporal-hermes-compiled-zone-binding.py": "16992ffc8bd069047e217703a0da7de93c8a436ea4f12bf3a65614a4ed934d21",
+    "temporal-hermes-compiled-zone-binding.txt": "d11d459e56d61f9ed04ebfdca839503dbee6816ca58f8bc2e9d5da2eceb6ca7c"
+  },
+  "runtimeSourceSha256": {
+    "packages/temporal/BUILD.bazel": "2a7ade9355e73a34580f212a2c9331c7b63d343c45c371159d73792e8e78fffc",
+    "packages/temporal/host-timezone.ts": "2cb5324d7f20104efa99b2706bb78a02249502d500770705bc8fbb97795f9a36",
+    "native/hermes/runner.cpp": "a4ce0174cc786666fc5492bf031b5fe0b7280952f41645703ce132cb6022d8b1",
+    "native/hermes/datetimeformat.cpp": "cba6986c9587cb505e86d7018072d5146489cc1e33430762222114a4ef2afffd",
+    "crates/intl_datetimeformat/ffi.rs": "3770db148cc82a5258f69a0378600f0f4db6abc06e60a101cebbc88599744a0d",
+    "crates/intl_datetimeformat/instance.rs": "db8ae5f7315e0fdec942eb8e05f425a6f222aba5d0560740d9387f9ef2a1a98b",
+    "crates/intl_datetimeformat/timezone.rs": "e9aadad30d1ca73153e54aee7634b6069868ac8d87ef1fa22cd6b1d1ac9a07ff",
+    "crates/intl_datetimeformat/render.rs": "2b86385276721eb75c41c41e2f95b7d0a099fd2f27e7176ee83942d5e18066b4"
+  },
+  "validation": {
+    "target": "//packages/temporal:host_calendar_hermes_test",
+    "result": "PASSED",
+    "logSha256": "fe8762916c001b86469faa54d9544f4af6ffd85af411449481955dbed9ccf9cb"
+  }
+}

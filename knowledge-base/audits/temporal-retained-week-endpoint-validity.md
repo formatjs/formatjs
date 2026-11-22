@@ -73,7 +73,10 @@ It reports 638 zones, zero lower changes, zero upper negative changes,
 and four upper +1h transitions (the same two zones and aliases
 Chile/Continental and Chile/EasterIsland). Exact Node 26.5.1, ICU 78.3, tz2026b
 binary SHA-256 fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6.
-Unexamined host builds need their own endpoint and six-day certificates.
+The [pinned-toolchain proof](temporal-timezone-boundary-proof/node-icu/temporal-pinned-node-icu-proof.md)
+extends these bounds to the configured Linux x64 Node 24 and 26 profiles
+and the tested compiled Hermes formatter. Unexamined host builds need
+their own endpoint and six-day certificates.
 Fixed offsets satisfy both conditions directly.
 [Scan summary](temporal-timezone-boundary-proof/retained-week-window-summary.json).
 

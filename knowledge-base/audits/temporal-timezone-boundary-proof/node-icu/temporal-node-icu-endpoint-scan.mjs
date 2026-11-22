@@ -1,34 +1,7 @@
 import assert from 'node:assert/strict'
-import {createHash} from 'node:crypto'
-import {readFileSync} from 'node:fs'
-import {DynamicLibrary, toString} from 'node:ffi'
-import {endianness} from 'node:os'
+import {loadPinnedIcu} from './temporal-pinned-icu-runtime.mjs'
 
-assert.equal(endianness(), 'LE', 'UChar buffers require little endian')
-assert.equal(process.platform, 'linux')
-assert.equal(process.arch, 'x64')
-assert.deepEqual(process.execArgv, ['--experimental-ffi'])
-for (const variable of [
-  'NODE_ICU_DATA',
-  'ICU_DATA',
-  'ICU_TIMEZONE_FILES_DIR',
-  'NODE_OPTIONS',
-  'LD_PRELOAD',
-  'LD_LIBRARY_PATH',
-]) {
-  assert.equal(process.env[variable], undefined, variable)
-}
-assert.equal(process.config.variables.icu_system, false)
-assert.equal(process.config.variables.icu_small, false)
-const binarySha256 = createHash('sha256')
-  .update(readFileSync(process.execPath))
-  .digest('hex')
-assert.equal(
-  binarySha256,
-  'fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6'
-)
-const icuMajor = process.versions.icu.split('.')[0]
-const lib = new DynamicLibrary(null)
+const {binarySha256, icuMajor, lib, toString} = await loadPinnedIcu()
 function bind(name, result, args) {
   return lib.getFunction(`${name}_${icuMajor}`, {
     return: result,

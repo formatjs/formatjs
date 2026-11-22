@@ -1,0 +1,66 @@
+{
+  "runtime": {
+    "node": "v26.8.1",
+    "icu": "78.3",
+    "tz": "2026c"
+  },
+  "binarySha256": "19235a9b678f84729464c52623f92de130a165452747c6826d3fdc13df3abcc3",
+  "systemZoneIdentifiers": 638,
+  "twoDayEndpointScan": {
+    "intervals": 1276,
+    "transitions": 0,
+    "rawSha256": "67b68bf4433fe31d3702e74e71389aab4b9e92ffeea1c09aa9d0e9070a125bee"
+  },
+  "elevenDayEndpointScan": {
+    "intervals": 1276,
+    "lowerChanges": 0,
+    "upperNegativeChanges": 0,
+    "upperPositiveChanges": [
+      {
+        "zone": "America/Santiago",
+        "at": 8639999496000000,
+        "before": -14400000,
+        "after": -10800000
+      },
+      {
+        "zone": "Chile/Continental",
+        "at": 8639999496000000,
+        "before": -14400000,
+        "after": -10800000
+      },
+      {
+        "zone": "Chile/EasterIsland",
+        "at": 8639999496000000,
+        "before": -21600000,
+        "after": -18000000
+      },
+      {
+        "zone": "Pacific/Easter",
+        "at": 8639999496000000,
+        "before": -21600000,
+        "after": -18000000
+      }
+    ],
+    "rawSha256": "671919db6f00ac28ade54791d349812cdae64ce189b8d0551580f22a15daa0f9"
+  },
+  "sixDaySpreadScan": {
+    "maximumSpreadMilliseconds": 86400000,
+    "globalBounds": 622,
+    "historicalBounds": 16,
+    "absoluteFiniteRuleStarts": 30811,
+    "checkedActualTransitions": 500,
+    "rawSha256": "dd0b9b30c89d68f210297c36dcdd28762226f03c0ac4c18b8bb41ab74d91c43e"
+  },
+  "proofSourceSha256": {
+    "temporal-node-icu-endpoint-scan.mjs": "2c3297eb6896e544d36e3c10010e4d0fd63e6fdd0b65590cc75d2f2555d4e2b5",
+    "temporal-node-icu-rule-spread.mjs": "724cb7e802391e04edbc9274e80090465f1108f8bedd29d5092d0b37b4a82e87",
+    "temporal-pinned-icu-runtime.mjs": "dc086bae1355cdb5f7e99b305dcb3fc2309cfd3fad326980ddf70cc69f761190",
+    "temporal-pinned-node-icu-binding.sh": "7714a51943ea5c43dd74680e5d97ae8d79e59c779358c81c6688e58c7d4739f6",
+    "temporal-node-26.8.1-icu-binding.txt": "79ed32cfc128c7d79be2ac277a93ff37a915df613a5458d1a5215d854824162b"
+  },
+  "validation": {
+    "target": "//packages/temporal:host_timezone_reference_node26_test",
+    "result": "PASSED",
+    "logSha256": "d8bd60521e1f65f3ae4fba7bf9f637d120181b018908ae76eaf1f4ce5769ba12"
+  }
+}
