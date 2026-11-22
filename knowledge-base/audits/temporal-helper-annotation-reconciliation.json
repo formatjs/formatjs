@@ -33688,7 +33688,7 @@
       "enclosing_numbered": 26,
       "retired_callback": 4
     },
-    "direct_with_step_wording": 862,
+    "direct_with_step_wording": 863,
     "direct_numbered_vs_inventory_sections": {
       "overlap": 982
     },
@@ -33801,7 +33801,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "72c00bdb4ea4f46239bab41e64a2559204d2bd34fc8e999b1a214fd33b0fdf5b",
+    "packages/temporal/host-timezone.ts": "9ce9220fd4498d71c0721fd1bdfba4fe9b422ae6bb73bea4e44e580b1fdb0117",
     "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
@@ -34425,10 +34425,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "createHostTimeZoneProvider",
-        "start_line": 75,
-        "end_line": 171,
-        "anchor_line": 74,
-        "source_sha256": "72c00bdb4ea4f46239bab41e64a2559204d2bd34fc8e999b1a214fd33b0fdf5b",
+        "start_line": 80,
+        "end_line": 191,
+        "anchor_line": 79,
+        "source_sha256": "9ce9220fd4498d71c0721fd1bdfba4fe9b422ae6bb73bea4e44e580b1fdb0117",
         "spec_row_ids": [
           "11.1.9/algorithm-1/step-3",
           "11.1.13/algorithm-1/step-3.a",
@@ -34442,7 +34442,7 @@
         "start_line": 410,
         "end_line": 435,
         "anchor_line": 409,
-        "source_sha256": "4cb6ed9908a8306b5f4ff386eae3572274dff87431260d099db3a562b81a761f",
+        "source_sha256": "def3fd9cb6ae2055a18124691fd53df69b868d0c33e254267d8a2fdcc5e13794",
         "spec_row_ids": [
           "11.1.13/algorithm-1/step-3.a",
           "11.1.13/algorithm-1/step-4.a"
@@ -34467,7 +34467,7 @@
         "start_line": 443,
         "end_line": 492,
         "anchor_line": 442,
-        "source_sha256": "4cb6ed9908a8306b5f4ff386eae3572274dff87431260d099db3a562b81a761f",
+        "source_sha256": "def3fd9cb6ae2055a18124691fd53df69b868d0c33e254267d8a2fdcc5e13794",
         "spec_row_ids": [
           "11.1.12/algorithm-1/step-6",
           "11.1.12/algorithm-1/step-7",

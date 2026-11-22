@@ -26,6 +26,8 @@ polyfill data when timezone laws change. When the installed FormatJS formatter s
 its private candidate lookup, named-zone resolution enumerates candidates
 from the installed transitions and validates them at the Instant limits. The
 same provider resolves interior gaps from the nearest reachable local times.
+Reloading the installed FormatJS timezone data refreshes cached offsets and
+transitions on the next lookup.
 
 ## Installation
 

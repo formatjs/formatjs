@@ -65,7 +65,8 @@ shared arithmetic dependencies remain transitive. The Temporal host adapter
 can use the owned formatter’s private candidate lookup. It enumerates decoded
 offsets in the candidate interval and validates exact instants without numeric
 TimeClip. For interior gaps it projects decoded transition boundaries into
-local time and re-queries the shifted instant candidates.
+local time and re-queries the shifted instant candidates. A timezone data
+reload advances the cache generation for the Temporal host adapter.
 [Endpoint audit](audits/temporal-timezone-boundary-proof/README.md#owned-formatjs-candidate-validation). Standalone DateTimeFormat
 composite typechecks and package_json_sync_test are required integration gates.
 

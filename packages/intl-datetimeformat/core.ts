@@ -511,6 +511,14 @@ Object.defineProperty(
   }
 )
 
+let timeZoneDataGeneration = {}
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/timeZoneDataGeneration'),
+  {value: () => timeZoneDataGeneration}
+)
+
 const {formatRangeToParts} = {
   formatRangeToParts(
     this: Intl.DateTimeFormat,
@@ -996,6 +1004,7 @@ DateTimeFormat.__addCalendarLocaleData = function (
 DateTimeFormat.tzData = {}
 DateTimeFormat.__addTZData = function (d: PackedData) {
   DateTimeFormat.tzData = unpack(d)
+  timeZoneDataGeneration = {}
 }
 
 try {

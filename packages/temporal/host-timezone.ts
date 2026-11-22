@@ -22,6 +22,7 @@ export type HostTimeZone = Pick<
 > &
   Partial<Pick<TimeZoneKernel, 'transition'>>
 const apply = Reflect.apply
+const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
 const arraySort = Array.prototype.sort
 const arrayFind = Array.prototype.find
 const arrayCopyWithin = Array.prototype.copyWithin
@@ -32,6 +33,7 @@ const MapConstructor = Map
 const mapGet = MapConstructor.prototype.get
 const mapSet = MapConstructor.prototype.set
 const mapDelete = MapConstructor.prototype.delete
+const mapClear = MapConstructor.prototype.clear
 const mapKeys = MapConstructor.prototype.keys
 const mapSize = Object.getOwnPropertyDescriptor(
   MapConstructor.prototype,
@@ -41,6 +43,9 @@ const mapIteratorNext = Object.getPrototypeOf(new MapConstructor().keys())
   .next as () => IteratorResult<number>
 const Constructor = globalThis.Intl?.DateTimeFormat
 const hostParts = Constructor?.prototype.formatToParts
+const timeZoneDataGenerationKey = Symbol.for(
+  '@formatjs/intl-datetimeformat/timeZoneDataGeneration'
+)
 type OwnedTimeZoneQuery = (
   this: Intl.DateTimeFormat,
   local: bigint,
@@ -78,6 +83,7 @@ function createHostTimeZoneProvider(
 ): {
   offsetNanoseconds: HostTimeZone['offsetNanoseconds']
   ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
+  dataGeneration?: () => object
 } {
   const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
@@ -98,9 +104,22 @@ function createHostTimeZoneProvider(
   // Proposal comparison §11.1.9 step3: named offset memoization stays private.
   // https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor
   const offsets = new MapConstructor<number, bigint>()
+  const dataGeneration = getOwnPropertyDescriptor(
+    parts,
+    timeZoneDataGenerationKey
+  )?.value as (() => object) | undefined
+  let offsetGeneration: object | undefined
   const offsetNanoseconds = (instant: bigint): bigint => {
     // Proposal comparison §11.1.9 step 3: decode host ISO clock fields into offset nanoseconds.
     check(instant)
+    // Proposal comparison §11.1.9 step 3: expire offsets when the data changes.
+    if (dataGeneration) {
+      const generation = dataGeneration()
+      if (generation !== offsetGeneration) {
+        apply(mapClear, offsets, [])
+        offsetGeneration = generation
+      }
+    }
     const epochSecond =
         instant / second - (instant < 0n && instant % second !== 0n ? 1n : 0n),
       key = numberFrom(epochSecond),
@@ -162,6 +181,7 @@ function createHostTimeZoneProvider(
   }
   return {
     offsetNanoseconds,
+    dataGeneration,
     ownedCandidates:
       parts === hostParts && checkHostTemporalCandidates
         ? (local, direction) =>
@@ -179,7 +199,7 @@ export function createHostTimeZoneOffset(
 }
 
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
-  const {offsetNanoseconds, ownedCandidates} =
+  const {offsetNanoseconds, ownedCandidates, dataGeneration} =
     createHostTimeZoneProvider(timeZone)
 
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
@@ -261,11 +281,21 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     value: bigint | null
   }[] = []
   const unchanged: {first: bigint; last: bigint; offset: bigint}[] = []
+  let transitionGeneration: object | undefined
   const transition = (
     instant: bigint,
     direction: 'next' | 'previous'
   ): bigint | null => {
     check(instant)
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: expire transitions when the data changes.
+    if (dataGeneration) {
+      const generation = dataGeneration()
+      if (generation !== transitionGeneration) {
+        transitions.length = 0
+        unchanged.length = 0
+        transitionGeneration = generation
+      }
+    }
     const known = apply(arrayFind, transitions, [
       (row: (typeof transitions)[number]) =>
         // Proposal comparison §6.3.46 steps 9.a, 10.b: reuse a cached result for this direction and instant.

@@ -180,6 +180,56 @@ try {
       RangeError
     )
   }
+  // A warm zone must use the same reloaded offsets as owned candidates.
+  const reloadZone = 'America/New_York'
+  const registerZone = (initialOffset, transitionSecond) => {
+    formatter.__addTZData({
+      abbrvs: 'TEST',
+      offsets: '0|2s0|5k0', // +00:00, +01:00, +02:00
+      zones: [
+        `${reloadZone}|${packedRow(null, initialOffset)}|${packedRow(transitionSecond, 2)}`,
+      ],
+    })
+  }
+  registerZone(0, 10_000n)
+  const existing = new Temporal.ZonedDateTime(0n, reloadZone)
+  const afterTransition = new Temporal.ZonedDateTime(
+    30_000n * second,
+    reloadZone
+  )
+  const dateTimeFormat = new formatter('en', {
+    timeZone: reloadZone,
+    hour: 'numeric',
+    hourCycle: 'h23',
+  })
+  const formattedHour = () =>
+    dateTimeFormat.formatToParts(0).find(part => part.type === 'hour').value
+  const nextTransition = () =>
+    existing.getTimeZoneTransition('next')?.epochNanoseconds
+  const previousTransition = () =>
+    afterTransition.getTimeZoneTransition('previous')?.epochNanoseconds
+  assert.equal(formattedHour(), '00')
+  assert.equal(existing.offset, '+00:00')
+  assert.equal(nextTransition(), 10_000n * second)
+  assert.equal(previousTransition(), 10_000n * second)
+
+  registerZone(1, 20_000n)
+  assert.equal(formattedHour(), '01')
+  const candidate = Temporal.ZonedDateTime.from(
+    `1970-01-01T01:00:00[${reloadZone}]`,
+    {disambiguation: 'reject'}
+  )
+  assert.equal(candidate.epochNanoseconds, 0n)
+  assert.deepEqual(
+    [
+      existing.offset,
+      candidate.offset,
+      candidate.hour,
+      nextTransition(),
+      previousTransition(),
+    ],
+    ['+01:00', '+01:00', 1, 20_000n * second, 20_000n * second]
+  )
 } finally {
   hooks.deregister()
 }

@@ -159,6 +159,22 @@ Temporal and DateTimeFormat targets passed afterward.
 - Short gap before-fix log SHA-256 `7288268ca20ea81bb86fb36202b71d137564ffa9d682b5715b65600ce3e9fa19`
 - Short gap after-fix log SHA-256 `75cc28d542197b2824625daa410711a4424f4693a38835a97291048e596d3469`
 
+## Reload the owned timezone data
+
+The public regression warms offsets and transitions, then replaces timezone
+data with `__addTZData`. Intl formatting and exact candidate lookup see the
+replacement immediately. Before the correction, existing and newly resolved
+ZonedDateTime values still reported the warmed offset and next transition.
+
+The owned formatter publishes an opaque generation token after replacing its
+decoded data. The host adapter checks it before reading offsets, cached
+transition results or unchanged search intervals. Native Intl without this
+private hook retains its original cache. The regression checks warm and fresh
+values, the local hour, and both transition directions after reload.
+
+- Reload before-fix log SHA-256 `f6981566d05596a97351a02f97e3a09355e2ecdf359b4ac06524f16ffb192266`
+- Reload after-fix log SHA-256 `bafa7b15ec3cb402d20bf215dcc1316b1c13f84cc7b546ae959534773473c858`
+
 ## Reproduce analysis
 
 Use `bazel cquery --output=files` for the three targets above; do not guess
