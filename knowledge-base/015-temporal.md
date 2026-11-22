@@ -1,5 +1,12 @@
 # Temporal implementation
 
+Temporal timezone caches retain their original Map constructor/get/set, including
+lazy identifier tables. RelativeTo string routing uses bounded character scanning
+without an extra RegExp method call or match-state change. The
+[cache/routing audit](audits/temporal-zone-cache-relative-routing-audit.md) records
+five public regressions and keeps downstream parser/String/Object/provider work
+open.
+
 Zoned relativeTo preparation retains its private null-prototype record through
 Duration round/total conversion. Public inherited getters/coercions still run.
 ZonedDateTime.round validates allowed units and unit-specific increments before

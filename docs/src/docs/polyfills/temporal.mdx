@@ -69,6 +69,9 @@ without calling a replaced `String.prototype.startsWith`.
 Zoned `relativeTo` preparation for Duration rounding/totals keeps omitted private
 fields isolated from inherited getters. ZonedDateTime rounding rejects invalid
 units/increments before computing local time.
+Private timezone caches retain their original Map constructor and access methods.
+Relative `Duration` options route strings without an extra RegExp test; full
+string validation still follows the existing parsers.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

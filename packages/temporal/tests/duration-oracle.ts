@@ -15,6 +15,53 @@ export function checkDurationOracle(
   zonedRounds: number
   zonedTotals: number
 } {
+  const malformedRelativeDuration = Temporal.Duration.from('PT1H')
+  const relativeTestDescriptor = Object.getOwnPropertyDescriptor(
+    RegExp.prototype,
+    'test'
+  )!
+  const relativeTestSentinel = new Error('Observable relativeTo classification')
+  let classificationHooks = 0
+  let malformedUnitReads = 0
+  let malformedRelativeError: unknown
+  try {
+    Object.defineProperty(RegExp.prototype, 'test', {
+      configurable: true,
+      get() {
+        classificationHooks++
+        throw relativeTestSentinel
+      },
+    })
+    try {
+      malformedRelativeDuration.total({
+        relativeTo: '[[]',
+        get unit() {
+          malformedUnitReads++
+          return 'hour'
+        },
+      })
+    } catch (error) {
+      malformedRelativeError = error
+    }
+  } finally {
+    Object.defineProperty(RegExp.prototype, 'test', relativeTestDescriptor)
+  }
+  equal(
+    classificationHooks,
+    0,
+    'Malformed relativeTo avoids a private RegExp test'
+  )
+  equal(
+    malformedUnitReads,
+    0,
+    'Malformed relativeTo rejects before reading unit'
+  )
+  equal(
+    malformedRelativeError instanceof RangeError,
+    true,
+    'Malformed relativeTo rejects with RangeError'
+  )
+
   const relativeBag = Object.assign(Object.create(null), {
     year: 2000,
     month: 1,

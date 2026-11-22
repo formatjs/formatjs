@@ -7,7 +7,7 @@ not adopted ECMA-262 authority or chapter signoff. No historical line credit.
 
 ## Private relativeTo record
 
-[Field preparation:83](../../packages/temporal/relative-duration.ts#L83) reads the public calendar,
+[Field preparation:96](../../packages/temporal/relative-duration.ts#L96) reads the public calendar,
 allocates a null-prototype record, then prepares public fields in the existing
 Get/coercion order. The previous zoned path spread that record into an ordinary
 object before calling toZonedDateTimeSlot. Its second field scan could observe
@@ -15,7 +15,7 @@ Object.prototype for omitted fields, despite the original input inheriting null.
 
 A public Duration.total/round regression reproduced two calls to an inherited
 Object.prototype.hour getter with the private copied record as receiver, throwing
-the same sentinel. The [corrected delegation:99](../../packages/temporal/relative-duration.ts#L99)
+the same sentinel. The [corrected delegation:112](../../packages/temporal/relative-duration.ts#L112)
 stores the already normalized calendar as an own property and passes the original
 private record directly. Prepared field values remain primitive; no user field
 access or conversion is skipped. Missing fields continue to yield undefined.
