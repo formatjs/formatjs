@@ -566,6 +566,7 @@ pub(crate) fn regulate(value: i32, min: i32, max: i32, overflow: Overflow) -> Re
         Ok(value.clamp(min, max))
     }
 }
+// Proposal comparison §12.3.26 step 2: Bound private calendar year estimates before arithmetic.
 pub(crate) fn check_year(year: i64) -> Result<i64, Error> {
     if (-400_000..=400_000).contains(&year) {
         Ok(year)

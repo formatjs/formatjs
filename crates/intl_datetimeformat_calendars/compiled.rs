@@ -18,6 +18,7 @@ const PACKS: [&str; 14] = [
     include_str!(env!("FORMATJS_CALENDAR_ROC")),
 ];
 
+// Proposal comparison §15.6.23 step 5.a: Install compiled calendar projection providers.
 pub(crate) fn register(runtime: &Runtime) -> Result<(), Error> {
     let providers = PACKS
         .iter()

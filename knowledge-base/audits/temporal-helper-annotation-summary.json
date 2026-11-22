@@ -4,23 +4,23 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "mapped": 891,
-    "candidate": 96,
-    "unmapped": 82
+    "mapped": 908,
+    "candidate": 87,
+    "unmapped": 74
   },
   "annotation_coverage": {
-    "direct_numbered": 838,
-    "no_numbered_anchor": 213,
+    "direct_numbered": 855,
+    "no_numbered_anchor": 196,
     "enclosing_numbered": 15,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 717,
+  "direct_with_step_wording": 734,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 819,
+    "overlap": 836,
     "no_overlap_or_no_prior_mapping": 19
   },
   "no_numbered_anchor_by_kind": {
-    "function": 35,
+    "function": 18,
     "named-function": 115,
     "callback": 55,
     "method": 8
@@ -30,8 +30,8 @@
       "rows": 180,
       "files": 12,
       "coverage": {
-        "direct_numbered": 140,
-        "no_numbered_anchor": 36,
+        "direct_numbered": 143,
+        "no_numbered_anchor": 33,
         "enclosing_numbered": 4
       }
     },
@@ -39,8 +39,8 @@
       "rows": 247,
       "files": 19,
       "coverage": {
-        "no_numbered_anchor": 48,
-        "direct_numbered": 197,
+        "direct_numbered": 203,
+        "no_numbered_anchor": 42,
         "enclosing_numbered": 2
       }
     },
@@ -48,8 +48,8 @@
       "rows": 248,
       "files": 13,
       "coverage": {
-        "direct_numbered": 236,
-        "no_numbered_anchor": 12
+        "direct_numbered": 244,
+        "no_numbered_anchor": 4
       }
     },
     "native_transport_with_temporal_adapters_review": {
@@ -80,11 +80,11 @@
   },
   "source_hashes": {
     "crates/intl_datetimeformat/timezone.rs": "bc29fb0df19e1578ba6f81bce233c88a56dd20fe97b8f1c17716f5553cc48a79",
-    "crates/intl_datetimeformat_calendars/arithmetic.rs": "e66f3ba273c4101b6c3203afa40557178dabbb7be1806942c890418a13a0f75c",
-    "crates/intl_datetimeformat_calendars/compiled.rs": "3f566cef3f11727ac6cc554f99df8abd6c213754679cf7a00a719481331d5eb4",
-    "crates/intl_datetimeformat_calendars/core.rs": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf",
+    "crates/intl_datetimeformat_calendars/arithmetic.rs": "26579769b947f4d8e72e4cdf8c51adfae2faa89ccf32476e031d72bd9299288e",
+    "crates/intl_datetimeformat_calendars/compiled.rs": "047248b04f87b7b67430061682b9c5faf95fb0a9dc966d9f10693e7e0c4697d9",
+    "crates/intl_datetimeformat_calendars/core.rs": "88f58f4afd08131fc2de4c8575785aaa5c4852c1158ac04023ac0c91e5ddb05f",
     "crates/intl_datetimeformat_calendars/date_math.rs": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6",
-    "crates/intl_datetimeformat_calendars/ffi.rs": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
+    "crates/intl_datetimeformat_calendars/ffi.rs": "5c7aa886812e2e4f11173bc7f0b923bd003513ed880777f355e150692e356151",
     "crates/intl_datetimeformat_calendars/provider.rs": "612bdd5d09dfaa9d29685d7320a236979291ca4a136c8e1de2fb1825c1b13384",
     "crates/intl_datetimeformat_calendars/table_calendar.rs": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b",
     "crates/intl_datetimeformat_calendars/tables.rs": "25a5677bccc6a4aa4c56d9579e4146777164e0f3773fc50aaaa4096934e0ac66",
@@ -97,8 +97,8 @@
     "crates/temporal/ffi.rs": "21d213ca3c00148e5a16946989bdce1bc7090a62c81240a59031b3b3c7815761",
     "crates/temporal/format.rs": "76293d25be4fd5b293eb43d098d832eb566ccc8338259cd0132d5ebba31c978c",
     "crates/temporal/iso.rs": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736",
-    "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
-    "crates/temporal/now.rs": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e",
+    "crates/temporal/lib.rs": "61bc6647d4f9aa44aea4a0fcbca949657d18d30bdde2ae8972138bc466603542",
+    "crates/temporal/now.rs": "554885cb8e8fad1b15f10e6a85a5bd99bc8b8687b64613a28cd3603eba35b840",
     "crates/temporal/parse.rs": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4",
     "crates/temporal/plain_relative.rs": "2180a18fb2672442343ef2e5da471fe98adb30029d31736a7269928f4eed2af2",
     "crates/temporal/relative_duration.rs": "dda8d638d0e5ebda82aa6b41b6153a3b174ee94a5188ac7e11a914d7f911ea7f",
@@ -107,7 +107,7 @@
     "crates/temporal/time.rs": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
     "crates/temporal/timezone.rs": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2",
     "crates/temporal/timezone_identity.rs": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790",
-    "crates/temporal/timezone_registry.rs": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
+    "crates/temporal/timezone_registry.rs": "b91bb00f54db1926d83eacd94d275d0d8d2a59847bc047dbe7259f4c7a60adb1",
     "crates/temporal/zoned.rs": "375361dee705aa3da8fac2ffd5e7b8e53de038385f59a38cd8ed008f4adcd9dd",
     "crates/temporal/zoned_difference.rs": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353",
     "crates/temporal/zoned_string.rs": "c883ba2ab73f4fbdbe827862c3e1307a4f246c42a90beccd343d25d402aabb57",
@@ -174,10 +174,10 @@
       "rows": 2,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 2
+        "mapped": 2
       },
       "coverage": {
-        "no_numbered_anchor": 2
+        "direct_numbered": 2
       }
     },
     {
@@ -185,10 +185,10 @@
       "rows": 1,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 1
+        "mapped": 1
       },
       "coverage": {
-        "no_numbered_anchor": 1
+        "direct_numbered": 1
       }
     },
     {
@@ -196,12 +196,10 @@
       "rows": 36,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "mapped": 35,
-        "candidate": 1
+        "mapped": 36
       },
       "coverage": {
-        "direct_numbered": 35,
-        "no_numbered_anchor": 1
+        "direct_numbered": 36
       }
     },
     {
@@ -220,10 +218,10 @@
       "rows": 2,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 2
+        "mapped": 2
       },
       "coverage": {
-        "no_numbered_anchor": 2
+        "direct_numbered": 2
       }
     },
     {
@@ -373,10 +371,12 @@
       "rows": 8,
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 8
+        "unmapped": 1,
+        "mapped": 7
       },
       "coverage": {
-        "no_numbered_anchor": 8
+        "no_numbered_anchor": 1,
+        "direct_numbered": 7
       }
     },
     {
@@ -384,12 +384,10 @@
       "rows": 6,
       "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "unmapped": 1,
-        "mapped": 5
+        "mapped": 6
       },
       "coverage": {
-        "no_numbered_anchor": 1,
-        "direct_numbered": 5
+        "direct_numbered": 6
       }
     },
     {
@@ -489,12 +487,12 @@
       "rows": 21,
       "work_bundle": "time_zone_and_zoned_algorithm_review",
       "mapping_status": {
-        "mapped": 16,
-        "candidate": 5
+        "mapped": 19,
+        "candidate": 2
       },
       "coverage": {
-        "direct_numbered": 16,
-        "no_numbered_anchor": 5
+        "direct_numbered": 19,
+        "no_numbered_anchor": 2
       }
     },
     {
@@ -1054,13 +1052,13 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 780,
-  "reviewed_mapping_rows_this_batch": 43,
+  "reviewed_mapping_rows_cumulative": 797,
+  "reviewed_mapping_rows_this_batch": 17,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0,
   "no_numbered_anchor_by_disposition": {
-    "examined_no_exact_step_anchor_established": 11,
-    "annotation_owner_and_step_scope_review_pending": 202
+    "examined_no_exact_step_anchor_established": 23,
+    "annotation_owner_and_step_scope_review_pending": 173
   }
 }

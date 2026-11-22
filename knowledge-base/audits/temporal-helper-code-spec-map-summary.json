@@ -3,9 +3,9 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 25637,
+  "whole_selected_source_lines": 25654,
   "whole_selected_source_lines_by_language": {
-    "rust": 10877,
+    "rust": 10894,
     "typescript": 14760
   },
   "nonoverlapping_callable_lines": 17108,
@@ -14,15 +14,15 @@
     "typescript": 8971
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 15069,
-    "candidate": 1017,
-    "unmapped": 1022
+    "mapped": 15247,
+    "candidate": 872,
+    "unmapped": 989
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "mapped": 891,
-    "candidate": 96,
-    "unmapped": 82
+    "mapped": 908,
+    "candidate": 87,
+    "unmapped": 74
   },
   "by_language": {
     "typescript": {
@@ -31,9 +31,9 @@
       "unmapped": 64
     },
     "rust": {
-      "mapped": 514,
-      "candidate": 17,
-      "unmapped": 18
+      "mapped": 531,
+      "candidate": 8,
+      "unmapped": 10
     }
   },
   "direct_target_assignments": [
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 96
+    "implementation_dependency": 87
   },
   "proposal_core_section_ids": 170,
   "proposal_amendment_section_ids": 5,
@@ -280,26 +280,26 @@
     },
     {
       "file": "crates/intl_datetimeformat_calendars/arithmetic.rs",
-      "source_lines": 85,
+      "source_lines": 87,
       "callable_rows": 2,
       "nonoverlapping_callable_lines": 80,
-      "sha256": "e66f3ba273c4101b6c3203afa40557178dabbb7be1806942c890418a13a0f75c",
+      "sha256": "26579769b947f4d8e72e4cdf8c51adfae2faa89ccf32476e031d72bd9299288e",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/intl_datetimeformat_calendars/compiled.rs",
-      "source_lines": 30,
+      "source_lines": 31,
       "callable_rows": 1,
       "nonoverlapping_callable_lines": 10,
-      "sha256": "3f566cef3f11727ac6cc554f99df8abd6c213754679cf7a00a719481331d5eb4",
+      "sha256": "047248b04f87b7b67430061682b9c5faf95fb0a9dc966d9f10693e7e0c4697d9",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/intl_datetimeformat_calendars/core.rs",
-      "source_lines": 676,
+      "source_lines": 677,
       "callable_rows": 36,
       "nonoverlapping_callable_lines": 542,
-      "sha256": "0fe9391ba75747aa19084f8d5ddd8ec0cd28c58ae70cba553e5faf531f95aabf",
+      "sha256": "88f58f4afd08131fc2de4c8575785aaa5c4852c1158ac04023ac0c91e5ddb05f",
       "unresolved_callable_rows": 0
     },
     {
@@ -312,10 +312,10 @@
     },
     {
       "file": "crates/intl_datetimeformat_calendars/ffi.rs",
-      "source_lines": 50,
+      "source_lines": 52,
       "callable_rows": 2,
       "nonoverlapping_callable_lines": 39,
-      "sha256": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
+      "sha256": "5c7aa886812e2e4f11173bc7f0b923bd003513ed880777f355e150692e356151",
       "unresolved_callable_rows": 0
     },
     {
@@ -432,19 +432,19 @@
     },
     {
       "file": "crates/temporal/lib.rs",
-      "source_lines": 141,
+      "source_lines": 148,
       "callable_rows": 8,
       "nonoverlapping_callable_lines": 45,
-      "sha256": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
-      "unresolved_callable_rows": 8
+      "sha256": "61bc6647d4f9aa44aea4a0fcbca949657d18d30bdde2ae8972138bc466603542",
+      "unresolved_callable_rows": 1
     },
     {
       "file": "crates/temporal/now.rs",
-      "source_lines": 41,
+      "source_lines": 42,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 23,
-      "sha256": "59bbd7791292f37d08302b439fb1b9b2a2c132c1c7becc2fea5c5f449a7ef86e",
-      "unresolved_callable_rows": 1
+      "sha256": "554885cb8e8fad1b15f10e6a85a5bd99bc8b8687b64613a28cd3603eba35b840",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/parse.rs",
@@ -512,10 +512,10 @@
     },
     {
       "file": "crates/temporal/timezone_registry.rs",
-      "source_lines": 226,
+      "source_lines": 229,
       "callable_rows": 21,
       "nonoverlapping_callable_lines": 147,
-      "sha256": "bfcd5a86e816589ab9db261c9076a4e02e8b71a19a4a265d792fce272c02eb1b",
+      "sha256": "b91bb00f54db1926d83eacd94d275d0d8d2a59847bc047dbe7259f4c7a60adb1",
       "unresolved_callable_rows": 0
     },
     {

@@ -10,6 +10,7 @@ pub trait SystemClock {
 
 pub struct Now<C>(C);
 impl<C: SystemClock> Now<C> {
+    // Proposal comparison §2.3.1 step 1: Supply the injected source of current epoch nanoseconds.
     pub const fn new(clock: C) -> Self {
         Self(clock)
     }

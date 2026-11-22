@@ -33,6 +33,7 @@ pub struct TimeZoneRegistry<'a> {
     records: &'a [TimeZoneRecord<'a>],
 }
 impl<'a> TimeZoneRegistry<'a> {
+    // Proposal comparison §11.1.9 step 3: Supply a registry with no external named-zone records.
     pub const fn empty() -> Self {
         Self { records: &[] }
     }
@@ -96,6 +97,7 @@ impl TimeZoneRegistry<'static> {
     }
 }
 impl Default for TimeZoneRegistry<'_> {
+    // Proposal comparison §11.1.9 step 3: Default to the registry without external zone data.
     fn default() -> Self {
         Self::empty()
     }
@@ -138,6 +140,7 @@ impl PartialEq for ResolvedTimeZone<'_> {
 }
 impl Eq for ResolvedTimeZone<'_> {}
 impl core::fmt::Display for ResolvedTimeZone<'_> {
+    // Proposal comparison §11.1.8 steps 5 and 9: Display the normalized resolved zone identifier.
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.write_str(self.identifier())
     }
