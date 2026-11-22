@@ -181,8 +181,8 @@ const dateSlots = new WeakMap<
   DateTimeSlot,
   {epochDay: number; calendar: string; properties?: DateTimeSlot['properties']}
 >()
-const getDateSlot = dateSlots.get.bind(dateSlots)
-const setDateSlot = dateSlots.set.bind(dateSlots)
+const getCachedDateSlot = dateSlots.get.bind(dateSlots)
+const setCachedDateSlot = dateSlots.set.bind(dateSlots)
 // Temporal comparison §5.3.6 step 3.
 // Reuse the private ISO date needed for calendar year projection.
 function dateSlot(slot: DateTimeSlot) {
@@ -191,14 +191,14 @@ function dateSlot(slot: DateTimeSlot) {
     slot.epochDay !== undefined
   )
     return slot as DateTimeSlot & {epochDay: number}
-  let value = getDateSlot(slot)
+  let value = getCachedDateSlot(slot)
   if (!value) {
     value = {
       epochDay: epochDayOf(slot.epochNanoseconds),
       calendar: slot.calendar,
       properties: slot.properties,
     }
-    setDateSlot(slot, value)
+    setCachedDateSlot(slot, value)
   }
   return value
 }
