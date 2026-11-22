@@ -1,5 +1,9 @@
 # Temporal implementation
 
+Shared Pattern String parsing follows ECMA-402 §9.2.15 through captured String
+operations and own private-list writes. See the [seven-step parser audit](audits/temporal-pattern-partition-audit.md)
+for source mapping and remaining formatter producer work.
+
 Current delivery scope: pure TypeScript, native Rust and native Hermes bindings.
 Temporal WASM runtime entries, assets, build targets and test variants are removed.
 WASM measurements and ABI notes below are historical. New native Rust/TS comparison:
