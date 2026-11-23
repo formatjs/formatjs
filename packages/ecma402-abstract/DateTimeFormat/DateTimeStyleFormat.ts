@@ -198,8 +198,9 @@ export function DateTimeStyleFormat(
         format[field] = timeFormat[field]
       }
     }
-    const connector = (dataLocaleData.dateTimeFormatAtTime ||
-      dataLocaleData.dateTimeFormat)[dateStyle]
+    const connector = (
+      dataLocaleData.dateTimeFormatAtTime || dataLocaleData.dateTimeFormat
+    )[dateStyle]
     const rangeConnector = dataLocaleData.dateTimeFormat[dateStyle]
     const pattern = replaceStyleToken(
       replaceStyleToken(connector, '{0}', timeFormat!.pattern),
