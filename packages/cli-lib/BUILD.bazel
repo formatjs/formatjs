@@ -2,6 +2,7 @@ load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 PACKAGE_NAME = "cli-lib"
 
@@ -188,6 +189,7 @@ formatjs_library(
         },
     },
     repository = "formatjs/formatjs.git",
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     tsconfig_types = ["node"],
     type = "module",
     version = "10.5.0",  # x-release-please-version
