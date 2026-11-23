@@ -681,9 +681,11 @@ That is a new primitive measurement scope; full facade/data size remains separat
 ## Now and host clock
 
 TS implements all six Now methods through an internal SystemClock boundary.
-Default TS clock captures Date.now (millisecond precision). Host Intl supplies
+Default TS clock captures Date.now (millisecond precision) and uses it if a
+configured clock fails. Host Intl supplies
 named system-zone discovery; hosts without DateTimeFormat use Date's current
-system offset, never an inferred IANA location. Explicit zones continue to use
+system offset, never an inferred IANA location. A failing lookup or unusable
+host identifier falls back to UTC. Explicit zones continue to use
 owned IANA data. Each call validates the zone before reading the clock; supplied
 zones skip system-zone discovery. Captured constructors preserve intrinsic
 results after public Now methods are replaced.

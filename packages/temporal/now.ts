@@ -40,20 +40,25 @@ const limit = 8_640_000_000_000_000_000_000n
 export function createNow(clock: SystemClock): NowObject {
   // ECMA-262 preview §22.7.3.2 step 2: read the supplied host clock.
   // https://tc39.es/ecma262/pr/3966/#sec-systemutcepochnanoseconds
-  // ECMA-262 preview §22.1.1.27: keep the result within epoch bounds.
+  // ECMA-262 preview §22.1.1.27: default to the runtime clock and clamp.
   // https://tc39.es/ecma262/pr/3966/#sec-hostsystemutcepochnanoseconds
   function instant(): bigint {
-    const value = clock.epochNanoseconds()
+    let value: bigint
+    try {
+      value = clock.epochNanoseconds()
+    } catch {
+      value = wallClockNanoseconds()
+    }
     return value < -limit ? -limit : value > limit ? limit : value
   }
-  // ECMA-262 preview §22.2.7 steps 1–3: normalize the host zone or use UTC.
+  // ECMA-262 preview §22.2.7 steps 1–3: use UTC if the host zone is unavailable.
   // https://tc39.es/ecma262/pr/3966/#sec-systemtimezoneidentifier
   function systemZone(): string {
-    const value: unknown = clock.timeZoneId()
-    if (typeof value === 'string')
-      try {
+    try {
+      const value: unknown = clock.timeZoneId()
+      if (typeof value === 'string')
         return primaryTimeZoneIdentifier(timeZoneIdentifier(value))
-      } catch {}
+    } catch {}
     return 'UTC'
   }
   // ECMA-262 preview §22.7.3.1 steps 1–2: resolve the time zone.
@@ -124,8 +129,12 @@ const HostDate = Date,
     HostDateTimeFormat &&
     Function.prototype.call.bind(HostDateTimeFormat.prototype.resolvedOptions)
 
+function wallClockNanoseconds(): bigint {
+  return toBigInt(hostNow()) * 1_000_000n
+}
+
 let systemClock: SystemClock = {
-  epochNanoseconds: () => toBigInt(hostNow()) * 1_000_000n,
+  epochNanoseconds: wallClockNanoseconds,
   timeZoneId() {
     if (HostDateTimeFormat && hostResolvedOptions)
       return hostResolvedOptions(new HostDateTimeFormat()).timeZone

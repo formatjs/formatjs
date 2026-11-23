@@ -141,6 +141,9 @@ always expose their own unit properties.
 
 Without Intl, default `Temporal.Now` timezone offsets remain independent of
 later replacements of `String` or `String.prototype.padStart`.
+If the host system timezone lookup fails or returns an unusable identifier,
+`Temporal.Now` uses UTC for calls that omit the timezone.
+If a configured clock fails, `Temporal.Now` uses the runtime wall clock.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

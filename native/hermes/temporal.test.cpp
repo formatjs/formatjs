@@ -23,6 +23,8 @@ void evaluate(jsi::Runtime &runtime, const char *source) {
 struct Host {
   std::string zone = "US/Eastern";
   std::string nanos = "1583649000000000000";
+  bool zoneUnavailable = false;
+  bool clockUnavailable = false;
 };
 }
 
@@ -50,8 +52,16 @@ int main(int argc, char **argv) {
     auto host = std::make_shared<Host>();
     std::weak_ptr<Host> lifetime = host;
     formatjs::installTemporal(*first, {
-        [host] { return host->zone; },
-        [host] { return host->nanos; },
+        [host] {
+          if (host->zoneUnavailable)
+            throw std::runtime_error("Host system zone unavailable");
+          return host->zone;
+        },
+        [host] {
+          if (host->clockUnavailable)
+            throw std::runtime_error("Host wall clock unavailable");
+          return host->nanos;
+        },
     });
     evaluate(*first, R"JS(
       let checks = 0;
@@ -744,8 +754,19 @@ int main(int argc, char **argv) {
     )JS");
     host->zone = "";
     evaluate(*first, "check(Temporal.Now.zonedDateTimeISO().timeZoneId === 'UTC')");
+    host->zoneUnavailable = true;
+    evaluate(*first, R"JS(
+      check(Temporal.Now.timeZoneId() === 'UTC');
+      check(Temporal.Now.zonedDateTimeISO().timeZoneId === 'UTC');
+    )JS");
     host->nanos = "9999999999999999999999999999999999";
     evaluate(*first, "check(Temporal.Now.instant().epochNanoseconds === 8640000000000000000000n)");
+    host->clockUnavailable = true;
+    evaluate(*first, R"JS(
+      const beforeFallbackClock = Date.now();
+      const fallbackClock = Temporal.Now.instant().epochMilliseconds;
+      check(fallbackClock >= beforeFallbackClock && fallbackClock <= Date.now());
+    )JS");
     host.reset();
     check(!lifetime.expired());
     formatter.reset();
