@@ -535,9 +535,11 @@ pub fn verify_resources(
         }
     }
     let mut issues = Vec::new();
-    for (table, catalogs) in &tables {
-        for (language, catalog) in catalogs {
-            issues.extend(unused_plural_categories(table, language, catalog));
+    if options.structural_equality {
+        for (table, catalogs) in &tables {
+            for (language, catalog) in catalogs {
+                issues.extend(unused_plural_categories(table, language, catalog));
+            }
         }
     }
     for (table, catalogs) in tables {

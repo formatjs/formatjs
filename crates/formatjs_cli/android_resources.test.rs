@@ -506,6 +506,13 @@ fn plurals(quantities: &[&str]) -> String {
     format!(r#"<plurals name="count">{items}</plurals>"#)
 }
 
+fn structural() -> VerificationOptions {
+    VerificationOptions {
+        structural_equality: true,
+        ..VerificationOptions::default()
+    }
+}
+
 fn plural_issues(directory: &str, quantities: &[&str]) -> Vec<(String, String)> {
     let files = BTreeMap::from([
         (
@@ -517,7 +524,7 @@ fn plural_issues(directory: &str, quantities: &[&str]) -> Vec<(String, String)> 
             xml(&plurals(quantities)),
         ),
     ]);
-    verify_resources(&files, "en", VerificationOptions::default())
+    verify_resources(&files, "en", structural())
         .unwrap()
         .into_iter()
         .map(|issue| (issue.locale, issue.message_id))
@@ -562,6 +569,21 @@ fn android_plural_categories_reject_quantities_the_locale_never_selects() {
         unused("gl", &["many"])
     );
     assert!(plural_issues("values-ar", &six).is_empty());
+    let files = BTreeMap::from([
+        (
+            "res/values/strings.xml".into(),
+            xml(&plurals(&["one", "other"])),
+        ),
+        (
+            "res/values-ja/strings.xml".into(),
+            xml(&plurals(&["one", "other"])),
+        ),
+    ]);
+    assert!(
+        verify_resources(&files, "en", VerificationOptions::default())
+            .unwrap()
+            .is_empty()
+    );
 }
 
 #[test]
@@ -576,7 +598,7 @@ fn android_plural_categories_check_the_source_and_skip_unknown_languages() {
             xml(&plurals(&["one", "few", "other"])),
         ),
     ]);
-    let issues = verify_resources(&files, "en", VerificationOptions::default()).unwrap();
+    let issues = verify_resources(&files, "en", structural()).unwrap();
     assert_eq!(issues.len(), 1);
     assert_eq!(issues[0].locale, "en");
     assert_eq!(issues[0].message_id, "res: plurals/count/few");

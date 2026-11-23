@@ -518,10 +518,10 @@ override their resource. Plurals require distinct supported quantities and
 Locale-specific category equality is not required. `translatable="false"`
 resources are excluded, and unrelated Android resource types are ignored.
 
-Plural items must use a quantity the locale's CLDR cardinal rules select, so
-`one` in `values-ja` or `few` in `values-es` fails. Android never looks those
-items up, and lint reports them as `UnusedQuantity`. Source and target locales
-are both checked. Lookup drops trailing subtags (`b+sr+Latn` uses `sr`);
+`--structural-equality` also requires plural items to use a quantity the
+locale's CLDR cardinal rules select, so `one` in `values-ja` or `few` in
+`values-es` fails. Android never looks those items up, and lint reports them as
+`UnusedQuantity`. Source and target locales are both checked. Lookup drops trailing subtags (`b+sr+Latn` uses `sr`);
 languages CLDR has no rules for are skipped. Data comes from the bundled
 `cldr-core`; `vi` `one` and `gl` `many` are also rejected because current
 Android lint still uses CLDR 42, which lacks them.
