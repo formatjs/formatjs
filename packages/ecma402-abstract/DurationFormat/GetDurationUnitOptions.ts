@@ -1,23 +1,23 @@
 import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 
-export function GetDurationUnitOptions<T extends object>(
-  unit: keyof T,
-  options: T,
-  baseStyle: Exclude<T[keyof T], undefined>,
-  stylesList: readonly T[keyof T][],
-  digitalBase: Exclude<T[keyof T], undefined>,
+export function GetDurationUnitOptions(
+  unit: string,
+  options: object,
+  baseStyle: string,
+  stylesList: readonly string[],
+  digitalBase: string,
   prevStyle: string,
   twoDigitHours = false
 ): {
-  style: Exclude<T[keyof T], undefined>
-  display: string | Exclude<T[keyof T], undefined>
+  style: string
+  display: 'always' | 'auto'
 } {
-  let style = GetOption(options, unit, 'string', stylesList, undefined)
-  let displayDefault = 'always'
+  const unitOptions = options as Record<string, string | undefined>
+  let style = GetOption(unitOptions, unit, 'string', stylesList, undefined)
+  let displayDefault: 'always' | 'auto' = 'always'
   // ECMA-402 §13.5.6, steps 3–4: numeric styles propagate through fractional units.
   // https://tc39.es/ecma402/#sec-getdurationunitoptions
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L599-L611
   if (style === undefined) {
     if (baseStyle === 'digital') {
       style = digitalBase
@@ -29,32 +29,32 @@ export function GetDurationUnitOptions<T extends object>(
       prevStyle === 'numeric' ||
       prevStyle === '2-digit'
     ) {
-      style = 'numeric' as Exclude<T[keyof T], undefined>
+      style = 'numeric'
       if (unit !== 'minutes' && unit !== 'seconds') displayDefault = 'auto'
     } else {
       style = baseStyle
       displayDefault = 'auto'
     }
   }
+  // ECMA-402 §13.5.13 https://tc39.es/ecma402/#sec-isfractionalsecondunitname
   if (
     style === 'numeric' &&
     (unit === 'milliseconds' ||
       unit === 'microseconds' ||
       unit === 'nanoseconds')
   ) {
-    style = 'fractional' as Exclude<T[keyof T], undefined>
+    style = 'fractional'
     displayDefault = 'auto'
   }
   const display = GetOption(
-    options,
-    `${unit as string}Display` as keyof T,
+    unitOptions as Record<string, 'always' | 'auto' | undefined>,
+    `${unit}Display`,
     'string',
-    ['always', 'auto'] as Array<T[keyof T]>,
+    ['always', 'auto'],
     displayDefault
   )
   // ValidateDurationUnitStyle, steps 1–3, after fractional style normalization.
   // https://tc39.es/ecma402/#sec-validatedurationunitstyle
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L657-L659
   if (display === 'always' && style === 'fractional') {
     throw new RangeErrorConstructor(
       'Fractional units cannot use always display'
@@ -74,13 +74,14 @@ export function GetDurationUnitOptions<T extends object>(
     throw new RangeErrorConstructor("Can't mix numeric and non-numeric styles")
   }
   if (twoDigitHours && unit === 'hours') {
-    style = '2-digit' as Exclude<T[keyof T], undefined>
+    style = '2-digit'
   }
   if (
     (unit === 'minutes' || unit === 'seconds') &&
     (prevStyle === 'numeric' || prevStyle === '2-digit')
   ) {
-    style = '2-digit' as Exclude<T[keyof T], undefined>
+    style = '2-digit'
   }
+  // ECMA-402 §13.5.6.1 https://tc39.es/ecma402/#sec-durationformat-unit-options-record
   return {style, display}
 }

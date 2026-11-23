@@ -75,6 +75,7 @@ formatjs_test(
     ],
     data = [
         "tests/collator-conformance.tsv",  # keep: TSV fixture loaded at runtime
+        ":test262-polyfill",  # keep: host-locale regression loads the bundle
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

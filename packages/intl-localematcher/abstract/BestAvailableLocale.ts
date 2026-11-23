@@ -42,16 +42,16 @@ export function BestAvailableLocale(
   }
 
   let candidate = locale
-  while (true) {
+  while (candidate.length) {
     if (setHas(availableSet, candidate)) {
       return candidate
     }
     // ECMA-402 §9.2.3 steps 1.d.ii–iv: truncate at a subtag boundary.
     let pos = stringLastIndexOf(candidate, '-')
-    if (!~pos) {
+    if (pos === -1) {
       return undefined
     }
-    if (pos >= 2 && candidate[pos - 2] === '-') {
+    while (pos >= 2 && candidate[pos - 2] === '-') {
       pos -= 2
     }
     candidate = stringSlice(candidate, 0, pos)

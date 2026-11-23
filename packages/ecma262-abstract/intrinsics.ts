@@ -5,6 +5,27 @@ export const floor: typeof Math.floor = Math.floor
 export const numberFrom: typeof Number = Number
 export const bigIntFrom: typeof BigInt = BigInt
 export const objectFrom: typeof Object = Object
+
+// A derived class can allocate its receiver without the base-class prototype read.
+export const nullClassBase: abstract new () => object = null as never
+
+const objectCreate = Object.create
+
+// ECMA-262 §10.1.13–14 use the requested prototype or the intrinsic fallback.
+// This fallback is limited to the polyfill's own realm.
+// https://tc39.es/ecma262/#sec-getprototypefromconstructor
+export function createFromConstructor<T extends object>(
+  newTarget: {prototype: unknown},
+  defaultPrototype: T
+): T {
+  const prototype = newTarget.prototype
+  return objectCreate(
+    objectFrom(prototype) === prototype
+      ? (prototype as object)
+      : defaultPrototype
+  )
+}
+
 export const mathAbs: typeof Math.abs = Math.abs
 export const mathMin: typeof Math.min = Math.min
 export const mathMax: typeof Math.max = Math.max

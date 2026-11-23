@@ -1,3 +1,7 @@
+import {
+  createFromConstructor,
+  nullClassBase,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -8,75 +12,76 @@ import {
 } from '#packages/ecma402-abstract/types/relative-time.js'
 import {InitializeRelativeTimeFormat} from '#packages/ecma402-abstract/RelativeTimeFormat/InitializeRelativeTimeFormat.js'
 import {PartitionRelativeTimePattern} from '#packages/ecma402-abstract/RelativeTimeFormat/PartitionRelativeTimePattern.js'
-import getInternalSlots from '#packages/intl-relativetimeformat/get_internal_slots.js'
+import getInternalSlots, {
+  requireInternalSlots,
+} from '#packages/intl-relativetimeformat/get_internal_slots.js'
 
-export default class RelativeTimeFormat {
+// ECMA-402 §9.2.7 step 3 resolves the internal default locale.
+// https://tc39.es/ecma402/#sec-resolvelocale
+let defaultLocale = ''
+function getDefaultLocale(): string {
+  return defaultLocale
+}
+
+// Class syntax supplies the prototype and constructor descriptors.
+// ECMA-402 §18.2.1 https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype
+// ECMA-402 §18.3.1 https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.constructor
+export default class RelativeTimeFormat extends nullClassBase {
+  // ECMA-402 §18.1.1: class construction requires new, then initializes slots.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
+  // @ts-expect-error TS2377: extends null and returns its own receiver.
+  // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
   constructor(
     locales?: string | string[],
     options?: Intl.RelativeTimeFormatOptions
   ) {
-    return InitializeRelativeTimeFormat(this, locales, options, {
+    const receiver = createFromConstructor(
+      new.target,
+      RelativeTimeFormat.prototype
+    )
+    return InitializeRelativeTimeFormat(receiver, locales, options, {
       getInternalSlots,
       availableLocales: RelativeTimeFormat.availableLocales,
-      relevantExtensionKeys: RelativeTimeFormat.relevantExtensionKeys,
+      relevantExtensionKeys: ['nu'],
       localeData: RelativeTimeFormat.localeData,
-      getDefaultLocale: RelativeTimeFormat.getDefaultLocale,
+      getDefaultLocale,
     })
   }
+  // ECMA-402 §18.3.3 steps 2–5: check the receiver, then coerce value and unit.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.format
   format(value: number, unit: Intl.RelativeTimeFormatUnit): string {
-    if (typeof this !== 'object') {
-      throw new TypeError('format was called on a non-object')
-    }
-    const internalSlots = getInternalSlots(this)
-    if (!internalSlots.initializedRelativeTimeFormat) {
-      throw new TypeError('format was called on a invalid context')
-    }
-    return PartitionRelativeTimePattern(
-      this,
-      // ECMA-402 §18.3.3 Intl.RelativeTimeFormat.prototype.format, step 3.
-      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.format
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L175
+    const parts = PartitionRelativeTimePattern(
+      requireInternalSlots(this),
       +value,
-      ToString(unit) as Intl.RelativeTimeFormatUnit,
-      {
-        getInternalSlots,
-      }
+      ToString(unit) as Intl.RelativeTimeFormatUnit
     )
-      .map(el => el.value)
-      .join('')
+    // ECMA-402 §18.5.4 steps 2–4: concatenate private part values.
+    // https://tc39.es/ecma402/#sec-FormatRelativeTime
+    let result = ''
+    for (let index = 0; index < parts.length; index++) {
+      result += parts[index].value
+    }
+    return result
   }
+  // ECMA-402 §18.3.4 steps 2–5.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.formatToParts
   formatToParts(
     value: number,
     unit: Intl.RelativeTimeFormatUnit
   ): Intl.RelativeTimeFormatPart[] {
-    if (typeof this !== 'object') {
-      throw new TypeError('formatToParts was called on a non-object')
-    }
-    const internalSlots = getInternalSlots(this)
-    if (!internalSlots.initializedRelativeTimeFormat) {
-      throw new TypeError('formatToParts was called on a invalid context')
-    }
+    // ECMA-402 §18.5.5: the partitioning path creates fresh parts and array entries.
+    // https://tc39.es/ecma402/#sec-FormatRelativeTimeToParts
     return PartitionRelativeTimePattern(
-      this,
-      // ECMA-402 §18.3.4 Intl.RelativeTimeFormat.prototype.formatToParts, step 3.
-      // ToNumber rejects BigInt: https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.formatToParts
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L189
+      requireInternalSlots(this),
       +value,
-      ToString(unit) as Intl.RelativeTimeFormatUnit,
-      {getInternalSlots}
+      ToString(unit) as Intl.RelativeTimeFormatUnit
     )
   }
 
   resolvedOptions(): Intl.ResolvedRelativeTimeFormatOptions {
-    if (typeof this !== 'object') {
-      throw new TypeError('resolvedOptions was called on a non-object')
-    }
-    const internalSlots = getInternalSlots(this)
-    if (!internalSlots.initializedRelativeTimeFormat) {
-      throw new TypeError('resolvedOptions was called on a invalid context')
-    }
-
-    // test262/test/intl402/RelativeTimeFormat/prototype/resolvedOptions/type.js
+    // ECMA-402 §18.3.2 steps 2–5: check the receiver, then create own properties.
+    // https://tc39.es/ecma402/#sec-intl.relativetimeformat.prototype.resolvedoptions
+    const internalSlots = requireInternalSlots(this)
     return {
       locale: internalSlots.locale,
       style: internalSlots.style,
@@ -89,6 +94,8 @@ export default class RelativeTimeFormat {
     locales: string | string[],
     options?: Pick<Intl.RelativeTimeFormatOptions, 'localeMatcher'>
   ): string[] {
+    // ECMA-402 §18.2.2: canonicalize before filtering or reading options.
+    // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.supportedLocalesOf
     return SupportedLocales(
       RelativeTimeFormat.availableLocales,
       CanonicalizeLocaleList(locales),
@@ -97,30 +104,31 @@ export default class RelativeTimeFormat {
   }
 
   public static __addLocaleData(...data: RelativeTimeLocaleData[]): void {
-    for (const {data: d, locale} of data) {
+    for (const {data: d, locale: tag} of data) {
+      const [locale] = CanonicalizeLocaleList(tag)
       registerLocaleData(
         locale,
         d,
         RelativeTimeFormat.localeData,
         RelativeTimeFormat.availableLocales
       )
-      if (!RelativeTimeFormat.__defaultLocale) {
-        RelativeTimeFormat.__defaultLocale = locale
+      if (!defaultLocale) {
+        defaultLocale = locale
       }
     }
   }
+  // ECMA-402 §18.2.3: supported locale data and the nu extension.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat-internal-slots
   static localeData: Record<string, LocaleFieldsData> = {}
   private static availableLocales = new Set<string>()
-  private static __defaultLocale = ''
-  private static getDefaultLocale() {
-    return RelativeTimeFormat.__defaultLocale
-  }
-  private static relevantExtensionKeys = ['nu']
   public static polyfilled = true
 }
 
+Object.setPrototypeOf(RelativeTimeFormat.prototype, Object.prototype)
+
 try {
-  // IE11 does not have Symbol
+  // ECMA-402 §18.3.5.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype-toStringTag
   if (typeof Symbol !== 'undefined') {
     Object.defineProperty(RelativeTimeFormat.prototype, Symbol.toStringTag, {
       value: 'Intl.RelativeTimeFormat',

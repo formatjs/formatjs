@@ -16,59 +16,6 @@ export function repeat(s: string, times: number): string {
   return arr.join('')
 }
 
-export function setInternalSlot<
-  Instance extends object,
-  Internal extends object,
-  Field extends keyof Internal,
->(
-  map: WeakMap<Instance, Internal>,
-  pl: Instance,
-  field: Field,
-  value: NonNullable<Internal>[Field]
-): void {
-  if (!map.get(pl)) {
-    map.set(pl, Object.create(null))
-  }
-  const slots = map.get(pl)!
-  slots[field] = value
-}
-
-export function getInternalSlot<
-  Instance extends object,
-  Internal extends object,
-  Field extends keyof Internal,
->(
-  map: WeakMap<Instance, Internal>,
-  pl: Instance,
-  field: Field
-): Internal[Field] {
-  return getMultiInternalSlots(map, pl, field)[field]
-}
-
-export function getMultiInternalSlots<
-  Instance extends object,
-  Internal extends object,
-  Field extends keyof Internal,
->(
-  map: WeakMap<Instance, Internal>,
-  pl: Instance,
-  ...fields: Field[]
-): Pick<Internal, Field> {
-  const slots = map.get(pl)
-  if (!slots) {
-    throw new TypeErrorConstructor(
-      `${pl} InternalSlot has not been initialized`
-    )
-  }
-  return fields.reduce(
-    (all, f) => {
-      all[f] = slots[f]
-      return all
-    },
-    Object.create(null) as Pick<Internal, Field>
-  )
-}
-
 export interface LiteralPart {
   type: 'literal'
   value: string
@@ -105,11 +52,22 @@ export function defineProperty<T extends object>(
 
 export function ensureIntl(): typeof Intl {
   if (typeof Intl === 'undefined') {
+    const intl = {}
+    // ECMA-402 §8.1.1 sets the Intl namespace tag.
+    // https://tc39.es/ecma402/#sec-intl-%symbol.tostringtag%
+    if (typeof Symbol !== 'undefined') {
+      Object.defineProperty(intl, Symbol.toStringTag, {
+        value: 'Intl',
+        writable: false,
+        enumerable: false,
+        configurable: true,
+      })
+    }
     Object.defineProperty(globalThis, 'Intl', {
       configurable: true,
       enumerable: false,
       writable: true,
-      value: {},
+      value: intl,
     })
   }
   if (providerIntl === undefined) providerIntl = Intl
@@ -167,16 +125,6 @@ export const createMemoizedNumberFormat: (
   }
 )
 
-export const createMemoizedPluralRules: (
-  ...args: ConstructorParameters<typeof Intl.PluralRules>
-) => Intl.PluralRules = memoize(
-  (...args: ConstructorParameters<typeof Intl.PluralRules>) =>
-    new Intl.PluralRules(...args),
-  {
-    strategy: strategies.variadic,
-  }
-)
-
 export const createMemoizedListFormat: (
   ...args: ConstructorParameters<typeof Intl.ListFormat>
 ) => Intl.ListFormat = memoize(
@@ -194,7 +142,9 @@ const formatterMemoizeOptions = {
   strategy: strategies.variadic,
 }
 let providerIntl = globalThis.Intl
-function ownIntlProvider(name: 'NumberFormat' | 'ListFormat'): unknown {
+function ownIntlProvider(
+  name: 'NumberFormat' | 'ListFormat' | 'PluralRules'
+): unknown {
   const descriptor =
     providerIntl && getOwnPropertyDescriptor(providerIntl, name)
   const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
@@ -204,6 +154,9 @@ let numberFormatProvider = ownIntlProvider(
   'NumberFormat'
 ) as typeof Intl.NumberFormat
 let listFormatProvider = ownIntlProvider('ListFormat') as typeof Intl.ListFormat
+let pluralRulesProvider = ownIntlProvider(
+  'PluralRules'
+) as typeof Intl.PluralRules
 
 // Temporal comparison §§15.10.1–2 step4: retain supplied providers without accessor Gets.
 // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
@@ -219,36 +172,49 @@ export function getListFormatProvider(): typeof Intl.ListFormat {
     listFormatProvider = candidate as typeof Intl.ListFormat
   return listFormatProvider
 }
+export function getPluralRulesProvider(): typeof Intl.PluralRules {
+  const candidate = ownIntlProvider('PluralRules')
+  if (typeof candidate === 'function')
+    pluralRulesProvider = candidate as typeof Intl.PluralRules
+  return pluralRulesProvider
+}
 
 // Temporal comparison §§15.10.1–2 step4; §15.4.1: retain selected real parts methods.
 // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
 const getFormatterPrototype = Object.getPrototypeOf
-const formatterPartsMethods = new WeakMap<object, unknown>()
-const formatterPartsOwners = new WeakMap<object, unknown>()
-const getPartsMethod = formatterPartsMethods.get.bind(formatterPartsMethods)
-const setPartsMethod = formatterPartsMethods.set.bind(formatterPartsMethods)
-const getPartsOwner = formatterPartsOwners.get.bind(formatterPartsOwners)
-const setPartsOwner = formatterPartsOwners.set.bind(formatterPartsOwners)
-function findFormatterPartsMethod(Constructor: object): unknown {
-  const cached = getPartsMethod(Constructor)
-  if (cached) return cached
-  let prototype = getOwnPropertyDescriptor(Constructor, 'prototype')?.value
-  while (prototype != null) {
-    const inherited = getPartsOwner(prototype)
-    if (inherited) {
-      setPartsMethod(Constructor, inherited)
-      return inherited
+function formatterMethodLookup<T>(name: 'formatToParts' | 'select') {
+  const methods = new WeakMap<object, T>()
+  const owners = new WeakMap<object, T>()
+  const getMethod = methods.get.bind(methods)
+  const setMethod = methods.set.bind(methods)
+  const getOwner = owners.get.bind(owners)
+  const setOwner = owners.set.bind(owners)
+  return (Constructor: object): T | undefined => {
+    const cached = getMethod(Constructor)
+    if (cached) return cached
+    let prototype = getOwnPropertyDescriptor(Constructor, 'prototype')?.value
+    while (prototype != null) {
+      const inherited = getOwner(prototype)
+      if (inherited) {
+        setMethod(Constructor, inherited)
+        return inherited
+      }
+      const descriptor = getOwnPropertyDescriptor(prototype, name)
+      const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
+      if (value && typeof value.value === 'function') {
+        const method = value.value as T
+        setMethod(Constructor, method)
+        setOwner(prototype, method)
+        return method
+      }
+      prototype = getFormatterPrototype(prototype)
     }
-    const descriptor = getOwnPropertyDescriptor(prototype, 'formatToParts')
-    const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
-    if (value && typeof value.value === 'function') {
-      setPartsMethod(Constructor, value.value)
-      setPartsOwner(prototype, value.value)
-      return value.value
-    }
-    prototype = getFormatterPrototype(prototype)
   }
 }
+export const findFormatterPartsMethod =
+  formatterMethodLookup<unknown>('formatToParts')
+export const findPluralRulesSelectMethod =
+  formatterMethodLookup<Intl.PluralRules['select']>('select')
 export function getFormatterPartsMethod<T>(Constructor: object): T {
   const method = findFormatterPartsMethod(Constructor)
   if (!method)
@@ -259,6 +225,8 @@ if (typeof numberFormatProvider === 'function')
   findFormatterPartsMethod(numberFormatProvider)
 if (typeof listFormatProvider === 'function')
   findFormatterPartsMethod(listFormatProvider)
+if (typeof pluralRulesProvider === 'function')
+  findPluralRulesSelectMethod(pluralRulesProvider)
 
 const numberFormatMemoizers = new WeakMap<
   typeof Intl.NumberFormat,
@@ -276,6 +244,28 @@ const listFormatMemoizers = new WeakMap<
 >()
 const getListFormatMemoizer = listFormatMemoizers.get.bind(listFormatMemoizers)
 const setListFormatMemoizer = listFormatMemoizers.set.bind(listFormatMemoizers)
+const pluralRulesMemoizers = new WeakMap<
+  typeof Intl.PluralRules,
+  (locale: string) => Intl.PluralRules
+>()
+const getPluralRulesMemoizer =
+  pluralRulesMemoizers.get.bind(pluralRulesMemoizers)
+const setPluralRulesMemoizer =
+  pluralRulesMemoizers.set.bind(pluralRulesMemoizers)
+
+export function createMemoizedPluralRulesForConstructor(
+  Constructor: typeof Intl.PluralRules
+): (locale: string) => Intl.PluralRules {
+  let factory = getPluralRulesMemoizer(Constructor)
+  if (!factory) {
+    factory = memoize(
+      (locale: string) => new Constructor(locale),
+      formatterMemoizeOptions
+    )
+    setPluralRulesMemoizer(Constructor, factory)
+  }
+  return factory
+}
 
 export function createMemoizedNumberFormatForConstructor(
   Constructor: typeof Intl.NumberFormat

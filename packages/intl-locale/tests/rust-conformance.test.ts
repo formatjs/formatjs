@@ -14,17 +14,20 @@ interface Case {
 }
 interface Request extends Case {
   defaultNumberingSystem?: string
+  availableCalendars?: string[]
   globalCollations?: string[]
   matchedCollation?: boolean
   acceptedCollations?: string[]
 }
 
 const globalCollations = supportedValuesOf('collation')
+const availableCalendars = supportedValuesOf('calendar')
 
 function prepare(input: Case): {request: Request; expected: unknown} {
   const request: Request = {...input}
   try {
     const value = new Locale(input.tag, input.options)
+    request.availableCalendars = availableCalendars
     const tag = value.toString()
     if (
       value.numberingSystem === undefined &&

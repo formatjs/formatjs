@@ -1,6 +1,6 @@
 use crate::{
     Error,
-    fields::{Components, NumericWidth, TextWidth, Width, ZoneWidth},
+    fields::{Components, FractionalDigits, NumericWidth, TextWidth, Width, ZoneWidth},
 };
 use serde::{
     Deserialize, Serialize,
@@ -17,12 +17,14 @@ pub enum Source {
     EndRange,
 }
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
+// ECMA-402 §11.2.3.4. https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-part-record
 pub struct PatternPart {
     pub source: Source,
     pub pattern: String,
 }
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
+// ECMA-402 §11.2.3.3. https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-format-record
 pub struct RangePattern {
     #[serde(flatten)]
     pub components: Components,
@@ -30,11 +32,14 @@ pub struct RangePattern {
 }
 #[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
+// ECMA-402 §11.2.3.1. https://tc39.es/ecma402/#sec-datetimeformat-format-record
 pub struct Format {
     pub pattern: String,
     pub pattern12: String,
     pub skeleton: String,
     pub raw_pattern: String,
+    // ECMA-402 §11.2.3.2: field-indexed interval patterns with a default.
+    // https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-record
     pub range_patterns: BTreeMap<String, RangePattern>,
     pub range_patterns12: BTreeMap<String, RangePattern>,
     #[serde(flatten)]
@@ -183,7 +188,13 @@ fn token(character: char, length: usize, fields: &mut Components) -> Result<&'st
             fields.second = Some(numeric(length));
             Ok("{second}")
         }
-        'S' | 'A' => {
+        'S' => {
+            // LDML Date Field Symbol Table: S is a fraction of a second.
+            // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+            fields.fractional_second_digits = FractionalDigits::try_from(length.min(3) as u8).ok();
+            Ok("{fractionalSecondDigits}")
+        }
+        'A' => {
             fields.second = Some(NumericWidth::Numeric);
             Ok("{second}")
         }
@@ -213,6 +224,7 @@ fn maximum(character: char) -> usize {
         'G' | 'Q' | 'q' | 'U' | 'M' | 'L' | 'a' | 'b' | 'B' => 5,
         'z' | 'Z' | 'O' | 'v' | 'V' | 'x' | 'X' => 4,
         'D' => 3,
+        'S' => usize::MAX,
         'd' | 'h' | 'k' | 'H' | 'K' | 'w' | 'm' | 's' => 2,
         'F' | 'W' => 1,
         'y' | 'Y' | 'u' | 'r' => usize::MAX,
@@ -255,7 +267,8 @@ fn replace_tokens(pattern: &str, fields: &mut Components) -> Result<(String, u16
             'B' => Some(Field::DayPeriod),
             'h' | 'H' | 'K' | 'k' => Some(Field::Hour),
             'm' => Some(Field::Minute),
-            's' | 'S' | 'A' => Some(Field::Second),
+            's' | 'A' => Some(Field::Second),
+            'S' => Some(Field::FractionalSecondDigits),
             'z' | 'Z' | 'O' | 'v' | 'V' | 'X' | 'x' => Some(Field::TimeZoneName),
             _ => None,
         };
@@ -318,7 +331,8 @@ fn range_key(key: &str) -> Result<&'static str, Error> {
         "B" => Ok("dayPeriod"),
         "h" | "H" | "K" | "k" => Ok("hour"),
         "m" => Ok("minute"),
-        "s" | "S" | "A" => Ok("second"),
+        "s" | "A" => Ok("second"),
+        "S" => Ok("fractionalSecondDigits"),
         _ => Err(Error::InvalidPattern),
     }
 }

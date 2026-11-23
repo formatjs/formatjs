@@ -398,12 +398,50 @@ for (const name of [
     equal(reads, 0, 'brand before coercion ' + name)
   }
 }
-const formatGetter = Object.getOwnPropertyDescriptor(
+const formatDescriptor = Object.getOwnPropertyDescriptor(
   Native.prototype,
   'format'
-)!.get!
+)!
+try {
+  Object.defineProperty(Native.prototype, 'format', {
+    get() {
+      throw new Error('Public format should not be read')
+    },
+  })
+  for (const [value, expected] of [
+    [1250.5, '1,250.5'],
+    [BigInt('9007199254740993'), '9,007,199,254,740,993'],
+  ] as const) {
+    const method = value.toLocaleString
+    equal(
+      method.call(Object(value), 'en'),
+      expected,
+      'formats boxed numbers internally'
+    )
+    throws(
+      () => Reflect.construct(Object, [], method),
+      TypeError,
+      'locale method rejects construction'
+    )
+    let reads = 0
+    throws(
+      () =>
+        method.call({}, 'en', {
+          get style() {
+            reads++
+            return 'decimal'
+          },
+        }),
+      TypeError,
+      'locale method checks receiver first'
+    )
+    equal(reads, 0, 'locale method rejects receiver before reading options')
+  }
+} finally {
+  Object.defineProperty(Native.prototype, 'format', formatDescriptor)
+}
 throws(
-  () => formatGetter.call(Object.create(Native.prototype)),
+  () => formatDescriptor.get!.call(Object.create(Native.prototype)),
   TypeError,
   'format getter brand'
 )

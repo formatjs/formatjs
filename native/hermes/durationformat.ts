@@ -137,9 +137,16 @@
       result += (index ? ',' : '') + quote(values[index])
     return result + ']'
   }
-  function options(value: unknown): any {
+  // Constructor uses GetOptionsObject. FilterLocales boxes primitives.
+  // https://tc39.es/ecma402/#sec-resolveoptions
+  // https://tc39.es/ecma402/#sec-filterlocales
+  function options(value: unknown, strict = false): any {
     if (value === undefined) return create(null)
-    if (value === null) throw new BadReceiver('options must not be null')
+    if (
+      value === null ||
+      (strict && typeof value !== 'object' && typeof value !== 'function')
+    )
+      throw new BadReceiver('options must be an object')
     return object(value)
   }
   function option(
@@ -200,6 +207,8 @@
     return value
   }
   function numbers(input: any): {values: number[]; defined: number} {
+    // ECMA-402 §13.5.3 steps 1–22 read and coerce ordinary fields in order.
+    // https://tc39.es/ecma402/#sec-todurationrecord
     if (typeof input === 'string' && temporalReaders.length) {
       const reader = temporalReaders[temporalReaders.length - 1]
       input = apply(reader.from, reader.constructor, [input])
@@ -234,6 +243,8 @@
           value = input[fields[index]]
         if (value !== undefined) {
           const numeric = +value
+          // ECMA-402 §13.5.2 rejects non-integral coercion results.
+          // https://tc39.es/ecma402/#sec-tointegerifintegral
           if (!integer(numeric))
             throw new BadOption('Duration fields must be finite integers')
           values[index] = numeric
@@ -247,11 +258,17 @@
     throw new BadReceiver('Invalid duration')
   }
   function format(receiver: unknown, input: unknown, mode: number): any {
+    // ECMA-402 §13.3.3–13.3.4: require the instance slot before coercion.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.format
     const model = slot(receiver),
       record = numbers(input)
+    // ECMA-402 §13.5.3 steps 23–24 validate the record after all JS reads.
+    // https://tc39.es/ecma402/#sec-todurationrecord
     return decoded(nativeFormat(model, record.values, record.defined, mode))
   }
   class DurationFormat extends null {
+    // ECMA-402 §13.1.1 steps 1–3: allocate from NewTarget before resolving options.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat
     constructor(
       locales: unknown = undefined,
       optionsInput: unknown = undefined
@@ -264,11 +281,8 @@
           ? requestedPrototype
           : prototype
       )
-      // Match the reference's pre-locale constructor access.
-      if (!(receiver instanceof DurationFormat) || !receiver.constructor)
-        throw new BadReceiver("Intl.DurationFormat must be called with 'new'")
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
-      const opts = options(optionsInput)
+      const opts = options(optionsInput, true)
       const matcher = option(opts, 'localeMatcher', ['lookup', 'best fit'])
       const system = option(opts, 'numberingSystem', undefined)
       if (system !== undefined && !unicodeType(system))
@@ -322,6 +336,7 @@
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
+      // ECMA-402 §13.2.2 https://tc39.es/ecma402/#sec-Intl.DurationFormat.supportedLocalesOf
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
       const matcher = option(options(optionsInput), 'localeMatcher', [
         'lookup',
@@ -352,16 +367,22 @@
       check(nativeLoad(kind, pack))
     }
   }
+  // ECMA-402 §§13.2.1 and 13.3.1: class syntax supplies both prototype links.
+  // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype
+  // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.constructor
   const prototype = DurationFormat.prototype
   setPrototype(prototype, objectPrototype)
   const methods = {
     format(this: unknown, duration: unknown): string {
       return format(this, duration, 0)
     },
+    // ECMA-402 §13.3.4 uses the same record conversion as format.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.formatToParts
     formatToParts(this: unknown, duration: unknown): object[] {
       return format(this, duration, 1)
     },
     resolvedOptions(this: unknown): object {
+      // ECMA-402 §13.3.2 https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.resolvedOptions
       return decoded(nativeResolved(slot(this)))
     },
     getAvailableLocales(): Set<string> {
@@ -375,6 +396,7 @@
   const names = ['format', 'formatToParts', 'resolvedOptions'] as const
   for (let index = 0; index < names.length; index++)
     property(prototype, names[index], methods[names[index]])
+  // ECMA-402 §13.3.5 https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype-%symbol.tostringtag%
   property(prototype, Symbol.toStringTag, 'Intl.DurationFormat', false, false)
   property(DurationFormat, 'polyfilled', true)
   property(DurationFormat, '__addTemporalNamespace', addTemporalNamespace)

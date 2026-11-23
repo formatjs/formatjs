@@ -61,6 +61,7 @@ const codes = {
     'japanese',
     'ethiopic',
     'ethioaa',
+    'ETHIOPIC-AMETE-ALEM',
     'islamic-civil',
     'islamicc',
     'abc_def',
@@ -88,6 +89,187 @@ interface Case {
   codes: string[]
 }
 const cases: Case[] = []
+
+it('returns present empty names and ignores inherited entries', () => {
+  const raw = JSON.parse(
+    readFileSync(resolve('packages/intl-displaynames/cldr-raw/en.json'), 'utf8')
+  )
+  const pack = JSON.parse(
+    readFileSync(
+      resolve('crates/intl_displaynames/locale-data/en.json'),
+      'utf8'
+    )
+  )
+  for (const record of [raw, pack]) {
+    record.data.types.currency.short.USD = ''
+    delete record.data.types.currency.short.QZZ
+    delete record.data.types.currency.long.QZZ
+  }
+  const options = {type: 'currency', style: 'short', fallback: 'none'} as const
+  const codes = ['USD', 'QZZ']
+  const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'QZZ')
+  let names: (string | undefined)[]
+  try {
+    DisplayNames.__addLocaleData(raw)
+    const formatter = new DisplayNames('en', options)
+    Object.defineProperty(Object.prototype, 'QZZ', {
+      configurable: true,
+      get() {
+        throw new Error('read an inherited name')
+      },
+    })
+    names = codes.map(code => formatter.of(code))
+  } finally {
+    if (previous) Object.defineProperty(Object.prototype, 'QZZ', previous)
+    else Reflect.deleteProperty(Object.prototype, 'QZZ')
+    DisplayNames.__addLocaleData(
+      JSON.parse(
+        readFileSync(
+          resolve('packages/intl-displaynames/cldr-raw/en.json'),
+          'utf8'
+        )
+      )
+    )
+  }
+  expect(names).toEqual(['', undefined])
+
+  const result = spawnSync(
+    resolve('crates/intl_displaynames/conformance'),
+    [],
+    {
+      input:
+        JSON.stringify({
+          pack: JSON.stringify(pack),
+          cases: [{options, codes}],
+        }) + '\n',
+      encoding: 'utf8',
+    }
+  )
+  if (result.error) throw result.error
+  expect(result.status, result.stderr).toBe(0)
+  expect(JSON.parse(result.stdout)[0].values).toEqual([
+    {value: ''},
+    {value: null},
+  ])
+})
+
+it.each(['current', 'legacy'] as const)(
+  'uses %s field labels and falls back for missing currency names',
+  version => {
+    const raw = JSON.parse(
+      readFileSync(
+        resolve('packages/intl-displaynames/cldr-raw/agq.json'),
+        'utf8'
+      )
+    )
+    const pack = JSON.parse(
+      readFileSync(
+        resolve('crates/intl_displaynames/locale-data/agq.json'),
+        'utf8'
+      )
+    )
+    if (version === 'legacy') {
+      for (const record of [raw, pack]) {
+        const fields = record.data.types.dateTimeField.long
+        fields.dayperiod = fields.dayPeriod
+        delete fields.dayPeriod
+      }
+    }
+    DisplayNames.__addLocaleData(raw)
+    const requests = [
+      {
+        options: {type: 'dateTimeField', fallback: 'none'},
+        codes: ['dayPeriod'],
+      },
+      {options: {type: 'currency', fallback: 'code'}, codes: ['AFN']},
+      {options: {type: 'currency', fallback: 'none'}, codes: ['AFN']},
+    ] satisfies Case[]
+    const expected = ['â tsɨ̀', 'AFN', null]
+    expect(
+      requests.map(
+        ({options, codes}) =>
+          new DisplayNames('agq', options).of(codes[0]) ?? null
+      )
+    ).toEqual(expected)
+    const result = spawnSync(
+      resolve('crates/intl_displaynames/conformance'),
+      [],
+      {
+        input:
+          JSON.stringify({pack: JSON.stringify(pack), cases: requests}) + '\n',
+        encoding: 'utf8',
+      }
+    )
+    if (result.error) throw result.error
+    expect(result.status, result.stderr).toBe(0)
+    expect(
+      JSON.parse(result.stdout).map(
+        ({values}: {values: {value: string | null}[]}) => values[0].value
+      )
+    ).toEqual(expected)
+  }
+)
+
+it('looks up translated language variants and calendar aliases', () => {
+  const raw = JSON.parse(
+    readFileSync(resolve('packages/intl-displaynames/cldr-raw/en.json'), 'utf8')
+  )
+  DisplayNames.__addLocaleData(raw)
+  const requests = [
+    {
+      options: {
+        type: 'language',
+        languageDisplay: 'standard',
+        fallback: 'none',
+      },
+      codes: ['de-1901', 'en-Latn-GB-fonipa-scouse', 'en-abcde'],
+    },
+    {
+      options: {type: 'language', languageDisplay: 'dialect', fallback: 'code'},
+      codes: ['en-Latn-GB-fonipa-scouse', 'de-abcde'],
+    },
+    {
+      options: {type: 'calendar', fallback: 'none'},
+      codes: ['ethiopic-amete-alem', 'ethioaa', 'islamicc'],
+    },
+  ] satisfies Case[]
+  const expected = [
+    [
+      'German (Traditional German orthography)',
+      'English (Latin, United Kingdom, IPA Phonetics, Scouse)',
+      null,
+    ],
+    ['British English (Latin, IPA Phonetics, Scouse)', 'German (abcde)'],
+    ['Ethiopic Amete Alem Calendar', 'Ethiopic Amete Alem Calendar', null],
+  ]
+  expect(
+    requests.map(({options, codes}) => {
+      const formatter = new DisplayNames('en', options)
+      return codes.map(code => formatter.of(code) ?? null)
+    })
+  ).toEqual(expected)
+
+  const pack = readFileSync(
+    resolve('crates/intl_displaynames/locale-data/en.json'),
+    'utf8'
+  )
+  const result = spawnSync(
+    resolve('crates/intl_displaynames/conformance'),
+    [],
+    {
+      input: JSON.stringify({pack, cases: requests}) + '\n',
+      encoding: 'utf8',
+    }
+  )
+  if (result.error) throw result.error
+  expect(result.status, result.stderr).toBe(0)
+  expect(
+    JSON.parse(result.stdout).map(
+      ({values}: {values: {value: string | null}[]}) =>
+        values.map(({value}) => value)
+    )
+  ).toEqual(expected)
+})
 
 it('matches script-name oracle fixtures with explicit ICU differences', () => {
   const rows = readFileSync(

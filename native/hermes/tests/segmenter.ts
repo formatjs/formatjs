@@ -33,6 +33,8 @@ const inputs = [
   'a\r\nb',
   'foo_bar',
   '3.14 + 1,234.50',
+  'a\u0301🇺🇸🇨🇦',
+  '🗦🇺🇸🇨🇦',
   '\ud800a\udc00',
 ]
 for (const locale of ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh']) {
@@ -59,6 +61,56 @@ for (const locale of ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh']) {
   }
 }
 const grapheme = new Native('en')
+for (const Constructor of [TypeScriptSegmenter, Native]) {
+  const methods = [
+    [Object, 'keys'],
+    [Array.prototype, 'sort'],
+    [Array.prototype, Symbol.iterator],
+    [String.prototype, 'split'],
+    [String.prototype, 'replaceAll'],
+    [RegExp.prototype, 'exec'],
+    [RegExp.prototype, Symbol.replace],
+    [WeakMap.prototype, 'get'],
+    [WeakMap.prototype, 'set'],
+  ] as const
+  const descriptors = methods.map(([target, key]) =>
+    Object.getOwnPropertyDescriptor(target, key)!
+  )
+  const before = Object.getOwnPropertyDescriptor(Object.prototype, 'before')
+  const reject = () => {
+    throw new Error('Segmenter constructor called a mutable intrinsic')
+  }
+  let formatter: Intl.Segmenter
+  try {
+    formatter = new Constructor('en-GB', {
+      get granularity() {
+        for (let i = 0; i < methods.length; i++) {
+          const target = methods[i][0]
+          const key = methods[i][1]
+          Object.defineProperty(target, key, {...descriptors[i], value: reject})
+        }
+        Object.defineProperty(Object.prototype, 'before', {
+          configurable: true,
+          get: reject,
+        })
+        return 'sentence' as const
+      },
+    })
+  } finally {
+    for (let i = 0; i < methods.length; i++) {
+      const target = methods[i][0]
+      const key = methods[i][1]
+      Object.defineProperty(target, key, descriptors[i])
+    }
+    if (before) Object.defineProperty(Object.prototype, 'before', before)
+    else Reflect.deleteProperty(Object.prototype, 'before')
+  }
+  equal(
+    Array.from(formatter.segment('One. Two!'), part => part.segment),
+    ['One. ', 'Two!'],
+    'constructor keeps its locale rules after granularity getter'
+  )
+}
 const input = 'á😀👩‍👩‍👧‍👦🇺🇸\r\n'
 const segments = grapheme.segment(input)
 equal(
@@ -376,6 +428,50 @@ for (const [name, Model] of [
     name + ' cursor constructor stays private'
   )
 }
+for (const Constructor of [Native, TypeScriptSegmenter]) {
+  const segments = new Constructor('en', {granularity: 'word'}).segment('a b')
+  const cursor = segments[Symbol.iterator]()
+  const methods = [
+    [String.prototype, 'substring'],
+    [String.prototype, 'charCodeAt'],
+    [String.prototype, 'trim'],
+    [RegExp.prototype, 'exec'],
+    [Array.prototype, Symbol.iterator],
+  ] as const
+  const descriptors = methods.map(([prototype, name]) =>
+    Object.getOwnPropertyDescriptor(prototype, name)!
+  )
+  const fail = () => {
+    throw Error('Segmentation called a mutable prototype method')
+  }
+  let contained: unknown
+  let first: unknown
+  try {
+    for (let i = 0; i < methods.length; i++) {
+      Object.defineProperty(methods[i][0], methods[i][1], {value: fail})
+    }
+    contained = segments.containing(2)
+    first = cursor.next()
+  } finally {
+    for (let i = 0; i < methods.length; i++) {
+      Object.defineProperty(methods[i][0], methods[i][1], descriptors[i])
+    }
+  }
+  equal(
+    contained,
+    {segment: 'b', index: 2, input: 'a b', isWordLike: true},
+    'containing uses private boundary operations'
+  )
+  equal(
+    first,
+    {
+      value: {segment: 'a', index: 0, input: 'a b', isWordLike: true},
+      done: false,
+    },
+    'iterator uses private boundary operations'
+  )
+}
+
 // Record creation must bypass inherited accessors, including iterator results.
 const recordModels = [
   {name: 'native', grapheme, words},

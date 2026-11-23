@@ -1,6 +1,12 @@
+import {getIntlFallbackSymbol} from '#packages/ecma402-abstract/intl-fallback-symbol.js'
 import {invalidateCompactPatterns} from '#packages/ecma402-abstract/NumberFormat/compact-patterns.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+import {
+  setDataProperty,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {FormatNumeric} from '#packages/ecma402-abstract/NumberFormat/FormatNumeric.js'
 import {FormatNumericRange} from '#packages/ecma402-abstract/NumberFormat/FormatNumericRange.js'
@@ -13,12 +19,13 @@ import {
   type NumberFormatOptions,
   type RawNumberLocaleData,
 } from '#packages/ecma402-abstract/types/number.js'
-import {
-  createMemoizedPluralRules,
-  defineProperty,
-  invariant,
-} from '#packages/ecma402-abstract/utils.js'
+import {defineProperty} from '#packages/ecma402-abstract/utils.js'
 import {currencyDigitsData} from '@formatjs_generated/cldr.number/currency-digits.js'
+import {cardinalRules} from '@formatjs_generated/cldr.number/cardinal-rules.js'
+import {match} from '@formatjs/intl-localematcher'
+import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
+import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatDigitOptions.js'
+import type {NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
 // eslint-disable-next-line import/no-cycle
 import type Decimal from '@formatjs/bigdecimal'
 import getInternalSlots, {
@@ -29,14 +36,15 @@ import {
   type NumberFormat as NumberFormatType,
 } from '#packages/intl-numberformat/types.js'
 
-const legacyConstructedSymbol = Symbol('IntlLegacyConstructedSymbol')
+const objectCreate = Object.create
+const objectDefineProperty = Object.defineProperty
+const cardinalLocales = Object.keys(cardinalRules)
 
 function unwrapNumberFormat(receiver: unknown): Intl.NumberFormat {
-  if (
-    receiver === null ||
-    (typeof receiver !== 'object' && typeof receiver !== 'function')
-  ) {
-    throw new TypeError('Receiver is not an object')
+  // ECMA-402 §16.5.9, step 1 requires an Object before checking its legacy wrapper.
+  // https://tc39.es/ecma402/#sec-unwrapnumberformat
+  if (!IsObject(receiver)) {
+    throw new TypeErrorConstructor('Receiver is not an object')
   }
   // Only format and resolvedOptions support legacy wrappers.
   // https://tc39.es/ecma402/#sec-unwrapnumberformat
@@ -45,7 +53,7 @@ function unwrapNumberFormat(receiver: unknown): Intl.NumberFormat {
     OrdinaryHasInstance(NumberFormat, receiver)
   ) {
     return (receiver as Record<symbol, Intl.NumberFormat>)[
-      legacyConstructedSymbol
+      getIntlFallbackSymbol()
     ]
   }
   return receiver as Intl.NumberFormat
@@ -53,6 +61,11 @@ function unwrapNumberFormat(receiver: unknown): Intl.NumberFormat {
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = NumberFormatType
+
+let defaultLocale = ''
+function getDefaultLocale(): string {
+  return defaultLocale
+}
 
 const RESOLVED_OPTIONS_KEYS = [
   'locale',
@@ -88,33 +101,47 @@ function initializeNumberFormat(
     getInternalSlots: nf => getInternalSlots(nf, true),
     localeData: NumberFormat.localeData,
     availableLocales: NumberFormat.availableLocales,
-    getDefaultLocale: NumberFormat.getDefaultLocale,
+    getDefaultLocale,
     currencyDigitsData,
   })
 
   const internalSlots = getInternalSlots(numberFormat as any)
 
   const dataLocale = internalSlots.dataLocale
-  const dataLocaleData = NumberFormat.localeData[dataLocale]
-  invariant(
-    dataLocaleData !== undefined,
-    `Cannot load locale-dependent data for ${dataLocale}.`
-  )
-
-  // ECMA-402 §16.1.1, steps 3–4 read localeMatcher from the caller's
-  // options. Internal plural selection must not add inherited option reads.
-  // https://tc39.es/ecma402/#sec-intl.numberformat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L23-L24
-  internalSlots.pl = createMemoizedPluralRules(
-    dataLocale,
-    Object.assign(Object.create(null), {
-      minimumFractionDigits: internalSlots.minimumFractionDigits,
-      maximumFractionDigits: internalSlots.maximumFractionDigits,
-      minimumIntegerDigits: internalSlots.minimumIntegerDigits,
-      minimumSignificantDigits: internalSlots.minimumSignificantDigits,
-      maximumSignificantDigits: internalSlots.maximumSignificantDigits,
-    })
-  )
+  const pluralOptions = {
+    __proto__: null,
+    minimumFractionDigits: internalSlots.minimumFractionDigits,
+    maximumFractionDigits: internalSlots.maximumFractionDigits,
+    minimumIntegerDigits: internalSlots.minimumIntegerDigits,
+    minimumSignificantDigits: internalSlots.minimumSignificantDigits,
+    maximumSignificantDigits: internalSlots.maximumSignificantDigits,
+  }
+  let pluralDigits: NumberFormatDigitInternalSlots | undefined
+  let rule: (typeof cardinalRules)[string] | undefined
+  // ECMA-402 §16.5.3, steps 5.b–d and 9.g–k. CLDR names use exact decimal
+  // operands, including visible trailing zeros when the rendered value is available.
+  // https://tc39.es/ecma402/#sec-partitionnumberpattern
+  // https://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
+  internalSlots.selectPlural = (value, formatted) => {
+    if (!value.isFinite()) return 'other'
+    if (formatted === undefined) {
+      if (!pluralDigits) {
+        pluralDigits = objectCreate(null) as NumberFormatDigitInternalSlots
+        SetNumberFormatDigitOptions(
+          pluralDigits,
+          pluralOptions,
+          0,
+          3,
+          'standard'
+        )
+      }
+      formatted = FormatNumericToString(pluralDigits, value).formattedString
+    }
+    rule ??=
+      cardinalRules[dataLocale] ??
+      cardinalRules[match([dataLocale], cardinalLocales, 'en')]
+    return rule(formatted, false)
+  }
   return numberFormat
 }
 
@@ -125,53 +152,58 @@ export const NumberFormat = new Proxy(
     options?: NumberFormatOptions
   ) {
     const numberFormat = new NumberFormat(locales, options)
-    // ChainNumberFormat checks the receiver after all option reads.
+    // ECMA-402 §16.1.1.1 steps 1.a–b define the legacy slot after initialization.
     // https://tc39.es/ecma402/#sec-chainnumberformat
     if (OrdinaryHasInstance(NumberFormat, this)) {
-      Object.defineProperty(this, legacyConstructedSymbol, {
+      const descriptor = {
+        __proto__: null,
         value: numberFormat,
         writable: false,
         enumerable: false,
         configurable: false,
-      })
+      }
+      objectDefineProperty(this, getIntlFallbackSymbol(), descriptor)
       return this
     }
     return numberFormat
   },
   {
+    // The private proxy handler has no inherited traps.
+    // https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots-get-p-receiver
+    __proto__: null,
     construct(_target, args, newTarget) {
       // GetPrototypeFromConstructor reads prototype once, before locale/options.
       // https://tc39.es/ecma262/#sec-getprototypefromconstructor
       const prototype = newTarget.prototype
-      const objectPrototype =
-        prototype !== null &&
-        (typeof prototype === 'object' || typeof prototype === 'function')
-          ? prototype
-          : NumberFormat.prototype
+      const objectPrototype = IsObject(prototype)
+        ? prototype
+        : NumberFormat.prototype
       return initializeNumberFormat(
-        Object.create(objectPrototype),
+        objectCreate(objectPrototype),
         args[0],
         args[1]
       )
     },
-  }
+  } as ProxyHandler<Function>
 ) as unknown as NumberFormatConstructor
 
 Object.defineProperty(NumberFormat, 'name', {
   value: 'NumberFormat',
   configurable: true,
 })
+// ECMA-402 §16.3.1 https://tc39.es/ecma402/#sec-intl.numberformat.prototype.constructor
 defineProperty(NumberFormat.prototype, 'constructor', {value: NumberFormat})
 
 // ECMA-402 §7 applies ECMA-262 §18 built-in function requirements: these
 // methods have no [[Construct]] or own prototype property.
 // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
-// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
 const {formatToParts, formatRange, formatRangeToParts} = {
-  formatToParts(this: Intl.NumberFormat, x: number | bigint | Decimal) {
+  formatToParts(
+    this: Intl.NumberFormat,
+    x?: number | bigint | Decimal | string
+  ) {
     // ECMA-402 §16.3.6 step 2 precedes argument conversion in step 3.
     // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formattoparts
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L492-L493
     getInternalSlots(this)
     return FormatNumericToParts(this, ToIntlMathematicalValue(x), {
       getInternalSlots,
@@ -184,11 +216,10 @@ const {formatToParts, formatRange, formatRangeToParts} = {
     end: number | bigint | Decimal
   ) {
     getInternalSlots(this)
-    // ECMA-402 §16.3.4, step 3: reject missing endpoints before coercion.
+    // ECMA-402 §16.3.4 steps 3–5 reject missing endpoints, then coerce in order.
     // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L463-L465
     if (start === undefined || end === undefined) {
-      throw new TypeError('Range endpoints must not be undefined')
+      throw new TypeErrorConstructor('Range endpoints must not be undefined')
     }
     return FormatNumericRange(
       this,
@@ -206,11 +237,10 @@ const {formatToParts, formatRange, formatRangeToParts} = {
     end: number | bigint | Decimal
   ) {
     getInternalSlots(this)
-    // ECMA-402 §16.3.5, step 3: reject missing endpoints before coercion.
+    // ECMA-402 §16.3.5 steps 3–5 reject missing endpoints, then coerce in order.
     // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L478-L480
     if (start === undefined || end === undefined) {
-      throw new TypeError('Range endpoints must not be undefined')
+      throw new TypeErrorConstructor('Range endpoints must not be undefined')
     }
     return FormatNumericRangeToParts(
       this,
@@ -239,24 +269,22 @@ const {resolvedOptions} = {
   resolvedOptions() {
     const internalSlots = getInternalSlots(unwrapNumberFormat(this))
     const ro: Record<string, unknown> = {}
-    for (const key of RESOLVED_OPTIONS_KEYS) {
+    // ECMA-402 §16.3.2 step 5 creates own properties in table order.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.resolvedoptions
+    for (let index = 0; index < RESOLVED_OPTIONS_KEYS.length; index++) {
+      const key = RESOLVED_OPTIONS_KEYS[index]
       const value = internalSlots[key]
       if (value !== undefined) {
-        ro[key] = value
+        setDataProperty(ro, key, value)
       }
     }
-    if (internalSlots.roundingType === 'morePrecision') {
-      ro.roundingPriority = 'morePrecision'
-    } else if (internalSlots.roundingType === 'lessPrecision') {
-      ro.roundingPriority = 'lessPrecision'
-    } else {
-      ro.roundingPriority = 'auto'
-    }
-    // ECMA-402 §16.3.2, step 5: create properties in table order.
-    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.resolvedoptions
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L302-L309
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L418-L427
-    ro.trailingZeroDisplay = internalSlots.trailingZeroDisplay
+    const {roundingType, trailingZeroDisplay} = internalSlots
+    const roundingPriority =
+      roundingType === 'morePrecision' || roundingType === 'lessPrecision'
+        ? roundingType
+        : 'auto'
+    setDataProperty(ro, 'roundingPriority', roundingPriority)
+    setDataProperty(ro, 'trailingZeroDisplay', trailingZeroDisplay)
     return ro as any
   },
 }
@@ -272,7 +300,8 @@ const formatDescriptor = {
     const internalSlots = getInternalSlots(unwrapNumberFormat(this))
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
-      // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
+      // ECMA-402 §16.3.3 steps 4–5 cache a built-in with an empty name.
+      // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.format
       boundFormat = (
         value?:
           | number
@@ -283,18 +312,14 @@ const formatDescriptor = {
           | '+Infinity'
       ) => FormatNumeric(internalSlots, ToIntlMathematicalValue(value))
 
-      try {
-        // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
-        Object.defineProperty(boundFormat, 'name', {
-          configurable: true,
-          enumerable: false,
-          writable: false,
-          value: '',
-        })
-      } catch {
-        // In older browser (e.g Chrome 36 like polyfill-fastly.io)
-        // TypeError: Cannot redefine property: name
+      const descriptor = {
+        __proto__: null,
+        configurable: true,
+        enumerable: false,
+        writable: false,
+        value: '',
       }
+      objectDefineProperty(boundFormat, 'name', descriptor)
       internalSlots.boundFormat = boundFormat
     }
     return boundFormat
@@ -321,6 +346,7 @@ const {supportedLocalesOf} = {
     locales: string | string[],
     options?: Pick<NumberFormatOptions, 'localeMatcher'>
   ) {
+    // ECMA-402 §16.2.2 https://tc39.es/ecma402/#sec-intl.numberformat.supportedlocalesof
     return SupportedLocales(
       NumberFormat.availableLocales,
       CanonicalizeLocaleList(locales),
@@ -334,7 +360,8 @@ defineProperty(NumberFormat, 'supportedLocalesOf', {value: supportedLocalesOf})
 NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
-  for (const {data: source, locale} of data) {
+  for (const {data: source, locale: tag} of data) {
+    const [locale] = CanonicalizeLocaleList(tag)
     const d = source.numbers.aliases
       ? {
           ...source,
@@ -370,16 +397,17 @@ NumberFormat.__addLocaleData = function __addLocaleData(
       NumberFormat.localeData,
       NumberFormat.availableLocales
     )
-    if (!NumberFormat.__defaultLocale) {
-      NumberFormat.__defaultLocale = locale
+    if (!defaultLocale) {
+      defaultLocale = locale
     }
   }
 }
 
 NumberFormat.__addUnitData = function __addUnitData(
-  locale: string,
+  tag: string,
   unitsData: RawNumberLocaleData['data']['units']
 ) {
+  const [locale] = CanonicalizeLocaleList(tag)
   const {[locale]: existingData} = NumberFormat.localeData
   if (!existingData) {
     throw new Error(`Locale data for "${locale}" has not been loaded in NumberFormat. 
@@ -394,16 +422,25 @@ Please __addLocaleData before adding additional unit data`)
   }
 }
 
-NumberFormat.__defaultLocale = ''
+// ECMA-402 §9.2.7 step 3 uses the internal default during locale resolution.
+// https://tc39.es/ecma402/#sec-resolvelocale
+objectDefineProperty(NumberFormat, '__defaultLocale', {
+  configurable: true,
+  enumerable: true,
+  get: getDefaultLocale,
+  set(locale: string) {
+    defaultLocale = locale
+  },
+})
+// ECMA-402 §16.2.3: registered locale data supplies [[AvailableLocales]] and [[LocaleData]].
+// https://tc39.es/ecma402/#sec-intl.numberformat-internal-slots
 NumberFormat.localeData = {}
 NumberFormat.availableLocales = new Set<string>()
-NumberFormat.getDefaultLocale = () => {
-  return NumberFormat.__defaultLocale
-}
+NumberFormat.getDefaultLocale = getDefaultLocale
 NumberFormat.polyfilled = true
 
 try {
-  // IE11 does not have Symbol
+  // ECMA-402 §16.3.7 https://tc39.es/ecma402/#sec-intl.numberformat.prototype-%symbol.tostringtag%
   if (typeof Symbol !== 'undefined') {
     Object.defineProperty(NumberFormat.prototype, Symbol.toStringTag, {
       configurable: true,
@@ -428,6 +465,7 @@ try {
     value: 1,
   })
 
+  // ECMA-402 §16.2.1 https://tc39.es/ecma402/#sec-intl.numberformat.prototype
   Object.defineProperty(NumberFormat, 'prototype', {
     configurable: false,
     enumerable: false,

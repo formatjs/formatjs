@@ -2,6 +2,7 @@ import type {Decimal} from '@formatjs/bigdecimal'
 import {type UnsignedRoundingModeType} from '#packages/ecma402-abstract/types/number.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 
+// ECMA-402 §16.5.17 https://tc39.es/ecma402/#sec-applyunsignedroundingmode
 export function ApplyUnsignedRoundingMode(
   x: Decimal,
   r1: Decimal,

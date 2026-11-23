@@ -98,6 +98,186 @@ for (const text of fixtures.packs) {
   Reference.__addLocaleData(pack)
   ;(Intl.NumberFormat as any).__addLocaleData(pack.number)
 }
+for (const Constructor of [Native, Reference]) {
+  check(
+    Constructor.prototype.constructor === Constructor,
+    'prototype constructor'
+  )
+  const legacy = Object.create(Constructor.prototype)
+  const options = {timeZone: 'UTC', year: 'numeric'}
+  const formatter = new Constructor('en', options)
+  check(Constructor.call(legacy, 'en', options) === legacy, 'legacy receiver')
+  equal(legacy.resolvedOptions(), formatter.resolvedOptions(), 'legacy options')
+  equal(legacy.format(0), formatter.format(0), 'legacy format')
+  equal(
+    outcome(() => legacy.formatToParts(0)),
+    {error: 'TypeError'},
+    'legacy parts'
+  )
+  Constructor.call(formatter, 'en', {timeZone: 'UTC', month: 'long'})
+  equal(
+    formatter.resolvedOptions().year,
+    'numeric',
+    'original options preserved'
+  )
+
+  const alternate = function () {}
+  alternate.prototype = null as any
+  const defaulted = Reflect.construct(Constructor, ['en', options], alternate)
+  check(
+    Object.getPrototypeOf(defaulted) === Constructor.prototype,
+    'primitive newTarget.prototype uses the DateTimeFormat prototype'
+  )
+  const customPrototype = Object.create(null)
+  const reads: string[] = []
+  const newTarget = new Proxy(function () {}, {
+    get(target, key, receiver) {
+      if (key !== 'prototype') return Reflect.get(target, key, receiver)
+      reads.push('prototype')
+      return customPrototype
+    },
+  })
+  const custom = Reflect.construct(
+    Constructor,
+    [
+      'en',
+      {
+        get timeZone() {
+          reads.push('timeZone')
+          return 'UTC'
+        },
+      },
+    ],
+    newTarget
+  )
+  equal(reads, ['prototype', 'timeZone'], 'prototype read once before options')
+  check(Object.getPrototypeOf(custom) === customPrototype, 'custom prototype')
+  equal(
+    Constructor.prototype.resolvedOptions.call(custom).timeZone,
+    'UTC',
+    'custom receiver has formatter slots'
+  )
+
+  const cold = new Constructor('en', options)
+  const previousBound = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'bound'
+  )
+  let firstFormat: Intl.DateTimeFormat['format']
+  let secondFormat: Intl.DateTimeFormat['format']
+  try {
+    Object.defineProperty(Object.prototype, 'bound', {
+      configurable: true,
+      get() {
+        throw new Error('Read inherited bound format')
+      },
+      set() {
+        throw new Error('Wrote inherited bound format')
+      },
+    })
+    firstFormat = cold.format
+    secondFormat = cold.format
+  } finally {
+    if (previousBound) {
+      Object.defineProperty(Object.prototype, 'bound', previousBound)
+    } else {
+      Reflect.deleteProperty(Object.prototype, 'bound')
+    }
+  }
+  check(firstFormat === secondFormat, 'private bound format cache')
+  equal(firstFormat(0), formatter.format(0), 'detached bound format')
+
+  const periods = new Constructor('en', {timeZone: 'UTC', dayPeriod: 'long'})
+  const morning = Date.UTC(2026, 0, 15, 9)
+  const laterMorning = Date.UTC(2026, 0, 15, 11)
+  const noon = Date.UTC(2026, 0, 15, 12)
+  // ECMA-402 §11.5.8 steps 15.d.iii and 16 compare localized periods.
+  // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+  equal(
+    periods.formatRangeToParts(morning, laterMorning),
+    [{type: 'dayPeriod', value: 'in the morning', source: 'shared'}],
+    'equal stand-alone periods collapse'
+  )
+  equal(
+    periods
+      .formatRangeToParts(morning, noon)
+      .filter(
+        (part: Intl.DateTimeRangeFormatPart) => part.type === 'dayPeriod'
+      ),
+    [
+      {type: 'dayPeriod', value: 'in the morning', source: 'startRange'},
+      {type: 'dayPeriod', value: 'noon', source: 'endRange'},
+    ],
+    'distinct stand-alone periods retain both endpoints'
+  )
+}
+const nativeLegacy = Object.create(Native.prototype)
+const referenceLegacy = Object.create(Reference.prototype)
+const legacyOptions = {timeZone: 'UTC'}
+Native.call(nativeLegacy, 'en', legacyOptions)
+Reflect.apply(Reference, referenceLegacy, ['en', legacyOptions])
+check(
+  Object.getOwnPropertySymbols(nativeLegacy)[0] ===
+    Object.getOwnPropertySymbols(referenceLegacy)[0],
+  'Hermes and TypeScript formatters share the realm fallback symbol'
+)
+const localeDate = new Date(0)
+for (const [name, components] of [
+  [
+    'toLocaleString',
+    {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    },
+  ],
+  ['toLocaleDateString', {year: 'numeric', month: 'numeric', day: 'numeric'}],
+  [
+    'toLocaleTimeString',
+    {hour: 'numeric', minute: 'numeric', second: 'numeric'},
+  ],
+] as const) {
+  equal(
+    outcome(() => Reflect.construct(Object, [], Date.prototype[name])),
+    {error: 'TypeError'},
+    name + ' rejects construction'
+  )
+  const reads: string[] = []
+  const locale = {
+    get length() {
+      reads.push('locales')
+      return 1
+    },
+    0: 'en',
+  }
+  const options = {
+    get timeZone() {
+      reads.push('timeZone')
+      return 'UTC'
+    },
+    get hour() {
+      reads.push('hour')
+      return undefined
+    },
+    get dateStyle() {
+      reads.push('dateStyle')
+      return undefined
+    },
+  }
+  equal(
+    Reflect.apply(Date.prototype[name], localeDate, [locale, options]),
+    new Reference('en', {...components, timeZone: 'UTC'}).format(0),
+    name + ' component defaults'
+  )
+  equal(
+    reads,
+    ['locales', 'timeZone', 'hour', 'dateStyle'],
+    name + ' option read order'
+  )
+}
 const inputs = [
   0,
   -1,
@@ -165,6 +345,68 @@ for (const locale of fixtures.locales)
     for (const numberingSystem of ['latn', 'arab', 'mathbold'])
       for (const timeZone of ['UTC', '+05:30', '-04:30'])
         compare(locale, {...profile, numberingSystem, timeZone}, inputs)
+
+// ECMA-402 §11.5.4 steps 8 and 15.b use localized digits and pattern literals.
+// https://tc39.es/ecma402/#sec-formatdatetimepattern
+// Test262 expects U+0020 before AM. CLDR uses U+202F.
+// https://github.com/tc39/test262/issues/3711
+for (const Constructor of [Reference, Native]) {
+  const formatter = new Constructor('en-US-u-nu-hanidec', {
+    timeZone: 'UTC',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+  const timestamp = Date.UTC(2024, 0, 1, 2, 35, 6)
+  equal(
+    formatter.formatToParts(timestamp),
+    [
+      {type: 'hour', value: '〇二'},
+      {type: 'literal', value: ':'},
+      {type: 'minute', value: '三五'},
+      {type: 'literal', value: ':'},
+      {type: 'second', value: '〇六'},
+      {type: 'literal', value: '\u202f'},
+      {type: 'dayPeriod', value: 'AM'},
+    ],
+    'Han decimal digits and CLDR day-period separator'
+  )
+}
+
+// ECMA-402 §11.5.4 step 15.e and LDML localized GMT patterns.
+for (const Constructor of [Reference, Native]) {
+  for (const [locale, timeZone, timeZoneName, expected] of [
+    ['en-u-nu-arab', '+05:30', 'longOffset', 'GMT+٠٥:٣٠'],
+    ['en-u-nu-arab', '-04:00', 'shortOffset', 'GMT-٤'],
+    ['en-u-nu-mathbold', '+05:30', 'longOffset', 'GMT+𝟎𝟓:𝟑𝟎'],
+  ] as const) {
+    const formatter = new Constructor(locale, {
+      hour: 'numeric',
+      timeZone,
+      timeZoneName,
+    })
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, timeZone)
+    let parts: Intl.DateTimeFormatPart[]
+    try {
+      Object.defineProperty(Object.prototype, timeZone, {
+        configurable: true,
+        get() {
+          throw new Error('inherited time-zone name')
+        },
+      })
+      parts = formatter.formatToParts(0)
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, timeZone, previous)
+      else Reflect.deleteProperty(Object.prototype, timeZone)
+    }
+    equal(
+      parts.find(part => part.type === 'timeZoneName')?.value,
+      expected,
+      'localized GMT offset digits'
+    )
+  }
+}
+
 for (const options of [
   {calendar: 'x'},
   {numberingSystem: 'a'},
@@ -376,6 +618,42 @@ for (const input of [
     'value coercion'
   )
 const sentinel = {message: 'user exception'}
+for (const Constructor of [Native, Reference]) {
+  for (const [field, options] of [
+    ['monthNumber', {month: 'numeric'}],
+    ['monthNameIndex', {month: 'long'}],
+    ['leapMonth', {month: 'long'}],
+    ['monthStandalone', {month: 'long'}],
+    ['weekdayStandalone', {weekday: 'long'}],
+  ] as const) {
+    const formatter = new Constructor('en', {...options, timeZone: 'UTC'})
+    const first = Date.UTC(2026, 0, 15)
+    const last = Date.UTC(2026, 1, 20)
+    const own = Object.getOwnPropertyDescriptor(Object.prototype, field)
+    const input = {
+      valueOf() {
+        Object.defineProperty(Object.prototype, field, {
+          configurable: true,
+          get() {
+            throw new Error('Read inherited DateTimeFormat field ' + field)
+          },
+        })
+        return first
+      },
+    }
+    for (const method of ['formatToParts', 'formatRangeToParts'] as const) {
+      const expected = formatter[method](first, last)
+      let actual: unknown
+      try {
+        actual = formatter[method](input, last)
+      } finally {
+        if (own) Object.defineProperty(Object.prototype, field, own)
+        else Reflect.deleteProperty(Object.prototype, field)
+      }
+      equal(actual, expected, method + ' ignores inherited ' + field)
+    }
+  }
+}
 for (const Constructor of [Native, Reference]) {
   let caught
   try {
@@ -598,6 +876,21 @@ try {
 equal(poisoned, before, 'native request records ignore inherited toJSON')
 Native.__addTZData(fixtures.timezone)
 Reference.__addTZData(JSON.parse(fixtures.timezone))
+for (const Constructor of [Reference, Native]) {
+  const formatter = new Constructor('en-u-nu-arab', {
+    hour: 'numeric',
+    timeZone: 'America/New_York',
+    timeZoneName: 'shortOffset',
+  })
+  const parts: Intl.DateTimeFormatPart[] = formatter.formatToParts(
+    Date.UTC(1880, 0, 1)
+  )
+  equal(
+    parts.find(part => part.type === 'timeZoneName')?.value,
+    'GMT-٤:٥٦:٠٢',
+    'localized historical offset seconds'
+  )
+}
 for (const timeZone of [
   'America/New_York',
   'Asia/Kolkata',

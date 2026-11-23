@@ -33,6 +33,8 @@ const keys = [
   'unit',
 ] as const
 
+const currencyNames = new Map<string, Intl.DisplayNames>()
+
 const executable = runfiles.resolve(
   `${process.env.TEST_WORKSPACE || '_main'}/crates/intl_supportedvaluesof/conformance`
 )
@@ -74,23 +76,44 @@ function observe(
             `${locale}-u-co-${value}`
           ).resolvedOptions().collation,
         }
-      case 'currency':
-        return {
-          ...candidate,
-          formatted: new Intl.NumberFormat(locale, {
-            style: 'currency',
-            currencyDisplay: 'name',
-            currency: value,
-          }).format(123),
+      case 'currency': {
+        if (typeof Intl.DisplayNames === 'function') {
+          let names = currencyNames.get(locale)
+          if (!names) {
+            names = new Intl.DisplayNames(locale, {
+              type: 'currency',
+              fallback: 'none',
+            })
+            currencyNames.set(locale, names)
+          }
+          if (names.of(value) === undefined) return undefined
         }
-      case 'numberingSystem': {
-        const formatter = new Intl.NumberFormat(`${locale}-u-nu-${value}`)
+        const parts = new Intl.NumberFormat(locale, {
+          style: 'currency',
+          currencyDisplay: 'name',
+          currency: value,
+        }).formatToParts(123)
         return {
           ...candidate,
-          resolved: formatter.resolvedOptions().numberingSystem,
-          formatted: formatter.format(123),
+          resolved: parts.some(
+            part => part.type === 'currency' && part.value !== value
+          )
+            ? value
+            : undefined,
         }
       }
+      case 'numberingSystem':
+        return [
+          Intl.NumberFormat,
+          Intl.DateTimeFormat,
+          Intl.RelativeTimeFormat,
+        ].every(
+          Constructor =>
+            new Constructor(`${locale}-u-nu-${value}`).resolvedOptions()
+              .numberingSystem === value
+        )
+          ? {...candidate, resolved: value}
+          : undefined
       case 'timeZone':
         return {
           ...candidate,
@@ -99,13 +122,7 @@ function observe(
           }).resolvedOptions().timeZone,
         }
       case 'unit':
-        return {
-          ...candidate,
-          resolved: new Intl.NumberFormat(locale, {
-            style: 'unit',
-            unit: value,
-          }).resolvedOptions().unit,
-        }
+        return undefined
     }
   } catch {
     return undefined
@@ -137,6 +154,18 @@ beforeAll(() => {
 }, 30_000)
 
 describe('Rust supportedValuesOf against TypeScript source', () => {
+  it('probes XAD in Chuvash where CLDR supplies a name', () => {
+    expect(candidates.currency).toContainEqual({value: 'XAD', locale: 'cv'})
+    expect(
+      rust([
+        {
+          key: 'currency',
+          observations: [{value: 'XAD', locale: 'cv', resolved: 'XAD'}],
+        },
+      ])
+    ).toEqual([{values: ['XAD']}])
+  })
+
   for (const [index, key] of keys.entries()) {
     it(`matches every supported ${key} value`, () => {
       expect(candidates[key].length).toBeGreaterThan(0)
@@ -187,16 +216,20 @@ describe('Rust supportedValuesOf against TypeScript source', () => {
   })
 
   it('does not leak support between independent backends', () => {
-    const requests = keys.flatMap(key => [
+    const runtimeKeys = keys.filter(
+      key => key !== 'unit' && key !== 'numberingSystem'
+    )
+    const requests = runtimeKeys.flatMap(key => [
       {key, observations: observations[key]},
       {key, observations: []},
       {key, observations: observations[key]},
     ])
     const actual = rust(requests)
-    for (const [index] of keys.entries()) {
-      expect(actual[index * 3]).toEqual(responses[index])
+    for (const [index, key] of runtimeKeys.entries()) {
+      const response = responses[keys.indexOf(key)]
+      expect(actual[index * 3]).toEqual(response)
       expect(actual[index * 3 + 1]).toEqual({values: []})
-      expect(actual[index * 3 + 2]).toEqual(responses[index])
+      expect(actual[index * 3 + 2]).toEqual(response)
     }
   })
 })

@@ -1,3 +1,4 @@
+import {IsWellFormedUnitIdentifier} from '#packages/ecma402-abstract/IsWellFormedUnitIdentifier.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 import {afterEach, beforeEach, describe, expect, it} from 'vitest'
@@ -23,6 +24,12 @@ describe('polyfill utilities', () => {
     const intl = ensureIntl()
 
     expect(intl).toBe(globalThis.Intl)
+    expect(Object.getOwnPropertyDescriptor(intl, Symbol.toStringTag)).toEqual({
+      value: 'Intl',
+      writable: false,
+      enumerable: false,
+      configurable: true,
+    })
     expect(Object.getOwnPropertyDescriptor(globalThis, 'Intl')).toMatchObject({
       writable: true,
       enumerable: false,
@@ -43,6 +50,25 @@ describe('polyfill utilities', () => {
       configurable: true,
     })
   })
+})
+
+it('validates compound units without a mutable string split hook', () => {
+  const split = String.prototype.split
+  let results: boolean[]
+  try {
+    String.prototype.split = () => {
+      throw new Error('Unexpected string split')
+    }
+    results = [
+      IsWellFormedUnitIdentifier('meter-per-second'),
+      IsWellFormedUnitIdentifier('meter-per-second-per-hour'),
+      IsWellFormedUnitIdentifier('meter-per-'),
+    ]
+  } finally {
+    String.prototype.split = split
+  }
+
+  expect(results).toEqual([true, false, false])
 })
 
 describe('locale data registration', () => {
@@ -92,6 +118,21 @@ describe('locale data registration', () => {
     const replacement = {}
     registerLocaleData('en', replacement, data, locales)
     expect(data['en-US']).toBe(replacement)
+  })
+  it('creates fallback entries without consulting inherited object properties', () => {
+    const prototype = Object.create(null, {
+      'de-DE': {
+        get() {
+          throw new Error('read inherited fallback')
+        },
+      },
+    })
+    const data = Object.create(prototype)
+    const record = {locale: 'de-Latn-DE'}
+    const locales = new Set<string>()
+    registerLocaleData('de-Latn-DE', record, data, locales)
+    expect(locales.has('de-DE')).toBe(true)
+    expect(data['de-DE']).toBe(record)
   })
   it('registers en-US from English data without consulting Intl.Locale', () => {
     const descriptor = Object.getOwnPropertyDescriptor(Intl, 'Locale')!

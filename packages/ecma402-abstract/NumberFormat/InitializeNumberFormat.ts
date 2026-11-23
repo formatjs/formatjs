@@ -16,9 +16,10 @@ import {CurrencyDigits} from '#packages/ecma402-abstract/NumberFormat/CurrencyDi
 import {SetNumberFormatDigitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatDigitOptions.js'
 import {SetNumberFormatUnitOptions} from '#packages/ecma402-abstract/NumberFormat/SetNumberFormatUnitOptions.js'
 
-/**
- * https://tc39.es/ecma402/#sec-initializenumberformat
- */
+const createOptions = Object.create
+
+// ECMA-402 §16.1.1, step 3 resolves locale options before unit and digit options.
+// https://tc39.es/ecma402/#sec-intl.numberformat
 export function InitializeNumberFormat(
   nf: Intl.NumberFormat,
   locales: string | ReadonlyArray<string> | undefined,
@@ -39,7 +40,7 @@ export function InitializeNumberFormat(
 ): Intl.NumberFormat {
   const requestedLocales: string[] = CanonicalizeLocaleList(locales)
   const options = CoerceOptionsToObject<NumberFormatOptions>(opts)
-  const opt = Object.create(null)
+  const opt = createOptions(null)
   const matcher = GetOption(
     options,
     'localeMatcher',
@@ -66,6 +67,8 @@ export function InitializeNumberFormat(
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
     throw RangeErrorConstructor(`Invalid numberingSystems: ${numberingSystem}`)
   }
+  // ECMA-402 §16.2.3 maps the nu extension to the numberingSystem option.
+  // https://tc39.es/ecma402/#sec-intl.numberformat-internal-slots
   opt.nu = numberingSystem
 
   const r = ResolveLocale(
@@ -75,9 +78,12 @@ export function InitializeNumberFormat(
     // [[RelevantExtensionKeys]] slot, which is a constant
     ['nu'],
     localeData,
-    getDefaultLocale
+    getDefaultLocale,
+    'hostDefaultWithLocaleData'
   )
-  const dataLocaleData = localeData[r.dataLocale]
+  // ECMA-402 §16.1.1 step 7 retains the selected locale data on the formatter.
+  // https://tc39.es/ecma402/#sec-intl.numberformat
+  const dataLocaleData = r.localeData
   invariant(!!dataLocaleData, `Missing locale data for ${r.dataLocale}`)
   const internalSlots = getInternalSlots(nf)
   internalSlots.locale = r.locale

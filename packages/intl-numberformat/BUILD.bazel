@@ -327,6 +327,10 @@ ts_run_binary(
     srcs = ["cldr-raw/%s.json" % locale],
     outs = ["tests/locale-data/%s.json" % locale],
     cmd = "cp $< $@",
+    visibility = [
+        "//native/hermes/tests:__pkg__",
+        "//packages/intl-datetimeformat:__pkg__",
+    ] if locale == "en" else None,
 ) for locale in TEST_LOCALES]
 
 ts_run_binary(
@@ -352,6 +356,19 @@ ts_run_binary(
 )
 
 # @formatjs_generated/cldr.number — CLDR number/currency formatting data
+generate_package_file(
+    name = "cldr_number_cardinal_rules",
+    src = "cardinal-rules.ts",
+    data = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//:node_modules/@typescript/typescript6",
+        "//:node_modules/cldr-core",
+    ],
+    tags = ["cldr"],
+    tool = "//packages/intl-numberformat/scripts:cardinal-rules",
+)
+
 generate_package_file(
     name = "cldr_number_currency_digits",
     src = "currency-digits.ts",
@@ -412,6 +429,7 @@ formatjs_generated_package(
     name = "cldr_number_pkg",
     package_name = "cldr.number",
     srcs = [
+        ":cldr_number_cardinal_rules",
         ":cldr_number_currency_digits",
         ":cldr_number_numbering_systems",
         ":cldr_number_time_separators",
@@ -545,7 +563,9 @@ formatjs_test(
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs_generated/cldr.number",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract/NumberFormat",
         "//packages/ecma402-abstract/types",

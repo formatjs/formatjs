@@ -18,7 +18,8 @@ import {
   isUnicodeLanguageSubtag,
   isUnicodeVariantSubtag,
   parseUnicodeLanguageId,
-  SEPARATOR,
+  lowerCase,
+  splitSubtags,
 } from '#packages/intl-getcanonicallocales/parser.js'
 import {
   type Extension,
@@ -27,17 +28,43 @@ import {
   type UnicodeLocaleId,
 } from '#packages/intl-getcanonicallocales/types.js'
 
+const create = Object.create
+const keys = Object.keys
+const hasOwn = Function.prototype.call.bind(
+  Object.prototype.hasOwnProperty
+) as (object: object, key: string) => boolean
+const upperCase = Function.prototype.call.bind(
+  String.prototype.toUpperCase
+) as (value: string) => string
+const slice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number
+) => string
+const sort = Function.prototype.call.bind(Array.prototype.sort) as <T>(
+  values: T[],
+  compare?: (a: T, b: T) => number
+) => T[]
+const find = Function.prototype.call.bind(Array.prototype.find) as <T>(
+  values: T[],
+  predicate: (value: T) => boolean
+) => T | undefined
+
+function fromTable<T>(
+  table: Readonly<Record<string, T>> | undefined,
+  key: string
+): T | undefined {
+  return table && hasOwn(table, key) ? table[key] : undefined
+}
+
 function canonicalizeAttrs(strs: string[]): string[] {
-  return Object.keys(
-    strs.reduce((all: Record<string, number>, str) => {
-      all[str.toLowerCase()] = 1
-      return all
-    }, {})
-  ).sort()
+  const seen: Record<string, true> = create(null)
+  for (let i = 0; i < strs.length; i++) seen[lowerCase(strs[i])] = true
+  return sort(keys(seen))
 }
 
 function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
-  const seen = new Set<string>()
+  const seen: Record<string, true> = create(null)
+  const aliases = fromTable(extensionAlias, extension)
   const result: KV[] = []
   // ECMA-402 §6.2.2, step 1 applies UTS #35 Processing LocaleIds, step 2.
   // Canonicalize aliases before removing Unicode "true" values; tvalues keep it.
@@ -45,12 +72,13 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
   // https://unicode.org/reports/tr35/#processing-localeids
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4255-L4262
-  for (const [rawKey, rawValue] of arr) {
-    const key = rawKey.toLowerCase()
-    if (seen.has(key)) continue
-    seen.add(key)
-    const value = rawValue?.toLowerCase() || ''
-    let canonical = extensionAlias[extension]?.[key]?.[value] || value
+  for (let i = 0; i < arr.length; i++) {
+    const field = arr[i]
+    const key = lowerCase(field[0])
+    if (seen[key]) continue
+    seen[key] = true
+    const value = field.length === 2 ? lowerCase(field[1]) : ''
+    let canonical = fromTable(fromTable(aliases, key), value) || value
     // ECMA-402 §6.2.2, step 1 applies UTS #35 Processing LocaleIds, step 3:
     // rg/sd use subdivision aliases, including territory replacements with zzzz.
     // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
@@ -58,7 +86,7 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
     // https://unicode.org/reports/tr35/#processing-localeids
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4263-L4267
     if (extension === 'u' && (key === 'rg' || key === 'sd')) {
-      canonical = subdivisionAlias[canonical] || canonical
+      canonical = fromTable(subdivisionAlias, canonical) || canonical
     }
     appendToList(
       result,
@@ -67,10 +95,10 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
         : [key, canonical]
     )
   }
-  return result.sort(compareKV)
+  return sort(result, compareKV)
 }
 
-function compareKV(t1: Array<any>, t2: Array<any>): number {
+function compareKV(t1: KV, t2: KV): number {
   return t1[0] < t2[0] ? -1 : t1[0] > t2[0] ? 1 : 0
 }
 
@@ -82,12 +110,19 @@ function compareExtension(e1: Extension, e2: Extension): number {
   return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0
 }
 
-function mergeVariants(v1: string[], v2: string[]): string[] {
-  const result = [...v1]
-  for (const v of v2) {
-    if (arrayIndexOf(v1, v) < 0) {
-      appendToList(result, v)
-    }
+function replaceVariants(
+  source: string[],
+  removed: string[],
+  replacement: string[]
+): string[] {
+  const result: string[] = []
+  for (let i = 0; i < source.length; i++) {
+    const variant = source[i]
+    if (!arrayIncludes(removed, variant)) appendToList(result, variant)
+  }
+  for (let i = 0; i < replacement.length; i++) {
+    const variant = replacement[i]
+    if (!arrayIncludes(result, variant)) appendToList(result, variant)
   }
   return result
 }
@@ -99,15 +134,15 @@ interface LanguageAliasRule {
 
 function compareLanguageAliasRules(a: LanguageAliasRule, b: LanguageAliasRule) {
   const fields = (id: UnicodeLanguageId) => [
-    Number(id.lang !== 'und'),
-    Number(!!id.script),
-    Number(!!id.region),
+    +(id.lang !== 'und'),
+    +!!id.script,
+    +!!id.region,
     id.variants.length,
   ]
   const left = fields(a.type),
     right = fields(b.type)
-  const difference =
-    right.reduce((a, b) => a + b, 0) - left.reduce((a, b) => a + b, 0)
+  let difference = 0
+  for (let i = 0; i < left.length; i++) difference += right[i] - left[i]
   if (difference) return difference
   for (let i = 0; i < left.length; i++) {
     if (!!left[i] !== !!right[i]) return right[i] ? 1 : -1
@@ -125,14 +160,14 @@ const languageAliasRules = Object.keys(languageAlias)
   .reduce<LanguageAliasRule[]>((rules, from) => {
     const to = languageAlias[from]
     let type: UnicodeLanguageId
-    const source = from.split(SEPARATOR)
+    const source = splitSubtags(from)
     try {
       type = parseUnicodeLanguageId(source)
     } catch {
       return rules
     }
     if (source.length) return rules
-    const target = to.split(SEPARATOR)
+    const target = splitSubtags(to)
     const replacement = parseUnicodeLanguageId(target)
     if (target.length)
       throw new Error(`Invalid language alias replacement: ${to}`)
@@ -151,18 +186,19 @@ export function canonicalizeUnicodeLanguageId(
   // ECMA-402 §6.2.2, step 1: canonicalize case before matching CLDR aliases.
   // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
-  unicodeLanguageId.lang = unicodeLanguageId.lang.toLowerCase()
+  unicodeLanguageId.lang = lowerCase(unicodeLanguageId.lang)
   if (unicodeLanguageId.script) {
     unicodeLanguageId.script =
-      unicodeLanguageId.script[0].toUpperCase() +
-      unicodeLanguageId.script.slice(1).toLowerCase()
+      upperCase(unicodeLanguageId.script[0]) +
+      lowerCase(slice(unicodeLanguageId.script, 1))
   }
   if (unicodeLanguageId.region) {
-    unicodeLanguageId.region = unicodeLanguageId.region.toUpperCase()
+    unicodeLanguageId.region = upperCase(unicodeLanguageId.region)
   }
-  unicodeLanguageId.variants = unicodeLanguageId.variants.map(v =>
-    v.toLowerCase()
-  )
+  const lowerVariants: string[] = []
+  for (let i = 0; i < unicodeLanguageId.variants.length; i++)
+    appendToList(lowerVariants, lowerCase(unicodeLanguageId.variants[i]))
+  unicodeLanguageId.variants = lowerVariants
 
   const original = emitUnicodeLanguageId(unicodeLanguageId)
   let finalLangAst = unicodeLanguageId
@@ -178,11 +214,12 @@ export function canonicalizeUnicodeLanguageId(
     arrayEvery(type.variants, variant =>
       arrayIncludes(finalLangAst.variants, variant)
     )
-  const languageRule = languageAliasRules[finalLangAst.lang]?.find(matches)
+  const rules = languageAliasRules[finalLangAst.lang]
+  const languageRule = rules && find(rules, matches)
   const undRule =
-    finalLangAst.lang === 'und'
-      ? undefined
-      : languageAliasRules.und?.find(matches)
+    finalLangAst.lang !== 'und' && languageAliasRules.und
+      ? find(languageAliasRules.und, matches)
+      : undefined
   const matched = !languageRule
     ? undRule
     : !undRule
@@ -203,8 +240,9 @@ export function canonicalizeUnicodeLanguageId(
       region: type.region
         ? replacement.region
         : finalLangAst.region || replacement.region,
-      variants: mergeVariants(
-        finalLangAst.variants.filter(v => !arrayIncludes(type.variants, v)),
+      variants: replaceVariants(
+        finalLangAst.variants,
+        type.variants,
         replacement.variants
       ),
     }
@@ -213,28 +251,27 @@ export function canonicalizeUnicodeLanguageId(
   }
 
   if (finalLangAst.region) {
-    const region = finalLangAst.region.toUpperCase()
-    const regionAlias = territoryAlias[region]
+    const region = upperCase(finalLangAst.region)
+    const regionAlias = fromTable(territoryAlias, region)
     let replacedRegion: string | undefined
     if (regionAlias) {
-      const regions = regionAlias.split(' ')
+      const regions = splitSubtags(regionAlias, ' ')
       replacedRegion = regions[0]
       // Territory replacement uses likely subtags: try language-script, then
       // language alone. A missing script-specific row must not skip fallback.
       // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4146
       // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2546-L2551
       const likelySubtag =
-        likelySubtags[
+        fromTable(
+          likelySubtags,
           emitUnicodeLanguageId({
             lang: finalLangAst.lang,
             script: finalLangAst.script,
             variants: [],
-          }) as 'aa'
-        ] || likelySubtags[finalLangAst.lang as 'aa']
+          })
+        ) || fromTable(likelySubtags, finalLangAst.lang)
       if (likelySubtag) {
-        const {region: likelyRegion} = parseUnicodeLanguageId(
-          likelySubtag.split(SEPARATOR)
-        )
+        const {region: likelyRegion} = parseUnicodeLanguageId(likelySubtag)
         if (likelyRegion && arrayIndexOf(regions, likelyRegion) > -1) {
           replacedRegion = likelyRegion
         }
@@ -243,22 +280,20 @@ export function canonicalizeUnicodeLanguageId(
     if (replacedRegion) {
       finalLangAst.region = replacedRegion
     }
-    finalLangAst.region = finalLangAst.region.toUpperCase()
+    finalLangAst.region = upperCase(finalLangAst.region)
   }
   if (finalLangAst.script) {
     finalLangAst.script =
-      finalLangAst.script[0].toUpperCase() +
-      finalLangAst.script.slice(1).toLowerCase()
-    if (scriptAlias[finalLangAst.script]) {
-      finalLangAst.script = scriptAlias[finalLangAst.script]
-    }
+      upperCase(finalLangAst.script[0]) +
+      lowerCase(slice(finalLangAst.script, 1))
+    const alias = fromTable(scriptAlias, finalLangAst.script)
+    if (alias) finalLangAst.script = alias
   }
 
   if (finalLangAst.variants.length) {
     for (let i = 0; i < finalLangAst.variants.length; i++) {
-      let variant = finalLangAst.variants[i].toLowerCase()
-      if (variantAlias[variant]) {
-        const alias = variantAlias[variant]
+      const alias = fromTable(variantAlias, lowerCase(finalLangAst.variants[i]))
+      if (alias) {
         if (isUnicodeVariantSubtag(alias)) {
           finalLangAst.variants[i] = alias
         } else if (isUnicodeLanguageSubtag(alias)) {
@@ -267,7 +302,15 @@ export function canonicalizeUnicodeLanguageId(
         }
       }
     }
-    finalLangAst.variants.sort()
+    // UTS #35 Annex C treats variants as a sorted set after alias replacement.
+    // https://unicode.org/reports/tr35/#processing-localeids
+    const variants = sort(finalLangAst.variants)
+    let count = 1
+    for (let i = 1; i < variants.length; i++) {
+      const variant = variants[i]
+      if (variant !== variants[count - 1]) variants[count++] = variant
+    }
+    variants.length = count
   }
   return emitUnicodeLanguageId(finalLangAst) === original
     ? finalLangAst
@@ -286,7 +329,8 @@ export function CanonicalizeUnicodeLocaleId(
 ): UnicodeLocaleId {
   locale.lang = canonicalizeUnicodeLanguageId(locale.lang)
   if (locale.extensions) {
-    for (const extension of locale.extensions) {
+    for (let i = 0; i < locale.extensions.length; i++) {
+      const extension = locale.extensions[i]
       switch (extension.type) {
         case 'u':
           extension.keywords = canonicalizeKVs(extension.keywords, 'u')
@@ -301,11 +345,11 @@ export function CanonicalizeUnicodeLocaleId(
           extension.fields = canonicalizeKVs(extension.fields, 't')
           break
         default:
-          extension.value = extension.value.toLowerCase()
+          extension.value = lowerCase(extension.value)
           break
       }
     }
-    locale.extensions.sort(compareExtension)
+    sort(locale.extensions, compareExtension)
   }
 
   return locale

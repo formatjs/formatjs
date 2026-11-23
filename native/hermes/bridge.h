@@ -12,6 +12,31 @@
 namespace formatjs::hermes_bridge {
 namespace jsi = facebook::jsi;
 
+// ECMA-402 §8. Both legacy constructors use the same symbol in this realm.
+// https://tc39.es/ecma402/#intl-object
+inline jsi::Value intlFallbackSymbol(jsi::Runtime &runtime) {
+  constexpr jsi::UUID key{0x367d336a, 0x8a88, 0x425c, 0xa272, 0xb177e9adba40};
+  auto symbol = std::static_pointer_cast<jsi::Value>(runtime.getRuntimeData(key));
+  if (!symbol) {
+    // Reuse the value from a TypeScript bundle already loaded in this realm.
+    constexpr char source[] = R"JS(
+      (function () {
+        const storage = Symbol.for('@formatjs/intlFallbackSymbol');
+        const existing = Object.getOwnPropertyDescriptor(globalThis, storage);
+        if (existing && typeof existing.value === 'symbol') return existing.value;
+        const fallback = Symbol('IntlLegacyConstructedSymbol');
+        if (!existing && Object.isExtensible(globalThis))
+          Object.defineProperty(globalThis, storage, {__proto__: null, value: fallback});
+        return fallback;
+      })()
+    )JS";
+    symbol = std::make_shared<jsi::Value>(runtime.evaluateJavaScript(
+        std::make_shared<jsi::StringBuffer>(source), "formatjs:IntlFallbackSymbol"));
+    runtime.setRuntimeData(key, symbol);
+  }
+  return jsi::Value(runtime, *symbol);
+}
+
 template <typename T, void (*Release)(T)>
 struct Buffer {
   T value{nullptr, 0};
@@ -143,6 +168,24 @@ jsi::Function create(jsi::Runtime &runtime, const char *name, const char *expect
         if (code == 1 && policy.nullRange) return jsi::Value::null();
         if (code) return status(rt, code, policy.accepted, policy.failure);
         return jsi::Object::createFromHostObject(rt, std::make_shared<Model>(std::move(guard)));
+      });
+}
+
+template <typename Model, typename Snapshot, typename Function>
+jsi::Function createFromSnapshot(jsi::Runtime &runtime, const char *name,
+                                 const char *expected, Policy policy, Function call) {
+  return jsi::Function::createFromHostFunction(
+      runtime, jsi::PropNameID::forAscii(runtime, name, std::strlen(name)), 2,
+      [expected, policy, call](jsi::Runtime &rt, const jsi::Value &,
+                               const jsi::Value *args, size_t count) -> jsi::Value {
+        if (count != 2 || !args[1].isString()) throw jsi::JSError(rt, expected);
+        auto snapshot = record<Snapshot>(rt, args[0], expected, expected);
+        auto options = args[1].asString(rt).utf8(rt);
+        typename Model::Pointer::element_type *raw = nullptr;
+        auto code = call(snapshot->handle.get(), bytesOf(options), options.size(), &raw);
+        typename Model::Pointer handle(raw, Model::destroy);
+        if (code) return status(rt, code, policy.accepted, policy.failure);
+        return jsi::Object::createFromHostObject(rt, std::make_shared<Model>(std::move(handle)));
       });
 }
 

@@ -113,7 +113,7 @@ fn repeated_slots_and_empty_named_forms_keep_part_boundaries() {
     );
 }
 #[test]
-fn resolution_stays_fixed_but_fields_follow_later_registration() {
+fn resolution_keeps_fields_after_later_registration() {
     let mut registry = loaded();
     let old = registry
         .create(&["en".into()], &Options::default())
@@ -124,13 +124,17 @@ fn resolution_stays_fixed_but_fields_follow_later_registration() {
     let mut replacement: Value = serde_json::from_str(EN).unwrap();
     replacement["data"]["day"]["future"]["other"] = json!("later {0} days");
     registry.add_locale_data(&replacement.to_string()).unwrap();
-    let new = registry
+    let constructing = registry
         .create_resolved(&resolution, &Options::default())
+        .unwrap();
+    let next = registry
+        .create(&["en-u-nu-arab".into()], &Options::default())
         .unwrap();
     drop(registry);
     assert_eq!(old.format("2", "day").unwrap(), "in 2 days");
-    assert_eq!(new.format("2", "day").unwrap(), "later ٢ days");
-    assert_eq!(new.resolved_options().locale, "en-u-nu-arab");
+    assert_eq!(constructing.format("2", "day").unwrap(), "in ٢ days");
+    assert_eq!(constructing.resolved_options().locale, "en-u-nu-arab");
+    assert_eq!(next.format("2", "day").unwrap(), "later ٢ days");
 }
 #[test]
 fn repeated_construction_keeps_number_systems_and_options_independent() {
@@ -174,9 +178,7 @@ fn replacement_number_symbols_do_not_change_existing_instances() {
     let mut replacement: Value = serde_json::from_str(EN).unwrap();
     replacement["number"]["data"]["numbers"]["symbols"]["latn"]["group"] = json!("!");
     registry.add_locale_data(&replacement.to_string()).unwrap();
-    let new = registry
-        .create_resolved(&resolution, &Options::default())
-        .unwrap();
+    let new = registry.create(&requested, &Options::default()).unwrap();
     drop(registry);
     assert_eq!(old.format("1234", "day").unwrap(), "in 1,234 days");
     assert_eq!(new.format("1234", "day").unwrap(), "in 1!234 days");

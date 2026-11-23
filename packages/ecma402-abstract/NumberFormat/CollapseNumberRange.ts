@@ -1,59 +1,102 @@
-import {arrayEvery, arraySome} from '#packages/ecma262-abstract/intrinsics.js'
+import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
   type NumberFormatPartTypes,
 } from '#packages/ecma402-abstract/types/number.js'
 
-const AFFIX_TYPES = new Set<NumberFormatPartTypes>([
-  'unit',
-  'minusSign',
-  'plusSign',
-  'percentSign',
-  'currency',
-  'literal',
-])
-const DIGIT_TYPES = new Set<NumberFormatPartTypes>([
-  'integer',
-  'fraction',
-  'exponentInteger',
-])
+const apply = Reflect.apply
+const codePointAt = String.prototype.codePointAt
+const indexOf = String.prototype.indexOf
+const trim = String.prototype.trim
 
-function affixLength(parts: NumberFormatPart[], fromEnd: boolean): number {
-  let length = 0
-  while (length < parts.length) {
-    const part = parts[fromEnd ? parts.length - length - 1 : length]
-    if (!AFFIX_TYPES.has(part.type)) break
-    length++
-  }
-  return length
-}
-
-function canCollapse(
-  a: NumberFormatPart[],
-  b: NumberFormatPart[],
-  sharedSuffix = false
-): boolean {
+function isAffix(type: NumberFormatPartTypes): boolean {
   return (
-    a.length === b.length &&
-    arraySome(a, part => part.type !== 'literal') &&
-    !arraySome(a, part => part.type === 'minusSign') &&
-    arrayEvery(
-      a,
-      (part, i) => part.type === b[i].type && part.value === b[i].value
-    ) &&
-    (Array.from(a.map(part => part.value).join('')).length > 1 ||
-      (sharedSuffix && a.length === 1 && a[0].type === 'plusSign'))
+    type === 'unit' ||
+    type === 'minusSign' ||
+    type === 'plusSign' ||
+    type === 'percentSign' ||
+    type === 'currency' ||
+    type === 'literal'
   )
 }
 
-// ECMA-402 §16.5.21 forbids collapsing ranges into ambiguous results.
-// Only identical affixes collapse; scientific and compact notation remain intact.
+function isDigit(type: NumberFormatPartTypes): boolean {
+  return type === 'integer' || type === 'fraction' || type === 'exponentInteger'
+}
+
+function prefixEnd(
+  parts: NumberFormatPart[],
+  start: number,
+  end: number
+): number {
+  while (start < end && isAffix(parts[start].type)) start++
+  return start
+}
+
+function suffixStart(
+  parts: NumberFormatPart[],
+  start: number,
+  end: number
+): number {
+  while (start < end && isAffix(parts[end - 1].type)) end--
+  return end
+}
+
+function canCollapse(
+  parts: NumberFormatPart[],
+  start: number,
+  end: number,
+  otherStart: number,
+  otherEnd: number,
+  sharedUnit = false
+): boolean {
+  if (end - start !== otherEnd - otherStart) return false
+  let nonLiteral = false
+  let value = ''
+  for (let i = start; i < end; i++) {
+    const lhs = parts[i]
+    const rhs = parts[otherStart + i - start]
+    if (
+      lhs.type === 'minusSign' ||
+      lhs.type !== rhs.type ||
+      lhs.value !== rhs.value
+    )
+      return false
+    if (lhs.type !== 'literal') nonLiteral = true
+    value += lhs.value
+  }
+  // Count Unicode code points across the whole affix, including paired surrogates.
+  const multipleCodePoints =
+    value.length > 2 ||
+    (value.length === 2 && (apply(codePointAt, value, [0]) as number) <= 0xffff)
+  return (
+    nonLiteral &&
+    (multipleCodePoints ||
+      (sharedUnit && end - start === 1 && parts[start].type === 'plusSign'))
+  )
+}
+
+function appendRange(
+  target: NumberFormatPart[],
+  parts: NumberFormatPart[],
+  start: number,
+  end: number,
+  shared = false
+): void {
+  for (let i = start; i < end; i++) {
+    const part = parts[i]
+    setDataProperty(
+      target,
+      target.length,
+      shared ? {type: part.type, value: part.value, source: 'shared'} : part
+    )
+  }
+}
+
+// ECMA-402 §16.5.20 requires unambiguous output from the private part list.
 // https://tc39.es/ecma402/#sec-collapsenumberrange
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1874-L1878
-// LDML collapsing steps 1–3 and range-spacing heuristics:
 // https://unicode.org/reports/tr35/tr35-numbers.html#Collapsing_Number_Ranges
-// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1886-L1921
 export function CollapseNumberRange(
   _numberFormat: Intl.NumberFormat,
   result: NumberFormatPart[],
@@ -61,56 +104,71 @@ export function CollapseNumberRange(
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }
 ): NumberFormatPart[] {
-  const separatorIndex = result.findIndex(part => part.source === 'shared')
-  if (separatorIndex < 0) return result
-  const start = result.slice(0, separatorIndex)
-  const end = result.slice(separatorIndex + 1)
-  const separator = {...result[separatorIndex]}
-  const prefix: NumberFormatPart[] = []
-  const suffix: NumberFormatPart[] = []
-  // Keep accounting pairs and negative endpoints unambiguous.
-  const paired = (part: NumberFormatPart) =>
-    part.type === 'literal' &&
-    (part.value.includes('(') || part.value.includes(')'))
-  const canShare = !arraySome(start, paired) && !arraySome(end, paired)
+  let separatorIndex = 0
+  while (
+    separatorIndex < result.length &&
+    result[separatorIndex].source !== 'shared'
+  )
+    separatorIndex++
+  if (separatorIndex === result.length) return result
+  const endStart = separatorIndex + 1
+  const aPrefix = prefixEnd(result, 0, separatorIndex)
+  const bPrefix = prefixEnd(result, endStart, result.length)
+  const aSuffix = suffixStart(result, 0, separatorIndex)
+  const bSuffix = suffixStart(result, endStart, result.length)
 
-  const startPrefix = start.slice(0, affixLength(start, false))
-  const endPrefix = end.slice(0, affixLength(end, false))
-  const startSuffixLength = affixLength(start, true)
-  const endSuffixLength = affixLength(end, true)
-  const startSuffix = start.slice(start.length - startSuffixLength)
-  const endSuffix = end.slice(end.length - endSuffixLength)
-  const collapseSuffix = canShare && canCollapse(startSuffix, endSuffix)
-  const sharedUnit =
-    collapseSuffix &&
-    arraySome(
-      startSuffix,
-      part =>
-        part.type === 'currency' ||
-        part.type === 'unit' ||
-        part.type === 'percentSign'
+  // An affix-only endpoint carries its meaning in that affix. Keep both
+  // endpoints intact if collapsing would leave either without a numeric core.
+  let canShare = aPrefix < aSuffix && bPrefix < bSuffix
+  for (let i = 0; canShare && i < result.length; i++) {
+    if (i === separatorIndex) continue
+    const part = result[i]
+    if (
+      part.type === 'literal' &&
+      (apply(indexOf, part.value, ['(']) >= 0 ||
+        apply(indexOf, part.value, [')']) >= 0)
     )
-  if (canShare && canCollapse(startPrefix, endPrefix, sharedUnit)) {
-    prefix.push(...start.splice(0, startPrefix.length))
-    end.splice(0, endPrefix.length)
+      canShare = false
   }
-  if (collapseSuffix) {
-    start.splice(start.length - startSuffixLength)
-    suffix.push(...end.splice(end.length - endSuffixLength))
-  }
-  for (const part of [...prefix, ...suffix]) part.source = 'shared'
 
-  if (
-    start.length &&
-    end.length &&
-    (!DIGIT_TYPES.has(start[start.length - 1].type) ||
-      !DIGIT_TYPES.has(end[0].type))
-  ) {
-    // Use ordinary spaces for the optional spacing around uncollapsed affixes.
-    if (!separator.value || separator.value.charAt(0).trim())
-      separator.value = ` ${separator.value}`
-    if (separator.value.charAt(separator.value.length - 1).trim())
-      separator.value += ' '
+  const collapseSuffix =
+    canShare &&
+    canCollapse(result, aSuffix, separatorIndex, bSuffix, result.length)
+  let sharedUnit = false
+  for (let i = aSuffix; collapseSuffix && i < separatorIndex; i++) {
+    const type = result[i].type
+    if (type === 'currency' || type === 'unit' || type === 'percentSign') {
+      sharedUnit = true
+      break
+    }
   }
-  return [...prefix, ...start, separator, ...end, ...suffix]
+  const collapsePrefix =
+    canShare && canCollapse(result, 0, aPrefix, endStart, bPrefix, sharedUnit)
+  const aStart = collapsePrefix ? aPrefix : 0
+  const aEnd = collapseSuffix ? aSuffix : separatorIndex
+  const bStart = collapsePrefix ? bPrefix : endStart
+  const bEnd = collapseSuffix ? bSuffix : result.length
+
+  let separator = result[separatorIndex].value
+  if (
+    aStart < aEnd &&
+    bStart < bEnd &&
+    (!isDigit(result[aEnd - 1].type) || !isDigit(result[bStart].type))
+  ) {
+    // Retain the locale's own whitespace before adding optional spacing.
+    if (!separator || apply(trim, separator[0], [])) separator = ' ' + separator
+    if (apply(trim, separator[separator.length - 1], [])) separator += ' '
+  }
+
+  const parts: NumberFormatPart[] = []
+  if (collapsePrefix) appendRange(parts, result, 0, aPrefix, true)
+  appendRange(parts, result, aStart, aEnd)
+  setDataProperty(parts, parts.length, {
+    type: 'literal',
+    value: separator,
+    source: 'shared',
+  })
+  appendRange(parts, result, bStart, bEnd)
+  if (collapseSuffix) appendRange(parts, result, bSuffix, result.length, true)
+  return parts
 }

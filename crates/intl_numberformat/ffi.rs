@@ -262,6 +262,7 @@ pub unsafe extern "C" fn formatjs_number_create(
 #[derive(Deserialize)]
 struct SupportedRequest {
     locales: Vec<String>,
+    lookup: Option<bool>,
 }
 /// # Safety
 /// Registry live; input readable for len bytes; out writable. Free result once.
@@ -286,7 +287,13 @@ pub unsafe extern "C" fn formatjs_number_supported(
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
         let locales = formatjs_intl_getcanonicallocales::get_canonical_locales(&request.locales)
             .map_err(|_| 1)?;
-        let supported = unsafe { &(*registry).0 }.supported_locales(&locales);
+        let available = unsafe { &(*registry).0 }.available_locales();
+        let supported = formatjs_intl_locale::matcher::filter(
+            available,
+            &locales,
+            request.lookup.unwrap_or(true),
+        )
+        .map_err(|_| 1)?;
         unsafe {
             output(json!(supported), out);
         }

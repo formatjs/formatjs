@@ -2,8 +2,8 @@
 ;(function (native: {
   nativeLoad: (pack: string) => number
   nativeInfo: () => string | number
-  nativeResolve: (request: string) => string | number
-  nativeCreate: (request: string) => object | number
+  nativeResolve: (request: string) => object | number
+  nativeCreate: (resolution: object, options: string) => object | number
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeFormat: (handle: object, value: number, unit: string) => string | number
@@ -33,6 +33,8 @@
     setAdd = Set.prototype.add
   const BadReceiver = TypeError,
     BadOption = RangeError
+  // ECMA-402 §18.4: the native handle owns locale, options, and formatters.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-relativetimeformat-instances
   const slots = new WeakMap<object, object>()
   const getSlot = WeakMap.prototype.get.bind(slots) as (
     receiver: unknown
@@ -128,8 +130,8 @@
     method: string
   ): any {
     const handle = slot(receiver)
-    // ToNumber precedes ToString; both precede nonfinite and unit validation.
-    // https://tc39.es/ecma402/#sec-intl-relativetimeformat.prototype.format
+    // ECMA-402 §18.3.3–18.3.4 steps 2–4: slot check, ToNumber, then ToString.
+    // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.format
     const numeric = +(value as any)
     const text = `${unit}`
     if (method === 'format') {
@@ -141,6 +143,8 @@
     return decoded(nativeParts(handle, numeric, text))
   }
 
+  // ECMA-402 §18.1.1 steps 1–3: allocate before reading locales or options.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
   class RelativeTimeFormat extends null {
     constructor(
       locales: unknown = undefined,
@@ -170,6 +174,7 @@
       )
       if (numberingSystem !== undefined && !unicodeType(numberingSystem))
         throw new BadOption('Invalid numberingSystem')
+      // ECMA-402 §18.1.1 step 8: retain the locale data through option getters.
       const resolution = nativeResolve(
         '{"locales":' +
           requested +
@@ -181,20 +186,17 @@
             : ',"numberingSystem":"' + numberingSystem + '"') +
           '}}'
       )
-      if (typeof resolution === 'number') decoded(resolution)
-      // Fields are fetched after these getters, using the earlier locale/nu.
-      // https://tc39.es/ecma402/#sec-intl-relativetimeformat-constructor
+      if (typeof resolution === 'number')
+        throw new BadOption(
+          'Invalid Intl.RelativeTimeFormat value, unit or locale data'
+        )
+      // ECMA-402 §18.1.1 steps 10–17: read style, then numeric, before setup.
       const style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
       const numeric = option(opts, 'numeric', ['always', 'auto'], 'always')
       // Enum choices and Unicode type validation exclude JSON escapes.
       const handle = nativeCreate(
-        '{"resolution":' +
-          resolution +
-          ',"options":{"style":"' +
-          style +
-          '","numeric":"' +
-          numeric +
-          '"}}'
+        resolution,
+        '{"style":"' + style + '","numeric":"' + numeric + '"}'
       )
       if (typeof handle === 'number') decoded(handle)
       setSlot(receiver, handle)
@@ -204,14 +206,24 @@
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
+      // ECMA-402 §18.2.2: canonicalize before filtering.
+      // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.supportedLocalesOf
       const requested = tags(canonicalize(locales) as string[])
-      option(
+      const matcher = option(
         options(optionsInput),
         'localeMatcher',
         ['lookup', 'best fit'],
         'best fit'
       )
-      return decoded(nativeSupported(requested))
+      return decoded(
+        nativeSupported(
+          '{"locales":' +
+            requested +
+            ',"lookup":' +
+            (matcher === 'lookup') +
+            '}'
+        )
+      )
     }
     static __addLocaleData(...packs: unknown[]): void {
       for (let index = 0; index < packs.length; index++) {
@@ -226,16 +238,22 @@
       return decoded(nativeInfo()).default || ''
     }
   }
+  // ECMA-402 §18.3.1: class syntax supplies the prototype's constructor.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.constructor
   const prototype = RelativeTimeFormat.prototype
   setPrototype(prototype, objectPrototype)
   const methods = {
     format(this: unknown, value: unknown, unit: unknown): string {
       return format(this, value, unit, 'format')
     },
+    // ECMA-402 §18.3.4 uses the same receiver check and coercion as format.
+    // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.formatToParts
     formatToParts(this: unknown, value: unknown, unit: unknown): object[] {
       return format(this, value, unit, 'formatToParts')
     },
     resolvedOptions(this: unknown): object {
+      // ECMA-402 §18.3.2: check the receiver and return a fresh options object.
+      // https://tc39.es/ecma402/#sec-intl.relativetimeformat.prototype.resolvedoptions
       return decoded(nativeQuery(slot(this), '{"method":"resolvedOptions"}'))
     },
     getAvailableLocales(): Set<string> {
@@ -249,6 +267,7 @@
   const names = ['format', 'formatToParts', 'resolvedOptions'] as const
   for (let index = 0; index < names.length; index++)
     property(prototype, names[index], methods[names[index]])
+  // ECMA-402 §18.3.5 https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype-toStringTag
   property(
     prototype,
     Symbol.toStringTag,
@@ -261,6 +280,8 @@
   available.get = methods.getAvailableLocales
   available.configurable = true
   define(RelativeTimeFormat, 'availableLocales', available)
+  // ECMA-402 §18.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype
   const descriptor = create(null)
   descriptor.writable = false
   define(RelativeTimeFormat, 'prototype', descriptor)

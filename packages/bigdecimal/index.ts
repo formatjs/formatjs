@@ -147,7 +147,10 @@ function parseDecimalString(s: string): {
   const combined = intPart + fracPart
   const exponent = sciExp - fracPart.length
 
-  if (combined === '' || combined === '0' || /^0+$/.test(combined)) {
+  let firstNonZero = 0
+  while (firstNonZero < combined.length && combined[firstNonZero] === '0')
+    firstNonZero++
+  if (firstNonZero === combined.length) {
     return {
       mantissa: 0n,
       exponent: 0,

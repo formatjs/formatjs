@@ -94,9 +94,9 @@ export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
   let w: number
   let t: Decimal
   if (!f.isZero()) {
-    const ft = fv.replace(/0+$/, '')
-    w = ft.length
-    t = new Decimal(ft)
+    w = fv.length
+    while (w > 0 && fv[w - 1] === '0') w--
+    t = new Decimal(fv.slice(0, w))
   } else {
     w = 0
     t = ZERO

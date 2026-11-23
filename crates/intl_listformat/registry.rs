@@ -10,6 +10,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Arc;
 
 #[derive(Default)]
+// ECMA-402 §14.2.3: locale matching uses registered patterns and no Unicode keys.
+// https://tc39.es/ecma402/#sec-Intl.ListFormat-internal-slots
 pub struct Registry {
     data: BTreeMap<String, Data<LocalePatterns>>,
     explicit: BTreeSet<String>,
@@ -39,6 +41,7 @@ impl Registry {
                 .map_err(|_| Error::InvalidOption("locales"))?
         };
         matched
+            .or_else(|| formatjs_intl_locale::matcher::host_default(self.available.as_slice()))
             .or_else(|| self.default.clone())
             .ok_or(Error::MissingLocale)
     }
@@ -51,7 +54,7 @@ impl Registry {
     fn insert(&mut self, tag: String, rules: Data<LocalePatterns>, replace: bool) {
         let exists = self.data.contains_key(&tag);
         if !exists {
-            self.available.push(tag.clone());
+            self.available.push_service_locale(tag.clone());
         }
         if replace || !exists {
             self.data.insert(tag, rules);
@@ -91,15 +94,16 @@ impl Registry {
     }
 
     fn register(&mut self, locale: String, aliases: Vec<String>, rules: Data<LocalePatterns>) {
-        self.explicit.insert(locale.clone());
+        if !self.explicit.insert(locale.clone()) {
+            formatjs_intl_data::refresh_locale_data(&mut self.data, &locale, &rules);
+        }
         let tags: Vec<_> = std::iter::once(locale.clone()).chain(aliases).collect();
         for tag in &tags {
             let replace = tag == &locale || !self.explicit.contains(tag);
             self.insert(tag.clone(), rules.clone(), replace);
         }
-        // AvailableLocales includes parent and scriptless language-region tags.
-        // Fill missing fallbacks; never overwrite an explicitly loaded payload.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L18-L26
+        // ECMA-402 §9.1 includes parent and scriptless language-region tags.
+        // https://tc39.es/ecma402/#sec-internal-slots
         for tag in tags {
             let selected = self.data[&tag].clone();
             let mut parts: Vec<_> = tag.split('-').collect();
@@ -134,15 +138,34 @@ impl Registry {
     /// `locale` is the already negotiated AvailableLocales entry. No implicit
     /// fallback here: lookup/best-fit matching belongs before instance creation.
     pub fn create(&self, locale: &str, options: &Options) -> Result<ListFormat, Error> {
-        let rules = self
+        self.capture(locale)?.create(options)
+    }
+
+    pub(crate) fn capture(&self, locale: &str) -> Result<LocaleSnapshot, Error> {
+        let data = self
             .data
-            .get(locale)
+            .get(self.available.data_locale(locale))
             .ok_or(Error::MissingLocale)?
-            .get()
-            .map_err(Error::InvalidData)?;
+            .clone();
+        Ok(LocaleSnapshot {
+            locale: locale.to_owned(),
+            data,
+        })
+    }
+}
+
+#[derive(Clone)]
+pub(crate) struct LocaleSnapshot {
+    locale: String,
+    data: Data<LocalePatterns>,
+}
+
+impl LocaleSnapshot {
+    pub(crate) fn create(self, options: &Options) -> Result<ListFormat, Error> {
+        let rules = self.data.get().map_err(Error::InvalidData)?;
         Ok(ListFormat {
             templates: Arc::clone(&rules.templates[options.kind.key()][options.style.key()]),
-            locale: locale.to_owned(),
+            locale: self.locale,
             options: options.clone(),
         })
     }

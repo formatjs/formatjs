@@ -42,6 +42,8 @@ impl NumberData {
         })
     }
 
+    // ECMA-402 §11.5.4 steps 1–11: use the resolved numbering system without grouping.
+    // https://tc39.es/ecma402/#sec-formatdatetimepattern
     fn formatter(
         &self,
         locale: &str,
@@ -110,6 +112,7 @@ impl NumberFormatters {
             .two_digit
             .format(&value.to_string())
             .map_err(|_| Error::InvalidLocaleData)?;
+        // ECMA-402 §11.5.4 step 15.f.ix keeps the last two code points.
         let count = result.chars().count();
         Ok(result.chars().skip(count.saturating_sub(2)).collect())
     }

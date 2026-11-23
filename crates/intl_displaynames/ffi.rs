@@ -11,6 +11,7 @@ use std::{
 
 pub struct DisplayRegistry(Registry);
 pub struct DisplayHandle(DisplayNames);
+pub struct DisplaySnapshot(crate::registry::LocaleSnapshot);
 
 #[repr(C)]
 pub struct DisplayBytes {
@@ -181,6 +182,72 @@ struct MatchRequest {
     supported: bool,
 }
 
+/// ECMA-402 §9.2.7 step 6.c retains the resolved locale data.
+/// https://tc39.es/ecma402/#sec-resolvelocale
+/// # Safety
+/// Registry live; input readable; out writable. Destroy the snapshot once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_display_capture(
+    registry: *const DisplayRegistry,
+    data: *const u8,
+    len: usize,
+    out: *mut *mut DisplaySnapshot,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let request: MatchRequest =
+            serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
+        let registry = unsafe { &(*registry).0 };
+        let locale = registry
+            .negotiate(&request.requested, request.lookup)
+            .map_err(status)?;
+        let snapshot = registry.capture(&locale).map_err(status)?;
+        unsafe { out.write(Box::into_raw(Box::new(DisplaySnapshot(snapshot)))) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Snapshot live; options readable; out writable. Destroy the new handle once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_display_create_from_snapshot(
+    snapshot: *const DisplaySnapshot,
+    data: *const u8,
+    len: usize,
+    out: *mut *mut DisplayHandle,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    if snapshot.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let options = options(unsafe { input(data, len)? })?;
+        let model = unsafe { (*snapshot).0.clone() }
+            .create(&options)
+            .map_err(status)?;
+        unsafe { out.write(Box::into_raw(Box::new(DisplayHandle(model)))) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Destroy a live snapshot once. Null is allowed.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_display_snapshot_destroy(snapshot: *mut DisplaySnapshot) {
+    if !snapshot.is_null() {
+        unsafe { drop(Box::from_raw(snapshot)) };
+    }
+}
+
 /// Match already canonicalized requested tags against currently loaded data.
 /// # Safety
 /// Registry is live; input bytes readable; out writable. Free successful output once.
@@ -205,7 +272,14 @@ pub unsafe extern "C" fn formatjs_display_registry_match(
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
         let registry = unsafe { &(*registry).0 };
         let result = if request.supported {
-            json!(registry.supported_locales(&request.requested))
+            json!(
+                formatjs_intl_locale::matcher::filter(
+                    registry.available_locales(),
+                    &request.requested,
+                    request.lookup,
+                )
+                .map_err(|_| 1)?
+            )
         } else {
             json!(
                 registry

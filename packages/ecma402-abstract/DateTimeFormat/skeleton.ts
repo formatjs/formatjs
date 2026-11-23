@@ -85,6 +85,13 @@ const patternFields = new WeakMap<Formats, Intl.DateTimeFormatOptions>()
 const readPatternFields = patternFields.get.bind(patternFields)
 const writePatternFields = patternFields.set.bind(patternFields)
 
+export function setDateTimePatternFields(
+  format: Formats,
+  fields: Intl.DateTimeFormatOptions
+): void {
+  writePatternFields(format, fields)
+}
+
 export function getDateTimePatternFields(
   format: Formats
 ): Intl.DateTimeFormatOptions {
@@ -94,6 +101,26 @@ export function getDateTimePatternFields(
   processDateTimePattern(format.rawPattern, fields)
   writePatternFields(format, fields)
   return fields
+}
+
+// ECMA-402 §11.5.5 steps 5–6 use the layout for the resolved hour cycle.
+// CLDR supplies the two layouts as separate patterns.
+// https://tc39.es/ecma402/#sec-partitiondatetimepattern
+export function availableFormatHourCycle(
+  options: Intl.DateTimeFormatOptions,
+  formats: Formats[]
+): boolean | undefined {
+  const hour12 = options.hour === undefined ? undefined : options.hour12
+  if (
+    hour12 !== undefined &&
+    arraySome(formats, format => {
+      const fields = getDateTimePatternFields(format)
+      return fields.hour !== undefined && (fields.hour12 === true) === hour12
+    })
+  ) {
+    return hour12
+  }
+  return undefined
 }
 
 /**
@@ -115,6 +142,7 @@ function matchSkeletonPattern(
     | 'hour'
     | 'minute'
     | 'second'
+    | 'fractionalSecondDigits'
     | 'timeZoneName'
   > & {
     hour12?: boolean
@@ -250,6 +278,10 @@ function matchSkeletonPattern(
       return '{second}'
 
     case 'S':
+      // LDML Date Field Symbol Table: S is a fraction of a second.
+      // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+      result.fractionalSecondDigits = len === 1 ? 1 : len === 2 ? 2 : 3
+      return '{fractionalSecondDigits}'
     case 'A':
       result.second = 'numeric'
       return '{second}'
@@ -315,10 +347,10 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
 
     // Second
     case 's':
-
-    case 'S':
     case 'A':
       return 'second'
+    case 'S':
+      return 'fractionalSecondDigits'
     default:
       throw new RangeErrorConstructor('Invalid range pattern token')
   }
@@ -357,7 +389,7 @@ function replaceDateTimeTokens(
               ? 2
               : skeletonIncludes('FW', c)
                 ? 1
-                : skeletonIncludes('yYur', c)
+                : skeletonIncludes('yYurS', c)
                   ? Infinity
                   : 0
     if (quoted || !maximum) {
@@ -654,7 +686,7 @@ export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   }
   if (!startEnd) return [{source: RangePatternType.shared, pattern}]
 
-  // ECMA-402 11.5.9, step 19.f.i preserves each range record's source.
+  // ECMA-402 §11.5.8 step 19.f.i preserves each range record's source.
   // Repeated fields bound each endpoint; outer text and the separator are shared.
   // ICU derives the same spans from repeated field positions:
   // https://github.com/unicode-org/icu/blob/030fa1a4791ee7c2f58505ebb61253c3032916ec/icu4c/source/i18n/formattedval_iterimpl.cpp#L86-L122

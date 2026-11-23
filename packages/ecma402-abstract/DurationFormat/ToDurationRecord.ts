@@ -23,6 +23,8 @@ const durationPropertyNames = [
   'years',
 ] as const
 
+// ECMA-402 §13.5.3 steps 1–2 distinguish string errors and initialize the record.
+// https://tc39.es/ecma402/#sec-todurationrecord
 export function ToDurationRecord(input: DurationInput): DurationRecord {
   if (!IsObject(input)) {
     if (typeof input === 'string') {
@@ -30,6 +32,7 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
     }
     throw new TypeErrorConstructor('Invalid duration')
   }
+  // ECMA-402 §13.5.1 and Table 22 https://tc39.es/ecma402/#sec-duration-records
   const result: DurationRecord = {
     years: 0,
     months: 0,
@@ -42,10 +45,7 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
     microseconds: 0,
     nanoseconds: 0,
   }
-  // Read each field once, in ToDurationRecord's specified order.
-  // ECMA-402 §13.5.3 ToDurationRecord, steps 3–24.a.
-  // https://tc39.es/ecma402/#sec-todurationrecord
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L495-L517
+  // Steps 3–22 interleave each property read with its integer conversion.
   let anyDefined = false
   for (let index = 0; index < durationPropertyNames.length; index++) {
     const field = durationPropertyNames[index]
@@ -55,6 +55,7 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
       result[field] = ToIntegerIfIntegral(value)
     }
   }
+  // Steps 23–24 validate the record after all successful conversions.
   if (!anyDefined) {
     throw new TypeErrorConstructor('Invalid duration format')
   }

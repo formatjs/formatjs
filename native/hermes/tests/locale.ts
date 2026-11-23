@@ -173,6 +173,26 @@ equal(
 throws(() => NativeLocale('en'), TypeError, 'new required')
 for (const tag of [undefined, null, true, 1, 1n, Symbol('tag')])
   throws(() => new NativeLocale(tag), TypeError, 'primitive tag rejected')
+for (const options of [false, 0, 0n, '', Symbol('options')])
+  equal(
+    new NativeLocale('en', options).language,
+    'en',
+    'primitive options are boxed'
+  )
+let boxedReads = 0
+Object.defineProperty(Number.prototype, 'region', {
+  configurable: true,
+  get() {
+    boxedReads++
+    return 'DE'
+  },
+})
+try {
+  equal(new NativeLocale('en', 0).region, 'DE', 'reads boxed option getters')
+  equal(boxedReads, 1, 'reads the boxed getter once')
+} finally {
+  Reflect.deleteProperty(Number.prototype, 'region')
+}
 throws(
   () => new NativeLocale('bad_tag', null),
   TypeError,
@@ -258,6 +278,32 @@ equal(
   Intl.getCanonicalLocales(genuine),
   ['en-US'],
   'canonicalization recognizes Rust Locale'
+)
+const bundled = new TypeScriptLocale('ja-JP-u-ca-japanese')
+Object.defineProperty(bundled, Symbol.toPrimitive, {
+  get() {
+    throw new Error('must use the separately bundled Locale brand')
+  },
+})
+equal(
+  new TypeScriptLocale(genuine as typeof bundled).toString(),
+  'en-US',
+  'TypeScript Locale recognizes Rust Locale'
+)
+equal(
+  new NativeLocale(bundled).toString(),
+  'ja-JP-u-ca-japanese',
+  'Rust Locale recognizes separately bundled TypeScript Locale'
+)
+equal(
+  Intl.getCanonicalLocales(bundled as unknown as string),
+  ['ja-JP-u-ca-japanese'],
+  'canonicalization reads a bundled Locale as a singleton'
+)
+equal(
+  Intl.getCanonicalLocales([genuine, bundled] as unknown as string[]),
+  ['en-US', 'ja-JP-u-ca-japanese'],
+  'canonicalization recognizes both Locale brands in a list'
 )
 for (const name of Object.getOwnPropertyNames(NativeLocale.prototype)) {
   if (name === 'constructor') continue
@@ -469,13 +515,16 @@ try {
   else delete (Object.prototype as any).toJSON
 }
 
-// Keep one Rust record alive while the real TS formatter loads another locale.
-const bengali = new NativeLocale('bn')
+// ECMA-402 §15.5.12 step 3 matches the formatter's loaded locales by prefix.
+// https://tc39.es/ecma402/#sec-numberingsystemsoflocale
+const bengali = [new NativeLocale('bn'), new TypeScriptLocale('bn')]
+const lookup = {localeMatcher: 'lookup'} as const
 check(
-  !NumberFormat.supportedLocalesOf(['bn']).length,
+  !NumberFormat.supportedLocalesOf(['bn'], lookup).length,
   'Bengali initially unloaded'
 )
-equal(bengali.getNumberingSystems(), ['latn'], 'unloaded locale fallback')
+for (const locale of bengali)
+  equal(locale.getNumberingSystems(), ['latn'], 'unloaded locale fallback')
 for (const Constructor of [NativeLocale, TypeScriptLocale]) {
   const original = Object.is
   let actual: unknown, error: unknown
@@ -493,13 +542,20 @@ for (const Constructor of [NativeLocale, TypeScriptLocale]) {
   equal(actual, false, 'numeric collation value under equality mutation')
 }
 root.__finishLocaleConformance = () => {
-  const expected = new NumberFormat('bn').resolvedOptions().numberingSystem
-  check(expected !== 'latn', 'new locale has distinct numbering system')
   equal(
-    bengali.getNumberingSystems(),
-    [expected],
-    'existing Rust record sees newly loaded locale'
+    NumberFormat.supportedLocalesOf(['bn'], lookup),
+    ['bn'],
+    'Bengali loaded'
   )
+  const expected = new NumberFormat('bn', lookup).resolvedOptions()
+    .numberingSystem
+  check(expected !== 'latn', 'new locale has distinct numbering system')
+  for (const locale of bengali)
+    equal(
+      locale.getNumberingSystems(),
+      [expected],
+      'existing locale record sees newly loaded data'
+    )
   check(cases > 250 && assertions > 1000, 'complete comparison coverage')
   root.print(
     JSON.stringify({

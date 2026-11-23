@@ -13,7 +13,9 @@ export function shouldPolyfill(): boolean {
       // ECMA-402 canonicalizes aliases by key; only whole "true" values disappear.
       // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
       canonicalize('en-u-aa-yes')[0] !== 'en-u-aa-yes' ||
-      canonicalize('en-u-kn-yes')[0] !== 'en-u-kn'
+      canonicalize('en-u-kn-yes')[0] !== 'en-u-kn' ||
+      // ECMA-402 §6.2.2 retains valid variants without an alias.
+      canonicalize('en-atom1')[0] !== 'en-atom1'
     )
   } catch {
     return true

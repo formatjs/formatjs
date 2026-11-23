@@ -1,60 +1,12 @@
-import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {UTCOffsetNanoseconds} from '#packages/ecma262-abstract/UTCOffsetNanoseconds.js'
 
 const apply = Reflect.apply
-const regexpExec = RegExp.prototype.exec
 const charCodeAt = String.prototype.charCodeAt
 const toUpperCase = String.prototype.toUpperCase
-const objectKeys = Object.keys
+const hasOwnProperty = Object.prototype.hasOwnProperty
 
-const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
-
-/**
- * IsValidDateTimeFormatOffset ( offsetString )
- * ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
- * https://tc39.es/ecma402/#sec-createdatetimeformat
- * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
- *
- * Validates whether a string represents a valid UTC offset timezone.
- * Supports DateTimeFormat offsets: ±HH, ±HHMM, ±HH:MM
- *
- * @param offsetString - The string to validate as a timezone offset
- * @returns true if offsetString is a valid UTC offset format
- */
-function IsValidDateTimeFormatOffset(offsetString: string): boolean {
-  // CreateDateTimeFormat step 19.c rejects more than one MinuteSecond node:
-  // minutes are allowed, but seconds (including :00) are not.
-  // ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
-  // https://tc39.es/ecma402/#sec-createdatetimeformat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
-  const match = apply(regexpExec, OFFSET_TIMEZONE_FORMAT_REGEX, [offsetString])
-
-  if (!match) {
-    return false
-  }
-
-  const hours = numberFrom(match[2])
-  const minutes = match[3] ? numberFrom(match[3]) : 0
-
-  if (hours > 23 || minutes > 59) {
-    return false
-  }
-
-  return true
-}
-
-/**
- * IsValidTimeZoneName ( timeZone )
- * https://tc39.es/ecma402/#sec-isvalidtimezonename
- *
- * Extended to support UTC offset time zones per ECMA-402 PR #788 (ES2026).
- * The abstract operation validates both:
- * 1. UTC offset identifiers (e.g., "+01:00", "-05:30")
- * 2. Available named time zone identifiers from IANA Time Zone Database
- *
- * @param tz - The timezone identifier to validate
- * @param implDetails - Implementation details containing timezone data
- * @returns true if timeZone is a valid identifier
- */
+// ECMA-402 §11.1.2 steps 19–20 accept a minute offset or available named zone.
+// https://tc39.es/ecma402/#sec-createdatetimeformat
 export function IsValidTimeZoneName(
   tz: string,
   {
@@ -65,37 +17,42 @@ export function IsValidTimeZoneName(
     uppercaseLinks: Record<string, string>
   }
 ): boolean {
-  // 1. If IsValidDateTimeFormatOffset(timeZone) is true, return true
-  // Per ECMA-402 PR #788, UTC offset identifiers are valid
-  if (IsValidDateTimeFormatOffset(tz)) {
-    return true
+  if (tz[0] === '+' || tz[0] === '-') {
+    // Step 19.c limits DateTimeFormat identifiers to minute precision.
+    // https://tc39.es/ecma262/#sec-time-zone-offset-strings
+    return UTCOffsetNanoseconds(tz, true) !== undefined
   }
 
-  // 2. Let timeZones be AvailableNamedTimeZoneIdentifiers()
-  // 3. If timeZones contains an element equal to timeZone, return true
-  // NOTE: Implementation uses case-insensitive comparison per spec note
+  // ECMA-402 §6.5.1 sources available identifiers from IANA zones and links.
+  // https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
   // ECMA-402 §6.5.2 GetAvailableNamedTimeZoneIdentifier, step 1.a:
   // only ASCII case folding is allowed; Unicode lookalikes cannot match IANA names.
   // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L318
+  // https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
   for (let i = 0; i < tz.length; i++) {
     if (apply(charCodeAt, tz, [i]) > 0x7f) return false
   }
   const uppercasedTz = apply(toUpperCase, tz, [])
+  if (
+    uppercasedTz === 'UTC' ||
+    uppercasedTz === 'ETC/UTC' ||
+    uppercasedTz === 'ETC/GMT'
+  )
+    return true
+  if (apply(hasOwnProperty, uppercaseLinks, [uppercasedTz])) {
+    const target = uppercaseLinks[uppercasedTz]
+    if (target === 'Etc/UTC' || target === 'Etc/GMT' || target === 'UTC')
+      return true
+    // A pack can include either the IANA link's target or the link's own rows.
+    for (let zone = 0; zone < zoneNamesFromData.length; zone++) {
+      if (zoneNamesFromData[zone] === target) return true
+    }
+  }
   for (let index = 0; index < zoneNamesFromData.length; index++) {
     if (apply(toUpperCase, zoneNamesFromData[index], []) === uppercasedTz)
       return true
   }
-  const links = objectKeys(uppercaseLinks)
-  for (let index = 0; index < links.length; index++) {
-    const link = links[index]
-    if (
-      apply(toUpperCase, link, []) === uppercasedTz ||
-      apply(toUpperCase, uppercaseLinks[link], []) === uppercasedTz
-    )
-      return true
-  }
 
-  // 4. Return false
+  // ECMA-402 §6.5.2 step 2 returns empty after an unsuccessful lookup.
   return false
 }

@@ -12,7 +12,9 @@ def package_formatter_conformance(kind):
             "//crates/intl_listformat:locale_data",
         ] if kind == "durationformat" else []) + ([
             "//:node_modules/@formatjs/intl-numberformat",
-        ] if kind in ["numberformat", "datetimeformat", "relativetimeformat", "durationformat", "supportedvaluesof", "locale", "pluralrules"] else []) + ([
+        ] if kind in ["numberformat", "datetimeformat", "relativetimeformat", "durationformat", "supportedvaluesof", "locale", "pluralrules", "segmenter"] else []) + ([
+            "//:node_modules/@formatjs/intl-displaynames",
+        ] if kind == "supportedvaluesof" else []) + ([
             "//:node_modules/@formatjs/intl-datetimeformat",
             "//:node_modules/@formatjs/intl-collator",
             "//:node_modules/@formatjs_generated/tz",
@@ -23,6 +25,7 @@ def package_formatter_conformance(kind):
             "//packages/ecma402-abstract",
             "//packages/ecma402-abstract/DateTimeFormat",
             "//packages/intl-datetimeformat/calendars",
+            "//packages/intl-numberformat:tests-locale-data-en",
         ] if kind == "datetimeformat" else []) + ([
             "//packages/ecma402-abstract/PluralRules",
         ] if kind == "pluralrules" else []) + ([

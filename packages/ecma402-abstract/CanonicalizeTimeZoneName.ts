@@ -1,93 +1,45 @@
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {UTCOffsetNanoseconds} from '#packages/ecma262-abstract/UTCOffsetNanoseconds.js'
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 
 const apply = Reflect.apply
-const regexpExec = RegExp.prototype.exec
 const toUpperCase = String.prototype.toUpperCase
 const stringSlice = String.prototype.slice
 const objectKeys = Object.keys
+const indexOf = Array.prototype.indexOf
 
-const OFFSET_TIMEZONE_FORMAT_REGEX =
-  /^([+-])(\d{2})(?::?(\d{2}))?(?::?(\d{2}))?(?:\.(\d{1,9}))?$/
-
-/**
- * IsTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-istimezoneoffsetstring
- *
- * Simplified check to determine if a string is a UTC offset identifier.
- *
- * @param offsetString - The string to check
- * @returns true if offsetString starts with '+' or '-'
- */
-function IsTimeZoneOffsetString(offsetString: string): boolean {
-  // 1. If offsetString does not start with '+' or '-', return false
-  return offsetString[0] === '+' || offsetString[0] === '-'
+function twoDigits(value: number): string {
+  return value < 10 ? `0${value}` : `${value}`
 }
 
-/**
- * ParseTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
- *
- * Parses a UTC offset string and returns its canonical representation.
- * Normalizes various formats (±HH, ±HHMM, ±HH:MM, etc.) to ±HH:MM format.
- *
- * @param offsetString - The UTC offset string to parse
- * @returns The canonical offset string in ±HH:MM format (with :SS.sss if non-zero)
- */
-function ParseTimeZoneOffsetString(offsetString: string): string {
-  // 1. Let parseResult be ParseText(offsetString, UTCOffset)
-  const match = apply(regexpExec, OFFSET_TIMEZONE_FORMAT_REGEX, [offsetString])
-
-  // 2. Assert: parseResult is not a List of errors (validated by IsValidTimeZoneName)
-  if (!match) {
-    return offsetString
+// ECMA-402 §11.1.2 steps 19.d–g and §11.1.3 normalize accepted minute offsets.
+// https://tc39.es/ecma402/#sec-formatoffsettimezoneidentifier
+// The shared helper also normalizes full ECMA-262 UTC offsets.
+function formatOffset(offsetNanoseconds: number): string {
+  const sign = offsetNanoseconds < 0 ? '-' : '+'
+  const absolute =
+    offsetNanoseconds < 0 ? -offsetNanoseconds : offsetNanoseconds
+  const minutes = floor(absolute / 60_000_000_000)
+  let canonical = `${sign}${twoDigits(floor(minutes / 60))}:${twoDigits(minutes % 60)}`
+  const remainder = absolute % 60_000_000_000
+  if (remainder) {
+    canonical += `:${twoDigits(floor(remainder / 1_000_000_000))}`
+    const fraction = remainder % 1_000_000_000
+    if (fraction) {
+      // Adding one billion supplies leading zeros. Omit the initial 1.
+      const digits = `${fraction + 1_000_000_000}`
+      let end = digits.length
+      while (digits[end - 1] === '0') end--
+      canonical += `.${apply(stringSlice, digits, [1, end])}`
+    }
   }
 
-  // 3. Extract components from parseResult
-  const hours = match[2]
-  const minutes = match[3] ? match[3] : '00'
-  const seconds = match[4]
-  const fractional = match[5] ?? ''
-  let fractionalEnd = fractional.length
-  while (fractionalEnd > 0 && fractional[fractionalEnd - 1] === '0')
-    fractionalEnd--
-  // ECMA-402 §11.1.3 FormatOffsetTimeZoneIdentifier, step 1: zero uses +.
-  // https://tc39.es/ecma402/#sec-formatoffsettimezoneidentifier
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L172
-  const sign =
-    hours !== '00' ||
-    minutes !== '00' ||
-    (seconds !== undefined && seconds !== '00') ||
-    fractionalEnd
-      ? match[1]
-      : '+'
-
-  // 4. Build canonical format: ±HH:MM
-  let canonical = `${sign}${hours}:${minutes}`
-
-  // 5. If seconds are present and non-zero (or fractional present), include them
-  if (seconds && (seconds !== '00' || fractional)) {
-    canonical += `:${seconds}`
-
-    // 6. If fractional seconds present, include them (trim trailing zeros)
-    if (fractionalEnd)
-      canonical += `.${apply(stringSlice, fractional, [0, fractionalEnd])}`
-  }
-
-  // 7. Return canonical representation
   return canonical
 }
 
-/**
- * CanonicalizeTimeZoneName ( timeZone )
- * https://tc39.es/ecma402/#sec-canonicalizetimezonename
- *
- * Extended to support UTC offset time zones per ECMA-402 PR #788 (ES2026).
- * Returns the canonical and case-regularized form of a timezone identifier.
- *
- * @param tz - The timezone identifier to canonicalize
- * @param implDetails - Implementation details containing timezone data
- * @returns The canonical timezone identifier
- */
+// ECMA-402 §11.1.2 steps 19–20 normalize offsets or resolve named identifiers.
+// https://tc39.es/ecma402/#sec-createdatetimeformat
+// For named zones, return the packed data target.
 export function CanonicalizeTimeZoneName(
   tz: string,
   {
@@ -98,23 +50,30 @@ export function CanonicalizeTimeZoneName(
     uppercaseLinks: Record<string, string>
   }
 ): string | undefined {
-  // 1. If IsTimeZoneOffsetString(timeZone) is true, then
-  //    a. Return ParseTimeZoneOffsetString(timeZone)
-  // Per ECMA-402 PR #788, UTC offset identifiers are canonicalized
-  if (IsTimeZoneOffsetString(tz)) {
-    return ParseTimeZoneOffsetString(tz)
+  if (tz[0] === '+' || tz[0] === '-') {
+    const offset = UTCOffsetNanoseconds(tz)
+    return offset === undefined ? undefined : formatOffset(offset)
   }
 
-  // 2. Let ianaTimeZone be the String value of the Zone or Link name
-  //    in the IANA Time Zone Database that is an ASCII-case-insensitive
-  //    match of timeZone
   // ECMA-402 §6.5.2 step 1.a matches the prepared ASCII identifier.
   // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
   const uppercasedTz = apply(toUpperCase, tz, [])
+  if (
+    uppercasedTz === 'UTC' ||
+    uppercasedTz === 'ETC/UTC' ||
+    uppercasedTz === 'ETC/GMT'
+  )
+    return 'UTC'
   let ianaTimeZone = HasOwnProperty(uppercaseLinks, uppercasedTz)
     ? uppercaseLinks[uppercasedTz]
     : undefined
-  if (!ianaTimeZone) {
+  if (
+    ianaTimeZone !== 'Etc/UTC' &&
+    ianaTimeZone !== 'Etc/GMT' &&
+    (ianaTimeZone === undefined ||
+      apply(indexOf, zoneNames, [ianaTimeZone]) < 0)
+  ) {
+    // Use a packed link's own rows if this pack omitted its canonical target.
     for (let index = zoneNames.length - 1; index >= 0; index--) {
       const zone = zoneNames[index]
       if (apply(toUpperCase, zone, []) !== uppercasedTz) continue
@@ -132,11 +91,11 @@ export function CanonicalizeTimeZoneName(
     }
   }
 
-  // 3. If ianaTimeZone is "Etc/UTC" or "Etc/GMT", return "UTC"
+  // ECMA-402 §6.5.1 step 5.c maps UTC-equivalent primary names to UTC.
+  // https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
   if (ianaTimeZone === 'Etc/UTC' || ianaTimeZone === 'Etc/GMT') {
     return 'UTC'
   }
 
-  // 4. Return ianaTimeZone
   return ianaTimeZone
 }

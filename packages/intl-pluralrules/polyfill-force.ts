@@ -3,6 +3,9 @@ import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
 
+// ECMA-402 §8.2.8 and §17.1 install Intl.PluralRules.
+// https://tc39.es/ecma402/#sec-intl-pluralrules-constructor
+// https://tc39.es/ecma402/#sec-intl.pluralrules-intro
 defineProperty(intl, 'PluralRules', {value: PluralRules})
 
 // Drain any locale data that was buffered before polyfill loaded

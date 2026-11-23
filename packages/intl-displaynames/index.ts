@@ -1,25 +1,36 @@
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
-import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  createFromConstructor,
+  nullClassBase,
+  setDataProperty,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
-import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
   type DisplayNamesData,
   type DisplayNamesLocaleData,
 } from '#packages/ecma402-abstract/types/displaynames.js'
-import {
-  getInternalSlot,
-  getMultiInternalSlots,
-  invariant,
-  setInternalSlot,
-} from '#packages/ecma402-abstract/utils.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {CanonicalCodeForDisplayNames} from '#packages/ecma402-abstract/DisplayNames/CanonicalCodeForDisplayNames.js'
-import {IsValidDateTimeFieldCode} from '#packages/ecma402-abstract/DisplayNames/IsValidDateTimeFieldCode.js'
-
 import {ResolveLocale} from '@formatjs/intl-localematcher'
+
+// ECMA-402 §9.2.7 step 3 resolves the internal default locale.
+// https://tc39.es/ecma402/#sec-resolvelocale
+let defaultLocale = ''
+function getDefaultLocale(): string {
+  return defaultLocale
+}
+
+const apply = Reflect.apply
+const stringSlice = String.prototype.slice
+const stringIndexOf = String.prototype.indexOf
+const stringSplit = String.prototype.split
+const ownKeys = Object.keys
+const hasOwn = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
 
 export interface DisplayNamesOptions {
   localeMatcher?: 'lookup' | 'best fit'
@@ -40,22 +51,29 @@ export interface DisplayNamesResolvedOptions {
   style: NonNullable<DisplayNamesOptions['style']>
   type: NonNullable<DisplayNamesOptions['type']>
   fallback: NonNullable<DisplayNamesOptions['fallback']>
-  languageDisplay: NonNullable<DisplayNamesOptions['languageDisplay']>
+  languageDisplay?: NonNullable<DisplayNamesOptions['languageDisplay']>
 }
 
-export class DisplayNames {
+// Class syntax supplies the prototype and constructor descriptors.
+// ECMA-402 §12.2.1 https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype
+// ECMA-402 §12.3.1 https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.constructor
+export class DisplayNames extends nullClassBase {
+  // ECMA-402 §12.1.1 steps 1–5: allocate, canonicalize, and resolve locale options.
+  // https://tc39.es/ecma402/#sec-Intl.DisplayNames
+  // @ts-expect-error TS2377: extends null and returns its own receiver.
+  // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
   constructor(
     locales: string | string[] | undefined,
     options: DisplayNamesOptions
   ) {
-    if (new.target === undefined) {
-      throw TypeError(`Constructor Intl.DisplayNames requires 'new'`)
-    }
+    const receiver = createFromConstructor(new.target, DisplayNames.prototype)
+    const {localeData} = DisplayNames
     const requestedLocales = CanonicalizeLocaleList(locales)
+    if (options === undefined) {
+      throw new TypeErrorConstructor('Intl.DisplayNames requires options')
+    }
     options = GetOptionsObject(options)
 
-    const opt = Object.create(null)
-    const {localeData} = DisplayNames
     const matcher = GetOption(
       options,
       'localeMatcher',
@@ -63,17 +81,22 @@ export class DisplayNames {
       ['lookup', 'best fit'],
       'best fit'
     )
-    opt.localeMatcher = matcher
+    const opt = {__proto__: null, localeMatcher: matcher}
 
     const r = ResolveLocale(
-      Array.from(DisplayNames.availableLocales),
+      DisplayNames.availableLocales,
       requestedLocales,
       opt,
       [], // there is no relevantExtensionKeys
-      DisplayNames.localeData,
-      DisplayNames.getDefaultLocale
+      localeData,
+      getDefaultLocale,
+      'hostDefaultWithLocaleData'
     )
+    // ECMA-402 §9.2.7 step 6.c captures the locale record before style getters.
+    // https://tc39.es/ecma402/#sec-resolvelocale
+    const dataLocaleData = r.localeData
 
+    // ECMA-402 §12.1.1 steps 6–12 read style, required type, and fallback.
     const style = GetOption(
       options,
       'style',
@@ -81,7 +104,6 @@ export class DisplayNames {
       ['narrow', 'short', 'long'],
       'long'
     )
-    setSlot(this, 'style', style)
 
     const type = GetOption(
       options,
@@ -91,10 +113,10 @@ export class DisplayNames {
       undefined
     )
     if (type === undefined) {
-      throw TypeError(`Intl.DisplayNames constructor requires "type" option`)
+      throw new TypeErrorConstructor(
+        'Intl.DisplayNames constructor requires "type" option'
+      )
     }
-
-    setSlot(this, 'type', type)
 
     const fallback = GetOption(
       options,
@@ -103,24 +125,13 @@ export class DisplayNames {
       ['code', 'none'],
       'code'
     )
-    setSlot(this, 'fallback', fallback)
-    setSlot(this, 'locale', r.locale)
-
-    const {dataLocale} = r
-    const dataLocaleData = localeData[dataLocale]
-    invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`)
-    setSlot(this, 'localeData', dataLocaleData)
     invariant(
       dataLocaleData !== undefined,
       `locale data for ${r.locale} does not exist.`
     )
     const {types} = dataLocaleData
     invariant(typeof types === 'object' && types != null, 'invalid types data')
-    const typeFields = types[type]
-    invariant(
-      typeof typeFields === 'object' && typeFields != null,
-      'invalid typeFields data'
-    )
+    // Steps 13–22 read languageDisplay for every type, then select fields.
     const languageDisplay = GetOption(
       options,
       'languageDisplay',
@@ -128,8 +139,12 @@ export class DisplayNames {
       ['dialect', 'standard'],
       'dialect'
     )
+    const typeFields = types[type]
+    invariant(
+      typeof typeFields === 'object' && typeFields != null,
+      'invalid typeFields data'
+    )
     if (type === 'language') {
-      setSlot(this, 'languageDisplay', languageDisplay)
       // Using types[type] instead of typeFields because TypeScript cannot infer the correct type
       const typeFields = types[type][languageDisplay]
       invariant(
@@ -147,9 +162,19 @@ export class DisplayNames {
       typeof styleFields === 'object' && styleFields != null,
       'invalid styleFields data'
     )
-    setSlot(this, 'fields', styleFields)
+    setSlots(receiver, {
+      locale: r.locale,
+      style,
+      type,
+      fallback,
+      languageDisplay: type === 'language' ? languageDisplay : undefined,
+      localeData: dataLocaleData,
+    })
+    return receiver
   }
 
+  // ECMA-402 §12.2.2 canonicalizes locales before reading filter options.
+  // https://tc39.es/ecma402/#sec-Intl.DisplayNames.supportedLocalesOf
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<DisplayNamesOptions, 'localeMatcher'>
@@ -162,51 +187,46 @@ export class DisplayNames {
   }
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]): void {
-    for (const {data: d, locale} of data) {
+    for (const {data: d, locale: tag} of data) {
+      const [locale] = CanonicalizeLocaleList(tag)
       registerLocaleData(
         locale,
         d,
         DisplayNames.localeData,
         DisplayNames.availableLocales
       )
-      if (!DisplayNames.__defaultLocale) {
-        DisplayNames.__defaultLocale = locale
+      if (!defaultLocale) {
+        defaultLocale = locale
       }
     }
   }
 
   of(code: string | number | Record<string, unknown>): string | undefined {
-    checkReceiver(this, 'of')
-    const type = getSlot(this, 'type')
-    const codeAsString = ToString(code)
-    if (!isValidCodeForDisplayNames(type, codeAsString)) {
-      throw RangeError('invalid code for Intl.DisplayNames.prototype.of')
-    }
-    const {localeData, style, fallback} = getMultiInternalSlots(
-      __INTERNAL_SLOT_MAP__,
+    const {type, localeData, style, fallback, languageDisplay} = requireSlots(
       this,
-      'localeData',
-      'style',
-      'fallback'
+      'of'
     )
-
-    // Canonicalize the case.
-    let canonicalCode = CanonicalCodeForDisplayNames(type, codeAsString)
-
+    // ECMA-402 §12.3.3 steps 3–4 coerce and canonicalize before lookup.
+    // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
+    const canonicalCode = CanonicalCodeForDisplayNames(type, ToString(code))
     let name: string | undefined
     if (type === 'language') {
-      const languageDisplay = getSlot(this, 'languageDisplay')
       name = getNameForTypeLanguage(
-        languageDisplay,
+        languageDisplay!,
         localeData,
         style,
         canonicalCode,
         fallback
       )
     } else {
-      // All the other types
-      const typesData = localeData.types[type]
-      name = typesData[style][canonicalCode] || typesData.long[canonicalCode]
+      name = lookupName(
+        localeData.types[type],
+        style,
+        canonicalCode,
+        type === 'dateTimeField' && canonicalCode === 'dayPeriod'
+          ? 'dayperiod'
+          : undefined
+      )
     }
 
     if (name !== undefined) {
@@ -214,70 +234,34 @@ export class DisplayNames {
     }
 
     if (fallback === 'code') {
-      // Return the canonical code after lookup fails.
-      // ECMA-402 §12.3.3 Intl.DisplayNames.prototype.of, steps 4–7.
-      // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L185-L188
       return canonicalCode
     }
   }
 
   resolvedOptions(): DisplayNamesResolvedOptions {
-    checkReceiver(this, 'resolvedOptions')
-    return {
-      ...getMultiInternalSlots(
-        __INTERNAL_SLOT_MAP__,
-        this,
-        'locale',
-        'style',
-        'type',
-        'fallback',
-        'languageDisplay'
-      ),
-    }
+    // ECMA-402 §12.3.2 step 4.c omits undefined slots in table order.
+    // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.resolvedOptions
+    const {locale, style, type, fallback, languageDisplay} = requireSlots(
+      this,
+      'resolvedOptions'
+    )
+    return languageDisplay === undefined
+      ? {locale, style, type, fallback}
+      : {locale, style, type, fallback, languageDisplay}
   }
 
+  // ECMA-402 §12.2.3: locale data supplies name tables by type and style.
+  // https://tc39.es/ecma402/#sec-Intl.DisplayNames-internal-slots
   static localeData: Record<string, DisplayNamesData | undefined> = {}
   private static availableLocales = new Set<string>()
-  private static __defaultLocale = ''
-  private static getDefaultLocale() {
-    return DisplayNames.__defaultLocale
-  }
   public static readonly polyfilled = true
 }
 
-// https://tc39.es/proposal-intl-displaynames/#sec-isvalidcodefordisplaynames
-function isValidCodeForDisplayNames(
-  type: NonNullable<DisplayNamesOptions['type']>,
-  code: string
-): boolean {
-  switch (type) {
-    case 'language':
-      // ECMA-402 §12.5.1 CanonicalCodeForDisplayNames, step 1.a:
-      // unicode_language_subtag allows 2–3 or 5–8 ASCII letters.
-      // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L235-L238
-      return /^(?:[a-z]{2,3}|[a-z]{5,8})(-[a-z]{4})?(-([a-z]{2}|\d{3}))?(-([a-z\d]{5,8}|\d[a-z\d]{3}))*(?![\s\S])/i.test(
-        code
-      )
-    case 'region':
-      // unicode_region_subtag
-      return /^([a-z]{2}|\d{3})(?![\s\S])/i.test(code)
-    case 'script':
-      // unicode_script_subtag
-      return /^[a-z]{4}(?![\s\S])/i.test(code)
-    case 'currency':
-      return IsWellFormedCurrencyCode(code)
-    case 'calendar':
-      // unicode locale identifier type
-      return IsUnicodeLocaleIdentifierType(code)
-    case 'dateTimeField':
-      return IsValidDateTimeFieldCode(code)
-  }
-}
+Object.setPrototypeOf(DisplayNames.prototype, Object.prototype)
 
 try {
-  // IE11 does not have Symbol
+  // ECMA-402 §12.3.4.
+  // https://tc39.es/ecma402/#sec-intl.displaynames.prototype-%symbol.tostringtag%
   if (typeof Symbol !== 'undefined' && Symbol.toStringTag) {
     Object.defineProperty(DisplayNames.prototype, Symbol.toStringTag, {
       value: 'Intl.DisplayNames',
@@ -301,109 +285,207 @@ interface DisplayNamesInternalSlots {
   style: NonNullable<DisplayNamesOptions['style']>
   type: NonNullable<DisplayNamesOptions['type']>
   fallback: NonNullable<DisplayNamesOptions['fallback']>
-  languageDisplay: NonNullable<DisplayNamesOptions['languageDisplay']>
-  // Note that this differs from `fields` slot in the spec.
+  languageDisplay: DisplayNamesOptions['languageDisplay']
+  // Name lookup uses the selected locale record, including CLDR fallbacks.
   localeData: DisplayNamesData
-  fields: Record<string, string>
 }
 
+// ECMA-402 §12.4: keep each instance's fields and options private.
+// https://tc39.es/ecma402/#sec-properties-of-intl-displaynames-instances
 const __INTERNAL_SLOT_MAP__ = new WeakMap<
   DisplayNames,
   DisplayNamesInternalSlots
 >()
+const getSlots = WeakMap.prototype.get.bind(__INTERNAL_SLOT_MAP__)
+const setSlots = WeakMap.prototype.set.bind(__INTERNAL_SLOT_MAP__)
 
-function getSlot<K extends keyof DisplayNamesInternalSlots>(
-  instance: DisplayNames,
-  key: K
-): DisplayNamesInternalSlots[K] {
-  return getInternalSlot(__INTERNAL_SLOT_MAP__, instance, key)
-}
-
-function setSlot<K extends keyof DisplayNamesInternalSlots>(
-  instance: DisplayNames,
-  key: K,
-  value: DisplayNamesInternalSlots[K]
-): void {
-  setInternalSlot(__INTERNAL_SLOT_MAP__, instance, key, value)
-}
-
-function checkReceiver(receiver: unknown, methodName: string) {
-  if (!(receiver instanceof DisplayNames)) {
-    throw TypeError(
+// ECMA-402 §12.3.2 and §12.3.3 step 2 require the [[InitializedDisplayNames]] slot.
+// https://tc39.es/ecma262/#sec-requireinternalslot
+function requireSlots(
+  receiver: DisplayNames,
+  methodName: string
+): DisplayNamesInternalSlots {
+  const slots = getSlots(receiver)
+  if (!slots) {
+    throw new TypeErrorConstructor(
       `Method Intl.DisplayNames.prototype.${methodName} called on incompatible receiver`
     )
   }
+  return slots
+}
+
+// ECMA-402 §12.3.3 step 6 checks Record field presence. Empty strings are names.
+// https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
+function lookupName(
+  names: DisplayNamesData['types']['region'],
+  style: DisplayNamesInternalSlots['style'],
+  code: string,
+  legacyCode?: string
+): string | undefined {
+  const fields = names[style]
+  if (hasOwn(fields, code)) return fields[code]
+  if (legacyCode !== undefined && hasOwn(fields, legacyCode))
+    return fields[legacyCode]
+  if (style !== 'long') {
+    if (hasOwn(names.long, code)) return names.long[code]
+    if (legacyCode !== undefined && hasOwn(names.long, legacyCode))
+      return names.long[legacyCode]
+  }
+}
+
+// UTS 35 Part 2, Locale Display Name Algorithm steps 2–4.
+// https://unicode.org/reports/tr35/tr35-general.html#Locale_Display_Name_Algorithm
+function matchVariantLanguage(
+  names: DisplayNamesData['types']['region'],
+  style: DisplayNamesInternalSlots['style'],
+  subtags: readonly string[]
+): {code: string; consumed: number[]} {
+  let code = subtags[0]
+  let consumed: number[] = []
+  const prefix = code + '-'
+  const fields = style === 'long' ? [names.long] : [names[style], names.long]
+  for (let table = 0; table < fields.length; table++) {
+    const keys = ownKeys(fields[table])
+    for (let k = 0; k < keys.length; k++) {
+      const candidate = keys[k]
+      if (apply(stringIndexOf, candidate, [prefix]) !== 0) continue
+      const suffix = apply(stringSlice, candidate, [prefix.length])
+      const parts = apply(stringSplit, suffix, ['-']) as string[]
+      if (parts.length < consumed.length || parts.length >= subtags.length)
+        continue
+      const positions: number[] = []
+      let input = 1
+      for (let j = 0; j < parts.length; j++) {
+        while (input < subtags.length && subtags[input] !== parts[j]) input++
+        if (input === subtags.length) break
+        setDataProperty(positions, positions.length, input++)
+      }
+      if (positions.length !== parts.length) continue
+      let better = positions.length > consumed.length
+      if (positions.length === consumed.length) {
+        for (let j = 0; j < positions.length; j++) {
+          if (positions[j] === consumed[j]) continue
+          better = positions[j] < consumed[j]
+          break
+        }
+      }
+      if (better) {
+        code = candidate
+        consumed = positions
+      }
+    }
+  }
+  return {code, consumed}
 }
 
 function getNameForTypeLanguage(
-  languageDisplay: DisplayNamesInternalSlots['languageDisplay'],
+  languageDisplay: NonNullable<DisplayNamesOptions['languageDisplay']>,
   localeData: DisplayNamesData,
   style: DisplayNamesInternalSlots['style'],
   canonicalCode: string,
   fallback: DisplayNamesInternalSlots['fallback']
 ): string | undefined {
   const typesData = localeData.types.language[languageDisplay]
-  const languageName = (code: string) =>
-    typesData[style][code] || typesData.long[code]
-  const exact = languageName(canonicalCode)
+  const exact = lookupName(typesData, style, canonicalCode)
   if (exact !== undefined) return exact
 
-  const parts = canonicalCode.split('-')
-  const scriptIndex = /^[A-Z][a-z]{3}$/.test(parts[1] || '') ? 1 : -1
-  const regionIndex = parts.findIndex(
-    (part, index) => index > 0 && /^(?:[A-Z]{2}|[0-9]{3})$/.test(part)
-  )
-  let script: string | undefined = parts[scriptIndex]
-  let region: string | undefined = parts[regionIndex]
-  let name: string | undefined
+  const subtags = apply(stringSplit, canonicalCode, ['-']) as string[]
+  let cursor = 1
+  const first = subtags.length > 1 ? subtags[1] : undefined
+  // A canonical four-letter script starts uppercase.
+  const script =
+    first?.length === 4 && first[0] >= 'A' && first[0] <= 'Z' ? cursor++ : -1
+  const second = cursor < subtags.length ? subtags[cursor] : undefined
+  const region = second?.length === 2 || second?.length === 3 ? cursor++ : -1
+  const language = subtags[0]
+  let code = language
+  let consumed: number[] = []
   if (languageDisplay === 'dialect') {
-    if (script && region) {
-      name = languageName(
-        parts.filter((_, index) => index !== regionIndex).join('-')
-      )
-      if (name !== undefined) script = undefined
-      else {
-        name = languageName(
-          parts.filter((_, index) => index !== scriptIndex).join('-')
-        )
-        if (name !== undefined) region = undefined
+    if (cursor < subtags.length) {
+      const match = matchVariantLanguage(typesData, style, subtags)
+      code = match.code
+      consumed = match.consumed
+    } else if (script >= 0 && region >= 0) {
+      // With only script and region left, the script wins equal-length matches.
+      const withScript = language + '-' + subtags[script]
+      const withRegion = language + '-' + subtags[region]
+      if (lookupName(typesData, style, withScript) !== undefined) {
+        code = withScript
+        consumed = [script]
+      } else if (lookupName(typesData, style, withRegion) !== undefined) {
+        code = withRegion
+        consumed = [region]
       }
     }
   }
-  name ??= languageName(
-    parts
-      .filter((_, index) => index !== scriptIndex && index !== regionIndex)
-      .join('-')
-  )
-  if (name === undefined || (!script && !region)) return undefined
+  const name = lookupName(typesData, style, code)
+  if (name === undefined) return undefined
 
-  const qualifiers: string[] = []
-  for (const [code, names] of [
-    [script, localeData.types.script],
-    [region, localeData.types.region],
-  ] as const) {
-    if (!code) continue
-    const display = names[style][code] || names.long[code]
-    if (!display && fallback === 'none') return undefined
-    qualifiers.push(display || code)
-  }
   const pattern = localeData.patterns.locale
-  const nested = (value: string) =>
-    value.replace(/[()（）]/g, bracket => {
-      if (pattern.includes('(') && (bracket === '(' || bracket === ')'))
-        return bracket === '(' ? '[' : ']'
-      if (pattern.includes('（') && (bracket === '（' || bracket === '）'))
-        return bracket === '（' ? '［' : '］'
-      return bracket
-    })
-  const substitute = (format: string, first: string, second: string) =>
-    format.replace(/\{([01])\}/g, (_, index) =>
-      index === '0' ? first : second
-    )
-  const qualifier = qualifiers
-    .map(nested)
-    .reduce((first, second) =>
-      substitute(localeData.patterns.separator ?? '{0}, {1}', first, second)
-    )
-  return substitute(pattern, nested(name), qualifier)
+  const usesAsciiBrackets = apply(stringIndexOf, pattern, ['(']) !== -1
+  const usesWideBrackets = apply(stringIndexOf, pattern, ['（']) !== -1
+  const nested = (value: string) => {
+    let result = ''
+    for (let index = 0; index < value.length; index++) {
+      const char = value[index]
+      if (usesAsciiBrackets && char === '(') result += '['
+      else if (usesAsciiBrackets && char === ')') result += ']'
+      else if (usesWideBrackets && char === '（') result += '［'
+      else if (usesWideBrackets && char === '）') result += '］'
+      else result += char
+    }
+    return result
+  }
+  let qualifier: string | undefined
+  let skip = 0
+  const separator = localeData.patterns.separator ?? '{0}, {1}'
+  for (let i = 1; i < subtags.length; i++) {
+    if (skip < consumed.length && consumed[skip] === i) {
+      skip++
+      continue
+    }
+    const map =
+      i === script
+        ? localeData.types.script
+        : i === region
+          ? localeData.types.region
+          : localeData.types.variant
+    // Older packs have no variant data. Let of() apply its whole-code fallback.
+    if (map === undefined) return undefined
+    const label = lookupName(map, style, subtags[i])
+    if (label === undefined && fallback === 'none') return undefined
+    const part = nested(label ?? subtags[i])
+    qualifier =
+      qualifier === undefined
+        ? part
+        : substitutePattern(separator, qualifier, part)
+  }
+  return qualifier === undefined
+    ? name
+    : substitutePattern(pattern, nested(name), qualifier)
+}
+
+function substitutePattern(
+  pattern: string,
+  first: string,
+  second: string
+): string {
+  let result = ''
+  for (let index = 0; index < pattern.length; index++) {
+    const char = pattern[index]
+    if (
+      char === '{' &&
+      index + 2 < pattern.length &&
+      pattern[index + 2] === '}'
+    ) {
+      const field = pattern[index + 1]
+      if (field === '0' || field === '1') {
+        result += field === '0' ? first : second
+        index += 2
+        continue
+      }
+    }
+    result += char
+  }
+  return result
 }

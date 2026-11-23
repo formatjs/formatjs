@@ -146,6 +146,50 @@ function withoutZone(pattern: string): string {
   return pattern
 }
 
+function withoutEra(pattern: string): string {
+  // Skip quoted LDML literals, including escaped apostrophes.
+  for (const match of pattern.matchAll(/'(?:[^']|'')*'|(\(G+\)|G+)/g)) {
+    const [token, era] = match
+    if (era === undefined) continue
+    const before = pattern.slice(0, match.index)
+    const after = pattern.slice(match.index + token.length)
+    if (!before) return after.replace(/^[,\s]+/, '')
+    if (!after) return before.replace(/[,\s]+$/, '')
+    if (era.startsWith('(')) return before.trimEnd() + after
+    if (/^\s/.test(after)) return before + after.trimStart()
+    return before.trimEnd() + after
+  }
+  return pattern
+}
+
+function addRequiredDatePatterns(
+  dateFormats: Record<string, string>,
+  allFormats: Record<string, string>
+) {
+  const shapes = new Set<string>()
+  for (const pattern of Object.values(dateFormats)) {
+    const fields: Intl.DateTimeFormatOptions = {}
+    processDateTimePattern(pattern, fields)
+    if (fields.era) continue
+    const shape = `${fields.year ? 'y' : ''}${fields.month ? 'M' : ''}${
+      fields.weekday ? 'E' : ''
+    }${fields.day ? 'd' : ''}`
+    shapes.add(shape)
+  }
+  // ECMA-402 §11.2.3 requires these exact subsets for each locale/calendar.
+  // CLDR can supply them only with an era. Keep those records for era requests.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+  for (const skeleton of ['yM', 'yMd', 'yMEd']) {
+    if (shapes.has(skeleton)) continue
+    const eraPattern = dateFormats[`G${skeleton}`]
+    if (eraPattern === undefined) continue
+    const pattern = withoutEra(eraPattern)
+    if (pattern === eraPattern) continue
+    dateFormats[skeleton] = pattern
+    allFormats[skeleton] = pattern
+  }
+}
+
 export function getAllLocales(): string[] {
   return globSync('*/ca-gregorian.json', {
     cwd: resolve(
@@ -570,13 +614,19 @@ async function loadDatesFields(
       all[v] = v
       return all
     }, {})
-  const allFormats: Record<string, string> = {
-    // LDML Date Field Symbol Table: standalone B uses the requested name width.
-    // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L2235-L2240
+  // LDML Date Field Symbol Table: standalone B uses the requested name width.
+  // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+  const standaloneTimeFields = {
     B: 'B',
     BBBB: 'BBBB',
     BBBBB: 'BBBBB',
+    m: 'm',
+    s: 's',
+    S: 'S',
+    SS: 'SS',
+    SSS: 'SSS',
+  }
+  const allFormats: Record<string, string> = {
     ...parsedAvailableFormats.reduce(
       (all: Record<string, string>, [skeleton, pattern]) => {
         all[skeleton] = pattern
@@ -586,6 +636,9 @@ async function loadDatesFields(
     ),
     ...dateFormats,
     ...timeFormats,
+  }
+  for (const [field, pattern] of Object.entries(standaloneTimeFields)) {
+    allFormats[field] ??= pattern
   }
   for (const [
     skeleton,
@@ -617,6 +670,7 @@ async function loadDatesFields(
       timeFormats[skeleton] = pattern
     }
   }
+  addRequiredDatePatterns(dateFormats, allFormats)
   // Explicit minute/second widths can require appendItems rather than an
   // availableFormats entry whose skeleton has different widths.
   const appendZone = calendarFields.dateTimeFormats.appendItems.Timezone
@@ -727,8 +781,7 @@ async function loadDatesFields(
       const intervalDateKey = numericMonth
         ? dateSkeleton.replace(/[ML]+/g, 'M')
         : dateSkeleton
-      const intervalDate =
-        availableFormats[intervalDateKey as 'yMd'] || datePattern
+      const intervalDate = dateFormats[intervalDateKey] || datePattern
       let rawPattern
       if (entry.month === 'long') {
         rawPattern = entry.weekday ? full : long
@@ -840,9 +893,12 @@ async function loadDatesFields(
   }
   // Time-only intervals still need dates when the endpoints span calendar days.
   // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
-  const numericDate = availableFormats.yMd
+  const numericDate = dateFormats.yMd
   if (typeof numericDate === 'string' && typeof intervalFallback === 'string') {
-    for (const [skeleton, timePattern] of Object.entries(timeFormats)) {
+    for (const [skeleton, timePattern] of Object.entries({
+      ...standaloneTimeFields,
+      ...timeFormats,
+    })) {
       const target = parseDateTimeSkeleton(skeleton, timePattern)
       if (!isTimeFormatOnly(target)) continue
       const exact = intervalFormats[skeleton]

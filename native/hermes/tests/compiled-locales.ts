@@ -59,6 +59,9 @@ const checks: Record<string, [string, () => void]> = {
       })
       equal(newYork.resolvedOptions().timeZone, 'America/New_York')
       equal(newYork.format(0), '31 décembre 1969')
+      const calendars = api.supportedValuesOf('calendar')
+      equal(calendars.includes('gregory'), true)
+      equal(calendars.includes('japanese'), true)
     },
   ],
   durationformat: [

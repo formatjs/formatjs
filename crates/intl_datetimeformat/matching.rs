@@ -1,6 +1,7 @@
 use crate::{
     Error,
-    fields::{Components, Field, Value, ZoneWidth},
+    data::CalendarLocale,
+    fields::{Components, Field, Value, Width, ZoneWidth},
     pattern::{self, Format, RangePattern, Source},
 };
 use serde::{Deserialize, Serialize};
@@ -27,7 +28,17 @@ fn zone_penalty(requested: ZoneWidth, actual: ZoneWidth) -> i32 {
         _ => 120,
     }
 }
+// LDML matching skeletons allow adding precision to a seconds pattern.
+// https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
+fn with_requested_precision(options: Components, mut format: Components) -> Components {
+    if format.second.is_some() && format.fractional_second_digits.is_none() {
+        format.fractional_second_digits = options.fractional_second_digits;
+    }
+    format
+}
+
 pub fn basic_score(options: Components, format: Components) -> i32 {
+    let format = with_requested_precision(options, format);
     let mut score = 0;
     for field in Field::ALL {
         match (options.get(field), format.get(field)) {
@@ -52,6 +63,7 @@ pub fn basic_score(options: Components, format: Components) -> i32 {
     score
 }
 pub fn best_fit_score(options: Components, format: Components) -> i32 {
+    let format = with_requested_precision(options, format);
     let mut score = 0;
     if options.hour.is_some() {
         if options.hour12 == Some(true) && format.hour12 != Some(true) {
@@ -76,18 +88,46 @@ pub fn best_fit_score(options: Components, format: Components) -> i32 {
     }
     score
 }
-fn best<'a>(
+fn best<'a, I>(
     options: Components,
-    formats: &'a [Format],
+    formats: I,
     score: fn(Components, Components) -> i32,
-    prefer_month: bool,
-) -> Result<&'a Format, Error> {
+    best_fit: bool,
+) -> Result<&'a Format, Error>
+where
+    I: IntoIterator<Item = &'a Format>,
+    I::IntoIter: Clone,
+{
+    let formats = formats.into_iter();
+    // ECMA-402 §11.5.5 steps 5–6 select the layout for the resolved hour cycle.
+    // CLDR stores the 12-hour and 24-hour layouts as separate candidates.
+    // https://tc39.es/ecma402/#sec-partitiondatetimepattern
+    let hour_cycle_matches =
+        |fields: Components| (fields.hour12 == Some(true)) == (options.hour12 == Some(true));
+    let select_hour_cycle = options.hour.is_some()
+        && options.hour12.is_some()
+        && formats.clone().any(|format| {
+            format.pattern_fields.hour.is_some() && hour_cycle_matches(format.pattern_fields)
+        });
     let mut best = None;
     let mut best_score = i32::MIN;
     for format in formats {
-        let score = score(options, format.components);
+        if select_hour_cycle
+            && format.pattern_fields.hour.is_some()
+            && !hour_cycle_matches(format.pattern_fields)
+        {
+            continue;
+        }
+        // ECMA-402 §11.5.2 step 10.b.iii reads the format record's actual widths.
+        // https://tc39.es/ecma402/#sec-basicformatmatcher
+        let fields = if best_fit {
+            format.components
+        } else {
+            format.pattern_fields
+        };
+        let score = score(options, fields);
         if score > best_score
-            || (prefer_month
+            || (best_fit
                 && score == best_score
                 && options.month.is_some()
                 && format.components.month == options.month
@@ -99,14 +139,29 @@ fn best<'a>(
     }
     best.ok_or(Error::MissingFormats)
 }
+// ECMA-402 §11.5.2. https://tc39.es/ecma402/#sec-basicformatmatcher
 pub fn basic(options: Components, formats: &[Format]) -> Result<Format, Error> {
-    Ok(best(options, formats, basic_score, false)?.clone())
+    Ok(with_pattern_fields(best(
+        options,
+        formats,
+        basic_score,
+        false,
+    )?))
 }
+// ECMA-402 §11.5.3. https://tc39.es/ecma402/#sec-bestfitformatmatcher
 pub fn best_fit(options: Components, formats: &[Format]) -> Result<Format, Error> {
     let selected = best(options, formats, best_fit_score, true)?;
+    adjust_best_fit(options, selected)
+}
+fn with_pattern_fields(selected: &Format) -> Format {
     let mut result = selected.clone();
     result.components = selected.pattern_fields;
     result.fields_mask = selected.pattern_fields_mask;
+    result
+}
+
+fn adjust_best_fit(options: Components, selected: &Format) -> Result<Format, Error> {
+    let mut result = with_pattern_fields(selected);
     for field in Field::ALL {
         if matches!(field, Field::Minute | Field::Second) {
             continue;
@@ -169,6 +224,10 @@ impl<T> Styles<T> {
     }
 }
 #[derive(Debug, Clone, Serialize)]
+// ECMA-402 §§11.2.3.5–7: date/time style records and connector strings.
+// https://tc39.es/ecma402/#sec-datetimeformat-styles-record
+// https://tc39.es/ecma402/#sec-datetimeformat-style-record
+// https://tc39.es/ecma402/#sec-datetimeformat-connector-record
 pub struct StyleData {
     pub date: Styles<Format>,
     pub time: Styles<Format>,
@@ -176,6 +235,99 @@ pub struct StyleData {
     #[serde(rename = "rangeConnector")]
     pub range_connector: Styles<String>,
 }
+
+// LDML combines missing skeleton fields with a locale connector. A zone can
+// supply the time side without introducing clock fields.
+// https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
+// https://github.com/formatjs/formatjs/issues/8039
+fn date_with_time_zone(
+    options: Components,
+    formats: &[Format],
+    calendar: &CalendarLocale,
+    best_fit: bool,
+) -> Result<Option<Format>, Error> {
+    let Some(zone) = options.time_zone_name else {
+        return Ok(None);
+    };
+    let has_clock = |fields: Components| {
+        fields.hour.is_some()
+            || fields.minute.is_some()
+            || fields.second.is_some()
+            || fields.day_period.is_some()
+            || fields.fractional_second_digits.is_some()
+    };
+    if has_clock(options) {
+        return Ok(None);
+    }
+    let dates = formats
+        .iter()
+        .filter(|f| !has_clock(f.components) && f.components.time_zone_name.is_none());
+    let score = if best_fit {
+        best_fit_score
+    } else {
+        basic_score
+    };
+    let Ok(selected) = best(options, dates, score, best_fit) else {
+        return Ok(None);
+    };
+    let mut format = if best_fit {
+        adjust_best_fit(options, selected)?
+    } else {
+        with_pattern_fields(selected)
+    };
+    let style = match format.components.month {
+        Some(Width::Long) if format.components.weekday.is_some() => Style::Full,
+        Some(Width::Long) => Style::Long,
+        Some(Width::Short) => Style::Medium,
+        _ => Style::Short,
+    };
+    format.pattern = calendar
+        .styles()?
+        .connector
+        .get(style)
+        .replacen("{0}", "{timeZoneName}", 1)
+        .replacen("{1}", &format.pattern, 1);
+    format.pattern12 = format.pattern.clone();
+    format.components.time_zone_name = Some(zone);
+    format.fields_mask |= Field::TimeZoneName.bit();
+    // The synthesized pattern uses the widths already selected for the date.
+    // https://tc39.es/ecma402/#sec-bestfitformatmatcher
+    format.pattern_fields = format.components;
+    format.pattern_fields_mask = format.fields_mask;
+    // Date-only interval records do not include the zone.
+    format.range_patterns.clear();
+    format.range_patterns12.clear();
+    Ok(Some(format))
+}
+
+pub(crate) fn match_components(
+    options: Components,
+    formats: &[Format],
+    calendar: &CalendarLocale,
+    best_fit: bool,
+) -> Result<Format, Error> {
+    let Some(supplemental) = date_with_time_zone(options, formats, calendar, best_fit)? else {
+        return if best_fit {
+            self::best_fit(options, formats)
+        } else {
+            basic(options, formats)
+        };
+    };
+    // ECMA-402 §11.5.2 step 10.c keeps the first format on a tie.
+    // https://tc39.es/ecma402/#sec-basicformatmatcher
+    let candidates = formats.iter().chain(std::iter::once(&supplemental));
+    if best_fit {
+        adjust_best_fit(options, best(options, candidates, best_fit_score, true)?)
+    } else {
+        Ok(with_pattern_fields(best(
+            options,
+            candidates,
+            basic_score,
+            false,
+        )?))
+    }
+}
+// ECMA-402 §11.5.1. https://tc39.es/ecma402/#sec-date-time-style-format
 pub fn style(
     date: Option<Style>,
     time: Option<Style>,
@@ -236,6 +388,10 @@ pub fn style(
                     range_date.pattern = format.pattern.clone();
                 }
             }
+            // ECMA-402 §§11.2.3.8–10: combine date and time style intervals and their fields.
+            // https://tc39.es/ecma402/#sec-datetimeformat-date-range-record
+            // https://tc39.es/ecma402/#sec-datetimeformat-time-range-record
+            // https://tc39.es/ecma402/#sec-datetimeformat-style-range-record
             let combine = |ranges: std::collections::BTreeMap<String, RangePattern>,
                            time_pattern: &str| {
                 ranges

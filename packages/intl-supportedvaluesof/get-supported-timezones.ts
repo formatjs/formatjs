@@ -1,29 +1,22 @@
-import {createMemoizedDateTimeFormat} from '#packages/intl-supportedvaluesof/memoize.js'
+import {supportedEntries} from '#packages/intl-supportedvaluesof/supported-entries.js'
+import {getDateTimeFormatProbe} from '#packages/intl-supportedvaluesof/memoize.js'
 import type {Timezone} from '@formatjs_generated/cldr.supported-values/timezones.js'
 import {timezones} from '@formatjs_generated/cldr.supported-values/timezones.js'
 
-/**
- * Implementation: Tests if a timezone is supported by attempting to create
- * a DateTimeFormat with that timezone and verifying it was accepted.
- *
- * CLDR Data: Candidate values come from IANA Time Zone Database
- */
-function isSupportedTimeZone(timeZone: Timezone): boolean {
-  try {
-    // Always use 'en' for testing
-    createMemoizedDateTimeFormat('en', {timeZone})
-    return true
-  } catch {}
-
-  return false
-}
-
-/**
- * ECMA-402 Spec: Returns supported timezone identifiers
- * ECMA-402 Spec: Results must be sorted lexicographically
- *
- * Implementation: Filters CLDR list against actual runtime support
- */
+// ECMA-402 §8.3.2 step 6 returns the available primary time-zone identifiers.
+// https://tc39.es/ecma402/#sec-availableprimarytimezoneidentifiers
 export function getSupportedTimeZones(): Timezone[] {
-  return timezones.filter(isSupportedTimeZone).sort()
+  const probe = getDateTimeFormatProbe()
+  if (!probe) return []
+  if (probe.hasTimeZone) return supportedEntries(timezones, probe.hasTimeZone)
+  const {create} = probe
+  return supportedEntries(timezones, timeZone => {
+    try {
+      const options = {__proto__: null, timeZone}
+      create('en', options)
+      return true
+    } catch {
+      return false
+    }
+  })
 }

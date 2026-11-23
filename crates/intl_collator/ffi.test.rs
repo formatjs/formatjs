@@ -33,7 +33,7 @@ fn owned_model_retains_options_and_exact_utf16_after_inputs_drop() {
             ),
             (
                 json!({"method":"compare","left":[0xd800],"right":[0xfffd]}),
-                json!(1),
+                json!(-1),
             ),
             (
                 json!({"method":"compare","left":[120,50],"right":[120,49,48]}),

@@ -7,6 +7,7 @@ import {getCompactPattern} from '#packages/ecma402-abstract/NumberFormat/compact
  * number of the given magnitude (power of ten of the most significant digit) according to the
  * locale and the desired notation (scientific, engineering, or compact).
  */
+// ECMA-402 §16.5.13 https://tc39.es/ecma402/#sec-computeexponentformagnitude
 export function ComputeExponentForMagnitude(
   internalSlots: NumberFormatInternal,
   magnitude: Decimal

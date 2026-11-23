@@ -5,7 +5,9 @@ const apply = Reflect.apply
 const stringIndexOf = String.prototype.indexOf
 const substring = String.prototype.substring
 
-/** ECMA-402 §9.2.15. Input is a private Pattern String (§6.10). */
+// ECMA-402 §9.2.15 splits a private Pattern String into literals and fields.
+// https://tc39.es/ecma402/#sec-partitionpattern
+// https://tc39.es/ecma402/#sec-pattern-string-types
 export function PartitionPattern<T extends string>(
   pattern: string
 ): Array<{type: T; value: string | undefined}> {

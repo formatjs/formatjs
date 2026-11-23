@@ -14,7 +14,7 @@ import {
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {TABLE_2} from '#packages/intl-durationformat/constants.js'
-import {DurationFormat} from '#packages/intl-durationformat/core.js'
+import type {DurationFormat} from '#packages/intl-durationformat/core.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
 import {
   type DurationFormatPart,
@@ -42,8 +42,7 @@ const formatterProviders = new WeakMap<
 const getFormatterProviders = formatterProviders.get.bind(formatterProviders)
 const setFormatterProviders = formatterProviders.set.bind(formatterProviders)
 
-// Temporal comparison §§15.10.1–15.10.2 step4: retain supplied formatter providers.
-// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+// Capture runtime NumberFormat and ListFormat providers for this instance.
 export function initializeDurationFormatProviders(df: DurationFormat): void {
   const NumberFormat = getNumberFormatProvider()
   const ListFormat = getListFormatProvider()
@@ -55,8 +54,8 @@ export function initializeDurationFormatProviders(df: DurationFormat): void {
   })
 }
 
-// Temporal amendment §15.9.8: partition normalized Temporal.Duration fields.
-// https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern
+// ECMA-402 §13.5.15: partition the validated duration into groups of parts.
+// https://tc39.es/ecma402/#sec-partitiondurationformatpattern
 export function PartitionDurationFormatPattern(
   df: DurationFormat,
   duration: DurationRecord
@@ -70,15 +69,6 @@ export function PartitionDurationFormatPattern(
   const negative = arraySome(TABLE_2, row => duration[row.valueField] < 0)
   const internalSlots = getInternalSlots(df)
   const providers = getFormatterProviders(df)!
-  let dataLocale = internalSlots.dataLocale
-  const dataLocaleData = DurationFormat.localeData[dataLocale]
-  if (!dataLocaleData) {
-    throw new TypeError('Invalid locale')
-  }
-  const numberingSystem = internalSlots.numberingSystem
-  const separator =
-    dataLocaleData.digitalFormat[numberingSystem] ??
-    dataLocaleData.digitalFormat.default
 
   for (let i = 0; i < TABLE_2.length && !done; i++) {
     const row = TABLE_2[i]
@@ -90,8 +80,6 @@ export function PartitionDurationFormatPattern(
     // BigInt preserves the exact Number value beyond the safe-integer range;
     // Number.toString() may instead produce a shorter, rounded decimal.
     // https://tc39.es/ecma402/#sec-tointegerifintegral
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L475
-    // Temporal comparison §§15.10.1–2 step4: private integer conversion keeps runtime intrinsic.
     let value = new BigDecimal(bigIntFrom(duration[row.valueField]))
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
@@ -111,9 +99,11 @@ export function PartitionDurationFormatPattern(
       } else {
         nextStyle = internalSlots.nanoseconds
       }
-      if (nextStyle === 'numeric' || nextStyle === 'fractional') {
-        // Temporal amendment §15.9.6: fold fractional duration fields exactly.
-        // https://tc39.es/proposal-temporal/#sec-computefractionaldigits
+      // ECMA-402 §13.5.8 checks the next smaller unit.
+      // https://tc39.es/ecma402/#sec-nextunitfractional
+      if (nextStyle === 'fractional') {
+        // ECMA-402 §13.5.7: fold fractional fields at their exact scale.
+        // https://tc39.es/ecma402/#sec-computefractionaldigits
         if (unit === 'seconds') {
           value = value
             .plus(
@@ -164,8 +154,6 @@ export function PartitionDurationFormatPattern(
     // ECMA-402 §13.5.12, step 15.a: keep zero minutes between displayed
     // numeric hours and seconds, even when minutesDisplay is auto.
     // https://tc39.es/ecma402/#sec-formatnumericunits
-    // Temporal amendment §15.9.7: format the numeric sequence from duration fields.
-    // https://tc39.es/proposal-temporal/#sec-formatnumericunits
     const minutesBetweenHoursAndSeconds =
       unit === 'minutes' &&
       separated &&
@@ -182,7 +170,6 @@ export function PartitionDurationFormatPattern(
       // ECMA-402 §13.5.15 step 4.h.iii.2 and §13.5.12 steps 16–18:
       // display the duration sign once, including on a leading zero unit.
       // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L987-L991
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L868-L882
       if (signDisplayed) {
         if (value.isZero() && negative) value = new BigDecimal('-0')
@@ -193,9 +180,11 @@ export function PartitionDurationFormatPattern(
       nfOpts.numberingSystem = internalSlots.numberingSystem
       // ECMA-402 §13.5.9 step 9 and §13.5.10–11 step 10 disable grouping.
       // https://tc39.es/ecma402/#sec-formatnumerichours
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L737
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L811
       if (style === 'numeric' || style === '2-digit') nfOpts.useGrouping = false
+      // Hours, minutes and seconds share sign, grouping and digit-width options.
+      // ECMA-402 §13.5.10 https://tc39.es/ecma402/#sec-formatnumericminutes
+      // ECMA-402 §13.5.11 https://tc39.es/ecma402/#sec-formatnumericseconds
       if (style === '2-digit') {
         nfOpts.minimumIntegerDigits = 2
       }
@@ -219,7 +208,13 @@ export function PartitionDurationFormatPattern(
         list = result[result.length - 1]
         setDataProperty(list, `${list.length}`, {
           type: 'literal',
-          value: separator,
+          value:
+            unit === 'minutes'
+              ? internalSlots.hourMinuteSeparator
+              : internalSlots.minuteSecondSeparator,
+          // ECMA-402 §§13.5.10–11 give separators an empty internal unit.
+          // https://tc39.es/ecma402/#sec-formatnumericminutes
+          unit: undefined,
         })
       }
       // Pass the BigDecimal straight through. NumberFormat (V3) parses it
@@ -248,6 +243,8 @@ export function PartitionDurationFormatPattern(
       separated = false
     }
   }
+  // ECMA-402 §13.5.14: list-format the group strings, then restore their parts.
+  // https://tc39.es/ecma402/#sec-listformatparts
   const lfOpts = {__proto__: null} as unknown as Intl.ListFormatOptions
   lfOpts.type = 'unit'
   let listStyle = internalSlots.style
@@ -298,6 +295,9 @@ export function PartitionDurationFormatPattern(
       setDataProperty(flattened, `${flattened.length}`, {
         type: 'literal',
         value,
+        // ECMA-402 §13.5.14 step 13.b.ii gives list literals an empty unit.
+        // https://tc39.es/ecma402/#sec-listformatparts
+        unit: undefined,
       })
     }
   }

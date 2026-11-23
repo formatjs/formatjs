@@ -95,7 +95,17 @@ describe('Intl.Collator', () => {
     expect(new Collator(['tlh', 'id', 'en']).resolvedOptions().locale).toBe(
       'id'
     )
-    expect(Collator.supportedLocalesOf(['tlh', 'id'])).toEqual(['id'])
+  })
+
+  it('applies CLDR language matching only with best fit', () => {
+    const requested = ['tlh', 'id']
+    // ECMA-402 §9.2.9 step 4.c preserves matching requests.
+    // https://tc39.es/ecma402/#sec-filterlocales
+    // CLDR languageInfo assigns a one-way match from tlh to en.
+    expect(Collator.supportedLocalesOf(requested)).toEqual(requested)
+    expect(
+      Collator.supportedLocalesOf(requested, {localeMatcher: 'lookup'})
+    ).toEqual(['id'])
   })
 
   it('supports locale filtering', () => {
@@ -161,6 +171,35 @@ it('validates collation syntax before resolving support', () => {
     new Collator('en', {collation: 'foobar'}).resolvedOptions().collation
   ).toBe('default')
 })
+
+it('selects the locale data before reading matcher options', () => {
+  const data = Collator.localeData
+  const expected = new Collator('en').resolvedOptions().ignorePunctuation
+  let reads = 0
+  try {
+    const formatter = new Collator('en', {
+      get localeMatcher() {
+        reads++
+        if (data) {
+          Collator.localeData = {
+            ...data,
+            en: {...data.en!, ignorePunctuation: !expected},
+          }
+        }
+        return 'lookup' as const
+      },
+    })
+    expect(formatter.resolvedOptions().ignorePunctuation).toBe(expected)
+    expect(reads).toBe(1)
+    if (data)
+      expect(new Collator('en').resolvedOptions().ignorePunctuation).toBe(
+        !expected
+      )
+  } finally {
+    if (data) Collator.localeData = data
+  }
+})
+
 it('compare uses ToString and preserves coercion order', () => {
   const compare = new Collator('en').compare
   expect(() => compare(Symbol('a') as any, 'a')).toThrow(TypeError)
@@ -177,6 +216,64 @@ it('compare uses ToString and preserves coercion order', () => {
 })
 
 describe('built-in descriptors', () => {
+  it('ignores the receiver when called as a function', () => {
+    const existing = new Collator('en', {numeric: true})
+    const result = Collator.call(existing, 'en')
+    expect(result).not.toBe(existing)
+    expect(result.resolvedOptions().numeric).toBe(false)
+    expect(existing.resolvedOptions().numeric).toBe(true)
+  })
+
+  it('uses the new target prototype and checks slots independently of it', () => {
+    const prototype = Object.create(null)
+    let reads = 0
+    const newTarget = new Proxy(function () {}, {
+      get(target, key, receiver) {
+        if (key === 'prototype') {
+          reads++
+          return prototype
+        }
+        return Reflect.get(target, key, receiver)
+      },
+    })
+    const instance = Reflect.construct(Collator, ['en'], newTarget)
+    expect(reads).toBe(1)
+    expect(Object.getPrototypeOf(instance)).toBe(prototype)
+    const getter = Object.getOwnPropertyDescriptor(
+      Collator.prototype,
+      'compare'
+    )!.get!
+    expect(getter.call(instance)('a', 'b')).toBeLessThan(0)
+    expect(Collator.prototype.resolvedOptions.call(instance).locale).toBe('en')
+    const impostor = Object.create(Collator.prototype)
+    expect(() => getter.call(impostor)).toThrow(TypeError)
+    expect(() => Collator.prototype.resolvedOptions.call(impostor)).toThrow(
+      TypeError
+    )
+  })
+
+  it('creates resolved option properties without invoking inherited setters', () => {
+    const instance = new Collator('en', {numeric: true})
+    const previous = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'numeric'
+    )
+    let actual: ReturnType<typeof instance.resolvedOptions>
+    try {
+      Object.defineProperty(Object.prototype, 'numeric', {
+        configurable: true,
+        set() {
+          throw new Error('called inherited numeric setter')
+        },
+      })
+      actual = instance.resolvedOptions()
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, 'numeric', previous)
+      else Reflect.deleteProperty(Object.prototype, 'numeric')
+    }
+    expect(Object.getOwnPropertyDescriptor(actual, 'numeric')?.value).toBe(true)
+  })
+
   it.each([
     ['supportedLocalesOf', Collator, 1],
     ['resolvedOptions', Collator.prototype, 0],
@@ -212,6 +309,70 @@ describe('built-in descriptors', () => {
 })
 
 describe('consistent comparison keys', () => {
+  it('uses intrinsic case mapping for comparison and case-first keys', () => {
+    const turkish = new Collator('tr', {sensitivity: 'base'}).compare
+    const upperFirst = new Collator('en', {caseFirst: 'upper'}).compare
+    const {toLocaleLowerCase, toLocaleUpperCase} = String.prototype
+    let base: number
+    let upper: number
+    try {
+      String.prototype.toLocaleLowerCase = String.prototype.toLocaleUpperCase =
+        () => {
+          throw new Error('called public case mapping')
+        }
+      base = turkish('I', 'ı')
+      upper = upperFirst('A', 'a')
+    } finally {
+      String.prototype.toLocaleLowerCase = toLocaleLowerCase
+      String.prototype.toLocaleUpperCase = toLocaleUpperCase
+    }
+    expect(base).toBe(0)
+    expect(upper).toBeLessThan(0)
+  })
+
+  it('compares a cold tailoring without array species or inherited writes', () => {
+    const compare = new Collator('is', {numeric: true}).compare
+    const species = Object.getOwnPropertyDescriptor(Array, Symbol.species)!
+    const item = Object.getOwnPropertyDescriptor(Array.prototype, '0')
+    let actual: number
+    try {
+      Object.defineProperty(Array, Symbol.species, {
+        configurable: true,
+        get() {
+          throw new Error('read public array species')
+        },
+      })
+      Object.defineProperty(Array.prototype, '0', {
+        configurable: true,
+        set() {
+          throw new Error('called inherited array setter')
+        },
+      })
+      actual = compare('þ2', 'þ10')
+    } finally {
+      if (item) Object.defineProperty(Array.prototype, '0', item)
+      else Reflect.deleteProperty(Array.prototype, '0')
+      if (species) Object.defineProperty(Array, Symbol.species, species)
+      else Reflect.deleteProperty(Array, Symbol.species)
+    }
+    expect(actual).toBeLessThan(0)
+  })
+
+  it('compares canonical equivalents using intrinsic normalization', () => {
+    const collator = new Collator('en')
+    const normalize = String.prototype.normalize
+    let actual: number
+    try {
+      String.prototype.normalize = () => {
+        throw new Error('called public normalize')
+      }
+      actual = collator.compare('Å', 'A\u030a')
+    } finally {
+      String.prototype.normalize = normalize
+    }
+    expect(actual).toBe(0)
+  })
+
   it('keeps unmatched numeric runs ordered', () => {
     const collator = new Collator('en', {numeric: true})
     expect(collator.compare('x', 'x1')).toBeLessThan(0)
@@ -229,7 +390,7 @@ describe('consistent comparison keys', () => {
         ).toBe(0)
       }
   })
-  it('uses canonical-equivalent caseFirst keys', () => {
+  it('orders canonically equivalent strings consistently with caseFirst', () => {
     for (const caseFirst of ['upper', 'lower'] as const) {
       const collator = new Collator('en', {caseFirst})
       expect(collator.compare('Å', 'A\u030a')).toBe(0)
@@ -378,3 +539,22 @@ it('keeps primary locale tailorings when sensitivity ignores accents', () => {
   ).toBe(0)
   expect(new Collator('en', {sensitivity: 'case'}).compare('a', 'á')).toBe(0)
 })
+
+it.each(['getDefaultLocale', 'relevantExtensionKeys'] as const)(
+  'keeps locale state private from %s',
+  property => {
+    const original = Object.getOwnPropertyDescriptor(Collator, property)
+    try {
+      Object.defineProperty(Collator, property, {
+        configurable: true,
+        get() {
+          throw new Error(`Read public ${property}`)
+        },
+      })
+      expect(new Collator('en-u-kn').resolvedOptions().numeric).toBe(true)
+    } finally {
+      if (original) Object.defineProperty(Collator, property, original)
+      else Reflect.deleteProperty(Collator, property)
+    }
+  }
+)

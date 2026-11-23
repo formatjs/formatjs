@@ -5,6 +5,8 @@ import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFo
 
 // Temporal amendment §15.6.9: format two prepared values as a range.
 // https://tc39.es/proposal-temporal/#sec-formatdatetimerange
+// ECMA-402 §11.5.9 concatenates the partition values.
+// https://tc39.es/ecma402/#sec-formatdatetimerange
 export function FormatDateTimeRange(
   dtf: Intl.DateTimeFormat,
   x: DateTimeFormattable,

@@ -61,9 +61,8 @@ impl FromStr for Key {
     type Err = InvalidKey;
 
     fn from_str(value: &str) -> Result<Self, Self::Err> {
-        // Intl.supportedValuesOf steps 2–8: dispatch exact, case-sensitive keys;
-        // the JS boundary performs ToString (step 1) before entering Rust.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103-L122
+        // ECMA-402 §8.3.2 steps 2–8 dispatch exact keys after JS coerces them.
+        // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
         Self::ALL
             .into_iter()
             .find(|key| key.as_str() == value)
@@ -75,6 +74,7 @@ impl FromStr for Key {
 /// formatting call is represented by `None`, not a fabricated fallback value.
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct Observation {
+    /// Resolved identifier, including a currency confirmed by its currency part.
     pub resolved: Option<String>,
     pub formatted: Option<String>,
 }
@@ -85,7 +85,7 @@ pub struct Candidate {
     pub locale: &'static str,
 }
 
-/// CLDR candidates to probe. Collations include their non-English locales.
+/// CLDR candidates and the locales where they may be supported.
 pub fn candidates(key: Key) -> Vec<Candidate> {
     let values = match key {
         Key::Calendar => CALENDARS,
@@ -98,14 +98,16 @@ pub fn candidates(key: Key) -> Vec<Candidate> {
     values
         .iter()
         .flat_map(|value| {
-            let locales = if key == Key::Collation {
-                COLLATION_LOCALES
-                    .iter()
-                    .find(|(collation, _)| collation == value)
-                    .map_or(&["en"][..], |(_, locales)| *locales)
-            } else {
-                &["en"][..]
+            let candidate_locales = match key {
+                Key::Collation => COLLATION_LOCALES,
+                Key::Currency => CURRENCY_LOCALES,
+                Key::NumberingSystem => NUMBERING_SYSTEM_LOCALES,
+                _ => &[],
             };
+            let locales = candidate_locales
+                .iter()
+                .find(|(identifier, _)| identifier == value)
+                .map_or(&["en"][..], |(_, locales)| *locales);
             let values = if key == Key::Currency {
                 expand_currency(value)
             } else {
@@ -129,11 +131,26 @@ pub fn supported_values_of(
     mut probe: impl FnMut(Key, &str, &str) -> Option<Observation>,
 ) -> Result<Vec<String>, InvalidKey> {
     let key = Key::from_str(key)?;
-    // Available* operations return sorted unique lists. All candidate strings
-    // are ASCII, so Rust's byte order equals lexicographic UTF-16 code unit order.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L143-L149
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L481-L534
+    // ECMA-402 §6.6.3 lists all Table 2 units independently of the formatter.
+    // https://tc39.es/ecma402/#sec-availablecanonicalunits
+    if key == Key::Unit {
+        let mut units: Vec<_> = UNITS.iter().map(|unit| (*unit).to_owned()).collect();
+        units.sort_unstable();
+        return Ok(units);
+    }
+    // ECMA-402 §8.3.2 steps 2–8 dispatch to sorted, unique lists. ASCII byte
+    // order matches UTF-16 code unit order for these candidates.
+    // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
     let mut supported = BTreeSet::new();
+    // ECMA-402 §6.7.1 requires every Table 30 system.
+    // https://tc39.es/ecma402/#sec-availablecanonicalnumberingsystems
+    if key == Key::NumberingSystem {
+        supported.extend(
+            REQUIRED_NUMBERING_SYSTEMS
+                .iter()
+                .map(|system| (*system).to_owned()),
+        );
+    }
     for candidate in candidates(key) {
         if supported.contains(&candidate.value) {
             continue;
@@ -144,39 +161,30 @@ pub fn supported_values_of(
             supported.insert(candidate.value);
         }
     }
-    // Intl.supportedValuesOf step 9: CreateArrayFromList is performed by the JS
-    // boundary. Return an owned list so callers never share mutable results.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L123
+    // ECMA-402 §8.3.2 step 9: the JS boundary turns the owned list into an array.
+    // https://tc39.es/ecma262/#sec-createarrayfromlist
     Ok(supported.into_iter().collect())
 }
 
 fn accepted(key: Key, value: &str, observation: &Observation) -> bool {
     match key {
-        // Steps 2.b.i–ii.1: a calendar alias resolves to its canonical name, so it
-        // does not match its candidate spelling and cannot enter the result.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L104-L109
-        Key::Calendar | Key::Collation | Key::Unit => {
-            observation.resolved.as_deref() == Some(value)
-        }
-        // Candidates are already primary IDs; older formatters may resolve aliases.
-        Key::TimeZone => true,
-        // Step 4 / AvailableCanonicalCurrencies: match the TS runtime's currency
-        // name probe, excluding codes that only fall back to their own spelling.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L112-L113
-        Key::Currency => observation
-            .formatted
-            .as_deref()
-            .is_some_and(|text| !text.starts_with(value) && !text.ends_with(value)),
-        // Step 5 / AvailableCanonicalNumberingSystems: latn is accepted by its
-        // resolved option; other systems must change the formatted digits.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L114-L115
-        Key::NumberingSystem => {
-            (value == "latn" && observation.resolved.as_deref() == Some(value))
-                || observation
-                    .formatted
-                    .as_deref()
-                    .is_some_and(|text| text != "123")
-        }
+        // Steps 2.b and 3 select canonical calendars and collations.
+        // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+        // https://tc39.es/ecma402/#sec-availablecanonicalcollations
+        Key::Calendar | Key::Collation => observation.resolved.as_deref() == Some(value),
+        // Step 6 / §6.5.3: the generator supplies primary IDs. Probe availability.
+        // https://tc39.es/ecma402/#sec-availableprimarytimezoneidentifiers
+        Key::TimeZone | Key::Unit => true,
+        // Step 4 / AvailableCanonicalCurrencies: prefer the currency part probe.
+        // Hosts with only formatted text use the legacy fallback check.
+        // https://tc39.es/ecma402/#sec-availablecanonicalcurrencies
+        Key::Currency => observation.formatted.as_deref().map_or_else(
+            || observation.resolved.as_deref() == Some(value),
+            |text| !text.starts_with(value) && !text.ends_with(value),
+        ),
+        // ECMA-402 §8.3.2 step 5 and §6.7.1: the formatter must select the requested system.
+        // https://tc39.es/ecma402/#sec-availablecanonicalnumberingsystems
+        Key::NumberingSystem => observation.resolved.as_deref() == Some(value),
     }
 }
 

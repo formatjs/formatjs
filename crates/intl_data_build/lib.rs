@@ -84,6 +84,12 @@ fn compile(value: &mut Value) -> Result<()> {
 }
 
 pub fn generate<T: DeserializeOwned>() -> Result<()> {
+    generate_with_keys::<T>(None)
+}
+
+pub fn generate_with_keys<T: DeserializeOwned>(
+    keys_for: Option<fn(&T) -> Vec<&str>>,
+) -> Result<()> {
     let mut args: Vec<String> = std::env::args().skip(1).collect();
     if args.len() == 1 && args[0].starts_with('@') {
         args = fs::read_to_string(&args[0][1..])?
@@ -199,7 +205,7 @@ pub fn generate<T: DeserializeOwned>() -> Result<()> {
             }
         }
         let text = serde_json::to_string(&json)?;
-        let _: T = serde_json::from_str(&text).map_err(|e| format!("{locale}: {e}"))?;
+        let data: T = serde_json::from_str(&text).map_err(|e| format!("{locale}: {e}"))?;
         let mut value = Value::serialized(&json)?;
         compile(&mut value)?;
         let mut bytes = Vec::new();
@@ -210,12 +216,21 @@ pub fn generate<T: DeserializeOwned>() -> Result<()> {
         fs::write(packs.join(&filename), bytes)?;
         let relative = Path::new(packs.file_name().ok_or("Missing pack directory")?).join(filename);
         source.push_str(&format!("static LOCALE_{index}: formatjs_intl_data::Compiled<{data_type}> = formatjs_intl_data::Compiled::new(include_bytes!({:?}));\n", relative.to_str().ok_or("Invalid path")?));
+        if let Some(keys_for) = keys_for {
+            source.push_str(&format!(
+                "static KEYS_{index}: &[&str] = &{:?};\n",
+                keys_for(&data)
+            ));
+        }
     }
     source.push_str("pub fn initialize(registry: &mut crate::registry::Registry) {\n");
     for (index, locale) in order.iter().enumerate() {
         let aliases = &available[locale].1;
+        let keys = keys_for
+            .map(|_| format!(", KEYS_{index}"))
+            .unwrap_or_default();
         source.push_str(&format!(
-            "registry.add_compiled({locale:?}, &{aliases:?}, &LOCALE_{index});\n"
+            "registry.add_compiled({locale:?}, &{aliases:?}, &LOCALE_{index}{keys});\n"
         ));
     }
     source.push_str("}\n");

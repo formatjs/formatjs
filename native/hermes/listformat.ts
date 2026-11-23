@@ -3,7 +3,8 @@
   nativeLoad: (pack: string) => number
   nativeInfo: () => string | number
   nativeMatch: (request: string) => string | number
-  nativeCreate: (locale: string, options: string) => object | number
+  nativeCapture: (request: string) => object | number
+  nativeCreate: (snapshot: object, options: string) => object | number
   nativeCreateDefault: (requested: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeFormat: (handle: object, values: string[]) => string
@@ -16,6 +17,7 @@
     nativeLoad,
     nativeInfo,
     nativeMatch,
+    nativeCapture,
     nativeCreate,
     nativeCreateDefault,
     nativeQuery,
@@ -37,6 +39,8 @@
   const slice = Function.prototype.call.bind(String.prototype.slice)
   const BadReceiver = TypeError
   const BadOption = RangeError
+  // ECMA-402 §14.4: the native handle owns the instance's locale and patterns.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-listformat-instances
   const slots = new WeakMap<object, object>()
   const getSlot = WeakMap.prototype.get.bind(slots) as (
     receiver: unknown
@@ -97,21 +101,19 @@
     if (!handle) throw new BadReceiver('Incompatible Intl.ListFormat receiver')
     return handle
   }
-  function match(
+  function matchRequest(
     requested: string[],
     lookup: boolean,
     supported: boolean
-  ): any {
-    return decoded(
-      nativeMatch(
-        '{"requested":' +
-          strings(requested) +
-          ',"lookup":' +
-          lookup +
-          ',"supported":' +
-          supported +
-          '}'
-      )
+  ): string {
+    return (
+      '{"requested":' +
+      strings(requested) +
+      ',"lookup":' +
+      lookup +
+      ',"supported":' +
+      supported +
+      '}'
     )
   }
   function strings(requested: string[]): string {
@@ -145,7 +147,8 @@
     small: (handle: object, ...values: string[]) => string,
     large: (handle: object, values: string[]) => string
   ): string {
-    // Validate during iteration so non-string values close the iterator.
+    // ECMA-402 §14.5.5 steps 1–4: close the iterator on a non-string value.
+    // https://tc39.es/ecma402/#sec-createstringlistfromiterable
     if (input === undefined) return small(handle)
     let first = '',
       second = '',
@@ -227,9 +230,9 @@
         return large(handle, values!)
     }
   }
-  // Constructor 1–6: allocate once before ResolveOptions. A derived constructor
+  // ECMA-402 §14.1.1 steps 1–6: allocate before ResolveOptions. A derived constructor
   // avoids Hermes allocating from newTarget.prototype before our explicit Get.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L21-L26
+  // https://tc39.es/ecma402/#sec-Intl.ListFormat
   class ListFormat extends null {
     constructor(
       locales: unknown = undefined,
@@ -245,13 +248,16 @@
         return initialize(receiver, nativeCreateDefault(strings(requested)))
       const opts = constructorOptions(optionsInput)
       const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
-      const locale = match(requested, matcher === 'lookup', false) as string
+      const snapshot = nativeCapture(
+        matchRequest(requested, matcher === 'lookup', false)
+      )
+      if (typeof snapshot === 'number') return decoded(snapshot)
       // Steps 7–14: get/validate type before reading style; Rust selects templates.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L27-L34
+      // https://tc39.es/ecma402/#sec-Intl.ListFormat
       const type = option(opts, 'type', types, 'conjunction')
       const style = option(opts, 'style', styles, 'long')
       const handle = nativeCreate(
-        locale,
+        snapshot,
         '{"type":"' + type + '","style":"' + style + '"}'
       )
       return initialize(receiver, handle)
@@ -260,8 +266,8 @@
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
-      // CanonicalizeLocaleList precedes FilterLocales and its option accesses.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L61-L63
+      // ECMA-402 §14.2.2 steps 2–3: canonicalize before reading options.
+      // https://tc39.es/ecma402/#sec-Intl.ListFormat.supportedLocalesOf
       const requested = canonicalize(locales) as string[]
       const matcher = option(
         options(optionsInput),
@@ -269,7 +275,9 @@
         matchers,
         'best fit'
       )
-      return match(requested, matcher === 'lookup', true)
+      return decoded(
+        nativeMatch(matchRequest(requested, matcher === 'lookup', true))
+      )
     }
     static __addLocaleData(...packs: unknown[]): void {
       for (let index = 0; index < packs.length; index++) {
@@ -283,18 +291,21 @@
       return decoded(nativeInfo()).default || ''
     }
   }
+  // ECMA-402 §14.3.1: class syntax supplies the prototype's constructor.
+  // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.constructor
   const prototype = ListFormat.prototype
   setPrototypeOf(prototype, objectPrototype)
   const members = {
     format(this: unknown, list: unknown): string {
-      // Brand check precedes iteration; Rust selects the formatting patterns.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L162-L166
+      // ECMA-402 §14.3.3 steps 2–4: check the receiver before iteration.
+      // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.format
       const handle = slot(this)
       return callList(list, handle, nativeFormatSmall, nativeFormat)
     },
     formatToParts(this: unknown, list: unknown): object[] {
-      // Fresh ordinary array/records; Rust preserves element/literal boundaries.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L335-L344
+      // ECMA-402 §14.3.4 delegates to §14.5.4 for fresh arrays and part objects.
+      // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.formatToParts
+      // https://tc39.es/ecma402/#sec-formatlisttoparts
       const handle = slot(this)
       const packed = callList(list, handle, nativePartsSmall, nativeParts)
       const parts: object[] = []
@@ -318,9 +329,8 @@
       return parts
     },
     resolvedOptions(this: unknown): object {
-      // Fresh ordinary result, table property order; null descriptors avoid
-      // inherited setters and poisoned descriptor getters.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L120-L151
+      // ECMA-402 §14.3.2 steps 2–5: require the slot and define own properties.
+      // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.resolvedoptions
       const values = decoded(
         nativeQuery(slot(this), '{"method":"resolvedOptions"}')
       )
@@ -338,8 +348,11 @@
   ]
   for (let index = 0; index < names.length; index++)
     property(prototype, names[index], members[names[index]])
+  // ECMA-402 §14.3.5 https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype-toStringTag
   property(prototype, Symbol.toStringTag, 'Intl.ListFormat', false, false)
   property(ListFormat, 'polyfilled', true)
+  // ECMA-402 §14.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype
   const descriptor = create(null)
   descriptor.writable = false
   define(ListFormat, 'prototype', descriptor)

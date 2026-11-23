@@ -7,6 +7,8 @@ import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFo
 
 // Temporal amendment §15.6.10: project parts from the prepared range.
 // https://tc39.es/proposal-temporal/#sec-formatdatetimerangetoparts
+// ECMA-402 §11.5.10 projects the partition with each part’s source.
+// https://tc39.es/ecma402/#sec-formatdatetimerangetoparts
 export function FormatDateTimeRangeToParts(
   dtf: Intl.DateTimeFormat,
   x: DateTimeFormattable,

@@ -82,6 +82,14 @@ describe('CanonicalizeTimeZoneName', () => {
     expect(CanonicalizeTimeZoneName('+01:30:45.000', testData)).toBe(
       '+01:30:45'
     )
+    expect(CanonicalizeTimeZoneName('-013045,100', testData)).toBe(
+      '-01:30:45.1'
+    )
+    expect(CanonicalizeTimeZoneName('+000000,000000001', testData)).toBe(
+      '+00:00:00.000000001'
+    )
+    expect(CanonicalizeTimeZoneName('+24:00', testData)).toBeUndefined()
+    expect(CanonicalizeTimeZoneName('+01:3045', testData)).toBeUndefined()
   })
 
   test('Edge cases', () => {

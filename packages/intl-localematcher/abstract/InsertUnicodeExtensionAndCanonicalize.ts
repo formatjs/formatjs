@@ -9,6 +9,8 @@ import {
   splitUnicodeExtension,
 } from '#packages/intl-localematcher/abstract/utils.js'
 
+// ECMA-402 §9.2.6 restores the Unicode extension before canonicalization.
+// https://tc39.es/ecma402/#sec-insert-unicode-extension-and-canonicalize
 export function InsertUnicodeExtensionAndCanonicalize(
   locale: string,
   attributes: string[],

@@ -65,6 +65,49 @@ test('legacy unwrapping performs an observable fallback property Get', () => {
   expect(reads).toEqual([symbol, symbol])
 })
 
+test('legacy definition and bound function creation bypass mutable property helpers', () => {
+  const receiver = Object.create(NumberFormat.prototype)
+  const define = Object.defineProperty
+  const inherited = Object.getOwnPropertyDescriptor(Object.prototype, 'get')
+  let wrapped: unknown
+  let bound: ((value: number) => string) | undefined
+  try {
+    define(Object.prototype, 'get', {
+      configurable: true,
+      get() {
+        throw new Error('read a descriptor inherited from Object.prototype')
+      },
+    })
+    Object.defineProperty = () => {
+      throw new Error('called the global Object.defineProperty')
+    }
+    wrapped = NumberFormat.call(receiver, 'en')
+    bound = receiver.format
+  } finally {
+    Object.defineProperty = define
+    delete (Object.prototype as {get?: unknown}).get
+    if (inherited) define(Object.prototype, 'get', inherited)
+  }
+  expect(wrapped).toBe(receiver)
+  expect(bound?.name).toBe('')
+  expect(bound?.(1234)).toBe('1,234')
+})
+
+test('grouping uses the internal option without calling the global Boolean', () => {
+  const formatter = new NumberFormat('en', {useGrouping: 'always'})
+  const boolean = globalThis.Boolean
+  let result: string
+  try {
+    globalThis.Boolean = (() => {
+      throw new Error('observed a private grouping decision')
+    }) as unknown as BooleanConstructor
+    result = formatter.format(1234)
+  } finally {
+    globalThis.Boolean = boolean
+  }
+  expect(result).toBe('1,234')
+})
+
 test('legacy instance checks ignore Symbol.hasInstance and accept callable objects', () => {
   const receiver = Object.setPrototypeOf(() => {}, NumberFormat.prototype)
   Object.defineProperty(NumberFormat, Symbol.hasInstance, {

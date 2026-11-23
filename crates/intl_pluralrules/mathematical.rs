@@ -128,10 +128,12 @@ fn radix(digits: &str, base: u32) -> String {
     }
 }
 
+// ECMA-402 §§16.5.14–15: parse ECMAScript numeric text before Number-range checks.
+// https://tc39.es/ecma402/#sec-runtime-semantics-stringintlmv
+// https://tc39.es/ecma402/#sec-tointlmathematicalvalue
 pub fn to_mathematical_value(input: &str, bigint: bool) -> String {
-    // ToIntlMathematicalValue 1–2: the host already performed ToPrimitive.
+    // Steps 1–2: the host already performed ToPrimitive.
     // BigInt's mathematical value returns before Number-range clamping.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1652-L1653
     if bigint {
         let digits = input.strip_prefix('-').unwrap_or(input);
         if digits.is_empty() || !digits.bytes().all(|digit| digit.is_ascii_digit()) {
@@ -222,7 +224,6 @@ pub fn to_mathematical_value(input: &str, bigint: bool) -> String {
     }
     // Steps 5–10 parse numeric text, clamp only rounded infinities/zeros, then
     // retain decimal precision instead of replacing it with the rounded Number.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1660-L1670
     let digits = digits[leading..].trim_end_matches('0');
     let floating = format!(
         "{}{digits}e{}",

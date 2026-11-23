@@ -9,6 +9,7 @@ style = "both"
 [export.rename]
 "DisplayRegistry" = "FormatjsDisplayRegistry"
 "DisplayHandle" = "FormatjsDisplayHandle"
+"DisplaySnapshot" = "FormatjsDisplaySnapshot"
 "DisplayBytes" = "FormatjsDisplayBytes"
 
 [export]

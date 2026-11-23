@@ -729,8 +729,6 @@ version = "0.2.2"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
- "icu_casemap",
- "icu_locale_core",
  "icu_normalizer",
  "serde",
  "serde_json",

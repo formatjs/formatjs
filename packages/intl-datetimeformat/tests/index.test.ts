@@ -2,6 +2,9 @@ import calendars from '#packages/intl-datetimeformat/calendars/all.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
+import {NumberFormat} from '@formatjs/intl-numberformat'
+import type {RawNumberLocaleData} from '#packages/ecma402-abstract/types/number.js'
+import enNumber from '#packages/intl-numberformat/tests/locale-data/en.json' with {type: 'json'}
 import allData from '@formatjs_generated/tz/all-tz.js'
 import arEG from '#packages/intl-datetimeformat/tests/locale-data/ar-EG.json' with {type: 'json'}
 import bn from '#packages/intl-datetimeformat/tests/locale-data/bn.json' with {type: 'json'}
@@ -20,6 +23,29 @@ DateTimeFormat.__addCalendarData(...calendars)
 DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
 DateTimeFormat.__addTZData(allData)
 const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
+
+it.each(['ja', 'zh'])(
+  'keeps the GMT offset separate from date fields in %s',
+  locale => {
+    const time = Date.UTC(2026, 0, 15, 15, 30)
+    for (const formatMatcher of ['basic', 'best fit'] as const) {
+      const formatter = new DateTimeFormat(locale, {
+        timeZone: 'America/New_York',
+        timeZoneName: 'short',
+        formatMatcher,
+      })
+      expect(formatter.format(time)).toBe('2026/1/15 GMT-5')
+      expect(formatter.formatToParts(time)).toContainEqual({
+        type: 'timeZoneName',
+        value: 'GMT-5',
+      })
+      expect(formatter.resolvedOptions()).not.toHaveProperty('hour')
+      expect(formatter.resolvedOptions()).not.toHaveProperty('hourCycle')
+      expect(formatter.resolvedOptions()).not.toHaveProperty('hour12')
+    }
+  }
+)
+
 describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
@@ -109,6 +135,95 @@ describe('Intl.DateTimeFormat', function () {
         fractionalSecondDigits: 3,
       }).format(date)
     ).toBe('02:03.456')
+  })
+
+  it.each(['basic', 'best fit'] as const)(
+    'renders standalone time fields with the %s matcher',
+    formatMatcher => {
+      const timeZone = 'UTC'
+      const time = Date.UTC(2024, 0, 1, 2, 3, 4, 56)
+      for (const [field, value] of [
+        ['minute', '3'],
+        ['second', '4'],
+      ] as const) {
+        const formatter = new DateTimeFormat('en', {
+          timeZone,
+          formatMatcher,
+          [field]: 'numeric',
+        })
+        expect(formatter.formatToParts(time)).toEqual([{type: field, value}])
+      }
+      for (const [digits, value] of [
+        [1, '٠'],
+        [2, '٠٥'],
+        [3, '٠٥٦'],
+      ] as const) {
+        const formatter = new DateTimeFormat('en-u-nu-arab', {
+          timeZone,
+          formatMatcher,
+          fractionalSecondDigits: digits,
+        })
+        expect(formatter.resolvedOptions().fractionalSecondDigits).toBe(digits)
+        expect(formatter.formatToParts(time)).toEqual([
+          {type: 'fractionalSecond', value},
+        ])
+      }
+      const formatter = new DateTimeFormat('en', {
+        timeZone,
+        formatMatcher,
+        minute: 'numeric',
+        fractionalSecondDigits: 3,
+      })
+      expect(formatter.format(time)).toBe('03:04.056')
+      expect(formatter.resolvedOptions()).toMatchObject({
+        minute: '2-digit',
+        second: '2-digit',
+        fractionalSecondDigits: 3,
+      })
+    }
+  )
+
+  it.each(
+    ['en', 'fr', 'ja'].flatMap(locale =>
+      (['basic', 'best fit'] as const).map(
+        matcher => [locale, matcher] as const
+      )
+    )
+  )('selects the hour layout for %s using %s', (locale, formatMatcher) => {
+    const options = {
+      timeZone: 'UTC',
+      formatMatcher,
+      hour: '2-digit',
+      minute: '2-digit',
+    } as const
+    const twelveHour = new DateTimeFormat(locale, {
+      ...options,
+      hourCycle: 'h12',
+    })
+    const twentyFourHour = new DateTimeFormat(locale, {
+      ...options,
+      hourCycle: 'h23',
+    })
+    expect(twelveHour.formatToParts(0)).toContainEqual({
+      type: 'hour',
+      value: '12',
+    })
+    expect(
+      twelveHour.formatToParts(0).find(part => part.type === 'dayPeriod')
+    ).toBeDefined()
+    const parts = twentyFourHour.formatToParts(0)
+    expect(Number(parts.find(part => part.type === 'hour')?.value)).toBe(0)
+    expect(parts.find(part => part.type === 'dayPeriod')).toBeUndefined()
+    const withPeriod = new DateTimeFormat(locale, {
+      ...options,
+      hourCycle: 'h23',
+      dayPeriod: 'long',
+    })
+    expect(withPeriod.formatToParts(0)).toEqual(parts)
+    expect(withPeriod.resolvedOptions()).not.toHaveProperty('dayPeriod')
+    expect(withPeriod.formatRangeToParts(0, 43200000)).toEqual(
+      twentyFourHour.formatRangeToParts(0, 43200000)
+    )
   })
 
   it('uses explicitly supplied ISO locale patterns', () => {
@@ -201,14 +316,17 @@ describe('Intl.DateTimeFormat', function () {
     }
   )
 
-  it('preserves legacy RegExp statics during construction', () => {
-    DateTimeFormat.__addLocaleData(en as any)
-    ;/sent(inel)/.exec('sentinel')
-    const before = [RegExp.lastMatch, RegExp.$1]
-    new DateTimeFormat('en', {year: 'numeric', month: 'long', timeZone: 'UTC'})
-    const after = [RegExp.lastMatch, RegExp.$1]
-    expect(after).toEqual(before)
-  })
+  it.each(['UTC', '+0530', '-00'] as const)(
+    'preserves legacy RegExp statics when constructing with %s',
+    timeZone => {
+      DateTimeFormat.__addLocaleData(en as any)
+      ;/sent(inel)/.exec('sentinel')
+      const before = [RegExp.lastMatch, RegExp.$1]
+      new DateTimeFormat('en', {year: 'numeric', month: 'long', timeZone})
+      const after = [RegExp.lastMatch, RegExp.$1]
+      expect(after).toEqual(before)
+    }
+  )
   it.each(['exotic', 'ordinary'] as const)(
     'numeric formatting avoids private %s coercion hooks',
     kind => {
@@ -414,6 +532,37 @@ describe('Intl.DateTimeFormat', function () {
     const frozen = Object.freeze({timeZone: 'UTC'})
     expect(new DateTimeFormat('en', frozen).format(0)).toBe('1/1/1970')
   })
+
+  it.each(['basic', 'best fit'] as const)(
+    'uses private default fields with the %s matcher',
+    formatMatcher => {
+      const {prototype} = Array
+      const original = Object.getOwnPropertyDescriptor(
+        prototype,
+        Symbol.iterator
+      )!
+      const reject = () => {
+        throw new Error('Private date-time fields used the Array iterator')
+      }
+      let formatter: InstanceType<typeof DateTimeFormat>
+      try {
+        formatter = new DateTimeFormat('en', {
+          timeZone: 'UTC',
+          formatMatcher,
+          get timeStyle() {
+            Object.defineProperty(prototype, Symbol.iterator, {
+              ...original,
+              value: reject,
+            })
+            return undefined
+          },
+        })
+      } finally {
+        Object.defineProperty(prototype, Symbol.iterator, original)
+      }
+      expect(formatter.format(0)).toBe('1/1/1970')
+    }
+  )
 
   it.each([
     ['basic', {year: 'numeric', formatMatcher: 'basic'}],
@@ -771,6 +920,119 @@ describe('Intl.DateTimeFormat', function () {
       }).format(new Date(0))
     ).toBe('8:00\u202fAM')
   })
+  it('uses the host zone when its data is loaded and respects overrides', () => {
+    const previous = process.env.TZ
+    process.env.TZ = 'America/New_York'
+    try {
+      DateTimeFormat.__setDefaultTimeZone()
+      const options = {hour: 'numeric', minute: 'numeric'} as const
+      const host = new Intl.DateTimeFormat().resolvedOptions().timeZone
+      // Node applies TZ changes to its host formatter. Hermes uses the
+      // embedding's system zone through its installed host services.
+      if (process.versions?.node) expect(host).toBe('America/New_York')
+      const formatter = new DateTimeFormat('en', options)
+      expect(formatter.resolvedOptions().timeZone).toBe(host)
+      expect(formatter.format(0)).toBe(
+        new DateTimeFormat('en', {...options, timeZone: host}).format(0)
+      )
+
+      DateTimeFormat.__setDefaultTimeZone('UTC')
+      expect(new DateTimeFormat('en', options).resolvedOptions().timeZone).toBe(
+        'UTC'
+      )
+
+      DateTimeFormat.__setDefaultTimeZone()
+      DateTimeFormat.__addTZData({...allData, zones: [], future: {}})
+      expect(new DateTimeFormat('en', options).resolvedOptions().timeZone).toBe(
+        'UTC'
+      )
+    } finally {
+      if (previous === undefined) delete process.env.TZ
+      else process.env.TZ = previous
+      DateTimeFormat.__addTZData(allData)
+    }
+  })
+
+  it('uses the system zone without reading public constructor properties', () => {
+    const host = Intl.DateTimeFormat
+    const hostZone = new host().resolvedOptions().timeZone
+    const hostMarker = Object.getOwnPropertyDescriptor(host, 'polyfilled')
+    const getDefaultTimeZone = Object.getOwnPropertyDescriptor(
+      DateTimeFormat,
+      'getDefaultTimeZone'
+    )!
+    const previousOverride = Object.getOwnPropertyDescriptor(
+      DateTimeFormat,
+      '__defaultTimeZone'
+    )
+    const throwingGetter = {
+      configurable: true,
+      get() {
+        throw new Error('Read public constructor property')
+      },
+    }
+    DateTimeFormat.__setDefaultTimeZone()
+
+    try {
+      Object.defineProperty(host, 'polyfilled', throwingGetter)
+      Object.defineProperty(
+        DateTimeFormat,
+        'getDefaultTimeZone',
+        throwingGetter
+      )
+      Object.defineProperty(DateTimeFormat, '__defaultTimeZone', throwingGetter)
+      expect(new DateTimeFormat('en').resolvedOptions().timeZone).toBe(hostZone)
+      const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+      expect(formatter.formatToParts(0)).toEqual([
+        {type: 'month', value: '1'},
+        {type: 'literal', value: '/'},
+        {type: 'day', value: '1'},
+        {type: 'literal', value: '/'},
+        {type: 'year', value: '1970'},
+      ])
+    } finally {
+      if (hostMarker) Object.defineProperty(host, 'polyfilled', hostMarker)
+      else Reflect.deleteProperty(host, 'polyfilled')
+      Object.defineProperty(
+        DateTimeFormat,
+        'getDefaultTimeZone',
+        getDefaultTimeZone
+      )
+      if (previousOverride)
+        Object.defineProperty(
+          DateTimeFormat,
+          '__defaultTimeZone',
+          previousOverride
+        )
+      else Reflect.deleteProperty(DateTimeFormat, '__defaultTimeZone')
+    }
+  })
+
+  it('formats UTC without a packed row or inherited time-zone data', () => {
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'UTC')
+    DateTimeFormat.__addTZData({...allData, zones: [], future: {}})
+    try {
+      Object.defineProperty(Object.prototype, 'UTC', {
+        configurable: true,
+        get() {
+          throw new Error('Read inherited UTC zone data')
+        },
+      })
+      const formatter = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23',
+      })
+      expect(formatter.format(0)).toBe('00:00')
+      expect(formatter.format(3_600_000)).toBe('01:00')
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, 'UTC', previous)
+      else Reflect.deleteProperty(Object.prototype, 'UTC')
+      DateTimeFormat.__addTZData(allData)
+    }
+  })
+
   it('setDefaultTimeZone should work', function () {
     DateTimeFormat.__setDefaultTimeZone('Asia/Shanghai')
     expect(
@@ -1340,7 +1602,7 @@ describe('Intl.DateTimeFormat', function () {
   it('toLocaleString returns date and time with the default format, GH #3508', function () {
     const date1 = new Date(0)
     expect(date1.toLocaleString('en-US')).toMatch(
-      /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} [AP]M/
+      /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2}[ \u202f][AP]M/
     )
   })
   it('toLocaleTimeString returns "Invalid Date", GH #3508', function () {
@@ -1678,6 +1940,72 @@ describe('timestamp truncation', () => {
 })
 
 describe('DateTimeFormat built-in methods', () => {
+  it.each(['getDefaultLocale', 'relevantExtensionKeys'] as const)(
+    'constructs without consulting the public %s property',
+    property => {
+      const original = Object.getOwnPropertyDescriptor(DateTimeFormat, property)
+      let options: Intl.ResolvedDateTimeFormatOptions
+      try {
+        Object.defineProperty(DateTimeFormat, property, {
+          configurable: true,
+          get() {
+            throw new Error(`Read public ${property}`)
+          },
+        })
+        options = new DateTimeFormat('en-u-nu-arab', {
+          timeZone: 'UTC',
+        }).resolvedOptions()
+      } finally {
+        if (original) Object.defineProperty(DateTimeFormat, property, original)
+        else Reflect.deleteProperty(DateTimeFormat, property)
+      }
+      expect(options).toMatchObject({
+        locale: 'en-u-nu-arab',
+        numberingSystem: 'arab',
+      })
+    }
+  )
+
+  it('keeps inherited proxy traps out of legacy construction', () => {
+    const receiver = Object.create(DateTimeFormat.prototype)
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'get')
+    let wrapped: unknown
+    let bound: unknown
+    try {
+      Object.defineProperty(Object.prototype, 'get', {
+        configurable: true,
+        get() {
+          throw new Error('looked up a private proxy trap on Object.prototype')
+        },
+      })
+      wrapped = Reflect.apply(DateTimeFormat, receiver, [
+        'en',
+        {timeZone: 'UTC'},
+      ])
+      bound = receiver.format
+    } finally {
+      delete (Object.prototype as {get?: unknown}).get
+      if (previous) Object.defineProperty(Object.prototype, 'get', previous)
+    }
+    expect(wrapped).toBe(receiver)
+    expect(typeof bound).toBe('function')
+  })
+
+  it('shares the realm legacy symbol with an independently bundled NumberFormat', () => {
+    NumberFormat.__addLocaleData(enNumber as unknown as RawNumberLocaleData)
+    const number = Object.create(NumberFormat.prototype)
+    const date = Object.create(DateTimeFormat.prototype)
+    Reflect.apply(NumberFormat, number, ['en'])
+    Reflect.apply(DateTimeFormat, date, ['en', {timeZone: 'UTC'}])
+    const [symbol] = Object.getOwnPropertySymbols(number)
+    expect(Object.getOwnPropertySymbols(date)).toEqual([symbol])
+    expect(symbol.description).toBe('IntlLegacyConstructedSymbol')
+    expect(Symbol.keyFor(symbol)).toBeUndefined()
+    const hostNumber = Object.create(Intl.NumberFormat.prototype)
+    if (Reflect.apply(Intl.NumberFormat, hostNumber, ['en']) === hostNumber)
+      expect(Object.getOwnPropertySymbols(hostNumber)).toContain(symbol)
+  })
+
   it.each([
     ['formatToParts', DateTimeFormat.prototype, 1],
     ['formatRange', DateTimeFormat.prototype, 2],
@@ -1691,6 +2019,49 @@ describe('DateTimeFormat built-in methods', () => {
     expect(Object.hasOwn(method, 'prototype')).toBe(false)
     expect(() => Reflect.construct(method, [])).toThrow(TypeError)
   })
+  it('wraps legacy receivers without giving them formatter slots', () => {
+    const receiver = Object.create(DateTimeFormat.prototype)
+    const options = {timeZone: 'UTC', year: 'numeric'} as const
+    const expected = new DateTimeFormat('en', options)
+
+    expect(Reflect.apply(DateTimeFormat, receiver, ['en', options])).toBe(
+      receiver
+    )
+    expect(receiver.resolvedOptions()).toEqual(expected.resolvedOptions())
+    expect(receiver.format(0)).toBe(expected.format(0))
+    expect(() => receiver.formatToParts(0)).toThrow(TypeError)
+    expect(() => receiver.formatRange(0, 1000)).toThrow(TypeError)
+
+    expect(
+      Reflect.apply(DateTimeFormat, expected, [
+        'en',
+        {timeZone: 'UTC', month: 'long'},
+      ])
+    ).toBe(expected)
+    expect(expected.formatToParts(0)).toEqual([{type: 'year', value: '1970'}])
+  })
+
+  it('resolves options without consulting user-modified intrinsics', () => {
+    const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const expected = formatter.resolvedOptions()
+    const iterator = Array.prototype[Symbol.iterator]
+    const defineProperty = Object.defineProperty
+    const fail = () => {
+      throw new Error('Unexpected intrinsic call')
+    }
+    let actual
+    try {
+      Array.prototype[Symbol.iterator] = fail
+      Object.defineProperty = fail
+      actual = formatter.resolvedOptions()
+    } finally {
+      Array.prototype[Symbol.iterator] = iterator
+      Object.defineProperty = defineProperty
+    }
+
+    expect(actual).toEqual(expected)
+  })
+
   it('has zero required constructor arguments', () => {
     expect(DateTimeFormat.length).toBe(0)
   })
@@ -1751,6 +2122,11 @@ it('preserves the CLDR day-period separator with Han decimal digits', () => {
     second: '2-digit',
   })
   const date = Date.UTC(2024, 0, 1, 2, 35, 6)
+  // ECMA-402 §11.5.4 steps 8 and 15.b preserve digits and pattern literals.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // CLDR uses U+202F here. The pinned Test262 fixture expects ASCII space.
+  // https://github.com/tc39/test262/blob/2a1ade303f72d3de80565c921d685222405c32ce/test/intl402/DateTimeFormat/prototype/format/numbering-system.js#L26
+  // https://github.com/tc39/test262/issues/3711
   expect(formatter.format(date)).toBe('〇二:三五:〇六\u202fAM')
   expect(
     formatter

@@ -34,6 +34,36 @@ Native.__addLocaleData(fixtures.packs[0])
 TypeScriptListFormat.__addLocaleData(fixtures.tsData[0])
 const existing = new Native('en')
 equal(existing.format(['A', 'B']), 'A and B', 'initial English pack')
+for (const Constructor of [Native, TypeScriptListFormat]) {
+  const listFormat = new Constructor('en')
+  const reduce = Array.prototype.reduce
+  const create = Object.create
+  const get = WeakMap.prototype.get
+  for (const method of ['format', 'formatToParts'] as const) {
+    const expected = listFormat[method](['A', 'B', 'C'])
+    let actual: unknown
+    try {
+      actual = listFormat[method]({
+        *[Symbol.iterator]() {
+          Array.prototype.reduce =
+            Object.create =
+            WeakMap.prototype.get =
+              () => {
+                throw new Error('Public method called after list iteration')
+              }
+          yield 'A'
+          yield 'B'
+          yield 'C'
+        },
+      })
+    } finally {
+      Array.prototype.reduce = reduce
+      Object.create = create
+      WeakMap.prototype.get = get
+    }
+    equal(actual, expected, method + ' reads private templates after iteration')
+  }
+}
 equal(Native.supportedLocalesOf('fr'), [], 'French stays unloaded')
 for (let index = 1; index < fixtures.packs.length; index++) {
   Native.__addLocaleData(fixtures.packs[index])

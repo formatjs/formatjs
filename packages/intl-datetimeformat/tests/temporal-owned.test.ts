@@ -1332,7 +1332,7 @@ for (const formatMatcher of ['basic', 'best fit'] as const)
         expect(calls).toBe(0)
         expect(text).toBe(
           formatMatcher === 'basic'
-            ? '1/2/2024, 3:04:05'
+            ? '1/2/2024, 03:04:05'
             : '01/02/2024, 03:04:05'
         )
         expect(parts).toEqual(expectedParts)
@@ -1364,7 +1364,7 @@ test.each([
     })
     const value = new Temporal.PlainTime(3, 4, 5)
     expect(formatter.format(new Date('2024-01-02T03:04:05Z'))).toBe(
-      '1/2/2024, 3:04:05'
+      '1/2/2024, 03:04:05'
     )
     const owner =
       key === 'defineProperties' || key === 'keys'
@@ -1398,14 +1398,14 @@ test.each([
     }
     if (error) throw error
     expect(hooks).toBe(0)
-    expect(text).toBe('3:04:05')
+    expect(text).toBe('03:04:05')
     expect(parts).toEqual([
-      {type: 'hour', value: '3'},
+      {type: 'hour', value: '03'},
       {type: 'literal', value: ':'},
       {type: 'minute', value: '04'},
       {type: 'literal', value: ':'},
       {type: 'second', value: '05'},
     ])
-    expect(formatter.format(value)).toBe('3:04:05')
+    expect(formatter.format(value)).toBe('03:04:05')
   }
 )

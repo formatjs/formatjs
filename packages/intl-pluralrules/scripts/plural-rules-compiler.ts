@@ -36,32 +36,25 @@ export type PluralCategory = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
  * Implementation: Parses a CLDR operand (n, i, v, etc.) with optional modulo into a TypeScript expression
  */
 function parseOperand(operandStr: string, modulo?: string): ts.Expression {
-  const operand = ts.factory.createIdentifier(operandStr.trim())
+  const name = operandStr.trim()
+  const operand = ts.factory.createIdentifier(name)
 
   if (modulo) {
     // Extract the divisor from "% 100" format
     const divisor = parseInt(modulo.replace('%', '').trim(), 10)
-    if ('nift'.includes(operandStr.trim())) {
-      const digits =
-        operandStr.trim() === 'f'
-          ? ts.factory.createIdentifier('decimalPart')
-          : operandStr.trim() === 't'
-            ? ts.factory.createCallExpression(
-                ts.factory.createPropertyAccessExpression(
-                  ts.factory.createIdentifier('decimalPart'),
-                  'replace'
-                ),
-                undefined,
-                [
-                  ts.factory.createRegularExpressionLiteral('/0+$/'),
-                  ts.factory.createStringLiteral(''),
-                ]
-              )
-            : ts.factory.createIdentifier('integerPart')
+    if ('nift'.includes(name)) {
+      const digits = ts.factory.createIdentifier(
+        name === 'f' || name === 't' ? 'decimalPart' : 'integerPart'
+      )
+      const args: ts.Expression[] = [
+        digits,
+        ts.factory.createNumericLiteral(divisor),
+      ]
+      if (name === 't') args.push(ts.factory.createIdentifier('w'))
       return ts.factory.createCallExpression(
         ts.factory.createIdentifier('modDigits'),
         undefined,
-        [digits, ts.factory.createNumericLiteral(divisor)]
+        args
       )
     }
     return ts.factory.createParenthesizedExpression(
@@ -374,11 +367,15 @@ export class PluralRulesCompiler {
       // CLDR spec: v = number of visible fraction digits in n, with trailing zeros
       ['v', 'decimalPart.length', []],
       // CLDR spec: w = number of visible fraction digits in n, without trailing zeros
-      ['w', 'decimalPart.replace(/0+$/, "").length', []],
+      [
+        'w',
+        '(() => { let end = decimalPart.length; while (end > 0 && decimalPart[end - 1] === "0") end--; return end; })()',
+        [],
+      ],
       // CLDR spec: f = visible fractional digits in n, with trailing zeros
       ['f', 'v > 0 ? parseInt(decimalPart, 10) : 0', ['v']],
       // CLDR spec: t = visible fractional digits in n, without trailing zeros
-      ['t', 'w > 0 ? parseInt(decimalPart.replace(/0+$/, ""), 10) : 0', ['w']],
+      ['t', 'w > 0 ? parseInt(decimalPart.slice(0, w), 10) : 0', ['w']],
       // CLDR spec: c = compact decimal exponent (extension for compact notation)
       ['c', 'exponent', []],
       // CLDR spec: e = compact decimal exponent (synonym for c)
@@ -614,9 +611,9 @@ export class PluralRulesCompiler {
       // small, so each intermediate remains exact even for BigInt-sized inputs.
       code = code.replace(
         '__MOD_DIGITS__;',
-        `function modDigits(digits, divisor) {
+        `function modDigits(digits, divisor, end = digits.length) {
         let value = 0;
-        for (let index = 0; index < digits.length; index++) {
+        for (let index = 0; index < end; index++) {
           const digit = digits.charCodeAt(index) - 48;
           if (digit >= 0 && digit <= 9) value = (value * 10 + digit) % divisor;
         }

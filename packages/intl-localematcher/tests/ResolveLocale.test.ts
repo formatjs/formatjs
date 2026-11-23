@@ -1,7 +1,158 @@
 import {findMatchingDistance} from '#packages/intl-localematcher/abstract/utils.js'
 import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
-import {expect, test} from 'vitest'
+import {expect, test, vi} from 'vitest'
 import {runInNewContext} from 'node:vm'
+
+test.each(['lookup', 'best fit'])(
+  'uses the loaded host locale as the Intl default with %s',
+  localeMatcher => {
+    const host = new Intl.Locale(
+      new Intl.NumberFormat().resolvedOptions().locale
+    )
+    const hostLanguage = host.language
+    const fallback = hostLanguage === 'fr' ? 'en' : 'fr'
+    const locales = new Set([fallback])
+    const data = {
+      [fallback]: {nu: ['latn']},
+      [hostLanguage]: {nu: ['latn', 'arab']},
+    }
+    const resolve = (requested: string[]) =>
+      ResolveLocale(
+        locales,
+        requested,
+        {localeMatcher},
+        ['nu'],
+        data,
+        () => fallback,
+        'hostDefaultWithLocaleData'
+      )
+    expect(resolve([]).locale).toBe(fallback)
+    locales.add(hostLanguage)
+    const resolved = resolve([])
+    expect(resolved.locale).toBe(host.baseName)
+    expect(resolved.dataLocale).toBe(hostLanguage)
+    expect(resolved.localeData).toBe(data[hostLanguage])
+    expect(resolve([host.baseName + '-u-nu-arab']).locale).toBe(
+      host.baseName + '-u-nu-arab'
+    )
+    expect(resolve([fallback]).locale).toBe(fallback)
+    locales.delete(hostLanguage)
+    expect(resolve([]).locale).toBe(fallback)
+  }
+)
+
+test('late bundles retain the default after host formatters are replaced', async () => {
+  const {NumberFormat, DateTimeFormat} = Intl
+  const hostLocale = new NumberFormat().resolvedOptions().locale
+  const fallback = hostLocale === 'fr' ? 'en' : 'fr'
+  try {
+    Object.defineProperty(Intl, 'NumberFormat', {
+      value: class extends NumberFormat {
+        static polyfilled = true
+      },
+    })
+    Object.defineProperty(Intl, 'DateTimeFormat', {
+      value: class extends DateTimeFormat {
+        static polyfilled = true
+      },
+    })
+    vi.resetModules()
+    const {ResolveLocale: resolve} =
+      await import('#packages/intl-localematcher/abstract/ResolveLocale.js')
+    expect(
+      resolve(
+        [fallback, hostLocale],
+        [],
+        {localeMatcher: 'lookup'},
+        [],
+        undefined,
+        () => fallback,
+        'hostDefaultWithLocaleData'
+      ).locale
+    ).toBe(hostLocale)
+  } finally {
+    Intl.NumberFormat = NumberFormat
+    Intl.DateTimeFormat = DateTimeFormat
+  }
+})
+
+test('uses the next host formatter when inspecting the first one throws', async () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'Intl')!
+  const broken = Proxy.revocable(Intl.NumberFormat, {})
+  broken.revoke()
+  try {
+    Object.defineProperty(globalThis, 'Intl', {
+      value: {
+        NumberFormat: broken.proxy,
+        DateTimeFormat: class {
+          resolvedOptions() {
+            return {locale: 'fr-CA-u-nu-latn'}
+          }
+        },
+      },
+    })
+    vi.resetModules()
+    const {ResolveLocale: resolve} =
+      await import('#packages/intl-localematcher/abstract/ResolveLocale.js')
+    expect(
+      resolve(
+        ['en', 'fr'],
+        [],
+        {localeMatcher: 'lookup'},
+        [],
+        undefined,
+        () => 'en',
+        'hostDefaultWithLocaleData'
+      )
+    ).toMatchObject({locale: 'fr-CA', dataLocale: 'fr'})
+  } finally {
+    Object.defineProperty(globalThis, 'Intl', original)
+    vi.resetModules()
+  }
+})
+
+test('a script-specific host locale also supports its scriptless region', async () => {
+  const OriginalIntl = Intl
+  const hostLocale = 'az-Latn-AZ'
+  let resolve: typeof ResolveLocale
+  try {
+    Object.defineProperty(globalThis, 'Intl', {
+      value: {
+        NumberFormat: class {
+          resolvedOptions() {
+            return {locale: hostLocale}
+          }
+        },
+      },
+    })
+    vi.resetModules()
+    ;({ResolveLocale: resolve} =
+      await import('#packages/intl-localematcher/abstract/ResolveLocale.js'))
+  } finally {
+    Object.defineProperty(globalThis, 'Intl', {value: OriginalIntl})
+    vi.resetModules()
+  }
+  const supported = new Set(['az', 'az-Latn'])
+  const latin = {nu: ['latn']}
+  const region = {nu: ['arab']}
+  const data = {az: latin, 'az-Latn': latin, 'az-AZ': region}
+  const lookup = (...requested: string[]) =>
+    resolve(
+      supported,
+      requested,
+      {localeMatcher: 'lookup'},
+      ['nu'],
+      data,
+      () => 'az',
+      'hostDefaultWithLocaleData'
+    )
+  expect(lookup().locale).toBe(hostLocale)
+  expect(lookup('az-AZ')).toMatchObject({locale: 'az-AZ', localeData: latin})
+  supported.add('az-AZ')
+  expect(lookup('az-AZ')).toMatchObject({locale: 'az-AZ', localeData: region})
+  expect(lookup().localeData).toBe(latin)
+})
+
 test('ResolveLocale', function () {
   expect(
     ResolveLocale(
@@ -53,6 +204,30 @@ test('ResolveLocale', function () {
     ca: 'gregory',
     hc: 'h23',
   })
+})
+
+test('returns the same locale record used to negotiate extension values', () => {
+  const selected = {nu: ['latn', 'arab']}
+  let reads = 0
+  const result = ResolveLocale(
+    ['en'],
+    ['en-u-nu-arab'],
+    {localeMatcher: 'lookup'},
+    ['nu'],
+    {
+      get en() {
+        return reads++ === 0 ? selected : {nu: ['latn']}
+      },
+    },
+    () => 'en',
+    'includeLocaleData'
+  )
+
+  // ECMA-402 §9.2.7 steps 6 and 11 use the same record.
+  // https://tc39.es/ecma402/#sec-resolvelocale
+  expect(result.nu).toBe('arab')
+  expect(result.localeData).toBe(selected)
+  expect(reads).toBe(1)
 })
 
 test('empty requested', function () {

@@ -331,9 +331,19 @@ impl LocaleData {
             gregory
         };
         calendars.insert("iso8601".into(), iso);
+        // ECMA-402 §6.9.1 requires ISO 8601 even for legacy locale packs.
+        // https://tc39.es/ecma402/#sec-availablecalendars
+        let mut metadata = data.metadata;
+        if !metadata
+            .calendar_preferences
+            .iter()
+            .any(|name| name == "iso8601")
+        {
+            metadata.calendar_preferences.push("iso8601".into());
+        }
         Ok(Self {
             locale,
-            metadata: data.metadata,
+            metadata,
             number: number.map(|number| number.0),
             calendars,
         })
@@ -357,14 +367,18 @@ impl LocaleData {
         Ok(calendar)
     }
 
-    pub fn available_calendars(&self, providers: &CalendarRegistry) -> Vec<String> {
+    pub fn calendar_candidates(&self) -> impl Iterator<Item = &str> {
         self.metadata
             .calendar_preferences
             .iter()
-            .filter(|calendar| {
-                self.calendars.contains_key(*calendar) && providers.contains(calendar)
-            })
-            .cloned()
+            .filter(|calendar| self.calendars.contains_key(*calendar))
+            .map(String::as_str)
+    }
+
+    pub fn available_calendars(&self, providers: &CalendarRegistry) -> Vec<String> {
+        self.calendar_candidates()
+            .filter(|calendar| providers.contains(calendar))
+            .map(str::to_owned)
             .collect()
     }
 }

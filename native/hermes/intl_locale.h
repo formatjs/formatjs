@@ -9,6 +9,10 @@ namespace formatjs {
 void installLocale(facebook::jsi::Runtime &runtime);
 void installLocale(facebook::jsi::Runtime &runtime,
                    facebook::jsi::Object &extensions);
+// Refresh retained formatter probes after the embedding installs its formatters.
+facebook::jsi::Function prepareLocale(facebook::jsi::Runtime &runtime);
+facebook::jsi::Function prepareLocale(facebook::jsi::Runtime &runtime,
+                                     facebook::jsi::Object &extensions);
 } // namespace formatjs
 
 #endif

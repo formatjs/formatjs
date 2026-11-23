@@ -7,6 +7,24 @@ describe('Granularity word', () => {
   const segmenter = new Segmenter('en', {
     granularity: 'word',
   })
+  it.each(['a\u0301', '\u0301', '😀\u0301', '🗦'])(
+    'pairs regional indicators after %j',
+    prefix => {
+      const input = prefix + '🇺🇸🇨🇦'
+      const segments = segmenter.segment(input)
+      const records = Array.from(segments)
+      expect(records.map(({segment}) => segment)).toEqual([prefix, '🇺🇸', '🇨🇦'])
+      for (const record of records) {
+        for (
+          let index = record.index;
+          index < record.index + record.segment.length;
+          index++
+        ) {
+          expect(segments.containing(index)).toEqual(record)
+        }
+      }
+    }
+  )
   it.each(ucdTests.map(test => [test.comment, test.testInput, test.expected]))(
     `Test word #%#: '%s', input "%s"`,
     (_, testInput, expected) => {

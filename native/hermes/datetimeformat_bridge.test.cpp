@@ -1,5 +1,6 @@
 #include <formatjs/hermes/intl_datetimeformat.h>
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/intl_numberformat.h>
 #include <hermes/hermes.h>
 #include <jsi/instrumentation.h>
 #include <cstdlib>
@@ -15,7 +16,7 @@ static jsi::Value evaluate(jsi::Runtime &rt, std::string source) {
   return rt.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(std::move(source)), "datetimeformat-bridge-test");
 }
 int main(int argc, char **argv) {
-  check(argc == 2);
+  check(argc == 3);
   auto runtime = facebook::hermes::makeHermesRuntime();
   auto &rt = *runtime;
   try {
@@ -42,6 +43,10 @@ int main(int argc, char **argv) {
       function query(formatter, operation) {
         return bridge.nativeQuery(formatter, JSON.stringify({op:operation || 'format', value:{type:'number',value:'0'}}));
       }
+      check(bridge.nativeHasZone('UTC') === true);
+      success(bridge.nativeLoad(2, JSON.stringify({abbrvs:'EST', offsets:'-dw0', zones:['America/New_York|,0,0,0']})));
+      check(bridge.nativeHasZone('America/New_York') === true);
+      check(bridge.nativeHasZone('America/Los_Angeles') === false);
       success(bridge.nativeLoad(0, packJson));
       check(JSON.parse(bridge.nativeInfo()).default === 'en');
       var gregorian = construct('gregory');
@@ -105,10 +110,64 @@ int main(int argc, char **argv) {
     )JS");
     rt.instrumentation().collectGarbage("DateTimeFormat installation released");
     formatjs::installCanonicalLocales(rt);
+    evaluate(rt, R"JS(
+      var hostZone = 'America/New_York', hostReads = 0;
+      var brokenHost = false;
+      var hostOptions, hostOptionReads = 0;
+      function HostDateTimeFormat() {}
+      HostDateTimeFormat.prototype.resolvedOptions = function() {
+        hostReads++;
+        if (brokenHost) throw new Error('host unavailable');
+        return hostOptions || {timeZone:hostZone};
+      };
+      Intl.DateTimeFormat = HostDateTimeFormat;
+    )JS");
     auto facade = formatjs::installDateTimeFormat(rt);
     evaluate(rt, R"JS(
       var Constructor = Intl.DateTimeFormat;
       Constructor.__addLocaleData(packJson);
+      check(Constructor.getDefaultTimeZone() === 'UTC');
+      check(new Constructor('en').resolvedOptions().timeZone === 'UTC');
+      Constructor.__addTZData(JSON.stringify({
+        abbrvs:'EST|JST|GMT', offsets:'-dw0|p00|0',
+        zones:['America/New_York|,0,0,0','Asia/Tokyo|,1,1,0','Africa/Abidjan|,2,2,0']
+      }));
+      check(Constructor.getDefaultTimeZone() === 'America/New_York');
+      var localOptions = {hour:'numeric', minute:'numeric', hourCycle:'h23'};
+      check(new Constructor('en', localOptions).format(0) === '19:00');
+      var before = hostReads;
+      check(new Constructor('en', {timeZone:'UTC'}).resolvedOptions().timeZone === 'UTC');
+      check(hostReads === before);
+      Constructor.__setDefaultTimeZone('+05:30');
+      check(Constructor.getDefaultTimeZone() === '+05:30');
+      check(new Constructor('en').resolvedOptions().timeZone === '+05:30');
+      Constructor.__setDefaultTimeZone();
+      check(Constructor.getDefaultTimeZone() === 'America/New_York');
+      brokenHost = true;
+      check(new Constructor('en').resolvedOptions().timeZone === 'Asia/Tokyo');
+      check(new Constructor('en', localOptions).format(0) === '09:00');
+      brokenHost = false;
+      hostZone = 'Invalid/Zone';
+      check(Constructor.getDefaultTimeZone() === 'Asia/Tokyo');
+      hostZone = 'U\u017F/Eastern';
+      check(Constructor.getDefaultTimeZone() === 'Asia/Tokyo');
+      var partialOptions = {get timeZone() { hostOptionReads++; return 'America/New_York'; }};
+      for (var record of [partialOptions, Object.create(partialOptions)]) {
+        hostOptions = record;
+        check(Constructor.getDefaultTimeZone() === 'Asia/Tokyo');
+      }
+      check(hostOptionReads === 0);
+      hostOptions = undefined;
+      hostZone = 'Africa/Accra';
+      check(new Constructor('en').resolvedOptions().timeZone === 'Africa/Accra');
+      check(new Constructor('en', localOptions).format(0) ===
+            new Constructor('en', {...localOptions, timeZone: hostZone}).format(0));
+      hostZone = 'US/Eastern';
+      check(new Constructor('en').resolvedOptions().timeZone === 'America/New_York');
+      HostDateTimeFormat.prototype.resolvedOptions = function() { throw new Error('replaced'); };
+      check(Constructor.getDefaultTimeZone() === 'America/New_York');
+      Constructor.__addTZData(JSON.stringify({abbrvs:'EST', offsets:'-dw0', zones:[]}));
+      check(Constructor.getDefaultTimeZone() === 'UTC');
       var source = JSON.parse(packJson);
       for (var name of ['customa', 'customb']) Constructor.__addCalendarLocaleData(JSON.stringify({locale:'en',calendar:name,data:source.data,formats:source.data.formats.gregory}));
       Constructor.__addCalendarData(
@@ -117,6 +176,40 @@ int main(int argc, char **argv) {
       );
       check(new Constructor('en',{calendar:'customa',timeZone:'UTC'}).format(0) === '1/1/2001');
       check(new Constructor('en',{calendar:'customb',timeZone:'UTC'}).format(0) === '1/1/2002');
+    )JS");
+    formatjs::installNumberFormat(rt);
+    std::ifstream numberFile(argv[2]);
+    check(bool(numberFile));
+    std::string numberPack((std::istreambuf_iterator<char>(numberFile)), std::istreambuf_iterator<char>());
+    rt.global().setProperty(rt, "numberPackJson", jsi::String::createFromUtf8(rt, numberPack));
+    evaluate(rt, R"JS(
+      Intl.NumberFormat.__addLocaleData(numberPackJson);
+      function fallback(ctor, options) {
+        var wrapper = Object.create(ctor.prototype);
+        check(ctor.call(wrapper, 'en', options) === wrapper);
+        var keys = Object.getOwnPropertySymbols(wrapper);
+        check(keys.length === 1);
+        check(wrapper[keys[0]] instanceof ctor);
+        return keys[0];
+      }
+      var dateFallback = fallback(Intl.DateTimeFormat, {timeZone: 'UTC'});
+      var numberFallback = fallback(Intl.NumberFormat);
+      if (dateFallback !== numberFallback)
+        throw new Error('DateTimeFormat and NumberFormat must share the legacy symbol');
+      check(dateFallback.description === 'IntlLegacyConstructedSymbol');
+      check(Symbol.keyFor(dateFallback) === undefined);
+      var inheritedGet = Object.getOwnPropertyDescriptor(Object.prototype, 'get');
+      try {
+        Object.defineProperty(Object.prototype, 'get', {
+          configurable: true,
+          get: function() { throw new Error('read an inherited private proxy trap'); }
+        });
+        check(fallback(Intl.DateTimeFormat, {timeZone: 'UTC'}) === dateFallback);
+        check(fallback(Intl.NumberFormat) === numberFallback);
+      } finally {
+        delete Object.prototype.get;
+        if (inheritedGet) Object.defineProperty(Object.prototype, 'get', inheritedGet);
+      }
     )JS");
 
     return 0;

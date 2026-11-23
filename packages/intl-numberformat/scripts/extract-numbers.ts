@@ -69,7 +69,7 @@ function extractNumbers(d: Numbers): RawNumberData {
       const rangePattern =
         d[`miscPatterns-numberSystem-${ns}` as 'miscPatterns-numberSystem-latn']
           .range
-      // ECMA-402 §16.5.19 steps 7–8 preserve the complete separator.
+      // ECMA-402 §16.5.18 steps 7–8 preserve the complete separator.
       // https://tc39.es/ecma402/#sec-partitionnumberrangepattern
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1838-L1839
       invariant(
@@ -134,15 +134,17 @@ function extractNumbers(d: Numbers): RawNumberData {
   }
 }
 
+async function loadNumberData(locale: string): Promise<Numbers> {
+  const {default: data} = (await import(
+    `cldr-numbers-full/main/${locale}/numbers.json`,
+    {with: {type: 'json'}}
+  )) as {default: typeof NumbersData}
+  return data.main[locale as 'ar'].numbers
+}
+
 async function loadNumbers(locale: string): Promise<RawNumberData> {
   try {
-    return extractNumbers(
-      (
-        (await import(`cldr-numbers-full/main/${locale}/numbers.json`, {
-          with: {type: 'json'},
-        })) as {default: typeof NumbersData}
-      ).default.main[locale as 'ar'].numbers
-    )
+    return extractNumbers(await loadNumberData(locale))
   } catch (e) {
     console.error('Issue processing numbers data for ' + locale)
     throw e
@@ -159,9 +161,34 @@ export async function generateDataForLocales(
   }, {})
 }
 
-export function extractNumberingSystemNames() {
-  // Export an object instead of array to be more compatible with rollup.
+export async function extractNumberingSystemNames() {
+  const systems = Object.entries(numberingSystems.supplemental.numberingSystems)
+  const candidates = new Map<string, Set<string>>()
+  // LDML algorithmic rules can name a locale, and locale data can name
+  // traditional and financial systems under otherNumberingSystems.
+  // https://unicode.org/reports/tr35/tr35-numbers.html#Numbering_Systems
+  for (const [name, system] of systems) {
+    if (system._type !== 'algorithmic') continue
+    const locales = new Set(['en'])
+    const rule = system._rules.split('/')
+    if (rule.length === 3) locales.add(rule[0].replaceAll('_', '-'))
+    candidates.set(name, locales)
+  }
+  const locales = AVAILABLE_LOCALES.availableLocales.full
+  const data = await Promise.all(locales.map(loadNumberData))
+  for (const [index, numbers] of data.entries()) {
+    for (const name of Object.values(numbers.otherNumberingSystems ?? {}))
+      candidates.get(name)?.add(locales[index])
+  }
   return {
-    names: Object.keys(numberingSystems.supplemental.numberingSystems),
+    names: systems.map(([name]) => name),
+    // CLDR 49 numeric systems match ECMA-402 Table 30.
+    // https://tc39.es/ecma402/#table-numbering-system-digits
+    numeric: systems
+      .filter(([, system]) => system._type === 'numeric')
+      .map(([name]) => name),
+    candidates: Object.fromEntries(
+      [...candidates].map(([name, locales]) => [name, [...locales]])
+    ),
   }
 }

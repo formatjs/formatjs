@@ -3,6 +3,7 @@ import {
   arrayIndexOf,
   setDataProperty,
 } from '#packages/intl-localematcher/abstract/intrinsics.js'
+import {BestAvailableLocale} from '#packages/intl-localematcher/abstract/BestAvailableLocale.js'
 import {BestFitMatcher} from '#packages/intl-localematcher/abstract/BestFitMatcher.js'
 import {CanonicalizeUValue} from '#packages/intl-localematcher/abstract/CanonicalizeUValue.js'
 import {InsertUnicodeExtensionAndCanonicalize} from '#packages/intl-localematcher/abstract/InsertUnicodeExtensionAndCanonicalize.js'
@@ -15,11 +16,15 @@ import type {
 import {
   createLocaleListSnapshot,
   invariant,
+  localeDescriptorMember,
+  scriptlessRegionLocale,
+  splitUnicodeExtension,
 } from '#packages/intl-localematcher/abstract/utils.js'
 
-export interface ResolveLocaleResult {
+export interface ResolveLocaleResult<D = unknown> {
   locale: string
   dataLocale: string
+  localeData?: D
   [k: string]: any
 }
 
@@ -41,8 +46,105 @@ const localeSetSize = Object.getOwnPropertyDescriptor(
 )!.get!
 const localeSetNext = Object.getPrototypeOf(new Set().values()).next
 const localeLowerCase = String.prototype.toLowerCase
+const localeDescriptor = Object.getOwnPropertyDescriptor
+const hostDefaultLocaleKey = Symbol.for('@formatjs/intlHostDefaultLocale')
 
-function localeArray(
+// ECMA-402 §6.2.3 uses the host's current locale without Unicode extensions.
+// Share the value with bundles loaded after the host formatters are replaced.
+// https://tc39.es/ecma402/#sec-defaultlocale
+function readHostDefaultLocale(): string | undefined {
+  const intl = localeDescriptorMember(globalThis, 'Intl') as object | undefined
+  if (!intl) return undefined
+  const retained = localeDescriptor(intl, hostDefaultLocaleKey)
+  const cached = retained && localeDescriptor(retained, 'value')?.value
+  if (typeof cached === 'string') return cached
+  for (const name of ['NumberFormat', 'DateTimeFormat'] as const) {
+    try {
+      const Constructor = localeDescriptorMember(intl, name) as
+        | typeof Intl.NumberFormat
+        | typeof Intl.DateTimeFormat
+        | undefined
+      if (
+        typeof Constructor !== 'function' ||
+        localeDescriptorMember(Constructor, 'polyfilled')
+      )
+        continue
+      const prototype = localeDescriptorMember(Constructor, 'prototype') as
+        | object
+        | undefined
+      if (!prototype) continue
+      const resolve = localeDescriptorMember(prototype, 'resolvedOptions')
+      if (typeof resolve !== 'function') continue
+      // Host resolvedOptions creates the locale as an own data property.
+      // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.resolvedoptions
+      // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
+      const resolved = localeApply(resolve, new Constructor(), [])
+      const locale = localeDescriptorMember(resolved, 'locale')
+      if (typeof locale !== 'string' || !locale) continue
+      const tag = splitUnicodeExtension(locale).locale
+      if (!retained && Object.isExtensible(intl)) {
+        Object.defineProperty(intl, hostDefaultLocaleKey, {
+          __proto__: null,
+          value: tag,
+        } as PropertyDescriptor)
+      }
+      return tag
+    } catch {
+      // A partial host formatter may fail during inspection or construction.
+    }
+  }
+}
+const hostDefaultLocale = readHostDefaultLocale()
+const hostRegionLocale =
+  hostDefaultLocale && scriptlessRegionLocale(hostDefaultLocale)
+
+interface HostLocaleSupport {
+  available: readonly string[]
+  defaultLocale: string | undefined
+  dataLocale: string | undefined
+  regionAlias: string | undefined
+}
+
+const hostLocaleSupport = new WeakMap<readonly string[], HostLocaleSupport>()
+const getHostLocaleSupport = hostLocaleSupport.get.bind(hostLocaleSupport)
+const setHostLocaleSupport = hostLocaleSupport.set.bind(hostLocaleSupport)
+
+// ECMA-402 §9.1 includes the host default in each service's available locales.
+// A loaded parent can supply its data. Include the scriptless region too.
+// https://tc39.es/ecma402/#sec-internal-slots
+export function getServiceLocaleList(
+  locales: Set<string> | readonly string[],
+  bestFit: boolean
+): HostLocaleSupport {
+  const available = getAvailableLocaleList(locales, bestFit)
+  const cacheable = !localeIsArray(locales)
+  const cached = cacheable && getHostLocaleSupport(available)
+  if (cached) return cached
+  const dataLocale =
+    hostDefaultLocale && BestAvailableLocale(available, hostDefaultLocale)
+  const aliases: string[] = []
+  if (hostDefaultLocale && dataLocale && dataLocale !== hostDefaultLocale)
+    setDataProperty(aliases, 0, hostDefaultLocale)
+  const regionAlias =
+    dataLocale &&
+    hostRegionLocale &&
+    arrayIndexOf(available, hostRegionLocale) < 0
+      ? hostRegionLocale
+      : undefined
+  if (regionAlias) setDataProperty(aliases, aliases.length, regionAlias)
+  const support = {
+    available: aliases.length
+      ? createLocaleListSnapshot(available, aliases)
+      : available,
+    defaultLocale: dataLocale ? hostDefaultLocale : undefined,
+    dataLocale,
+    regionAlias,
+  }
+  if (cacheable) setHostLocaleSupport(available, support)
+  return support
+}
+
+export function getAvailableLocaleList(
   locales: Set<string> | readonly string[],
   bestFit: boolean
 ): readonly string[] {
@@ -98,44 +200,49 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
     [k: string]: string | null | undefined
   },
   relevantExtensionKeys: K[],
-  localeData: Record<string, D | undefined>,
-  getDefaultLocale: () => string
-): ResolveLocaleResult {
+  localeData: Record<string, D | undefined> | undefined,
+  getDefaultLocale: () => string,
+  mode:
+    | 'includeLocaleData'
+    | 'hostDefaultWithLocaleData'
+    | undefined = undefined
+): ResolveLocaleResult<D> {
+  // ECMA-402 §9.2.7 steps 1–4: match requests or use the default locale.
+  // https://tc39.es/ecma402/#sec-resolvelocale
   const matcher = options.localeMatcher
+  const hostSupport =
+    mode === 'hostDefaultWithLocaleData'
+      ? getServiceLocaleList(availableLocales, matcher !== 'lookup')
+      : undefined
+  const available =
+    hostSupport?.available ??
+    getAvailableLocaleList(availableLocales, matcher !== 'lookup')
+  const hostLocale = hostSupport?.defaultLocale
+  const defaultLocale = hostLocale ? () => hostLocale : getDefaultLocale
   let r: LookupMatcherResult
   if (matcher === 'lookup') {
-    r = LookupMatcher(
-      localeArray(availableLocales, false),
-      requestedLocales,
-      getDefaultLocale
-    )
+    r = LookupMatcher(available, requestedLocales, defaultLocale)
   } else {
-    r = BestFitMatcher(
-      localeArray(availableLocales, true),
-      requestedLocales,
-      getDefaultLocale
-    )
+    r = BestFitMatcher(available, requestedLocales, defaultLocale)
   }
   if (r == null) {
     r = {
-      locale: getDefaultLocale(),
+      locale: defaultLocale(),
       extension: '',
     }
   }
   let foundLocale = r.locale
-  let foundLocaleData = localeData[foundLocale]
-  // TODO: We can't really guarantee that the locale data is available
-  // invariant(
-  //   foundLocaleData !== undefined,
-  //   `Missing locale data for ${foundLocale}`
-  // )
-  // ECMA-402 §9.2.7, step 8: this is an internal Record, not an object
-  // whose fields can invoke setters inherited from Object.prototype.
-  // https://tc39.es/ecma402/#sec-resolvelocale
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L242
-  const result = {__proto__: null} as unknown as ResolveLocaleResult
-  result.locale = 'en'
-  result.dataLocale = foundLocale
+  // Steps 5–7 create a private Record and select the locale data once.
+  const result = {__proto__: null} as unknown as ResolveLocaleResult<D>
+  const dataLocale =
+    foundLocale === hostLocale || foundLocale === hostSupport?.regionAlias
+      ? (hostSupport?.dataLocale ?? foundLocale)
+      : foundLocale
+  const foundLocaleData = localeData?.[dataLocale]
+  result.dataLocale = dataLocale
+  // Keep the exported helper's original result shape for six-argument callers.
+  if (mode) result.localeData = foundLocaleData
+  // Steps 8–10 gather requested Unicode extension fields.
   let components
   let keywords: Keyword[]
   if (r.extension) {
@@ -145,7 +252,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
     keywords = []
   }
   let supportedKeywords: Keyword[] = []
-  // ECMA-402 §9.2.7 step13: relevant keys are a private List.
+  // ECMA-402 §9.2.7 step 11 visits the relevant extension keys.
   for (let keyIndex = 0; keyIndex < relevantExtensionKeys.length; keyIndex++) {
     const key = relevantExtensionKeys[keyIndex]
     // TODO: Shouldn't default to empty array, see TODO above
@@ -155,9 +262,8 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
       `keyLocaleData for ${key} must be an array`
     )
     let value = keyLocaleData[0]
-    // ECMA-402 §9.2.7 ResolveLocale, step 13.d: null is a valid default.
+    // ECMA-402 §9.2.7 steps 11.c–d select the locale default, which may be null.
     // https://tc39.es/ecma402/#sec-resolvelocale
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L254
     invariant(
       value == null || typeof value === 'string',
       `value must be a string, null, or undefined`
@@ -183,6 +289,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
       }
     }
 
+    // Steps 11.h–k let a differing supported option override a retained keyword.
     let optionsValue = options[key]
     invariant(
       optionsValue == null || typeof optionsValue === 'string',
@@ -212,12 +319,11 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
     }
     result[key] = value
   }
-  let supportedAttributes: string[] = []
+  // Steps 12–14 canonicalize the retained extension and return the record.
   if (supportedKeywords.length > 0) {
-    supportedAttributes = []
     foundLocale = InsertUnicodeExtensionAndCanonicalize(
       foundLocale,
-      supportedAttributes,
+      [],
       supportedKeywords
     )
   }

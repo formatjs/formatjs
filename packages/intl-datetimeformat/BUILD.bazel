@@ -55,7 +55,6 @@ TEST_DEPS = [
     "//packages/intl-datetimeformat/calendars",
     "//packages/ecma402-abstract/types",
     "//:node_modules/@formatjs/intl-localematcher",
-    "//:node_modules/@formatjs/bigdecimal",
     "//:node_modules/@formatjs/intl-getcanonicallocales",
     "//:node_modules/@formatjs/intl-locale",
     "//:node_modules/@types/node",
@@ -180,7 +179,10 @@ formatjs_test(
         "tests/historical-timezone.test.ts",
         ":tests-locale-data-en",
     ],
-    data = ["//conformance-tests/icu4j:historical_timezone_fixtures"],
+    data = [
+        ":polyfill.iife",
+        "//conformance-tests/icu4j:historical_timezone_fixtures",
+    ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         ":lib",
@@ -221,6 +223,7 @@ formatjs_test(
         ":tests-locale-data-pl",  # keep: generated locale data imported by tests
         ":tests-locale-data-ru",  # keep: generated locale data imported by tests
         ":tests-locale-data-zh-Hans",  # keep: generated locale data imported by tests
+        "//packages/intl-numberformat:tests-locale-data-en",  # keep: generated locale data imported by tests
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
@@ -228,12 +231,14 @@ formatjs_test(
         ":intl-datetimeformat",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-numberformat",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/vitest",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
         "//packages/intl-datetimeformat/calendars",
+        "//packages/intl-numberformat",
     ],
 )
 
@@ -610,7 +615,6 @@ rolldown_bundle(
     entry_point = "polyfill.ts",
     target = "es2020",
     deps = [
-        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
@@ -658,7 +662,6 @@ alias(
             "//tools/test262:__pkg__",
         ],
         deps = [
-            "//:node_modules/@formatjs/bigdecimal",
             "//:node_modules/@formatjs/intl-localematcher",
             "//:node_modules/@formatjs_generated/tz",
             "//packages/ecma262-abstract",
@@ -799,6 +802,7 @@ filegroup(
     testonly = True,
     srcs = ["cldr-raw/%s.json" % locale for locale in [
         "en",
+        "de",
         "fr",
         "ar",
         "ja",

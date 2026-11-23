@@ -1,16 +1,17 @@
 import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 
+const createObject = Object.create
+
 /**
- * ECMA-262 §7.3.36 GetOptionsObject, steps 2–3.
+ * ECMA-262 §7.3.36 GetOptionsObject, steps 1–3.
  * https://tc39.es/ecma262/#sec-getoptionsobject
- * https://github.com/tc39/ecma262/blob/dcf59856a8184792a9e42f0ffb7dc064094a5dcc/spec.html#L7008-L7010
  * @param options
  * @returns
  */
 export function GetOptionsObject<T extends object>(options?: T): T {
   if (options === undefined) {
-    return Object.create(null)
+    return createObject(null)
   }
   if (IsObject(options)) {
     return options

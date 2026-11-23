@@ -212,14 +212,14 @@ export const expect: Expect = Object.assign(
       function check(ok: boolean, message: string) {
         assertions++
         if (ok === negated)
-          throw Error(message + '; received ' + String(actual))
+          throw Error(message + '; received ' + display(actual))
       }
       return {
         get not() {
           return match(!negated)
         },
         toBe(value: any) {
-          check(Object.is(actual, value), 'Expected ' + String(value))
+          check(Object.is(actual, value), 'Expected ' + display(value))
         },
         toEqual(value: any) {
           check(

@@ -17,6 +17,99 @@ describe('Intl.DateTimeFormat with UTC offset timezones', function () {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
   })
 
+  it('formats fixed IANA zones without a transition pack', () => {
+    DateTimeFormat.__addTZData({abbrvs: '', offsets: '', zones: []})
+    try {
+      for (const [timeZone, identifier, hour] of [
+        ['etc/gmt+1', 'Etc/GMT+1', '23'],
+        ['Etc/GMT+12', 'Etc/GMT+12', '12'],
+        ['Etc/GMT-14', 'Etc/GMT-14', '14'],
+      ]) {
+        const formatter = new DateTimeFormat('en-GB', {
+          timeZone,
+          hour: 'numeric',
+          hourCycle: 'h23',
+        })
+        expect(formatter.resolvedOptions().timeZone).toBe(identifier)
+        expect(formatter.formatToParts(0)).toContainEqual({
+          type: 'hour',
+          value: hour,
+        })
+      }
+      for (const timeZone of ['Etc/GMT+01', 'Etc/GMT+13', 'Etc/GMT-15']) {
+        expect(() => new DateTimeFormat('en-GB', {timeZone})).toThrow(
+          RangeError
+        )
+      }
+    } finally {
+      DateTimeFormat.__addTZData(allData)
+    }
+  })
+
+  it('requires transition data for explicit IANA zones and their aliases', () => {
+    DateTimeFormat.__addTZData({abbrvs: '', offsets: '', zones: []})
+    try {
+      for (const timeZone of ['America/New_York', 'US/Eastern']) {
+        expect(() => new DateTimeFormat('en-GB', {timeZone})).toThrow(
+          RangeError
+        )
+      }
+      for (const timeZone of ['GMT', 'Etc/UTC', 'Etc/GMT']) {
+        expect(new DateTimeFormat('en-GB', {timeZone}).format(0)).toBe(
+          '01/01/1970'
+        )
+      }
+      DateTimeFormat.__addTZData({
+        abbrvs: 'EST',
+        offsets: '-dw0',
+        zones: ['US/Eastern|,0,0,0'],
+      })
+      const alias = new DateTimeFormat('en-GB', {
+        timeZone: 'us/eastern',
+        hour: 'numeric',
+        hourCycle: 'h23',
+      })
+      expect(alias.resolvedOptions().timeZone).toBe('US/Eastern')
+      expect(alias.formatToParts(0)).toContainEqual({type: 'hour', value: '19'})
+    } finally {
+      DateTimeFormat.__addTZData(allData)
+    }
+    const formatter = new DateTimeFormat('en-GB', {
+      timeZone: 'us/eastern',
+      hour: 'numeric',
+      hourCycle: 'h23',
+    })
+    expect(formatter.resolvedOptions().timeZone).toBe('US/Eastern')
+    expect(formatter.formatToParts(0)).toContainEqual({
+      type: 'hour',
+      value: '19',
+    })
+  })
+
+  it('falls back while a configured zone is missing from the current pack', () => {
+    const options = {hour: 'numeric', hourCycle: 'h23'} as const
+    DateTimeFormat.__setDefaultTimeZone('US/Eastern')
+    try {
+      DateTimeFormat.__addTZData({abbrvs: '', offsets: '', zones: []})
+      expect(
+        new DateTimeFormat('en-GB', options).resolvedOptions().timeZone
+      ).toBe('UTC')
+      DateTimeFormat.__addTZData({
+        abbrvs: 'EDT',
+        offsets: '-b40',
+        zones: ['US/Eastern|,0,0,0'],
+      })
+      const formatter = new DateTimeFormat('en-GB', options)
+      expect(formatter.resolvedOptions().timeZone).toBe('US/Eastern')
+      expect(formatter.formatToParts(0)).toContainEqual({
+        type: 'hour',
+        value: '20',
+      })
+    } finally {
+      DateTimeFormat.__addTZData(allData)
+    }
+  })
+
   it('should accept +01:00 offset timezone', function () {
     expect(
       () =>
@@ -53,6 +146,30 @@ describe('Intl.DateTimeFormat with UTC offset timezones', function () {
     formats.forEach(timeZone => {
       expect(() => new DateTimeFormat('en-GB', {timeZone})).not.toThrow()
     })
+  })
+
+  it('resolves fixed offsets without reading inherited named-zone entries', () => {
+    const timeZone = '+0530'
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, timeZone)
+    let resolved: string
+    let resolvedDefault: string
+    try {
+      Object.defineProperty(Object.prototype, timeZone, {
+        configurable: true,
+        get() {
+          throw new Error('read inherited named-zone entry')
+        },
+      })
+      resolved = new DateTimeFormat('en-GB', {timeZone}).resolvedOptions()
+        .timeZone
+      DateTimeFormat.__setDefaultTimeZone(timeZone)
+      resolvedDefault = new DateTimeFormat('en-GB').resolvedOptions().timeZone
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, timeZone, original)
+      else Reflect.deleteProperty(Object.prototype, timeZone)
+    }
+    expect(resolved).toBe('+05:30')
+    expect(resolvedDefault).toBe('+05:30')
   })
 
   it('should reject invalid offset timezones', function () {

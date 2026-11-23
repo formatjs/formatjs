@@ -1,9 +1,15 @@
 /**
  * https://bugs.chromium.org/p/v8/issues/detail?id=10682
  */
-function hasIntlGetCanonicalLocalesBug(): boolean {
+function hasLocaleCanonicalizationBug(): boolean {
   try {
-    return new (Intl as any).Locale('und-x-private').toString() === 'x-private'
+    const Locale = (Intl as any).Locale
+    return (
+      new Locale('und-x-private').toString() !== 'und-x-private' ||
+      // ECMA-402 §6.2.2 retains valid variants without an alias.
+      // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+      new Locale('en-atom1').toString() !== 'en-atom1'
+    )
   } catch {
     return true
   }
@@ -65,7 +71,7 @@ export function shouldPolyfill(): boolean {
   return (
     typeof Intl === 'undefined' ||
     !('Locale' in Intl) ||
-    hasIntlGetCanonicalLocalesBug() ||
+    hasLocaleCanonicalizationBug() ||
     hasIncompleteLocaleInfo() ||
     !hasVariantsProperty()
   )

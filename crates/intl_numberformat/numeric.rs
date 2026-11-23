@@ -92,7 +92,7 @@ impl Numeric {
         }
         Ok(())
     }
-    pub fn text(&self) -> Result<String, Error> {
+    pub fn exact_text(&self) -> Result<String, Error> {
         if let Some(special) = self.special {
             return Ok(format!(
                 "{}{special}",
@@ -117,6 +117,13 @@ impl Numeric {
                 format!("{}.{}", &self.digits[..point], &self.digits[point..])
             }
         };
+        if self.negative {
+            result.insert(0, '-');
+        }
+        Ok(result)
+    }
+    pub fn text(&self) -> Result<String, Error> {
+        let mut result = self.exact_text()?;
         // All active precision limits are at most 100 fraction or 21 significant
         // digits. Retain a guard digit and sticky tail for enormous mantissas.
         if let Some(point) = result.find('.') {
@@ -134,9 +141,6 @@ impl Numeric {
                     result.push('1');
                 }
             }
-        }
-        if self.negative {
-            result.insert(0, '-');
         }
         Ok(result)
     }

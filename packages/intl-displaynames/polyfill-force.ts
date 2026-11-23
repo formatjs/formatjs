@@ -3,6 +3,9 @@ import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
 
+// ECMA-402 §8.2.3 and §12.1 install Intl.DisplayNames.
+// https://tc39.es/ecma402/#sec-intl-displaynames-constructor
+// https://tc39.es/ecma402/#sec-intl.displaynames-intro
 defineProperty(intl, 'DisplayNames', {value: DisplayNames})
 
 // Drain any locale data that was buffered before polyfill loaded

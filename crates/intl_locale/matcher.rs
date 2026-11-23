@@ -13,8 +13,8 @@ thread_local! {
     static MATCHERS: RefCell<HashMap<Vec<String>, Arc<PreparedMatcher>>> = RefCell::new(HashMap::new());
 }
 
-/// Remove only the Unicode extension; a private-use subtag named u stays intact.
-/// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L116-L118
+/// ECMA-402 §9.2.3 step 1.b removes the Unicode extension.
+/// https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
 pub fn without_unicode_extension(locale: &str) -> String {
     if !locale.contains("-u") {
         return locale.to_owned();
@@ -41,10 +41,14 @@ pub fn without_unicode_extension(locale: &str) -> String {
 }
 
 fn prefix<'a>(available: &BTreeSet<&'a str>, requested: &str) -> Option<&'a str> {
+    find_prefix(requested, |candidate| available.get(candidate).copied())
+}
+
+fn find_prefix<'a, T>(requested: &'a str, find: impl Fn(&'a str) -> Option<T>) -> Option<T> {
     let mut candidate = requested;
     loop {
-        if let Some(found) = available.get(candidate) {
-            return Some(*found);
+        if let Some(found) = find(candidate) {
+            return Some(found);
         }
         let mut end = candidate.rfind('-')?;
         while end >= 2 && candidate.as_bytes()[end - 2] == b'-' {
@@ -54,8 +58,94 @@ fn prefix<'a>(available: &BTreeSet<&'a str>, requested: &str) -> Option<&'a str>
     }
 }
 
-/// LookupMatchingLocaleByPrefix 1–3; caller supplies canonical requested tags.
-/// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L113-L130
+struct HostLocale {
+    tag: String,
+    region_tag: Option<String>,
+}
+
+// ECMA-402 §6.2.3. Capture the process's POSIX message locale.
+// https://tc39.es/ecma402/#sec-defaultlocale
+fn host_locale() -> Option<&'static HostLocale> {
+    static HOST_LOCALE: OnceLock<Option<HostLocale>> = OnceLock::new();
+    HOST_LOCALE
+        .get_or_init(|| {
+            let locale = ["LC_ALL", "LC_MESSAGES", "LANG"]
+                .into_iter()
+                .filter_map(std::env::var_os)
+                .find(|value| !value.is_empty())?;
+            let locale = locale.to_str()?.split(['.', '@']).next()?;
+            if locale == "C" || locale == "POSIX" {
+                return None;
+            }
+            let canonical =
+                formatjs_intl_getcanonicallocales::canonicalize_locale(&locale.replace('_', "-"))
+                    .ok()?;
+            let id = crate::LanguageId::parse(&canonical);
+            let region_tag = match (id.script, id.region) {
+                (Some(_), Some(region)) => Some(format!("{}-{region}", id.language)),
+                _ => None,
+            };
+            Some(HostLocale {
+                tag: without_unicode_extension(&canonical),
+                region_tag,
+            })
+        })
+        .as_ref()
+}
+
+fn find_available_prefix<'a>(available: &'a [String], locale: &str) -> Option<&'a str> {
+    find_prefix(locale, |candidate| {
+        available
+            .iter()
+            .map(String::as_str)
+            .find(|tag| *tag == candidate)
+    })
+}
+
+/// ECMA-402 §9.1. Include the host tag and its scriptless region when supported.
+/// https://tc39.es/ecma402/#sec-internal-slots
+pub fn include_host_locale(available: &mut Vec<String>) -> usize {
+    let Some(locale) = host_locale() else {
+        return 0;
+    };
+    let Some(data_tag) = find_available_prefix(available, &locale.tag) else {
+        return 0;
+    };
+    let original_len = available.len();
+    if data_tag != locale.tag {
+        available.push(locale.tag.clone());
+    }
+    if let Some(region) = &locale.region_tag {
+        if !available.contains(region) {
+            available.push(region.clone());
+        }
+    }
+    available.len() - original_len
+}
+
+/// ECMA-402 §9.2.7 step 3 selects the host tag with an empty extension.
+/// https://tc39.es/ecma402/#sec-resolvelocale
+pub fn host_default(available: &[String]) -> Option<String> {
+    let locale = &host_locale()?.tag;
+    available
+        .iter()
+        .any(|tag| tag == locale)
+        .then(|| locale.clone())
+}
+
+/// Data for an inferred host tag or its scriptless region.
+pub fn host_locale_data(locale: &str, has_data: impl Fn(&str) -> bool) -> Option<&'static str> {
+    let host = host_locale()?;
+    if host.tag != locale && host.region_tag.as_deref() != Some(locale) {
+        return None;
+    }
+    find_prefix(&host.tag, |candidate| {
+        has_data(candidate).then_some(candidate)
+    })
+}
+
+/// ECMA-402 §9.2.3 searches the requested tags in order; caller canonicalizes.
+/// https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
 pub fn lookup(available: &[String], requested: &[String]) -> Option<String> {
     let set = available.iter().map(String::as_str).collect();
     requested
@@ -63,9 +153,8 @@ pub fn lookup(available: &[String], requested: &[String]) -> Option<String> {
         .find_map(|tag| prefix(&set, &without_unicode_extension(tag)).map(str::to_owned))
 }
 
-/// FilterLocales preserves requested tags, including their Unicode extensions.
-/// The TS implementation uses prefix support for both localeMatcher values.
-/// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L334-L347
+/// ECMA-402 §9.2.9 steps 3–5, prefix matching branch.
+/// https://tc39.es/ecma402/#sec-filterlocales
 pub fn supported(available: &[String], requested: &[String]) -> Vec<String> {
     let set = available.iter().map(String::as_str).collect();
     requested
@@ -73,6 +162,58 @@ pub fn supported(available: &[String], requested: &[String]) -> Vec<String> {
         .filter(|tag| prefix(&set, &without_unicode_extension(tag)).is_some())
         .cloned()
         .collect()
+}
+
+/// ECMA-402 §9.2.9 steps 3–5 match each tag without a default.
+/// https://tc39.es/ecma402/#sec-filterlocales
+pub fn filter(
+    available: &[String],
+    requested: &[String],
+    lookup: bool,
+) -> Result<Vec<String>, LocaleError> {
+    if lookup {
+        return Ok(supported(available, requested));
+    }
+    if available.is_empty() || requested.is_empty() {
+        return Ok(Vec::new());
+    }
+    let mut prepared = None;
+    let mut subset = Vec::new();
+    for tag in requested {
+        let single = std::slice::from_ref(tag);
+        if first_exact(available, single).is_some() {
+            subset.push(tag.clone());
+            continue;
+        }
+        let matcher = match &prepared {
+            Some(matcher) => matcher,
+            None => prepared.insert(shared_matcher(available)?),
+        };
+        if match_requested(&matcher.distance, single)?.is_some() {
+            subset.push(tag.clone());
+        }
+    }
+    Ok(subset)
+}
+
+// Accept the legacy array form for embeddings that used prefix filtering.
+#[derive(serde::Deserialize)]
+#[serde(untagged)]
+pub enum FilterRequest {
+    Locales(Vec<String>),
+    WithMatcher {
+        locales: Vec<String>,
+        lookup: Option<bool>,
+    },
+}
+
+impl FilterRequest {
+    pub fn into_parts(self) -> (Vec<String>, bool) {
+        match self {
+            Self::Locales(locales) => (locales, true),
+            Self::WithMatcher { locales, lookup } => (locales, lookup.unwrap_or(true)),
+        }
+    }
 }
 
 /// Prefer the likely script when canonical packs share a scriptless alias.
@@ -115,8 +256,8 @@ fn raw_key(tag: &str) -> Option<&str> {
     Some(&tag[..end])
 }
 
-/// Best fit shares ICU defaults with the TypeScript matcher.
-/// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L134-L144
+/// ECMA-402 §9.2.4 best fit shares ICU defaults with the TypeScript matcher.
+/// https://tc39.es/ecma402/#sec-lookupmatchinglocalebybestfit
 pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<String>, LocaleError> {
     Ok(best_fit_requested(available, requested)?.map(|(_, locale)| locale))
 }
@@ -228,6 +369,7 @@ fn exact_index(available: &[String]) -> HashMap<String, usize> {
 #[derive(Default)]
 pub struct AvailableLocales {
     locales: Vec<String>,
+    host_aliases: usize,
     matcher: OnceLock<Result<Arc<PreparedMatcher>, LocaleError>>,
 }
 
@@ -235,17 +377,49 @@ impl AvailableLocales {
     pub fn new(locales: Vec<String>) -> Self {
         Self {
             locales,
+            host_aliases: 0,
+            matcher: OnceLock::new(),
+        }
+    }
+
+    pub fn with_host_locale(mut locales: Vec<String>) -> Self {
+        let host_aliases = include_host_locale(&mut locales);
+        Self {
+            locales,
+            host_aliases,
             matcher: OnceLock::new(),
         }
     }
 
     pub fn push(&mut self, locale: String) {
         self.matcher.take();
-        self.locales.push(locale);
+        self.locales
+            .insert(self.locales.len() - self.host_aliases, locale);
+    }
+
+    pub fn push_service_locale(&mut self, locale: String) {
+        self.locales
+            .truncate(self.locales.len() - self.host_aliases);
+        self.host_aliases = 0;
+        self.push(locale);
+        self.host_aliases = include_host_locale(&mut self.locales);
     }
 
     pub fn as_slice(&self) -> &[String] {
         &self.locales
+    }
+
+    pub fn data_locale<'a>(&'a self, locale: &'a str) -> &'a str {
+        let (registered, aliases) = self
+            .locales
+            .split_at(self.locales.len() - self.host_aliases);
+        if aliases.iter().any(|alias| alias == locale) {
+            return host_locale_data(locale, |candidate| {
+                registered.iter().any(|tag| tag == candidate)
+            })
+            .unwrap_or(locale);
+        }
+        locale
     }
 
     pub fn best_fit(&self, requested: &[String]) -> Result<Option<String>, LocaleError> {

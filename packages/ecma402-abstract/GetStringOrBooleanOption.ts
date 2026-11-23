@@ -3,7 +3,9 @@ import {
   arrayIndexOf,
 } from '#packages/ecma262-abstract/intrinsics.js'
 /**
- * https://tc39.es/ecma402/#sec-getstringorbooleanoption
+ * ECMA-402 §9.2.12 reads and coerces the grouping option.
+ * The caller supplies the legacy conversions from §16.1.1 steps 22–23.
+ * https://tc39.es/ecma402/#sec-getbooleanorstringnumberformatoption
  * @param opts
  * @param prop
  * @param values
@@ -29,9 +31,9 @@ export function GetStringOrBooleanOption<T extends object, K extends keyof T>(
   if (value === true) {
     return trueValue
   }
-  const valueBoolean = Boolean(value)
-
-  if (valueBoolean === false) {
+  // ECMA-402 §9.2.12 step 4 uses intrinsic ToBoolean.
+  // https://tc39.es/ecma262/#sec-toboolean
+  if (!value) {
     return falsyValue
   }
 

@@ -1,38 +1,16 @@
 import '@formatjs/intl-getcanonicallocales/polyfill-force.js'
-import '@formatjs/intl-pluralrules/polyfill-force.js'
-import type {PluralRules} from '@formatjs/intl-pluralrules'
 import {NumberFormat} from '@formatjs/intl-numberformat'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
 import {readFileSync, readdirSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
-import {runInNewContext} from 'node:vm'
 import assert from 'node:assert/strict'
 import {createHash} from 'node:crypto'
 
 const resolve = (path: string) =>
   runfiles.resolve(`${process.env.TEST_WORKSPACE || '_main'}/${path}`)
 const directory = resolve('crates/intl_numberformat/locale-data')
-const pluralRules = Intl.PluralRules as unknown as typeof PluralRules
-for (const file of readdirSync(resolve('crates/intl_pluralrules/locale-data'))
-  .filter(file => file.endsWith('.json'))
-  .sort(
-    (a, b) =>
-      Number(b === 'en.json') - Number(a === 'en.json') || a.localeCompare(b)
-  ))
-  pluralRules.__addLocaleData(
-    runInNewContext(
-      '(' +
-        readFileSync(
-          resolve(
-            'packages/intl-pluralrules/cldr-raw/' + file.replace('.json', '.js')
-          ),
-          'utf8'
-        ) +
-        ')'
-    )
-  )
 for (const file of readdirSync(directory)
   .filter(file => file.endsWith('.json'))
   .sort(

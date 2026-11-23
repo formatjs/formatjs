@@ -59,8 +59,8 @@ export type RelativeTimeFormatSingularUnit = Exclude<
 
 export type RelativeTimeLocaleData = LocaleData<LocaleFieldsData>
 export interface RelativeTimeFormatInternal {
-  numberFormat: Intl.NumberFormat
-  pluralRules: Intl.PluralRules
+  formatNumber(value: number): Intl.NumberFormatPart[]
+  selectPlural(value: number): Intl.LDMLPluralRule
   locale: string
   fields: LocaleFieldsData
   style: Intl.ResolvedRelativeTimeFormatOptions['style']

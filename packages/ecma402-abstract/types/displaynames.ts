@@ -38,6 +38,11 @@ export interface DisplayNamesData {
       short: Record<ScriptCode, string>
       long: Record<ScriptCode, string>
     }
+    variant?: {
+      narrow: Record<string, string>
+      short: Record<string, string>
+      long: Record<string, string>
+    }
     currency: {
       narrow: Record<CurrencyCode, string>
       short: Record<CurrencyCode, string>
@@ -55,11 +60,11 @@ export interface DisplayNamesData {
     }
   }
   /**
-   * CLDR patterns for composing language names with script and region qualifiers.
+   * CLDR patterns for composing language names with script, region, and variant qualifiers.
    */
   patterns: {
     locale: string
-    /** Pattern joining script and region names. Defaults to "{0}, {1}". */
+    /** Pattern joining qualifiers. Defaults to "{0}, {1}". */
     separator?: string
   }
 }

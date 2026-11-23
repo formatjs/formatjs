@@ -345,7 +345,7 @@ try {
   Function.prototype.bind = savedBind
   Intl.getCanonicalLocales = savedCanonical
 }
-// Relative fields follow style/numeric getters; existing instances retain their data.
+// Relative fields are captured before style/numeric getters can reload them.
 const old = new Native('en'),
   replacement = JSON.parse(fixtures.packs[0])
 replacement.data.day.future.other = 'AFTER {0}'
@@ -358,11 +358,48 @@ const changed = new Native('en', {
 })
 equal(
   changed.format(1, 'day'),
+  'in 1 day',
+  'constructor retains captured fields'
+)
+equal(
+  new Native('en').format(1, 'day'),
   'AFTER 1',
-  'getter replacement supplies new fields'
+  'next constructor sees reloaded fields'
 )
 equal(old.format(1, 'day'), 'in 1 day', 'old instance retains fields')
 Native.__addLocaleData(fixtures.packs[0])
+
+// ECMA-402 §18.5.2 step 7 uses ECMAScript Number::toString for named offsets.
+const namedOffsets = JSON.parse(fixtures.packs[0])
+const offsets = [
+  [1e21, '1e+21'],
+  [-1e21, '-1e+21'],
+  [1e20, '100000000000000000000'],
+  [1e-7, '1e-7'],
+  [1e-6, '0.000001'],
+  [1000000000000000.25, '1000000000000000.2'],
+] as const
+for (const [, key] of offsets) namedOffsets.data.day[key] = 'named ' + key
+Native.__addLocaleData(JSON.stringify(namedOffsets))
+Reference.__addLocaleData(namedOffsets)
+try {
+  for (const Constructor of [Reference, Native]) {
+    const formatter = new Constructor('en', {numeric: 'auto'})
+    for (const [value, key] of offsets) {
+      const text = 'named ' + key
+      equal(formatter.format(value, 'day'), text, 'named offset text')
+      equal(
+        formatter.formatToParts(value, 'days'),
+        [{type: 'literal', value: text}],
+        'named offset parts'
+      )
+    }
+  }
+} finally {
+  Native.__addLocaleData(fixtures.packs[0])
+  Reference.__addLocaleData(JSON.parse(fixtures.packs[0]))
+}
+
 // Native data embeds number/plural records; globals are only needed by TS reference.
 const numberDescriptor = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
 const pluralDescriptor = Object.getOwnPropertyDescriptor(Intl, 'PluralRules')!

@@ -26,7 +26,8 @@ struct Zone {
 }
 struct State {
     zones: Arc<BTreeMap<String, Zone>>,
-    default: TimeZone,
+    default: Option<String>,
+    host_time_zone: Option<String>,
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TimeZone {
@@ -49,12 +50,12 @@ pub struct TimeZoneRegistry {
     state: Arc<RwLock<State>>,
 }
 impl Default for TimeZoneRegistry {
-    // Proposal comparison §15.4.1 step 28.b.i: Initialize the Intl registry default to UTC.
     fn default() -> Self {
         Self {
             state: Arc::new(RwLock::new(State {
                 zones: Arc::new(BTreeMap::new()),
-                default: utc(),
+                default: None,
+                host_time_zone: None,
             })),
         }
     }
@@ -77,27 +78,70 @@ fn named(name: String, target: String) -> TimeZone {
         target,
     }
 }
-// Proposal comparison §15.4.1 step 32.a: Build the generated alias and target lookup.
-fn links() -> &'static BTreeMap<String, (String, String)> {
-    static LINKS: OnceLock<BTreeMap<String, (String, String)>> = OnceLock::new();
-    LINKS.get_or_init(|| {
-        let raw: BTreeMap<String, String> =
+struct ZoneIdentifiers {
+    links: BTreeMap<String, (String, String)>,
+    primary: BTreeMap<String, String>,
+}
+
+// ECMA-402 §6.5.1 keeps primary identifiers separate from transition data links.
+// https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
+fn identifiers() -> &'static ZoneIdentifiers {
+    #[derive(Deserialize)]
+    struct RawIdentifiers {
+        links: BTreeMap<String, String>,
+        primary: BTreeMap<String, String>,
+    }
+    static IDENTIFIERS: OnceLock<ZoneIdentifiers> = OnceLock::new();
+    IDENTIFIERS.get_or_init(|| {
+        let raw: RawIdentifiers =
             serde_json::from_str(include_str!(env!("FORMATJS_TIMEZONE_LINKS")))
-                .expect("generated IANA links");
-        let mut result = BTreeMap::new();
-        for target in raw.values() {
-            result.insert(
+                .expect("generated IANA timezone identities");
+        let mut links = BTreeMap::new();
+        for target in raw.links.values() {
+            links.insert(
                 target.to_ascii_uppercase(),
                 (target.clone(), target.clone()),
             );
         }
-        for (alias, target) in raw {
-            result.insert(alias.to_ascii_uppercase(), (alias, target));
+        for (alias, target) in raw.links {
+            links.insert(alias.to_ascii_uppercase(), (alias, target));
         }
-        result
+        ZoneIdentifiers {
+            links,
+            primary: raw.primary,
+        }
     })
 }
-// Proposal comparison §15.4.1 steps 30.a, 30.d and 30.f: Resolve accepted numeric offsets to normalized text.
+
+// ECMA-262 §21.4.1.24 steps 2–3 ask the host for its current zone.
+// Bare POSIX runtimes can use a TZ setting or a zoneinfo link.
+// https://tc39.es/ecma262/#sec-systemtimezoneidentifier
+fn system_time_zone_name() -> Option<String> {
+    if let Some(zone) = std::env::var_os("TZ") {
+        return zone.into_string().ok();
+    }
+    #[cfg(unix)]
+    if let Ok(link) = std::fs::read_link("/etc/localtime") {
+        let path = link.to_str()?;
+        if path.contains("/zoneinfo/") {
+            return Some(path.to_owned());
+        }
+    }
+    None
+}
+
+fn time_zone_identifier(value: &str) -> &str {
+    let value = value.strip_prefix(':').unwrap_or(value);
+    let Some((_, zone)) = value.rsplit_once("/zoneinfo/") else {
+        return value;
+    };
+    zone.strip_prefix("posix/")
+        .or_else(|| zone.strip_prefix("right/"))
+        .unwrap_or(zone)
+}
+// ECMA-402 §§11.1.2 step 19 and 11.1.3: parse minute offsets and normalize their identifiers.
+// https://tc39.es/ecma402/#sec-createdatetimeformat
+// https://tc39.es/ecma402/#sec-formatoffsettimezoneidentifier
 fn offset_zone(value: &str) -> Result<TimeZone, Error> {
     let bytes = value.as_bytes();
     let (hours, minutes) = match bytes {
@@ -262,21 +306,48 @@ impl TimeZoneRegistry {
     pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
         self.snapshot().resolve(value)
     }
-    // Proposal comparison §15.4.1 step 28.b.i: Supply the configured Intl default zone.
+    // ECMA-402 §11.1.2 step 18 uses the current system zone by default.
+    // https://tc39.es/ecma402/#sec-createdatetimeformat
+    // ECMA-262 §21.4.1.24 returns UTC when only UTC is available.
+    // https://tc39.es/ecma262/#sec-systemtimezoneidentifier
     pub fn default_time_zone(&self) -> TimeZone {
-        self.state
-            .read()
-            .expect("time zone registry")
+        let state = self.state.read().expect("time zone registry");
+        let snapshot = TimeZoneSnapshot {
+            zones: state.zones.clone(),
+        };
+        // Re-resolve the override because the active pack may have changed.
+        if let Some(zone) = state
             .default
-            .clone()
+            .as_deref()
+            .and_then(|name| snapshot.resolve(name).ok())
+        {
+            return zone;
+        }
+        state
+            .host_time_zone
+            .as_deref()
+            .and_then(|name| snapshot.resolve_system_zone(name))
+            .or_else(|| {
+                let name = system_time_zone_name()?;
+                snapshot.resolve_system_zone(time_zone_identifier(&name))
+            })
+            .unwrap_or_else(utc)
     }
     pub fn set_default_time_zone(&self, value: Option<&str>) -> Result<(), Error> {
-        let zone = value
-            .map(|value| self.resolve(value))
-            .transpose()?
-            .unwrap_or_else(utc);
-        self.state.write().expect("time zone registry").default = zone;
+        let mut state = self.state.write().expect("time zone registry");
+        let snapshot = TimeZoneSnapshot {
+            zones: state.zones.clone(),
+        };
+        state.default = value
+            .map(|name| snapshot.resolve(name).map(|zone| zone.name))
+            .transpose()?;
         Ok(())
+    }
+    pub(crate) fn set_host_time_zone(&self, name: String) {
+        self.state
+            .write()
+            .expect("time zone registry")
+            .host_time_zone = (!name.is_empty()).then_some(name);
     }
     // Proposal comparison §15.6.23 steps 1.a and 2.b: Look up the offset in a captured map.
     pub fn offset_at(&self, zone: &TimeZone, epoch_nanoseconds: i128) -> TimeZoneOffset {
@@ -297,7 +368,22 @@ pub struct TimeZoneSnapshot {
     zones: Arc<BTreeMap<String, Zone>>,
 }
 impl TimeZoneSnapshot {
-    // Proposal comparison §15.6.23 steps 1.a and 2.b: Resolve fixed, explicit or recurring offset data.
+    fn resolve_system_zone(&self, name: &str) -> Option<TimeZone> {
+        // ECMA-262 §21.4.1.24 prefers the system zone's primary identifier.
+        // https://tc39.es/ecma262/#sec-systemtimezoneidentifier
+        // A partial pack may have only the host alias's own rows.
+        let ids = identifiers();
+        ids.links
+            .get(&name.to_ascii_uppercase())
+            .and_then(|(identifier, _)| ids.primary.get(identifier))
+            .and_then(|primary| self.resolve(primary).ok())
+            .or_else(|| self.resolve(name).ok())
+    }
+
+    // ECMA-402 §11.5.11 steps 1–2 resolve fixed and named offsets.
+    // https://tc39.es/ecma402/#sec-tolocaltime
+    // ECMA-262 §21.4.1.21 looks up the named offset at the requested instant.
+    // https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds
     pub fn offset_at(&self, zone: &TimeZone, epoch_nanoseconds: i128) -> TimeZoneOffset {
         if let Some(seconds) = zone.fixed {
             return TimeZoneOffset {
@@ -331,7 +417,7 @@ impl TimeZoneSnapshot {
             .partition_point(|transition| i128::from(transition.seconds) <= seconds);
         data.transitions[index.saturating_sub(1)].offset
     }
-    // Proposal comparison §15.6.23 step 3: Add the exact zone offset before civil projection.
+    // ECMA-402 §11.5.11 steps 3–5 add the offset before civil projection.
     pub fn local_time(
         &self,
         zone: &TimeZone,
@@ -343,7 +429,12 @@ impl TimeZoneSnapshot {
             .ok_or(Error::InvalidDate)?;
         Ok((CivilDateTime::from_epoch_nanoseconds(value)?, offset))
     }
-    // Proposal comparison §15.4.1 steps 30.f, 32.a and 32.c: Resolve numeric offsets and named timezone spelling.
+    // ECMA-402 §11.1.2 steps 19–20 resolves the supplied identifier.
+    // https://tc39.es/ecma402/#sec-createdatetimeformat
+    // ECMA-402 §§6.1 and 6.5.1–2 match IANA identifiers with ASCII case folding.
+    // https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
+    // https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
+    // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
     pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
         if !value.is_ascii() {
             return Err(Error::InvalidTimeZone);
@@ -358,11 +449,19 @@ impl TimeZoneSnapshot {
         if let Some(zone) = etc_gmt_zone(&key) {
             return Ok(zone);
         }
-        if let Some((name, target)) = links().get(&key) {
+        if let Some((name, target)) = identifiers().links.get(&key) {
             if matches!(target.as_str(), "Etc/UTC" | "Etc/GMT") {
                 return Ok(named(name.clone(), "UTC".into()));
             }
-            return Ok(named(name.clone(), target.clone()));
+            // A pack can include either the IANA link's target or the link's own rows.
+            if self.zones.contains_key(&target.to_ascii_uppercase()) {
+                return Ok(named(name.clone(), target.clone()));
+            }
+            return self
+                .zones
+                .get(&key)
+                .map(|zone| named(name.clone(), zone.name.clone()))
+                .ok_or(Error::InvalidTimeZone);
         }
         self.zones
             .get(&key)

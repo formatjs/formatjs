@@ -1,9 +1,10 @@
+import type {ApproximateStyle} from '#packages/ecma402-abstract/NumberFormat/FormatApproximately.js'
 import {
   composeNumberPattern,
   getNumberPattern,
 } from '#packages/ecma402-abstract/NumberFormat/number-patterns.js'
 import type {Decimal} from '@formatjs/bigdecimal'
-import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/regex.js'
+import {SYMBOL_RANGES} from '@formatjs_generated/unicode/regex.js'
 import {
   type LDMLPluralRuleMap,
   type NumberFormatLocaleInternalData,
@@ -16,20 +17,131 @@ import {
   type NumberFormatPart,
   type RawNumberFormatResult,
   type SymbolsData,
-  type UnitData,
   type UseGroupingType,
 } from '#packages/ecma402-abstract/types/number.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
 import {getCompactPattern} from '#packages/ecma402-abstract/NumberFormat/compact-patterns.js'
 import {digitMapping} from '@formatjs_generated/unicode/digit-mapping.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 
-// This is from: unicode-12.1.0/General_Category/Symbol/regex.js
-// IE11 does not support unicode flag, otherwise this is just /\p{S}/u.
-// /^\p{S}/u
-const CARET_S_UNICODE_REGEX = new RegExp(`^${S_UNICODE_REGEX.source}`)
-// /\p{S}$/u
-const S_DOLLAR_UNICODE_REGEX = new RegExp(`${S_UNICODE_REGEX.source}$`)
+const apply = Reflect.apply
+const charCodeAt = String.prototype.charCodeAt
+const codePointAt = String.prototype.codePointAt
+const indexOf = String.prototype.indexOf
+const slice = String.prototype.slice
+const repeat = String.prototype.repeat
+const trim = String.prototype.trim
+
+function appendPart(
+  parts: NumberFormatPart[],
+  type: NumberFormatPart['type'],
+  value: string
+): void {
+  setDataProperty(parts, parts.length, {type, value})
+}
+
+// LDML currency boundary spacing checks Unicode General_Category at the edge.
+// https://unicode.org/reports/tr35/tr35-numbers.html#Currency_Spacing
+function isSymbol(codePoint: number | undefined): boolean {
+  if (codePoint === undefined) return false
+  let start = 0
+  let end: number = SYMBOL_RANGES.length
+  while (start < end) {
+    const index = (start + end) >>> 1
+    const range = SYMBOL_RANGES[index]
+    if (codePoint < range[0]) end = index
+    else if (codePoint > range[1]) start = index + 1
+    else return true
+  }
+  return false
+}
+
+function lastCodePoint(value: string): number | undefined {
+  let index = value.length - 1
+  const last = apply(charCodeAt, value, [index]) as number
+  if (last >= 0xdc00 && last <= 0xdfff && index > 0) {
+    const first = apply(charCodeAt, value, [index - 1]) as number
+    if (first >= 0xd800 && first <= 0xdbff) index--
+  }
+  return apply(codePointAt, value, [index])
+}
+
+function appendParts(
+  result: NumberFormatPart[],
+  parts: readonly NumberFormatPart[]
+) {
+  for (let i = 0; i < parts.length; i++)
+    setDataProperty(result, result.length, parts[i])
+}
+
+function appendSpan(
+  parts: NumberFormatPart[],
+  type: 'literal' | 'unit',
+  pattern: string,
+  start: number,
+  end: number
+): void {
+  if (start < end) appendPart(parts, type, apply(slice, pattern, [start, end]))
+}
+
+function interpolateCurrencyName(
+  pattern: string,
+  numberParts: NumberFormatPart[],
+  name: string
+): NumberFormatPart[] {
+  const result: NumberFormatPart[] = []
+  let start = 0
+  for (let i = 0; i + 2 < pattern.length; i++) {
+    if (pattern[i] !== '{' || pattern[i + 2] !== '}') continue
+    const field = pattern[i + 1]
+    if (field !== '0' && field !== '1') continue
+    appendSpan(result, 'literal', pattern, start, i)
+    if (field === '0') appendParts(result, numberParts)
+    else appendPart(result, 'currency', name)
+    start = i + 3
+    i += 2
+  }
+  appendSpan(result, 'literal', pattern, start, pattern.length)
+  return result
+}
+
+function replaceField(pattern: string, field: string, value: string): string {
+  const index = apply(indexOf, pattern, [field]) as number
+  if (index < 0) return pattern
+  return (
+    apply(slice, pattern, [0, index]) +
+    value +
+    apply(slice, pattern, [index + field.length])
+  )
+}
+
+function interpolateUnit(
+  pattern: string,
+  numberParts: NumberFormatPart[]
+): NumberFormatPart[] {
+  const result: NumberFormatPart[] = []
+  let start = 0
+  let field = apply(indexOf, pattern, ['{0}', start]) as number
+  while (field >= 0) {
+    // Adjacent whitespace is a literal, separate from the unit affix.
+    let before = field
+    let after = field + 3
+    while (before > start && apply(trim, pattern[before - 1], []) === '')
+      before--
+    while (after < pattern.length && apply(trim, pattern[after], []) === '')
+      after++
+    appendSpan(result, 'unit', pattern, start, before)
+    appendSpan(result, 'literal', pattern, before, field)
+    appendParts(result, numberParts)
+    appendSpan(result, 'literal', pattern, field + 3, after)
+    start = after
+    field = apply(indexOf, pattern, ['{0}', start]) as number
+  }
+  appendSpan(result, 'unit', pattern, start, pattern.length)
+  return result
+}
 
 interface NumberResult {
   formattedString: string
@@ -43,7 +155,7 @@ interface NumberResult {
 export default function formatToParts(
   numberResult: NumberResult,
   data: NumberFormatLocaleInternalData,
-  pl: Intl.PluralRules,
+  getCategory: (value: Decimal, formatted?: string) => LDMLPluralRule,
   options: {
     numberingSystem: string
     useGrouping?: UseGroupingType
@@ -60,7 +172,7 @@ export default function formatToParts(
     unit?: string
     unitDisplay?: NumberFormatOptionsUnitDisplay
   },
-  approximately = false
+  approximateStyle?: ApproximateStyle
 ): NumberFormatPart[] {
   const {sign, exponent, magnitude} = numberResult
   const {notation, style, numberingSystem} = options
@@ -68,40 +180,45 @@ export default function formatToParts(
   const symbols =
     data.numbers.symbols[numberingSystem] ||
     data.numbers.symbols[defaultNumberingSystem]
-  approximately = approximately && !!symbols.approximatelySign
 
   // #region Part 1: partition and interpolate the CLDR number pattern.
   // ----------------------------------------------------------
 
+  // ECMA-402 §16.5.11: select the notation pattern from exponent and locale data.
+  // https://tc39.es/ecma402/#sec-getnotationsubpattern
   let compactNumberPattern: string | null = null
   if (notation === 'compact' && magnitude) {
     compactNumberPattern = getCompactDisplayPattern(
       numberResult,
-      pl,
+      getCategory,
       data,
       options.compactDisplay!,
       numberingSystem
     )
   }
 
-  // This is used multiple times
+  // ECMA-402 §6.3 uses the ISO 4217 code when no localized symbol exists.
+  // The locale record cannot inherit a translation.
+  // https://tc39.es/ecma402/#sec-currency-codes
+  const currencyData =
+    style === 'currency' && HasOwnProperty(data.currencies, options.currency!)
+      ? data.currencies[options.currency!]
+      : undefined
   let nonNameCurrencyPart: string | undefined
   if (style === 'currency' && options.currencyDisplay !== 'name') {
-    const byCurrencyDisplay = data.currencies[options.currency!]
-    if (byCurrencyDisplay) {
+    if (currencyData) {
       switch (options.currencyDisplay!) {
         case 'code':
           nonNameCurrencyPart = options.currency!
           break
         case 'symbol':
-          nonNameCurrencyPart = byCurrencyDisplay.symbol
+          nonNameCurrencyPart = currencyData.symbol
           break
         default:
-          nonNameCurrencyPart = byCurrencyDisplay.narrow
+          nonNameCurrencyPart = currencyData.narrow
           break
       }
     } else {
-      // Fallback for unknown currency
       nonNameCurrencyPart = options.currency!
     }
   }
@@ -119,12 +236,16 @@ export default function formatToParts(
       : style === 'currency' && options.currencyDisplay !== 'name'
         ? currency[options.currencySign!]
         : decimal.standard
+  if (approximateStyle) {
+    approximateStyle.pattern = numberPattern
+    approximateStyle.sign = sign
+  }
   const stylePlan = getNumberPattern(
     data.numbers,
     numberPattern,
     false,
     sign,
-    approximately
+    false
   )
   // ECMA-402 GetNumberFormatPattern and GetNotationSubPattern are independent.
   const plan = compactNumberPattern
@@ -142,53 +263,52 @@ export default function formatToParts(
       : undefined
   const beforeCurrency =
     spacing?.beforeInsertBetween &&
-    !CARET_S_UNICODE_REGEX.test(nonNameCurrencyPart!)
+    !isSymbol(apply(codePointAt, nonNameCurrencyPart!, [0]))
   const afterCurrency =
     spacing?.afterInsertBetween &&
-    !S_DOLLAR_UNICODE_REGEX.test(nonNameCurrencyPart!)
+    !isSymbol(lastCodePoint(nonNameCurrencyPart!))
   let insertedBefore = false
   let insertedAfter = false
   const numberParts: NumberFormatPart[] = []
 
-  for (const [index, [type, value]] of plan.parts.entries()) {
+  // ECMA-402 §16.5.3 step 9 traverses private pattern parts.
+  // https://tc39.es/ecma402/#sec-partitionnumberpattern
+  for (let index = 0; index < plan.parts.length; index++) {
+    const part = plan.parts[index]
+    const type = part[0]
     switch (type) {
       case 'number':
-        numberParts.push(
-          ...partitionNumberIntoParts(
-            symbols,
-            numberResult,
-            notation,
-            exponent,
-            numberingSystem,
-            options.useGrouping ?? true,
-            plan.grouping,
-            data.numbers.minimumGroupingDigits ?? 1,
-            style
-          )
+        partitionNumberIntoParts(
+          numberParts,
+          symbols,
+          numberResult,
+          notation,
+          exponent,
+          numberingSystem,
+          options.useGrouping ?? true,
+          plan.grouping,
+          data.numbers.minimumGroupingDigits ?? 1,
+          style
         )
         break
       case 'currency':
         if (
           !insertedBefore &&
           beforeCurrency &&
-          plan.parts[index - 1]?.[0] === 'number'
+          index > 0 &&
+          plan.parts[index - 1][0] === 'number'
         ) {
-          numberParts.push({
-            type: 'literal',
-            value: spacing!.beforeInsertBetween,
-          })
+          appendPart(numberParts, 'literal', spacing!.beforeInsertBetween!)
           insertedBefore = true
         }
-        numberParts.push({type: 'currency', value: nonNameCurrencyPart!})
+        appendPart(numberParts, 'currency', nonNameCurrencyPart!)
         if (
           !insertedAfter &&
           afterCurrency &&
-          plan.parts[index + 1]?.[0] === 'number'
+          index + 1 < plan.parts.length &&
+          plan.parts[index + 1][0] === 'number'
         ) {
-          numberParts.push({
-            type: 'literal',
-            value: spacing!.afterInsertBetween,
-          })
+          appendPart(numberParts, 'literal', spacing!.afterInsertBetween!)
           insertedAfter = true
         }
         break
@@ -196,10 +316,10 @@ export default function formatToParts(
       case 'minusSign':
       case 'plusSign':
       case 'percentSign':
-        numberParts.push({type, value: symbols[type]})
+        appendPart(numberParts, type, symbols[type])
         break
       default:
-        numberParts.push({type, value})
+        appendPart(numberParts, type, part[1])
     }
   }
 
@@ -207,6 +327,36 @@ export default function formatToParts(
 
   // #region Part 2: interpolate unit pattern if necessary.
   // ----------------------------------------------
+
+  const getNameCategory = () => {
+    const {roundedNumber, formattedString} = numberResult
+    if (exponent === 0) return getCategory(roundedNumber, formattedString)
+    if (notation === 'compact') {
+      return getCategory(roundedNumber.times(getPowerOf10(exponent)))
+    }
+    // Scientific and engineering notation display a mantissa times 10^exponent.
+    // Shift its decimal point before deriving CLDR's visible fraction operands.
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Scientific_Notation
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Operands
+    const decimal = apply(indexOf, formattedString, ['.']) as number
+    const integerLength = decimal < 0 ? formattedString.length : decimal
+    const digits =
+      decimal < 0
+        ? formattedString
+        : (apply(slice, formattedString, [0, decimal]) as string) +
+          apply(slice, formattedString, [decimal + 1])
+    const point = integerLength + exponent
+    let expanded: string
+    if (point <= 0) {
+      expanded = '0.' + apply(repeat, '0', [-point]) + digits
+    } else if (point >= digits.length) {
+      expanded = digits + apply(repeat, '0', [point - digits.length])
+    } else {
+      expanded =
+        apply(slice, digits, [0, point]) + '.' + apply(slice, digits, [point])
+    }
+    return getCategory(roundedNumber, expanded)
+  }
 
   switch (style) {
     case 'currency': {
@@ -217,115 +367,64 @@ export default function formatToParts(
           data.numbers.currency[defaultNumberingSystem]
         ).unitPattern
 
-        // Select plural
-        let unitName: string
-        const currencyNameData = data.currencies[options.currency!]
-        if (currencyNameData) {
-          // Sparse CLDR locales can omit names for an otherwise known currency.
-          unitName =
-            selectPlural(
-              pl,
-              numberResult.roundedNumber
-                .times(getPowerOf10(exponent))
-                .toNumber(),
-              currencyNameData.displayName
-            ) || options.currency!
-        } else {
-          // Fallback for unknown currency
-          unitName = options.currency!
-        }
+        // Sparse CLDR locales can omit names for an otherwise known currency.
+        const unitName =
+          (currencyData &&
+            pluralPattern(getNameCategory(), currencyData.displayName)) ||
+          options.currency!
 
-        // Do {0} and {1} substitution
-        const unitPatternParts = unitPattern.split(/(\{[01]\})/g)
-
-        const result: NumberFormatPart[] = []
-        for (const part of unitPatternParts) {
-          switch (part) {
-            case '{0}':
-              result.push(...numberParts)
-              break
-            case '{1}':
-              result.push({type: 'currency', value: unitName})
-              break
-            default:
-              if (part) {
-                result.push({type: 'literal', value: part})
-              }
-              break
-          }
-        }
-        return result
+        // ECMA-402 §16.5.3 step 9.c–g expands a private pattern.
+        // https://tc39.es/ecma402/#sec-partitionnumberpattern
+        return interpolateCurrencyName(unitPattern, numberParts, unitName)
       } else {
         return numberParts
       }
     }
     case 'unit': {
-      const {unit, unitDisplay} = options
-
-      let unitData: UnitData | undefined = data.units.simple[unit!]
-
-      let unitPattern: string
-      if (unitData) {
-        // Simple unit pattern
-        unitPattern = selectPlural(
-          pl,
-          numberResult.roundedNumber.times(getPowerOf10(exponent)).toNumber(),
-          data.units.simple[unit!][unitDisplay!]
-        )
-      } else {
-        // See: http://unicode.org/reports/tr35/tr35-general.html#perUnitPatterns
-        // If cannot find unit in the simple pattern, it must be "per" compound pattern.
-        // Implementation note: we are not following TR-35 here because we need to format to parts!
-        const [numeratorUnit, denominatorUnit] = unit!.split('-per-')
-        unitData = data.units.simple[numeratorUnit]
-
-        const numeratorUnitPattern = selectPlural(
-          pl,
-          numberResult.roundedNumber.times(getPowerOf10(exponent)).toNumber(),
-          data.units.simple[numeratorUnit!][unitDisplay!]
-        )
-        const perUnitPattern =
-          data.units.simple[denominatorUnit].perUnit[unitDisplay!]
-
-        if (perUnitPattern) {
-          // perUnitPattern exists, combine it with numeratorUnitPattern
-          unitPattern = perUnitPattern.replace('{0}', numeratorUnitPattern)
-        } else {
-          // get compoundUnit pattern (e.g. "{0} per {1}"), repalce {0} with numerator pattern and {1} with
-          // the denominator pattern in singular form.
-          const perPattern = data.units.compound.per[unitDisplay!]
-          const denominatorPattern = selectPlural(
-            pl,
-            1,
-            data.units.simple[denominatorUnit][unitDisplay!]
-          )
-          unitPattern = unitPattern = perPattern
-            .replace('{0}', numeratorUnitPattern)
-            .replace('{1}', denominatorPattern.replace('{0}', ''))
+      const unit = options.unit!
+      const width = options.unitDisplay!
+      const {simple, compound} = data.units
+      const category = getNameCategory()
+      const unitData = (id: string) =>
+        HasOwnProperty(simple, id) ? simple[id] : undefined
+      const unitForm = (id: string, plural: LDMLPluralRule) => {
+        const forms = unitData(id)?.[width]
+        return forms && pluralPattern(plural, forms)
+      }
+      let unitPattern = unitForm(unit, category)
+      if (unitPattern === undefined) {
+        // LDML compound units use a precomposed denominator when available.
+        // https://unicode.org/reports/tr35/tr35-general.html#Compound_Units
+        const per = apply(indexOf, unit, ['-per-']) as number
+        if (per >= 0) {
+          const numerator = apply(slice, unit, [0, per]) as string
+          const denominator = apply(slice, unit, [per + 5]) as string
+          const numeratorPattern = unitForm(numerator, category)
+          const perUnitPattern = unitData(denominator)?.perUnit?.[width]
+          if (numeratorPattern && perUnitPattern) {
+            unitPattern = replaceField(perUnitPattern, '{0}', numeratorPattern)
+          } else if (numeratorPattern) {
+            // CLDR's per derivation assigns category "one" to the denominator.
+            // https://unicode.org/reports/tr35/tr35-general.html#Deriving_the_Plural_Category_of_Unit_Components
+            const perPattern = HasOwnProperty(compound, 'per')
+              ? compound.per?.[width]
+              : undefined
+            const denominatorPattern = unitForm(denominator, 'one')
+            if (perPattern && denominatorPattern) {
+              unitPattern = replaceField(
+                replaceField(perPattern, '{0}', numeratorPattern),
+                '{1}',
+                apply(trim, replaceField(denominatorPattern, '{0}', ''), [])
+              )
+            }
+          }
         }
       }
+      // ECMA-402 §16.5.10 steps 6.d–f select a fallback for missing unit data.
+      // https://tc39.es/ecma402/#sec-getnumberformatpattern
+      unitPattern ??= unitForm('fallback', category) ?? `{0} ${unit}`
 
-      const result: NumberFormatPart[] = []
-      // We need spacing around "{0}" because they are not treated as "unit" parts, but "literal".
-      for (const part of unitPattern.split(/(\s*\{0\}\s*)/)) {
-        const interpolateMatch = /^(\s*)\{0\}(\s*)$/.exec(part)
-        if (interpolateMatch) {
-          // Space before "{0}"
-          if (interpolateMatch[1]) {
-            result.push({type: 'literal', value: interpolateMatch[1]})
-          }
-          // "{0}" itself
-          result.push(...numberParts)
-          // Space after "{0}"
-          if (interpolateMatch[2]) {
-            result.push({type: 'literal', value: interpolateMatch[2]})
-          }
-        } else if (part) {
-          result.push({type: 'unit', value: part})
-        }
-      }
-
-      return result
+      return interpolateUnit(unitPattern, numberParts)
     }
     default:
       return numberParts
@@ -334,9 +433,25 @@ export default function formatToParts(
   // #endregion
 }
 
-// A subset of https://tc39.es/ecma402/#sec-partitionnotationsubpattern
-// Plus the exponent parts handling.
+// ECMA-402 §16.5.4 step 4.c.iii.1 substitutes ASCII digits directly.
+// https://tc39.es/ecma402/#sec-partitionnotationsubpattern
+function localizeDigits(
+  value: string,
+  digits: readonly string[] | undefined
+): string {
+  if (!digits) return value
+  let result = ''
+  for (let index = 0; index < value.length; index++) {
+    const digit = (apply(charCodeAt, value, [index]) as number) - 48
+    result += digit >= 0 && digit <= 9 ? digits[digit] : value[index]
+  }
+  return result
+}
+
+// ECMA-402 §16.5.4 partitions digits, separators, and exponent fields.
+// https://tc39.es/ecma402/#sec-partitionnotationsubpattern
 function partitionNumberIntoParts(
+  result: NumberFormatPart[],
   symbols: SymbolsData,
   numberResult: Pick<
     RawNumberFormatResult,
@@ -349,128 +464,82 @@ function partitionNumberIntoParts(
   grouping: readonly [number, number],
   minimumGroupingDigits: number,
   style: NumberFormatOptionsStyle
-): NumberFormatPart[] {
-  const result: NumberFormatPart[] = []
-  // eslint-disable-next-line prefer-const
-  let {formattedString: n, roundedNumber: x} = numberResult
-
+): void {
+  const {formattedString: n, roundedNumber: x} = numberResult
   if (x.isNaN()) {
-    return [{type: 'nan', value: n}]
-  } else if (!x.isFinite()) {
-    return [{type: 'infinity', value: n}]
+    appendPart(result, 'nan', n)
+    return
+  }
+  if (!x.isFinite()) {
+    appendPart(result, 'infinity', n)
+    return
   }
 
-  const asciiDecimalSepIndex = n.indexOf('.')
-  const integerDigitCount =
-    asciiDecimalSepIndex < 0 ? n.length : asciiDecimalSepIndex
-  const digitReplacementTable = digitMapping[numberingSystem as 'arab']
-  if (digitReplacementTable) {
-    n = n.replace(/\d/g, digit => digitReplacementTable[+digit] || digit)
-  }
-  // TODO: Else use an implementation dependent algorithm to map n to the appropriate
-  // representation of n in the given numbering system.
-  const decimalSepIndex = n.indexOf('.')
-  let integer: string
-  let fraction: string | undefined
-  if (decimalSepIndex > 0) {
-    integer = n.slice(0, decimalSepIndex)
-    fraction = n.slice(decimalSepIndex + 1)
-  } else {
-    integer = n
-  }
+  const digits = HasOwnProperty(digitMapping, numberingSystem)
+    ? digitMapping[numberingSystem]
+    : undefined
+  const point = apply(indexOf, n, ['.']) as number
+  const integerEnd = point < 0 ? n.length : point
 
-  // #region Grouping integer digits
-
-  // ECMA-402 §16.4 [[UseGrouping]] lets auto follow locale preferences
-  // (internal-slot requirement, no numbered steps).
-  // https://tc39.es/ecma402/#sec-intl.numberformat-internal-slots
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L528
-  // LDML Number Patterns adds minimumGroupingDigits to the primary group size.
+  // Step 4.c.iii.7.b groups by original digit positions before substitution.
+  // Each ASCII digit maps to one code point, which can occupy two UTF-16 units.
   // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
-  // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L736-L737
-  const [primaryGroupingSize, secondaryGroupingSize] = grouping
+  const primary = grouping[0]
+  const secondary = grouping[1]
   const minimum = useGrouping === 'min2' ? 2 : minimumGroupingDigits
-  const shouldUseGrouping =
-    Boolean(useGrouping) &&
-    (useGrouping === 'always' ||
-      integerDigitCount >= primaryGroupingSize + minimum)
-  if (shouldUseGrouping) {
-    const groupSepSymbol =
-      style === 'currency' && symbols.currencyGroup != null
-        ? symbols.currencyGroup
+  const shouldGroup =
+    useGrouping !== false &&
+    (useGrouping === 'always' || integerEnd >= primary + minimum)
+  if (shouldGroup && integerEnd > primary) {
+    const separator =
+      style === 'currency'
+        ? (symbols.currencyGroup ?? symbols.group)
         : symbols.group
-    const groups: string[] = []
-
-    // ECMA-402 §16.5.5 steps 4.c.iii.1.a and 4.c.iii.7.b group mapped
-    // digit code points, never halves of a supplementary-plane digit.
-    // https://tc39.es/ecma402/#sec-partitionnotationsubpattern
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L844-L878
-    // LDML grouping sizes count digits, not UTF-16 code units.
-    // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
-    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L724
-    // ASCII input gives the digit count; BMP digits can keep string slicing.
-    const codePoints =
-      integer.length === integerDigitCount ? undefined : Array.from(integer)
-    let end = integerDigitCount
-    let groupSize = primaryGroupingSize
-    while (end > 0) {
-      const start = Math.max(0, end - groupSize)
-      groups.push(
-        codePoints
-          ? codePoints.slice(start, end).join('')
-          : integer.slice(start, end)
+    const split = integerEnd - primary
+    const firstGroup = ((split - 1) % secondary) + 1
+    let start = 0
+    for (let end = firstGroup; end <= split; end += secondary) {
+      appendPart(
+        result,
+        'integer',
+        localizeDigits(apply(slice, n, [start, end]) as string, digits)
       )
-      end = start
-      groupSize = secondaryGroupingSize
+      appendPart(result, 'group', separator)
+      start = end
     }
-
-    while (groups.length > 0) {
-      const integerGroup = groups.pop()!
-      result.push({type: 'integer', value: integerGroup})
-      if (groups.length > 0) {
-        result.push({type: 'group', value: groupSepSymbol})
-      }
-    }
+    appendPart(
+      result,
+      'integer',
+      localizeDigits(apply(slice, n, [split, integerEnd]) as string, digits)
+    )
   } else {
-    result.push({type: 'integer', value: integer})
+    const integer = point < 0 ? n : (apply(slice, n, [0, integerEnd]) as string)
+    appendPart(result, 'integer', localizeDigits(integer, digits))
   }
 
-  // #endregion
-
-  if (fraction !== undefined) {
-    const decimalSepSymbol =
-      style === 'currency' && symbols.currencyDecimal != null
-        ? symbols.currencyDecimal
+  // Step 4.c.iii.8 appends the decimal separator and fraction when present.
+  if (point >= 0) {
+    const separator =
+      style === 'currency'
+        ? (symbols.currencyDecimal ?? symbols.decimal)
         : symbols.decimal
-    result.push(
-      {type: 'decimal', value: decimalSepSymbol},
-      {type: 'fraction', value: fraction}
+    appendPart(result, 'decimal', separator)
+    appendPart(
+      result,
+      'fraction',
+      localizeDigits(apply(slice, n, [point + 1]) as string, digits)
     )
   }
 
-  if (
-    (notation === 'scientific' || notation === 'engineering') &&
-    x.isFinite()
-  ) {
-    result.push({type: 'exponentSeparator', value: symbols.exponential})
+  if (notation === 'scientific' || notation === 'engineering') {
+    appendPart(result, 'exponentSeparator', symbols.exponential)
     if (exponent < 0) {
-      result.push({type: 'exponentMinusSign', value: symbols.minusSign})
+      appendPart(result, 'exponentMinusSign', symbols.minusSign)
       exponent = -exponent
     }
-    // Exponent digits use the numbering system, independently of mantissa rounding.
-    const exponentDigits = String(exponent)
-    result.push({
-      type: 'exponentInteger',
-      value: digitReplacementTable
-        ? exponentDigits.replace(
-            /\d/g,
-            digit => digitReplacementTable[+digit] || digit
-          )
-        : exponentDigits,
-    })
+    // Step 4.c.vii formats exponent digits in the same numbering system.
+    appendPart(result, 'exponentInteger', localizeDigits(`${exponent}`, digits))
   }
-
-  return result
 }
 
 // Find the CLDR pattern for compact notation based on the magnitude of data and style.
@@ -480,12 +549,12 @@ function partitionNumberIntoParts(
 // Returning null means the compact display pattern cannot be found.
 function getCompactDisplayPattern(
   numberResult: NumberResult,
-  pl: Intl.PluralRules,
+  getCategory: (value: Decimal, formatted?: string) => LDMLPluralRule,
   data: NumberFormatLocaleInternalData,
   compactDisplay: NumberFormatOptionsCompactDisplay,
   numberingSystem: string
 ): string | null {
-  const {roundedNumber, magnitude} = numberResult
+  const {roundedNumber, formattedString, magnitude} = numberResult
   // String(10 ** magnitude) uses exponent notation for tiny values; comparing
   // "1e-7" lexically with CLDR thresholds would select the largest suffix.
   if (magnitude < 0) return null
@@ -496,10 +565,13 @@ function getCompactDisplayPattern(
   const patterns = decimal[compactDisplay]
   const entry = getCompactPattern(patterns, magnitude)
   if (!entry) return null
-  const pattern = selectPlural(pl, roundedNumber.toNumber(), entry.rules)
-  // See https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
-  // > If the value is precisely “0”, either explicit or defaulted, then the normal number format
-  // > pattern for that sort of object is supplied.
+  // LDML compact formatting steps 7–8 select the pattern from the scaled
+  // number at its displayed precision. A pattern of "0" uses normal formatting.
+  // https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
+  const pattern = pluralPattern(
+    getCategory(roundedNumber, formattedString),
+    entry.rules
+  )
   if (pattern === '0') {
     return null
   }
@@ -507,10 +579,12 @@ function getCompactDisplayPattern(
   return pattern
 }
 
-function selectPlural<T>(
-  pl: Intl.PluralRules,
-  x: number,
+function pluralPattern<T>(
+  category: LDMLPluralRule,
   rules: LDMLPluralRuleMap<T>
 ): T {
-  return rules[pl.select(x) as LDMLPluralRule] || rules.other
+  return (
+    (HasOwnProperty(rules, category) ? rules[category] : undefined) ||
+    rules.other
+  )
 }

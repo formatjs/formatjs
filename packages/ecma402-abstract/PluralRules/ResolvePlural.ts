@@ -1,12 +1,16 @@
 import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
+import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {
   type LDMLPluralRule,
+  type PluralRulesData,
   type PluralRulesInternal,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import type Decimal from '@formatjs/bigdecimal'
+
+const objectKeys = Object.keys
 
 /**
  * Result of ResolvePluralInternal containing both the formatted string and plural category.
@@ -44,7 +48,7 @@ export function ResolvePluralInternal(
   }: {
     getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal
     PluralRuleSelect: (
-      locale: string,
+      localeData: PluralRulesData | undefined,
       type: 'cardinal' | 'ordinal',
       decimalString: string,
       exponent: number
@@ -60,14 +64,22 @@ export function ResolvePluralInternal(
     'pluralrules must be initialized'
   )
 
-  // Handle non-finite values (Infinity, -Infinity, NaN)
+  // ECMA-402 §17.5.2 steps 1–3 distinguish NaN and the signs of infinity.
+  // https://tc39.es/ecma402/#sec-resolveplural
   if (!n.isFinite()) {
-    return {formattedString: String(n), pluralCategory: 'other'}
+    return {
+      formattedString: n.isNaN()
+        ? 'NaN'
+        : n.isNegative()
+          ? '-Infinity'
+          : 'Infinity',
+      pluralCategory: 'other',
+    }
   }
 
-  const {locale, type, notation} = internalSlots
+  const {localeData, type, notation} = internalSlots
 
-  // ECMA-402 Spec: Format the number according to digit options
+  // ECMA-402 §17.5.2 steps 4–5 round with the instance's digit options.
   const res = FormatNumericToString(
     internalSlots,
     n,
@@ -79,20 +91,21 @@ export function ResolvePluralInternal(
   // ECMA-402 §17.5.2, step 10 selects from the rounded decimal string.
   // Own CLDR data keeps compact selection independent of NumberFormat.
   // https://tc39.es/ecma402/#sec-resolveplural
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L316-L321
   let exponent = 0
   if (notation === 'compact') {
     const patterns =
       internalSlots.compactExponents?.[internalSlots.compactDisplay || 'short']
-    const unsigned = s[0] === '-' ? s.slice(1) : s
-    const integer = unsigned.split('.')[0]
-    let first = 0
-    while (first < integer.length && integer[first] === '0') first++
-    const magnitude = integer.length - first - 1
-    let selectedMagnitude = -1
     if (patterns) {
-      for (const key in patterns) {
-        const threshold = Number(key)
+      let first = 0
+      while (first < s.length && s[first] === '0') first++
+      let end = first
+      while (end < s.length && s[end] !== '.') end++
+      const magnitude = end - first - 1
+      let selectedMagnitude = -1
+      // The compact table contains private data fields for non-negative magnitudes.
+      const keys = objectKeys(patterns)
+      for (let i = 0; i < keys.length; i++) {
+        const threshold = numberFrom(keys[i])
         if (threshold <= magnitude && threshold > selectedMagnitude) {
           selectedMagnitude = threshold
           exponent = patterns[threshold]
@@ -102,13 +115,13 @@ export function ResolvePluralInternal(
   }
 
   // ECMA-402 Spec: Select the appropriate plural category using the locale's plural rules
-  const pluralCategory = PluralRuleSelect(locale, type, s, exponent)
+  const pluralCategory = PluralRuleSelect(localeData, type, s, exponent)
 
   return {formattedString: s, pluralCategory}
 }
 
 /**
- * http://ecma-international.org/ecma-402/7.0/index.html#sec-resolveplural
+ * https://tc39.es/ecma402/#sec-resolveplural
  * @param pl
  * @param n
  * @param PluralRuleSelect Has to pass in bc it's implementation-specific
@@ -122,7 +135,7 @@ export function ResolvePlural(
   }: {
     getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal
     PluralRuleSelect: (
-      locale: string,
+      localeData: PluralRulesData | undefined,
       type: 'cardinal' | 'ordinal',
       decimalString: string,
       exponent: number

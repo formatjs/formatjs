@@ -4,14 +4,13 @@ Rust enumeration core for `Intl.supportedValuesOf`. Uses the same generated
 CLDR/IANA candidates as the TypeScript polyfill. No locale data is loaded at
 runtime; this API has six static candidate categories.
 
-The caller supplies formatter observations. Returning every candidate would
-advertise values absent from the caller's formatter backend. Each callback
-receives a `Key`, candidate identifier and probe locale, and returns:
+Units come from ECMA-402 Table 2. Numbering systems include Table 30. The caller
+supplies formatter observations for additional systems and other categories.
+Each callback receives a `Key`, candidate identifier and probe locale, and returns:
 
 - `resolved`: the formatter's resolved calendar, collation, numbering system,
-  time zone or unit.
-- `formatted`: NumberFormat output for `123`, used for currency names and
-  numbering systems.
+  or time zone.
+- `formatted`: NumberFormat output for `123`, used as a fallback currency-name check.
 - `None`: unsupported value, including a failed formatter call.
 
 Collations use CLDR candidate locales, including non-English collations.

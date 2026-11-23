@@ -26,7 +26,6 @@ export function GetOption<T extends object, K extends keyof T, F>(
 ): Exclude<T[K], undefined> | F {
   // ECMA-402 §9.2.11 GetOption, step 1: Get accepts host and callable Objects too.
   // https://tc39.es/ecma402/#sec-getoption
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L384
   if (!IsObject(opts)) {
     throw new TypeErrorConstructor('Options must be an object')
   }
@@ -36,12 +35,14 @@ export function GetOption<T extends object, K extends keyof T, F>(
       throw new TypeErrorConstructor('invalid type')
     }
     if (type === 'boolean') {
-      value = Boolean(value)
+      // ECMA-402 §9.2.11 step 3.a uses intrinsic ToBoolean.
+      // https://tc39.es/ecma262/#sec-toboolean
+      value = !!value
     }
     if (type === 'string') {
       value = ToString(value)
     }
-    if (values !== undefined && !arraySome(values, val => val == value)) {
+    if (values?.length && !arraySome(values, val => val === value)) {
       throw new RangeErrorConstructor(
         `${value} is not within ${optionApply(optionJoin, values, [', '])}`
       )

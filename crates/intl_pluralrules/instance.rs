@@ -30,6 +30,8 @@ pub struct ResolvedOptions<'a> {
     pub plural_categories: Vec<&'static str>,
 }
 
+// ECMA-402 §17.4: resolved locale, type, notation, and digit options.
+// https://tc39.es/ecma402/#sec-properties-of-intl-pluralrules-instances
 pub struct PluralRules {
     rules: Arc<LocaleRules>,
     locale: String,
@@ -136,6 +138,8 @@ impl PluralRules {
         self.select_input(value, bigint, !bigint)
     }
 
+    // ECMA-402 §17.5.2 rounds the mathematical value before selecting a category.
+    // https://tc39.es/ecma402/#sec-resolveplural
     pub fn select_input(
         &self,
         value: &str,
@@ -179,6 +183,8 @@ impl PluralRules {
         )
     }
 
+    // ECMA-402 §17.5.4 resolves the rounded endpoints before selecting a range.
+    // https://tc39.es/ecma402/#sec-resolvepluralrange
     pub fn select_range_input(
         &self,
         start: &str,

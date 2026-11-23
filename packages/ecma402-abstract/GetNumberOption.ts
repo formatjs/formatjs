@@ -1,14 +1,7 @@
-/**
- * https://tc39.es/ecma402/#sec-getnumberoption
- * @param options
- * @param property
- * @param min
- * @param max
- * @param fallback
- */
-
 import {DefaultNumberOption} from '#packages/ecma402-abstract/DefaultNumberOption.js'
 
+// ECMA-402 §9.2.14 steps 1–2 read the option once before coercing it.
+// https://tc39.es/ecma402/#sec-getnumberoption
 export function GetNumberOption<
   T extends object,
   K extends keyof T,

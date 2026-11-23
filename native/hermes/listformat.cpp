@@ -12,6 +12,7 @@ constexpr char wrapperSource[] =
 #include "listformat.inc"
     ;
 using Model = hermes_bridge::Record<FormatjsListHandle, formatjs_list_destroy>;
+using Snapshot = hermes_bridge::Record<FormatjsListSnapshot, formatjs_list_snapshot_destroy>;
 using Bytes = hermes_bridge::Buffer<FormatjsListBytes, formatjs_list_bytes_free>;
 using Units = hermes_bridge::Buffer<FormatjsListUnits, formatjs_list_units_free>;
 using Registry = std::unique_ptr<FormatjsListRegistry, decltype(&formatjs_list_registry_destroy)>;
@@ -83,8 +84,10 @@ void installListFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
       nullptr, results, formatjs_list_registry_info, registry));
   bridge.setProperty(runtime, "nativeMatch", hermes_bridge::json<1, Bytes>(runtime, "listMatch",
       "Expected list locale match JSON", results, formatjs_list_registry_match, registry));
-  bridge.setProperty(runtime, "nativeCreate", hermes_bridge::create<2, Model>(runtime, "listCreate",
-      "Expected list locale and options JSON", {2, "Rust list construction failed"}, formatjs_list_create, registry));
+  bridge.setProperty(runtime, "nativeCapture", hermes_bridge::create<1, Snapshot>(runtime, "listCapture",
+      "Expected list locale match JSON", results, formatjs_list_capture, registry));
+  bridge.setProperty(runtime, "nativeCreate", hermes_bridge::createFromSnapshot<Model, Snapshot>(runtime, "listCreate",
+      "Expected ListFormat snapshot and options JSON", {2, "Rust list construction failed"}, formatjs_list_create_from_snapshot));
   bridge.setProperty(runtime, "nativeCreateDefault", hermes_bridge::create<1, Model>(runtime, "listCreateDefault",
       "Expected canonical list locales JSON", {2, "Rust default list construction failed"}, formatjs_list_create_default, registry));
   hermes_bridge::bind(runtime, bridge, "nativeQuery", "listQuery", 2,

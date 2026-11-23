@@ -238,7 +238,10 @@ it.each(['Number', 'isSafeInteger', 'iterator'] as const)(
     }
     const expected = ToLocalTime(-1n, 'gregory', '+01:30', details)
     const expectedNamed = ToLocalTime(-1n, 'gregory', 'UTC', details)
-    let actual: unknown, named: unknown, error: unknown
+    const instant = -86_399_999_999_999n
+    const offset = '+23:59:59.999999999'
+    const expectedFractional = ToLocalTime(instant, 'gregory', offset, details)
+    let actual: unknown, named: unknown, fractional: unknown, error: unknown
     try {
       define(owner, key, {
         ...descriptor,
@@ -248,6 +251,7 @@ it.each(['Number', 'isSafeInteger', 'iterator'] as const)(
       })
       actual = ToLocalTime(-1n, 'gregory', '+01:30', details)
       named = ToLocalTime(-1n, 'gregory', 'UTC', details)
+      fractional = ToLocalTime(instant, 'gregory', offset, details)
     } catch (caught) {
       error = caught
     } finally {
@@ -256,6 +260,7 @@ it.each(['Number', 'isSafeInteger', 'iterator'] as const)(
     expect(error).toBeUndefined()
     expect(actual).toEqual(expected)
     expect(named).toEqual(expectedNamed)
+    expect(fractional).toEqual(expectedFractional)
   }
 )
 

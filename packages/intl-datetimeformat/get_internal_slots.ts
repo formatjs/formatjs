@@ -4,6 +4,8 @@ import {
   type IntlDateTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/date-time.js'
 
+// ECMA-402 §11.4 stores each instance’s private formatter state.
+// https://tc39.es/ecma402/#sec-properties-of-intl-datetimeformat-instances
 const internalSlotMap = new WeakMap<
   DateTimeFormat | Intl.DateTimeFormat,
   IntlDateTimeFormatInternal
@@ -11,6 +13,10 @@ const internalSlotMap = new WeakMap<
 const readInternalSlots = internalSlotMap.get.bind(internalSlotMap)
 const writeInternalSlots = internalSlotMap.set.bind(internalSlotMap)
 const createObject = Object.create
+
+export function hasInternalSlots(x: DateTimeFormat): boolean {
+  return readInternalSlots(x) !== undefined
+}
 
 export default function getInternalSlots(
   x: DateTimeFormat | Intl.DateTimeFormat,

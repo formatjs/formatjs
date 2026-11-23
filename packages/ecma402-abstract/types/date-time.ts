@@ -7,6 +7,8 @@ export type TemporalDateTimeKind =
   | 'Instant'
   | 'ZonedDateTime'
 
+// ECMA-402 §11.2.3.1 stores component widths and patterns.
+// https://tc39.es/ecma402/#sec-datetimeformat-format-record
 export type Formats = Pick<
   Intl.DateTimeFormatOptions,
   | 'weekday'
@@ -28,6 +30,8 @@ export type Formats = Pick<
   pattern12: string
   skeleton: string
   rawPattern: string
+  // ECMA-402 §11.2.3.2 indexes patterns by the largest differing field.
+  // https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-record
   rangePatterns: Record<TABLE_2 | 'default', RangePatterns>
   rangePatterns12: Record<TABLE_2 | 'default', RangePatterns>
 }
@@ -66,6 +70,8 @@ export interface IntlDateTimeFormatInternal {
   boundFormat?: Intl.DateTimeFormat['format']
 }
 
+// ECMA-402 §11.2.3.4.
+// https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-part-record
 export interface RangePatternPart<
   T extends RangePatternType = RangePatternType,
 > {
@@ -73,6 +79,8 @@ export interface RangePatternPart<
   pattern: string
 }
 
+// ECMA-402 §11.2.3.3.
+// https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-format-record
 export type RangePatterns = Pick<
   Intl.DateTimeFormatOptions,
   | 'weekday'
@@ -208,8 +216,14 @@ export interface DateTimeFormatLocaleInternalData {
   hourCycle: string
   hourCycle12?: string
   hourCycle24?: string
+  // ECMA-402 §11.2.3.5 groups the date styles, time styles, and connectors below.
+  // https://tc39.es/ecma402/#sec-datetimeformat-styles-record
+  // ECMA-402 §11.2.3.6 indexes each style by width.
+  // https://tc39.es/ecma402/#sec-datetimeformat-style-record
   dateFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   timeFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
+  // ECMA-402 §11.2.3.7 indexes connectors by date style.
+  // https://tc39.es/ecma402/#sec-datetimeformat-connector-record
   dateTimeFormat: {full: string; long: string; medium: string; short: string}
   dateTimeFormatAtTime?: {
     full: string

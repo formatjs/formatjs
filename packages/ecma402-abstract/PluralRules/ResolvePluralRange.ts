@@ -3,6 +3,7 @@ import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathe
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {
   type LDMLPluralRule,
+  type PluralRulesData,
   type PluralRulesInternal,
 } from '#packages/ecma402-abstract/types/plural-rules.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
@@ -19,7 +20,6 @@ import {ResolvePluralInternal} from '#packages/ecma402-abstract/PluralRules/Reso
  *
  * ECMA-402 §17.5.4 ResolvePluralRange, steps 1–3.
  * Specification: https://tc39.es/ecma402/#sec-resolvepluralrange
- * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L358
  *
  * @param pluralRules - An initialized PluralRules object
  * @param x - Mathematical value for the range start
@@ -37,13 +37,13 @@ export function ResolvePluralRange(
   }: {
     getInternalSlots(pl: Intl.PluralRules): PluralRulesInternal
     PluralRuleSelect: (
-      locale: string,
+      localeData: PluralRulesData | undefined,
       type: 'cardinal' | 'ordinal',
       decimalString: string,
       exponent: number
     ) => LDMLPluralRule
     PluralRuleSelectRange: (
-      locale: string,
+      localeData: PluralRulesData | undefined,
       type: 'cardinal' | 'ordinal',
       xp: LDMLPluralRule,
       yp: LDMLPluralRule
@@ -53,7 +53,6 @@ export function ResolvePluralRange(
   // ResolvePluralRange rejects NaN but permits either infinity.
   // ECMA-402 §17.5.4 ResolvePluralRange, steps 1–3.
   // https://tc39.es/ecma402/#sec-resolvepluralrange
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L358
   if (
     ('value' in x ? x.value : x).isNaN() ||
     ('value' in y ? y.value : y).isNaN()
@@ -92,22 +91,13 @@ export function ResolvePluralRange(
     return xp.pluralCategory
   }
 
-  // 5. Let locale be pluralRules.[[Locale]].
-  // 6. Let type be pluralRules.[[Type]].
-  const {locale, type} = internalSlots
+  const {localeData, type} = internalSlots
 
-  // 7. Let notation be pluralRules.[[Notation]].
-  // 8. Let compactDisplay be pluralRules.[[CompactDisplay]].
-  // Note: notation and compactDisplay are not yet implemented for PluralRules polyfill.
-  // When implemented, these would affect how the range is formatted and thus which
-  // plural rules apply (see c/e operand support).
-
-  // 9. Return PluralRuleSelectRange(locale, type, notation, compactDisplay, xp.[[PluralCategory]], yp.[[PluralCategory]]).
-  // Note: PluralRuleSelectRange is implementation-defined and uses CLDR plural range data
-  // to determine the appropriate plural category for a range based on the start and end categories.
-  // Example: In English, "one" to "other" → "other" (e.g., "1-2 items")
+  // ECMA-402 §17.5.4 steps 7–9 apply the range rule to the selected categories.
+  // CLDR selects by category pair. Notation and compactDisplay affect the endpoint categories.
+  // https://tc39.es/ecma402/#sec-resolvepluralrange
   return PluralRuleSelectRange(
-    locale,
+    localeData,
     type,
     xp.pluralCategory,
     yp.pluralCategory

@@ -9,7 +9,10 @@ import {
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
-import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {
+  setDateTimePatternFields,
+  splitRangePattern,
+} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 
 const styleRangeKeys = Object.keys
 const styleIndexOf = Function.prototype.call.bind(String.prototype.indexOf) as (
@@ -34,6 +37,40 @@ function replaceStyleToken(
     : styleSlice(pattern, 0, index) +
         value +
         styleSlice(pattern, index + token.length)
+}
+
+// LDML combines missing date/time skeleton fields with a locale connector.
+// A zone name can fill the time side without introducing a clock pattern.
+// https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
+// https://github.com/formatjs/formatjs/issues/8039
+export function DateWithTimeZoneFormat(
+  date: Formats,
+  timeZoneName: NonNullable<Formats['timeZoneName']>,
+  data: DateTimeFormatLocaleInternalData
+): Formats {
+  const style =
+    date.month === 'long'
+      ? date.weekday
+        ? 'full'
+        : 'long'
+      : date.month === 'short'
+        ? 'medium'
+        : 'short'
+  const connector = (data.dateTimeFormatAtTime || data.dateTimeFormat)[style]
+  const withZone = replaceStyleToken(connector, '{0}', '{timeZoneName}')
+  const pattern = replaceStyleToken(withZone, '{1}', date.pattern)
+  const format = {
+    __proto__: null,
+    ...date,
+    timeZoneName,
+    pattern,
+    pattern12: pattern,
+    // Date-only interval records lack the zone. Use the full endpoint fallback.
+    rangePatterns: {__proto__: null},
+    rangePatterns12: {__proto__: null},
+  } as Formats
+  setDateTimePatternFields(format, format)
+  return format
 }
 
 function combineStyleRanges(
@@ -154,6 +191,8 @@ function getTimeStyleFormat(
   return BestFitFormatMatcher(matcherOptions, formats)
 }
 
+// ECMA-402 §11.5.1 combines the selected date and time styles.
+// https://tc39.es/ecma402/#sec-date-time-style-format
 export function DateTimeStyleFormat(
   dateStyle: Intl.DateTimeFormatOptions['dateStyle'],
   timeStyle: Intl.DateTimeFormatOptions['timeStyle'],
@@ -217,6 +256,11 @@ export function DateTimeStyleFormat(
       format.pattern12 = pattern12
     }
 
+    // Compute style ranges on demand from the selected date and time styles.
+    // ECMA-402 §11.2.3.8.
+    // https://tc39.es/ecma402/#sec-datetimeformat-date-range-record
+    // ECMA-402 §11.2.3.9.
+    // https://tc39.es/ecma402/#sec-datetimeformat-time-range-record
     let rangeDateFormat = dateFormat!
     if (
       dateStyle === 'medium' &&
@@ -236,6 +280,8 @@ export function DateTimeStyleFormat(
     // Merge rangePatterns from timeFormat (for time-related differences)
     // This is needed for formatRange to work with dateStyle/timeStyle
     // See: https://github.com/formatjs/formatjs/issues/4168
+    // ECMA-402 §11.2.3.10 projects rangePatterns and rangePatterns12 onto the combined format.
+    // https://tc39.es/ecma402/#sec-datetimeformat-style-range-record
     if (timeFormat!.rangePatterns) {
       format.rangePatterns = combineStyleRanges(
         rangeDateFormat,

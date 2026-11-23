@@ -6,6 +6,7 @@
 'use strict'
 import CurrenciesData from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
 import supplementalCurrencyData from 'cldr-core/supplemental/currencyData.json' with {type: 'json'}
+import {supplementalEnglishCurrencyNames} from '#packages/ecma402-abstract/supplementalEnglishCurrencyNames.js'
 import glob from 'fast-glob'
 const globSync = glob.sync
 import {resolve, dirname} from 'path'
@@ -59,19 +60,31 @@ async function loadCurrencies(
       with: {type: 'json'},
     })) as {default: typeof CurrenciesData}
   ).default.main[locale as 'en'].numbers.currencies
-  return (Object.keys(currencies) as Array<keyof typeof currencies>).reduce(
-    (all: Record<string, CurrencyData>, isoCode) => {
-      const d = currencies[isoCode] as Currencies['USD']
-      const displayName = extractCurrencyPattern(d) || {other: d.displayName}
-      all[isoCode] = {
-        displayName,
-        symbol: d.symbol || isoCode,
-        narrow: d['symbol-alt-narrow'] || d.symbol || isoCode,
-      }
-      return all
-    },
-    {}
-  )
+  const data = (
+    Object.keys(currencies) as Array<keyof typeof currencies>
+  ).reduce((all: Record<string, CurrencyData>, isoCode) => {
+    const d = currencies[isoCode] as Currencies['USD']
+    const displayName = extractCurrencyPattern(d) || {other: d.displayName}
+    all[isoCode] = {
+      displayName,
+      symbol: d.symbol || isoCode,
+      narrow: d['symbol-alt-narrow'] || d.symbol || isoCode,
+    }
+    return all
+  }, {})
+  if (locale === 'en' || locale.startsWith('en-')) {
+    for (const [code, name] of Object.entries(
+      supplementalEnglishCurrencyNames
+    )) {
+      const entry = (data[code] ??= {
+        displayName: {other: name},
+        symbol: code,
+        narrow: code,
+      })
+      entry.displayName.other ??= name
+    }
+  }
+  return data
 }
 
 export async function generateDataForLocales(

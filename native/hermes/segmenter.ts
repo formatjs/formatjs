@@ -36,12 +36,17 @@
   const iteratorPrototype = getPrototypeOf(getPrototypeOf([][iteratorSymbol]()))
   const getSlot = WeakMap.prototype.get
   const setSlot = WeakMap.prototype.set
+  // ECMA-402 §19.4: the native handle owns locale and granularity.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-segmenter-instances
   const models = new WeakMap<object, object>()
   interface State {
     handle: object
     owner: object
     input: string
   }
+  // ECMA-402 §§19.5.3 and 19.6.3 retain the original Segments and cursor state.
+  // https://tc39.es/ecma402/#sec-properties-of-segments-instances
+  // https://tc39.es/ecma402/#sec-properties-of-segment-iterator-instances
   const segments = new WeakMap<object, State>()
   const cursors = new WeakMap<object, State>()
   const root = globalThis as any
@@ -79,8 +84,8 @@
     return value
   }
   // ResolveOptions uses GetOptionsObject; FilterLocales uses CoerceOptionsToObject.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L302-L305
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L335-L336
+  // https://tc39.es/ecma402/#sec-resolveoptions
+  // https://tc39.es/ecma402/#sec-filterlocales
   function options(value: unknown, strict = false): any {
     if (value === undefined) return create(null)
     if (
@@ -129,15 +134,15 @@
   ): object | undefined {
     if (value === undefined) return undefined
     // CreateSegmentDataObject: ordinary record, specified property order, original input.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L358-L370
+    // https://tc39.es/ecma402/#sec-createsegmentdataobject
     const segment = apply(slice, input, [value[0], value[1]])
     const index = value[0]
     return value[2] === -1
       ? {segment, index, input}
       : {segment, index, input, isWordLike: value[2] === 1}
   }
-  // Constructor 1–11: one prototype Get, canonicalize, matcher, resolve, granularity.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L21-L29
+  // ECMA-402 §19.1.1: read prototype, canonicalize, resolve, then read granularity.
+  // https://tc39.es/ecma402/#sec-intl.segmenter
   class Segmenter extends null {
     constructor(
       locales: unknown = undefined,
@@ -177,7 +182,7 @@
       optionsInput: unknown = undefined
     ): string[] {
       // CanonicalizeLocaleList precedes FilterLocales and option access.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L57-L59
+      // https://tc39.es/ecma402/#sec-intl.segmenter.supportedlocalesof
       const requested = apply(canonicalize, intl, [locales]) as string[]
       const matcher = option(
         options(optionsInput),
@@ -188,14 +193,19 @@
       return match(requested, matcher === 'lookup', true)
     }
   }
+  // ECMA-402 §19.3.1: class syntax supplies the prototype's constructor.
+  // https://tc39.es/ecma402/#sec-intl.segmenter.prototype.constructor
   const prototype = Segmenter.prototype
   setPrototypeOf(prototype, objectPrototype)
+  // ECMA-402 §19.5.2 and §19.6.2 use distinct intrinsic prototypes.
+  // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-object
+  // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%-object
   const segmentsPrototype = create(objectPrototype)
   const cursorPrototype = create(iteratorPrototype)
   const members = {
     segment(this: unknown, input: unknown): object {
       // Brand before ToString; keep original JS Segmenter alive through Segments.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L138-L143
+      // https://tc39.es/ecma402/#sec-intl.segmenter.prototype.segment
       const model = slot(models, this)
       const value = `${input}`
       const result = create(segmentsPrototype)
@@ -211,7 +221,7 @@
     },
     resolvedOptions(this: unknown): object {
       // Fresh ordinary result with locale/granularity in table order.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L98-L117
+      // https://tc39.es/ecma402/#sec-intl.segmenter.prototype.resolvedoptions
       const values = decoded(nativeResolved(slot(models, this)))
       const result = create(objectPrototype)
       property(result, 'locale', values.locale, true)
@@ -223,7 +233,7 @@
     containing(this: unknown, index: unknown): object | undefined {
       // Brand then ToIntegerOrInfinity. Truncate before bounds: -0.5 becomes -0.
       // Unary + rejects BigInt (including coercion hooks) and Symbol.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L209-L218
+      // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%.containing
       const state = slot(segments, this)
       const number = +(index as any)
       const position = number !== number ? 0 : trunc(number)
@@ -232,7 +242,9 @@
     },
     [iteratorSymbol](this: unknown): object {
       // Independent cursor retains original constructing Segmenter and input.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L225-L230
+      // ECMA-402 §19.6.1 initializes the cursor at zero.
+      // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-%symbol.iterator%
+      // https://tc39.es/ecma402/#sec-createsegmentiterator
       const state = slot(segments, this)
       const result = create(cursorPrototype)
       apply(setSlot, cursors, [
@@ -249,7 +261,7 @@
   const cursorMembers = {
     next(this: unknown): object {
       // Each step returns fresh ordinary {value, done}; exhaustion stays exhausted.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L291-L298
+      // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.next
       const state = slot(cursors, this)
       const value = record(nativeNext(state.handle), state.input)
       return {value, done: value === undefined}
@@ -257,11 +269,12 @@
   }
   property(prototype, 'segment', members.segment)
   property(prototype, 'resolvedOptions', members.resolvedOptions)
+  // ECMA-402 §19.3.4 https://tc39.es/ecma402/#sec-intl.segmenter.prototype-%symbol.tostringtag%
   property(prototype, tagSymbol, 'Intl.Segmenter', false, false)
   property(segmentsPrototype, 'containing', segmentMembers.containing)
   property(segmentsPrototype, iteratorSymbol, segmentMembers[iteratorSymbol])
   property(cursorPrototype, 'next', cursorMembers.next)
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L305
+  // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.%symbol.tostringtag%
   property(
     cursorPrototype,
     tagSymbol,
@@ -270,6 +283,8 @@
     false
   )
   property(Segmenter, 'polyfilled', true)
+  // ECMA-402 §19.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-intl.segmenter.prototype
   const descriptor = create(null)
   descriptor.writable = false
   define(Segmenter, 'prototype', descriptor)

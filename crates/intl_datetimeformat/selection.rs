@@ -19,6 +19,13 @@ pub struct Options {
     pub date_style: Option<String>,
     pub time_style: Option<String>,
 }
+#[derive(Clone, Copy, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum DateLocaleMode {
+    All,
+    Date,
+    Time,
+}
 #[derive(Debug, Clone, Copy, Default)]
 enum Matcher {
     Basic,
@@ -81,6 +88,8 @@ fn style(value: Option<&str>, name: &'static str) -> Result<Option<Style>, Error
 fn twelve(cycle: HourCycle) -> bool {
     matches!(cycle, HourCycle::H11 | HourCycle::H12)
 }
+// ECMA-402 §11.1.2 steps 15–17 use the retained locale-wide preferences.
+// https://tc39.es/ecma402/#sec-createdatetimeformat
 fn hour_cycle(resolved: Option<HourCycle>, data: &Metadata, hour12: Option<bool>) -> HourCycle {
     match hour12 {
         Some(true) => data
@@ -111,9 +120,17 @@ impl Snapshot {
     pub fn capture(
         registry: &Registry,
         resolution: Resolution,
-        mut components: Components,
+        components: Components,
     ) -> Result<Self, Error> {
         let locale = registry.get(&resolution.data_locale)?;
+        Self::from_locale(locale, resolution, components)
+    }
+
+    pub(crate) fn from_locale(
+        locale: Arc<LocaleData>,
+        resolution: Resolution,
+        mut components: Components,
+    ) -> Result<Self, Error> {
         let calendar = locale.calendar(&resolution.calendar)?;
         calendar.formats()?;
         let hour12 = components.hour12.take();
@@ -127,6 +144,14 @@ impl Snapshot {
     }
 
     pub fn select(self, options: &Options) -> Result<Configuration, Error> {
+        self.select_with_date_locale(options, None)
+    }
+
+    pub(crate) fn select_with_date_locale(
+        self,
+        options: &Options,
+        date_locale: Option<DateLocaleMode>,
+    ) -> Result<Configuration, Error> {
         let matcher = match options.format_matcher.as_deref() {
             None | Some("best fit") => Matcher::BestFit,
             Some("basic") => Matcher::Basic,
@@ -156,11 +181,12 @@ impl Snapshot {
                 time_style.map(|_| twelve(cycle)),
             )?
         } else {
-            if [
-                Field::Weekday,
-                Field::Year,
-                Field::Month,
-                Field::Day,
+            // ECMA-402 §11.1.2 step 32 checks required fields before adding defaults.
+            // https://tc39.es/ecma402/#sec-createdatetimeformat
+            let has_date = [Field::Weekday, Field::Year, Field::Month, Field::Day]
+                .into_iter()
+                .any(|field| requested.get(field).is_some());
+            let has_time = [
                 Field::DayPeriod,
                 Field::Hour,
                 Field::Minute,
@@ -168,20 +194,32 @@ impl Snapshot {
                 Field::FractionalSecondDigits,
             ]
             .into_iter()
-            .all(|field| requested.get(field).is_none())
-            {
-                requested.year = Some(NumericWidth::Numeric);
-                requested.month = Some(Width::Numeric);
-                requested.day = Some(NumericWidth::Numeric);
+            .any(|field| requested.get(field).is_some());
+            let needs_defaults = match date_locale {
+                Some(DateLocaleMode::Date) => !has_date,
+                Some(DateLocaleMode::Time) => !has_time,
+                Some(DateLocaleMode::All) | None => !has_date && !has_time,
+            };
+            if needs_defaults {
+                if !matches!(date_locale, Some(DateLocaleMode::Time)) {
+                    requested.year = Some(NumericWidth::Numeric);
+                    requested.month = Some(Width::Numeric);
+                    requested.day = Some(NumericWidth::Numeric);
+                }
+                if matches!(
+                    date_locale,
+                    Some(DateLocaleMode::Time | DateLocaleMode::All)
+                ) {
+                    requested.hour = Some(NumericWidth::Numeric);
+                    requested.minute = Some(NumericWidth::Numeric);
+                    requested.second = Some(NumericWidth::Numeric);
+                }
             }
-            if matches!(matcher, Matcher::BestFit)
-                && (requested.hour.is_some()
-                    || requested.minute.is_some()
-                    || requested.second.is_some())
+            if requested.hour.is_some() || requested.minute.is_some() || requested.second.is_some()
             {
                 requested.hour12 = Some(twelve(cycle));
             }
-            choose(matcher, requested, self.calendar.formats()?)?
+            choose(matcher, requested, &self.calendar)?
         };
         let profile = make_profile(&self, format, requested, cycle, false)?;
         Ok(Configuration {
@@ -197,11 +235,17 @@ impl Snapshot {
     }
 }
 
-fn choose(matcher: Matcher, options: Components, formats: &[Format]) -> Result<Format, Error> {
-    match matcher {
-        Matcher::Basic => matching::basic(options, formats),
-        Matcher::BestFit => matching::best_fit(options, formats),
-    }
+fn choose(
+    matcher: Matcher,
+    options: Components,
+    calendar: &CalendarLocale,
+) -> Result<Format, Error> {
+    matching::match_components(
+        options,
+        calendar.formats()?,
+        calendar,
+        matches!(matcher, Matcher::BestFit),
+    )
 }
 
 fn make_profile(
@@ -213,12 +257,6 @@ fn make_profile(
 ) -> Result<Profile, Error> {
     let mut components = format.components;
     components.hour12 = None;
-    if requested.day_period.is_some() {
-        components.day_period = requested.day_period;
-    }
-    if requested.fractional_second_digits.is_some() {
-        components.fractional_second_digits = requested.fractional_second_digits;
-    }
     let use12 = components.hour.is_some() && twelve(cycle);
     let mut pattern = if use12 {
         format.pattern12.clone()
@@ -241,6 +279,16 @@ fn make_profile(
     }
     if requested.day_period.is_some() {
         pattern = pattern.replacen("{ampm}", "{dayPeriod}", 1);
+    }
+    // ECMA-402 §11.2.3.1 Table 5 ties period and precision fields to the pattern.
+    // https://tc39.es/ecma402/#sec-datetimeformat-format-record
+    if pattern.contains("{dayPeriod}") {
+        components.day_period = requested.day_period.or(components.day_period);
+    }
+    if pattern.contains("{fractionalSecondDigits}") {
+        components.fractional_second_digits = requested
+            .fractional_second_digits
+            .or(components.fractional_second_digits);
     }
     let hour_cycle = if temporal || components.hour.is_some() {
         Some(cycle)
@@ -296,7 +344,12 @@ fn make_profile(
             range.components.era = components.era;
         }
         for field in [Field::Weekday, Field::Month] {
-            if field == Field::Weekday && range.components.weekday_standalone == Some(true) {
+            // Keep the interval's width when its weekday form differs from the single pattern.
+            // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
+            if field == Field::Weekday
+                && range.components.weekday_standalone == Some(true)
+                && components.weekday_standalone != Some(true)
+            {
                 continue;
             }
             if field == Field::Month
@@ -402,7 +455,7 @@ impl Configuration {
                 self.main.format.components.get(field).is_some() && !allowed.contains(&field)
             });
             if conflict {
-                choose(self.matcher, selected, self.snapshot.calendar.formats()?)?
+                choose(self.matcher, selected, &self.snapshot.calendar)?
             } else {
                 self.main.format.clone()
             }
@@ -431,7 +484,7 @@ impl Configuration {
                 }
             }
             selected.hour12 = Some(twelve(self.cycle));
-            choose(self.matcher, selected, self.snapshot.calendar.formats()?)?
+            choose(self.matcher, selected, &self.snapshot.calendar)?
         };
         let profile = Arc::new(make_profile(
             &self.snapshot,

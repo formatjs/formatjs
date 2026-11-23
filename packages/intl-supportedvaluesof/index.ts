@@ -1,4 +1,5 @@
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {getSupportedCalendars} from '#packages/intl-supportedvaluesof/get-supported-calendars.js'
 import {getSupportedCollations} from '#packages/intl-supportedvaluesof/get-supported-collations.js'
 import {getSupportedCurrencies} from '#packages/intl-supportedvaluesof/get-supported-currencies.js'
@@ -15,10 +16,7 @@ export type {Unit} from '@formatjs_generated/cldr.supported-values/units.js'
 export {shouldPolyfill} from '#packages/intl-supportedvaluesof/should-polyfill.js'
 
 /**
- * ECMA-402 Spec: Intl.supportedValuesOf
- * ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
- * https://tc39.es/ecma402/#sec-intl.supportedvaluesof
- * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
+ * ECMA-402 §8.3.2 Intl.supportedValuesOf.
  */
 declare global {
   namespace Intl {
@@ -51,17 +49,13 @@ export type SupportedValuesOf =
   | 'unit'
 
 /**
- * ECMA-402 Spec: Intl.supportedValuesOf(key)
- * ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
+ * ECMA-402 §8.3.2 Intl.supportedValuesOf.
  * https://tc39.es/ecma402/#sec-intl.supportedvaluesof
- * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
  *
  * Returns an array containing the supported calendar, collation, currency,
  * numbering systems, time zone, or unit values supported by the implementation.
  *
- * Implementation: We validate candidate values from CLDR against the actual
- * Intl formatters to determine runtime support rather than using static lists.
- * This ensures accuracy across different JavaScript engines and runtimes.
+ * Units come from the spec. Other categories probe the installed formatters.
  *
  * @param key - The category of values to return
  * @returns A sorted array of unique string values
@@ -69,13 +63,11 @@ export type SupportedValuesOf =
 // ECMA-262 §17, built-in function objects: non-constructors lack [[Construct]]
 // and an own prototype property (these requirements are not algorithm steps).
 // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
-// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30376
 export const supportedValuesOf: (key: SupportedValuesOf) => string[] = {
   supportedValuesOf(key: SupportedValuesOf): string[] {
-    // ECMA-402 §8.3.2 Intl.supportedValuesOf, step 1.
-    // Coerce the key before dispatch: https://tc39.es/ecma402/#sec-intl.supportedvaluesof
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L103
+    // Step 1 coerces the key before dispatch.
     key = ToString(key) as SupportedValuesOf
+    // Steps 2–7 and 9 select the category and return its fresh array.
     switch (key) {
       case 'calendar':
         return getSupportedCalendars()
@@ -90,8 +82,8 @@ export const supportedValuesOf: (key: SupportedValuesOf) => string[] = {
       case 'unit':
         return getSupportedUnits()
       default:
-        // ECMA-402 Spec: Throw RangeError for invalid keys
-        throw RangeError('Invalid key: ' + key)
+        // Step 8 throws for unrecognized keys.
+        throw new RangeErrorConstructor('Invalid key: ' + key)
     }
   },
 }.supportedValuesOf

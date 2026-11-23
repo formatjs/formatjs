@@ -1,5 +1,8 @@
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
-import {ErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  ErrorConstructor,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CompiledNumberPatterns,
   NumberPatternPlan,
@@ -9,12 +12,27 @@ import type {
 const values = <T>(data: Record<string, T>): T[] =>
   Object.keys(data).map(key => data[key])
 
-const NUMBER = /[#0](?:[.,][#0]+)*/g
-const TOKENS = /({c:[^}]+}|\{approximatelySign\}|\{0\}|[¤%\-+])/g
 const WeakMapConstructor = WeakMap
+const MapConstructor = Map
+const mapGet = Map.prototype.get
+const mapSet = Map.prototype.set
+const indexOf = Function.prototype.call.bind(String.prototype.indexOf) as (
+  value: string,
+  search: string,
+  start?: number
+) => number
+const slice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
+const trim = Function.prototype.call.bind(String.prototype.trim) as (
+  value: string
+) => string
 const apply = Reflect.apply
 const weakMapGet = WeakMap.prototype.get
 const weakMapSet = WeakMap.prototype.set
+const approximateMarker = '{approximatelySign}'
 
 // Capture methods for lazily created private pattern maps.
 function readPlanCache<K extends object, V>(
@@ -39,82 +57,222 @@ const composed = new WeakMap<
 >()
 
 function approximate(pattern: string, sign: number): string {
-  const index = sign === 0 ? -1 : pattern.indexOf(sign === 1 ? '+' : '-')
+  const index = sign === 0 ? -1 : indexOf(pattern, sign === 1 ? '+' : '-')
   return index < 0
-    ? `{approximatelySign}${pattern}`
-    : `${pattern.slice(0, index)}{approximatelySign}${pattern.slice(index)}`
+    ? approximateMarker + pattern
+    : slice(pattern, 0, index) + approximateMarker + slice(pattern, index)
 }
 
+function positiveSign(pattern: string): string {
+  let result = ''
+  for (let i = 0; i < pattern.length; i++) {
+    const ch = pattern[i]
+    result += ch === '-' ? '+' : ch
+  }
+  return result
+}
+
+function compactTokens(pattern: string): string {
+  // Identify compact literals before inserting the approximate marker.
+  let result = ''
+  let literalStart = -1
+  let foundZeros = false
+  for (let i = 0; i < pattern.length; i++) {
+    const ch = pattern[i]
+    if (
+      ch !== ';' &&
+      ch !== '-' &&
+      ch !== '+' &&
+      ch !== '¤' &&
+      !(ch >= '0' && ch <= '9') &&
+      trim(ch) !== ''
+    ) {
+      if (literalStart === -1) literalStart = i
+      continue
+    }
+    if (literalStart !== -1) {
+      result += '{c:' + slice(pattern, literalStart, i) + '}'
+      literalStart = -1
+    }
+    result += ch
+    if (!foundZeros && ch === '0') {
+      foundZeros = true
+      while (i + 1 < pattern.length && pattern[i + 1] === '0') i++
+    }
+  }
+  if (literalStart !== -1) result += '{c:' + slice(pattern, literalStart) + '}'
+  return result
+}
+
+function isNumberSlot(ch: string): boolean {
+  return ch === '#' || ch === '0'
+}
+
+function groupingSizes(
+  pattern: string,
+  start: number,
+  end: number
+): [number, number] {
+  let previousComma = -1
+  let lastComma = -1
+  for (let i = start; i < end; i++) {
+    const ch = pattern[i]
+    if (ch === '.') {
+      end = i
+      break
+    }
+    if (ch === ',') {
+      previousComma = lastComma
+      lastComma = i
+    }
+  }
+  const primary = lastComma === -1 ? 3 : end - lastComma - 1
+  const secondary =
+    previousComma === -1 ? primary : lastComma - previousComma - 1
+  return [primary, secondary]
+}
+
+function numberSlots(
+  pattern: string,
+  compact: boolean
+): {value: string; grouping: [number, number]} {
+  let value = ''
+  let grouping: [number, number] | undefined
+  for (let i = 0; i < pattern.length;) {
+    const ch = pattern[i]
+    if (!isNumberSlot(ch)) {
+      value += ch
+      i++
+      continue
+    }
+    let end = i + 1
+    while (
+      end + 1 < pattern.length &&
+      (pattern[end] === '.' || pattern[end] === ',') &&
+      isNumberSlot(pattern[end + 1])
+    ) {
+      end += 2
+      while (end < pattern.length && isNumberSlot(pattern[end])) end++
+    }
+    grouping ??= groupingSizes(pattern, i, end)
+    value += '{0}'
+    i = end
+  }
+  if (!grouping && !compact)
+    throw new ErrorConstructor('Missing number pattern: ' + pattern)
+  return {value, grouping: grouping ?? [3, 3]}
+}
+
+function unquoteSingleCharacters(pattern: string): string {
+  let result = ''
+  for (let i = 0; i < pattern.length; i++) {
+    if (
+      pattern[i] === "'" &&
+      i + 2 < pattern.length &&
+      pattern[i + 2] === "'"
+    ) {
+      const ch = pattern[i + 1]
+      if (ch !== '\n' && ch !== '\r' && ch !== '\u2028' && ch !== '\u2029') {
+        result += ch
+        i += 2
+        continue
+      }
+    }
+    result += pattern[i]
+  }
+  return result
+}
+
+function tokenize(value: string): NumberPatternPlan['parts'] {
+  const parts: NumberPatternPlan['parts'] = []
+  let start = 0
+  for (let i = 0; i < value.length; i++) {
+    let end = i + 1
+    let token: NumberPatternPlan['parts'][number] | undefined
+    switch (value[i]) {
+      case '¤':
+        token = ['currency', '']
+        break
+      case '%':
+        token = ['percentSign', '']
+        break
+      case '+':
+        token = ['plusSign', '']
+        break
+      case '-':
+        token = ['minusSign', '']
+        break
+      case '{':
+        if (slice(value, i, i + 3) === '{0}') {
+          token = ['number', '']
+          end = i + 3
+        } else if (
+          slice(value, i, i + approximateMarker.length) === approximateMarker
+        ) {
+          token = ['approximatelySign', '']
+          end = i + approximateMarker.length
+        } else if (slice(value, i, i + 3) === '{c:') {
+          const close = indexOf(value, '}', i + 3)
+          if (close > i + 3) {
+            token = ['compact', slice(value, i + 3, close)]
+            end = close + 1
+          }
+        }
+    }
+    if (token) {
+      if (start < i)
+        setDataProperty(parts, parts.length, [
+          'literal',
+          slice(value, start, i),
+        ])
+      setDataProperty(parts, parts.length, token)
+      start = end
+      i = end - 1
+    }
+  }
+  if (start < value.length)
+    setDataProperty(parts, parts.length, ['literal', slice(value, start)])
+  return parts
+}
+
+// ECMA-402 §§16.5.10–11 select private locale patterns. Older packs are
+// decoded on demand without running RegExp or consulting public methods.
+// https://tc39.es/ecma402/#sec-getnumberformatpattern
+// https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
 function compile(pattern: string, compact: boolean): NumberPatternPlan[] {
-  if (!pattern.includes(';')) pattern = `${pattern};-${pattern}`
-  const [positive, negative] = pattern.split(';')
+  const delimiter = indexOf(pattern, ';')
+  const positive = delimiter < 0 ? pattern : slice(pattern, 0, delimiter)
+  const next = delimiter < 0 ? -1 : indexOf(pattern, ';', delimiter + 1)
+  const negative =
+    delimiter < 0
+      ? '-' + pattern
+      : slice(pattern, delimiter + 1, next < 0 ? pattern.length : next)
+  const minus = indexOf(negative, '-')
   const signed = [
     positive,
     negative,
-    negative.includes('-') ? negative.replace(/-/g, '+') : `+${positive}`,
+    minus < 0 ? '+' + positive : positiveSign(negative),
   ]
-  const variants = [
-    ...signed,
-    ...signed.map((value, index) =>
-      index === 0 && negative.includes('-') && !compact
-        ? negative.replace('-', '{approximatelySign}')
-        : approximate(value, index === 0 ? 0 : index === 1 ? -1 : 1)
-    ),
-  ]
-  return variants.map((value, index) => {
-    if (compact) {
-      // Compact literals are identified before the approximate marker is added.
-      const base = signed[index % 3]
-        .replace(/([^\s;\-+\d¤]+)/g, '{c:$1}')
-        .replace(/0+/, '0')
+  const plans: NumberPatternPlan[] = []
+  for (let i = 0; i < 6; i++) {
+    const signIndex = i % 3
+    let value = signed[signIndex]
+    if (compact) value = compactTokens(value)
+    if (i >= 3) {
       value =
-        index < 3
-          ? base
-          : approximate(base, index % 3 === 0 ? 0 : index % 3 === 1 ? -1 : 1)
+        i === 3 && minus >= 0 && !compact
+          ? slice(negative, 0, minus) +
+            approximateMarker +
+            slice(negative, minus + 1)
+          : approximate(value, signIndex === 0 ? 0 : signIndex === 1 ? -1 : 1)
     }
-    NUMBER.lastIndex = 0
-    const number = NUMBER.exec(value)?.[0]
-    if (!number && !compact)
-      throw new ErrorConstructor(`Missing number pattern: ${pattern}`)
-    const groups = (number || '0').split('.')[0].split(',')
-    const primary = groups.length > 1 ? groups[groups.length - 1].length : 3
-    const secondary =
-      groups.length > 2 ? groups[groups.length - 2].length : primary
-    const parts: NumberPatternPlan['parts'] = []
-    for (const token of value
-      .replace(NUMBER, '{0}')
-      .replace(/'(.)'/g, '$1')
-      .split(TOKENS)) {
-      if (!token) continue
-      switch (token) {
-        case '{0}':
-          parts.push(['number', ''])
-          break
-        case '{approximatelySign}':
-          parts.push(['approximatelySign', ''])
-          break
-        case '-':
-          parts.push(['minusSign', ''])
-          break
-        case '+':
-          parts.push(['plusSign', ''])
-          break
-        case '%':
-          parts.push(['percentSign', ''])
-          break
-        case '¤':
-          parts.push(['currency', ''])
-          break
-        default:
-          parts.push(
-            token.startsWith('{c:')
-              ? ['compact', token.slice(3, -1)]
-              : ['literal', token]
-          )
-      }
-    }
-    return {grouping: [primary, secondary], parts}
-  })
+    const {value: withSlots, grouping} = numberSlots(value, compact)
+    setDataProperty(plans, i, {
+      grouping,
+      parts: tokenize(unquoteSingleCharacters(withSlots)),
+    })
+  }
+  return plans
 }
 
 /** Shared wire schema. Identical sign plans and numbering-system aliases share IDs. */
@@ -176,6 +334,8 @@ export function compileNumberPatterns(
   return result
 }
 
+// ECMA-402 §16.5.10 steps 1–9 select stored pattern data without public hooks.
+// https://tc39.es/ecma402/#sec-getnumberformatpattern
 export function getNumberPattern(
   data: RawNumberData,
   pattern: string,
@@ -184,36 +344,41 @@ export function getNumberPattern(
   approximately: boolean
 ): NumberPatternPlan {
   const index = (sign === 0 ? 0 : sign === -1 ? 1 : 2) + (approximately ? 3 : 0)
-  const generated = data.patternPlans
+  const generated = HasOwnProperty(data, 'patternPlans')
+    ? data.patternPlans
+    : undefined
   if (generated?.version === 1) {
-    const ids = (compact ? generated.compact : generated.standard)[pattern]
-    if (ids) {
+    const table = compact ? generated.compact : generated.standard
+    if (HasOwnProperty(table, pattern)) {
       let plans = readPlanCache(prepared, generated)
       if (!plans) {
         plans = []
         writePlanCache(prepared, generated, plans)
       }
-      const id = ids[index]
-      if (!plans[id]) {
+      const id = table[pattern][index]
+      if (!HasOwnProperty(plans, `${id}`)) {
         const plan = generated.plans[id]
-        plans[id] = {
+        const parts: NumberPatternPlan['parts'] = []
+        for (let i = 2; i < plan.length; i++)
+          setDataProperty(parts, i - 2, generated.tokens[plan[i]])
+        setDataProperty(plans, id, {
           grouping: [plan[0], plan[1]],
-          parts: plan.slice(2).map(id => generated.tokens[id]),
-        }
+          parts,
+        })
       }
       return plans[id]
     }
   }
   let patterns = readPlanCache(cache, data)
   if (!patterns) {
-    patterns = new Map()
+    patterns = new MapConstructor()
     writePlanCache(cache, data, patterns)
   }
   const key = `${compact ? 'compact' : 'standard'}:${pattern}`
-  let plans = patterns.get(key)
+  let plans = apply(mapGet, patterns, [key]) as NumberPatternPlan[] | undefined
   if (!plans) {
     plans = compile(pattern, compact)
-    patterns.set(key, plans)
+    apply(mapSet, patterns, [key, plans])
   }
   return plans[index]
 }
@@ -234,8 +399,15 @@ export function composeNumberPattern(
       grouping: style.grouping,
       parts: [],
     }
-    for (const part of style.parts)
-      result.parts.push(...(part[0] === 'number' ? notation.parts : [part]))
+    for (let i = 0; i < style.parts.length; i++) {
+      const part = style.parts[i]
+      if (part[0] === 'number') {
+        for (let j = 0; j < notation.parts.length; j++)
+          setDataProperty(result.parts, result.parts.length, notation.parts[j])
+      } else {
+        setDataProperty(result.parts, result.parts.length, part)
+      }
+    }
     writePlanCache(patterns, notation, result)
   }
   return result

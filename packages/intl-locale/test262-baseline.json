@@ -1,7 +1,7 @@
 {
   "total": 380,
   "failures": {
-    "intl402/Locale/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
-    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'"
+    "intl402/Locale/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Locale]», «[object Intl.Locale]») to be true",
+    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.Locale]», «[object Intl.Locale]») to be true"
   }
 }

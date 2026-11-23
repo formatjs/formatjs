@@ -1,27 +1,49 @@
 import {BestAvailableLocale} from '#packages/intl-localematcher/abstract/BestAvailableLocale.js'
-import {splitUnicodeExtension} from '#packages/intl-localematcher/abstract/utils.js'
+import {
+  getAvailableLocaleList,
+  getServiceLocaleList,
+} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
+import {setDataProperty} from '#packages/intl-localematcher/abstract/intrinsics.js'
+import {
+  findBestMatch,
+  splitUnicodeExtension,
+} from '#packages/intl-localematcher/abstract/utils.js'
 
-/**
- * https://tc39.es/ecma402/#sec-lookupsupportedlocales
- * @param availableLocales
- * @param requestedLocales
- */
 export function LookupSupportedLocales(
   availableLocales: string[],
   requestedLocales: string[]
 ): string[] {
+  return FilterLocales(availableLocales, requestedLocales, 'lookup')
+}
+
+// ECMA-402 §9.2.9 steps 3–5 match each tag independently without a default.
+// https://tc39.es/ecma402/#sec-filterlocales
+export function FilterLocales(
+  availableLocales: Set<string> | readonly string[],
+  requestedLocales: readonly string[],
+  matcher: 'lookup' | 'best fit',
+  includeHostLocale = false
+): string[] {
+  const bestFit = matcher === 'best fit'
+  const available = includeHostLocale
+    ? getServiceLocaleList(availableLocales, bestFit).available
+    : getAvailableLocaleList(availableLocales, bestFit)
   const subset: string[] = []
-  for (const locale of requestedLocales) {
+  for (let index = 0; index < requestedLocales.length; index++) {
+    const locale = requestedLocales[index]
     const {locale: noExtensionLocale} = splitUnicodeExtension(locale)
-    const availableLocale = BestAvailableLocale(
-      availableLocales,
-      noExtensionLocale
-    )
+    const availableLocale =
+      matcher === 'lookup'
+        ? BestAvailableLocale(available, noExtensionLocale)
+        : findBestMatch(
+            [noExtensionLocale],
+            available,
+            undefined,
+            undefined,
+            false
+          ).matchedSupportedLocale
     if (availableLocale) {
-      // ECMA-402 §9.2.9 FilterLocales, step 4.c: preserve the requested tag.
-      // https://tc39.es/ecma402/#sec-filterlocales
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L344
-      subset.push(locale)
+      setDataProperty(subset, subset.length, locale)
     }
   }
   return subset

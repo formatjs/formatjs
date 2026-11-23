@@ -18,8 +18,11 @@ pub(crate) struct Metadata {
 pub(crate) fn load() -> Result<&'static Metadata, Error> {
     static DATA: OnceLock<Result<Metadata, String>> = OnceLock::new();
     DATA.get_or_init(|| {
-        serde_json::from_str(include_str!(env!("FORMATJS_DURATION_METADATA")))
-            .map_err(|error| error.to_string())
+        let mut data: Metadata =
+            serde_json::from_str(include_str!(env!("FORMATJS_DURATION_METADATA")))
+                .map_err(|error| error.to_string())?;
+        formatjs_intl_locale::matcher::include_host_locale(&mut data.available);
+        Ok(data)
     })
     .as_ref()
     .map_err(|error| Error::InvalidData(error.clone()))

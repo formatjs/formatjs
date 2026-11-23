@@ -8,11 +8,17 @@ import {
   type RelativeTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/relative-time.js'
 import {
-  createMemoizedNumberFormat,
-  createMemoizedPluralRules,
+  createMemoizedNumberFormatForConstructor,
+  createMemoizedPluralRulesForConstructor,
+  findFormatterPartsMethod,
+  findPluralRulesSelectMethod,
+  getNumberFormatProvider,
+  getPluralRulesProvider,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
+
+const apply = Reflect.apply
 
 export function InitializeRelativeTimeFormat(
   rtf: Intl.RelativeTimeFormat,
@@ -34,8 +40,10 @@ export function InitializeRelativeTimeFormat(
 ): Intl.RelativeTimeFormat {
   const internalSlots = getInternalSlots(rtf)
   internalSlots.initializedRelativeTimeFormat = true
+  // ECMA-402 §18.1.1 steps 3–9: resolve locales before reading style or numeric.
+  // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
   const requestedLocales = CanonicalizeLocaleList(locales)
-  const opt: any = Object.create(null)
+  const opt: any = {__proto__: null}
   const opts = CoerceOptionsToObject<Intl.RelativeTimeFormatOptions>(options)
   const matcher = GetOption(
     opts,
@@ -67,10 +75,17 @@ export function InitializeRelativeTimeFormat(
     opt,
     relevantExtensionKeys,
     localeData,
-    getDefaultLocale
+    getDefaultLocale,
+    'hostDefaultWithLocaleData'
   )
   const {locale, nu} = r
   internalSlots.locale = locale
+  // Step 8: capture fields before style or numeric getters can reload them.
+  const fields = r.localeData
+  invariant(!!fields, `Missing locale data for ${r.dataLocale}`)
+  internalSlots.fields = fields
+  internalSlots.numberingSystem = nu
+  // Steps 10–13: read style before numeric, applying defaults.
   internalSlots.style = GetOption(
     opts,
     'style',
@@ -85,17 +100,36 @@ export function InitializeRelativeTimeFormat(
     ['always', 'auto'],
     'always'
   )
-  const fields = localeData[r.dataLocale]
-  invariant(!!fields, `Missing locale data for ${r.dataLocale}`)
-  internalSlots.fields = fields
   // ECMA-402 §18.1.1, steps 14–17: isolate NumberFormat options and use
   // the resolved locale for both internal formatters.
   // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L34-L37
-  const nfOptions = Object.create(null)
-  nfOptions.numberingSystem = nu
-  internalSlots.numberFormat = createMemoizedNumberFormat(locale, nfOptions)
-  internalSlots.pluralRules = createMemoizedPluralRules(locale)
-  internalSlots.numberingSystem = nu
+  const nfOptions = {__proto__: null, numberingSystem: nu}
+  const NumberFormat = getNumberFormatProvider()
+  const numberFormat = createMemoizedNumberFormatForConstructor(NumberFormat)(
+    locale,
+    nfOptions
+  )
+  const PluralRules = getPluralRulesProvider()
+  const pluralRules =
+    createMemoizedPluralRulesForConstructor(PluralRules)(locale)
+  // §18.5.2 steps 11–12 invoke internal operations. Retain the provider
+  // methods so replacing public Intl properties cannot affect formatting.
+  // https://tc39.es/ecma402/#sec-PartitionRelativeTimePattern
+  const formatToParts = findFormatterPartsMethod(NumberFormat) as
+    | Intl.NumberFormat['formatToParts']
+    | undefined
+  if (formatToParts) {
+    internalSlots.formatNumber = value =>
+      apply(formatToParts, numberFormat, [value])
+  } else {
+    // Older providers expose only the bound format getter.
+    const format = numberFormat.format
+    internalSlots.formatNumber = value => [
+      {type: 'literal', value: format(value)},
+    ]
+  }
+  const select = findPluralRulesSelectMethod(PluralRules)
+  invariant(select, 'Missing supplied PluralRules select method')
+  internalSlots.selectPlural = value => apply(select, pluralRules, [value])
   return rtf
 }

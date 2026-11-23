@@ -198,6 +198,58 @@ INTL_SUITES = [
     ("supportedvaluesof", "Intl/supportedValuesOf"),
 ]
 
+LOCALE_METHOD_SUITES = [
+    ("date-locale", "Date"),
+    ("number-locale", "Number"),
+    ("bigint-locale", "BigInt"),
+]
+
+DATE_LOCALE_PRELUDES = [
+    ("isolated", "//packages/intl-datetimeformat:test262-polyfill.js"),
+    ("combined", COMBINED_PRELUDES),
+]
+
+NUMERIC_LOCALE_PRELUDES = [
+    ("isolated", "//packages/intl-numberformat:test262-polyfill.js"),
+    ("combined", COMBINED_DEFAULT_PRELUDES),
+]
+
+[
+    test262_test(
+        name = name + "-" + mode,
+        baseline = None,
+        data = [
+            "@com_github_tc39_test262//:test262-" + name + "-copy",
+            "@com_github_tc39_test262//:test262-harness-copy",
+        ],
+        prelude = prelude,
+        suite = "intl402/" + suite,
+    )
+    for name, suite in LOCALE_METHOD_SUITES
+    for mode, prelude in (DATE_LOCALE_PRELUDES if suite == "Date" else NUMERIC_LOCALE_PRELUDES)
+]
+
+test_suite(
+    name = "date-locale",
+    tests = [
+        ":date-locale-combined-strict",
+        ":date-locale-isolated-strict",
+        ":hermes-date-locale-strict",
+    ],
+)
+
+test_suite(
+    name = "numeric-locale",
+    tests = [
+        ":bigint-locale-combined-strict",
+        ":bigint-locale-isolated-strict",
+        ":hermes-bigint-locale-strict",
+        ":hermes-number-locale-strict",
+        ":number-locale-combined-strict",
+        ":number-locale-isolated-strict",
+    ],
+)
+
 [
     test262_test(
         name = "combined-" + name,
@@ -244,7 +296,7 @@ test262_test(
         node_toolchain = ":node-runtime",
         tags = ["manual"],
     )
-    for name, _ in INTL_SUITES
+    for name, _ in INTL_SUITES + LOCALE_METHOD_SUITES
 ]
 
 [
@@ -278,7 +330,7 @@ test262_test(
             "supportedvaluesof",
         ] else ["manual"],
     )
-    for name, suite in INTL_SUITES
+    for name, suite in INTL_SUITES + LOCALE_METHOD_SUITES
 ]
 
 test_suite(

@@ -24,7 +24,7 @@ using CanonicalBytes = hermes_bridge::Buffer<FormatjsLocaleResult, formatjs_loca
 using hermes_bridge::bytesOf;
 } // namespace
 
-void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
+jsi::Function prepareLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
   auto canonicalize = hermes_bridge::json<1, CanonicalBytes>(runtime, "localeCanonicalTag", "Expected locale tag string", {0, "Rust locale canonicalization failed", true}, formatjs_canonicalize_locale);
   auto create = hermes_bridge::create<2, LocaleRecord>(runtime, "localeCreate", "Expected locale tag and options JSON", {0, "Rust locale construction failed", true}, formatjs_locale_create);
   auto validate = jsi::Function::createFromHostFunction(
@@ -67,11 +67,20 @@ void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
   bridge.setProperty(runtime, "nativeValidate", std::move(validate));
   bridge.setProperty(runtime, "nativeQuery", std::move(query));
   bridge.setProperty(runtime, "nativeTransform", std::move(transform));
-  extensions.getPropertyAsFunction(runtime, "IntlLocale").call(runtime, bridge);
+  return extensions.getPropertyAsFunction(runtime, "IntlLocale")
+      .call(runtime, bridge).asObject(runtime).asFunction(runtime);
+}
+
+jsi::Function prepareLocale(jsi::Runtime &runtime) {
+  auto extensions = hermes_bridge::factory(runtime, wrapperSource, "formatjs:Locale", "IntlLocale");
+  return prepareLocale(runtime, extensions);
+}
+
+void installLocale(jsi::Runtime &runtime, jsi::Object &extensions) {
+  prepareLocale(runtime, extensions);
 }
 
 void installLocale(jsi::Runtime &runtime) {
-  auto extensions = hermes_bridge::factory(runtime, wrapperSource, "formatjs:Locale", "IntlLocale");
-  installLocale(runtime, extensions);
+  prepareLocale(runtime);
 }
 } // namespace formatjs

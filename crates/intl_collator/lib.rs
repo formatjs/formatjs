@@ -1,9 +1,8 @@
 //! ECMA-402 Collator records. Rust owns locale resolution and comparisons;
 //! host adapters supply observable coercions, brands and the cached bound function.
 use formatjs_intl_locale::{Locale, LocaleOptions, matcher};
-use icu_locale_core::LanguageIdentifier;
 use serde::{Deserialize, Serialize};
-use std::{collections::BTreeSet, sync::Arc};
+use std::sync::Arc;
 mod compare;
 mod data;
 pub mod ffi;
@@ -76,9 +75,8 @@ pub struct ResolvedOptions {
 }
 pub struct Collator {
     resolved: ResolvedOptions,
-    language: LanguageIdentifier,
     data: &'static data::Data,
-    tailoring: Arc<Vec<compare::Entry>>,
+    tailoring: Arc<compare::CompiledTailoring>,
 }
 pub fn available_locales() -> Result<&'static [String], Error> {
     Ok(&data::load()?.available)
@@ -110,7 +108,7 @@ impl Collator {
     pub fn new(requested: &[String], options: &Options) -> Result<Self, Error> {
         // InitializeCollator: canonical list, usage, matcher, co/kn/kf options;
         // search has only the default collation even when sort co was requested.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L21-L42
+        // https://tc39.es/ecma402/#sec-intl.collator
         let requested = formatjs_intl_getcanonicallocales::get_canonical_locales(requested)
             .map_err(|_| Error::InvalidLocale)?;
         let collation = options
@@ -127,8 +125,9 @@ impl Collator {
             LocaleMatcher::BestFit => matcher::best_fit_requested(&data.available, &requested)
                 .map_err(|_| Error::InvalidLocale)?,
         };
-        let (index, data_locale) = matched
+        let (index, base_locale) = matched
             .map(|(index, locale)| (Some(index), locale))
+            .or_else(|| matcher::host_default(&data.available).map(|locale| (None, locale)))
             .unwrap_or((None, "en".into()));
         let request = index
             .map(|mut index| {
@@ -145,13 +144,19 @@ impl Collator {
                     .map_err(|_| Error::InvalidLocale)
             })
             .transpose()?;
+        let data_locale = if data.locales.contains_key(&base_locale) {
+            &base_locale
+        } else {
+            matcher::host_locale_data(&base_locale, |tag| data.locales.contains_key(tag))
+                .ok_or_else(|| Error::InvalidData(base_locale.clone()))?
+        };
         let metadata = data
             .locales
-            .get(&data_locale)
-            .ok_or_else(|| Error::InvalidData(data_locale.clone()))?;
+            .get(data_locale)
+            .ok_or_else(|| Error::InvalidData(data_locale.into()))?;
         // ResolveLocale checks requested keywords, then supported option overrides.
         // Only extensions that actually contributed remain in the locale string.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L248-L284
+        // https://tc39.es/ecma402/#sec-resolvelocale
         let mut keywords = Vec::new();
         let mut resolved_values = Vec::new();
         let numeric = options
@@ -161,7 +166,7 @@ impl Collator {
         let search = vec!["default".to_owned()];
         // CLDR's default tailoring (for example Arabic compat) stays internal.
         // ECMA-402's default co slot is null, exposed as "default".
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L95-L98
+        // https://tc39.es/ecma402/#sec-intl-collator-internal-slots
         let sort: Vec<String> = std::iter::once("default".to_owned())
             .chain(
                 metadata
@@ -182,7 +187,15 @@ impl Collator {
                 collation.as_deref(),
             ),
             ("kn", &metadata.kn, numeric.as_deref()),
-            ("kf", &metadata.kf, first.as_deref()),
+            (
+                "kf",
+                if options.usage == Usage::Search {
+                    &metadata.search_kf
+                } else {
+                    &metadata.kf
+                },
+                first.as_deref(),
+            ),
         ] {
             let mut value = values
                 .first()
@@ -197,7 +210,7 @@ impl Collator {
                 };
                 // "default" encodes the null co default in generated data;
                 // it is not an advertised Unicode extension value.
-                // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L95-L98
+                // https://tc39.es/ecma402/#sec-intl-collator-internal-slots
                 if !(key == "co" && requested == "default")
                     && values.iter().any(|value| value == requested)
                 {
@@ -216,7 +229,21 @@ impl Collator {
             }
             resolved_values.push(value.to_owned());
         }
-        let mut locale = data_locale.clone();
+        // Explicit tailoring defaults apply when no option or retained kf keyword
+        // supplied the case order.
+        // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
+        let tailoring_defaults = metadata.collation_defaults.get(&resolved_values[0]);
+        let case_first = match tailoring_defaults {
+            Some(defaults) if first.is_none() && !keywords.iter().any(|(key, _)| *key == "kf") => {
+                defaults.case_first
+            }
+            _ => match resolved_values[2].as_str() {
+                "upper" => CaseFirst::Upper,
+                "lower" => CaseFirst::Lower,
+                _ => CaseFirst::False,
+            },
+        };
+        let mut locale = base_locale.clone();
         if !keywords.is_empty() {
             locale.push_str("-u");
             for (key, value) in keywords {
@@ -241,16 +268,18 @@ impl Collator {
             locale,
             usage: options.usage,
             sensitivity,
-            ignore_punctuation: options
-                .ignore_punctuation
-                .unwrap_or(metadata.ignore_punctuation),
+            ignore_punctuation: options.ignore_punctuation.unwrap_or(
+                if options.usage == Usage::Search {
+                    metadata.search_ignore_punctuation
+                } else {
+                    tailoring_defaults.map_or(metadata.ignore_punctuation, |defaults| {
+                        defaults.ignore_punctuation
+                    })
+                },
+            ),
             collation: resolved_values[0].clone(),
             numeric: resolved_values[1] == "true",
-            case_first: match resolved_values[2].as_str() {
-                "upper" => CaseFirst::Upper,
-                "lower" => CaseFirst::Lower,
-                _ => CaseFirst::False,
-            },
+            case_first,
         };
         // The comparison profile uses CLDR's defaultCollation while the ECMA slot
         // still reports "default". Search selects independent LDML rules.
@@ -262,12 +291,9 @@ impl Collator {
         } else {
             &resolved.collation
         };
-        let tailoring =
-            compare::tailoring(data, &data_locale, comparison_type, &mut BTreeSet::new());
-        let language = data_locale.parse().map_err(|_| Error::InvalidLocale)?;
+        let tailoring = compare::tailoring(data, data_locale, comparison_type);
         Ok(Self {
             resolved,
-            language,
             data,
             tailoring,
         })

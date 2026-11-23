@@ -1,4 +1,12 @@
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  arrayIncludes,
+  createFromConstructor,
+  nullClassBase,
+  setDataProperty,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
@@ -7,7 +15,6 @@ import {
   type NumberFormatDigitOptions,
 } from '#packages/ecma402-abstract/types/number.js'
 import {
-  type CompactExponentData,
   type LDMLPluralRule,
   type PluralRulesData,
   type PluralRulesLocaleData,
@@ -15,7 +22,9 @@ import {
 import {InitializePluralRules} from '#packages/ecma402-abstract/PluralRules/InitializePluralRules.js'
 import {ResolvePlural} from '#packages/ecma402-abstract/PluralRules/ResolvePlural.js'
 import {ResolvePluralRange} from '#packages/ecma402-abstract/PluralRules/ResolvePluralRange.js'
-import getInternalSlots from '#packages/intl-pluralrules/get_internal_slots.js'
+import getInternalSlots, {
+  requireInternalSlots,
+} from '#packages/intl-pluralrules/get_internal_slots.js'
 
 /**
  * Type augmentation for Intl.PluralRules
@@ -29,7 +38,7 @@ import getInternalSlots from '#packages/intl-pluralrules/get_internal_slots.js'
 declare global {
   namespace Intl {
     interface PluralRules {
-      select(value: number | bigint | string): LDMLPluralRule
+      select(value?: number | bigint | string): LDMLPluralRule
       // ECMA-402 Spec: selectRange method
       selectRange(
         start: number | bigint | string,
@@ -40,11 +49,10 @@ declare global {
       trailingZeroDisplay: NumberFormatDigitInternalSlots['trailingZeroDisplay']
     }
     // Constructor delegates all digit options to SetNumberFormatDigitOptions.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L34
+    // https://tc39.es/ecma402/#sec-intl.pluralrules
     interface PluralRulesOptions extends NumberFormatDigitOptions {
       // ECMA-402 §17.1.1 Intl.PluralRules, steps 9–13.
       // https://tc39.es/ecma402/#sec-intl.pluralrules
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L29-L34
       notation?: 'standard' | 'scientific' | 'engineering' | 'compact'
       // Only reported in resolvedOptions when notation is compact.
       compactDisplay?: 'short' | 'long'
@@ -52,210 +60,131 @@ declare global {
   }
 }
 
-function validateInstance(instance: any, method: string) {
-  if (!(instance instanceof PluralRules)) {
-    throw new TypeError(
-      `Method Intl.PluralRules.prototype.${method} called on incompatible receiver ${String(
-        instance
-      )}`
-    )
-  }
-}
-
-export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
-  initializedPluralRules: boolean
-  locale: string
-  type: 'cardinal' | 'ordinal'
-  notation: 'standard' | 'scientific' | 'engineering' | 'compact'
-  compactDisplay?: 'short' | 'long'
-  compactExponents?: CompactExponentData
-}
+export type {PluralRulesInternal} from '#packages/ecma402-abstract/types/plural-rules.js'
 
 /**
  * https://tc39.es/ecma402/#sec-pluralruleselect
  */
 function PluralRuleSelect(
-  locale: string,
+  localeData: PluralRulesData | undefined,
   type: 'cardinal' | 'ordinal',
   decimalString: string,
   exponent: number
 ): LDMLPluralRule {
-  return PluralRules.localeData[locale].fn(
-    decimalString,
-    type === 'ordinal',
-    exponent
-  )
+  return localeData!.fn(decimalString, type === 'ordinal', exponent)
 }
 
-/**
- * PluralRuleSelectRange ( locale, type, notation, compactDisplay, start, end )
- *
- * Implementation-defined abstract operation that determines the plural category for a range
- * by consulting CLDR plural range data. Each locale defines how different combinations of
- * start and end plural categories map to a range plural category.
- *
- * Examples from CLDR:
- * - English: "one" + "other" → "other" (e.g., "1-2 items")
- * - French: "one" + "one" → "one" (e.g., "0-1 vue")
- * - Arabic: "few" + "many" → "many" (e.g., complex range rules)
- *
- * The spec allows this to be implementation-defined, and we use CLDR supplemental data
- * from pluralRanges.json which provides explicit mappings for each locale.
- *
- * @param locale - BCP 47 locale identifier
- * @param type - "cardinal" or "ordinal"
- * @param xp - Start plural category
- * @param yp - End plural category
- * @returns The plural category for the range
- */
+// ECMA-402 §17.5.3 uses CLDR to resolve the two categories for this locale.
+// https://tc39.es/ecma402/#sec-pluralruleselectrange
 function PluralRuleSelectRange(
-  locale: string,
+  localeData: PluralRulesData | undefined,
   type: 'cardinal' | 'ordinal',
   xp: LDMLPluralRule,
   yp: LDMLPluralRule
 ): LDMLPluralRule {
-  const localeData = PluralRules.localeData[locale]
-  if (!localeData || !localeData.pluralRanges) {
-    // Fallback: If no range data is available, return the end category.
-    // This is a reasonable default as the end value often determines the plural form.
-    return yp
-  }
-
-  // Construct lookup key: "start_end" (e.g., "one_other", "few_many")
-  const key = `${xp}_${yp}` as const
-
-  // Select the appropriate range data based on type (cardinal vs ordinal)
+  const ranges =
+    localeData && HasOwnProperty(localeData, 'pluralRanges')
+      ? localeData.pluralRanges
+      : undefined
+  // CLDR tables contain own fields keyed by the selected category pair.
   const rangeData =
-    type === 'ordinal'
-      ? localeData.pluralRanges.ordinal
-      : localeData.pluralRanges.cardinal
-
-  // Look up the result, falling back to end category if not found
-  return rangeData?.[key] ?? yp
+    ranges && HasOwnProperty(ranges, type) ? ranges[type] : undefined
+  const key = `${xp}_${yp}` as const
+  return rangeData && HasOwnProperty(rangeData, key)
+    ? (rangeData[key] ?? yp)
+    : yp
 }
 
-export class PluralRules {
+let defaultLocale = ''
+function getDefaultLocale(): string {
+  return defaultLocale
+}
+// ECMA-402 §17.2.3 defines an empty internal extension list.
+// https://tc39.es/ecma402/#sec-intl.pluralrules-internal-slots
+const relevantExtensionKeys: never[] = []
+
+// ECMA-402 §17.2.1 https://tc39.es/ecma402/#sec-intl.pluralrules.prototype
+// ECMA-402 §17.3.1 https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.constructor
+export class PluralRules extends nullClassBase {
+  // @ts-expect-error TS2377: extends null and returns its own receiver.
+  // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
   constructor(locales?: string | string[], options?: Intl.PluralRulesOptions) {
-    // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
-    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-    const newTarget =
-      this && this instanceof PluralRules ? this.constructor : void 0
-    if (!newTarget) {
-      throw new TypeError("Intl.PluralRules must be called with 'new'")
-    }
-    return InitializePluralRules(this, locales, options, {
+    // ECMA-402 §17.1.1 uses NewTarget to allocate the branded receiver.
+    // https://tc39.es/ecma402/#sec-intl.pluralrules
+    const receiver = createFromConstructor(new.target, PluralRules.prototype)
+    return InitializePluralRules(receiver, locales, options, {
       availableLocales: PluralRules.availableLocales,
-      relevantExtensionKeys: PluralRules.relevantExtensionKeys,
+      relevantExtensionKeys,
       localeData: PluralRules.localeData,
-      getDefaultLocale: PluralRules.getDefaultLocale,
+      getDefaultLocale,
       getInternalSlots,
     })
   }
   public resolvedOptions(): Intl.ResolvedPluralRulesOptions {
-    validateInstance(this, 'resolvedOptions')
+    const internalSlots = requireInternalSlots(this)
     // Ordinary result object and property order follow the resolved-options table.
     // ECMA-402 §17.3.2 Intl.PluralRules.prototype.resolvedOptions, steps 3–5, Table 32.
     // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.resolvedoptions
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L114-L126
     const opts: Record<string, any> = {}
-    const internalSlots = getInternalSlots(this)
-    opts.locale = internalSlots.locale
-    opts.type = internalSlots.type
-    ;(
-      [
-        'notation',
-        'compactDisplay',
-        'minimumIntegerDigits',
-        'minimumFractionDigits',
-        'maximumFractionDigits',
-        'minimumSignificantDigits',
-        'maximumSignificantDigits',
-      ] as Array<keyof PluralRulesInternal>
-    ).forEach(field => {
+    const fields = [
+      'locale',
+      'type',
+      'notation',
+      'compactDisplay',
+      'minimumIntegerDigits',
+      'minimumFractionDigits',
+      'maximumFractionDigits',
+      'minimumSignificantDigits',
+      'maximumSignificantDigits',
+    ] as const
+    for (let index = 0; index < fields.length; index++) {
+      const field = fields[index]
       const val = internalSlots[field]
       if (val !== undefined) {
-        opts[field] = val
+        setDataProperty(opts, field, val)
       }
-    })
-
-    const categories =
-      PluralRules.localeData[internalSlots.locale].categories[
-        internalSlots.type
-      ]
-    opts.pluralCategories = [
-      'zero',
-      'one',
-      'two',
-      'few',
-      'many',
-      'other',
-    ].filter(category => categories.includes(category))
-    for (const field of [
-      'roundingIncrement',
-      'roundingMode',
-      'roundingPriority',
-      'trailingZeroDisplay',
-    ] as const) {
-      opts[field] = internalSlots[field]
     }
+
+    const categories = internalSlots.localeData!.categories[internalSlots.type]
+    const ordered = ['zero', 'one', 'two', 'few', 'many', 'other'] as const
+    const pluralCategories: LDMLPluralRule[] = []
+    for (let index = 0; index < ordered.length; index++) {
+      const category = ordered[index]
+      if (arrayIncludes(categories, category)) {
+        setDataProperty(pluralCategories, pluralCategories.length, category)
+      }
+    }
+    setDataProperty(opts, 'pluralCategories', pluralCategories)
+    setDataProperty(opts, 'roundingIncrement', internalSlots.roundingIncrement)
+    setDataProperty(opts, 'roundingMode', internalSlots.roundingMode)
+    setDataProperty(opts, 'roundingPriority', internalSlots.roundingPriority)
+    setDataProperty(
+      opts,
+      'trailingZeroDisplay',
+      internalSlots.trailingZeroDisplay
+    )
     return opts as Intl.ResolvedPluralRulesOptions
   }
 
-  public select(val: number | bigint | string): LDMLPluralRule {
-    validateInstance(this, 'select')
+  public select(val?: number | bigint | string): LDMLPluralRule {
+    requireInternalSlots(this)
     // Use ToIntlMathematicalValue which handles bigint per ECMA-402
     // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.select
     const n = ToIntlMathematicalValue(val)
     return ResolvePlural(this, n, {getInternalSlots, PluralRuleSelect})
   }
-  /**
-   * Intl.PluralRules.prototype.selectRange ( start, end )
-   *
-   * Returns a string indicating which plural rule applies to a range of numbers.
-   * This is useful for formatting ranges like "1-2 items" vs "2-3 items" where
-   * different languages have different plural rules for ranges.
-   *
-   * Specification: https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
-   *
-   * @param start - The start value of the range (number or bigint)
-   * @param end - The end value of the range (number or bigint)
-   * @returns The plural category for the range (zero, one, two, few, many, or other)
-   *
-   * @example
-   * const pr = new Intl.PluralRules('en');
-   * pr.selectRange(1, 2); // "other" (English: "1-2 items")
-   * pr.selectRange(1, 1); // "one" (same value: "1 item")
-   *
-   * @example
-   * const prFr = new Intl.PluralRules('fr');
-   * prFr.selectRange(0, 1); // "one" (French: "0-1 vue")
-   * prFr.selectRange(1, 2); // "other" (French: "1-2 vues")
-   *
-   * @example
-   * // BigInt support (spec-compliant, but Chrome has a bug as of early 2025)
-   * pr.selectRange(BigInt(1), BigInt(2)); // "other"
-   *
-   * @throws {TypeError} If start or end is undefined
-   * @throws {RangeError} If start or end converts to NaN
-   *
-   * @note Chrome's native implementation (as of early 2025) has a bug where it throws
-   * "Cannot convert a BigInt value to a number" when using BigInt arguments. This is
-   * a browser bug - the spec requires BigInt support. This polyfill handles BigInt correctly.
-   */
+  // ECMA-402 §17.3.4 steps 2–6: require both endpoints, then coerce left to right.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
   public selectRange(
     start: number | bigint | string,
     end: number | bigint | string
   ): LDMLPluralRule {
-    validateInstance(this, 'selectRange')
-    // Spec: https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
-
-    // 1. Let pr be the this value.
-    // 2. Perform ? RequireInternalSlot(pr, [[InitializedPluralRules]]).
-    // (Validation is done by validateInstance above)
-
+    requireInternalSlots(this)
     // 3. If start is undefined or end is undefined, throw a TypeError exception.
     if (start === undefined || end === undefined) {
-      throw new TypeError('selectRange requires both start and end arguments')
+      throw new TypeErrorConstructor(
+        'selectRange requires both start and end arguments'
+      )
     }
 
     // 4. Let x be ? ToIntlMathematicalValue(start).
@@ -271,13 +200,11 @@ export class PluralRules {
       PluralRuleSelectRange,
     })
   }
-  toString() {
-    return '[object Intl.PluralRules]'
-  }
   public static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<Intl.PluralRulesOptions, 'localeMatcher'>
   ): string[] {
+    // ECMA-402 §17.2.2 https://tc39.es/ecma402/#sec-intl.pluralrules.supportedlocalesof
     return SupportedLocales(
       PluralRules.availableLocales,
       CanonicalizeLocaleList(locales),
@@ -288,7 +215,7 @@ export class PluralRules {
     for (const {data: d, locale: tag} of data) {
       // AvailableLocales and its data keys must use the same canonical ID.
       // Otherwise sh resolves to sr-Latn, where no registered payload exists.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L18-L26
+      // https://tc39.es/ecma402/#sec-internal-slots
       const [locale] = CanonicalizeLocaleList(tag)
       registerLocaleData(
         locale,
@@ -296,23 +223,38 @@ export class PluralRules {
         PluralRules.localeData,
         PluralRules.availableLocales
       )
-      if (!PluralRules.__defaultLocale) {
-        PluralRules.__defaultLocale = locale
+      if (!defaultLocale) {
+        defaultLocale = locale
       }
     }
   }
-  static localeData: Record<string, PluralRulesData> = {}
+  // ECMA-402 §17.2.3: register plural data without locale extension keys.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules-internal-slots
+  static localeData: Record<string, PluralRulesData> = Object.create(null)
   static availableLocales: Set<string> = new Set<string>()
-  static __defaultLocale = ''
+  declare static __defaultLocale: string
   static getDefaultLocale(): string {
-    return PluralRules.__defaultLocale
+    return getDefaultLocale()
   }
   static relevantExtensionKeys: never[] = []
   public static polyfilled = true
 }
 
+// ECMA-402 §9.2.7 step 3 uses the internal default during locale resolution.
+// https://tc39.es/ecma402/#sec-resolvelocale
+Object.defineProperty(PluralRules, '__defaultLocale', {
+  configurable: true,
+  enumerable: true,
+  get: getDefaultLocale,
+  set(locale: string) {
+    defaultLocale = locale
+  },
+})
+
+Object.setPrototypeOf(PluralRules.prototype, Object.prototype)
+
 try {
-  // IE11 does not have Symbol
+  // ECMA-402 §17.3.5 https://tc39.es/ecma402/#sec-intl.pluralrules.prototype-%symbol.tostringtag%
   if (typeof Symbol !== 'undefined') {
     Object.defineProperty(PluralRules.prototype, Symbol.toStringTag, {
       value: 'Intl.PluralRules',

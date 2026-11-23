@@ -5,9 +5,11 @@
 #include <algorithm>
 #include <memory>
 #include <new>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 namespace formatjs {
 namespace jsi = facebook::jsi;
@@ -21,7 +23,11 @@ using ValuesResult = hermes_bridge::Buffer<FormatjsValuesResult, formatjs_values
 
 struct ProbeContext {
   jsi::Runtime &runtime;
-  jsi::Object intl;
+  jsi::Value constructor;
+  jsi::Value resolvedOptions;
+  jsi::Value formatProbe;
+  jsi::Function makeOptions;
+  std::optional<std::vector<std::string>> availableCalendars;
   std::string resolved;
   std::string formatted;
 };
@@ -41,55 +47,67 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
     context.resolved.clear();
     context.formatted.clear();
     std::string identifier(reinterpret_cast<const char *>(value.data), value.len);
+    // ECMA-402 §6.9.1. A FormatJS provider supplies its loaded calendar data.
+    // https://tc39.es/ecma402/#sec-availablecalendars
+    if (key == FORMATJS_CALENDAR && context.availableCalendars) {
+      const auto &calendars = *context.availableCalendars;
+      if (std::find(calendars.begin(), calendars.end(), identifier) == calendars.end())
+        return 1;
+      context.resolved = std::move(identifier);
+      out->resolved = borrow(context.resolved);
+      return 0;
+    }
+    // ECMA-402 §6.5.2 checks zone data without constructing a formatter.
+    // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
+    if (key == FORMATJS_TIME_ZONE && context.formatProbe.isObject()) {
+      auto supported = context.formatProbe.asObject(rt).asFunction(rt).call(
+          rt, jsi::String::createFromUtf8(rt, identifier));
+      return supported.isBool() && supported.getBool() ? 0 : 1;
+    }
     std::string language(reinterpret_cast<const char *>(locale.data), locale.len);
-    const char *constructor = nullptr;
+    if (key == FORMATJS_NUMBERING_SYSTEM) {
+      if (!context.formatProbe.isObject()) return 1;
+      language += "-u-nu-" + identifier;
+      auto supported = context.formatProbe.asObject(rt).asFunction(rt).call(
+          rt, jsi::String::createFromUtf8(rt, language), jsi::String::createFromUtf8(rt, identifier));
+      if (!supported.isBool() || !supported.getBool()) return 1;
+      context.resolved = std::move(identifier);
+      out->resolved = borrow(context.resolved);
+      return 0;
+    }
+    if (!context.constructor.isObject()) return 1;
     const char *property = nullptr;
-    bool format = false;
-    jsi::Object options(rt);
+    bool probeCurrency = false;
+    auto options = context.makeOptions.call(rt).asObject(rt);
     switch (key) {
     case FORMATJS_CALENDAR:
-      constructor = "DateTimeFormat";
       property = "calendar";
       language += "-u-ca-" + identifier;
       break;
     case FORMATJS_COLLATION:
-      constructor = "Collator";
       property = "collation";
       language += "-u-co-" + identifier;
       break;
     case FORMATJS_CURRENCY:
-      constructor = "NumberFormat";
-      format = true;
+      if (!context.formatProbe.isObject()) return 1;
+      probeCurrency = true;
       options.setProperty(rt, "style", jsi::String::createFromAscii(rt, "currency"));
       options.setProperty(rt, "currencyDisplay", jsi::String::createFromAscii(rt, "name"));
       options.setProperty(rt, "currency", jsi::String::createFromUtf8(rt, identifier));
       break;
-    case FORMATJS_NUMBERING_SYSTEM:
-      constructor = "NumberFormat";
-      property = "numberingSystem";
-      format = true;
-      language += "-u-nu-" + identifier;
-      break;
     case FORMATJS_TIME_ZONE:
-      constructor = "DateTimeFormat";
       options.setProperty(rt, "timeZone", jsi::String::createFromUtf8(rt, identifier));
-      break;
-    case FORMATJS_UNIT:
-      constructor = "NumberFormat";
-      property = "unit";
-      options.setProperty(rt, "style", jsi::String::createFromAscii(rt, "unit"));
-      options.setProperty(rt, "unit", jsi::String::createFromUtf8(rt, identifier));
       break;
     default:
       return 2;
     }
-    auto formatter = context.intl.getPropertyAsFunction(rt, constructor)
+    auto formatter = context.constructor.asObject(rt).asFunction(rt)
                          .callAsConstructor(rt,
                                             jsi::String::createFromUtf8(rt, language),
                                             options)
                          .asObject(rt);
     if (property) {
-      auto resolved = formatter.getPropertyAsFunction(rt, "resolvedOptions")
+      auto resolved = context.resolvedOptions.asObject(rt).asFunction(rt)
                           .callWithThis(rt, formatter)
                           .asObject(rt)
                           .getProperty(rt, property);
@@ -98,13 +116,15 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
         out->resolved = borrow(context.resolved);
       }
     }
-    // The TS predicate short-circuits accepted latn without formatting.
-    if (format && !(key == FORMATJS_NUMBERING_SYSTEM && identifier == "latn" &&
-                    context.resolved == "latn")) {
-      auto formatted = formatter.getPropertyAsFunction(rt, "format")
-                           .callWithThis(rt, formatter, 123);
-      if (formatted.isString()) {
-        context.formatted = formatted.asString(rt).utf8(rt);
+    if (probeCurrency) {
+      auto observed = context.formatProbe.asObject(rt).asFunction(rt)
+                          .call(rt, formatter, jsi::String::createFromUtf8(rt, identifier),
+                                jsi::String::createFromUtf8(rt, language));
+      if (observed.isBool() && observed.getBool()) {
+        context.resolved = std::move(identifier);
+        out->resolved = borrow(context.resolved);
+      } else if (observed.isString()) {
+        context.formatted = observed.asString(rt).utf8(rt);
         out->formatted = borrow(context.formatted);
       }
     }
@@ -122,14 +142,26 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
 
 jsi::Function prepareSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &extensions) {
   auto enumerate = jsi::Function::createFromHostFunction(
-      runtime, jsi::PropNameID::forAscii(runtime, "supportedValuesRust"), 1,
+      runtime, jsi::PropNameID::forAscii(runtime, "supportedValuesRust"), 6,
       [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args,
          size_t count) -> jsi::Value {
-        if (count != 1 || !args[0].isString()) {
-          throw jsi::JSError(rt, "Expected a supportedValuesOf key string");
+        if (count != 6 || !args[0].isString()) {
+          throw jsi::JSError(rt, "Expected supportedValuesOf key and probe operations");
         }
         auto key = args[0].asString(rt).utf8(rt);
-        ProbeContext context{rt, rt.global().getPropertyAsObject(rt, "Intl"), {}, {}};
+        // ECMA-402 §8.3.2 steps 2–6 probe through the retained provider.
+        // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+        ProbeContext context{rt, jsi::Value(rt, args[1]), jsi::Value(rt, args[2]),
+                             jsi::Value(rt, args[3]),
+                             args[4].asObject(rt).asFunction(rt), {}, {}, {}};
+        if (!args[5].isUndefined()) {
+          auto source = args[5].asObject(rt).asArray(rt);
+          auto &calendars = context.availableCalendars.emplace();
+          size_t length = source.size(rt);
+          calendars.reserve(length);
+          for (size_t index = 0; index < length; ++index)
+            calendars.push_back(source.getValueAtIndex(rt, index).asString(rt).utf8(rt));
+        }
         ValuesResult output;
         auto status = formatjs_supported_values_of(
             reinterpret_cast<const uint8_t *>(key.data()), key.size(), probe,
@@ -138,7 +170,7 @@ jsi::Function prepareSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &exten
         if (status != 0) throw jsi::JSError(rt, "Rust supported value enumeration failed");
         // Intl.supportedValuesOf step 9, CreateArrayFromList: always create a
         // fresh intrinsic array, copying strings before releasing Rust's buffer.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L123
+        // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
         if (!output.value.len) return jsi::Array(rt, 0);
         std::string_view values(reinterpret_cast<const char *>(output.value.data),
                                 output.value.len);

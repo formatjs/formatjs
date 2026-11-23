@@ -3,10 +3,8 @@ import {Type} from '#packages/ecma262-abstract/Type.js'
 import {type RelativeTimeFormatSingularUnit} from '#packages/ecma402-abstract/types/relative-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 
-/**
- * https://tc39.es/proposal-intl-relative-time/#sec-singularrelativetimeunit
- * @param unit
- */
+// ECMA-402 §18.5.1: normalize plural aliases and reject unknown units.
+// https://tc39.es/ecma402/#sec-singularrelativetimeunit
 export function SingularRelativeTimeUnit(
   unit: Intl.RelativeTimeFormatUnit
 ): RelativeTimeFormatSingularUnit {

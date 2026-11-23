@@ -107,7 +107,17 @@ pub unsafe extern "C" fn formatjs_segmenter_match(
         let request: MatchRequest =
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
         let result = if request.supported {
-            json!(crate::supported_locales(&request.requested).map_err(|_| 1)?)
+            let requested =
+                formatjs_intl_getcanonicallocales::get_canonical_locales(&request.requested)
+                    .map_err(|_| 1)?;
+            json!(
+                formatjs_intl_locale::matcher::filter(
+                    crate::available_locales(),
+                    &requested,
+                    request.lookup,
+                )
+                .map_err(|_| 1)?
+            )
         } else {
             let options = Options {
                 locale_matcher: if request.lookup {

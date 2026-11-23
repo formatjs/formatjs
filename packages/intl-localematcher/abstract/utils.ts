@@ -169,6 +169,11 @@ function prefix(tag: string): {
   return {language, script, region, end}
 }
 
+export function scriptlessRegionLocale(tag: string): string | undefined {
+  const {language, script, region} = prefix(tag)
+  if (script && region) return language + '-' + region
+}
+
 function fields(tag: string): LSR {
   const parsed = prefix(tag)
   const language = parsed.language
@@ -241,7 +246,7 @@ const setLocaleOperations = localeOperations.set.bind(localeOperations)
 let localeIntl: typeof Intl | undefined = globalThis.Intl
 let localeConstructor: typeof Intl.Locale | undefined
 
-function localeDescriptorMember(
+export function localeDescriptorMember(
   object: object,
   key: PropertyKey,
   member: 'value' | 'get' = 'value'
@@ -514,12 +519,16 @@ const isLocaleListImmutable =
 let paradigms: Set<string> | undefined
 
 export function createLocaleListSnapshot(
-  locales: readonly string[]
+  locales: readonly string[],
+  additionalLocales: readonly string[] = []
 ): readonly string[] {
   // ECMA-402 §9.2.7 step 2.a: snapshot the private available locale List.
   const snapshot: string[] = []
   for (let index = 0; index < locales.length; index++) {
     setDataProperty(snapshot, `${index}`, locales[index])
+  }
+  for (let index = 0; index < additionalLocales.length; index++) {
+    setDataProperty(snapshot, `${snapshot.length}`, additionalLocales[index])
   }
   markLocaleListImmutable(freezeLocaleList(snapshot))
   return snapshot

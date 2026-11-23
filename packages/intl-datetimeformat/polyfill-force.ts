@@ -1,50 +1,14 @@
 import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/index.js'
-import {
-  toLocaleDateString as _toLocaleDateString,
-  toLocaleString as _toLocaleString,
-  toLocaleTimeString as _toLocaleTimeString,
-} from '#packages/intl-datetimeformat/to_locale_string.js'
+import {installDateLocaleMethods} from '#packages/intl-datetimeformat/to_locale_string.js'
 
 const intl = ensureIntl()
 
+// ECMA-402 §8.2.2 and §11.1 install Intl.DateTimeFormat.
+// https://tc39.es/ecma402/#sec-intl-datetimeformat-constructor
+// https://tc39.es/ecma402/#sec-intl.datetimeformat-intro
 defineProperty(intl, 'DateTimeFormat', {value: DateTimeFormat})
-defineProperty(Date.prototype, 'toLocaleString', {
-  value: function toLocaleString(
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
-  ) {
-    try {
-      return _toLocaleString(this, locales, options)
-    } catch {
-      return 'Invalid Date'
-    }
-  },
-})
-defineProperty(Date.prototype, 'toLocaleDateString', {
-  value: function toLocaleDateString(
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
-  ) {
-    try {
-      return _toLocaleDateString(this, locales, options)
-    } catch {
-      return 'Invalid Date'
-    }
-  },
-})
-defineProperty(Date.prototype, 'toLocaleTimeString', {
-  value: function toLocaleTimeString(
-    locales?: string | string[],
-    options?: Intl.DateTimeFormatOptions
-  ) {
-    try {
-      return _toLocaleTimeString(this, locales, options)
-    } catch {
-      return 'Invalid Date'
-    }
-  },
-})
+installDateLocaleMethods()
 
 // Optional calendars and their locale patterns can be loaded before installation.
 for (const [key, register] of [

@@ -130,9 +130,17 @@ pub unsafe extern "C" fn formatjs_collator_supported(
         out.write(CollatorBytes::EMPTY);
     }
     guarded(|| {
-        let requested: Vec<String> =
+        let request: formatjs_intl_locale::matcher::FilterRequest =
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
-        let supported = crate::supported_locales(&requested).map_err(|_| 1)?;
+        let (requested, lookup) = request.into_parts();
+        let requested =
+            formatjs_intl_getcanonicallocales::get_canonical_locales(&requested).map_err(|_| 1)?;
+        let supported = formatjs_intl_locale::matcher::filter(
+            crate::available_locales().map_err(|_| 1)?,
+            &requested,
+            lookup,
+        )
+        .map_err(|_| 1)?;
         unsafe {
             output(serde_json::to_value(supported).map_err(|_| 2)?, out);
         }

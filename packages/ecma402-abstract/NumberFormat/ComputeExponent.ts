@@ -4,13 +4,13 @@ import {ComputeExponentForMagnitude} from '#packages/ecma402-abstract/NumberForm
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
-/**
- * The abstract operation ComputeExponent computes an exponent (power of ten) by which to scale x
- * according to the number formatting settings. It handles cases such as 999 rounding up to 1000,
- * requiring a different exponent.
- *
- * NOT IN SPEC: returns magnitude and reusable positive rounding when scaling is unchanged.
- */
+function decimalMagnitude(value: Decimal): Decimal {
+  // The positive mantissa's digit count gives floor(log10(value)) exactly.
+  return new Decimal(value._mantissa.toString().length - 1 + value._exponent)
+}
+
+// Return the exponent, magnitude, and reusable positive rounding preview.
+// ECMA-402 §16.5.12 https://tc39.es/ecma402/#sec-computeexponent
 export function ComputeExponent(
   internalSlots: NumberFormatInternal,
   x: Decimal
@@ -23,22 +23,7 @@ export function ComputeExponent(
     x = x.negated()
   }
 
-  // Fast path for simple numbers
-  // If x can be represented as a safe integer, use native Math.log10
-  const xNum = x.toNumber()
-  let magnitude: Decimal
-  if (
-    Number.isFinite(xNum) &&
-    Number.isSafeInteger(xNum) &&
-    xNum > 0 &&
-    xNum <= 999999
-  ) {
-    // Use fast native logarithm for simple positive integers
-    const magNum = Math.floor(Math.log10(xNum))
-    magnitude = new Decimal(magNum)
-  } else {
-    magnitude = x.log(10).floor()
-  }
+  const magnitude = decimalMagnitude(x)
   const exponent = ComputeExponentForMagnitude(internalSlots, magnitude)
   // Preserve more precision by doing multiplication when exponent is negative.
   x = x.times(getPowerOf10(-exponent))
@@ -49,20 +34,7 @@ export function ComputeExponent(
     return [exponent, magnitude.toNumber(), preview]
   }
 
-  // Fast path for simple rounded numbers
-  const roundedNum = formatNumberResult.roundedNumber.toNumber()
-  let newMagnitude: Decimal
-  if (
-    Number.isFinite(roundedNum) &&
-    Number.isSafeInteger(roundedNum) &&
-    roundedNum > 0 &&
-    roundedNum <= 999999
-  ) {
-    const newMagNum = Math.floor(Math.log10(roundedNum))
-    newMagnitude = new Decimal(newMagNum)
-  } else {
-    newMagnitude = formatNumberResult.roundedNumber.log(10).floor()
-  }
+  const newMagnitude = decimalMagnitude(formatNumberResult.roundedNumber)
   if (newMagnitude.eq(magnitude.minus(exponent))) {
     return [exponent, magnitude.toNumber(), preview]
   }

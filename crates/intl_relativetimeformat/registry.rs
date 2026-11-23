@@ -8,6 +8,8 @@ use std::{
     sync::Arc,
 };
 #[derive(Default)]
+// ECMA-402 §18.2.3: available locales supply fields and the nu extension.
+// https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat-internal-slots
 pub struct Registry {
     data: BTreeMap<String, Data<LocaleData>>,
     explicit: BTreeSet<String>,
@@ -62,6 +64,9 @@ impl Registry {
         };
         let (index, data_locale) = matched
             .map(|(index, locale)| (Some(index), locale))
+            .or_else(|| {
+                matcher::host_default(self.available.as_slice()).map(|locale| (None, locale))
+            })
             .or_else(|| self.default.clone().map(|locale| (None, locale)))
             .ok_or(Error::MissingLocale)?;
         let data = self.get(&data_locale)?;
@@ -101,6 +106,7 @@ impl Registry {
             locale,
             data_locale,
             numbering_system,
+            data: Some(data),
         })
     }
     pub fn create(
@@ -116,13 +122,16 @@ impl Registry {
         resolution: &Resolution,
         options: &Options,
     ) -> Result<RelativeTimeFormat, Error> {
-        // TS reads fields after style/numeric getters, so fetch the current record
-        // using the already resolved data locale instead of retaining an early snapshot.
-        RelativeTimeFormat::new(self.get(&resolution.data_locale)?, resolution, options)
+        // Legacy serialized resolutions contain the locale ID alone.
+        let data = match &resolution.data {
+            Some(data) => Arc::clone(data),
+            None => self.get(&resolution.data_locale)?,
+        };
+        RelativeTimeFormat::new(data, resolution, options)
     }
     fn insert(&mut self, tag: String, data: Data<LocaleData>, replace: bool) {
         if !self.data.contains_key(&tag) {
-            self.available.push(tag.clone());
+            self.available.push_service_locale(tag.clone());
         }
         if replace || !self.data.contains_key(&tag) {
             self.data.insert(tag, data);
@@ -163,7 +172,9 @@ impl Registry {
 
     fn register(&mut self, locale: String, aliases: Vec<String>, data: Data<LocaleData>) {
         let tags: Vec<_> = std::iter::once(locale.clone()).chain(aliases).collect();
-        self.explicit.insert(locale.clone());
+        if !self.explicit.insert(locale.clone()) {
+            formatjs_intl_data::refresh_locale_data(&mut self.data, &locale, &data);
+        }
         for tag in &tags {
             self.insert(
                 tag.clone(),
@@ -205,6 +216,7 @@ impl Registry {
         self.default.as_deref()
     }
     pub fn get(&self, locale: &str) -> Result<Arc<LocaleData>, Error> {
+        let locale = self.available.data_locale(locale);
         self.data
             .get(locale)
             .ok_or(Error::MissingLocale)?

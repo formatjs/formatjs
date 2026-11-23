@@ -1,5 +1,6 @@
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
+import {GetStringOrBooleanOption} from '#packages/ecma402-abstract/GetStringOrBooleanOption.js'
 import {expect, it} from 'vitest'
 
 it('reads callable options without invoking them', () => {
@@ -51,4 +52,54 @@ it('creates fresh empty options when omitted', () => {
   expect(Object.getPrototypeOf(options)).toBe(null)
   expect(Reflect.ownKeys(options)).toEqual([])
   expect(GetOptionsObject()).not.toBe(options)
+})
+
+it('allocates default options without calling the global Object.create', () => {
+  const create = Object.create
+  let options: object
+  try {
+    Object.create = () => {
+      throw new Error('visible Object.create')
+    }
+    options = GetOptionsObject()
+  } finally {
+    Object.create = create
+  }
+  expect(Object.getPrototypeOf(options)).toBeNull()
+})
+
+it('coerces boolean options without calling the global Boolean', () => {
+  const boolean = globalThis.Boolean
+  let numeric: unknown
+  let grouping: string | boolean
+  try {
+    globalThis.Boolean = (() => {
+      throw new Error('visible Boolean')
+    }) as BooleanConstructor
+    numeric = GetOption(
+      {numeric: 'false'},
+      'numeric',
+      'boolean',
+      undefined,
+      false
+    )
+    grouping = GetStringOrBooleanOption(
+      {useGrouping: ''},
+      'useGrouping',
+      ['auto'],
+      'auto',
+      false,
+      'auto'
+    )
+  } finally {
+    globalThis.Boolean = boolean
+  }
+  expect(numeric).toBe(true)
+  expect(grouping).toBe(false)
+})
+
+it('accepts any string when GetOption has an empty allowed list', () => {
+  expect(GetOption({style: 'short'}, 'style', 'string', [], 'long')).toBe(
+    'short'
+  )
 })

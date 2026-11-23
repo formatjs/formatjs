@@ -34,6 +34,8 @@ pub struct Resolution {
     locale: String,
     data_locale: String,
     numbering_system: String,
+    #[serde(skip)]
+    data: Option<Arc<LocaleData>>,
 }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -104,6 +106,10 @@ impl RelativeTimeFormat {
         })
     }
     /// Format a Number after host coercion, without reparsing its binary value.
+    // ECMA-402 §18.5.2 step 11 passes the signed value. Test262 expects the
+    // magnitude in the numeric placeholder because the pattern conveys tense.
+    // https://tc39.es/ecma402/#sec-PartitionRelativeTimePattern
+    // https://github.com/tc39/test262/blob/2a1ade303f72d3de80565c921d685222405c32ce/test/intl402/RelativeTimeFormat/prototype/format/en-us-numeric-always.js#L32-L36
     pub fn format_number(&self, value: f64, unit: &str) -> Result<String, Error> {
         self.format_with(value, unit, || {
             let mut buffer = ryu::Buffer::new();
@@ -113,6 +119,8 @@ impl RelativeTimeFormat {
                 .format_decimal_string_with_plural(text, &self.data.plurals)
         })
     }
+    // ECMA-402 §18.5.4 steps 2–4: concatenate part values in order.
+    // https://tc39.es/ecma402/#sec-FormatRelativeTime
     fn format_with(
         &self,
         numeric: f64,
@@ -158,6 +166,8 @@ impl RelativeTimeFormat {
                 .format_decimal_with_plural(text, &self.data.plurals)
         })
     }
+    // ECMA-402 §18.5.5 steps 2–5: allocate fresh parts with units on numbers.
+    // https://tc39.es/ecma402/#sec-FormatRelativeTimeToParts
     fn parts_with(
         &self,
         numeric: f64,
@@ -201,9 +211,13 @@ impl RelativeTimeFormat {
         format_number: impl FnOnce() -> Result<(N, &'static str), formatjs_intl_numberformat::Error>,
         mut visit: impl FnMut(Piece<'_, N>),
     ) -> Result<(), Error> {
+        // ECMA-402 §18.5.2 steps 1–6: validate inputs and select the style pattern.
+        // https://tc39.es/ecma402/#sec-PartitionRelativeTimePattern
         if !numeric.is_finite() {
             return Err(Error::InvalidNumber);
         }
+        // ECMA-402 §18.5.1 maps plural aliases and rejects unknown units.
+        // https://tc39.es/ecma402/#sec-singularrelativetimeunit
         let unit = data::UNITS
             .iter()
             .copied()
@@ -220,19 +234,16 @@ impl RelativeTimeFormat {
             .get(key.as_ref())
             .or_else(|| self.data.fields.get(unit))
             .ok_or_else(|| Error::InvalidData("Missing relative field".into()))?;
-        // Numeric auto uses ToString(-0) = "0" before choosing past/future.
-        // https://tc39.es/ecma402/#sec-partitionrelativetimepattern
+        // Step 7: numeric auto uses the ECMAScript Number::toString key.
         if self.resolved.numeric == "auto" {
-            let key = if numeric == 0.0 {
-                "0".to_owned()
-            } else {
-                numeric.to_string()
-            };
-            if let Some(literal) = field.relative.get(&key) {
+            let mut buffer = ryu::Buffer::new();
+            let key = named_offset_key(numeric, &mut buffer);
+            if let Some(literal) = field.relative.get(key.as_ref()) {
                 visit(Piece::Literal(literal));
                 return Ok(());
             }
         }
+        // Steps 8–10: signed zero and negative values use the past pattern.
         let patterns = if numeric.is_sign_negative() {
             &field.past
         } else {
@@ -244,6 +255,8 @@ impl RelativeTimeFormat {
             .get(category)
             .or_else(|| patterns.get("other"))
             .ok_or_else(|| Error::InvalidData("Missing relative plural pattern".into()))?;
+        // ECMA-402 §18.5.3: copy literals and substitute tagged number parts.
+        // https://tc39.es/ecma402/#sec-makepartslist
         let mut chunks = pattern.split("{0}").enumerate().peekable();
         while let Some((index, literal)) = chunks.next() {
             if index > 0 {
@@ -256,6 +269,38 @@ impl RelativeTimeFormat {
         }
         Ok(())
     }
+}
+
+// ECMA-262 §6.1.6.1.20 steps 2–12: use Ryu's shortest digits with JS notation.
+// https://tc39.es/ecma262/#sec-numeric-types-number-tostring
+fn named_offset_key(value: f64, buffer: &mut ryu::Buffer) -> Cow<'_, str> {
+    if value == 0.0 {
+        return Cow::Borrowed("0");
+    }
+    let text = buffer.format_finite(value);
+    let Some((mantissa, exponent)) = text.split_once('e') else {
+        return Cow::Borrowed(text.strip_suffix(".0").unwrap_or(text));
+    };
+    let power: i32 = exponent.parse().expect("Ryu emits a decimal exponent");
+    if power >= 21 {
+        return Cow::Owned(format!("{mantissa}e+{exponent}"));
+    }
+    if power < -6 {
+        return Cow::Borrowed(text);
+    }
+
+    let (sign, mantissa) = mantissa
+        .strip_prefix('-')
+        .map_or(("", mantissa), |unsigned| ("-", unsigned));
+    let digits = mantissa.replace('.', "");
+    if power < 0 {
+        let zeros = (-power - 1) as usize;
+        return Cow::Owned(format!("{sign}0.{:0>zeros$}{digits}", ""));
+    }
+    // Ryu uses fixed notation through 16 integer digits. Its remaining
+    // fixed-range outputs have at least 17 integer digits and no fraction.
+    let width = (power + 1) as usize;
+    Cow::Owned(format!("{sign}{digits:0<width$}"))
 }
 #[derive(Debug)]
 pub enum Error {

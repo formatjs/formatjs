@@ -4,6 +4,27 @@ import '@formatjs/intl-pluralrules/locale-data/en'
 import en from '#packages/intl-numberformat/tests/locale-data/en.json' with {type: 'json'}
 import {NumberFormat} from '#packages/intl-numberformat/core'
 NumberFormat.__addLocaleData(en as any)
+
+it.each(['getDefaultLocale', '__defaultLocale'] as const)(
+  'keeps locale state private from %s',
+  property => {
+    const original = Object.getOwnPropertyDescriptor(NumberFormat, property)
+    try {
+      Object.defineProperty(NumberFormat, property, {
+        configurable: true,
+        get() {
+          throw new Error(`Read public ${property}`)
+        },
+      })
+      NumberFormat.__addLocaleData(en as any)
+      expect(new NumberFormat('en').format(1234)).toBe('1,234')
+    } finally {
+      if (original) Object.defineProperty(NumberFormat, property, original)
+      else Reflect.deleteProperty(NumberFormat, property)
+    }
+  }
+)
+
 const toNumberResults = [
   [undefined, NaN],
   [null, +0],
@@ -126,3 +147,37 @@ describe('Keep trailing zeros', () => {
     ).toThrow(TypeError)
   })
 })
+
+it.each(['formatRange', 'formatRangeToParts'] as const)(
+  '%s coerces both endpoints in order and keeps exact decimal strings',
+  method => {
+    const formatter = new NumberFormat('en', {useGrouping: false})
+    const calls: string[] = []
+    const endpoint = (name: string, value: string) => ({
+      [Symbol.toPrimitive](hint: string) {
+        calls.push(`${name}:${hint}`)
+        return value
+      },
+    })
+
+    const result = formatter[method](
+      endpoint('start', '9007199254740992.01') as any,
+      endpoint('end', '9007199254740992.02') as any
+    )
+    expect(calls).toEqual(['start:number', 'end:number'])
+    expect(
+      typeof result === 'string'
+        ? result
+        : result.map(part => part.value).join('')
+    ).toBe('9007199254740992.01–9007199254740992.02')
+
+    const error = new Error('end coercion')
+    expect(() =>
+      formatter[method]('NaN', {
+        [Symbol.toPrimitive]() {
+          throw error
+        },
+      } as any)
+    ).toThrow(error)
+  }
+)

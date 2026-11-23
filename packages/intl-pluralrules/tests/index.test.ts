@@ -8,6 +8,7 @@ import en from '#packages/intl-pluralrules/tests/locale-data/en.js'
 import fr from '#packages/intl-pluralrules/tests/locale-data/fr.js'
 import ca from '#packages/intl-pluralrules/tests/locale-data/ca.js'
 import es from '#packages/intl-pluralrules/tests/locale-data/es.js'
+import isData from '#packages/intl-pluralrules/tests/locale-data/is.js'
 import itData from '#packages/intl-pluralrules/tests/locale-data/it.js'
 import lld from '#packages/intl-pluralrules/tests/locale-data/lld.js'
 import pt from '#packages/intl-pluralrules/tests/locale-data/pt.js'
@@ -17,16 +18,137 @@ import vec from '#packages/intl-pluralrules/tests/locale-data/vec.js'
 import bs from '#packages/intl-pluralrules/tests/locale-data/bs.js'
 import lv from '#packages/intl-pluralrules/tests/locale-data/lv.js'
 PluralRules.__addLocaleData(en, fr, ca, es, itData, lld, pt, ptPT, scn, vec)
-PluralRules.__addLocaleData(bs, lv)
+PluralRules.__addLocaleData(bs, lv, isData)
 
 describe('PluralRules', function () {
+  it.each([
+    'getDefaultLocale',
+    '__defaultLocale',
+    'relevantExtensionKeys',
+  ] as const)('keeps locale state private from %s', property => {
+    const original = Object.getOwnPropertyDescriptor(PluralRules, property)
+    try {
+      Object.defineProperty(PluralRules, property, {
+        configurable: true,
+        get() {
+          throw new Error(`Read public ${property}`)
+        },
+      })
+      PluralRules.__addLocaleData(en)
+      expect(new PluralRules('en').select(1)).toBe('one')
+    } finally {
+      if (original) Object.defineProperty(PluralRules, property, original)
+      else Reflect.deleteProperty(PluralRules, property)
+    }
+  })
+
+  it('fraction digit limits expose positive zero for negative zero inputs', () => {
+    const rules = new PluralRules('en', {
+      minimumFractionDigits: -0,
+      maximumFractionDigits: -0,
+    })
+    const {minimumFractionDigits, maximumFractionDigits} =
+      rules.resolvedOptions()
+    expect(minimumFractionDigits).toBe(0)
+    expect(maximumFractionDigits).toBe(0)
+  })
+
+  it('reads NewTarget.prototype once and initializes custom receivers', () => {
+    const prototype = Object.create(null, {
+      constructor: {
+        get() {
+          throw new Error('Read the receiver constructor')
+        },
+      },
+    })
+    let reads = 0
+    const newTarget = new Proxy(function () {}, {
+      get(target, key) {
+        if (key !== 'prototype') return Reflect.get(target, key)
+        reads++
+        return prototype
+      },
+    })
+    const instance = Reflect.construct(PluralRules, ['en'], newTarget)
+    expect(reads).toBe(1)
+    expect(Object.getPrototypeOf(instance)).toBe(prototype)
+    expect(PluralRules.prototype.select.call(instance, 1)).toBe('one')
+
+    const defaultTarget = function () {}
+    Object.defineProperty(defaultTarget, 'prototype', {value: null})
+    const defaultInstance = Reflect.construct(
+      PluralRules,
+      ['en'],
+      defaultTarget
+    )
+    expect(Object.getPrototypeOf(defaultInstance)).toBe(PluralRules.prototype)
+  })
+
+  it('requires initialized slots before coercion and accepts changed prototypes', () => {
+    const rules = new PluralRules('en')
+    const {select, selectRange, resolvedOptions} = PluralRules.prototype
+    Object.setPrototypeOf(rules, null)
+    expect(select.call(rules, 1)).toBe('one')
+    expect(selectRange.call(rules, 1, 2)).toBe('other')
+    expect(resolvedOptions.call(rules).locale).toBe('en')
+
+    const impostor = Object.create(PluralRules.prototype)
+    const value = {
+      valueOf() {
+        throw new Error('coerced invalid receiver input')
+      },
+    }
+    expect(() => select.call(impostor, value as unknown as number)).toThrow(
+      TypeError
+    )
+    expect(() =>
+      selectRange.call(impostor, value as unknown as number, 2)
+    ).toThrow(TypeError)
+    expect(() => resolvedOptions.call(impostor)).toThrow(TypeError)
+  })
+
+  it('creates own resolved option properties without calling inherited setters', () => {
+    const rules = new PluralRules('en')
+    const previous = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'pluralCategories'
+    )
+    let result: Intl.ResolvedPluralRulesOptions
+    try {
+      Object.defineProperty(Object.prototype, 'pluralCategories', {
+        configurable: true,
+        set() {
+          throw new Error('called inherited pluralCategories setter')
+        },
+      })
+      result = rules.resolvedOptions()
+    } finally {
+      if (previous)
+        Object.defineProperty(Object.prototype, 'pluralCategories', previous)
+      else Reflect.deleteProperty(Object.prototype, 'pluralCategories')
+    }
+    expect(
+      Object.getOwnPropertyDescriptor(result, 'pluralCategories')?.value
+    ).toEqual(['one', 'other'])
+  })
+
   it('default locale', function () {
-    expect(new PluralRules().resolvedOptions()).toEqual({
-      locale: 'en',
+    const hostLocale = new Intl.NumberFormat().resolvedOptions().locale
+    const [supportedHost] = PluralRules.supportedLocalesOf(hostLocale, {
+      localeMatcher: 'lookup',
+    })
+    const locale = supportedHost ?? 'en'
+    const explicit = new PluralRules(locale, {
+      localeMatcher: 'lookup',
+    })
+    const {pluralCategories} = explicit.resolvedOptions()
+    const rules = new PluralRules()
+    expect(rules.resolvedOptions()).toEqual({
+      locale,
       maximumFractionDigits: 3,
       minimumFractionDigits: 0,
       minimumIntegerDigits: 1,
-      pluralCategories: ['one', 'other'],
+      pluralCategories,
       type: 'cardinal',
       notation: 'standard',
       roundingIncrement: 1,
@@ -34,6 +156,8 @@ describe('PluralRules', function () {
       roundingPriority: 'auto',
       trailingZeroDisplay: 'auto',
     })
+    expect(rules.select(1)).toBe(explicit.select(1))
+    expect(rules.selectRange(1, 2)).toBe(explicit.selectRange(1, 2))
   })
   it('should work for cardinal', function () {
     expect(new PluralRules('en').select(0)).toBe('other')
@@ -459,6 +583,60 @@ it('reports compact digit defaults, rounding settings, and ordered categories', 
     options
   )
 })
+it('inherits Object.prototype.toString and accepts a missing select value', () => {
+  const rules = new PluralRules('en')
+  // ECMA-402 §17.3.5 provides a tag for the inherited Object.prototype method.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype-%symbol.tostringtag%
+  expect(PluralRules.prototype.toString).toBe(Object.prototype.toString)
+  expect(rules.toString()).toBe('[object Intl.PluralRules]')
+  expect(rules.select()).toBe('other')
+})
+
+it.each([
+  [
+    '20',
+    'many',
+    () => new PluralRules('fr', {notation: 'compact'}).select(1.2e20),
+  ],
+  [
+    'one_two',
+    'two',
+    () => new PluralRules('en', {type: 'ordinal'}).selectRange(1, 2),
+  ],
+] as const)(
+  'ignores inherited %s in plural data tables',
+  (key, expected, select) => {
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+    let actual: string
+    try {
+      Object.defineProperty(Object.prototype, key, {
+        configurable: true,
+        enumerable: true,
+        get() {
+          throw new Error('Read an inherited plural data field')
+        },
+      })
+      actual = select()
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, key, original)
+      else Reflect.deleteProperty(Object.prototype, key)
+    }
+    expect(actual!).toBe(expected)
+  }
+)
+
+it('preserves RegExp state when Icelandic rules trim trailing zeros', () => {
+  const rules = new PluralRules('is', {minimumFractionDigits: 3})
+  void /probe(.)/.exec('probe!')
+  const before = [RegExp.lastMatch, RegExp.$1]
+  const categories = [rules.select('1.10'), rules.select('1.110')]
+  const after = [RegExp.lastMatch, RegExp.$1]
+  // ECMA-402 §17.5.2 steps 4–10 derive categories from the rounded string.
+  // https://tc39.es/ecma402/#sec-resolveplural
+  expect(categories).toEqual(['one', 'other'])
+  expect(after).toEqual(before)
+})
+
 it('accepts infinite range endpoints but still rejects NaN', () => {
   const rules = new PluralRules('en')
   for (const infinity of [-Infinity, Infinity]) {

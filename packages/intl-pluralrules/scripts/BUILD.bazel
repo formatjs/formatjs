@@ -41,3 +41,9 @@ js_library(
     srcs = ["compact-exponents.ts"],
     visibility = ["//crates/intl_pluralrules/scripts:__pkg__"],
 )
+
+js_library(
+    name = "plural_rules_compiler",
+    srcs = ["plural-rules-compiler.ts"],
+    visibility = ["//packages/intl-numberformat/scripts:__pkg__"],
+)

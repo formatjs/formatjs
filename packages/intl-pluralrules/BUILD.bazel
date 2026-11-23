@@ -16,6 +16,7 @@ TEST_LOCALES = [
     "en",
     "es",
     "fr",
+    "is",
     "it",
     "lld",
     "lv",
@@ -87,6 +88,7 @@ formatjs_library(
         "//:node_modules/@formatjs/bigdecimal",  # keep: runtime dependency of bundled abstract operations
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/PluralRules",
         "//packages/ecma402-abstract/types",
@@ -104,6 +106,7 @@ formatjs_test(
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-es",  # keep: generated locale data imported by tests
         ":tests-locale-data-fr",  # keep: generated locale data imported by tests
+        ":tests-locale-data-is",  # keep: generated locale data imported by tests
         ":tests-locale-data-it",  # keep: generated locale data imported by tests
         ":tests-locale-data-lld",  # keep: generated locale data imported by tests
         ":tests-locale-data-lv",  # keep: generated locale data imported by tests

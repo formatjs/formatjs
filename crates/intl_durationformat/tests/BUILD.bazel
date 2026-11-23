@@ -43,6 +43,7 @@ formatjs_test(
         "//crates/intl_durationformat:conformance",
         "//crates/intl_numberformat:locale_data",
     ],
+    env = {"LC_ALL": "fr_CA.UTF-8"},
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-durationformat",

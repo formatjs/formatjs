@@ -1,8 +1,74 @@
 import {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import {Locale} from '#packages/intl-locale/index.js'
+import {shouldPolyfill} from '#packages/intl-locale/should-polyfill.js'
 import {describe, expect, it, test} from 'vitest'
 describe('intl-locale', () => {
+  it('rejects a host Locale that rewrites an alphanumeric variant as a script', () => {
+    const descriptor = Object.getOwnPropertyDescriptor(Intl, 'Locale')!
+    try {
+      Object.defineProperty(Intl, 'Locale', {value: Locale})
+      expect(shouldPolyfill()).toBe(false)
+
+      const host = new Proxy(Locale, {
+        construct(_target, [tag]) {
+          return new Locale(tag === 'en-atom1' ? 'en-Atom' : tag)
+        },
+      })
+      Object.defineProperty(Intl, 'Locale', {value: host})
+      expect(shouldPolyfill()).toBe(true)
+    } finally {
+      Object.defineProperty(Intl, 'Locale', descriptor)
+    }
+  })
+
+  it('reads NewTarget.prototype once and initializes custom receivers', () => {
+    const prototype = Object.create(null, {
+      constructor: {
+        get() {
+          throw new Error('Read the receiver constructor')
+        },
+      },
+    })
+    let reads = 0
+    const newTarget = new Proxy(function () {}, {
+      get(target, key) {
+        if (key !== 'prototype') return Reflect.get(target, key)
+        reads++
+        return prototype
+      },
+    })
+    const instance = Reflect.construct(Locale, ['en'], newTarget)
+    expect(reads).toBe(1)
+    expect(Object.getPrototypeOf(instance) === prototype).toBe(true)
+    expect(Locale.prototype.toString.call(instance)).toBe('en')
+
+    const defaultTarget = function () {}
+    Object.defineProperty(defaultTarget, 'prototype', {value: null})
+    const defaultInstance = Reflect.construct(Locale, ['en'], defaultTarget)
+    expect(Object.getPrototypeOf(defaultInstance) === Locale.prototype).toBe(
+      true
+    )
+  })
+
+  it('returns explicit calendar and hour-cycle options before resolving region preferences', () => {
+    const locale = new Locale('en-US-u-ca-buddhist-hc-h24-rg-gbzzzz')
+    const canonicalize = Intl.getCanonicalLocales
+    let calendars: string[]
+    let hourCycles: string[]
+    try {
+      Intl.getCanonicalLocales = () => {
+        throw new Error('looked up region preferences for explicit options')
+      }
+      calendars = locale.getCalendars()
+      hourCycles = locale.getHourCycles()
+    } finally {
+      Intl.getCanonicalLocales = canonicalize
+    }
+    expect(calendars).toEqual(['buddhist'])
+    expect(hourCycles).toEqual(['h24'])
+  })
+
   it('toString', function () {
     // expect(() => IntlLocale.prototype.toString.call(IntlLocale.prototype)).toThrowError(TypeError)
     expect(
@@ -18,6 +84,16 @@ describe('intl-locale', () => {
   })
 
   describe('new locale info proposal properties', () => {
+    function expectRegionalCalendars(locale: Locale, preferred: string[]) {
+      const available = Intl.supportedValuesOf('calendar')
+      const expected = preferred.filter(calendar =>
+        available.includes(calendar)
+      )
+      expect(locale.getCalendars()).toEqual(
+        expected.length ? expected : ['gregory']
+      )
+    }
+
     it('ar collations', () => {
       const locale = new Locale('ar')
       // Runtime-dependent: 'compat' collation may not be supported on all platforms
@@ -53,7 +129,7 @@ describe('intl-locale', () => {
 
     it('ar', () => {
       const locale = new Locale('ar')
-      expect(locale.getCalendars()).toEqual([
+      expectRegionalCalendars(locale, [
         'gregory',
         'coptic',
         'islamic',
@@ -70,7 +146,7 @@ describe('intl-locale', () => {
 
     it('ar-EG', () => {
       const locale = new Locale('ar-EG')
-      expect(locale.getCalendars()).toEqual([
+      expectRegionalCalendars(locale, [
         'gregory',
         'coptic',
         'islamic',
@@ -87,7 +163,7 @@ describe('intl-locale', () => {
 
     it('ar-SA', () => {
       const locale = new Locale('ar-SA')
-      expect(locale.getCalendars()).toEqual([
+      expectRegionalCalendars(locale, [
         'gregory',
         'islamic-umalqura',
         'islamic',
@@ -103,7 +179,7 @@ describe('intl-locale', () => {
 
     it('ja', () => {
       const locale = new Locale('ja')
-      expect(locale.getCalendars()).toEqual(['gregory', 'japanese'])
+      expectRegionalCalendars(locale, ['gregory', 'japanese'])
 
       expect(locale.getHourCycles()).toEqual(['h23', 'h11', 'h12'])
       expect(locale.getNumberingSystems()).toEqual(['latn'])
@@ -291,6 +367,80 @@ test('uses region and subdivision preferences for week data', () => {
   expect(new Locale('en-US-u-sd-gbeng').getWeekInfo().firstDay).toBe(7)
 })
 
+test('ignores inherited likely-subtag and script-direction data', () => {
+  const unknownLanguage = new Locale('qaa')
+  const unknownScript = new Locale('en-Qaaa')
+  const {prototype} = Object
+  const originalLocale = Object.getOwnPropertyDescriptor(prototype, 'qaa')
+  const originalScript = Object.getOwnPropertyDescriptor(prototype, 'Qaaa')
+  let reads = 0
+  try {
+    Object.defineProperty(prototype, 'qaa', {
+      configurable: true,
+      get() {
+        reads++
+        return 'qaa-Latn-US'
+      },
+    })
+    Object.defineProperty(prototype, 'Qaaa', {
+      configurable: true,
+      get() {
+        reads++
+        return 'rtl'
+      },
+    })
+    expect(unknownLanguage.maximize().toString()).toBe('qaa')
+    expect(unknownLanguage.getWeekInfo().firstDay).toBe(1)
+    expect(unknownScript.getTextInfo().direction).toBeUndefined()
+    expect(reads).toBe(0)
+  } finally {
+    if (originalLocale) Object.defineProperty(prototype, 'qaa', originalLocale)
+    else Reflect.deleteProperty(prototype, 'qaa')
+    if (originalScript) Object.defineProperty(prototype, 'Qaaa', originalScript)
+    else Reflect.deleteProperty(prototype, 'Qaaa')
+  }
+})
+
+test('resolves likely subtags without the public Array iterator', () => {
+  const locale = new Locale('en-fonipa')
+  const iterator = Array.prototype[Symbol.iterator]
+  let maximized: string
+  let direction: string | undefined
+  try {
+    Array.prototype[Symbol.iterator] = () => {
+      throw new Error('Read a public Array iterator')
+    }
+    maximized = locale.maximize().toString()
+    direction = locale.getTextInfo().direction
+  } finally {
+    Array.prototype[Symbol.iterator] = iterator
+  }
+  expect(maximized).toBe('en-Latn-US-fonipa')
+  expect(direction).toBe('ltr')
+})
+
+test('resolves subdivision regions without consulting the public region getter', () => {
+  const locales = [
+    new Locale('en-US-u-rg-gbzzzz'),
+    new Locale('en-u-sd-gbeng'),
+    new Locale('en-US-u-sd-gbeng'),
+  ]
+  const region = Object.getOwnPropertyDescriptor(Locale.prototype, 'region')!
+  let days: number[]
+  try {
+    Object.defineProperty(Locale.prototype, 'region', {
+      configurable: true,
+      get() {
+        throw new Error('Read public Locale.region getter')
+      },
+    })
+    days = locales.map(locale => locale.getWeekInfo().firstDay)
+  } finally {
+    Object.defineProperty(Locale.prototype, 'region', region)
+  }
+  expect(days).toEqual([1, 1, 7])
+})
+
 test('Locale intrinsic supports canonicalization after polyfill installation', () => {
   const NativeLocale = Intl.Locale
   const native = new NativeLocale('fr')
@@ -398,12 +548,85 @@ test('variants options replace existing variants and preserve extensions', () =>
   expect(new Locale('en', {variants: 'FONIPA'}).variants).toBe('fonipa')
 })
 
-test.each(['', 'abcd', '1996-1996', 'POSIX-posix', '1996-', '1996-u-nu-latn'])(
-  'rejects invalid variants option %s',
-  variants => {
-    expect(() => new Locale('en', {variants})).toThrow(RangeError)
+it.each(['en-x-demo', 'en-u-ca-islamicc-x-demo'])(
+  'applies Unicode options without public Array methods for %s',
+  tag => {
+    const {find, push, unshift, [Symbol.iterator]: iterator} = Array.prototype
+    const fail = () => {
+      throw new Error('Read a public Array method')
+    }
+    let locale: Locale
+    try {
+      locale = new Locale(tag, {
+        get calendar() {
+          Array.prototype.find = fail
+          Array.prototype.push = fail
+          Array.prototype.unshift = fail
+          Array.prototype[Symbol.iterator] = fail
+          return 'gregory'
+        },
+        numberingSystem: 'arab',
+      })
+    } finally {
+      Array.prototype.find = find
+      Array.prototype.push = push
+      Array.prototype.unshift = unshift
+      Array.prototype[Symbol.iterator] = iterator
+    }
+    expect(locale.toString()).toBe('en-u-ca-gregory-nu-arab-x-demo')
+    expect(locale.calendar).toBe('gregory')
+    expect(locale.numberingSystem).toBe('arab')
   }
 )
+
+it('keeps Unicode extension keys private during construction', () => {
+  const original = Object.getOwnPropertyDescriptor(
+    Locale,
+    'relevantExtensionKeys'
+  )
+  try {
+    Object.defineProperty(Locale, 'relevantExtensionKeys', {
+      configurable: true,
+      get() {
+        throw new Error('Read public relevantExtensionKeys')
+      },
+    })
+    const locale = new Locale('en-u-kn', {numberingSystem: 'arab'})
+    expect(locale.toString()).toBe('en-u-kn-nu-arab')
+    expect(locale.numeric).toBe(true)
+  } finally {
+    if (original)
+      Object.defineProperty(Locale, 'relevantExtensionKeys', original)
+    else Reflect.deleteProperty(Locale, 'relevantExtensionKeys')
+  }
+})
+
+test('validates variants and region overrides without changing RegExp match state', () => {
+  void /probe(.)/.exec('probe!')
+  const expected = [RegExp.lastMatch, RegExp.$1]
+  const locale = new Locale('en-US-u-rg-gbzzzz', {variants: 'FONIPA'})
+  const afterConstruction = [RegExp.lastMatch, RegExp.$1]
+  void /probe(.)/.exec('probe!')
+  const firstDay = locale.getWeekInfo().firstDay
+  const afterWeekInfo = [RegExp.lastMatch, RegExp.$1]
+
+  expect(locale.variants).toBe('fonipa')
+  expect(firstDay).toBe(1)
+  expect(afterConstruction).toEqual(expected)
+  expect(afterWeekInfo).toEqual(expected)
+})
+
+test.each([
+  '',
+  'abcd',
+  'FONIKA',
+  '1996-1996',
+  'POSIX-posix',
+  '1996-',
+  '1996-u-nu-latn',
+])('rejects invalid variants option %s', variants => {
+  expect(() => new Locale('en', {variants})).toThrow(RangeError)
+})
 
 test('canonicalizes the original locale before applying language overrides', () => {
   expect(new Locale('und-Armn-SU', {language: 'ru'}).toString()).toBe(
@@ -443,6 +666,38 @@ it('filters global collation candidates for the requested locale', () => {
   expect(new Locale('und').getCollations()).toEqual(['emoji', 'eor'])
   expect(new Locale('pt-BR-u-co-phonebk').getCollations()).toEqual(['phonebk'])
 })
+
+it.each(['revoked', 'throwing'] as const)(
+  'uses Locale defaults when a host formatter is %s',
+  mode => {
+    class BrokenFormatter {
+      static supportedLocalesOf() {
+        throw new Error('Host formatter unavailable')
+      }
+      resolvedOptions() {
+        return {}
+      }
+    }
+    const {proxy, revoke} = Proxy.revocable(BrokenFormatter, {})
+    revoke()
+    const formatter = mode === 'revoked' ? proxy : BrokenFormatter
+    const number = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
+    const collator = Object.getOwnPropertyDescriptor(Intl, 'Collator')!
+    const locale = new Locale('ar')
+    const explicit = new Locale('ar-u-co-emoji-nu-arab')
+    try {
+      Object.defineProperty(Intl, 'NumberFormat', {value: formatter})
+      Object.defineProperty(Intl, 'Collator', {value: formatter})
+      expect(locale.getNumberingSystems()).toEqual(['latn'])
+      expect(locale.getCollations()).toEqual(['emoji', 'eor'])
+      expect(explicit.getNumberingSystems()).toEqual(['arab'])
+      expect(explicit.getCollations()).toEqual(['emoji'])
+    } finally {
+      Object.defineProperty(Intl, 'NumberFormat', number)
+      Object.defineProperty(Intl, 'Collator', collator)
+    }
+  }
+)
 
 test('Unicode options preserve other extensions and private use', () => {
   for (const suffix of [

@@ -1,45 +1,58 @@
-import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
+import {lowerCase} from '#packages/intl-getcanonicallocales/parser.js'
 import {
+  type KV,
   type UnicodeLanguageId,
   type UnicodeLocaleId,
 } from '#packages/intl-getcanonicallocales/types.js'
 
-export function emitUnicodeLanguageId(lang?: UnicodeLanguageId): string {
-  if (!lang) {
-    return ''
-  }
-  return [lang.lang, lang.script, lang.region, ...(lang.variants || [])]
-    .filter(Boolean)
-    .join('-')
+function appendSubtag(tag: string, subtag?: string): string {
+  if (!subtag) return tag
+  return tag ? tag + '-' + subtag : subtag
 }
 
+export function emitUnicodeLanguageId(lang?: UnicodeLanguageId): string {
+  if (!lang) return ''
+  let tag = appendSubtag(appendSubtag(lang.lang, lang.script), lang.region)
+  const variants = lang.variants
+  for (let i = 0; variants && i < variants.length; i++)
+    tag = appendSubtag(tag, variants[i])
+  return tag
+}
+
+function appendFields(tag: string, fields: KV[]): string {
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i]
+    tag = appendSubtag(tag, field[0])
+    if (field.length > 1) tag = appendSubtag(tag, field[1])
+  }
+  return tag
+}
+
+// ECMA-402 §6.2.2 steps 2.c–g concatenate private locale fields.
+// https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
 export function emitUnicodeLocaleId({
   lang,
   extensions,
 }: UnicodeLocaleId): string {
-  const chunks = [emitUnicodeLanguageId(lang)]
-  for (const ext of extensions) {
-    appendToList(chunks, ext.type)
+  let tag = emitUnicodeLanguageId(lang)
+  for (let i = 0; i < extensions.length; i++) {
+    const ext = extensions[i]
+    tag = appendSubtag(tag, ext.type)
     switch (ext.type) {
       case 'u':
-        appendToList(
-          chunks,
-          ...ext.attributes,
-          ...ext.keywords.reduce((all: string[], kv) => all.concat(kv), [])
-        )
+        for (let j = 0; j < ext.attributes.length; j++)
+          tag = appendSubtag(tag, ext.attributes[j])
+        tag = appendFields(tag, ext.keywords)
         break
       case 't':
-        appendToList(
-          chunks,
-          emitUnicodeLanguageId(ext.lang).toLowerCase(),
-          ...ext.fields.reduce((all: string[], kv) => all.concat(kv), [])
-        )
+        tag = appendSubtag(tag, lowerCase(emitUnicodeLanguageId(ext.lang)))
+        tag = appendFields(tag, ext.fields)
         break
       default:
-        appendToList(chunks, ext.value)
+        tag = appendSubtag(tag, ext.value)
         break
     }
   }
 
-  return chunks.filter(Boolean).join('-')
+  return tag
 }

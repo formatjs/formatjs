@@ -22,9 +22,12 @@ generate_package_file(
     args = [
         "--ucaPath",
         "$(rootpath :fractional_uca_short)",
+        "--combiningClassPath",
+        "$(rootpath //packages/generated/unicode:DerivedCombiningClass)",
     ],
     data = [
         ":fractional_uca_short",
+        "//packages/generated/unicode:DerivedCombiningClass",
     ],
     tool = "//packages/intl-collator/scripts:generate-root-data",
 )

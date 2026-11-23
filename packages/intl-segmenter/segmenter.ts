@@ -1,10 +1,16 @@
 import {availableLocales as cldrLocales} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  floor,
+  createFromConstructor,
+  nullClassBase,
+  setDataProperty,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
-import {setInternalSlot} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {SegmentationRules} from '@formatjs_generated/unicode/cldr-segmentation-rules.js'
 import {
@@ -12,6 +18,29 @@ import {
   replaceVariables,
 } from '#packages/intl-segmenter/segmentation-utils.js'
 
+const RegExpConstructor = RegExp
+const regexpExec = RegExp.prototype.exec
+const apply = Reflect.apply
+const create = Object.create
+const keys = Object.keys
+const sort = Array.prototype.sort
+const hasOwn = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
+const indexOf = Function.prototype.call.bind(String.prototype.indexOf) as (
+  input: string,
+  search: string
+) => number
+const substring = Function.prototype.call.bind(String.prototype.substring) as (
+  input: string,
+  start: number,
+  end?: number
+) => string
+const trim = Function.prototype.call.bind(String.prototype.trim) as (
+  input: string
+) => string
+const endsWith = Function.prototype.call.bind(String.prototype.endsWith) as (
+  input: string,
+  ending: string
+) => boolean
 let wordCharacters: RegExp | undefined
 
 type SegmentationRule = {
@@ -64,7 +93,7 @@ const generateRuleRegex = (
   variables: Record<string, string>,
   after: boolean
 ) => {
-  return new RegExp(
+  return new RegExpConstructor(
     `${after ? '^' : ''}${replaceVariables(variables, rule)}${after ? '' : '$'}`
   )
 }
@@ -72,21 +101,25 @@ const generateRuleRegex = (
 const prepareLocaleSegmentationRules = (
   segmentationTypeValue: SegmentationTypeTypeRaw
 ): Record<string, SegmentationRule> => {
-  const preparedRules: Record<string, SegmentationRule> = {}
-  for (const ruleNr of Object.keys(segmentationTypeValue.segmentRules)) {
+  const preparedRules: Record<string, SegmentationRule> = create(null)
+  const ruleNumbers = keys(segmentationTypeValue.segmentRules)
+  for (let i = 0; i < ruleNumbers.length; i++) {
+    const ruleNr = ruleNumbers[i]
     const ruleValue = segmentationTypeValue.segmentRules[ruleNr]
     const preparedRule: SegmentationRule = {
       breaks: ruleValue.breaks,
+      before: undefined,
+      after: undefined,
     }
 
-    if ('before' in ruleValue && ruleValue.before) {
+    if (hasOwn(ruleValue, 'before') && ruleValue.before) {
       preparedRule.before = generateRuleRegex(
         ruleValue.before,
         segmentationTypeValue.variables,
         false
       )
     }
-    if ('after' in ruleValue && ruleValue.after) {
+    if (hasOwn(ruleValue, 'after') && ruleValue.after) {
       preparedRule.after = generateRuleRegex(
         ruleValue.after,
         segmentationTypeValue.variables,
@@ -110,18 +143,19 @@ const breaksAtResult = (
   matchingRule,
 })
 
-export class Segmenter {
-  constructor(
-    locales: string | string[] | undefined,
-    options: SegmenterOptions
-  ) {
-    if (new.target === undefined) {
-      throw TypeError(`Constructor Intl.Segmenter requires 'new'`)
-    }
+// ECMA-402 §19.2.1 https://tc39.es/ecma402/#sec-intl.segmenter.prototype
+// ECMA-402 §19.3.1 https://tc39.es/ecma402/#sec-intl.segmenter.prototype.constructor
+export class Segmenter extends nullClassBase {
+  // ECMA-402 §19.1.1: resolve locale before reading granularity.
+  // https://tc39.es/ecma402/#sec-intl.segmenter
+  // @ts-expect-error TS2377: extends null and returns its own receiver.
+  // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
+  constructor(locales?: string | string[], options?: SegmenterOptions) {
+    const receiver = createFromConstructor(new.target, Segmenter.prototype)
     const requestedLocales = CanonicalizeLocaleList(locales)
     options = GetOptionsObject(options)
 
-    const opt = Object.create(null)
+    const opt = create(null)
     const matcher = GetOption(
       options,
       'localeMatcher',
@@ -131,30 +165,28 @@ export class Segmenter {
     )
     opt.localeMatcher = matcher
 
-    const granularity = GetOption(
-      options,
-      'granularity',
-      'string',
-      ['word', 'sentence', 'grapheme'],
-      'grapheme'
-    ) as keyof typeof SegmentationRules.root
-    setSlot(this, 'granularity', granularity)
-
     // DefaultLocale must be a structurally valid, canonical language tag.
     // ECMA-402 §6.2.3 DefaultLocale, return-value definition.
     // https://tc39.es/ecma402/#sec-defaultlocale
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L109
     const r = ResolveLocale(
       Segmenter.availableLocales,
       requestedLocales,
       opt,
       [], // there is no relevantExtensionKeys
-      {},
-      () => 'en'
+      undefined,
+      () => 'en',
+      'hostDefaultWithLocaleData'
     )
-    setSlot(this, 'locale', r.locale)
-
-    //root rules based on granularity
+    const granularity = GetOption(
+      options,
+      'granularity',
+      'string',
+      ['grapheme', 'word', 'sentence'],
+      'grapheme'
+    )
+    // Rule data is private, including when an option getter changes prototypes.
+    // ECMA-402 §19.1.1 steps 7–9 and §19.8.1 steps 3–4.
+    // https://tc39.es/ecma402/#sec-intl.segmenter
     const mergedSegmentationTypeValue: SegmentationTypeTypeRaw = {
       ...SegmentationRules.root[granularity],
     }
@@ -162,38 +194,51 @@ export class Segmenter {
     // ECMA-402 §19.8.1 steps 5.a and 7 use locale-sensitive boundaries.
     // Regional locales inherit their language's CLDR tailoring.
     // https://tc39.es/ecma402/#sec-findboundary
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L398-L406
-    if (r.locale.length) {
+    const dataLocale = r.dataLocale
+    const separator = indexOf(dataLocale, '-')
+    const language =
+      separator < 0 ? dataLocale : substring(dataLocale, 0, separator)
+    const localeKey = hasOwn(SegmentationRules, dataLocale)
+      ? dataLocale
+      : language
+    if (hasOwn(SegmentationRules, localeKey)) {
       const localeOverrides =
-        SegmentationRules[r.locale as keyof typeof SegmentationRules] ||
-        SegmentationRules[
-          r.locale.split('-')[0] as keyof typeof SegmentationRules
-        ]
-      if (localeOverrides && granularity in localeOverrides) {
-        const localeSegmentationTypeValue: SegmentationTypeTypeRaw =
+        SegmentationRules[localeKey as keyof typeof SegmentationRules]
+      if (hasOwn(localeOverrides, granularity)) {
+        const localeRules: SegmentationTypeTypeRaw =
           localeOverrides[granularity as keyof typeof localeOverrides]
         mergedSegmentationTypeValue.variables = {
           ...mergedSegmentationTypeValue.variables,
-          ...localeSegmentationTypeValue.variables,
+          ...localeRules.variables,
         }
         mergedSegmentationTypeValue.segmentRules = {
           ...mergedSegmentationTypeValue.segmentRules,
-          ...localeSegmentationTypeValue.segmentRules,
+          ...localeRules.segmentRules,
         }
-        mergedSegmentationTypeValue.suppressions = [
-          ...mergedSegmentationTypeValue.suppressions,
-          ...localeSegmentationTypeValue.suppressions,
-        ]
+        const base = mergedSegmentationTypeValue.suppressions
+        const extra = localeRules.suppressions
+        const suppressions: string[] = []
+        for (let i = 0; i < base.length; i++) {
+          setDataProperty(suppressions, i, base[i])
+        }
+        for (let i = 0; i < extra.length; i++) {
+          setDataProperty(suppressions, base.length + i, extra[i])
+        }
+        mergedSegmentationTypeValue.suppressions = suppressions
       }
     }
 
     const rules = prepareLocaleSegmentationRules(mergedSegmentationTypeValue)
-    const ruleSortedKeys = Object.keys(rules).sort(
-      (a, b) => Number(a) - Number(b)
-    )
-    setSlot(this, 'rules', rules)
-    setSlot(this, 'ruleSortedKeys', ruleSortedKeys)
-    setSlot(this, 'mergedSegmentationTypeValue', mergedSegmentationTypeValue)
+    const ruleSortedKeys = keys(rules)
+    apply(sort, ruleSortedKeys, [(a: string, b: string) => +a - +b])
+    writeModelSlot(receiver, {
+      locale: r.locale,
+      granularity,
+      rules,
+      ruleSortedKeys,
+      mergedSegmentationTypeValue,
+    })
+    return receiver
   }
 
   public breaksAt(
@@ -203,11 +248,15 @@ export class Segmenter {
     return findBoundary(readModel(this, 'breaksAt'), position, input)
   }
 
+  // ECMA-402 §19.3.3: require the slot, then convert the input to a String.
+  // https://tc39.es/ecma402/#sec-intl.segmenter.prototype.segment
   segment(input: string): Segments {
     const model = readModel(this, 'segment')
     return new Segments(this, model, ToString(input))
   }
 
+  // ECMA-402 §19.3.2: return fresh own properties in table order.
+  // https://tc39.es/ecma402/#sec-intl.segmenter.prototype.resolvedoptions
   resolvedOptions(): SegmenterResolvedOptions {
     const {locale, granularity} = readModel(this, 'resolvedOptions')
     return {locale, granularity}
@@ -215,8 +264,9 @@ export class Segmenter {
 
   // ECMA-402 §19.2.3 allows locale coverage backed by root segmentation rules.
   // https://tc39.es/ecma402/#sec-intl.segmenter-internal-slots
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L64-L66
   static availableLocales: Set<string> = new Set(cldrLocales)
+  // ECMA-402 §19.2.2: canonicalize before filtering requested locales.
+  // https://tc39.es/ecma402/#sec-intl.segmenter.supportedlocalesof
   static supportedLocalesOf(
     locales?: string | string[],
     options?: Pick<SegmenterOptions, 'localeMatcher'>
@@ -230,6 +280,9 @@ export class Segmenter {
   public static readonly polyfilled = true
 }
 
+// ECMA-402 §19.8.1 steps 5.a and 7. Test one UTF-16 boundary against UAX #29
+// and CLDR tailoring. The caller chooses the search direction.
+// https://tc39.es/ecma402/#sec-findboundary
 function findBoundary(
   model: SegmenterInternalSlots,
   position: number,
@@ -253,39 +306,36 @@ function findBoundary(
     return breaksAtResult(false, '0.1')
   }
 
-  const stringBeforeBreak = input.substring(0, position)
-  const stringAfterBreak = input.substring(position)
+  // The boundary search is internal. Use captured operations on primitive
+  // strings and private regexps without reading public prototype methods.
+  const stringBeforeBreak = substring(input, 0, position)
+  const stringAfterBreak = substring(input, position)
 
   // loop through rules and find a match
-  for (const ruleKey of ruleSortedKeys) {
+  for (let i = 0; i < ruleSortedKeys.length; i++) {
+    const ruleKey = ruleSortedKeys[i]
     const {before, after, breaks} = rules[ruleKey]
-    // for debugging
-    // if (ruleKey === '16' && position === 4) {
-    //   console.log({before, after, stringBeforeBreak, stringAfterBreak})
-    // }
-    if (before) {
-      if (!before.test(stringBeforeBreak)) {
-        //didn't match the before part, therfore skipping
-        continue
-      }
-    }
-
-    if (after) {
-      if (!after.test(stringAfterBreak)) {
-        //didn't match the after part, therfore skipping
-        continue
-      }
-    }
+    if (before && apply(regexpExec, before, [stringBeforeBreak]) === null)
+      continue
+    if (after && apply(regexpExec, after, [stringAfterBreak]) === null) continue
 
     // Abbreviations cannot suppress mandatory paragraph boundaries (SB4).
-    if (breaks && ruleKey !== '4') {
-      const textBeforeBreak = stringBeforeBreak.trim()
-      for (const suppression of mergedSegmentationTypeValue.suppressions) {
+    const {suppressions} = mergedSegmentationTypeValue
+    if (breaks && ruleKey !== '4' && suppressions.length) {
+      const textBeforeBreak = trim(stringBeforeBreak)
+      for (let i = 0; i < suppressions.length; i++) {
+        const suppression = suppressions[i]
         // The abbreviation must be a whole word: `S.` suppresses the break in
         // `S. Smith`, but not after `AWS.`.
         if (
-          textBeforeBreak.endsWith(suppression) &&
-          !endsWithWordCharacter(textBeforeBreak.slice(0, -suppression.length))
+          endsWith(textBeforeBreak, suppression) &&
+          !endsWithWordCharacter(
+            substring(
+              textBeforeBreak,
+              0,
+              textBeforeBreak.length - suppression.length
+            )
+          )
         ) {
           return breaksAtResult(false, '0.4')
         }
@@ -299,17 +349,24 @@ function findBoundary(
 }
 
 function isSegmentWordLike(segment: string): boolean {
-  wordCharacters ??= new RegExp(SegmentationRules.root.word.wordCharacters)
-  return wordCharacters.test(segment)
+  wordCharacters ??= new RegExpConstructor(
+    SegmentationRules.root.word.wordCharacters
+  )
+  return apply(regexpExec, wordCharacters, [segment]) !== null
 }
 
 function endsWithWordCharacter(text: string): boolean {
   // The last two code units hold the last code point, whether or not it is
   // a surrogate pair.
-  const lastCodePoint = Array.from(text.slice(-2)).pop()
-  return lastCodePoint !== undefined && isSegmentWordLike(lastCodePoint)
+  const last = text.length - 1
+  if (last < 0) return false
+  return isSegmentWordLike(
+    substring(text, isSurrogate(text, last) ? last - 1 : last)
+  )
 }
 
+// ECMA-402 §19.7.1: create a fresh record with UTF-16 index and word status.
+// https://tc39.es/ecma402/#sec-createsegmentdataobject
 const createSegmentDataObject = (
   model: SegmenterInternalSlots,
   segment: string,
@@ -321,11 +378,13 @@ const createSegmentDataObject = (
     : {segment, index, input}
 }
 
+// ECMA-402 §19.5.3 https://tc39.es/ecma402/#sec-properties-of-segments-instances
 type SegmentState = {
   segmenter: Segmenter
   model: SegmenterInternalSlots
   input: string
 }
+// ECMA-402 §19.6.3 https://tc39.es/ecma402/#sec-properties-of-segment-iterator-instances
 type CursorState = SegmentState & {lastSegmentIndex: number}
 const segmentStates = new WeakMap<object, SegmentState>()
 const cursorStates = new WeakMap<object, CursorState>()
@@ -338,14 +397,14 @@ function requireState<T>(
   receiver: object
 ): T {
   const state = read(receiver)
-  if (!state) throw new TypeError('Incompatible Segmenter receiver')
+  if (!state) throw new TypeErrorConstructor('Incompatible Segmenter receiver')
   return state
 }
 // Segments creates independent iterators; iterators retain their own position.
 // ECMA-402 §19.5.2.2 %IntlSegmentsPrototype% [ %Symbol.iterator% ], step 5.
 // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-%symbol.iterator%
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L230
 class Segments implements Iterable<SegmentResult> {
+  // ECMA-402 §19.5.1 https://tc39.es/ecma402/#sec-createsegmentsobject
   constructor(
     segmenter: Segmenter,
     model: SegmenterInternalSlots,
@@ -359,7 +418,7 @@ class Segments implements Iterable<SegmentResult> {
     return new SegmentIterator(segmenter, model, input)
   }
 
-  containing(positionInput: number):
+  containing(positionInput?: number):
     | {
         segment: string
         index: number
@@ -369,22 +428,14 @@ class Segments implements Iterable<SegmentResult> {
     | undefined {
     // ECMA-402 §19.5.2.1 containing, step 6: ToIntegerOrInfinity uses ToNumber.
     // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%.containing
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L214
     // Unary + rejects BigInt after object coercion and preserves thrown errors.
     // ECMA-262 §7.1.4 ToNumber, steps 2, 8–10.
     // https://tc39.es/ecma262/#sec-tonumber
-    // https://github.com/tc39/ecma262/blob/dcf59856a8184792a9e42f0ffb7dc064094a5dcc/spec.html#L5183-L5191
     const {model, input} = requireState(readSegments, this)
-    let position = +positionInput
-
-    //https://tc39.es/ecma262/#sec-tointegerorinfinity
-    // 2. If number is NaN, +0𝔽, or -0𝔽, return 0.
-    if (isNaN(position) || !position) {
-      position = 0
-    }
-    // 5. Let integer be floor(abs(ℝ(number))).
-    // 6. If number < -0𝔽, set integer to -integer.
-    position = Math.floor(Math.abs(position)) * (position < 0 ? -1 : 1)
+    // ECMA-262 ToIntegerOrInfinity. Undefined becomes NaN before rounding.
+    // https://tc39.es/ecma262/#sec-tointegerorinfinity
+    const number = +(positionInput as number)
+    const position = !number ? 0 : number < 0 ? -floor(-number) : floor(number)
 
     if (position < 0 || position >= input.length) {
       return undefined
@@ -404,12 +455,12 @@ class Segments implements Iterable<SegmentResult> {
         }
       }
     }
-    let checkString = input.substring(previousBreakPoint)
+    const checkString = substring(input, previousBreakPoint)
     //find next break point
     for (let cursor = 1; cursor <= checkString.length; cursor++) {
       const {breaks} = findBoundary(model, cursor, checkString)
       if (breaks) {
-        const segment = checkString.substring(0, cursor)
+        const segment = substring(checkString, 0, cursor)
         return createSegmentDataObject(
           model,
           segment,
@@ -426,6 +477,7 @@ class SegmentIterator
 {
   declare [Symbol.iterator]: () => SegmentIterator
 
+  // ECMA-402 §19.6.1 https://tc39.es/ecma402/#sec-createsegmentiterator
   constructor(
     segmenter: Segmenter,
     model: SegmenterInternalSlots,
@@ -434,16 +486,18 @@ class SegmentIterator
     writeCursor(this, {segmenter, model, input, lastSegmentIndex: 0})
   }
 
+  // ECMA-402 §19.6.2.1: advance the cursor and return a fresh iterator result.
+  // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.next
   next(): IteratorResult<SegmentResult> {
     const state = requireState(readCursor, this)
     //using only the relevant bit of the string
-    let checkString = state.input.substring(state.lastSegmentIndex)
+    const checkString = substring(state.input, state.lastSegmentIndex)
 
     //loop from the start of the checkString, until exactly length (breaksAt returns break at pos=== lenght)
     for (let position = 1; position <= checkString.length; position++) {
       const {breaks} = findBoundary(state.model, position, checkString)
       if (breaks) {
-        const segment = checkString.substring(0, position)
+        const segment = substring(checkString, 0, position)
         const index = state.lastSegmentIndex
         state.lastSegmentIndex += position
 
@@ -463,17 +517,19 @@ class SegmentIterator
   }
 }
 
+// ECMA-402 §19.5.2 inherits %Object.prototype% and exposes only the segment methods.
+// https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-object
 Reflect.deleteProperty(Segments.prototype, 'constructor')
 Reflect.deleteProperty(SegmentIterator.prototype, 'constructor')
 
 // %IntlSegmentIteratorPrototype% inherits the standard iterator prototype.
 // ECMA-402 §19.6.2 The %IntlSegmentIteratorPrototype% Object, third bullet.
 // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%-object
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L279
 Object.setPrototypeOf(
   SegmentIterator.prototype,
   Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))
 )
+// ECMA-402 §19.6.2.2 https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.%symbol.tostringtag%
 Object.defineProperty(SegmentIterator.prototype, Symbol.toStringTag, {
   value: 'Segmenter String Iterator',
   configurable: true,
@@ -481,6 +537,7 @@ Object.defineProperty(SegmentIterator.prototype, Symbol.toStringTag, {
 
 export type {Segments, SegmentIterator}
 
+// ECMA-402 §19.4 https://tc39.es/ecma402/#sec-properties-of-intl-segmenter-instances
 interface SegmenterInternalSlots {
   locale: string
   granularity: NonNullable<SegmenterOptions['granularity']>
@@ -492,14 +549,7 @@ interface SegmenterInternalSlots {
 const __INTERNAL_SLOT_MAP__ = new WeakMap<Segmenter, SegmenterInternalSlots>()
 
 const readModelSlot = __INTERNAL_SLOT_MAP__.get.bind(__INTERNAL_SLOT_MAP__)
-
-function setSlot<K extends keyof SegmenterInternalSlots>(
-  instance: Segmenter,
-  key: K,
-  value: SegmenterInternalSlots[K]
-): void {
-  setInternalSlot(__INTERNAL_SLOT_MAP__, instance, key, value)
-}
+const writeModelSlot = __INTERNAL_SLOT_MAP__.set.bind(__INTERNAL_SLOT_MAP__)
 
 function readModel(
   receiver: unknown,
@@ -507,15 +557,17 @@ function readModel(
 ): SegmenterInternalSlots {
   const model = readModelSlot(receiver as Segmenter)
   if (!model) {
-    throw TypeError(
+    throw new TypeErrorConstructor(
       `Method Intl.Segmenter.prototype.${methodName} called on incompatible receiver`
     )
   }
   return model
 }
 
+Object.setPrototypeOf(Segmenter.prototype, Object.prototype)
+
 try {
-  // IE11 does not have Symbol
+  // ECMA-402 §19.3.4 https://tc39.es/ecma402/#sec-intl.segmenter.prototype-%symbol.tostringtag%
   if (typeof Symbol !== 'undefined') {
     Object.defineProperty(Segmenter.prototype, Symbol.toStringTag, {
       value: 'Intl.Segmenter',

@@ -11,6 +11,7 @@ struct Request {
     #[serde(default)]
     options: LocaleOptions,
     default_numbering_system: Option<String>,
+    available_calendars: Option<Vec<String>>,
     #[serde(default)]
     global_collations: Vec<String>,
     #[serde(default)]
@@ -27,6 +28,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 let mut value = serde_json::to_value(
                     locale.snapshot(request.default_numbering_system.as_deref()),
                 )?;
+                value["calendars"] =
+                    json!(locale.calendars_with_support(request.available_calendars.as_deref()));
                 value["collations"] = json!(locale.collations(
                     &request.global_collations,
                     request.matched_collation,

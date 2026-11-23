@@ -33,6 +33,7 @@ export interface PluralRulesOptions extends Intl.PluralRulesOptions {
 export interface PluralRulesInternal extends NumberFormatDigitInternalSlots {
   initializedPluralRules: boolean
   locale: string
+  localeData?: PluralRulesData
   type: 'cardinal' | 'ordinal'
   notation: 'standard' | 'scientific' | 'engineering' | 'compact'
   compactDisplay?: 'short' | 'long'

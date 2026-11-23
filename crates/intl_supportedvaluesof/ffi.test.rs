@@ -6,7 +6,7 @@ use formatjs_intl_supportedvaluesof::ffi::{
     BorrowedString, ProbeResult, ValuesResult, formatjs_supported_values_of, formatjs_values_free,
 };
 
-unsafe extern "C" fn only_acre(
+unsafe extern "C" fn only_gregory(
     context: *mut c_void,
     key: u32,
     value: BorrowedString,
@@ -14,7 +14,8 @@ unsafe extern "C" fn only_acre(
     out: *mut ProbeResult,
 ) -> i32 {
     unsafe { *(context as *mut usize) += 1 };
-    if key == Key::Unit as u32 && unsafe { slice::from_raw_parts(value.data, value.len) } == b"acre"
+    if key == Key::Calendar as u32
+        && unsafe { slice::from_raw_parts(value.data, value.len) } == b"gregory"
     {
         unsafe { (*out).resolved = value };
         0
@@ -55,10 +56,16 @@ fn ffi_copies_callback_observations_and_owns_independent_outputs() {
     unsafe {
         for output in [&mut first, &mut second] {
             assert_eq!(
-                formatjs_supported_values_of(b"unit".as_ptr(), 4, Some(only_acre), context, output),
+                formatjs_supported_values_of(
+                    b"calendar".as_ptr(),
+                    8,
+                    Some(only_gregory),
+                    context,
+                    output
+                ),
                 0
             );
-            assert_eq!(slice::from_raw_parts(output.data, output.len), b"acre");
+            assert_eq!(slice::from_raw_parts(output.data, output.len), b"gregory");
         }
         assert_ne!(first.data, second.data);
         assert!(count > 2);
@@ -78,7 +85,7 @@ fn ffi_reports_invalid_keys_without_calling_the_backend() {
             formatjs_supported_values_of(
                 b"invalid".as_ptr(),
                 7,
-                Some(only_acre),
+                Some(only_gregory),
                 context,
                 &mut result
             ),
@@ -97,21 +104,27 @@ fn ffi_rejects_invalid_pointers_utf8_and_callback_output() {
             formatjs_supported_values_of(
                 ptr::null(),
                 0,
-                Some(only_acre),
+                Some(only_gregory),
                 ptr::null_mut(),
                 &mut result
             ),
             2
         );
         assert_eq!(
-            formatjs_supported_values_of(b"unit".as_ptr(), 4, None, ptr::null_mut(), &mut result),
+            formatjs_supported_values_of(
+                b"calendar".as_ptr(),
+                8,
+                None,
+                ptr::null_mut(),
+                &mut result
+            ),
             2
         );
         assert_eq!(
             formatjs_supported_values_of(
-                b"unit".as_ptr(),
-                4,
-                Some(only_acre),
+                b"calendar".as_ptr(),
+                8,
+                Some(only_gregory),
                 ptr::null_mut(),
                 ptr::null_mut()
             ),
@@ -121,7 +134,7 @@ fn ffi_rejects_invalid_pointers_utf8_and_callback_output() {
             formatjs_supported_values_of(
                 [0xff].as_ptr(),
                 1,
-                Some(only_acre),
+                Some(only_gregory),
                 ptr::null_mut(),
                 &mut result
             ),
@@ -129,8 +142,8 @@ fn ffi_rejects_invalid_pointers_utf8_and_callback_output() {
         );
         assert_eq!(
             formatjs_supported_values_of(
-                b"unit".as_ptr(),
-                4,
+                b"calendar".as_ptr(),
+                8,
                 Some(bad_observation),
                 ptr::null_mut(),
                 &mut result

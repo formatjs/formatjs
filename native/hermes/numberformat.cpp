@@ -37,6 +37,7 @@ void installNumberFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
   if (formatjs_number_registry_create(&raw) != 0) throw jsi::JSError(runtime, "Cannot create number locale registry");
   auto registry = std::make_shared<Registry>(raw, formatjs_number_registry_destroy);
   jsi::Object bridge(runtime);
+  bridge.setProperty(runtime, "fallbackSymbol", hermes_bridge::intlFallbackSymbol(runtime));
   bridge.setProperty(runtime, "nativeLoad", hermes_bridge::load(runtime, "numberLoad", "Expected number locale JSON", "Rust number locale load failed", formatjs_number_registry_load, registry));
   bridge.setProperty(runtime, "nativeUnits", hermes_bridge::load(runtime, "numberUnits", "Expected number unit JSON", "Rust number unit load failed", formatjs_number_registry_units, registry));
   bridge.setProperty(runtime, "nativeInfo", hermes_bridge::json<0, Bytes>(runtime, "numberInfo", nullptr, {18, "Rust NumberFormat bridge failed"}, formatjs_number_registry_info, registry));
