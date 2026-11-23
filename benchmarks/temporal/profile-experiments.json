@@ -1,0 +1,819 @@
+{
+  "baselineCommit": "872fdaee31e355e3a9da89ee2f838af56543353c",
+  "method": "Exploratory shared-process runs, eight inputs, parity checks, 3000 warmup and 7x10000 calls (transition overrides remain in raw harness). Different filters change JIT context; do not compare close medians across filters. Final retained workload evidence uses isolated processes with longer equal warmup in profile-hillclimb-results.json. Pure TS source is unchanged; ts-regression-guard.json records executable AST equivalence.",
+  "experiments": [
+    {
+      "name": "next-baseline",
+      "change": "Baseline ABI 11 under the unchanged shared-process workload.",
+      "decision": "baseline",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1618.438899999998,
+          "format": 724.2064999999968,
+          "add": 2215.761199999997,
+          "dateParse": 1608.3092999999963,
+          "yearMonthParse": 1872.6999999999973,
+          "monthDayParse": 1855.8456000000094,
+          "zonedWith": 9200.423799999999,
+          "dateAdd": 5844.142299999999
+        },
+        "nativeDataWasm": {
+          "parse": 913.0608000000393,
+          "format": 742.1411999999691,
+          "add": 2846.3967000000594,
+          "dateParse": 5726.108299999942,
+          "yearMonthParse": 4684.879000000001,
+          "monthDayParse": 4701.0491,
+          "zonedWith": 20897.821100000056,
+          "dateAdd": 9109.062199999971
+        },
+        "reference": {
+          "parse": 2494.348699999864,
+          "format": 1400.8711000000403,
+          "add": 1754.2788999999173,
+          "dateParse": 2219.230199999947,
+          "yearMonthParse": 795.9756000000198,
+          "monthDayParse": 1069.941100000142,
+          "zonedWith": 6217.634399999952,
+          "dateAdd": 2028.6399000000529
+        },
+        "officialReference": {
+          "parse": 4477.3785999999745,
+          "format": 6273.4245999999985,
+          "add": 5696.363300000121,
+          "dateParse": 1729.846600000019,
+          "yearMonthParse": 1924.3827000000238,
+          "monthDayParse": 1416.8980000000374,
+          "zonedWith": 41760.55099999994,
+          "dateAdd": 5065.1372000000265
+        }
+      }
+    },
+    {
+      "name": "instant-no-double-validation",
+      "change": "Remove redundant JS duration validation for native-only Instant arithmetic.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1635.4547999999995,
+          "format": 702.9712000000018,
+          "add": 2444.583799999998,
+          "dateParse": 1623.8968999999997,
+          "yearMonthParse": 1932.1243000000093,
+          "monthDayParse": 1661.510199999998,
+          "zonedWith": 9291.153299999996,
+          "dateAdd": 5900.646199999983
+        },
+        "nativeDataWasm": {
+          "parse": 780.022899999949,
+          "format": 760.119400000076,
+          "add": 2261.1128000000463,
+          "dateParse": 4787.4173000000155,
+          "yearMonthParse": 4795.149499999934,
+          "monthDayParse": 3952.4274000000337,
+          "zonedWith": 20649.792399999933,
+          "dateAdd": 8900.652300000002
+        },
+        "reference": {
+          "parse": 2589.6473999999216,
+          "format": 1483.241099999941,
+          "add": 1472.7946000000884,
+          "dateParse": 2482.0255999999063,
+          "yearMonthParse": 802.1453999999721,
+          "monthDayParse": 1270.3605999999127,
+          "zonedWith": 6122.244299999875,
+          "dateAdd": 2018.6157000000094
+        },
+        "officialReference": {
+          "parse": 4563.019499999973,
+          "format": 6336.644100000012,
+          "add": 5877.838700000029,
+          "dateParse": 1701.504700000078,
+          "yearMonthParse": 1889.886699999988,
+          "monthDayParse": 1371.1771000000226,
+          "zonedWith": 41222.927999999956,
+          "dateAdd": 5192.466199999944
+        }
+      }
+    },
+    {
+      "name": "instant-direct-fields",
+      "change": "Read normalized duration fields directly without per-call sorting or intermediate spreads.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1597.9069999999979,
+          "format": 670.3172999999992,
+          "add": 2275.173599999999,
+          "dateParse": 1618.801899999994,
+          "yearMonthParse": 1877.0096999999962,
+          "monthDayParse": 1584.6528000000035,
+          "zonedWith": 8995.349600000009,
+          "dateAdd": 5730.9755
+        },
+        "nativeDataWasm": {
+          "parse": 607.9305000000204,
+          "format": 775.1299000000472,
+          "add": 1121.060800000032,
+          "dateParse": 4647.236200000043,
+          "yearMonthParse": 5585.25410000002,
+          "monthDayParse": 5751.583500000015,
+          "zonedWith": 21741.062499999953,
+          "dateAdd": 9535.851800000091
+        },
+        "reference": {
+          "parse": 2905.044999999882,
+          "format": 1417.258899999979,
+          "add": 1510.5836000000636,
+          "dateParse": 2211.6394000000582,
+          "yearMonthParse": 804.0634999999384,
+          "monthDayParse": 1017.6712999998928,
+          "zonedWith": 6256.316800000059,
+          "dateAdd": 2085.9714000000167
+        },
+        "officialReference": {
+          "parse": 4493.065799999931,
+          "format": 6289.734000000135,
+          "add": 5790.658900000017,
+          "dateParse": 1737.7567999999885,
+          "yearMonthParse": 1914.6206999999777,
+          "monthDayParse": 1372.7488999998968,
+          "zonedWith": 41703.946299999916,
+          "dateAdd": 5023.425899999893
+        }
+      }
+    },
+    {
+      "name": "direct-owned-snapshot",
+      "change": "Avoid redundant WeakMap entries when an immutable snapshot already has the current owner; final code limits this to native-data builds.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1780.8227000000015,
+          "format": 694.101999999998,
+          "add": 2232.205200000004,
+          "dateParse": 1560.528099999999,
+          "yearMonthParse": 1889.9952999999982,
+          "monthDayParse": 1615.6268999999952,
+          "zonedWith": 8977.6789,
+          "dateAdd": 5771.2342000000035
+        },
+        "nativeDataWasm": {
+          "parse": 608.1572000000051,
+          "format": 781.0244999999668,
+          "add": 1068.4021999999459,
+          "dateParse": 2962.302699999964,
+          "yearMonthParse": 4231.734300000062,
+          "monthDayParse": 4133.818900000006,
+          "zonedWith": 20645.02510000002,
+          "dateAdd": 8601.182499999959
+        },
+        "reference": {
+          "parse": 2898.1393999998545,
+          "format": 1424.9912999999651,
+          "add": 1423.116200000004,
+          "dateParse": 2417.2223999999915,
+          "yearMonthParse": 783.2051999999749,
+          "monthDayParse": 1168.9857000001211,
+          "zonedWith": 6328.661099999954,
+          "dateAdd": 2052.016999999978
+        },
+        "officialReference": {
+          "parse": 4552.407999999923,
+          "format": 6312.039299999924,
+          "add": 5744.261999999981,
+          "dateParse": 1685.2168000001254,
+          "yearMonthParse": 2147.990700000082,
+          "monthDayParse": 1423.3823999999004,
+          "zonedWith": 41556.29760000011,
+          "dateAdd": 5123.196300000018
+        }
+      }
+    },
+    {
+      "name": "compact-iso-result",
+      "change": "Encode complete ISO date snapshots in a fixed result record.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1579.2428999999997,
+          "format": 696.6318999999999,
+          "add": 2243.5982999999965,
+          "dateParse": 1622.5333999999975,
+          "yearMonthParse": 1921.0595000000012,
+          "monthDayParse": 1626.9149999999968,
+          "zonedWith": 9228.217799999993,
+          "dateAdd": 5778.607600000009
+        },
+        "nativeDataWasm": {
+          "parse": 599.1821999999956,
+          "format": 757.4711000000207,
+          "add": 1047.9760999999598,
+          "dateParse": 1800.9702000000286,
+          "yearMonthParse": 1950.9620999999245,
+          "monthDayParse": 1845.4192000000148,
+          "zonedWith": 20918.012400000043,
+          "dateAdd": 7700.201000000015
+        },
+        "reference": {
+          "parse": 2992.2175000000607,
+          "format": 1431.0388999998395,
+          "add": 1413.8377999999648,
+          "dateParse": 2292.35690000005,
+          "yearMonthParse": 926.2453999999708,
+          "monthDayParse": 988.8783000000329,
+          "zonedWith": 6322.637899999972,
+          "dateAdd": 2109.4468999999663
+        },
+        "officialReference": {
+          "parse": 4563.576199999989,
+          "format": 6665.488300000106,
+          "add": 5820.813599999929,
+          "dateParse": 1732.6580000000831,
+          "yearMonthParse": 1827.632099999937,
+          "monthDayParse": 1401.280499999848,
+          "zonedWith": 41539.80180000017,
+          "dateAdd": 5054.287999999906
+        }
+      }
+    },
+    {
+      "name": "direct-date-binding",
+      "change": "Use direct date parsers with reused views; preserve non-ISO result fallback.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1593.8557000000003,
+          "format": 691.6927999999984,
+          "add": 2491.396499999996,
+          "dateParse": 1605.5264999999963,
+          "yearMonthParse": 1938.9408000000003,
+          "monthDayParse": 1660.1355000000012,
+          "zonedWith": 9178.648800000019,
+          "dateAdd": 5894.140100000004
+        },
+        "nativeDataWasm": {
+          "parse": 610.38580000004,
+          "format": 773.1775000000198,
+          "add": 1057.040599999982,
+          "dateParse": 1311.1847999999554,
+          "yearMonthParse": 1244.3530999999894,
+          "monthDayParse": 1240.7414000000244,
+          "zonedWith": 20929.906699999992,
+          "dateAdd": 7484.349999999996
+        },
+        "reference": {
+          "parse": 2608.929199999966,
+          "format": 1413.1860000000415,
+          "add": 1462.5514000000294,
+          "dateParse": 2711.527400000159,
+          "yearMonthParse": 783.0587999998897,
+          "monthDayParse": 1068.0264000000534,
+          "zonedWith": 6172.077499999978,
+          "dateAdd": 2080.512599999929
+        },
+        "officialReference": {
+          "parse": 4554.184500000156,
+          "format": 6415.987200000018,
+          "add": 5716.623599999912,
+          "dateParse": 1717.5775000001524,
+          "yearMonthParse": 2187.198200000057,
+          "monthDayParse": 1439.7445999999036,
+          "zonedWith": 42372.51350000006,
+          "dateAdd": 5209.443400000055
+        }
+      }
+    },
+    {
+      "name": "profile-kernel-baseline",
+      "change": "Baseline for the next shared-process kernel comparison.",
+      "decision": "baseline",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "format": 713.4314999999987,
+          "round": 492.55589999999927,
+          "dateFromFields": 1368.8550999999961,
+          "zonedWith": 9318.86310000001,
+          "dateTimeRoundFormat": 1437.9394999999931,
+          "zonedTransition": 440.451171874745
+        },
+        "nativeDataWasm": {
+          "format": 767.7639000000454,
+          "round": 3508.1803000000036,
+          "dateFromFields": 12232.28509999999,
+          "zonedWith": 21277.26189999994,
+          "dateTimeRoundFormat": 10570.863199999985,
+          "zonedTransition": 4474.43750000076
+        },
+        "reference": {
+          "format": 1488.369799999964,
+          "round": 664.6033999999418,
+          "dateFromFields": 875.742100000025,
+          "zonedWith": 6244.112200000018,
+          "dateTimeRoundFormat": 3773.8932999998724,
+          "zonedTransition": 6535.810546875354
+        },
+        "officialReference": {
+          "format": 6387.864099999933,
+          "round": 4302.514800000063,
+          "dateFromFields": 3547.3755000000892,
+          "zonedWith": 41733.41650000002,
+          "dateTimeRoundFormat": 4105.352599999969,
+          "zonedTransition": 418768.4218749972
+        }
+      }
+    },
+    {
+      "name": "snapshot-no-json-map",
+      "change": "Encode calendar property snapshots directly rather than constructing JSON maps.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "format": 689.6120999999994,
+          "round": 488.75199999999955,
+          "dateFromFields": 1387.804299999999,
+          "zonedWith": 9362.308999999994,
+          "dateTimeRoundFormat": 1545.0774999999794,
+          "zonedTransition": 489.66601562527853
+        },
+        "nativeDataWasm": {
+          "format": 771.6523000000052,
+          "round": 3475.0531000000587,
+          "dateFromFields": 7717.708299999958,
+          "zonedWith": 20898.366599999918,
+          "dateTimeRoundFormat": 10577.810500000032,
+          "zonedTransition": 4478.894531249722
+        },
+        "reference": {
+          "format": 1653.492499999993,
+          "round": 670.823399999972,
+          "dateFromFields": 958.5465000000114,
+          "zonedWith": 6287.375299999985,
+          "dateTimeRoundFormat": 3720.470100000057,
+          "zonedTransition": 6533.853515623633
+        },
+        "officialReference": {
+          "format": 6405.15919999998,
+          "round": 4312.536499999987,
+          "dateFromFields": 3598.5430000000633,
+          "zonedWith": 42025.62959999996,
+          "dateTimeRoundFormat": 4148.7528999999995,
+          "zonedTransition": 415497.8242187468
+        }
+      }
+    },
+    {
+      "name": "typed-round",
+      "change": "Call public Rust Instant.round with typed unit/increment; retain JS option coercion order.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "format": 738.8283999999999,
+          "round": 503.8794999999993,
+          "dateFromFields": 1413.248299999998,
+          "zonedWith": 9283.257000000003,
+          "dateTimeRoundFormat": 1484.6431999999822,
+          "zonedTransition": 442.1816406248169
+        },
+        "nativeDataWasm": {
+          "format": 763.9976999999817,
+          "round": 448.46079999997534,
+          "dateFromFields": 7358.204899999964,
+          "zonedWith": 20993.247600000086,
+          "dateTimeRoundFormat": 10591.373599999952,
+          "zonedTransition": 4453.42773437396
+        },
+        "reference": {
+          "format": 1468.4368999999606,
+          "round": 639.3166999999266,
+          "dateFromFields": 1257.175499999994,
+          "zonedWith": 6256.84429999983,
+          "dateTimeRoundFormat": 3606.725099999858,
+          "zonedTransition": 6672.826171875812
+        },
+        "officialReference": {
+          "format": 6403.031999999985,
+          "round": 4246.7711999999665,
+          "dateFromFields": 3574.70429999994,
+          "zonedWith": 42049.700699999994,
+          "dateTimeRoundFormat": 4116.508200000135,
+          "zonedTransition": 417085.7089843736
+        }
+      }
+    },
+    {
+      "name": "unit-quantum-fast-path",
+      "change": "Return exact input for one-nanosecond rounding; preserve all range checks.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1603.613699999997,
+          "format": 705.5646999999965,
+          "add": 2237.0430999999994,
+          "round": 560.4184999999973,
+          "dateParse": 1676.3453000000027,
+          "yearMonthParse": 2043.5869000000025,
+          "monthDayParse": 1611.9655999999964,
+          "dateFromFields": 1465.4088000000002,
+          "zonedWith": 9332.050900000013
+        },
+        "nativeDataWasm": {
+          "parse": 969.0880000000107,
+          "format": 738.9355000000251,
+          "add": 1154.9973999999565,
+          "round": 637.5624999999673,
+          "dateParse": 1126.8920999999864,
+          "yearMonthParse": 1490.8904999999322,
+          "monthDayParse": 1224.7582999999395,
+          "dateFromFields": 7339.936100000068,
+          "zonedWith": 20993.437799999992
+        },
+        "reference": {
+          "parse": 2948.3227000000625,
+          "format": 1408.2608000000619,
+          "add": 1460.8462000000145,
+          "round": 667.3004999998739,
+          "dateParse": 2209.5908999999665,
+          "yearMonthParse": 771.9302999999854,
+          "monthDayParse": 1231.214799999907,
+          "dateFromFields": 961.2487999998849,
+          "zonedWith": 6235.007199999927
+        },
+        "officialReference": {
+          "parse": 4512.918600000012,
+          "format": 6354.38009999998,
+          "add": 5763.420599999881,
+          "round": 4345.369700000083,
+          "dateParse": 1711.5219999999679,
+          "yearMonthParse": 2212.7762000000075,
+          "monthDayParse": 1407.8535000000556,
+          "dateFromFields": 3516.103900000053,
+          "zonedWith": 41359.56020000012
+        }
+      }
+    },
+    {
+      "name": "unit-quantum-repeat",
+      "change": "Repeat identical selection after JIT variance; do not claim stable rounding win.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "format": 675.1597000000004,
+          "round": 496.5365999999989,
+          "dateFromFields": 1393.9364000000012,
+          "zonedWith": 9366.086600000006,
+          "dateTimeRoundFormat": 1448.7833000000137,
+          "zonedTransition": 443.525390624977
+        },
+        "nativeDataWasm": {
+          "format": 737.9601000000548,
+          "round": 455.01119999998997,
+          "dateFromFields": 7410.3549000000385,
+          "zonedWith": 20649.837899999966,
+          "dateTimeRoundFormat": 10437.392,
+          "zonedTransition": 4503.240234374317
+        },
+        "reference": {
+          "format": 1485.7084000000214,
+          "round": 641.6079999999965,
+          "dateFromFields": 1211.7228000000068,
+          "zonedWith": 6214.432600000055,
+          "dateTimeRoundFormat": 3657.5527999999395,
+          "zonedTransition": 6679.980468749846
+        },
+        "officialReference": {
+          "format": 6345.50390000004,
+          "round": 4224.2379000001165,
+          "dateFromFields": 3524.0685999999187,
+          "zonedWith": 41877.22249999988,
+          "dateTimeRoundFormat": 4088.9685000000095,
+          "zonedTransition": 419322.8378906255
+        }
+      }
+    },
+    {
+      "name": "typed-iso-date-fields",
+      "change": "Construct ISO date and complete properties in one typed Rust call.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "format": 684.4006000000007,
+          "round": 494.1445999999985,
+          "dateFromFields": 1375.9296000000006,
+          "zonedWith": 9308.664299999999,
+          "dateTimeRoundFormat": 1478.410800000006,
+          "zonedTransition": 622.9316406249907
+        },
+        "nativeDataWasm": {
+          "format": 738.4915000000547,
+          "round": 455.35229999995863,
+          "dateFromFields": 1874.3344999999863,
+          "zonedWith": 20766.966000000048,
+          "dateTimeRoundFormat": 10293.98710000005,
+          "zonedTransition": 4513.605468750015
+        },
+        "reference": {
+          "format": 1552.4439000000712,
+          "round": 663.2462999999916,
+          "dateFromFields": 915.6770999999935,
+          "zonedWith": 6373.621700000058,
+          "dateTimeRoundFormat": 3675.7000999999946,
+          "zonedTransition": 6481.400390622838
+        },
+        "officialReference": {
+          "format": 6410.377399999925,
+          "round": 4247.815199999968,
+          "dateFromFields": 3510.3648000000244,
+          "zonedWith": 42070.74840000005,
+          "dateTimeRoundFormat": 4020.0413999999,
+          "zonedTransition": 416914.2695312509
+        }
+      }
+    },
+    {
+      "name": "static-native-iso-fields",
+      "change": "Reuse fixed ISO field-name lists with unchanged field access order.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "dateFromFields": 1447.9917999999998,
+          "dateWith": 3568.8702999999978,
+          "dateTimeWith": 6093.012299999998,
+          "zonedWith": 9081.566199999997
+        },
+        "nativeDataWasm": {
+          "dateFromFields": 1408.107199999995,
+          "dateWith": 8617.77920000004,
+          "dateTimeWith": 11580.770500000017,
+          "zonedWith": 21172.145900000032
+        },
+        "reference": {
+          "dateFromFields": 1007.9923999999664,
+          "dateWith": 1547.3159999999552,
+          "dateTimeWith": 5012.080600000081,
+          "zonedWith": 6158.601900000031
+        },
+        "officialReference": {
+          "dateFromFields": 3445.1864999999093,
+          "dateWith": 4125.374700000066,
+          "dateTimeWith": 8616.02759999987,
+          "zonedWith": 42002.82310000002
+        }
+      }
+    },
+    {
+      "name": "native-duration-coercion",
+      "change": "Use direct native duration coercion across arithmetic; retain JS validation before options reads.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "add": 2257.880399999999,
+          "timeAdd": 2395.9952000000044,
+          "dateAdd": 5808.166999999992,
+          "dateTimeAdd": 5679.794199999992,
+          "yearMonthAdd": 5277.84180000001,
+          "zonedAddDay": 6189.276000000018
+        },
+        "nativeDataWasm": {
+          "add": 1133.5001999999804,
+          "timeAdd": 6452.623700000004,
+          "dateAdd": 6399.276100000043,
+          "dateTimeAdd": 13617.025199999987,
+          "yearMonthAdd": 11965.927399999964,
+          "zonedAddDay": 17215.31449999984
+        },
+        "reference": {
+          "add": 1532.7559999999721,
+          "timeAdd": 1463.4443999999348,
+          "dateAdd": 2437.118200000077,
+          "dateTimeAdd": 5153.802200000064,
+          "yearMonthAdd": 1853.5571000000346,
+          "zonedAddDay": 3004.848899999888
+        },
+        "officialReference": {
+          "add": 5864.422299999933,
+          "timeAdd": 4170.346099999915,
+          "dateAdd": 5111.677599999894,
+          "dateTimeAdd": 7238.513799999964,
+          "yearMonthAdd": 6672.183500000028,
+          "zonedAddDay": 22750.09370000007
+        }
+      }
+    },
+    {
+      "name": "direct-date-add",
+      "change": "Avoid normalized request objects for date arithmetic; return complete Rust results.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "add": 2309.0675000000006,
+          "timeAdd": 2448.008599999997,
+          "dateAdd": 5949.429700000008,
+          "dateTimeAdd": 5735.209400000008,
+          "yearMonthAdd": 5352.117699999985,
+          "zonedAddDay": 6240.814899999987
+        },
+        "nativeDataWasm": {
+          "add": 1376.1994999999843,
+          "timeAdd": 6930.8984999999675,
+          "dateAdd": 5608.345599999939,
+          "dateTimeAdd": 13699.201699999865,
+          "yearMonthAdd": 11970.547299999998,
+          "zonedAddDay": 17234.926899999846
+        },
+        "reference": {
+          "add": 1543.4128000000783,
+          "timeAdd": 1476.7918000001373,
+          "dateAdd": 2454.6887000000424,
+          "dateTimeAdd": 5188.256899999942,
+          "yearMonthAdd": 2517.1449000001303,
+          "zonedAddDay": 3021.0300000000643
+        },
+        "officialReference": {
+          "add": 5686.245699999927,
+          "timeAdd": 4057.549800000015,
+          "dateAdd": 5059.475800000109,
+          "dateTimeAdd": 7233.006199999909,
+          "yearMonthAdd": 6621.470899999986,
+          "zonedAddDay": 22935.883000000103
+        }
+      }
+    },
+    {
+      "name": "rust-ascii-instant-format",
+      "change": "Write Rust Instant formatting into one bounded ASCII buffer.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1579.614799999999,
+          "format": 694.1374999999994,
+          "add": 2229.7030999999947,
+          "round": 563.1835000000024,
+          "dateFromFields": 1442.7160999999955,
+          "dateAdd": 5993.619000000001
+        },
+        "nativeDataWasm": {
+          "parse": 615.6818999999814,
+          "format": 484.03990000001613,
+          "add": 1054.0056999999706,
+          "round": 632.7078999999685,
+          "dateFromFields": 1574.6000000000095,
+          "dateAdd": 5422.126100000014
+        },
+        "reference": {
+          "parse": 3012.5850999999784,
+          "format": 1391.6187000000264,
+          "add": 1403.2460999999785,
+          "round": 601.3186999999562,
+          "dateFromFields": 1136.8155999999544,
+          "dateAdd": 2033.4899000000405
+        },
+        "officialReference": {
+          "parse": 4532.511699999941,
+          "format": 6340.5525000000125,
+          "add": 5604.065199999968,
+          "round": 4133.238899999924,
+          "dateFromFields": 3605.468500000006,
+          "dateAdd": 4960.355100000015
+        }
+      }
+    },
+    {
+      "name": "typed-date-format",
+      "change": "Use direct Rust date/short-date formatters and typed epoch/calendar input.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "dateWith": 3673.5297,
+          "yearMonthWith": 3402.575300000001,
+          "monthDayWith": 3971.4576999999963,
+          "dateAdd": 6054.3705000000045,
+          "dateFormat": 1027.8286999999864,
+          "yearMonthFormat": 444.97140000000854,
+          "monthDayFormat": 395.59719999999743,
+          "yearMonthAdd": 5267.674000000011
+        },
+        "nativeDataWasm": {
+          "dateWith": 6723.002600000018,
+          "yearMonthWith": 7297.760999999991,
+          "monthDayWith": 7302.366600000005,
+          "dateAdd": 3874.5186999999532,
+          "dateFormat": 675.247600000057,
+          "yearMonthFormat": 677.022500000021,
+          "monthDayFormat": 641.0284000000502,
+          "yearMonthAdd": 10057.111199999963
+        },
+        "reference": {
+          "dateWith": 1525.734999999986,
+          "yearMonthWith": 1095.9635000000162,
+          "monthDayWith": 1422.1859999999651,
+          "dateAdd": 2045.181599999887,
+          "dateFormat": 268.45630000007077,
+          "yearMonthFormat": 273.09949999998935,
+          "monthDayFormat": 263.0990000001475,
+          "yearMonthAdd": 1899.2228999999497
+        },
+        "officialReference": {
+          "dateWith": 4137.436300000081,
+          "yearMonthWith": 2860.227699999996,
+          "monthDayWith": 3866.7869999999316,
+          "dateAdd": 5108.627700000034,
+          "dateFormat": 195.25359999988723,
+          "yearMonthFormat": 192.77110000002722,
+          "monthDayFormat": 181.67599999997037,
+          "yearMonthAdd": 7034.632500000043
+        }
+      }
+    },
+    {
+      "name": "typed-iso-with",
+      "change": "Use public Rust ISO date/short-date with_fields methods through typed records.",
+      "decision": "kept",
+      "iterations": 10000,
+      "samples": 7,
+      "warmup": 3000,
+      "medianNanoseconds": {
+        "typescript": {
+          "dateFromFields": 1426.3289000000016,
+          "dateWith": 3552.2466999999947,
+          "yearMonthWith": 3335.7608000000027,
+          "monthDayWith": 3981.5321000000035
+        },
+        "nativeDataWasm": {
+          "dateFromFields": 1364.9070999999822,
+          "dateWith": 1959.3549000000169,
+          "yearMonthWith": 2096.050600000035,
+          "monthDayWith": 2152.3829000000205
+        },
+        "reference": {
+          "dateFromFields": 1471.0378999999648,
+          "dateWith": 1483.465299999989,
+          "yearMonthWith": 1353.6081000000195,
+          "monthDayWith": 1822.8965000000242
+        },
+        "officialReference": {
+          "dateFromFields": 3475.4349000000275,
+          "dateWith": 4092.140399999971,
+          "yearMonthWith": 2903.6888999999974,
+          "monthDayWith": 3693.9733000000165
+        }
+      }
+    }
+  ],
+  "correctnessCorrections": [
+    "Index duration field reads instead of consulting user-replaced Array iteration. Regression failed before correction and passed afterward.",
+    "Shared Rust month/day numeric conversion constrains finite values before narrowing, preserving reject/non-finite checks. Public TS already passed; native and both WASM controls failed before correction.",
+    "Remove a redundant import.meta comparison after an early return so declaration typechecking succeeds. No runtime math change."
+  ]
+}

@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -63,7 +64,7 @@ export function InitializeNumberFormat(
     // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
     // https://tc39.es/ecma402/#sec-resolveoptions
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
-    throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
+    throw RangeErrorConstructor(`Invalid numberingSystems: ${numberingSystem}`)
   }
   opt.nu = numberingSystem
 

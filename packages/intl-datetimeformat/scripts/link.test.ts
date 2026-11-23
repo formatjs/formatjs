@@ -6,12 +6,14 @@ it('extracts Link records without treating Zone offsets or comments as aliases',
     '# IANA backward data',
     'Zone EST5EDT -5:00 US E%sT',
     'Link America/New_York US/Eastern',
+    'Link Etc/GMT GMT',
     '  Link\tEtc/GMT\tGMT0 # equivalent UTC name',
     '\t# indented comment',
     '   ',
   ].join('\n')
   expect(parseLinks(source)).toEqual({
     'US/Eastern': 'America/New_York',
+    GMT: 'Etc/GMT',
     GMT0: 'Etc/GMT',
   })
 })

@@ -22,13 +22,15 @@ fn main() {
         _ => panic!("unsupported calendar: {name}"),
     };
     let calendar = AnyCalendar::new(kind);
-    // Cover Date/Temporal boundaries, including timezone shifts, with whole years.
-    let start = RataDie::new(719163 - 100000002);
-    let end = RataDie::new(719163 + 100000002);
+    // Cover internal Temporal rounding coordinates with whole years.
+    let start = RataDie::new(719163 - 110000000);
+    let end = RataDie::new(719163 + 110000001);
     let first = Date::from_rata_die(start, Ref(&calendar));
     let first_year = first.year().extended_year();
     let mut cursor = start - i64::from(first.day_of_year().0 - 1);
     let mut checkpoints = Vec::new();
+    let mut month_checkpoints = Vec::new();
+    let mut elapsed_months = 0u32;
     let mut dictionary = Vec::new();
     let mut indices = HashMap::new();
     let mut encoded = String::new();
@@ -41,6 +43,7 @@ fn main() {
         assert_eq!(date.day_of_month().0, 1);
         if year_index % 64 == 0 {
             checkpoints.push(cursor - RataDie::new(719163));
+            month_checkpoints.push(elapsed_months);
         }
         let months = date.months_in_year();
         let mut packed = 0u32;
@@ -66,11 +69,12 @@ fn main() {
         assert!(index < 4096);
         encoded.push(alphabet[index >> 6] as char);
         encoded.push(alphabet[index & 63] as char);
+        elapsed_months += u32::from(months);
         year_index += 1;
     }
     let end_day = cursor - RataDie::new(719163);
     let mut output = String::from("// Generated from pinned ICU4X calendar data.\n");
-    writeln!(output, "export const {name}: {{firstYear: number; endDay: number; checkpoints: number[]; dictionary: number[]; years: string}} = {{firstYear: {first_year}, endDay: {end_day}, checkpoints: {checkpoints:?}, dictionary: {dictionary:?}, years: \"{encoded}\"}};").unwrap();
+    writeln!(output, "export const {name}: {{firstYear: number; endDay: number; checkpoints: number[]; monthCheckpoints: number[]; dictionary: number[]; years: string}} = {{firstYear: {first_year}, endDay: {end_day}, checkpoints: {checkpoints:?}, monthCheckpoints: {month_checkpoints:?}, dictionary: {dictionary:?}, years: \"{encoded}\"}};").unwrap();
     let out = Path::new(bindir).join(out.expect("--out is required"));
     fs::create_dir_all(out.parent().unwrap()).unwrap();
     fs::write(out, output).unwrap();

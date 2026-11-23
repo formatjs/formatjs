@@ -1,5 +1,15 @@
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "calendar_registry")
-load("//tools:generated.bzl", "formatjs_generated_package")
+load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
+
+generate_package_file(
+    name = "fallback_eras",
+    src = "fallback-eras.ts",
+    data = [
+        "//:node_modules/cldr-cal-islamic-full",
+        "//:node_modules/cldr-core",
+    ],
+    tool = "//packages/intl-datetimeformat/scripts:era-fallbacks",
+)
 
 calendar_registry(
     name = "registry",
@@ -10,5 +20,8 @@ calendar_registry(
 formatjs_generated_package(
     name = "pkg",
     package_name = "datetimeformat.calendars",
-    srcs = [":registry"],
+    srcs = [
+        ":fallback_eras",
+        ":registry",
+    ],
 )

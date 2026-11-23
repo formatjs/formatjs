@@ -1,0 +1,24 @@
+{
+  "name": "@formatjs/temporal",
+  "version": "2.0.0",
+  "private": false,
+  "description": "Temporal implementation",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
+  "license": "MIT AND Unicode-3.0",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
+  "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js"
+  ],
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./polyfill-force.js": "./polyfill-force.js",
+    "./polyfill.js": "./polyfill.js",
+    "./should-polyfill.js": "./should-polyfill.js",
+    "./standalone.js": "./standalone.js"
+  }
+}

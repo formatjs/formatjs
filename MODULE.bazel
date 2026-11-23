@@ -236,6 +236,7 @@ crate.from_cargo(
         "aarch64-pc-windows-msvc",
         "aarch64-unknown-linux-gnu",
         "aarch64-unknown-linux-musl",
+        "wasm32-unknown-unknown",
         "x86_64-apple-darwin",
         "x86_64-apple-ios",
         "x86_64-linux-android",
@@ -264,6 +265,14 @@ crate.annotation(
     crate = "pyo3-ffi",
     repositories = ["crates"],
 )
+
+# The config suppresses PyO3's link lines; rename its Windows import library.
+crate.annotation_select(
+    crate = "pyo3-ffi",
+    repositories = ["crates"],
+    rustc_flags = ["-lpythonXY:python3"],
+    triples = ["x86_64-pc-windows-msvc"],
+)
 crate.annotation(
     crate = "stacker",
     patch_args = ["-p1"],
@@ -271,6 +280,30 @@ crate.annotation(
     version = "0.1.25",
 )
 use_repo(crate, "crates")
+
+# Benchmark-only Temporal implementation; production dependency graph stays separate.
+crate.from_cargo(
+    name = "temporal_benchmark_crates",
+    cargo_lock = "//benchmarks/temporal/rust:Cargo.lock",
+    cargo_toml = "//benchmarks/temporal/rust:Cargo.toml",
+    platform_triples = [
+        "aarch64-apple-darwin",
+        "aarch64-apple-ios",
+        "aarch64-apple-ios-sim",
+        "aarch64-linux-android",
+        "aarch64-pc-windows-msvc",
+        "aarch64-unknown-linux-gnu",
+        "aarch64-unknown-linux-musl",
+        "wasm32-unknown-unknown",
+        "x86_64-apple-darwin",
+        "x86_64-apple-ios",
+        "x86_64-linux-android",
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "x86_64-unknown-linux-musl",
+    ],
+)
+use_repo(crate, "temporal_benchmark_crates")
 
 # Pinned relative-time oracle; production formatters do not depend on this crate.
 crate.annotation(
@@ -346,12 +379,12 @@ http_archive(
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-TEST262_COMMIT = "419d3e0a2273ba01a3bfcbec423f2801425b8e93"
+TEST262_COMMIT = "2a1ade303f72d3de80565c921d685222405c32ce"
 
 http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
-    sha256 = "0253f2c85b2dd43ab5bf0b45395fae603cb0d93429eca9ab7a909a86aed45997",
+    sha256 = "da64b21401dca859095ad61c3a5f37721f92c7e3251523aa35b19dbcc3ecff82",
     strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
     type = "tar.gz",
     urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],

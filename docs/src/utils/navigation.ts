@@ -70,6 +70,7 @@ export function getNavigationTree(): NavSection[] {
       order: 4,
       items: [
         {title: 'Overview', path: 'polyfills'},
+        {title: 'Temporal', path: 'polyfills/temporal'},
         {title: 'Intl.Collator', path: 'polyfills/intl-collator'},
         {title: 'Intl.DateTimeFormat', path: 'polyfills/intl-datetimeformat'},
         {title: 'Intl.DisplayNames', path: 'polyfills/intl-displaynames'},
@@ -99,6 +100,7 @@ export function getNavigationTree(): NavSection[] {
       order: 5,
       items: [
         {title: 'Overview', path: 'rust'},
+        {title: 'Temporal', path: 'rust/temporal'},
         {title: 'Intl Runtime', path: 'rust/intl'},
         {title: 'ICU MessageFormat', path: 'rust/icu-messageformat'},
         {title: 'Java Printf Parser', path: 'tooling/rust-java-printf-parser'},

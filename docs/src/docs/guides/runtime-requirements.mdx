@@ -30,12 +30,17 @@ React Intl requires **Node.js 16 or later**, which includes full internationaliz
 
 ## React Native
 
-If you're using `react-intl` in React Native, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
+For Hermes apps, we recommend the native [Hermes Intl SDK](/docs/guides/hermes-intl).
+Install it before importing `react-intl`. Use the
+[TypeScript polyfill fallback](/docs/guides/react-native-hermes) if you cannot add
+native code or rebuild your app.
+
+For other React Native runtimes, make sure your runtime has built-in `Intl` support (similar to [JSC International variant](https://github.com/react-native-community/jsc-android-buildscripts#international-variant)). See these issues for more details:
 
 - https://github.com/formatjs/formatjs/issues/1356
 - https://github.com/formatjs/formatjs/issues/992
 
-### React Native on iOS
+### React Native on iOS without Hermes
 
 If you cannot use the Intl variant of JSC (e.g on iOS), follow the instructions in [polyfills](/docs/polyfills) to polyfill the following APIs (in this order):
 

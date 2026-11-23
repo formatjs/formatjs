@@ -156,6 +156,8 @@ const configurations: any[] = [
   {minimumFractionDigits: 2, maximumFractionDigits: 2, roundingIncrement: 25},
   {minimumFractionDigits: 2, trailingZeroDisplay: 'stripIfInteger'},
   {minimumIntegerDigits: 21},
+  {trailingZeroDisplay: 'stripToMinimum'},
+  {minimumFractionDigits: 2, trailingZeroDisplay: 'stripToMinimum'},
 ]
 for (const roundingMode of [
   'ceil',
@@ -195,6 +197,13 @@ const values: any[] = [
   '.5',
   '1.',
   '1e+0',
+  '1.00',
+  '001.00',
+  '1.20e1',
+  '1.20e-1',
+  '0.00e1',
+  '-0.00',
+  '0e-99999999999999999999999',
   '1e-9999',
   '1e9999',
   '.',
@@ -250,6 +259,9 @@ for (const locale of [
       }
       for (const [start, end] of [
         [-1, 1],
+        ['1', '1.00'],
+        ['1.0', '1.00'],
+        ['1.00', '1.00'],
         [1, 2],
         [1.0001, 1.0002],
         [1n, 2n],

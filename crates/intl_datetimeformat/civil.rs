@@ -4,6 +4,8 @@ pub const TIME_CLIP_BOUND: i64 = 8_640_000_000_000_000;
 const NANOSECONDS_PER_SECOND: i128 = 1_000_000_000;
 const NANOSECONDS_PER_DAY: i128 = 86_400 * NANOSECONDS_PER_SECOND;
 
+// ECMA-262 §21.4.1.31 steps 1–3; Err represents the NaN result for callers.
+// https://tc39.es/ecma262/#sec-timeclip
 pub fn time_clip(value: f64) -> Result<i64, Error> {
     if !value.is_finite() || value.abs() > TIME_CLIP_BOUND as f64 {
         return Err(Error::InvalidDate);

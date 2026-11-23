@@ -1,9 +1,9 @@
 [package]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.2.3"
+version = "1.0.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
-description = "Optional calendar providers for native DateTimeFormat"
+description = "Numeric calendar math and optional native DateTimeFormat providers"
 license = "BSD-3-Clause"
 repository = "https://github.com/formatjs/formatjs"
 publish = true
@@ -12,9 +12,11 @@ publish = true
 path = "lib.rs"
 
 [features]
-compiled_data = []
+default = ["provider"]
+provider = ["dep:formatjs_intl_datetimeformat", "dep:serde", "dep:serde_json"]
+compiled_data = ["provider"]
 
 [dependencies]
-formatjs_intl_datetimeformat = { path = "../intl_datetimeformat", version = "1.0.2" }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+formatjs_intl_datetimeformat = { path = "../intl_datetimeformat", version = "1.1.0", optional = true }
+serde = { version = "1.0", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }

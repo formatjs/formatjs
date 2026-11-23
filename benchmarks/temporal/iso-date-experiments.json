@@ -1,0 +1,1200 @@
+{
+  "baselineCommit": "3b089dc11a35096f1c342cd1c584055c30c04c6a",
+  "status": "94 conformance targets pass. Performance goal remains open; remaining reference losses and rounding variability are unresolved.",
+  "changes": "One-pass ISO calendar conversion; private immutable ISO fields reused by date getters; direct Gregorian derived fields; direct date-only serialization and bounded month/day padding lookup. No WASM or formatted-output memo.",
+  "profile": {
+    "sourceCommit": "3b089dc11a35096f1c342cd1c584055c30c04c6a",
+    "method": "V8 inspector100us sampling. Selected dateFields/dateFormat/yearMonthFormat/monthDayFormat,100000 warmup,5x200000 iterations each; includes workload setup/warmup. Leaf timeDeltas weighted; root/idle/program excluded. Inclusive rows count ancestors and overlap. Attribution only, not production throughput. Raw profile /tmp/temporal-ts-date-baseline.cpuprofile. Published package source unchanged from measured checkpoint.",
+    "categoriesPercent": {
+      "runtime/other": 1.03,
+      "harness": 10.58,
+      "Temporal TS": 87.13,
+      "GC": 1.26
+    },
+    "topSelf": [
+      {
+        "function": "YearFromTime",
+        "file": "index.js",
+        "line": 1095,
+        "selfOrInclusivePercent": 30.05
+      },
+      {
+        "function": "MonthFromTime",
+        "file": "index.js",
+        "line": 1115,
+        "selfOrInclusivePercent": 15.14
+      },
+      {
+        "function": "ArithmeticCalendarFromEpochDay",
+        "file": "index.js",
+        "line": 3473,
+        "selfOrInclusivePercent": 11.97
+      },
+      {
+        "function": "format$2",
+        "file": "index.js",
+        "line": 6492,
+        "selfOrInclusivePercent": 6.04
+      },
+      {
+        "function": "epochNanosecondsToISO",
+        "file": "index.js",
+        "line": 1203,
+        "selfOrInclusivePercent": 4.03
+      },
+      {
+        "function": "formatInstant",
+        "file": "index.js",
+        "line": 4962,
+        "selfOrInclusivePercent": 2.64
+      },
+      {
+        "function": "pad",
+        "file": "index.js",
+        "line": 4964,
+        "selfOrInclusivePercent": 2.62
+      },
+      {
+        "function": "calendarFromEpochDayRaw",
+        "file": "index.js",
+        "line": 3705,
+        "selfOrInclusivePercent": 2.42
+      },
+      {
+        "function": "calendarFromEpochDay",
+        "file": "index.js",
+        "line": 3702,
+        "selfOrInclusivePercent": 1.79
+      },
+      {
+        "function": "calendarStartOfYear",
+        "file": "index.js",
+        "line": 3627,
+        "selfOrInclusivePercent": 1.35
+      },
+      {
+        "function": "dateProperty",
+        "file": "index.js",
+        "line": 5530,
+        "selfOrInclusivePercent": 1.32
+      },
+      {
+        "function": "DayFromYear",
+        "file": "index.js",
+        "line": 1092,
+        "selfOrInclusivePercent": 1.28
+      },
+      {
+        "function": "formatShortDate",
+        "file": "index.js",
+        "line": 6099,
+        "selfOrInclusivePercent": 0.93
+      },
+      {
+        "function": "read$4",
+        "file": "index.js",
+        "line": 6417,
+        "selfOrInclusivePercent": 0.89
+      },
+      {
+        "function": "DateFromTime",
+        "file": "index.js",
+        "line": 1132,
+        "selfOrInclusivePercent": 0.75
+      },
+      {
+        "function": "calendarNameOption",
+        "file": "index.js",
+        "line": 5498,
+        "selfOrInclusivePercent": 0.59
+      },
+      {
+        "function": "(anonymous)",
+        "file": "index.js",
+        "line": 6609,
+        "selfOrInclusivePercent": 0.42
+      },
+      {
+        "function": "Object.defineProperty.get.Object.getOwnPropertyDescriptor",
+        "file": "index.js",
+        "line": 4906,
+        "selfOrInclusivePercent": 0.33
+      },
+      {
+        "function": "ArithmeticCalendarDaysInMonth",
+        "file": "index.js",
+        "line": 3442,
+        "selfOrInclusivePercent": 0.33
+      },
+      {
+        "function": "ToString",
+        "file": "index.js",
+        "line": 6,
+        "selfOrInclusivePercent": 0.32
+      },
+      {
+        "function": "daysInMonth",
+        "file": "index.js",
+        "line": 3642,
+        "selfOrInclusivePercent": 0.26
+      },
+      {
+        "function": "read$5",
+        "file": "index.js",
+        "line": 6304,
+        "selfOrInclusivePercent": 0.26
+      },
+      {
+        "function": "IsISOCalendar",
+        "file": "index.js",
+        "line": 3406,
+        "selfOrInclusivePercent": 0.21
+      },
+      {
+        "function": "calendarCheck",
+        "file": "index.js",
+        "line": 3611,
+        "selfOrInclusivePercent": 0.2
+      },
+      {
+        "function": "calendarAnnotation",
+        "file": "index.js",
+        "line": 5508,
+        "selfOrInclusivePercent": 0.17
+      }
+    ],
+    "topInclusive": [
+      {
+        "function": "calendarFromEpochDayRaw",
+        "file": "index.js",
+        "line": 3705,
+        "selfOrInclusivePercent": 57.9
+      },
+      {
+        "function": "ArithmeticCalendarFromEpochDay",
+        "file": "index.js",
+        "line": 3473,
+        "selfOrInclusivePercent": 55.25
+      },
+      {
+        "function": "Object.defineProperty.get.Object.getOwnPropertyDescriptor",
+        "file": "index.js",
+        "line": 4906,
+        "selfOrInclusivePercent": 52.53
+      },
+      {
+        "function": "(anonymous)",
+        "file": "index.js",
+        "line": 6609,
+        "selfOrInclusivePercent": 52.08
+      },
+      {
+        "function": "dateProperty",
+        "file": "index.js",
+        "line": 5530,
+        "selfOrInclusivePercent": 51.1
+      },
+      {
+        "function": "calendarFromEpochDay",
+        "file": "index.js",
+        "line": 3702,
+        "selfOrInclusivePercent": 47.34
+      },
+      {
+        "function": "dateFields",
+        "file": "index.js",
+        "line": 5382,
+        "selfOrInclusivePercent": 47.33
+      },
+      {
+        "function": "DateFromTime",
+        "file": "index.js",
+        "line": 1132,
+        "selfOrInclusivePercent": 31.97
+      },
+      {
+        "function": "MonthFromTime",
+        "file": "index.js",
+        "line": 1115,
+        "selfOrInclusivePercent": 30.41
+      },
+      {
+        "function": "YearFromTime",
+        "file": "index.js",
+        "line": 1095,
+        "selfOrInclusivePercent": 30.06
+      },
+      {
+        "function": "DayWithinYear",
+        "file": "index.js",
+        "line": 1109,
+        "selfOrInclusivePercent": 24.47
+      },
+      {
+        "function": "format$2",
+        "file": "index.js",
+        "line": 6492,
+        "selfOrInclusivePercent": 20.11
+      },
+      {
+        "function": "toString",
+        "file": "index.js",
+        "line": 6564,
+        "selfOrInclusivePercent": 20.03
+      },
+      {
+        "function": "formatShortDate",
+        "file": "index.js",
+        "line": 6099,
+        "selfOrInclusivePercent": 13.94
+      },
+      {
+        "function": "formatInstant",
+        "file": "index.js",
+        "line": 4962,
+        "selfOrInclusivePercent": 13.64
+      },
+      {
+        "function": "epochNanosecondsToISO",
+        "file": "index.js",
+        "line": 1203,
+        "selfOrInclusivePercent": 8.0
+      },
+      {
+        "function": "toString",
+        "file": "index.js",
+        "line": 6247,
+        "selfOrInclusivePercent": 7.1
+      },
+      {
+        "function": "toString",
+        "file": "index.js",
+        "line": 6366,
+        "selfOrInclusivePercent": 6.92
+      },
+      {
+        "function": "InLeapYear",
+        "file": "index.js",
+        "line": 1112,
+        "selfOrInclusivePercent": 6.48
+      },
+      {
+        "function": "pad",
+        "file": "index.js",
+        "line": 4964,
+        "selfOrInclusivePercent": 2.62
+      },
+      {
+        "function": "calendarStartOfYear",
+        "file": "index.js",
+        "line": 3627,
+        "selfOrInclusivePercent": 1.41
+      },
+      {
+        "function": "DayFromYear",
+        "file": "index.js",
+        "line": 1092,
+        "selfOrInclusivePercent": 1.28
+      },
+      {
+        "function": "calendarNameOption",
+        "file": "index.js",
+        "line": 5498,
+        "selfOrInclusivePercent": 0.9
+      },
+      {
+        "function": "read$4",
+        "file": "index.js",
+        "line": 6417,
+        "selfOrInclusivePercent": 0.89
+      },
+      {
+        "function": "daysInMonth",
+        "file": "index.js",
+        "line": 3642,
+        "selfOrInclusivePercent": 0.75
+      }
+    ],
+    "rawArtifact": "iso-date-baseline.cpuprofile.gz",
+    "rawSha256": "55174195d07eb2efba9fffb9b5d80fbdabdd718e6779c28a9bf4118fb38acc72",
+    "compression": "gzip; decompress before opening in V8/Chrome DevTools"
+  },
+  "onePassControls": {
+    "method": "Four fresh TS processes: parent/one-pass/one-pass/parent. 100000 warmup,9x200000 calls,eight varying inputs/parity. dateFormat is unchanged-path control; no profiler or concurrent tests/builds. Rust/data/cache unchanged.",
+    "sourceHashes": {
+      "parent": "c34a14c83c490e1e26aec2e37eff66d976ba9d2e5015304e1cbdfc3ad25c44f4",
+      "one-pass": "1f23ff398064a96b1ab7725b77aa5a8d4e00887e96075616d740b2dd935012d5"
+    },
+    "trials": [
+      {
+        "state": "parent",
+        "checksum": 193800000,
+        "results": [
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1684.7305300000005,
+            "samplesNanoseconds": [
+              1665.9302949999983, 1678.3582449999994, 1682.1197349999989,
+              1683.216709999999, 1684.7305300000005, 1687.7924700000005,
+              1696.8240349999996, 1711.5822200000002, 1715.1673100000003
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2640.4121050000003,
+            "samplesNanoseconds": [
+              2638.5169399999995, 2639.9895749999996, 2640.0459899999987,
+              2640.209520000003, 2640.4121050000003, 2643.057795000002,
+              2643.1651650000003, 2645.1483849999977, 2647.0610799999986
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 979.833610000005,
+            "samplesNanoseconds": [
+              976.2702699999954, 978.213495, 978.3081800000036,
+              978.3599250000043, 979.833610000005, 980.4664150000008,
+              981.4800000000014, 1137.4020999999993, 1181.7744049999965
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 432.53647499999715,
+            "samplesNanoseconds": [
+              429.8806500000046, 431.2368800000058, 431.27231500000556,
+              431.62356499999987, 432.53647499999715, 432.7118249999966,
+              432.77353000000403, 432.93735500000366, 433.4710100000029
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 400.08186000000023,
+            "samplesNanoseconds": [
+              397.97519499999913, 398.77570999999995, 399.4155950000004,
+              399.79739499999596, 400.08186000000023, 400.1902799999971,
+              400.7477600000038, 401.0698700000012, 401.31613999999905
+            ]
+          }
+        ]
+      },
+      {
+        "state": "one-pass",
+        "checksum": 193800000,
+        "results": [
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1426.5260799999987,
+            "samplesNanoseconds": [
+              1417.17628, 1418.6060699999996, 1426.184125000001,
+              1426.3843449999997, 1426.5260799999987, 1426.7380149999997,
+              1432.0392949999998, 1448.16397, 1450.5354000000002
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1031.6948649999995,
+            "samplesNanoseconds": [
+              1028.1211599999983, 1028.4441100000004, 1028.5019899999998,
+              1030.512755000002, 1031.6948649999995, 1032.6288599999998,
+              1033.6170450000009, 1035.7568149999997, 1042.5176699999997
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 942.3782900000015,
+            "samplesNanoseconds": [
+              939.725255000003, 940.701955000004, 941.1479499999996, 942.311565,
+              942.3782900000015, 942.6019249999989, 942.7165749999994,
+              945.3390949999994, 947.7795400000014
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 220.07210999999643,
+            "samplesNanoseconds": [
+              218.5908100000006, 219.4804750000003, 219.64136499999768,
+              219.67098499999793, 220.07210999999643, 221.3881599999968,
+              221.55647000000044, 221.85652499999833, 222.84463999999844
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 210.9524300000021,
+            "samplesNanoseconds": [
+              208.17939500000193, 209.14420500000236, 210.25638000000072,
+              210.56018499999936, 210.9524300000021, 211.73369999999977,
+              211.74388999999792, 212.06431000000066, 212.18410999999833
+            ]
+          }
+        ]
+      },
+      {
+        "state": "one-pass",
+        "checksum": 193800000,
+        "results": [
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1422.03934,
+            "samplesNanoseconds": [
+              1417.1154, 1417.1566099999993, 1417.770304999999,
+              1419.856954999999, 1422.03934, 1433.6996449999997,
+              1441.4662149999997, 1463.6432650000006, 1468.962065
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1045.5096800000001,
+            "samplesNanoseconds": [
+              1038.9582250000012, 1040.7814899999994, 1042.9960400000027,
+              1044.506214999999, 1045.5096800000001, 1046.695595000001,
+              1047.0485999999983, 1047.7156999999988, 1049.6360050000021
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 957.610824999997,
+            "samplesNanoseconds": [
+              953.115284999999, 953.6718000000019, 954.560080000001,
+              956.4589299999988, 957.610824999997, 958.9384400000018, 960.03017,
+              963.5231650000015, 963.7073250000003
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 219.10729500000343,
+            "samplesNanoseconds": [
+              216.82803500000315, 217.04589999999826, 217.98962500000016,
+              218.39676000000057, 219.10729500000343, 219.36525999999958,
+              220.02991999999722, 221.0619449999967, 223.58910500000093
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 195.14012499999805,
+            "samplesNanoseconds": [
+              192.92145999999775, 193.4682550000025, 193.95609499999867,
+              193.97016500000063, 195.14012499999805, 195.14996999999767,
+              195.72279999999867, 195.79114500000287, 196.0634549999986
+            ]
+          }
+        ]
+      },
+      {
+        "state": "parent",
+        "checksum": 193800000,
+        "results": [
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1574.291895,
+            "samplesNanoseconds": [
+              1568.59037, 1569.8883, 1570.3069849999997, 1572.6469500000005,
+              1574.291895, 1574.575605, 1589.1486799999998, 1601.3878,
+              1602.8356200000003
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2413.517174999997,
+            "samplesNanoseconds": [
+              2405.964600000002, 2407.451484999997, 2408.1979,
+              2412.077545000002, 2413.517174999997, 2414.605590000001,
+              2415.002095, 2418.092805000001, 2418.746544999999
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 972.3848350000026,
+            "samplesNanoseconds": [
+              967.6041600000008, 967.7380400000038, 970.4943249999997,
+              971.4164950000031, 972.3848350000026, 972.8113899999971,
+              973.0651799999941, 973.3209050000005, 973.8991600000008
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 406.2780399999974,
+            "samplesNanoseconds": [
+              402.1860650000054, 402.2700200000054, 402.298365000006,
+              404.19558000000507, 406.2780399999974, 406.47689999999784,
+              408.4571700000015, 409.35880500000167, 409.465969999992
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 370.2245200000016,
+            "samplesNanoseconds": [
+              369.2827999999917, 369.29070000000144, 369.5400449999943,
+              369.8128849999921, 370.2245200000016, 370.47144000000117,
+              370.8117849999962, 372.0449449999978, 374.134439999998
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "combinedControls": {
+    "baselineCommit": "3b089dc11a35096f1c342cd1c584055c30c04c6a",
+    "method": "Four fresh TS processes, parent/optimized/optimized/parent. 100000 warmup,9x200000 calls,eight varying inputs/output parity. round/zonedOffset unchanged-path controls. No concurrent tests, builds or profiler. Private ISO field cache, one-pass ISO calendar conversion and direct date-only formatters.",
+    "sourceHashes": {
+      "parent": {
+        "packages/ecma402-abstract/Calendar/Arithmetic.ts": "c34a14c83c490e1e26aec2e37eff66d976ba9d2e5015304e1cbdfc3ad25c44f4",
+        "packages/temporal/date-core.ts": "6ac874526b8b998c17c2bc271356fc1b83ededae66be10060b385fcb0da11b26",
+        "packages/temporal/plain-date.ts": "75ab4d504302ea4472b6dd2ca2b7538082de5036e60859184d04d2447916b60c",
+        "packages/temporal/plain-slots.ts": "165a1e4d4738011c7de7e043269e77f7a441adc8cbb452f513ae1df94fd4d13a",
+        "packages/temporal/short-date-core.ts": "20dcbe5c14d8a161ce1812aee5ef99b1b805386206b002568cc31b4ebaa7c412"
+      },
+      "optimized": {
+        "packages/ecma402-abstract/Calendar/Arithmetic.ts": "7bd33976647884627c834459b4b986556be2855f38ca402319b8f09c6f4352c3",
+        "packages/temporal/date-core.ts": "8221321370c05b1779daf1744c875c17c30c13c7cfc942d82ad7b64261c14065",
+        "packages/temporal/plain-date.ts": "08de235f9ad5f9e7526d54f92ad3a6a261afe9e968390be94ece6f74652da6cc",
+        "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+        "packages/temporal/short-date-core.ts": "a21abbc4e574edbe8859c6a5d68284bba0c33609b27b36a3bec3b98648f8359e"
+      }
+    },
+    "trials": [
+      {
+        "state": "parent",
+        "checksum": 257450000,
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 552.8847100000002,
+            "samplesNanoseconds": [
+              427.6289449999999, 485.895445, 486.1292249999997,
+              499.0800049999996, 552.8847100000002, 562.648660000001,
+              615.3930800000006, 824.367345, 864.3683450000003
+            ]
+          },
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1663.5549300000002,
+            "samplesNanoseconds": [
+              1631.0651549999989, 1638.0075749999992, 1638.9837999999986,
+              1639.7757449999974, 1663.5549300000002, 1665.4007850000005,
+              1669.8845300000005, 1681.4760250000018, 1699.9498100000005
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1356.5534249999973,
+            "samplesNanoseconds": [
+              1329.5576399999982, 1337.8761200000008, 1345.864305,
+              1351.920795000001, 1356.5534249999973, 1358.0184399999962,
+              1362.2080450000021, 1372.0422699999974, 1397.7598649999982
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2442.9650649999985,
+            "samplesNanoseconds": [
+              2433.1763300000057, 2433.5312000000067, 2434.7592450000047,
+              2442.2642150000047, 2442.9650649999985, 2474.2524449999974,
+              2474.568734999998, 2490.262885000002, 2563.1251350000002
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 961.391264999993,
+            "samplesNanoseconds": [
+              955.3345200000058, 956.5181699999994, 959.0040749999935,
+              959.9396199999956, 961.391264999993, 961.905740000002,
+              964.4439349999992, 964.5995250000033, 967.7041299999928
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 412.2881850000067,
+            "samplesNanoseconds": [
+              409.5677049999995, 411.6497350000009, 411.8907750000016,
+              411.90517, 412.2881850000067, 412.38384999999647,
+              412.92968499999915, 415.4939099999956, 418.3731850000004
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 390.14495999999787,
+            "samplesNanoseconds": [
+              387.7589950000038, 388.58959499999406, 389.1211649999969,
+              390.0418350000018, 390.14495999999787, 390.88920500000313,
+              390.89632000000165, 391.976939999995, 393.6031399999956
+            ]
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 116.26905500000248,
+            "samplesNanoseconds": [
+              111.48908999999549, 112.36915999999837, 112.63546999999562,
+              113.21620499999881, 116.26905500000248, 139.1616299999987,
+              140.03711499999554, 239.1878700000052, 249.06468000000132
+            ]
+          }
+        ]
+      },
+      {
+        "state": "optimized",
+        "checksum": 257450000,
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 534.4424449999997,
+            "samplesNanoseconds": [
+              414.71188999999976, 472.383835, 482.32643999999993,
+              501.27402500000017, 534.4424449999997, 537.729415,
+              572.2210300000006, 823.0393649999997, 871.2685550000003
+            ]
+          },
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1578.875375,
+            "samplesNanoseconds": [
+              1518.9610000000014, 1554.7770649999984, 1559.2449699999997,
+              1567.3801000000003, 1578.875375, 1584.775035, 1629.5539350000013,
+              1658.6265000000003, 1800.94836
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1269.5546449999983,
+            "samplesNanoseconds": [
+              1251.3209700000016, 1256.9658900000013, 1259.4973400000026,
+              1269.2347850000033, 1269.5546449999983, 1306.3537499999984,
+              1320.437364999998, 1345.8250400000043, 1354.5604549999962
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 344.9093499999981,
+            "samplesNanoseconds": [
+              342.55086499999834, 342.6544699999977, 343.52424000000156,
+              343.56291500000225, 344.9093499999981, 345.17770500000097,
+              348.3159149999983, 348.61268999999993, 354.8007300000017
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 189.26846000000293,
+            "samplesNanoseconds": [
+              181.08618000000206, 187.89095999999975, 188.62667999999758,
+              189.1336799999999, 189.26846000000293, 191.13914499999734,
+              191.2678399999959, 191.61394499999915, 223.81684499999665
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 177.05227999999806,
+            "samplesNanoseconds": [
+              176.38605999999982, 176.67391999999836, 176.73904499999938,
+              177.04643500000202, 177.05227999999806, 177.0539999999983,
+              180.27651000000333, 184.3339849999984, 222.48077499999906
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 156.81009500000073,
+            "samplesNanoseconds": [
+              156.21282500000234, 156.41475000000355, 156.57905500000197,
+              156.67590500000188, 156.81009500000073, 156.99690999999802,
+              157.03716999999415, 157.25792000000183, 158.279050000001
+            ]
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 119.28249000000505,
+            "samplesNanoseconds": [
+              118.0461650000052, 118.05192499999976, 119.024730000001,
+              119.10834999999679, 119.28249000000505, 119.54780500000197,
+              119.73366999999598, 120.8774750000066, 124.17231000000356
+            ]
+          }
+        ]
+      },
+      {
+        "state": "optimized",
+        "checksum": 257450000,
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 539.279995,
+            "samplesNanoseconds": [
+              420.59044, 472.2249199999998, 476.80495500000006, 478.770705,
+              539.279995, 565.3556400000002, 717.6352699999995, 822.1443,
+              826.9673599999999
+            ]
+          },
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1616.0301249999998,
+            "samplesNanoseconds": [
+              1534.9011299999986, 1547.4878450000006, 1597.4316150000002,
+              1606.678529999999, 1616.0301249999998, 1645.6628999999998,
+              1689.991520000001, 1801.5804200000002, 1833.22453
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1327.1806750000042,
+            "samplesNanoseconds": [
+              1278.0646350000006, 1282.6023200000009, 1282.932034999999,
+              1284.3710099999998, 1327.1806750000042, 1334.7789700000021,
+              1335.3197150000005, 1341.484835000001, 1349.4334200000003
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 346.61683999999696,
+            "samplesNanoseconds": [
+              344.80453499999834, 344.9235550000003, 345.12572999999975,
+              345.93495500000245, 346.61683999999696, 346.81826499999715,
+              351.5850300000011, 359.4564749999972, 364.2963150000014
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 192.10602999999992,
+            "samplesNanoseconds": [
+              181.91637000000352, 190.68255000000133, 190.90256999999835,
+              191.1419500000011, 192.10602999999992, 192.20590999999783,
+              193.33498500000135, 202.11907500000052, 219.79878999999983
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 173.67428499999733,
+            "samplesNanoseconds": [
+              173.17027000000053, 173.3223450000014, 173.45642500000395,
+              173.6667149999994, 173.67428499999733, 173.86595500000112,
+              173.97927000000436, 174.4991149999987, 211.24403000000257
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 162.32869000000392,
+            "samplesNanoseconds": [
+              161.98225499999353, 162.063849999995, 162.20287999999528,
+              162.31371500000023, 162.32869000000392, 162.48257500000364,
+              162.65237499999785, 162.6549249999971, 163.03380499999548
+            ]
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 114.990044999995,
+            "samplesNanoseconds": [
+              114.11250499999369, 114.45603000000119, 114.49460499999986,
+              114.62197999999262, 114.990044999995, 115.05933000000368,
+              115.39515999999821, 117.7397000000019, 118.44272000000274
+            ]
+          }
+        ]
+      },
+      {
+        "state": "parent",
+        "checksum": 257450000,
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 550.7081000000005,
+            "samplesNanoseconds": [
+              435.6981449999998, 478.4505100000001, 484.75510499999984,
+              487.9503650000004, 550.7081000000005, 559.0833900000001,
+              592.7271000000002, 815.1538149999999, 857.2846650000002
+            ]
+          },
+          {
+            "operation": "dateParse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1653.1602499999985,
+            "samplesNanoseconds": [
+              1641.8926350000038, 1648.179855000001, 1652.4205149999989,
+              1653.0582000000004, 1653.1602499999985, 1661.0302550000006,
+              1670.5089300000009, 1673.2433649999984, 1692.5088449999996
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1364.8821150000003,
+            "samplesNanoseconds": [
+              1345.1247000000012, 1355.4260599999998, 1361.2815799999996,
+              1362.2750799999994, 1364.8821150000003, 1369.510059999998,
+              1369.8753350000015, 1373.4826500000008, 1409.8521800000026
+            ]
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2649.6453250000013,
+            "samplesNanoseconds": [
+              2645.3925100000015, 2645.996839999998, 2647.6984899999934,
+              2648.757450000003, 2649.6453250000013, 2649.9799600000006,
+              2651.299710000003, 2653.79911, 2666.7849750000005
+            ]
+          },
+          {
+            "operation": "dateFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 987.2272799999973,
+            "samplesNanoseconds": [
+              977.4011700000028, 978.8138749999961, 985.6562850000046,
+              985.7173899999998, 987.2272799999973, 991.180875,
+              991.5425049999976, 1016.4850799999931, 1037.5486799999999
+            ]
+          },
+          {
+            "operation": "yearMonthFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 421.10008000000556,
+            "samplesNanoseconds": [
+              419.9772699999994, 420.54728999999503, 420.5990750000001,
+              420.8441900000071, 421.10008000000556, 421.32805000000184,
+              421.3529350000045, 422.7644650000002, 424.4794499999989
+            ]
+          },
+          {
+            "operation": "monthDayFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 396.36727999999493,
+            "samplesNanoseconds": [
+              394.52886999999464, 394.8248049999984, 395.5030700000043,
+              396.1121099999946, 396.36727999999493, 396.4181699999972,
+              397.4648200000047, 398.11406499999975, 398.82498999999376
+            ]
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 117.14830500000062,
+            "samplesNanoseconds": [
+              116.2208400000054, 116.57877999999984, 116.7186700000002,
+              117.08684500000345, 117.14830500000062, 117.35249500000464,
+              117.91933000000427, 120.53968500000337, 125.21353999999519
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "javascript": "js-optimized-results.json",
+  "native": "native-ts-optimized-results.json",
+  "typescriptWins": {
+    "reference": 28,
+    "officialReference": 44
+  },
+  "rustWins": 25,
+  "scope": "Native25 and JS48 differ; no universal performance, binding, named-zone native or non-ISO JS throughput claim. Frozen reference measurements explicitly retained. Compressed raw V8 profile, summarized attribution and every timed sample are recorded.",
+  "sourceHashes": {
+    "packages/ecma402-abstract/Calendar/Arithmetic.ts": "7bd33976647884627c834459b4b986556be2855f38ca402319b8f09c6f4352c3",
+    "packages/temporal/date-core.ts": "8221321370c05b1779daf1744c875c17c30c13c7cfc942d82ad7b64261c14065",
+    "packages/temporal/plain-date.ts": "08de235f9ad5f9e7526d54f92ad3a6a261afe9e968390be94ece6f74652da6cc",
+    "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+    "packages/temporal/short-date-core.ts": "a21abbc4e574edbe8859c6a5d68284bba0c33609b27b36a3bec3b98648f8359e",
+    "packages/temporal/tests/arithmetic-calendar.test.ts": "aa1f00b613db71f83b6c213819622b40f15d20a0dc2317ec94c864d273e2b74e",
+    "packages/temporal/tests/short-dates.test.ts": "b2e745503ec9af6d1286977d2f2000504beb7dfb998048187721cc6f001d3a54"
+  },
+  "cacheKey": "Private unique symbol. String-key candidate rejected: regression test throws Inherited date fields under Object.prototype pollution; corrected version passes focused checks.",
+  "validationTargets": [
+    "//packages/temporal:sdk_hermes_instant_source_test262",
+    "//packages/temporal:sdk_hermes_instant_bytecode_test262",
+    "//packages/temporal:sdk_hermes_date_source_test262",
+    "//packages/temporal:sdk_hermes_date_bytecode_test262",
+    "//packages/temporal:sdk_hermes_datetime_source_test262",
+    "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+    "//packages/temporal:sdk_hermes_time_source_test262",
+    "//packages/temporal:sdk_hermes_time_bytecode_test262",
+    "//packages/temporal:sdk_hermes_yearmonth_source_test262",
+    "//packages/temporal:sdk_hermes_yearmonth_bytecode_test262",
+    "//packages/temporal:sdk_hermes_monthday_source_test262",
+    "//packages/temporal:sdk_hermes_monthday_bytecode_test262",
+    "//packages/temporal:sdk_hermes_duration_source_test262",
+    "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+    "//packages/temporal:sdk_hermes_zoned_source_test262",
+    "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+    "//packages/temporal:sdk_hermes_calendars_source_test262",
+    "//packages/temporal:sdk_hermes_calendars_bytecode_test262",
+    "//packages/temporal:sdk_hermes_now_source_test262",
+    "//packages/temporal:sdk_hermes_now_bytecode_test262",
+    "//packages/temporal:sdk_hermes_installation_source_test262",
+    "//packages/temporal:sdk_hermes_installation_bytecode_test262",
+    "//packages/temporal:sdk_hermes_staging_source_test262",
+    "//packages/temporal:sdk_hermes_staging_bytecode_test262",
+    "//packages/temporal:instant_test262_full",
+    "//packages/temporal:plain_date_test262_full",
+    "//packages/temporal:plain_date_time_test262_full",
+    "//packages/temporal:plain_time_test262_full",
+    "//packages/temporal:year_month_test262_full",
+    "//packages/temporal:month_day_test262_full",
+    "//packages/temporal:duration_test262_full",
+    "//packages/temporal:zoned_test262",
+    "//packages/temporal:calendars_test262",
+    "//packages/temporal:now_test262",
+    "//packages/temporal:installation_test262",
+    "//packages/temporal:package_test",
+    "//packages/temporal:types_typecheck_test",
+    "//benchmarks/temporal:temporal-esm_typecheck_test",
+    "//crates/temporal:temporal_test",
+    "//crates/temporal:ffi_test",
+    "//packages/temporal:sdk_intl_compat_hermes_source_test262",
+    "//packages/temporal:sdk_intl_compat_hermes_bytecode_test262",
+    "//packages/temporal:native_duration_hermes_oracle_test",
+    "//packages/temporal:native_timezone_hermes_oracle_test",
+    "//packages/temporal:native_zoned_hermes_oracle_test",
+    "//packages/temporal:native_iso_hermes_oracle_test",
+    "//packages/temporal:public_calendar_hermes_oracle_test",
+    "//crates/temporal:public_calendar_test",
+    "//crates/temporal:context_test",
+    "//crates/temporal:registry_test",
+    "//packages/temporal:legacy_extended_calendar_test",
+    "//packages/temporal:legacy_calendar_era_test",
+    "//packages/temporal:legacy_calendar_era_arabic_test",
+    "//packages/temporal:legacy_calendar_era_fault_test",
+    "//packages/temporal:legacy_lunar_boundary_test",
+    "//packages/temporal:legacy_timezone_test",
+    "//packages/temporal:legacy_timezone_stale_test",
+    "//packages/temporal:legacy_calendar_era_hermes_test",
+    "//packages/temporal:legacy_timezone_hermes_test",
+    "//packages/temporal:host_intl_compat_test262",
+    "//packages/temporal:locale_intl_compat_test262",
+    "//packages/temporal:legacy_datetimeformat_test262",
+    "//packages/temporal:compact_calendar_datetimeformat_test262",
+    "//packages/temporal:locale_datetimeformat_test262",
+    "//crates/intl_datetimeformat_calendars:table_calendar_test",
+    "//crates/intl_datetimeformat_calendars:calendar_core_test",
+    "//native/hermes:datetimeformat_bridge_test",
+    "//packages/temporal:instant_hermes_test262_full",
+    "//packages/temporal:instant_hermes_bytecode_test262_full",
+    "//packages/temporal:plain_date_hermes_test262_full",
+    "//packages/temporal:plain_date_hermes_bytecode_test262_full",
+    "//packages/temporal:plain_date_time_hermes_test262_full",
+    "//packages/temporal:plain_date_time_hermes_bytecode_test262_full",
+    "//packages/temporal:plain_time_hermes_test262_full",
+    "//packages/temporal:plain_time_hermes_bytecode_test262_full",
+    "//packages/temporal:year_month_hermes_test262_full",
+    "//packages/temporal:year_month_hermes_bytecode_test262_full",
+    "//packages/temporal:month_day_hermes_test262_full",
+    "//packages/temporal:month_day_hermes_bytecode_test262_full",
+    "//packages/temporal:duration_hermes_test262_full",
+    "//packages/temporal:duration_hermes_bytecode_test262_full",
+    "//packages/temporal:zoned_hermes_test262_full",
+    "//packages/temporal:zoned_hermes_bytecode_test262_full",
+    "//packages/temporal:now_hermes_test262",
+    "//packages/temporal:now_hermes_bytecode_test262",
+    "//packages/temporal:installation_hermes_test262",
+    "//packages/temporal:installation_hermes_bytecode_test262",
+    "//packages/temporal:calendars_hermes_test262",
+    "//packages/temporal:calendars_hermes_bytecode_test262",
+    "//packages/temporal:arithmetic_calendar_test",
+    "//packages/temporal:short_date_test",
+    "//packages/intl-datetimeformat:calendar_test",
+    "//packages/intl-datetimeformat:intl-datetimeformat_test",
+    "//packages/ecma402-abstract/Calendar:Calendar-esm_typecheck_test"
+  ],
+  "roundingControls": {
+    "baselineCommit": "3b089dc11a35096f1c342cd1c584055c30c04c6a",
+    "method": "Four fresh TS processes, parent/optimized/optimized/parent. 100000 warmup,9x200000 calls,eight varying inputs/output parity. dateTimeRoundFormat controls for apparent full-matrix regression. No concurrent tests, builds or profiler. Private ISO field cache, one-pass ISO calendar conversion and direct date-only formatters.",
+    "sourceHashes": {
+      "parent": {
+        "packages/ecma402-abstract/Calendar/Arithmetic.ts": "c34a14c83c490e1e26aec2e37eff66d976ba9d2e5015304e1cbdfc3ad25c44f4",
+        "packages/temporal/date-core.ts": "6ac874526b8b998c17c2bc271356fc1b83ededae66be10060b385fcb0da11b26",
+        "packages/temporal/plain-date.ts": "75ab4d504302ea4472b6dd2ca2b7538082de5036e60859184d04d2447916b60c",
+        "packages/temporal/plain-slots.ts": "165a1e4d4738011c7de7e043269e77f7a441adc8cbb452f513ae1df94fd4d13a",
+        "packages/temporal/short-date-core.ts": "20dcbe5c14d8a161ce1812aee5ef99b1b805386206b002568cc31b4ebaa7c412"
+      },
+      "optimized": {
+        "packages/ecma402-abstract/Calendar/Arithmetic.ts": "7bd33976647884627c834459b4b986556be2855f38ca402319b8f09c6f4352c3",
+        "packages/temporal/date-core.ts": "8221321370c05b1779daf1744c875c17c30c13c7cfc942d82ad7b64261c14065",
+        "packages/temporal/plain-date.ts": "08de235f9ad5f9e7526d54f92ad3a6a261afe9e968390be94ece6f74652da6cc",
+        "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+        "packages/temporal/short-date-core.ts": "a21abbc4e574edbe8859c6a5d68284bba0c33609b27b36a3bec3b98648f8359e"
+      }
+    },
+    "trials": [
+      {
+        "state": "parent",
+        "checksum": 45600000,
+        "results": [
+          {
+            "operation": "dateTimeRoundFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1442.650635,
+            "samplesNanoseconds": [
+              1408.56404, 1416.1984299999995, 1436.19234, 1438.9394100000004,
+              1442.650635, 1443.7751150000008, 1450.3204549999998,
+              1455.010285000001, 1516.04668
+            ]
+          }
+        ]
+      },
+      {
+        "state": "optimized",
+        "checksum": 45600000,
+        "results": [
+          {
+            "operation": "dateTimeRoundFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1462.867289999999,
+            "samplesNanoseconds": [
+              1416.6756099999998, 1420.3823650000004, 1430.260885, 1461.30271,
+              1462.867289999999, 1479.680894999999, 1480.7570499999997,
+              1491.5064150000012, 1547.8022299999998
+            ]
+          }
+        ]
+      },
+      {
+        "state": "optimized",
+        "checksum": 45600000,
+        "results": [
+          {
+            "operation": "dateTimeRoundFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1593.6582950000004,
+            "samplesNanoseconds": [
+              1480.2732849999993, 1481.8690750000003, 1502.300515,
+              1529.0589899999998, 1593.6582950000004, 1604.1332899999984,
+              1615.48896, 1645.675225, 1658.0659049999997
+            ]
+          }
+        ]
+      },
+      {
+        "state": "parent",
+        "checksum": 45600000,
+        "results": [
+          {
+            "operation": "dateTimeRoundFormat",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1436.764855,
+            "samplesNanoseconds": [
+              1393.0852149999987, 1393.30103, 1405.2914199999998,
+              1410.9649049999985, 1436.764855, 1454.5930500000009, 1455.50361,
+              1463.5752749999995, 1519.9546800000003
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "roundingAssessment": "Full-matrix Instant.round median is 56% above frozen TS baseline, but longer alternating controls show no slowdown. DateTime round/format controls are mixed: optimized medians 1463ns and1594ns versus parent1443ns and1437ns. This leaves a possible regression unresolved; do not claim every TS workload improved or performance goal complete.",
+  "startup": "iso-startup-results.json",
+  "packageSizes": "iso-size-results.json",
+  "validation": {
+    "targets": 94,
+    "result": "94 tests pass; executed79,15cached",
+    "logSummary": "Executed 79 out of 94 tests: 94 tests pass.",
+    "sourceHashesUnchanged": true,
+    "prototypeRegression": "String-key candidate failed public Date/YearMonth/MonthDay inherited-field test. Unique symbol fix passes.",
+    "additionalChecks": [
+      "//packages/temporal:no_internal_imports_test",
+      "//packages/temporal:package_json_test",
+      "//packages/temporal:package_exports_test",
+      "//docs:dist"
+    ],
+    "formattedPayloadMatchesMeasuredSizeAndHash": true
+  },
+  "sizeTradeoff": {
+    "previousConsumerGzip": 39749,
+    "currentConsumerGzip": 40075,
+    "deltaGzip": 326,
+    "retainedHeap": "At most one immutable four-field record per accessed ISO date slot; no global memo table or formatted-output memo."
+  }
+}

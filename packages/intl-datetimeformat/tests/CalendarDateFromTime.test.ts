@@ -28,6 +28,17 @@ const calendars = [
 ]
 
 describe('CalendarDateFromTime', () => {
+  test.each(
+    data.filter(({calendar}) => calendar !== 'chinese' && calendar !== 'dangi')
+  )('$calendar preserves civil-date bounds with timezone padding', provider => {
+    const bound = 8640000000000000
+    const day = 86400000
+    expect(() => provider.dateFromTime(-bound - day - 1)).toThrow(RangeError)
+    expect(() => provider.dateFromTime(bound + day)).toThrow(RangeError)
+    expect(() => provider.dateFromTime(-bound - day)).not.toThrow()
+    expect(() => provider.dateFromTime(bound + day - 1)).not.toThrow()
+  })
+
   test('calendar conversion does not require native DateTimeFormat', () => {
     const date = (globalThis as any).Temporal.PlainDate.from('2024-03-11')
     const expected = calendars.map(calendar => {
@@ -72,18 +83,18 @@ describe('CalendarDateFromTime', () => {
           for (const day of [1, 6, 11, 28, 30, 31]) {
             const date = new Date(0)
             date.setUTCFullYear(year, month, day)
-            const parts = Object.fromEntries(
-              formatter.formatToParts(date).map(part => [part.type, part.value])
-            )
             const temporal = (globalThis as any).Temporal.PlainDate.from(
               date.toISOString().split('T')[0]
             ).withCalendar(calendar)
             const result = CalendarDateFromTime(+date, calendar)
-            // Gregorian/ISO formatting uses era years. Other calendars use
-            // Temporal's proleptic conversion, avoiding ICU's old Julian cutover.
+            // Gregorian records keep signed years; rendering applies era numbering.
             const expected =
               calendar === 'gregory' || calendar === 'iso8601'
-                ? [Number(parts.year), Number(parts.month), Number(parts.day)]
+                ? [
+                    date.getUTCFullYear(),
+                    date.getUTCMonth() + 1,
+                    date.getUTCDate(),
+                  ]
                 : [
                     temporal.eraYear ?? temporal.year,
                     temporal.month,

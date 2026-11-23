@@ -1,0 +1,38 @@
+# gazelle:ignore
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
+
+[
+    ts_binary(
+        name = name,
+        entry_point = name + ".ts",
+        tsconfig_types = ["node"],
+        visibility = ["//crates/temporal:__pkg__"],
+        deps = [":scripts"],
+    )
+    for name in [
+        "calendars",
+        "identifiers",
+        "timezones",
+    ]
+]
+
+formatjs_library(
+    name = "scripts",
+    srcs = [
+        "calendars.ts",
+        "identifiers.ts",
+        "timezones.ts",
+    ],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@formatjs_generated/icu.calendar",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
+        "//packages/ecma402-abstract/types",
+    ],
+)

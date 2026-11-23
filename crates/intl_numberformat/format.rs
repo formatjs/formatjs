@@ -24,6 +24,46 @@ static ZEROS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"0+").unwrap());
 static UNIT_SLOT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\s*\{0\}\s*").unwrap());
 static CURRENCY_SLOT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\{[01]\}").unwrap());
 
+enum Pattern<'a> {
+    Generated(&'a [usize], &'a [(String, String)]),
+    Cached(Arc<PreparedPattern>),
+}
+impl Pattern<'_> {
+    fn parts(&self) -> (&[usize], &[(String, String)]) {
+        match self {
+            Self::Generated(plan, tokens) => (plan, tokens),
+            Self::Cached(pattern) => (&pattern.plan, &pattern.tokens),
+        }
+    }
+}
+
+// Stream notation into the style's number slot without a composed-plan allocation or lock.
+struct PatternTokens<'a> {
+    remaining: &'a [usize],
+    tokens: &'a [(String, String)],
+    notation: Option<(&'a [usize], &'a [(String, String)])>,
+    inner: &'a [usize],
+}
+impl<'a> Iterator for PatternTokens<'a> {
+    type Item = &'a (String, String);
+    fn next(&mut self) -> Option<Self::Item> {
+        loop {
+            if let Some((id, remaining)) = self.inner.split_first() {
+                self.inner = remaining;
+                return Some(&self.notation?.1[*id]);
+            }
+            let (id, remaining) = self.remaining.split_first()?;
+            self.remaining = remaining;
+            let token = &self.tokens[*id];
+            if let Some((plan, _)) = self.notation.filter(|_| token.0 == "number") {
+                self.inner = &plan[2..];
+            } else {
+                return Some(token);
+            }
+        }
+    }
+}
+
 struct Rendered {
     rounded: Numeric,
     text: String,
@@ -149,28 +189,19 @@ fn unit_forms<'a>(unit: &'a Unit, style: &str) -> &'a Plurals {
 
 impl NumberFormat {
     fn compact_map(&self) -> Result<&Compact, Error> {
-        let options = &self.resolved;
-        if options.style == "currency" && options.currency_display.as_deref() != Some("name") {
-            Ok(&self
-                .data
-                .numbers
-                .currency
-                .get(&self.system)
-                .ok_or_else(|| missing("currency"))?
-                .short)
-        } else {
-            let decimal = self
-                .data
-                .numbers
-                .decimal
-                .get(&self.system)
-                .ok_or_else(|| missing("decimal"))?;
-            Ok(if options.compact_display.as_deref() == Some("long") {
+        let decimal = self
+            .data
+            .numbers
+            .decimal
+            .get(&self.system)
+            .ok_or_else(|| missing("decimal"))?;
+        Ok(
+            if self.resolved.compact_display.as_deref() == Some("long") {
                 &decimal.long
             } else {
                 &decimal.short
-            })
-        }
+            },
+        )
     }
     fn compact_rules(&self, magnitude: i64) -> Result<Option<&Plurals>, Error> {
         if magnitude < 0 {
@@ -201,10 +232,7 @@ impl NumberFormat {
                 if pattern == "0" {
                     return Ok(0);
                 }
-                let zeros = ZEROS
-                    .find(pattern)
-                    .ok_or_else(|| missing("compact zero"))?
-                    .len();
+                let zeros = ZEROS.find(pattern).map(|zeros| zeros.len()).unwrap_or(1);
                 let maximum = map
                     .last_key_value()
                     .map(|(key, _)| key.len() as i64 - 1)
@@ -290,7 +318,11 @@ impl NumberFormat {
                     exponent = self.exponent(magnitude)?;
                 }
                 // Negative inputs can use different directed rounding in the final pass.
-                if !number.negative && exponent == preview_exponent {
+                if !number.negative
+                    && exponent == preview_exponent
+                    && input.digit_count == 0
+                    && input.fraction_digit_count == 0
+                {
                     reusable = Some((preview, text));
                 }
             }
@@ -301,7 +333,11 @@ impl NumberFormat {
                 let text = self
                     .resolved
                     .digits
-                    .format_string(&number.text()?)
+                    .format_string_with_precision(
+                        &number.text()?,
+                        input.digit_count,
+                        input.fraction_digit_count,
+                    )
                     .map_err(digit_error)?;
                 (Numeric::parse(&text)?, text)
             };
@@ -371,22 +407,20 @@ impl NumberFormat {
         }
         Ok(Cow::Owned(output))
     }
-    fn grouped(&self, integer_len: usize, primary: usize, compact: bool) -> bool {
+    fn grouped(&self, integer_len: usize, primary: usize) -> bool {
         let grouping = self.resolved.use_grouping;
         let minimum = if grouping == Grouping::Min2 {
             2
         } else {
             self.data.numbers.minimum_grouping_digits
         };
-        !compact
-            && grouping != Grouping::Disabled
+        grouping != Grouping::Disabled
             && (grouping == Grouping::Always || integer_len >= primary.saturating_add(minimum))
     }
     fn visit_number_parts(
         &self,
         number: &Rendered,
         grouping: [usize; 2],
-        compact: bool,
         mut visit: impl FnMut(&'static str, Cow<'_, str>),
     ) -> Result<(), Error> {
         if let Some(special) = number.rounded.special {
@@ -403,7 +437,7 @@ impl NumberFormat {
             .map(|(integer, fraction)| (integer, Some(fraction)))
             .unwrap_or((&number.text, None));
         let [primary, secondary] = grouping;
-        if self.grouped(integer.len(), primary, compact) {
+        if self.grouped(integer.len(), primary) {
             if primary == 0 || secondary == 0 {
                 return Err(Error::InvalidData("Empty number grouping interval".into()));
             }
@@ -463,14 +497,9 @@ impl NumberFormat {
         }
         Ok(())
     }
-    fn number_parts(
-        &self,
-        number: &Rendered,
-        grouping: [usize; 2],
-        compact: bool,
-    ) -> Result<Vec<Part>, Error> {
+    fn number_parts(&self, number: &Rendered, grouping: [usize; 2]) -> Result<Vec<Part>, Error> {
         let mut parts = Vec::new();
-        self.visit_number_parts(number, grouping, compact, |kind, value| {
+        self.visit_number_parts(number, grouping, |kind, value| {
             parts.push(Part::new(kind, value));
         })?;
         Ok(parts)
@@ -518,7 +547,7 @@ impl NumberFormat {
                         .text
                         .replace_range(integer_len..integer_len + 1, &symbols.decimal);
                 }
-                if integer_len > 3 && self.grouped(integer_len, 3, false) {
+                if integer_len > 3 && self.grouped(integer_len, 3) {
                     number
                         .text
                         .reserve(32usize.saturating_sub(number.text.len()));
@@ -535,7 +564,7 @@ impl NumberFormat {
             } else if number.sign > 0 {
                 text.push_str(&symbols.plus_sign);
             }
-            self.visit_number_parts(&number, [3, 3], false, |_, value| {
+            self.visit_number_parts(&number, [3, 3], |_, value| {
                 text.push_str(&value);
             })?;
         } else {
@@ -561,6 +590,79 @@ impl NumberFormat {
         Ok((number, category))
     }
 
+    fn style_plan(&self, sign: i8, approximately: bool) -> Result<Pattern<'_>, Error> {
+        if let (Some(ids), Some(patterns)) = (&self.style_plans, &self.data.numbers.pattern_plans) {
+            let index = (if sign < 0 {
+                1
+            } else if sign > 0 {
+                2
+            } else {
+                0
+            }) + if approximately { 3 } else { 0 };
+            return Ok(Pattern::Generated(
+                &patterns.plans[ids[index]],
+                &patterns.tokens,
+            ));
+        }
+        self.pattern_plan(self.style_pattern(), sign, approximately, false)
+    }
+    fn pattern_plan<'a>(
+        &'a self,
+        pattern: &str,
+        sign: i8,
+        approximately: bool,
+        compact: bool,
+    ) -> Result<Pattern<'a>, Error> {
+        let index = match sign {
+            -1 => 1,
+            1 => 2,
+            _ => 0,
+        } + if approximately { 3 } else { 0 };
+        let generated = self
+            .data
+            .numbers
+            .pattern_plans
+            .as_ref()
+            .and_then(|patterns| {
+                let table = if compact {
+                    &patterns.compact
+                } else {
+                    &patterns.standard
+                };
+                table
+                    .get(pattern)
+                    .and_then(|ids| ids.get(index))
+                    .and_then(|id| patterns.plans.get(*id))
+                    .map(|plan| (plan, patterns.tokens.as_slice()))
+            });
+        let legacy = match generated {
+            Some((plan, tokens)) => return Ok(Pattern::Generated(plan, tokens)),
+            None => {
+                let key = (pattern.to_owned(), sign, approximately, compact);
+                let cached = self
+                    .data
+                    .legacy_patterns
+                    .read()
+                    .map_err(|_| missing("pattern lock"))?
+                    .get(&key)
+                    .cloned();
+                match cached {
+                    Some(plan) => plan,
+                    None => {
+                        let plan = Arc::new(legacy_plan(pattern, sign, approximately, compact)?);
+                        self.data
+                            .legacy_patterns
+                            .write()
+                            .map_err(|_| missing("pattern lock"))?
+                            .entry(key)
+                            .or_insert(plan)
+                            .clone()
+                    }
+                }
+            }
+        };
+        Ok(Pattern::Cached(legacy))
+    }
     fn partition_rendered(
         &self,
         number: &Rendered,
@@ -576,7 +678,7 @@ impl NumberFormat {
             && options.notation == "standard"
             && self.data.numbers.decimal[&self.system].standard == "#,##0.###"
         {
-            let mut parts = self.number_parts(number, [3, 3], false)?;
+            let mut parts = self.number_parts(number, [3, 3])?;
             if number.sign < 0 {
                 parts.insert(0, Part::new("minusSign", symbols.minus_sign.clone()));
             } else if number.sign > 0 {
@@ -592,78 +694,18 @@ impl NumberFormat {
         } else {
             None
         };
-        let pattern = compact.unwrap_or_else(|| match options.style.as_str() {
-            "currency" if options.currency_display.as_deref() != Some("name") => {
-                let data = &self.data.numbers.currency[&self.system];
-                if options.currency_sign.as_deref() == Some("accounting") {
-                    &data.accounting
-                } else {
-                    &data.standard
-                }
-            }
-            "percent" => &self.data.numbers.percent[&self.system],
-            _ => &self.data.numbers.decimal[&self.system].standard,
-        });
-        let index = match number.sign {
-            -1 => 1,
-            1 => 2,
-            _ => 0,
-        } + if approximately { 3 } else { 0 };
-        let generated = self
-            .data
-            .numbers
-            .pattern_plans
-            .as_ref()
-            .and_then(|patterns| {
-                let table = if compact.is_some() {
-                    &patterns.compact
-                } else {
-                    &patterns.standard
-                };
-                table
-                    .get(pattern)
-                    .and_then(|ids| ids.get(index))
-                    .and_then(|id| patterns.plans.get(*id))
-                    .map(|plan| (plan, patterns.tokens.as_slice()))
-            });
-        let legacy;
-        let (plan, tokens) = match generated {
-            Some(plan) => plan,
-            None => {
-                let key = (
-                    pattern.to_owned(),
-                    number.sign,
-                    approximately,
-                    compact.is_some(),
-                );
-                let cached = self
-                    .data
-                    .legacy_patterns
-                    .read()
-                    .map_err(|_| missing("pattern lock"))?
-                    .get(&key)
-                    .cloned();
-                legacy = match cached {
-                    Some(plan) => plan,
-                    None => {
-                        let plan = Arc::new(legacy_plan(
-                            pattern,
-                            number.sign,
-                            approximately,
-                            compact.is_some(),
-                        )?);
-                        self.data
-                            .legacy_patterns
-                            .write()
-                            .map_err(|_| missing("pattern lock"))?
-                            .entry(key)
-                            .or_insert(plan)
-                            .clone()
-                    }
-                };
-                (&legacy.plan, legacy.tokens.as_slice())
-            }
-        };
+        let style = self.style_plan(number.sign, approximately)?;
+        let notation = compact
+            .map(|pattern| self.pattern_plan(pattern, 0, false, true))
+            .transpose()?;
+        let (style_plan, style_tokens) = style.parts();
+        let mut tokens = PatternTokens {
+            remaining: &style_plan[2..],
+            tokens: style_tokens,
+            notation: notation.as_ref().map(Pattern::parts),
+            inner: &[],
+        }
+        .peekable();
         let currency_code = options.currency.as_deref().unwrap_or("");
         let currency = self.data.currencies.get(currency_code);
         let currency_label = match options.currency_display.as_deref() {
@@ -696,16 +738,14 @@ impl NumberFormat {
         let mut inserted_before = false;
         let mut inserted_after = false;
         let mut parts = Vec::new();
-        let plan_parts = &plan[2..];
-        for (index, id) in plan_parts.iter().enumerate() {
-            let (kind, value) = &tokens[*id];
+        let mut previous = "";
+        while let Some((kind, value)) = tokens.next() {
+            let preceding = previous;
+            previous = kind;
+
             let part = match kind.as_str() {
                 "number" => {
-                    parts.extend(self.number_parts(
-                        number,
-                        [plan[0], plan[1]],
-                        compact.is_some(),
-                    )?);
+                    parts.extend(self.number_parts(number, [style_plan[0], style_plan[1]])?);
                     continue;
                 }
                 "approximatelySign" => Part::new("approximatelySign", &symbols.approximately_sign),
@@ -713,18 +753,15 @@ impl NumberFormat {
                 "plusSign" => Part::new("plusSign", &symbols.plus_sign),
                 "percentSign" => Part::new("percentSign", &symbols.percent_sign),
                 "currency" => {
-                    if let Some(spacing) = before.filter(|_| {
-                        !inserted_before && index > 0 && tokens[plan_parts[index - 1]].0 == "number"
-                    }) {
+                    if let Some(spacing) =
+                        before.filter(|_| !inserted_before && preceding == "number")
+                    {
                         parts.push(Part::new("literal", &spacing.before_insert_between));
                         inserted_before = true;
                     }
                     parts.push(Part::new("currency", currency_label));
                     if let Some(spacing) = after.filter(|_| {
-                        !inserted_after
-                            && plan_parts
-                                .get(index + 1)
-                                .is_some_and(|id| tokens[*id].0 == "number")
+                        !inserted_after && tokens.peek().is_some_and(|token| token.0 == "number")
                     }) {
                         parts.push(Part::new("literal", &spacing.after_insert_between));
                         inserted_after = true;

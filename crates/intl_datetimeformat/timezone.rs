@@ -1,3 +1,5 @@
+use crate::timezone_future::FutureRule;
+pub use crate::timezone_future::TimeZoneOffset;
 use crate::{Error, civil::CivilDateTime};
 use serde::Deserialize;
 use std::{
@@ -10,11 +12,8 @@ struct PackedData {
     abbrvs: String,
     offsets: String,
     zones: Vec<String>,
-}
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct TimeZoneOffset {
-    pub seconds: i32,
-    pub in_dst: bool,
+    #[serde(default)]
+    future: BTreeMap<String, FutureRule>,
 }
 struct Transition {
     seconds: i64,
@@ -23,6 +22,7 @@ struct Transition {
 struct Zone {
     name: String,
     transitions: Vec<Transition>,
+    future: Option<FutureRule>,
 }
 struct State {
     zones: Arc<BTreeMap<String, Zone>>,
@@ -35,9 +35,11 @@ pub struct TimeZone {
     target: Option<String>,
 }
 impl TimeZone {
+    // Proposal comparison §15.4.1 steps 32.c and 34: Expose the resolved zone spelling.
     pub fn identifier(&self) -> &str {
         &self.name
     }
+    // Proposal comparison §15.6.4 step 16.e.iv: Supply the zone data key for localized names.
     pub fn data_identifier(&self) -> &str {
         self.target.as_deref().unwrap_or(&self.name)
     }
@@ -47,6 +49,7 @@ pub struct TimeZoneRegistry {
     state: Arc<RwLock<State>>,
 }
 impl Default for TimeZoneRegistry {
+    // Proposal comparison §15.4.1 step 28.b.i: Initialize the Intl registry default to UTC.
     fn default() -> Self {
         Self {
             state: Arc::new(RwLock::new(State {
@@ -56,6 +59,7 @@ impl Default for TimeZoneRegistry {
         }
     }
 }
+// Proposal comparison §15.4.1 step 28.b.i: Supply the UTC fallback used by the Intl registry.
 fn utc() -> TimeZone {
     TimeZone {
         name: "UTC".into(),
@@ -63,6 +67,7 @@ fn utc() -> TimeZone {
         target: None,
     }
 }
+// Proposal comparison §15.4.1 step 32.c and §15.6.23 step 2.b: Keep the zone spelling and data target.
 fn named(name: String, target: String) -> TimeZone {
     let fixed = (target == "UTC" || target == "Etc/UTC" || target == "Etc/GMT").then_some(0);
     let target = (name != target).then_some(target);
@@ -72,6 +77,7 @@ fn named(name: String, target: String) -> TimeZone {
         target,
     }
 }
+// Proposal comparison §15.4.1 step 32.a: Build the generated alias and target lookup.
 fn links() -> &'static BTreeMap<String, (String, String)> {
     static LINKS: OnceLock<BTreeMap<String, (String, String)>> = OnceLock::new();
     LINKS.get_or_init(|| {
@@ -91,6 +97,7 @@ fn links() -> &'static BTreeMap<String, (String, String)> {
         result
     })
 }
+// Proposal comparison §15.4.1 steps 30.a, 30.d and 30.f: Resolve accepted numeric offsets to normalized text.
 fn offset_zone(value: &str) -> Result<TimeZone, Error> {
     let bytes = value.as_bytes();
     let (hours, minutes) = match bytes {
@@ -119,6 +126,7 @@ fn offset_zone(value: &str) -> Result<TimeZone, Error> {
     })
 }
 
+// Proposal comparison §15.6.23 step 2.b: Supply fixed offsets for supported named Etc/GMT zones.
 fn etc_gmt_zone(value: &str) -> Option<TimeZone> {
     let suffix = value.strip_prefix("ETC/GMT")?;
     if suffix.len() < 2 {
@@ -141,7 +149,8 @@ fn etc_gmt_zone(value: &str) -> Option<TimeZone> {
         target: None,
     })
 }
-fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
+// Proposal comparison §15.6.23 step 2.b: Decode ordered transition data for offset lookup.
+fn decode(mut data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
     let abbreviations: Vec<&str> = data.abbrvs.split('|').collect();
     let offsets: Vec<i32> = if data.offsets.is_empty() {
         Vec::new()
@@ -201,12 +210,17 @@ fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
             return Err(Error::InvalidTimeZoneData);
         }
         let key = name.to_ascii_uppercase();
+        let future = data.future.remove(name);
+        if future.as_ref().is_some_and(|rule| !rule.valid()) {
+            return Err(Error::InvalidTimeZoneData);
+        }
         if result
             .insert(
                 key,
                 Zone {
                     name: name.into(),
                     transitions,
+                    future,
                 },
             )
             .is_some()
@@ -214,10 +228,14 @@ fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
             return Err(Error::InvalidTimeZoneData);
         }
     }
+    if !data.future.is_empty() {
+        return Err(Error::InvalidTimeZoneData);
+    }
     Ok(result)
 }
 impl TimeZoneRegistry {
     #[cfg(feature = "compiled_data")]
+    // Proposal comparison §15.6.23 step 2.b: Install the compiled Intl timezone data.
     pub fn with_compiled_data() -> Self {
         let registry = Self::default();
         registry
@@ -226,6 +244,7 @@ impl TimeZoneRegistry {
         registry
     }
 
+    // Proposal comparison §15.6.23 step 2.b: Replace Intl offset data after successful decode.
     pub fn load_json(&self, json: &str) -> Result<(), Error> {
         let packed = serde_json::from_str(json).map_err(|_| Error::InvalidTimeZoneData)?;
         let zones = decode(packed)?;
@@ -233,14 +252,17 @@ impl TimeZoneRegistry {
         self.state.write().expect("time zone registry").zones = Arc::new(zones);
         Ok(())
     }
+    // Proposal comparison §15.6.23 step 2.b: Capture the map used by offset lookup.
     pub fn snapshot(&self) -> TimeZoneSnapshot {
         TimeZoneSnapshot {
             zones: self.state.read().expect("time zone registry").zones.clone(),
         }
     }
+    // Proposal comparison §15.4.1 step 32.a: Resolve an Intl zone against a captured map.
     pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
         self.snapshot().resolve(value)
     }
+    // Proposal comparison §15.4.1 step 28.b.i: Supply the configured Intl default zone.
     pub fn default_time_zone(&self) -> TimeZone {
         self.state
             .read()
@@ -256,9 +278,11 @@ impl TimeZoneRegistry {
         self.state.write().expect("time zone registry").default = zone;
         Ok(())
     }
+    // Proposal comparison §15.6.23 steps 1.a and 2.b: Look up the offset in a captured map.
     pub fn offset_at(&self, zone: &TimeZone, epoch_nanoseconds: i128) -> TimeZoneOffset {
         self.snapshot().offset_at(zone, epoch_nanoseconds)
     }
+    // Proposal comparison §15.6.23 step 3: Delegate local-time projection with a captured zone map.
     pub fn local_time(
         &self,
         zone: &TimeZone,
@@ -273,6 +297,7 @@ pub struct TimeZoneSnapshot {
     zones: Arc<BTreeMap<String, Zone>>,
 }
 impl TimeZoneSnapshot {
+    // Proposal comparison §15.6.23 steps 1.a and 2.b: Resolve fixed, explicit or recurring offset data.
     pub fn offset_at(&self, zone: &TimeZone, epoch_nanoseconds: i128) -> TimeZoneOffset {
         if let Some(seconds) = zone.fixed {
             return TimeZoneOffset {
@@ -288,11 +313,25 @@ impl TimeZoneSnapshot {
             };
         };
         let seconds = epoch_nanoseconds.div_euclid(1_000_000_000);
+        if data
+            .transitions
+            .last()
+            .is_some_and(|last| seconds > i128::from(last.seconds))
+        {
+            if let Some(offset) = data
+                .future
+                .as_ref()
+                .and_then(|rule| rule.offset_at(epoch_nanoseconds))
+            {
+                return offset;
+            }
+        }
         let index = data
             .transitions
             .partition_point(|transition| i128::from(transition.seconds) <= seconds);
         data.transitions[index.saturating_sub(1)].offset
     }
+    // Proposal comparison §15.6.23 step 3: Add the exact zone offset before civil projection.
     pub fn local_time(
         &self,
         zone: &TimeZone,
@@ -304,6 +343,7 @@ impl TimeZoneSnapshot {
             .ok_or(Error::InvalidDate)?;
         Ok((CivilDateTime::from_epoch_nanoseconds(value)?, offset))
     }
+    // Proposal comparison §15.4.1 steps 30.f, 32.a and 32.c: Resolve numeric offsets and named timezone spelling.
     pub fn resolve(&self, value: &str) -> Result<TimeZone, Error> {
         if !value.is_ascii() {
             return Err(Error::InvalidTimeZone);
@@ -312,17 +352,17 @@ impl TimeZoneSnapshot {
             return offset_zone(value);
         }
         let key = value.to_ascii_uppercase();
-        if matches!(key.as_str(), "UTC" | "GMT" | "ETC/UTC" | "ETC/GMT") {
+        if key == "UTC" {
             return Ok(named("UTC".into(), "UTC".into()));
         }
         if let Some(zone) = etc_gmt_zone(&key) {
             return Ok(zone);
         }
-        if let Some((_, target)) = links().get(&key) {
+        if let Some((name, target)) = links().get(&key) {
             if matches!(target.as_str(), "Etc/UTC" | "Etc/GMT") {
-                return Ok(named("UTC".into(), "UTC".into()));
+                return Ok(named(name.clone(), "UTC".into()));
             }
-            return Ok(named(target.clone(), target.clone()));
+            return Ok(named(name.clone(), target.clone()));
         }
         self.zones
             .get(&key)

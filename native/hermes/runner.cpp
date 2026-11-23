@@ -10,10 +10,14 @@
 #include <formatjs/hermes/intl_datetimeformat.h>
 #include <formatjs/hermes/intl_durationformat.h>
 #include <formatjs/hermes/supported_values.h>
+#include <formatjs/hermes/temporal.h>
 
 #include <hermes/hermes.h>
+#include "bridge.h"
+#include <formatjs/intl/temporal.h>
 
 #include <chrono>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -34,6 +38,13 @@ int main(int argc, char **argv) {
     runtime = facebook::hermes::makeHermesRuntime(
         ::hermes::vm::RuntimeConfig::Builder().withES6BlockScoping(blockScoping).build());
     auto &rt = *runtime;
+    if (std::getenv("FORMATJS_TEMPORAL_RUST_ISO")) {
+      using Bytes = formatjs::hermes_bridge::Buffer<FormatjsTemporalBytes, formatjs_temporal_bytes_free>;
+      rt.global().setProperty(rt, "__formatjsTemporalISOQuery",
+          formatjs::hermes_bridge::json<1, Bytes>(rt, "temporalISOQuery",
+              "Expected Temporal ISO JSON", {2, "Rust Temporal ISO bridge failed"},
+              formatjs_temporal_query));
+    }
     auto print = jsi::Function::createFromHostFunction(
         rt, jsi::PropNameID::forAscii(rt, "print"), 0,
         [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args,
@@ -81,6 +92,13 @@ int main(int argc, char **argv) {
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
+      if (flag.rfind("--native-temporal=", 0) == 0) {
+        const auto zone = flag.substr(18);
+        formatjs::installTemporal(rt, {[zone] { return zone; }, {}});
+        rt.global().setProperty(rt, "__formatjsTemporalSDK", true);
+        ++firstScript;
+        continue;
+      }
       if (flag == "--native-durationformat") {
         formatjs::installDurationFormat(rt);
         ++firstScript;

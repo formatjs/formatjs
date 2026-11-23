@@ -1,3 +1,4 @@
+import {findMatchingDistance} from '#packages/intl-localematcher/abstract/utils.js'
 import {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 import {expect, test} from 'vitest'
 import {runInNewContext} from 'node:vm'
@@ -261,3 +262,33 @@ test('private snapshot records ignore inherited snapshot accessors', () => {
   expect(calls).toBe(0)
   expect(result).toMatchObject({dataLocale: 'fr'})
 })
+
+test.each(['includes', 'indexOf'] as const)(
+  'retains locale list search %s after prototype replacement',
+  name => {
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, name)!
+    let actual: unknown
+    try {
+      Object.defineProperty(Array.prototype, name, {
+        ...original,
+        value() {
+          throw new Error('Mutable locale list search reached')
+        },
+      })
+      actual = [
+        ResolveLocale(
+          ['en'],
+          ['en-u-ca-gregory'],
+          {localeMatcher: 'lookup'},
+          ['ca'],
+          {en: {ca: ['buddhist', 'gregory']}},
+          () => 'en'
+        ).ca,
+        findMatchingDistance('es-CO', 'es-419'),
+      ]
+    } finally {
+      Object.defineProperty(Array.prototype, name, original)
+    }
+    expect(actual).toEqual(['gregory', 4])
+  }
+)

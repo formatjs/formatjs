@@ -73,3 +73,8 @@ installation. CI cross-builds on Linux and runs downloaded macOS binaries.
 [Hermes benchmarks](../../benchmarks/hermes-intl-extension/README.md) compare
 optimized SDKs with TS in the same engine. Keep setup, workload, compiler flags,
 and output checks consistent; retain raw timings and profiles with changes.
+
+Optional Temporal uses `formatjs::installTemporal(runtime, host)` after Intl. Supply
+a current IANA timezone callback; the system wall clock is the default. Providers
+remain local to the runtime. See the [SDK guide](package/README.md#temporal) for
+Bazel/CMake setup and remaining implementation scope.

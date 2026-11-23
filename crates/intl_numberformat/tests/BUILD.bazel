@@ -8,6 +8,7 @@ formatjs_test(
     size = "large",
     srcs = ["conformance.test.ts"],
     data = [
+        "//conformance-tests/precision:public_fixtures",  # keep: public precision fixtures read through runfiles
         "//crates/intl_numberformat:conformance",
         "//crates/intl_numberformat:locale_data",
         "//crates/intl_pluralrules:locale_data",

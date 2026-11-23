@@ -11,6 +11,7 @@ pub mod registry;
 pub use data::LocaleData;
 use formatjs_intl_locale::{Locale, LocaleOptions};
 use formatjs_intl_pluralrules::digits::{Digits, Options as DigitOptions};
+pub use formatjs_intl_pluralrules::mathematical::MathematicalValue;
 pub use options::{Grouping, GroupingInput, Options, ResolvedOptions};
 use serde::Serialize;
 use std::sync::Arc;
@@ -38,6 +39,7 @@ pub struct NumberFormat {
     resolved: ResolvedOptions,
     system: String,
     plural_digits: Digits,
+    style_plans: Option<[usize; 6]>,
 }
 impl NumberFormat {
     pub(crate) fn new(
@@ -115,12 +117,36 @@ impl NumberFormat {
         };
         let plural_digits = Digits::new(&plural_options, false).map_err(options::digit_error)?;
         let system = data.numbers.system(&system)?.to_owned();
-        Ok(Self {
+        let mut formatter = Self {
             data,
             resolved,
             system,
             plural_digits,
-        })
+            style_plans: None,
+        };
+        formatter.style_plans = formatter
+            .data
+            .numbers
+            .pattern_plans
+            .as_ref()
+            .and_then(|patterns| patterns.standard.get(formatter.style_pattern()))
+            .and_then(|ids| ids.as_slice().try_into().ok());
+        Ok(formatter)
+    }
+
+    fn style_pattern(&self) -> &str {
+        match self.resolved.style.as_str() {
+            "currency" if self.resolved.currency_display.as_deref() != Some("name") => {
+                let data = &self.data.numbers.currency[&self.system];
+                if self.resolved.currency_sign.as_deref() == Some("accounting") {
+                    &data.accounting
+                } else {
+                    &data.standard
+                }
+            }
+            "percent" => &self.data.numbers.percent[&self.system],
+            _ => &self.data.numbers.decimal[&self.system].standard,
+        }
     }
     pub fn resolved_options(&self) -> &ResolvedOptions {
         &self.resolved
@@ -131,6 +157,16 @@ impl NumberFormat {
             .iter()
             .map(|part| part.value.as_str())
             .collect())
+    }
+    pub fn format_value(&self, value: &MathematicalValue) -> Result<String, Error> {
+        Ok(self
+            .format_value_to_parts(value)?
+            .iter()
+            .map(|part| part.value.as_str())
+            .collect())
+    }
+    pub fn format_value_to_parts(&self, value: &MathematicalValue) -> Result<Vec<Part>, Error> {
+        self.partition(&numeric::Numeric::from_value(value)?, false)
     }
     pub fn format_to_parts(&self, value: &str) -> Result<Vec<Part>, Error> {
         self.partition(&numeric::Numeric::parse(value)?, false)

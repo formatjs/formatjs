@@ -111,6 +111,7 @@ function reference(entry: Packed, request: CreationCase): unknown {
         relevantExtensionKeys: ['nu', 'ca', 'hc'],
         tzData: {UTC: []},
         uppercaseLinks: {},
+        uppercaseIdentifiers: {UTC: 'UTC'},
       }
     )
     let identity = true

@@ -50,8 +50,7 @@ it('formats percentage', () => {
   expect(format({...n, sign: 1}, data, pl, options)).toEqual('+42%')
 })
 
-// Replicate Google Chrome's behavior: when there is a compact pattern, drop the percentage sign.
-// For example, 10000 is formatted to "1M" (10000 * 100 = 1M).
+// Percent style wraps the compact notation subpattern.
 it('formats percentage with compact display', () => {
   const options = {
     ...defaultOptions,
@@ -68,7 +67,7 @@ it('formats percentage with compact display', () => {
     exponent: 6,
     magnitude: 6,
   }
-  expect(format(n, data, pl, options)).toEqual('1M')
+  expect(format(n, data, pl, options)).toEqual('1M%')
 })
 
 it('formats accounting currency sign pattern', () => {
@@ -193,7 +192,7 @@ it('respects currencyAfter insertion rule for compact display', () => {
     notation: 'compact',
     compactDisplay: 'long',
   } as const
-  expect(format(n, data, pl, options)).toEqual('ZWD\xa010K')
+  expect(format(n, data, pl, options)).toEqual('ZWD\xa010 thousand')
 })
 
 // Celsius in Japanese has prefix and suffix surrounding the number.
@@ -244,10 +243,8 @@ it('formats currency name pattern with currency before number', () => {
 })
 
 // See also https://github.com/tc39/ecma402/issues/439
-// sw's compact pattern can depend on style (currency vs. decimal) and sign (appears in the middle).
-// -100 -> "elfu -100"
-// -100 USD -> "US$laki -100"
-it('formats compact notation that is currency and sign dependent', () => {
+// ECMA-402 keeps style/sign patterns outside the shared notation subpattern.
+it('keeps style and sign outside prefix compact notation', () => {
   const options1 = {
     ...defaultOptions,
     notation: 'compact',
@@ -262,8 +259,8 @@ it('formats compact notation that is currency and sign dependent', () => {
     magnitude: 5,
   }
   expect(format(n, data, pl, options1)).toEqual('elfu 100')
-  expect(format({...n, sign: -1}, data, pl, options1)).toEqual('elfu -100')
-  expect(format({...n, sign: 1}, data, pl, options1)).toEqual('elfu +100')
+  expect(format({...n, sign: -1}, data, pl, options1)).toEqual('-elfu 100')
+  expect(format({...n, sign: 1}, data, pl, options1)).toEqual('+elfu 100')
 
   const options2 = {
     ...options1,
@@ -272,12 +269,12 @@ it('formats compact notation that is currency and sign dependent', () => {
     currencyDisplay: 'symbol',
     currencySign: 'standard',
   } as const
-  expect(format(n, data, pl, options2)).toEqual('US$\xa0elfu\xa0100')
+  expect(format(n, data, pl, options2)).toEqual('US$\xa0elfu 100')
   expect(format({...n, sign: -1}, data, pl, options2)).toEqual(
-    'US$\xa0elfu\xa0-100'
+    '-US$\xa0elfu 100'
   )
   expect(format({...n, sign: 1}, data, pl, options2)).toEqual(
-    'US$\xa0elfu\xa0+100'
+    '+US$\xa0elfu 100'
   )
 })
 

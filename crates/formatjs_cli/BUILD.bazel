@@ -9,7 +9,7 @@ load(
     "release_binary_windows_x64",
 )
 
-FORMATJS_CLI_VERSION = "1.11.0"  # x-release-please-version
+FORMATJS_CLI_VERSION = "1.12.0"  # x-release-please-version
 
 exports_files(
     [
@@ -38,6 +38,7 @@ exports_files(
 rust_library(
     name = "formatjs_cli_lib",
     srcs = [
+        "android_resources.rs",
         "apple_printf.rs",
         "apple_resources.rs",
         "compile.rs",
@@ -120,6 +121,7 @@ formatjs_rust_test(
     name = "formatjs_cli_test",
     size = "small",
     srcs = [
+        "android_resources.test.rs",
         "apple_resources.test.rs",
         "compile.test.rs",
         "compile_folder.test.rs",

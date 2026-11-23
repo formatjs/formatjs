@@ -43,6 +43,43 @@ for (const pack of fixtures.packs) {
   Native.__addLocaleData(pack)
   Reference.__addLocaleData(JSON.parse(pack))
 }
+for (const Constructor of [Native, Reference]) {
+  const receiver = Object.create(Constructor.prototype)
+  check(
+    Constructor.call(receiver, 'en', {minimumFractionDigits: 2}) === receiver,
+    'legacy receiver identity'
+  )
+  const symbol = Object.getOwnPropertySymbols(receiver)[0]
+  const descriptor = Object.getOwnPropertyDescriptor(receiver, symbol)!
+  check(descriptor.value instanceof Constructor, 'legacy fallback formatter')
+  check(
+    !descriptor.writable && !descriptor.enumerable && !descriptor.configurable,
+    'legacy fallback descriptor'
+  )
+  equal(receiver.format('1.00'), '1.00', 'legacy format source precision')
+  equal(
+    receiver.resolvedOptions().minimumFractionDigits,
+    2,
+    'legacy resolved options'
+  )
+  throws(() => receiver.formatToParts(1), TypeError, 'legacy parts brand')
+  throws(() => receiver.formatRange(1, 2), TypeError, 'legacy range brand')
+  throws(
+    () => receiver.formatRangeToParts(1, 2),
+    TypeError,
+    'legacy range parts brand'
+  )
+  throws(
+    () => Constructor.call(receiver, 'en'),
+    TypeError,
+    'legacy repeated initialization'
+  )
+  const initialized = new Constructor('en', {minimumFractionDigits: 1})
+  const bound = initialized.format
+  Constructor.call(initialized, 'en', {minimumFractionDigits: 2})
+  check(initialized.format === bound, 'legacy keeps existing bound format')
+  equal(initialized.format(1), '1.0', 'legacy keeps existing slots')
+}
 const values = [
   0,
   -0,
@@ -61,6 +98,18 @@ const values = [
   '9007199254740993.125',
   9007199254740993n,
   ' 0x20000000000001 ',
+  '1.00',
+  '001.00',
+  '1.20e1',
+  '1.20e-1',
+  '0.00e1',
+  '-0.00',
+  '1e-9999',
+  '-1e-9999',
+  '0e-99999999999999999999999',
+  '1.000e9999',
+  '1000',
+  '1.200e3',
 ]
 function compare(
   locale: string | string[],
@@ -93,6 +142,10 @@ function compare(
   if (ranges)
     for (const [start, end] of [
       [1, 2],
+      ['1', '1.00'],
+      ['1.0', '1.00'],
+      ['0.00', '-0.00'],
+      ['1.00', '1.00'],
       [2.999, 3],
       [1234, 5678],
       [-2, -1],
@@ -128,6 +181,8 @@ const styles: NumberFormatOptions[] = [
   {notation: 'compact', compactDisplay: 'long'},
   {notation: 'scientific'},
   {notation: 'engineering'},
+  {trailingZeroDisplay: 'stripToMinimum'},
+  {minimumFractionDigits: 2, trailingZeroDisplay: 'stripToMinimum'},
 ]
 for (const locale of [
   'en',
@@ -255,6 +310,8 @@ for (const options of [
   {maximumSignificantDigits: 3},
   {notation: 'scientific'},
   {notation: 'engineering'},
+  {trailingZeroDisplay: 'stripToMinimum'},
+  {minimumFractionDigits: 2, trailingZeroDisplay: 'stripToMinimum'},
   {useGrouping: false},
 ] satisfies NumberFormatOptions[])
   compare('en', options, [
@@ -281,7 +338,12 @@ for (const [locale, options] of [
 
 const model = Native('en')
 check(model instanceof Native, 'callable constructor')
-check(Native.call(model, 'fr') !== model, 'call creates fresh formatter')
+check(Native.call(model, 'fr') === model, 'legacy call preserves receiver')
+equal(
+  model.resolvedOptions().locale,
+  'en',
+  'legacy call preserves original locale'
+)
 class Derived extends Native {
   constructor(locale: string) {
     super(locale)

@@ -24,6 +24,12 @@ interface Result {
 const uppercaseLinks = Object.fromEntries(
   Object.entries(links).map(([alias, target]) => [alias.toUpperCase(), target])
 )
+const identifiers = Object.fromEntries(
+  [...Object.keys(links), ...Object.values(links)].map(name => [
+    name.toUpperCase(),
+    name,
+  ])
+)
 const minimum = -8_640_000_000_000_000_000_000n,
   maximum = -minimum
 function run(pack: string, cases: Case[]): Result[] {
@@ -81,6 +87,10 @@ it.each(['all', 'golden'])(
         '0',
         '1',
         '4102444800000000000',
+        String(BigInt(Date.parse('2500-01-15T12:00:00Z')) * 1_000_000n),
+        String(BigInt(Date.parse('2500-07-15T12:00:00Z')) * 1_000_000n),
+        String(BigInt(Date.parse('2500-03-14T07:00:00Z')) * 1_000_000n - 1n),
+        String(BigInt(Date.parse('2500-03-14T07:00:00Z')) * 1_000_000n),
       ])
       for (const [timestamp] of tzData[name]) {
         if (!Number.isFinite(timestamp)) continue
@@ -98,13 +108,13 @@ it.each(['all', 'golden'])(
         zoneNames: names,
         uppercaseLinks,
       })
-      expect(actual[index].name, entry.name).toBe(canonical)
+      expect(actual[index].name, entry.name).toBe(
+        identifiers[entry.name.toUpperCase()] ?? canonical
+      )
       expect(actual[index].samples!.length).toBe(entry.instants.length)
       for (let position = 0; position < entry.instants.length; position++) {
         const instant = BigInt(entry.instants[position])
-        const expected = ToLocalTime(instant, 'gregory', canonical, {tzData})
-        const astronomical =
-          expected.era === 'BC' ? 1 - expected.year : expected.year
+        const expected = ToLocalTime(instant, 'gregory', canonical!, {tzData})
         const nanosecond = Number(
           ((instant % 1_000_000_000n) + 1_000_000_000n) % 1_000_000_000n
         )
@@ -112,7 +122,7 @@ it.each(['all', 'golden'])(
           actual[index].samples![position],
           entry.name + ' ' + instant
         ).toEqual([
-          astronomical,
+          expected.year,
           expected.month + 1,
           expected.day,
           expected.weekday,
@@ -174,12 +184,14 @@ it('matches aliases, ASCII case folding, fixed offsets and invalid names', () =>
       zoneNames: names,
       uppercaseLinks,
     })
-    expect(actual[index].name, entry.name).toBe(canonical)
+    expect(actual[index].name, entry.name).toBe(
+      identifiers[entry.name.toUpperCase()] ?? canonical
+    )
     for (let position = 0; position < entry.instants.length; position++) {
       const expected = ToLocalTime(
         BigInt(entry.instants[position]),
         'gregory',
-        canonical,
+        canonical!,
         {tzData}
       )
       expect(actual[index].samples![position]!.slice(-2), entry.name).toEqual([
@@ -208,3 +220,113 @@ it('adds fractional offsets before flooring negative submilliseconds', () => {
     })
   }
 })
+
+it.each(['Number', 'isSafeInteger', 'iterator'] as const)(
+  'computes local records without mutable %s hooks',
+  hook => {
+    const owner =
+      hook === 'Number'
+        ? globalThis
+        : hook === 'isSafeInteger'
+          ? Number
+          : Array.prototype
+    const key = hook === 'iterator' ? Symbol.iterator : hook
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    const details = {
+      tzData: {UTC: [[-Infinity, '', 0, false]]} as ReturnType<typeof unpack>,
+    }
+    const expected = ToLocalTime(-1n, 'gregory', '+01:30', details)
+    const expectedNamed = ToLocalTime(-1n, 'gregory', 'UTC', details)
+    let actual: unknown, named: unknown, error: unknown
+    try {
+      define(owner, key, {
+        ...descriptor,
+        value: () => {
+          throw new Error(`Mutable ${hook}`)
+        },
+      })
+      actual = ToLocalTime(-1n, 'gregory', '+01:30', details)
+      named = ToLocalTime(-1n, 'gregory', 'UTC', details)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toEqual(expected)
+    expect(named).toEqual(expectedNamed)
+  }
+)
+
+it('retains nanosecond carries for fractional offsets near Date limits', () => {
+  const offsets = [
+    ['+23:59:59.999999999', 86_399_999_999_999n],
+    ['-23:59:59.999999999', -86_399_999_999_999n],
+    ['+12:34:56.123456789', 45_296_123_456_789n],
+    ['-12:34:56.123456789', -45_296_123_456_789n],
+    ['+23:59:59,999999999', 86_399_999_999_999n],
+    ['-23:59:59,999999999', -86_399_999_999_999n],
+    ['+12:34:56,123456789', 45_296_123_456_789n],
+    ['-12:34:56,123456789', -45_296_123_456_789n],
+  ] as const
+  for (const anchor of [0, -8_639_999_913_600_000, 8_639_999_913_600_000]) {
+    for (const [zone, offset] of offsets) {
+      for (const delta of [-1n, 0n, 1n]) {
+        const instant = BigInt(anchor) * 1_000_000n - offset + delta
+        const expected = new Date(anchor + (delta < 0n ? -1 : 0))
+        const year = expected.getUTCFullYear()
+        expect(
+          ToLocalTime(instant, 'gregory', zone, {tzData: {}}),
+          `${instant} ${zone}`
+        ).toMatchObject({
+          year,
+          month: expected.getUTCMonth(),
+          day: expected.getUTCDate(),
+          weekday: expected.getUTCDay(),
+          hour: expected.getUTCHours(),
+          minute: expected.getUTCMinutes(),
+          second: expected.getUTCSeconds(),
+          millisecond: expected.getUTCMilliseconds(),
+        })
+      }
+    }
+  }
+})
+
+it.each(['gregory', 'iso8601'])(
+  'keeps signed %s local-time fields across BCE and offset boundaries',
+  calendar => {
+    for (const anchor of [
+      -8_639_999_913_600_000, -62_198_755_200_000, -62_167_219_200_000,
+      -62_135_596_800_000, 0, 8_639_999_913_600_000,
+    ]) {
+      for (const [zone, offset] of [
+        ['+00:00', 0],
+        ['+01:30', 5_400_000],
+        ['-01:30', -5_400_000],
+      ] as const) {
+        for (const delta of [-1n, 0n, 1n]) {
+          const expected = new Date(anchor + (delta < 0n ? -1 : 0))
+          const epoch = BigInt(anchor - offset) * 1_000_000n + delta
+          expect(
+            ToLocalTime(epoch, calendar, zone, {tzData: {}}),
+            `${calendar} ${epoch} ${zone}`
+          ).toEqual({
+            era: expected.getUTCFullYear() < 1 ? 'BC' : 'AD',
+            year: expected.getUTCFullYear(),
+            month: expected.getUTCMonth(),
+            day: expected.getUTCDate(),
+            weekday: expected.getUTCDay(),
+            hour: expected.getUTCHours(),
+            minute: expected.getUTCMinutes(),
+            second: expected.getUTCSeconds(),
+            millisecond: expected.getUTCMilliseconds(),
+            inDST: false,
+            timeZoneOffset: offset,
+          })
+        }
+      }
+    }
+  }
+)

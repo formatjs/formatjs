@@ -1,0 +1,862 @@
+{
+  "baseCommit": "66582d9773fc071956516fd46fcf407ea0a5324d",
+  "status": "Rust arithmetic and ASCII date writer retained. Every TS experiment in this checkpoint rejected;accepted TS runtime and bundle unchanged. Goal remains open.",
+  "changes": "Floor nanoseconds to seconds once with exact narrow/limb paths;borrow FutureRule;reuse current-month first day for guarded recurring events;unsigned Gregorian era-day arithmetic;shared checked ASCII ISO date prefix. No cache,timezone data,dependency,public API or runtime struct layout change.",
+  "sourceHashes": {
+    "parent": {
+      "crates/temporal/format.rs": "3bea375fe9848357452dac7e4534d493fe24ccb9d91fb92422498e42fbfa866d",
+      "crates/temporal/date.rs": "57b82dc407580eef64c9a8d1587be889b642fdcd5d02e76fcb107909d5658532",
+      "crates/temporal/timezone.rs": "684426eeb777a4f9e2ac3c863c5267b7c98b1bbbf9d6dfd3d9e2c5d597a20c2d",
+      "crates/intl_datetimeformat_calendars/core.rs": "9da374045f00085aed1f080f44336df6cf7609ef2455ad4e30354ff14e6a39e6"
+    },
+    "candidate": {
+      "crates/temporal/format.rs": "df342603b6a66f185d92d43b3bd754c2ce23857446f57bff38ecbbddec45ca5f",
+      "crates/temporal/date.rs": "f7a90065fe1b314e205bd6e2e570ef4f88cdcad5ae09e33298c93c5b8e02b467",
+      "crates/temporal/timezone.rs": "10d6c797ef55cdf48d162d8d0b408ecd19b6d1f979962b6ead09d18428a56a28",
+      "crates/intl_datetimeformat_calendars/core.rs": "08319016e28f0cead4dafc401cb72bedca36b60dee7a64e5a1fbbeb030c8b7f4"
+    }
+  },
+  "testHashes": {
+    "crates/temporal/lib.test.rs": "d74ac87b3fa1f50485ad572f28a441ebda8c96d865b58850685ae5e9342d3c0f",
+    "crates/intl_datetimeformat_calendars/core.test.rs": "c81dd6da7a80a31f9fa25d27a650a5c11d42287efe1c8243438891bdd16e5c92"
+  },
+  "rustControls": {
+    "method": "Six isolated optimized native-only A B B A A B processes,three per state,CPU10. Published Rust66582 vs final four runtime Rust files. All original25 plus named7,four inputs,unchanged u64 checksum method for original25 and full signed i128 for named7;all outputs match all states.256warm9x16384. One-event/current-month-first rule reuse,borrowed future,exact u64/i64/limb seconds conversion,unsigned Gregorian day-in-era math and shared inverse inline;PlainDate uses existing checked ASCII ISO date builder shared with DateTime. No data/cache/dependency/API/struct-layout change. Native executable sizes and hashes captured after each run at exact cquery-reported path,include reference/data/harness. Rejected inline/binary-search/era32/weekday-bias/cutoff-field experiments absent. Broader66 spec/ICU/Hermes gates and style checks separately recorded. TS narrow numeric getter candidate held unchanged and is context only,nothing in these native-only runs retimes TS.",
+    "results": [
+      {
+        "name": "instant.parse",
+        "processMedians": {
+          "parent": [36.477783203125, 36.479248046875, 36.5439453125],
+          "candidate": [36.5927734375, 36.45977783203125, 36.47796630859375]
+        },
+        "candidateOverParent": 0.9999648639061967
+      },
+      {
+        "name": "instant.format",
+        "processMedians": {
+          "parent": [96.0931396484375, 96.6124267578125, 96.74761962890625],
+          "candidate": [96.97393798828125, 96.58233642578125, 96.42193603515625]
+        },
+        "candidateOverParent": 0.9996885459454747
+      },
+      {
+        "name": "instant.roundMicrosecond",
+        "processMedians": {
+          "parent": [10.54296875, 10.5401611328125, 10.531494140625],
+          "candidate": [10.53839111328125, 11.1934814453125, 10.53411865234375]
+        },
+        "candidateOverParent": 0.9998320690254213
+      },
+      {
+        "name": "instant.addTime",
+        "processMedians": {
+          "parent": [31.97454833984375, 17.5960693359375, 16.8892822265625],
+          "candidate": [17.60845947265625, 17.31756591796875, 17.34906005859375]
+        },
+        "candidateOverParent": 0.9859622468729838
+      },
+      {
+        "name": "duration.parseFormat",
+        "processMedians": {
+          "parent": [353.51397705078125, 352.35223388671875, 354.70654296875],
+          "candidate": [352.6568603515625, 353.06256103515625, 351.975341796875]
+        },
+        "candidateOverParent": 0.9975754375926822
+      },
+      {
+        "name": "duration.format",
+        "processMedians": {
+          "parent": [173.5479736328125, 172.50469970703125, 172.5860595703125],
+          "candidate": [
+            169.97149658203125, 171.33880615234375, 171.4229736328125
+          ]
+        },
+        "candidateOverParent": 0.9927731508496455
+      },
+      {
+        "name": "date.parse",
+        "processMedians": {
+          "parent": [79.07232666015625, 78.603271484375, 78.90863037109375],
+          "candidate": [77.67510986328125, 77.2724609375, 77.73919677734375]
+        },
+        "candidateOverParent": 0.9843677364312184
+      },
+      {
+        "name": "date.format",
+        "processMedians": {
+          "parent": [106.4722900390625, 105.521728515625, 105.07177734375],
+          "candidate": [60.46527099609375, 60.42230224609375, 60.65362548828125]
+        },
+        "candidateOverParent": 0.5730125145470909
+      },
+      {
+        "name": "date.add",
+        "processMedians": {
+          "parent": [123.532470703125, 111.06646728515625, 110.65234375],
+          "candidate": [107.42852783203125, 107.19482421875, 107.33770751953125]
+        },
+        "candidateOverParent": 0.9664276729352376
+      },
+      {
+        "name": "time.parseFormat",
+        "processMedians": {
+          "parent": [96.1658935546875, 95.3623046875, 95.735595703125],
+          "candidate": [96.34222412109375, 96.097412109375, 95.9146728515625]
+        },
+        "candidateOverParent": 1.0037793299722289
+      },
+      {
+        "name": "time.roundMicrosecond",
+        "processMedians": {
+          "parent": [84.6365966796875, 84.5048828125, 84.86065673828125],
+          "candidate": [84.8359375, 84.43890380859375, 84.4932861328125]
+        },
+        "candidateOverParent": 0.9983067543769822
+      },
+      {
+        "name": "dateTime.parseFormat",
+        "processMedians": {
+          "parent": [241.98370361328125, 243.33160400390625, 242.8892822265625],
+          "candidate": [
+            233.2530517578125, 234.18927001953125, 233.65521240234375
+          ]
+        },
+        "candidateOverParent": 0.9619823907437571
+      },
+      {
+        "name": "yearMonth.parseFormat",
+        "processMedians": {
+          "parent": [263.06689453125, 263.651123046875, 262.7164306640625],
+          "candidate": [
+            242.113037109375, 242.07012939453125, 241.53509521484375
+          ]
+        },
+        "candidateOverParent": 0.9201846922847051
+      },
+      {
+        "name": "monthDay.parseFormat",
+        "processMedians": {
+          "parent": [228.94439697265625, 227.8280029296875, 229.2579345703125],
+          "candidate": [
+            210.42999267578125, 210.0797119140625, 211.3192138671875
+          ]
+        },
+        "candidateOverParent": 0.9191314374071087
+      },
+      {
+        "name": "zoned.parseUtcOrOffset",
+        "processMedians": {
+          "parent": [
+            224.44097900390625, 220.08770751953125, 222.20355224609375
+          ],
+          "candidate": [
+            215.10150146484375, 214.75396728515625, 214.04351806640625
+          ]
+        },
+        "candidateOverParent": 0.9664740509967772
+      },
+      {
+        "name": "calendar.hebrew.fields",
+        "processMedians": {
+          "parent": [211.24566650390625, 211.73486328125, 211.22845458984375],
+          "candidate": [
+            208.336181640625, 209.00653076171875, 208.59210205078125
+          ]
+        },
+        "candidateOverParent": 0.987438490469219
+      },
+      {
+        "name": "calendar.hebrew.addMonth",
+        "processMedians": {
+          "parent": [855.7757568359375, 855.362548828125, 855.6626586914062],
+          "candidate": [849.4221801757812, 851.3086547851562, 848.12451171875]
+        },
+        "candidateOverParent": 0.9927068471993755
+      },
+      {
+        "name": "calendar.persian.fields",
+        "processMedians": {
+          "parent": [67.48736572265625, 67.251953125, 65.745361328125],
+          "candidate": [63.204345703125, 61.6611328125, 63.8135986328125]
+        },
+        "candidateOverParent": 0.9398142770017135
+      },
+      {
+        "name": "calendar.persian.addMonth",
+        "processMedians": {
+          "parent": [254.80859375, 251.073486328125, 252.50933837890625],
+          "candidate": [
+            254.73406982421875, 255.62408447265625, 255.45855712890625
+          ]
+        },
+        "candidateOverParent": 1.011679642301286
+      },
+      {
+        "name": "calendar.chinese.fields",
+        "processMedians": {
+          "parent": [258.51080322265625, 259.71514892578125, 260.9478759765625],
+          "candidate": [
+            259.13067626953125, 260.82232666015625, 259.22357177734375
+          ]
+        },
+        "candidateOverParent": 0.9981072449933293
+      },
+      {
+        "name": "calendar.chinese.addMonth",
+        "processMedians": {
+          "parent": [
+            1199.6290283203125, 1203.4010009765625, 1202.1906127929688
+          ],
+          "candidate": [
+            1197.6937866210938, 1199.4229125976562, 1197.9212646484375
+          ]
+        },
+        "candidateOverParent": 0.9964486928286583
+      },
+      {
+        "name": "calendar.dangi.fields",
+        "processMedians": {
+          "parent": [257.97119140625, 257.89752197265625, 257.75311279296875],
+          "candidate": [
+            258.27166748046875, 259.52264404296875, 258.089599609375
+          ]
+        },
+        "candidateOverParent": 1.001450752628217
+      },
+      {
+        "name": "calendar.dangi.addMonth",
+        "processMedians": {
+          "parent": [1199.3600463867188, 1198.843017578125, 1197.9697875976562],
+          "candidate": [
+            1196.8351440429688, 1200.446533203125, 1198.361083984375
+          ]
+        },
+        "candidateOverParent": 0.9995980010838086
+      },
+      {
+        "name": "calendar.islamic-umalqura.fields",
+        "processMedians": {
+          "parent": [134.13079833984375, 134.61297607421875, 134.321533203125],
+          "candidate": [
+            128.2515869140625, 129.39593505859375, 130.05181884765625
+          ]
+        },
+        "candidateOverParent": 0.9633297951037931
+      },
+      {
+        "name": "calendar.islamic-umalqura.addMonth",
+        "processMedians": {
+          "parent": [410.94110107421875, 410.40338134765625, 409.098388671875],
+          "candidate": [
+            401.02496337890625, 399.81817626953125, 399.784912109375
+          ]
+        },
+        "candidateOverParent": 0.9742078024713978
+      },
+      {
+        "name": "zoned.named.parse",
+        "processMedians": {
+          "parent": [501.11297607421875, 502.4808349609375, 503.9852294921875],
+          "candidate": [488.75555419921875, 493.87335205078125, 491.62353515625]
+        },
+        "candidateOverParent": 0.978392609131985
+      },
+      {
+        "name": "zoned.named.offset",
+        "processMedians": {
+          "parent": [59.06207275390625, 59.05889892578125, 59.05755615234375],
+          "candidate": [18.30322265625, 18.42816162109375, 18.327880859375]
+        },
+        "candidateOverParent": 0.31033224785324004
+      },
+      {
+        "name": "zoned.named.addDay",
+        "processMedians": {
+          "parent": [652.549560546875, 654.4391479492188, 676.1146240234375],
+          "candidate": [537.9615478515625, 537.0026245117188, 538.2451782226562]
+        },
+        "candidateOverParent": 0.8220192045927327
+      },
+      {
+        "name": "zoned.named.startOfDay",
+        "processMedians": {
+          "parent": [310.28228759765625, 310.538330078125, 310.71978759765625],
+          "candidate": [
+            146.0728759765625, 145.98297119140625, 145.9989013671875
+          ]
+        },
+        "candidateOverParent": 0.4701477634997818
+      },
+      {
+        "name": "zoned.named.hoursInDay",
+        "processMedians": {
+          "parent": [548.2676391601562, 548.5161743164062, 548.0580444335938],
+          "candidate": [260.23828125, 261.02734375, 259.51641845703125]
+        },
+        "candidateOverParent": 0.47465555626926387
+      },
+      {
+        "name": "zoned.named.transitionNext",
+        "processMedians": {
+          "parent": [262.8863525390625, 263.3717041015625, 262.7725830078125],
+          "candidate": [227.45574951171875, 228.0703125, 227.43896484375]
+        },
+        "candidateOverParent": 0.8652246391448598
+      },
+      {
+        "name": "zoned.named.withTime",
+        "processMedians": {
+          "parent": [311.51629638671875, 312.06072998046875, 312.45458984375],
+          "candidate": [184.2705078125, 183.75994873046875, 184.351318359375]
+        },
+        "candidateOverParent": 0.5904956635332909
+      }
+    ],
+    "executables": [
+      {
+        "cqueryFile": "bazel-out/local_linux_gnu-opt/bin/benchmarks/temporal/rust/native_benchmark",
+        "bytes": 4309936,
+        "sha256": "2a87b1e4f87bb696a0c5d2d61000597fc63b22681142aba67ceb623a5e9a1535",
+        "scope": "Optimized benchmark including temporal_rs,compiled data and harness;not published crate/SDK size"
+      },
+      {
+        "cqueryFile": "bazel-out/local_linux_gnu-opt/bin/benchmarks/temporal/rust/native_benchmark",
+        "bytes": 4322856,
+        "sha256": "9bf36924425e9de4a290272d8419202f0bfc97a6001f35b40b80934b636e5f61",
+        "scope": "Optimized benchmark including temporal_rs,compiled data and harness;not published crate/SDK size"
+      }
+    ],
+    "sizeLimit": "Benchmark executable grows12920B (~0.30%);includes temporal_rs,compiled data and harness,not shipped crate/SDK size."
+  },
+  "nativeVersusAcceptedTypescript": {
+    "method": "Six isolated fresh optimized native+TS processes A B B A A B on CPU10. All have same final Rust arithmetic+ASCII date writer. A=publishedTS66582,B=unaccepted private class+64-offset-number pool and short-date parser split. Original25 and named7 retained separately;Rust256warm9x16384;TS20kwarm9x50k transition1kwarm9x5k;exact signed parity. No change to retained raw Rust offset workload. No concurrent measurement or test. All rejected broader drafts absent. TS candidate not accepted: cold named reads+4.5%,8B retained-slot growth and several full-matrix4-6% increases require resolution.",
+    "trials": [
+      {
+        "rustFaster": 25,
+        "workloads": 25,
+        "namedZoneRustFaster": 7,
+        "namedZoneWorkloads": 7
+      },
+      {
+        "rustFaster": 25,
+        "workloads": 25,
+        "namedZoneRustFaster": 7,
+        "namedZoneWorkloads": 7
+      },
+      {
+        "rustFaster": 25,
+        "workloads": 25,
+        "namedZoneRustFaster": 7,
+        "namedZoneWorkloads": 7
+      }
+    ],
+    "limit": "Three fresh processes each;original25 and named7 reported separately. No binding or startup claim. Rejected hot TS cache beats stateless Rust raw offset lookup;not claimed as universal Rust win."
+  },
+  "javascript": {
+    "method": "Twelve isolated fresh processes,three each parentTS/candidateTS/basic/official,rotated order recorded. Parent TS swaps only numeric ZDT offset cache against66582;host and kernel sources are identical. Test and foreign installation sources held. Parent export-all consumer hash checked exact published baseline. Follows six full pinned controls on the same narrower numeric getter candidate. All broader rejected draft controls retained. Adds three fresh parent/candidate controls plus repeated references; no new source optimization between these phases. All48 public cases,eight varying inputs,output parity,20k warmup,9x50k;transition1kwarm9x5k. All implementations pinned to same allowed CPU via Bazel --run_under taskset. Fresh medians replace retained reference samples; parent/candidate use same CPU and counts; no throughput comparisons against unpinned historical samples. No concurrent test/build/profile during timing.",
+    "selectedProfile": "parentTypescript (accepted66582),not rejected candidate",
+    "wins": {
+      "basic": 40,
+      "official": 48
+    },
+    "results": [
+      {
+        "operation": "parse",
+        "typescriptNanoseconds": 1335.9320000000002,
+        "basicNanoseconds": 1939.7997600000008,
+        "officialNanoseconds": 4616.8726000000015,
+        "typescriptOverBasic": 0.6886958270373225,
+        "typescriptOverOfficial": 0.2893586450706913
+      },
+      {
+        "operation": "format",
+        "typescriptNanoseconds": 644.7454599999992,
+        "basicNanoseconds": 1294.564620000001,
+        "officialNanoseconds": 6493.811100000003,
+        "typescriptOverBasic": 0.4980403836465102,
+        "typescriptOverOfficial": 0.09928614338658526
+      },
+      {
+        "operation": "add",
+        "typescriptNanoseconds": 1215.5510600000025,
+        "basicNanoseconds": 1534.2077999999947,
+        "officialNanoseconds": 6043.836060000012,
+        "typescriptOverBasic": 0.7922988398312188,
+        "typescriptOverOfficial": 0.20112244076984445
+      },
+      {
+        "operation": "round",
+        "typescriptNanoseconds": 568.3905800000002,
+        "basicNanoseconds": 765.2481400000033,
+        "officialNanoseconds": 4273.257319999975,
+        "typescriptOverBasic": 0.742753298296155,
+        "typescriptOverOfficial": 0.13301108204736042
+      },
+      {
+        "operation": "until",
+        "typescriptNanoseconds": 2486.734000000006,
+        "basicNanoseconds": 24683.699780000024,
+        "officialNanoseconds": 8371.353999999992,
+        "typescriptOverBasic": 0.10074397364105371,
+        "typescriptOverOfficial": 0.2970527826203513
+      },
+      {
+        "operation": "timeParse",
+        "typescriptNanoseconds": 1279.4931199999974,
+        "basicNanoseconds": 2346.2552400000277,
+        "officialNanoseconds": 11248.211819999997,
+        "typescriptOverBasic": 0.545334155545661,
+        "typescriptOverOfficial": 0.11375080239198392
+      },
+      {
+        "operation": "timeFormat",
+        "typescriptNanoseconds": 176.94030000000566,
+        "basicNanoseconds": 741.1141599999974,
+        "officialNanoseconds": 618.766159999941,
+        "typescriptOverBasic": 0.2387490477850353,
+        "typescriptOverOfficial": 0.2859566528331519
+      },
+      {
+        "operation": "timeAdd",
+        "typescriptNanoseconds": 1519.6225799999954,
+        "basicNanoseconds": 1699.0723399999843,
+        "officialNanoseconds": 4165.010379999949,
+        "typescriptOverBasic": 0.8943836846876158,
+        "typescriptOverOfficial": 0.3648544520554146
+      },
+      {
+        "operation": "timeRoundFormat",
+        "typescriptNanoseconds": 911.4323399999921,
+        "basicNanoseconds": 1694.3932800000039,
+        "officialNanoseconds": 2055.234599999967,
+        "typescriptOverBasic": 0.5379107381728934,
+        "typescriptOverOfficial": 0.44346876020869186
+      },
+      {
+        "operation": "timeUntil",
+        "typescriptNanoseconds": 2741.6006799999923,
+        "basicNanoseconds": 24701.510339999946,
+        "officialNanoseconds": 8435.149519999977,
+        "typescriptOverBasic": 0.11098919225033907,
+        "typescriptOverOfficial": 0.32502099381873195
+      },
+      {
+        "operation": "dateParse",
+        "typescriptNanoseconds": 1479.8496200000045,
+        "basicNanoseconds": 1756.1846200000582,
+        "officialNanoseconds": 2047.6924200000212,
+        "typescriptOverBasic": 0.8426503700960298,
+        "typescriptOverOfficial": 0.7226913600627526
+      },
+      {
+        "operation": "dateTimeParse",
+        "typescriptNanoseconds": 1441.1833599999954,
+        "basicNanoseconds": 4116.408699999956,
+        "officialNanoseconds": 2337.133879999965,
+        "typescriptOverBasic": 0.35010696581221656,
+        "typescriptOverOfficial": 0.6166456155263202
+      },
+      {
+        "operation": "yearMonthParse",
+        "typescriptNanoseconds": 690.1263200000176,
+        "basicNanoseconds": 1001.4600799999606,
+        "officialNanoseconds": 2196.2309200000163,
+        "typescriptOverBasic": 0.6891201494522325,
+        "typescriptOverOfficial": 0.31423213001664346
+      },
+      {
+        "operation": "monthDayParse",
+        "typescriptNanoseconds": 649.0318599999955,
+        "basicNanoseconds": 1107.7660000001197,
+        "officialNanoseconds": 1613.8573600000382,
+        "typescriptOverBasic": 0.5858925621475343,
+        "typescriptOverOfficial": 0.40216184904964597
+      },
+      {
+        "operation": "dateFromFields",
+        "typescriptNanoseconds": 1235.7220199999938,
+        "basicNanoseconds": 1062.5389399999403,
+        "officialNanoseconds": 3473.0260799999814,
+        "typescriptOverBasic": 1.162989866517328,
+        "typescriptOverOfficial": 0.3558055688427195
+      },
+      {
+        "operation": "dateFields",
+        "typescriptNanoseconds": 368.0040200000076,
+        "basicNanoseconds": 418.2663199999661,
+        "officialNanoseconds": 1923.0138599999189,
+        "typescriptOverBasic": 0.8798318258090622,
+        "typescriptOverOfficial": 0.19136836590456147
+      },
+      {
+        "operation": "dateWith",
+        "typescriptNanoseconds": 1100.2797599999758,
+        "basicNanoseconds": 1601.4080400000967,
+        "officialNanoseconds": 4270.372859999916,
+        "typescriptOverBasic": 0.6870702110374751,
+        "typescriptOverOfficial": 0.2576542601949745
+      },
+      {
+        "operation": "dateTimeWith",
+        "typescriptNanoseconds": 3097.200499999999,
+        "basicNanoseconds": 5309.386000000086,
+        "officialNanoseconds": 8987.049479999987,
+        "typescriptOverBasic": 0.5833443829474725,
+        "typescriptOverOfficial": 0.3446292920599346
+      },
+      {
+        "operation": "yearMonthWith",
+        "typescriptNanoseconds": 1261.2257200000022,
+        "basicNanoseconds": 1176.656640000001,
+        "officialNanoseconds": 2966.300060000067,
+        "typescriptOverBasic": 1.071872351818795,
+        "typescriptOverOfficial": 0.42518480750055127
+      },
+      {
+        "operation": "monthDayWith",
+        "typescriptNanoseconds": 1530.2009399999952,
+        "basicNanoseconds": 1518.8792400000966,
+        "officialNanoseconds": 3921.1942600000475,
+        "typescriptOverBasic": 1.0074539829775393,
+        "typescriptOverOfficial": 0.3902384933104479
+      },
+      {
+        "operation": "zonedWith",
+        "typescriptNanoseconds": 6594.049220000015,
+        "basicNanoseconds": 6258.477920000005,
+        "officialNanoseconds": 43431.074720000026,
+        "typescriptOverBasic": 1.0536186760246669,
+        "typescriptOverOfficial": 0.15182790807070343
+      },
+      {
+        "operation": "dateAdd",
+        "typescriptNanoseconds": 2116.445440000025,
+        "basicNanoseconds": 2244.3339199999173,
+        "officialNanoseconds": 5342.598239999934,
+        "typescriptOverBasic": 0.9430171781212053,
+        "typescriptOverOfficial": 0.3961453481855022
+      },
+      {
+        "operation": "dateUntil",
+        "typescriptNanoseconds": 5707.263820000007,
+        "basicNanoseconds": 24521.620919999987,
+        "officialNanoseconds": 5998.390399999917,
+        "typescriptOverBasic": 0.23274415009593136,
+        "typescriptOverOfficial": 0.951465883247627
+      },
+      {
+        "operation": "dateTimeAdd",
+        "typescriptNanoseconds": 3405.8326800000214,
+        "basicNanoseconds": 5522.87083999996,
+        "officialNanoseconds": 8324.87518000009,
+        "typescriptOverBasic": 0.6166779522224073,
+        "typescriptOverOfficial": 0.4091151646552357
+      },
+      {
+        "operation": "dateTimeUntil",
+        "typescriptNanoseconds": 5702.8059600000415,
+        "basicNanoseconds": 69991.72024,
+        "officialNanoseconds": 18667.747319999908,
+        "typescriptOverBasic": 0.08147829401028081,
+        "typescriptOverOfficial": 0.3054897766850676
+      },
+      {
+        "operation": "dateTimeRoundFormat",
+        "typescriptNanoseconds": 1646.6300000000047,
+        "basicNanoseconds": 3893.01277999999,
+        "officialNanoseconds": 4535.215080000053,
+        "typescriptOverBasic": 0.4229706124930853,
+        "typescriptOverOfficial": 0.36307649603246284
+      },
+      {
+        "operation": "dateFormat",
+        "typescriptNanoseconds": 176.1861399999907,
+        "basicNanoseconds": 253.7414800000261,
+        "officialNanoseconds": 187.68275999987964,
+        "typescriptOverBasic": 0.6943529296036761,
+        "typescriptOverOfficial": 0.9387444003919363
+      },
+      {
+        "operation": "dateTimeFormat",
+        "typescriptNanoseconds": 1116.6280600000027,
+        "basicNanoseconds": 2222.210619999969,
+        "officialNanoseconds": 1814.3249199999264,
+        "typescriptOverBasic": 0.502485250475501,
+        "typescriptOverOfficial": 0.6154509854828253
+      },
+      {
+        "operation": "yearMonthFormat",
+        "typescriptNanoseconds": 104.13349999995262,
+        "basicNanoseconds": 264.3665799999144,
+        "officialNanoseconds": 192.21623999997973,
+        "typescriptOverBasic": 0.39389812433926535,
+        "typescriptOverOfficial": 0.5417518311666256
+      },
+      {
+        "operation": "monthDayFormat",
+        "typescriptNanoseconds": 172.0405999999639,
+        "basicNanoseconds": 250.76124000013806,
+        "officialNanoseconds": 176.89556000026644,
+        "typescriptOverBasic": 0.6860733341399539,
+        "typescriptOverOfficial": 0.9725546531507334
+      },
+      {
+        "operation": "zonedFormat",
+        "typescriptNanoseconds": 2079.8122399999556,
+        "basicNanoseconds": 2439.5233400000143,
+        "officialNanoseconds": 12094.444939999958,
+        "typescriptOverBasic": 0.852548613041736,
+        "typescriptOverOfficial": 0.17196425717077704
+      },
+      {
+        "operation": "yearMonthUntil",
+        "typescriptNanoseconds": 4028.7378799999715,
+        "basicNanoseconds": 24956.09230000002,
+        "officialNanoseconds": 9492.043379999814,
+        "typescriptOverBasic": 0.16143304134197198,
+        "typescriptOverOfficial": 0.4244331508733634
+      },
+      {
+        "operation": "yearMonthToDate",
+        "typescriptNanoseconds": 1111.857699999964,
+        "basicNanoseconds": 2346.726019999769,
+        "officialNanoseconds": 3944.467080000031,
+        "typescriptOverBasic": 0.4737910137460672,
+        "typescriptOverOfficial": 0.28187779931984003
+      },
+      {
+        "operation": "monthDayToDate",
+        "typescriptNanoseconds": 1322.8749199999584,
+        "basicNanoseconds": 2352.9510600000503,
+        "officialNanoseconds": 4022.5835199997528,
+        "typescriptOverBasic": 0.5622194793970471,
+        "typescriptOverOfficial": 0.32886201452941854
+      },
+      {
+        "operation": "yearMonthAdd",
+        "typescriptNanoseconds": 2010.9428599999956,
+        "basicNanoseconds": 2060.9277399998973,
+        "officialNanoseconds": 7405.840500000048,
+        "typescriptOverBasic": 0.9757464179700428,
+        "typescriptOverOfficial": 0.271534724519112
+      },
+      {
+        "operation": "zonedParse",
+        "typescriptNanoseconds": 3558.6750200000097,
+        "basicNanoseconds": 6088.6101599998065,
+        "officialNanoseconds": 37306.84853999992,
+        "typescriptOverBasic": 0.5844806822054974,
+        "typescriptOverOfficial": 0.09538932285273156
+      },
+      {
+        "operation": "zonedOffset",
+        "typescriptNanoseconds": 119.89646000001812,
+        "basicNanoseconds": 42.34227999986615,
+        "officialNanoseconds": 3477.803639999765,
+        "typescriptOverBasic": 2.831601415899123,
+        "typescriptOverOfficial": 0.03447476407840732
+      },
+      {
+        "operation": "zonedAddDay",
+        "typescriptNanoseconds": 3447.2955600000564,
+        "basicNanoseconds": 3090.4681199998595,
+        "officialNanoseconds": 23014.188480000008,
+        "typescriptOverBasic": 1.1154606441952921,
+        "typescriptOverOfficial": 0.14979001162677777
+      },
+      {
+        "operation": "zonedUntilDay",
+        "typescriptNanoseconds": 7879.569139999949,
+        "basicNanoseconds": 48078.9501399998,
+        "officialNanoseconds": 33629.62809999997,
+        "typescriptOverBasic": 0.16388812811127623,
+        "typescriptOverOfficial": 0.23430437935767584
+      },
+      {
+        "operation": "zonedRound",
+        "typescriptNanoseconds": 2631.2481199999456,
+        "basicNanoseconds": 2837.8238200000487,
+        "officialNanoseconds": 31242.515980000026,
+        "typescriptOverBasic": 0.9272062985220486,
+        "typescriptOverOfficial": 0.08422010959950683
+      },
+      {
+        "operation": "zonedDayStart",
+        "typescriptNanoseconds": 1880.4425199999241,
+        "basicNanoseconds": 1545.791919999756,
+        "officialNanoseconds": 32672.395319999774,
+        "typescriptOverBasic": 1.2164913632102703,
+        "typescriptOverOfficial": 0.05755447378689274
+      },
+      {
+        "operation": "zonedHoursInDay",
+        "typescriptNanoseconds": 2290.8502200001385,
+        "basicNanoseconds": 2116.811400000006,
+        "officialNanoseconds": 45196.5898399998,
+        "typescriptOverBasic": 1.0822174427065785,
+        "typescriptOverOfficial": 0.050686351074494006
+      },
+      {
+        "operation": "zonedTransition",
+        "typescriptNanoseconds": 483.73439999995753,
+        "basicNanoseconds": 6497.527200001059,
+        "officialNanoseconds": 416767.90699999547,
+        "typescriptOverBasic": 0.07444899961324959,
+        "typescriptOverOfficial": 0.001160680541556101
+      },
+      {
+        "operation": "durationParse",
+        "typescriptNanoseconds": 1846.6520400000445,
+        "basicNanoseconds": 1988.8546000001952,
+        "officialNanoseconds": 2442.9224400001112,
+        "typescriptOverBasic": 0.9285002734739197,
+        "typescriptOverOfficial": 0.7559192259906379
+      },
+      {
+        "operation": "durationFormat",
+        "typescriptNanoseconds": 2408.8510400000087,
+        "basicNanoseconds": 84766.05364000017,
+        "officialNanoseconds": 7697.848060000106,
+        "typescriptOverBasic": 0.028417638153008202,
+        "typescriptOverOfficial": 0.31292525147605676
+      },
+      {
+        "operation": "durationAdd",
+        "typescriptNanoseconds": 3882.046199999895,
+        "basicNanoseconds": 90747.34668000019,
+        "officialNanoseconds": 12019.833459999645,
+        "typescriptOverBasic": 0.04277861934287781,
+        "typescriptOverOfficial": 0.3229700488712104
+      },
+      {
+        "operation": "durationRoundRelative",
+        "typescriptNanoseconds": 14039.341840000125,
+        "basicNanoseconds": 53760.71361999959,
+        "officialNanoseconds": 65030.06609999982,
+        "typescriptOverBasic": 0.26114500523998496,
+        "typescriptOverOfficial": 0.21589001337337044
+      },
+      {
+        "operation": "durationTotalRelative",
+        "typescriptNanoseconds": 2631.0017000000516,
+        "basicNanoseconds": 3256.5787799999816,
+        "officialNanoseconds": 35903.15090000047,
+        "typescriptOverBasic": 0.8079035938446011,
+        "typescriptOverOfficial": 0.07328052368796459
+      }
+    ],
+    "consumer": {
+      "minified": 143955,
+      "gzip": 40652,
+      "sha256": "a378317aa107f0bf05ef3cd6d7294a7c1a1dd2087bcaa41ae878eda865862581"
+    },
+    "limit": "Three isolated processes per implementation,all48 retained,8inputs,full parity. Nominal median wins,close cases overlap. Different counts from older identical-source snapshots reflect resampling,not a TS code improvement. Startup not remeasured:accepted TS remains byte-identical."
+  },
+  "validation": {
+    "exitCode": 0,
+    "targets": [
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:instant_hermes_test262_full",
+      "//packages/temporal:instant_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_hermes_test262_full",
+      "//packages/temporal:plain_date_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_date_time_hermes_test262_full",
+      "//packages/temporal:plain_date_time_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:plain_time_hermes_test262_full",
+      "//packages/temporal:plain_time_hermes_bytecode_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:year_month_hermes_test262_full",
+      "//packages/temporal:year_month_hermes_bytecode_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:month_day_hermes_test262_full",
+      "//packages/temporal:month_day_hermes_bytecode_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:duration_hermes_test262_full",
+      "//packages/temporal:duration_hermes_bytecode_test262_full",
+      "//packages/temporal:zoned_test262_full",
+      "//packages/temporal:zoned_hermes_test262_full",
+      "//packages/temporal:zoned_hermes_bytecode_test262_full",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:public_calendar_test",
+      "//packages/temporal:short_date_test",
+      "//packages/temporal:instant_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//packages/temporal:no_internal_imports_test",
+      "//packages/temporal:package_json_test",
+      "//packages/temporal:package_exports_test",
+      "//packages/temporal:kernel_test",
+      "//packages/temporal:plain_time_test",
+      "//packages/temporal:arithmetic_calendar_test",
+      "//packages/temporal:calendar_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:registry_test",
+      "//crates/temporal:zoned_string_test",
+      "//packages/temporal:plain_date_time_test",
+      "//packages/temporal:table_calendar_test",
+      "//packages/temporal:duration_oracle_test",
+      "//packages/temporal:zoned_difference_test",
+      "//packages/temporal:relative_duration_test",
+      "//packages/temporal:native_date_output_hermes_oracle_test",
+      "//packages/temporal:native_plain_hermes_oracle_test",
+      "//packages/temporal:host_timezone_test",
+      "//packages/temporal:host_timezone_reference_test",
+      "//packages/temporal:zoned_test",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:legacy_timezone_hermes_test",
+      "//crates/intl_datetimeformat_calendars:calendar_core_test",
+      "//crates/intl_datetimeformat_calendars:table_calendar_test",
+      "//crates/intl_datetimeformat_calendars:intl_datetimeformat_calendars_test",
+      "//crates/intl_datetimeformat_calendars:compiled_calendars_test"
+    ],
+    "sourceHashes": {
+      "crates/temporal/format.rs": "df342603b6a66f185d92d43b3bd754c2ce23857446f57bff38ecbbddec45ca5f",
+      "crates/temporal/date.rs": "f7a90065fe1b314e205bd6e2e570ef4f88cdcad5ae09e33298c93c5b8e02b467",
+      "crates/temporal/timezone.rs": "10d6c797ef55cdf48d162d8d0b408ecd19b6d1f979962b6ead09d18428a56a28",
+      "crates/temporal/lib.test.rs": "d74ac87b3fa1f50485ad572f28a441ebda8c96d865b58850685ae5e9342d3c0f",
+      "crates/intl_datetimeformat_calendars/core.rs": "08319016e28f0cead4dafc401cb72bedca36b60dee7a64e5a1fbbeb030c8b7f4",
+      "crates/intl_datetimeformat_calendars/core.test.rs": "c81dd6da7a80a31f9fa25d27a650a5c11d42287efe1c8243438891bdd16e5c92",
+      "packages/temporal/zones.ts": "89f05c668f8026ff3835ceffbea5fbc138234f1f2aafdca4875815f805726dd4",
+      "packages/temporal/host-timezone.ts": "817795a6d50c627d84328f55299392f3fbcf45ed19a05d1cba8354d4fc9cbdb0",
+      "packages/temporal/zoned-date-time.ts": "93d96bfa0c43e4b1bbef92fdbcd7b5ae1e67e3fac10205ac18bda5b44b4e9bf3"
+    }
+  },
+  "rejectedTs": {
+    "weakMap": "Fresh12 gives40/48 basic,48/48 official but fails regression gate,including MonthDay parse+55%. Cold audits confirm first-read and retained-memory costs. Rejected.",
+    "privateClassAndPool": "Six cold controls:hot getter~62% faster,cold named+4.5%,+8B/value. Combined full48:offset getter~72% faster,butdateFields+5.4%,dateWith+4.5%,zonedAddDay+3.9%,durationTotalRelative+5.5%. Rejected.",
+    "parserSplit": "Main bytecode465->114;V8 trace confirms inlining into both short-date callers. No reliable full-matrix parser speedup;YearMonth/MonthDay process timings remain bimodal. Rejected.",
+    "diagnosis": "Extra-binding bytecode widening refuted:old cache left unique common function lengths unchanged. Both parser versions deopt at first MonthDay regex.exec path due insufficient feedback. CPU stacks retained. No sole cause established for all timing variation.",
+    "profiles": {
+      "parent": {
+        "artifact": "recurring-parser-parent.cpuprofile.gz",
+        "sha256": "737ed16a95d901ae160230c11686c4fbfdc962ab00f972581b0196f510f88788",
+        "scope": "Separate full48 V8 Inspector100us CPU samples;20kwarm,one50k sample per case. Includes setup/warmup/GC;instrumented timing excluded from throughput."
+      },
+      "rejected": {
+        "artifact": "recurring-parser-rejected.cpuprofile.gz",
+        "sha256": "e4891f54edbaa53f7caf6d8903f8d9e1f1c6b858f905f7d45c96d5163f21e0dc",
+        "scope": "Separate full48 V8 Inspector100us CPU samples;20kwarm,one50k sample per case. Includes setup/warmup/GC;instrumented timing excluded from throughput."
+      }
+    }
+  },
+  "raw": {
+    "artifact": "recurring-arithmetic-controls.json.gz",
+    "sha256": "3657e838907e96d41fab38b007b688cd674c7b3e9340e36fdbbd366bf9023ccc",
+    "bytes": 553839,
+    "scope": "All process samples/output checksums,accepted/rejected sources,drivers and earlier experiment phases. No instrumented sample used for throughput. Full textual V8 traces remain local;portable CPU profiles and bytecode summaries retained here."
+  },
+  "remaining": "Eight accepted-TS losses versus basic reference;earlier baseline audit and close-case variance;native Rust must be rechecked after future TS gains. Goal incomplete."
+}

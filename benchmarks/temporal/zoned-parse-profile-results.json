@@ -1,0 +1,189 @@
+{
+  "baselineCommit": "8c3fc3390e242a9eabb3680914573df383870f91",
+  "phase": "ABI 17 typed zoned parsing and complete resolution snapshots",
+  "method": "V8 Inspector CPU profile, named WASM build enabled only with --define=temporal_wasm_profile=true. Self samples weighted by timeDeltas; inspector/root/idle/program bookkeeping excluded. Setup, warmup, runtime helpers and GC remain explicit. Profile timings and payload sizes are not production throughput/size claims. Production checkpoint is zoned-parse-hillclimb-results.json.",
+  "environment": {
+    "node": "v24.14.0",
+    "v8": "13.6.233.17-node.41",
+    "icu": "78.2",
+    "cpu": "Intel(R) Xeon(R) Platinum 8488C"
+  },
+  "workload": [
+    {
+      "operation": "zonedParse",
+      "iterations": 50000,
+      "warmup": 3000,
+      "medianNanoseconds": 11084.60862,
+      "samplesNanoseconds": [
+        10712.370379999998, 11084.60862, 11369.770999999997
+      ]
+    }
+  ],
+  "attribution": {
+    "zonedParse": {
+      "sampledMilliseconds": 1731.595,
+      "selfPercent": {
+        "harnessOther": 9.07,
+        "javascript": 21.46,
+        "rustWasm": 65.13,
+        "gc": 4.34
+      },
+      "top": [
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionRule>::event",
+          "percent": 11.66,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionZone as formatjs_temporal[40b6354e2dba9ca5]::zoned::TimeZone>::visit_offsets::{closure#0}",
+          "percent": 11.63,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "invoke.parseZonedFields",
+          "percent": 7.0,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 4.34,
+          "source": ""
+        },
+        {
+          "name": "formatjs_intl_datetimeformat_calendars[8a28f11efdf5849e]::calendar::iso_fields",
+          "percent": 3.53,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::timezone_identity::named_time_zone_identifier",
+          "percent": 3.4,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::zoned::resolve_local::<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::ResolvedTimeZone>",
+          "percent": 3.14,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "createZonedDateTime",
+          "percent": 3.03,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "zonedResult",
+          "percent": 2.85,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::zoned::visit_possible_instants::<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::ResolvedTimeZone>::{closure#0}",
+          "percent": 2.65,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "decodeUTF8",
+          "percent": 2.49,
+          "source": ""
+        },
+        {
+          "name": "formatjs_intl_datetimeformat_calendars[8a28f11efdf5849e]::calendar::iso_day",
+          "percent": 2.33,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::FutureRule>::offset",
+          "percent": 2.3,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "invoke.resolveZonedDateTime",
+          "percent": 2.26,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::TimeZoneRegistry>::resolve",
+          "percent": 2.14,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "decode",
+          "percent": 2.04,
+          "source": "encoding"
+        },
+        {
+          "name": "__multi3",
+          "percent": 1.94,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "compiler_builtins[ce512ac70534e1d]::int::specialized_div_rem::u128_div_rem",
+          "percent": 1.92,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::run",
+          "percent": 1.84,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "__divti3",
+          "percent": 1.67,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "dateTimeResult",
+          "percent": 1.56,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "toZonedDateTimeSlot",
+          "percent": 1.36,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::ffi::zoned_value_snapshot",
+          "percent": 1.25,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "encodeInto",
+          "percent": 1.12,
+          "source": ""
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::zoned::day_boundary::<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::ResolvedTimeZone>",
+          "percent": 1.1,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionZone as formatjs_temporal[40b6354e2dba9ca5]::zoned::TimeZone>::transition",
+          "percent": 1.05,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::iso::IsoDateTime>::to_epoch_nanoseconds",
+          "percent": 0.77,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "<core[7d5f0a2ba6a62c33]::str::pattern::CharSearcher as core[7d5f0a2ba6a62c33]::str::pattern::Searcher>::next_match",
+          "percent": 0.77,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        },
+        {
+          "name": "from",
+          "percent": 0.72,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::ffi::calendar_snapshot",
+          "percent": 0.69,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2866"
+        }
+      ]
+    }
+  },
+  "nextTargets": [
+    "Recurring-rule event construction: 11.66% sampled self time.",
+    "Repeated historical-offset scans in local resolution: 11.63% sampled self time."
+  ]
+}

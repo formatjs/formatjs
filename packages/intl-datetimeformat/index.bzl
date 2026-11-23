@@ -15,8 +15,6 @@ ZIC_FILES = [
     "southamerica",
 ]
 
-_NODE_TOOLCHAIN_TYPE = "@rules_nodejs//nodejs:toolchain_type"
-
 def _hermetic_llvm_toolchain_contract_impl(ctx):
     cc_toolchain = find_cc_toolchain(ctx)
     if cc_toolchain.compiler != "clang" or "llvm" not in cc_toolchain.toolchain_id:
@@ -38,7 +36,7 @@ _hermetic_llvm_toolchain_contract_with_cfg, _hermetic_llvm_toolchain_contract_wi
 
 def _generate_tz_data_impl(ctx):
     zones = []
-    for zone, output in zip(ctx.attr.zones, ctx.outputs.zdumps):
+    for zone, output in zip(ctx.attr.zones, ctx.outputs.tzif_data):
         zones.append({
             "name": zone,
             "output": output.path,
@@ -58,29 +56,24 @@ def _generate_tz_data_impl(ctx):
     )
 
     work_dir = ctx.actions.declare_directory("%s_work" % ctx.label.name)
-    node = ctx.toolchains[_NODE_TOOLCHAIN_TYPE].nodeinfo.node
     ctx.actions.run(
-        executable = node,
+        executable = ctx.executable._generator,
         arguments = [
-            "--disable-warning=ExperimentalWarning",
-            "--experimental-transform-types",
-            ctx.file._generator.path,
             manifest.path,
             ctx.executable._zic.path,
-            ctx.executable._zdump.path,
             work_dir.path,
         ],
-        inputs = depset(ctx.files.srcs + [ctx.file.backward, ctx.file._generator, manifest]),
-        outputs = ctx.outputs.zdumps + [ctx.outputs.backward_out, work_dir],
+        inputs = depset(ctx.files.srcs + [ctx.file.backward, manifest]),
+        outputs = ctx.outputs.tzif_data + [ctx.outputs.backward_out, work_dir],
         tools = [
-            ctx.attr._zdump[DefaultInfo].files_to_run,
+            ctx.attr._generator[DefaultInfo].files_to_run,
             ctx.attr._zic[DefaultInfo].files_to_run,
         ],
         mnemonic = "GenerateTimezoneData",
         progress_message = "Generating IANA timezone data",
     )
 
-    return [DefaultInfo(files = depset(ctx.outputs.zdumps + [ctx.outputs.backward_out]))]
+    return [DefaultInfo(files = depset(ctx.outputs.tzif_data + [ctx.outputs.backward_out]))]
 
 _generate_tz_data = rule(
     implementation = _generate_tz_data_impl,
@@ -99,14 +92,10 @@ _generate_tz_data = rule(
             mandatory = True,
         ),
         "zones": attr.string_list(mandatory = True),
-        "zdumps": attr.output_list(mandatory = True),
+        "tzif_data": attr.output_list(mandatory = True),
         "_generator": attr.label(
-            allow_single_file = [".ts"],
-            default = "//packages/intl-datetimeformat/tzdata:generator.ts",
-        ),
-        "_zdump": attr.label(
             cfg = "exec",
-            default = "@iana_tzcode//:zdump",
+            default = "//packages/intl-datetimeformat/tzdata:generator",
             executable = True,
         ),
         "_zic": attr.label(
@@ -115,11 +104,10 @@ _generate_tz_data = rule(
             executable = True,
         ),
     },
-    toolchains = [_NODE_TOOLCHAIN_TYPE],
 )
 
 def generate_tz_data(name):
-    """Generate zdump data with execution tools pinned to hermetic LLVM."""
+    """Decode TZif using pinned Python and hermetic LLVM's zic."""
     contract_name = "%s_llvm_toolchain" % name
     _hermetic_llvm_toolchain_contract_with_cfg(
         name = contract_name,
@@ -131,5 +119,5 @@ def generate_tz_data(name):
         llvm_toolchain_contract = ":%s" % contract_name,
         srcs = ["@iana_tzdata//:%s" % zic_file for zic_file in ZIC_FILES],
         zones = ZONES,
-        zdumps = ["%s/zdump/%s" % (name, zone) for zone in ZONES],
+        tzif_data = ["%s/tzif/%s.json" % (name, zone) for zone in ZONES],
     )

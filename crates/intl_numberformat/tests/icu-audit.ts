@@ -148,7 +148,13 @@ const output: {values: Output[]; ranges: Output[]; error?: string}[] =
     .map(line => JSON.parse(line))
 assert.equal(output.length, cases.length)
 const reference = cases.map(
-  value => new NumberFormat(value.locales, value.options)
+  // ICU skeletons use explicit precision; strip source zeros for its auto cases.
+  value =>
+    new NumberFormat(value.locales, {
+      ...value.options,
+      trailingZeroDisplay:
+        value.options.trailingZeroDisplay || 'stripToMinimum',
+    })
 )
 const native = cases.map(
   value =>

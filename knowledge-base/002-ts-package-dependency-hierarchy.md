@@ -6,20 +6,25 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 
 ### Layer 0 — Leaf Packages (no internal deps)
 
-| Package                              | Purpose                                                              |
-| ------------------------------------ | -------------------------------------------------------------------- |
-| `@formatjs/bigdecimal`               | BigInt-backed decimal arithmetic for ECMA-402 precision requirements |
-| `@formatjs/fast-memoize`             | Memoization utility (fork of fast-memoize)                           |
-| `@formatjs/intl-getcanonicallocales` | Polyfill for `Intl.getCanonicalLocales`                              |
-| `@formatjs/ecma376`                  | ECMA-376 number format generation                                    |
+| Package                              | Purpose                                                                                        |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `ecma262-abstract` (internal)        | Primitive ECMA-262 conversions, date arithmetic and realm intrinsics; no internal dependencies |
+| `@formatjs/bigdecimal`               | BigInt-backed decimal arithmetic for ECMA-402 precision requirements                           |
+| `@formatjs/fast-memoize`             | Memoization utility (fork of fast-memoize)                                                     |
+| `@formatjs/intl-getcanonicallocales` | Polyfill for `Intl.getCanonicalLocales`                                                        |
+| `@formatjs/ecma376`                  | ECMA-376 number format generation                                                              |
+
+UTC-offset scanning lives in `ecma262-abstract/UTCOffsetNanoseconds.ts`.
+Temporal wrappers and ECMA-402 DateTimeFormat consume that leaf helper directly;
+formatters do not import Temporal to parse offsets.
 
 ### Layer 1 — Core Infrastructure
 
-| Package                            | Internal Dependencies                        | Notes                                                                                                                                   |
-| ---------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `@formatjs/intl-localematcher`     | fast-memoize                                 |                                                                                                                                         |
-| `ecma402-abstract` (internal)      | bigdecimal, fast-memoize, intl-localematcher | Not published to npm. Imported via `#packages/ecma402-abstract/*.js`. Split into 3 Bazel sub-packages: root, `types/`, `NumberFormat/`. |
-| `@formatjs/intl-supportedvaluesof` | ecma402-abstract, fast-memoize               |                                                                                                                                         |
+| Package                            | Internal Dependencies                                          | Notes                                                                                                                                                      |
+| ---------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@formatjs/intl-localematcher`     | fast-memoize                                                   |                                                                                                                                                            |
+| `ecma402-abstract` (internal)      | ecma262-abstract, bigdecimal, fast-memoize, intl-localematcher | Not published to npm. Imported via `#packages/ecma402-abstract/*.js`. Split into composite Bazel subpackages, including DateTimeFormat and DurationFormat. |
+| `@formatjs/intl-supportedvaluesof` | ecma402-abstract, fast-memoize                                 |                                                                                                                                                            |
 
 ### Layer 2 — Parsers & Polyfills
 
@@ -30,12 +35,29 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 | `@formatjs/icu-skeleton-parser`      | ecma402-abstract                      |
 | `@formatjs/icu-messageformat-parser` | ecma402-abstract, icu-skeleton-parser |
 
+`@formatjs/temporal` is public. It uses `ecma262-abstract`,
+`ecma402-abstract/DateTimeFormat`, `ecma402-abstract/DurationFormat`, shared types
+and generated timezone identifiers/search intervals. Default captures installed
+Intl for named timezone offsets; standalone and Rust retain owned IANA histories.
+It does not import formatter packages; applications may install their polyfills
+first without a circular runtime dependency. Date/short-date/zoned facades share
+calendar field preparation and merge rules. Plain/zoned rounding uses private
+anchor callbacks; the numeric kernel owns 13-calendar conversion/add/difference
+math. Arithmetic conversion/era helpers live below both formatters and Temporal
+in `ecma402-abstract/Calendar`; DateTimeFormat no longer uses `temporal-polyfill`
+at runtime. That dependency remains a test/benchmark reference only.
+Chinese/Dangi/Umm al-Qura use shared generated ICU packs below the
+formatter layer. Locale methods use captured Intl intrinsics and the optional
+DateTimeFormat private-record bridge; the Temporal runtime still imports no
+formatter package. Formatter tests may depend on Temporal's source and declaration
+targets to verify independently bundled brands. See [Temporal implementation](015-temporal.md).
+
 **Intl Polyfills** (all depend on `ecma402-abstract` + `intl-localematcher`):
 
 | Package                             | Extra Internal Dependencies                        |
 | ----------------------------------- | -------------------------------------------------- |
 | `@formatjs/intl-numberformat`       | + bigdecimal                                       |
-| `@formatjs/intl-datetimeformat`     | + bigdecimal                                       |
+| `@formatjs/intl-datetimeformat`     |                                                    |
 | `@formatjs/intl-pluralrules`        | + bigdecimal                                       |
 | `@formatjs/intl-displaynames`       |                                                    |
 | `@formatjs/intl-listformat`         |                                                    |

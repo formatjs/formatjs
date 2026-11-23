@@ -3,6 +3,8 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
+# gazelle:exclude tests/temporal.test.tsx
+
 PACKAGE_NAME = "react-intl"
 
 ENTRY_POINTS = [
@@ -162,7 +164,7 @@ formatjs_library(
     side_effects = False,
     type = "module",
     types = True,
-    version = "12.1.7",  # x-release-please-version
+    version = "12.2.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -239,4 +241,20 @@ genrule(
     srcs = [":%s.esbuild.iife.js" % PACKAGE_NAME],
     outs = ["%s.iife.js" % PACKAGE_NAME],
     cmd = "cat $< | sed -E 's/__require\\(\"react\"\\)/window.React/g' > $@",
+)
+
+formatjs_test(
+    name = "temporal_test",
+    srcs = ["tests/temporal.test.tsx"],
+    config = "vitest.config.mjs",
+    dom = True,
+    node_toolchain = "//tools/test262:node-runtime",
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":react-intl",
+        "//:node_modules/@testing-library/react",
+        "//:node_modules/@types/react",
+        "//:node_modules/react",
+        "//:node_modules/vitest",
+    ],
 )

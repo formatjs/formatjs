@@ -11,6 +11,7 @@ pub enum MessageSyntax {
     Icu,
     JavaPrintf,
     ApplePrintf,
+    Android,
 }
 
 /// Run a series of checks on translation files to validate correctness and consistency.
@@ -120,7 +121,10 @@ pub fn verify_with_syntax(
         }
     }
 
-    if matches!(message_syntax, MessageSyntax::ApplePrintf) {
+    if matches!(
+        message_syntax,
+        MessageSyntax::ApplePrintf | MessageSyntax::Android
+    ) {
         let mut catalogs = std::collections::BTreeMap::new();
         for file in expanded_files
             .iter()
@@ -132,19 +136,39 @@ pub fn verify_with_syntax(
                     .with_context(|| format!("Failed to read file: {}", file.display()))?,
             );
         }
-        let issues = crate::apple_resources::verify_resources(
-            &catalogs,
-            source_locale,
-            crate::apple_resources::VerificationOptions {
-                missing_keys,
-                extra_keys,
-                structural_equality,
-            },
-        )?;
+        let issues = if matches!(message_syntax, MessageSyntax::Android) {
+            crate::android_resources::verify_resources(
+                &catalogs,
+                source_locale.context("--source-locale is required for Android verification")?,
+                crate::android_resources::VerificationOptions {
+                    missing_keys,
+                    extra_keys,
+                    structural_equality,
+                },
+            )?
+        } else {
+            crate::apple_resources::verify_resources(
+                &catalogs,
+                source_locale,
+                crate::apple_resources::VerificationOptions {
+                    missing_keys,
+                    extra_keys,
+                    structural_equality,
+                },
+            )?
+        };
         for issue in &issues {
             eprintln!("{}: {}: {}", issue.locale, issue.message_id, issue.error);
         }
-        anyhow::ensure!(issues.is_empty(), "Apple resource verification failed");
+        anyhow::ensure!(
+            issues.is_empty(),
+            "{} resource verification failed",
+            if matches!(message_syntax, MessageSyntax::Android) {
+                "Android"
+            } else {
+                "Apple"
+            }
+        );
         return Ok(());
     }
     let source_locale = source_locale.context("--source-locale is required for verify command")?;
@@ -207,7 +231,7 @@ pub fn verify_with_syntax(
     if structural_equality {
         let passed = match message_syntax {
             MessageSyntax::Icu => check_structural_equality(&locales, source_locale),
-            MessageSyntax::ApplePrintf => unreachable!(),
+            MessageSyntax::ApplePrintf | MessageSyntax::Android => unreachable!(),
             MessageSyntax::JavaPrintf => {
                 let issues = crate::java_printf::verify_catalogs(&locales, source_locale)?;
                 for issue in &issues {

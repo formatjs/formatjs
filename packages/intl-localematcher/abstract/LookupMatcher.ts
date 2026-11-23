@@ -3,7 +3,7 @@ import type {LookupMatcherResult} from '#packages/intl-localematcher/abstract/ty
 import {splitUnicodeExtension} from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
- * https://tc39.es/ecma402/#sec-lookupmatcher
+ * https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
  * @param availableLocales
  * @param requestedLocales
  * @param getDefaultLocale
@@ -13,8 +13,11 @@ export function LookupMatcher(
   requestedLocales: readonly string[],
   getDefaultLocale: () => string
 ): LookupMatcherResult {
-  const result: LookupMatcherResult = {locale: ''}
-  for (const locale of requestedLocales) {
+  // ECMA-402 §9.2.3 step 1.d.i: the returned Record owns its extension field.
+  const result: LookupMatcherResult = {locale: '', extension: undefined}
+  // ECMA-402 §9.2.3 step 1: visit the private List in order.
+  for (let i = 0; i < requestedLocales.length; i++) {
+    const locale = requestedLocales[i]
     const {locale: noExtensionLocale, extension} = splitUnicodeExtension(locale)
     const availableLocale = BestAvailableLocale(
       availableLocales,

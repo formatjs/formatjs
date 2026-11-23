@@ -210,6 +210,8 @@ enum Query {
         mathematical: bool,
         #[serde(default)]
         bigint: bool,
+        #[serde(default)]
+        string: bool,
     },
     SelectRange {
         start: String,
@@ -220,6 +222,10 @@ enum Query {
         start_bigint: bool,
         #[serde(default, rename = "endBigint")]
         end_bigint: bool,
+        #[serde(default, rename = "startString")]
+        start_string: bool,
+        #[serde(default, rename = "endString")]
+        end_string: bool,
     },
 }
 
@@ -302,9 +308,10 @@ pub unsafe extern "C" fn formatjs_plural_query(
                 value,
                 mathematical,
                 bigint,
+                string,
             } => json!(
                 if mathematical {
-                    rules.select_mathematical(&value, bigint)
+                    rules.select_input(&value, bigint, string)
                 } else {
                     rules.select(&value)
                 }
@@ -316,10 +323,19 @@ pub unsafe extern "C" fn formatjs_plural_query(
                 mathematical,
                 start_bigint,
                 end_bigint,
+                start_string,
+                end_string,
             } => {
                 json!(
                     if mathematical {
-                        rules.select_range_mathematical(&start, &end, start_bigint, end_bigint)
+                        rules.select_range_input(
+                            &start,
+                            &end,
+                            start_bigint,
+                            end_bigint,
+                            start_string,
+                            end_string,
+                        )
                     } else {
                         rules.select_range(&start, &end)
                     }
@@ -345,6 +361,21 @@ pub unsafe extern "C" fn formatjs_plural_select(
     bigint: bool,
     out: *mut u8,
 ) -> i32 {
+    unsafe { formatjs_plural_select_input(handle, value, len, bigint, false, out) }
+}
+
+/// Select with the original primitive kind, retaining numeric-string precision.
+/// # Safety
+/// Handle live; input readable for len bytes; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_select_input(
+    handle: *const PluralHandle,
+    value: *const u8,
+    len: usize,
+    bigint: bool,
+    string: bool,
+    out: *mut u8,
+) -> i32 {
     if out.is_null() {
         return 2;
     }
@@ -355,7 +386,7 @@ pub unsafe extern "C" fn formatjs_plural_select(
     guarded(|| {
         let value = unsafe { input(value, len)? };
         let category = unsafe { &(*handle).0 }
-            .select_mathematical(value, bigint)
+            .select_input(value, bigint, string)
             .map_err(status)?;
         unsafe { out.write(category_index(category)?) };
         Ok(())
@@ -389,6 +420,38 @@ pub unsafe extern "C" fn formatjs_plural_select_range(
     end_bigint: bool,
     out: *mut u8,
 ) -> i32 {
+    unsafe {
+        formatjs_plural_select_range_input(
+            handle,
+            start,
+            start_len,
+            start_bigint,
+            false,
+            end,
+            end_len,
+            end_bigint,
+            false,
+            out,
+        )
+    }
+}
+
+/// Select a range with each endpoint's original primitive kind.
+/// # Safety
+/// Handle live; endpoint bytes readable; out writable.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_plural_select_range_input(
+    handle: *const PluralHandle,
+    start: *const u8,
+    start_len: usize,
+    start_bigint: bool,
+    start_string: bool,
+    end: *const u8,
+    end_len: usize,
+    end_bigint: bool,
+    end_string: bool,
+    out: *mut u8,
+) -> i32 {
     if out.is_null() {
         return 2;
     }
@@ -400,7 +463,14 @@ pub unsafe extern "C" fn formatjs_plural_select_range(
         let start = unsafe { input(start, start_len)? };
         let end = unsafe { input(end, end_len)? };
         let category = unsafe { &(*handle).0 }
-            .select_range_mathematical(start, end, start_bigint, end_bigint)
+            .select_range_input(
+                start,
+                end,
+                start_bigint,
+                end_bigint,
+                start_string,
+                end_string,
+            )
             .map_err(status)?;
         unsafe { out.write(category_index(category)?) };
         Ok(())

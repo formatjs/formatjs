@@ -1,10 +1,13 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 
 # gazelle:exclude tests/rust-timezones.test.ts
+# gazelle:exclude tests/timezone-icu.test.ts
 # gazelle:exclude tests/CalendarDateFromTime.test.ts
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
+# gazelle:exclude tests/temporal-owned.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -32,6 +35,7 @@ TEST_LOCALES = [
     "en",
     "en-GB",
     "en-CA",
+    "fr",
     "ja",
     "ko",
     "my",
@@ -97,6 +101,13 @@ formatjs_library(
     author = "Long Ho <holevietlong@gmail.com>",
     bugs = "https://github.com/formatjs/formatjs/issues",
     description = "Intl.DateTimeFormat polyfill",
+    entry_point_defines = {
+        entry: {
+            "import.meta.formatjsTemporalHostCalendar": "false",
+            "import.meta.formatjsTemporalCompactTimeZones": "false",
+        }
+        for entry in ENTRY_POINTS
+    },
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         "add-all-tz.d.ts",
@@ -127,7 +138,7 @@ formatjs_library(
     ],
     type = "module",
     types = True,
-    version = "8.0.3",  # x-release-please-version
+    version = "8.2.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -140,7 +151,6 @@ formatjs_library(
         "./locale-data": "./locale-data",
     },
     deps = [
-        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//:node_modules/@formatjs_generated/tz",
@@ -149,6 +159,35 @@ formatjs_library(
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
         "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+formatjs_test(
+    name = "timezone_future_test",
+    srcs = ["tests/timezone-future.test.ts"],
+    deps = [
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+# gazelle:exclude tests/historical-timezone.test.ts
+formatjs_test(
+    name = "historical_timezone_test",
+    srcs = [
+        "tests/historical-timezone.test.ts",
+        ":tests-locale-data-en",
+    ],
+    data = ["//conformance-tests/icu4j:historical_timezone_fixtures"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
     ],
 )
 
@@ -163,6 +202,7 @@ formatjs_test(
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
         "tests/offset-timezone.test.ts",
+        "tests/pattern-records.test.ts",
         ":tests-locale-data-ar",  # keep: generated locale data imported by tests
         ":tests-locale-data-ar-EG",  # keep: generated locale data imported by tests
         ":tests-locale-data-bn",  # keep: generated locale data imported by tests
@@ -190,6 +230,7 @@ formatjs_test(
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
         "//packages/intl-datetimeformat/calendars",
@@ -201,8 +242,8 @@ generate_tz_data(
 )
 
 filegroup(
-    name = "zdumps",
-    srcs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES],
+    name = "tzif_data",
+    srcs = ["tz_data_generated/tzif/%s.json" % zone for zone in ZONES],
 )
 
 # CLDR
@@ -345,19 +386,39 @@ ts_run_binary(
             "-en",
             ["en"],
         ),
+        # Locale metadata in Temporal and DateTimeFormat Temporal tests.
+        (
+            "-temporal",
+            [
+                "ar",
+                "ar-EG",
+                "de",
+                "en",
+                "ja",
+            ],
+        ),
     ]
 ]
 
 # @formatjs_generated/tz — IANA timezone data
+copy_file(
+    name = "tz_etcetera",
+    src = "@iana_tzdata//:etcetera",
+    out = "tz_data_generated/etcetera",
+)
+
 generate_package_file(
     name = "tz_links",
     src = "links.ts",
     args = [
         "--input",
         package_name() + "/tz_data_generated/backward",
+        "--input",
+        package_name() + "/tz_data_generated/etcetera",
     ],
     data = [
         ":tz_data_generated/backward",
+        ":tz_etcetera",
         "//:node_modules/json-stable-stringify",
     ],
     tags = ["cldr"],
@@ -368,11 +429,11 @@ generate_package_file(
     name = "tz_all_tz",
     src = "all-tz.ts",
     args = [
-        "$(rootpaths :zdumps)",
+        "$(rootpaths :tzif_data)",
     ],
     data = [
         "types.ts",
-        ":zdumps",
+        ":tzif_data",
         "//:node_modules/json-stable-stringify",
         "//:root_package_json",
         "//packages/ecma262-abstract",
@@ -384,13 +445,63 @@ generate_package_file(
     tool = "//packages/intl-datetimeformat/scripts:process-zdump",
 )
 
+_IDENTITY_SOURCES = [
+    "africa",
+    "antarctica",
+    "asia",
+    "australasia",
+    "europe",
+    "northamerica",
+    "southamerica",
+    "etcetera",
+    "backward",
+    "zone.tab",
+]
+
+[
+    copy_file(
+        name = "tz_identity_" + source,
+        src = "@iana_tzdata//:" + source,
+        out = "tz_identity_data/" + source,
+    )
+    for source in _IDENTITY_SOURCES
+]
+
+generate_package_file(
+    name = "tz_primary",
+    src = "primary.ts",
+    args = [
+        "--tab",
+        "$(rootpath :tz_identity_zone.tab)",
+    ] + [arg for source in _IDENTITY_SOURCES if source != "zone.tab" for arg in [
+        "--source",
+        "$(rootpath :tz_identity_%s)" % source,
+    ]],
+    data = ["//:node_modules/cldr-bcp47"] + [":tz_identity_" + source for source in _IDENTITY_SOURCES],
+    tool = "//packages/intl-datetimeformat/scripts:primary-zones",
+)
+
 formatjs_generated_package(
     name = "tz_pkg",
     package_name = "tz",
     srcs = [
         ":tz_all_tz",
         ":tz_links",
+        ":tz_primary",
+        ":tz_temporal_compact",
+        ":tz_temporal_names",
     ],
+)
+
+generate_package_file(
+    name = "tz_temporal_compact",
+    src = "temporal-compact.ts",
+    args = [
+        "--input",
+        "$(rootpath :tz_all_json)",
+    ],
+    data = [":tz_all_json"],
+    tool = "//packages/intl-datetimeformat/scripts:temporal-timezones",
 )
 
 # Raw packs use the same pinned IANA and golden-zone selection as JS.
@@ -399,7 +510,7 @@ formatjs_generated_package(
         name = "tz_%s_json" % selection,
         srcs = [
             "types.ts",
-            ":zdumps",
+            ":tzif_data",
             "//:node_modules/fs-extra",
             "//:node_modules/json-stable-stringify",
             "//:node_modules/minimist",
@@ -407,7 +518,7 @@ formatjs_generated_package(
         ],
         outs = ["tz-%s.json" % selection],
         args = ["--json"] + (["--golden"] if selection == "golden" else []) + [
-            "$(rootpaths :zdumps)",
+            "$(rootpaths :tzif_data)",
             "--out",
             "$(rootpath tz-%s.json)" % selection,
         ],
@@ -415,6 +526,7 @@ formatjs_generated_package(
         visibility = [
             "//crates:__pkg__",
             "//crates/intl_datetimeformat:__subpackages__",
+            "//crates/temporal:__pkg__",
             "//packages/intl-datetimeformat/benchmark:__pkg__",
         ],
     )
@@ -430,7 +542,7 @@ ts_run_binary(
     name = "add-all-tz",
     srcs = [
         "types.ts",
-        ":zdumps",
+        ":tzif_data",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -443,7 +555,7 @@ ts_run_binary(
     outs = ["add-all-tz.js"],
     args = [
         "--polyfill",
-        "$(rootpaths :zdumps)",
+        "$(rootpaths :tzif_data)",
         "--out",
         "$(rootpath add-all-tz.js)",
     ],
@@ -459,7 +571,7 @@ ts_run_binary(
     name = "add-golden-tz",
     srcs = [
         "types.ts",
-        ":zdumps",
+        ":tzif_data",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -473,7 +585,7 @@ ts_run_binary(
     args = [
         "--golden",
         "--polyfill",
-        "$(rootpaths :zdumps)",
+        "$(rootpaths :tzif_data)",
         "--out",
         "$(rootpath add-golden-tz.js)",
     ],
@@ -540,7 +652,11 @@ alias(
         entry_point = "test262%s-main.ts" % suffix,
         format = "iife",
         target = "es2020",
-        visibility = ["//tools/test262:__pkg__"],
+        visibility = [
+            "//packages/intl-supportedvaluesof:__pkg__",
+            "//packages/temporal:__pkg__",
+            "//tools/test262:__pkg__",
+        ],
         deps = [
             "//:node_modules/@formatjs/bigdecimal",
             "//:node_modules/@formatjs/intl-localematcher",
@@ -555,6 +671,7 @@ alias(
     for suffix in [
         "",
         "-en",
+        "-temporal",
     ]
 ]
 
@@ -650,10 +767,29 @@ formatjs_test(
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+formatjs_test(
+    name = "timezone_icu_test",
+    srcs = ["tests/timezone-icu.test.ts"],
+    data = [
+        ":tz_all_json",
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//crates/intl_datetimeformat:timezone_conformance",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
 )
@@ -693,4 +829,35 @@ filegroup(
     name = "polyfill_benchmark_timezones",
     srcs = [":tz_all_json"],
     visibility = ["//benchmarks/polyfills:__pkg__"],
+)
+
+formatjs_test(
+    name = "temporal_owned_test",
+    srcs = [
+        "tests/temporal-owned.test.ts",
+        ":tests-locale-data-de",
+        ":tests-locale-data-en",
+        ":tests-locale-data-fr",
+        ":tests-locale-data-ja",
+    ],
+    data = ["//conformance-tests/icu4j:temporal_locale_fixtures"],
+    deps = TEST_DEPS + [
+        "//:node_modules/@bazel/runfiles",
+        "//packages/intl-durationformat:lib",
+        "//packages/intl-durationformat:types",
+        "//packages/temporal:lib",
+        "//packages/temporal:types",
+    ],
+)
+
+generate_package_file(
+    name = "tz_temporal_names",
+    src = "temporal-names.ts",
+    args = [
+        "--input",
+        "$(rootpath :tz_all_json)",
+        "--namesOnly",
+    ],
+    data = [":tz_all_json"],
+    tool = "//packages/intl-datetimeformat/scripts:temporal-timezones",
 )

@@ -1,3 +1,9 @@
+import {UTCOffsetNanoseconds} from '#packages/ecma262-abstract/UTCOffsetNanoseconds.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  numberFrom,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   HourFromTime,
   MinFromTime,
@@ -5,7 +11,8 @@ import {
   WeekDay,
   msFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
-import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
+import {type UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
+import {TimeZoneOffset} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {
   CalendarDateFromTime,
   type CalendarRegistry,
@@ -15,67 +22,6 @@ import Decimal from '@formatjs/bigdecimal'
 const NANOSECONDS_PER_MILLISECOND = BigInt(1000000)
 const ZERO = BigInt(0)
 const ONE = BigInt(1)
-
-// Cached regex patterns for performance
-const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
-const OFFSET_TIMEZONE_FORMAT_REGEX =
-  /^([+-])(\d{2})(?::?(\d{2}))?(?::?(\d{2}))?(?:\.(\d{1,9}))?$/
-
-/**
- * IsTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-istimezoneoffsetstring
- *
- * Determines if a string is a UTC offset identifier.
- *
- * @param offsetString - The string to check
- * @returns true if offsetString is a UTC offset format
- */
-function IsTimeZoneOffsetString(offsetString: string): boolean {
-  return OFFSET_TIMEZONE_PREFIX_REGEX.test(offsetString)
-}
-
-/**
- * ParseTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
- *
- * Parses a UTC offset string and returns the offset in milliseconds.
- * This is used to calculate the timezone offset for ToLocalTime.
- *
- * Supports formats: ±HH, ±HHMM, ±HH:MM, ±HH:MM:SS, ±HH:MM:SS.sss
- *
- * @param offsetString - The UTC offset string to parse (e.g., "+01:00")
- * @returns The offset in milliseconds
- */
-function ParseTimeZoneOffsetString(offsetString: string): number {
-  // 1. Let parseResult be ParseText(offsetString, UTCOffset)
-  const match = OFFSET_TIMEZONE_FORMAT_REGEX.exec(offsetString)
-
-  // 2. Assert: parseResult is not a List of errors
-  if (!match) {
-    return 0
-  }
-
-  // 3. Extract components from parseResult
-  const sign = match[1] === '+' ? 1 : -1
-  const hours = parseInt(match[2], 10)
-  const minutes = match[3] ? parseInt(match[3], 10) : 0
-  const seconds = match[4] ? parseInt(match[4], 10) : 0
-  const fractionalStr = match[5] || '0'
-
-  // 4. Convert fractional seconds (nanoseconds) to milliseconds
-  // Pad to 9 digits and divide by 1000000
-  // Use manual padding for compatibility (padEnd is ES2017)
-  const paddedFractional = (fractionalStr + '000000000').slice(0, 9)
-  const fractional = parseInt(paddedFractional, 10) / 1000000
-
-  // 5. Calculate total offset in milliseconds
-  // offset = sign × (hours × 3600000 + minutes × 60000 + seconds × 1000 + fractional)
-  const offsetMs =
-    sign * (hours * 3600000 + minutes * 60000 + seconds * 1000 + fractional)
-
-  // 6. Return offset in milliseconds
-  return offsetMs
-}
 
 /**
  * GetNamedTimeZoneOffsetNanoseconds ( timeZone, t )
@@ -93,15 +39,11 @@ function ParseTimeZoneOffsetString(offsetString: string): number {
 function getApplicableZoneData(
   t: number,
   timeZone: string,
-  tzData: Record<string, UnpackedZoneData[]>
+  tzData: Record<string, UnpackedTimeZoneData>
 ): [number, boolean] {
-  // 1. If IsTimeZoneOffsetString(timeZone) is true, then
-  //    a. Let offsetNs be ParseTimeZoneOffsetString(timeZone)
-  //    b. Return offsetNs (no DST for offset timezones)
-  if (IsTimeZoneOffsetString(timeZone)) {
-    const offsetMs = ParseTimeZoneOffsetString(timeZone)
-    return [offsetMs, false] // UTC offset timezones never observe DST
-  }
+  // ECMA-402 §11.5.11 step 1: recognize and parse the complete UTCOffset.
+  const offsetNs = UTCOffsetNanoseconds(timeZone)
+  if (offsetNs !== undefined) return [offsetNs / 1_000_000, false]
 
   // 2. Let timeZoneData be the IANA Time Zone Database entry for timeZone
   const zoneData = tzData[timeZone]
@@ -112,31 +54,22 @@ function getApplicableZoneData(
   }
 
   // 4. Find the applicable transition for time t
-  let i = 0
-  let offset = 0
-  let dst = false
-  for (; i <= zoneData.length; i++) {
-    if (i === zoneData.length || zoneData[i][0] * 1e3 > t) {
-      ;[, , offset, dst] = zoneData[i - 1]
-      break
-    }
-  }
+  const zone = TimeZoneOffset(t, zoneData)
 
   // 5. Return offset in milliseconds and DST flag
-  return [offset * 1e3, dst]
+  return [zone[0] * 1e3, zone[1]]
 }
 
 export interface ToLocalTimeImplDetails {
   calendarData?: CalendarRegistry
-  tzData: Record<string, UnpackedZoneData[]>
+  tzData: Record<string, UnpackedTimeZoneData>
 }
 
-/**
- * https://tc39.es/ecma402/#sec-tolocaltime
- * @param t
- * @param calendar
- * @param timeZone
- */
+// ECMA-402 §11.5.11 steps 1–3: add the offset before computing calendar fields.
+// Table 17 in §11.5.12 projects integer milliseconds from epoch nanoseconds.
+// https://tc39.es/ecma402/#sec-tolocaltime
+// Temporal amendment §15.6.23: project exact epoch nanoseconds into calendar fields.
+// https://tc39.es/proposal-temporal/#sec-tolocaltime
 export function ToLocalTime(
   epochNanoseconds: bigint,
   calendar: string,
@@ -168,21 +101,19 @@ export function ToLocalTime(
   ) {
     epochMilliseconds -= ONE
   }
-  const milliseconds = Number(epochMilliseconds)
-  const [timeZoneOffset, inDST] = getApplicableZoneData(
-    milliseconds,
-    timeZone,
-    tzData
-  )
+  const milliseconds = numberFrom(epochMilliseconds)
+  const zone = getApplicableZoneData(milliseconds, timeZone, tzData)
+  const timeZoneOffset = zone[0]
+  const inDST = zone[1]
 
   // Integer offsets commute with flooring; fractional offsets must be added first.
   const localMilliseconds = milliseconds + timeZoneOffset
   const tz =
-    Number.isSafeInteger(milliseconds) &&
-    Number.isSafeInteger(timeZoneOffset) &&
-    Number.isSafeInteger(localMilliseconds)
+    numberIsSafeInteger(milliseconds) &&
+    numberIsSafeInteger(timeZoneOffset) &&
+    numberIsSafeInteger(localMilliseconds)
       ? localMilliseconds
-      : new Decimal(String(epochNanoseconds))
+      : new Decimal(ToString(epochNanoseconds))
           .div(1000000)
           .plus(timeZoneOffset)
           .floor()

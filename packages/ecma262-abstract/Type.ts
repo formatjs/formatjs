@@ -1,6 +1,6 @@
-/**
- * https://www.ecma-international.org/ecma-262/11.0/index.html#sec-type
- */
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+
+/** ECMA-262 §6.1 language-type classification. */
 export function Type(
   x: any
 ):
@@ -16,10 +16,10 @@ export function Type(
   if (x === null) {
     return 'Null'
   }
-  if (typeof x === 'undefined') {
+  if (x === undefined) {
     return 'Undefined'
   }
-  if (typeof x === 'function' || typeof x === 'object') {
+  if (IsObject(x)) {
     return 'Object'
   }
   if (typeof x === 'number') {

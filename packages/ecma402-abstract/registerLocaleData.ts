@@ -1,6 +1,8 @@
 import {defaultContent} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 
 const explicitLocales = new WeakMap<object, Set<string>>()
+const getExplicitLocales = explicitLocales.get.bind(explicitLocales)
+const setExplicitLocales = explicitLocales.set.bind(explicitLocales)
 
 // ECMA-402 §9.1 [[AvailableLocales]] requires fallback tags, including the
 // scriptless language-region tag. Fill missing fallbacks without replacing
@@ -13,10 +15,10 @@ export function registerLocaleData<T>(
   localeData: Record<string, T | undefined>,
   availableLocales: Set<string>
 ): void {
-  let loaded = explicitLocales.get(localeData)
+  let loaded = getExplicitLocales(localeData)
   if (!loaded) {
     loaded = new Set<string>()
-    explicitLocales.set(localeData, loaded)
+    setExplicitLocales(localeData, loaded)
   }
   loaded.add(locale)
   const locales = [locale, ...(defaultContent[locale] || [])]

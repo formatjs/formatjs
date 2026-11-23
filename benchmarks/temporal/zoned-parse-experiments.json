@@ -1,0 +1,566 @@
+{
+  "baselineCommit": "8c3fc3390e242a9eabb3680914573df383870f91",
+  "method": "Incremental production stripped-WASM diagnostic trials, same eight varying inputs/parity. No exact-operation-result cache, dependency or data-policy changes. Final isolated all-workload results in zoned-parse-hillclimb-results.json. Full Rust snapshots retained.",
+  "trials": [
+    {
+      "name": "zoned-typed-resolution",
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 9315.108599999998,
+          "samplesNanoseconds": [
+            9186.520099999996, 9198.899899999999, 9209.632599999997,
+            9315.108599999998, 9580.282299999999, 9723.8684, 10999.898000000001
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3950.039399999992,
+          "samplesNanoseconds": [
+            3897.429199999988, 3899.240099999997, 3917.5822999999928,
+            3950.039399999992, 3976.5475000000038, 4050.3312999999935,
+            4414.403699999991
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2804.2189000000008,
+          "samplesNanoseconds": [
+            2729.011400000013, 2749.9033000000054, 2796.9604000000118,
+            2804.2189000000008, 2804.4252000000142, 2867.617099999984,
+            3974.533199999996
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 383.17187500025443,
+          "samplesNanoseconds": [
+            352.3945312502441, 357.8515624997891, 376.3632812496809,
+            383.17187500025443, 388.93945312512557, 492.7011718751651,
+            816.6874999999685
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 20742.57349999998,
+          "samplesNanoseconds": [
+            20659.14410000005, 20685.60520000001, 20726.439200000004,
+            20742.57349999998, 20994.344699999965, 21022.241900000063,
+            21271.856500000013
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 22775.4508,
+          "samplesNanoseconds": [
+            22452.902500000073, 22497.243499999968, 22702.683500000057,
+            22775.4508, 22840.038599999934, 22883.589099999972,
+            23158.62849999994
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 13058.158100000037,
+          "samplesNanoseconds": [
+            13015.28870000002, 13020.44079999996, 13026.366699999926,
+            13058.158100000037, 13119.006900000022, 13148.012000000017,
+            13433.518300000103
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 1726.208984376143,
+          "samplesNanoseconds": [
+            1646.5058593766457, 1651.8613281277794, 1669.683593750193,
+            1726.208984376143, 1777.810546872871, 1929.5156250009882,
+            2269.0742187485566
+          ]
+        }
+      ],
+      "profileChecksums": {},
+      "note": "Shared-process diagnostic; not final throughput claim."
+    },
+    {
+      "name": "zoned-compact-resolution",
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 9053.6166,
+          "samplesNanoseconds": [
+            9019.770900000003, 9032.3891, 9032.819900000004, 9053.6166,
+            9409.809899999998, 9635.997400000004, 10936.244399999998
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3909.0964999999983,
+          "samplesNanoseconds": [
+            3806.791199999998, 3816.991699999994, 3855.314699999997,
+            3909.0964999999983, 3938.741499999992, 4021.8452000000066,
+            4284.698500000001
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2759.975099999997,
+          "samplesNanoseconds": [
+            2698.99190000001, 2710.127299999999, 2757.382800000005,
+            2759.975099999997, 2772.548699999993, 2815.750600000001,
+            3514.5604000000053
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 382.7519531247603,
+          "samplesNanoseconds": [
+            342.19921874978354, 345.314453125134, 353.08398437505775,
+            382.7519531247603, 404.0214843747947, 519.0273437500891,
+            830.9277343752086
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 20993.04630000006,
+          "samplesNanoseconds": [
+            20591.957900000034, 20637.08399999996, 20706.77370000003,
+            20993.04630000006, 21008.138599999984, 21298.47610000006,
+            21522.082899999987
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 21280.774500000007,
+          "samplesNanoseconds": [
+            21177.407200000016, 21201.728900000035, 21258.034299999963,
+            21280.774500000007, 21327.971400000024, 21610.302800000136,
+            21882.078300000012
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 13130.091399999947,
+          "samplesNanoseconds": [
+            12525.672300000042, 13054.916699999922, 13068.514799999866,
+            13130.091399999947, 13151.730999999927, 14125.300500000048,
+            18575.889899999856
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 1765.798828124332,
+          "samplesNanoseconds": [
+            1651.671874999039, 1662.2265625017008, 1723.4609374980892,
+            1765.798828124332, 1773.4804687492556, 1865.601562499819,
+            2532.5957031263615
+          ]
+        }
+      ],
+      "profileChecksums": {},
+      "note": "Shared-process diagnostic; not final throughput claim."
+    },
+    {
+      "name": "zoned-typed-parse",
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 9484.305399999994,
+          "samplesNanoseconds": [
+            9391.243899999996, 9421.067700000003, 9482.828599999999,
+            9484.305399999994, 9971.842500000002, 10005.663499999997,
+            11215.201199999998
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3843.770100000006,
+          "samplesNanoseconds": [
+            3804.572400000007, 3807.149299999992, 3811.4379999999983,
+            3843.770100000006, 3915.472, 3982.960099999991, 4266.277699999989
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2710.962699999982,
+          "samplesNanoseconds": [
+            2701.1084999999866, 2709.1975000000048, 2709.597100000019,
+            2710.962699999982, 2763.482299999987, 2849.152600000002,
+            3497.567400000003
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 388.75976562469106,
+          "samplesNanoseconds": [
+            346.98632812490973, 374.04492187498306, 378.1914062499503,
+            388.75976562469106, 389.5878906252648, 475.43750000000887,
+            817.9472656251186
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 20972.11099999995,
+          "samplesNanoseconds": [
+            20699.590100000023, 20807.356600000003, 20844.02689999997,
+            20972.11099999995, 21231.466399999954, 21382.96760000003,
+            23497.042299999976
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 12468.654999999944,
+          "samplesNanoseconds": [
+            12402.957500000048, 12450.849199999993, 12468.32089999998,
+            12468.654999999944, 12476.038499999959, 12490.140100000008,
+            13645.043700000042
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 13126.640199999929,
+          "samplesNanoseconds": [
+            13076.993000000039, 13088.819400000102, 13121.37989999992,
+            13126.640199999929, 13146.412699999928, 13582.944100000077,
+            18377.885399999923
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 1720.7148437492492,
+          "samplesNanoseconds": [
+            1578.7382812497697, 1583.929687498653, 1684.2636718763515,
+            1720.7148437492492, 1728.5253906251796, 1912.6367187496385,
+            2196.197265625699
+          ]
+        }
+      ],
+      "profileChecksums": {},
+      "note": "Shared-process diagnostic; not final throughput claim."
+    },
+    {
+      "name": "zoned-fused-identity",
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 17896.1455,
+          "samplesNanoseconds": [
+            9603.393699999993, 11193.357700000002, 16033.358699999984,
+            17896.1455, 19532.1154, 19717.96750000001, 21643.8425
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 7365.594299999999,
+          "samplesNanoseconds": [
+            4473.879500000021, 4670.338700000002, 7070.970299999998,
+            7365.594299999999, 7855.9872999999925, 8387.567399999989,
+            8830.992100000003
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2939.584300000024,
+          "samplesNanoseconds": [
+            2732.412599999998, 2763.548200000014, 2792.352400000027,
+            2939.584300000024, 4219.464200000016, 5850.294699999995,
+            7782.579800000008
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 434.4277343744096,
+          "samplesNanoseconds": [
+            341.9218750000397, 352.61523437490894, 356.50195312530997,
+            434.4277343744096, 513.8242187499031, 552.2207031249948,
+            819.1308593747948
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 21313.50590000002,
+          "samplesNanoseconds": [
+            20925.94420000005, 21022.56069999994, 21039.770599999974,
+            21313.50590000002, 21526.75680000002, 31638.485099999984,
+            43394.88619999993
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 10117.506800000046,
+          "samplesNanoseconds": [
+            9531.478400000015, 9889.588800000092, 10061.815800000113,
+            10117.506800000046, 10133.120400000007, 10206.059699999969,
+            10770.86679999993
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 13009.797699999945,
+          "samplesNanoseconds": [
+            12448.604999999952, 12925.060800000028, 12990.893400000095,
+            13009.797699999945, 13412.981799999943, 13579.98069999994,
+            18244.010100000014
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 1981.9511718743854,
+          "samplesNanoseconds": [
+            1793.3300781223238, 1882.0214843735528, 1933.6464843746626,
+            1981.9511718743854, 2064.1875000002583, 2170.3027343775716,
+            2293.2929687513592
+          ]
+        }
+      ],
+      "profileChecksums": {},
+      "note": "Shared-process diagnostic; TS parse/with medians rose together in last trial. Use isolated checkpoint for throughput claims."
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "targets": [
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:ffi_test",
+      "//crates/temporal:binary_test",
+      "//packages/temporal:wasm_zoned_test262",
+      "//packages/temporal:wasm_package_test",
+      "//packages/temporal:wasm_native_package_test",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:types_typecheck_test",
+      "//benchmarks/temporal:temporal-esm_typecheck_test"
+    ],
+    "controls": [
+      "Typed parse preserves signed/full-range local nanoseconds, clock fields, optional offsets, calendar annotations and normalized alias spelling. Invalid zones defer identity failure to JS ordering.",
+      "Typed resolution preserves full snapshots, fractional/historical offsets, date-only boundaries and supplied-empty-offset rejection; malformed modes/UTF8/trailing bytes recover.",
+      "Public ISO/non-ISO complete getters make no extra requests; invalid calendar/zone precedes option getters; successful option read order retained; poisoned Array iterator remains unobserved."
+    ]
+  },
+  "remainingSlowerWorkloads": [
+    {
+      "operation": "until",
+      "typescriptNanoseconds": 2541.2113000000045,
+      "nativeDataWasmNanoseconds": 9618.725720000002,
+      "ratio": 3.7850948167907115
+    },
+    {
+      "operation": "timeRoundFormat",
+      "typescriptNanoseconds": 1421.200800000006,
+      "nativeDataWasmNanoseconds": 1455.4937000000064,
+      "ratio": 1.0241295248356181
+    },
+    {
+      "operation": "dateTimeParse",
+      "typescriptNanoseconds": 2622.6055800000177,
+      "nativeDataWasmNanoseconds": 2775.842339999981,
+      "ratio": 1.0584292053553712
+    },
+    {
+      "operation": "dateTimeWith",
+      "typescriptNanoseconds": 6224.382560000013,
+      "nativeDataWasmNanoseconds": 9043.935659999988,
+      "ratio": 1.452985187337195
+    },
+    {
+      "operation": "zonedWith",
+      "typescriptNanoseconds": 9359.14478000006,
+      "nativeDataWasmNanoseconds": 21514.97869999999,
+      "ratio": 2.29881887776501
+    },
+    {
+      "operation": "dateUntil",
+      "typescriptNanoseconds": 6155.820199999944,
+      "nativeDataWasmNanoseconds": 10607.169499999873,
+      "ratio": 1.7231122994787875
+    },
+    {
+      "operation": "dateTimeUntil",
+      "typescriptNanoseconds": 6140.858020000014,
+      "nativeDataWasmNanoseconds": 11928.034460000052,
+      "ratio": 1.9424051852610695
+    },
+    {
+      "operation": "dateTimeRoundFormat",
+      "typescriptNanoseconds": 1619.4163999999002,
+      "nativeDataWasmNanoseconds": 2616.5940200000477,
+      "ratio": 1.6157635676656164
+    },
+    {
+      "operation": "yearMonthFormat",
+      "typescriptNanoseconds": 404.18791999996756,
+      "nativeDataWasmNanoseconds": 637.1856199999456,
+      "ratio": 1.5764588412241434
+    },
+    {
+      "operation": "monthDayFormat",
+      "typescriptNanoseconds": 377.4425999999221,
+      "nativeDataWasmNanoseconds": 612.150440000114,
+      "ratio": 1.6218371747127653
+    },
+    {
+      "operation": "zonedFormat",
+      "typescriptNanoseconds": 2070.594759999949,
+      "nativeDataWasmNanoseconds": 5567.127739999996,
+      "ratio": 2.6886611748211577
+    },
+    {
+      "operation": "yearMonthUntil",
+      "typescriptNanoseconds": 5585.721060000069,
+      "nativeDataWasmNanoseconds": 10815.839899999994,
+      "ratio": 1.9363372756748185
+    },
+    {
+      "operation": "yearMonthToDate",
+      "typescriptNanoseconds": 2352.3687999999675,
+      "nativeDataWasmNanoseconds": 5671.99099999998,
+      "ratio": 2.4111827193083237
+    },
+    {
+      "operation": "monthDayToDate",
+      "typescriptNanoseconds": 2660.9731399999873,
+      "nativeDataWasmNanoseconds": 6208.716739999945,
+      "ratio": 2.333250436342238
+    },
+    {
+      "operation": "yearMonthAdd",
+      "typescriptNanoseconds": 5375.787100000016,
+      "nativeDataWasmNanoseconds": 10148.426199999958,
+      "ratio": 1.8878028484424034
+    },
+    {
+      "operation": "zonedParse",
+      "typescriptNanoseconds": 3968.7248600000753,
+      "nativeDataWasmNanoseconds": 9907.113799999934,
+      "ratio": 2.4962964552800333
+    },
+    {
+      "operation": "zonedAddDay",
+      "typescriptNanoseconds": 6101.131000000023,
+      "nativeDataWasmNanoseconds": 17915.03586000006,
+      "ratio": 2.936346697030435
+    },
+    {
+      "operation": "zonedUntilDay",
+      "typescriptNanoseconds": 12563.616980000079,
+      "nativeDataWasmNanoseconds": 22536.334320000024,
+      "ratio": 1.793777568663183
+    },
+    {
+      "operation": "zonedRound",
+      "typescriptNanoseconds": 2811.751360000053,
+      "nativeDataWasmNanoseconds": 13535.289999999804,
+      "ratio": 4.813828915512483
+    },
+    {
+      "operation": "zonedDayStart",
+      "typescriptNanoseconds": 2037.800500000012,
+      "nativeDataWasmNanoseconds": 12948.887380000087,
+      "ratio": 6.354344981267799
+    },
+    {
+      "operation": "zonedTransition",
+      "typescriptNanoseconds": 446.49499999941327,
+      "nativeDataWasmNanoseconds": 1512.1381999982987,
+      "ratio": 3.386685629179018
+    },
+    {
+      "operation": "durationParse",
+      "typescriptNanoseconds": 2329.0876199999184,
+      "nativeDataWasmNanoseconds": 6628.70167999994,
+      "ratio": 2.8460507982092027
+    },
+    {
+      "operation": "durationAdd",
+      "typescriptNanoseconds": 4915.4378800000995,
+      "nativeDataWasmNanoseconds": 15194.634000000078,
+      "ratio": 3.0912065966338225
+    },
+    {
+      "operation": "durationTotalRelative",
+      "typescriptNanoseconds": 5472.3353399999905,
+      "nativeDataWasmNanoseconds": 8024.456940000236,
+      "ratio": 1.4663679108525263
+    }
+  ],
+  "finalEvidence": {
+    "throughput": "zoned-parse-hillclimb-results.json",
+    "startup": "zoned-parse-startup-results.json",
+    "typescriptGuard": "ts-regression-guard.json",
+    "wins": 24,
+    "total": 48,
+    "note": "Median count is not stable-win proof. All-workload goal remains open."
+  }
+}

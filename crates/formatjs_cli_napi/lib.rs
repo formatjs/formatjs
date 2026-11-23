@@ -92,6 +92,44 @@ pub fn verify_apple_resources(
     serde_json::to_string(&issues).map_err(to_napi_error)
 }
 
+#[napi(object)]
+pub struct AndroidResourceInput {
+    pub filename: String,
+    pub content: napi::bindgen_prelude::Buffer,
+}
+
+#[napi]
+pub fn verify_android_resources(
+    resources: Vec<AndroidResourceInput>,
+    source_locale: Option<String>,
+    missing_keys: bool,
+    extra_keys: bool,
+    structural_equality: bool,
+) -> napi::Result<String> {
+    let files = resources
+        .into_iter()
+        .map(|resource| {
+            (
+                std::path::PathBuf::from(resource.filename),
+                resource.content.to_vec(),
+            )
+        })
+        .collect();
+    let issues = formatjs_cli::android_resources::verify_resources(
+        &files,
+        source_locale.as_deref().ok_or_else(|| {
+            Error::from_reason("--source-locale is required for Android verification")
+        })?,
+        formatjs_cli::android_resources::VerificationOptions {
+            missing_keys,
+            extra_keys,
+            structural_equality,
+        },
+    )
+    .map_err(|error| Error::from_reason(format!("{error:#}")))?;
+    serde_json::to_string(&issues).map_err(to_napi_error)
+}
+
 #[napi]
 pub fn verify_xcstrings(
     catalogs_json: String,

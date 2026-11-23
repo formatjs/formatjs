@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {
@@ -36,7 +37,7 @@ export interface ResolvePluralResult {
  */
 export function ResolvePluralInternal(
   pl: Intl.PluralRules,
-  n: Decimal,
+  n: Decimal | IntlMathematicalValue,
   {
     getInternalSlots,
     PluralRuleSelect,
@@ -50,6 +51,8 @@ export function ResolvePluralInternal(
     ) => LDMLPluralRule
   }
 ): ResolvePluralResult {
+  const record = 'value' in n ? n : undefined
+  n = 'value' in n ? n.value : n
   const internalSlots = getInternalSlots(pl)
   invariant(Type(internalSlots) === 'Object', 'pl has to be an object')
   invariant(
@@ -65,7 +68,12 @@ export function ResolvePluralInternal(
   const {locale, type, notation} = internalSlots
 
   // ECMA-402 Spec: Format the number according to digit options
-  const res = FormatNumericToString(internalSlots, n)
+  const res = FormatNumericToString(
+    internalSlots,
+    n,
+    record?.stringDigitCount || 0,
+    record?.stringFractionDigitCount || 0
+  )
   const s = res.formattedString
 
   // ECMA-402 §17.5.2, step 10 selects from the rounded decimal string.
@@ -107,7 +115,7 @@ export function ResolvePluralInternal(
  */
 export function ResolvePlural(
   pl: Intl.PluralRules,
-  n: Decimal,
+  n: Decimal | IntlMathematicalValue,
   {
     getInternalSlots,
     PluralRuleSelect,

@@ -14,6 +14,7 @@ import my from '#packages/intl-datetimeformat/tests/locale-data/my.json' with {t
 import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
+import {shouldPolyfill} from '#packages/intl-datetimeformat/should-polyfill.js'
 DateTimeFormat.__addCalendarData(...calendars)
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
@@ -22,6 +23,71 @@ const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
+  })
+  it.each([
+    ['us/eastern', 'US/Eastern', 'America/New_York'],
+    ['asia/calcutta', 'Asia/Calcutta', 'Asia/Kolkata'],
+    ['europe/bratislava', 'Europe/Bratislava', 'Europe/Prague'],
+    ['america/yellowknife', 'America/Yellowknife', 'America/Edmonton'],
+    ['etc/gmt', 'Etc/GMT', 'UTC'],
+    ['etc/utc', 'Etc/UTC', 'UTC'],
+    ['gmt', 'GMT', 'UTC'],
+    ['zulu', 'Zulu', 'UTC'],
+  ])(
+    'preserves %s as %s while formatting with target data',
+    (input, identifier, primary) => {
+      const options = {
+        dateStyle: 'full',
+        timeStyle: 'long',
+      } as const
+      const formatter = new DateTimeFormat('en', {...options, timeZone: input})
+      const reference = new DateTimeFormat('en', {
+        ...options,
+        timeZone: primary,
+      })
+      expect(formatter.resolvedOptions().timeZone).toBe(identifier)
+      for (const start of [Date.UTC(2024, 0, 1), Date.UTC(2024, 6, 1)]) {
+        const end = start + 86_400_000
+        expect(formatter.format(start)).toBe(reference.format(start))
+        expect(formatter.formatToParts(start)).toEqual(
+          reference.formatToParts(start)
+        )
+        expect(formatter.formatRange(start, end)).toBe(
+          reference.formatRange(start, end)
+        )
+        expect(formatter.formatRangeToParts(start, end)).toEqual(
+          reference.formatRangeToParts(start, end)
+        )
+      }
+      DateTimeFormat.__setDefaultTimeZone(input)
+      expect(DateTimeFormat.getDefaultTimeZone()).toBe(identifier)
+      const defaultFormatter = new DateTimeFormat('en', options)
+      expect(defaultFormatter.resolvedOptions().timeZone).toBe(identifier)
+      expect(defaultFormatter.format(0)).toBe(reference.format(0))
+    }
+  )
+  it.each([
+    ['Asia/Calcutta', 'Asia/Kolkata'],
+    ['Etc/UTC', 'UTC'],
+  ])('detects native canonicalization of %s', (identifier, primary) => {
+    const original = Intl.DateTimeFormat
+    const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
+    try {
+      Intl.DateTimeFormat = polyfill
+      expect(shouldPolyfill('en')).toBeUndefined()
+      Intl.DateTimeFormat = new Proxy(polyfill, {
+        construct(target, [locales, options]) {
+          return new target(locales, {
+            ...options,
+            timeZone:
+              options?.timeZone === identifier ? primary : options?.timeZone,
+          })
+        },
+      })
+      expect(shouldPolyfill('en')).toBe('en')
+    } finally {
+      Intl.DateTimeFormat = original
+    }
   })
   it('does not add an hour to minute/second-only requests', () => {
     const date = Date.UTC(2020, 0, 2, 1, 2, 3, 456)
@@ -143,6 +209,59 @@ describe('Intl.DateTimeFormat', function () {
     const after = [RegExp.lastMatch, RegExp.$1]
     expect(after).toEqual(before)
   })
+  it.each(['exotic', 'ordinary'] as const)(
+    'numeric formatting avoids private %s coercion hooks',
+    kind => {
+      const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+      const runs = [
+        () => formatter.format(1.9),
+        () => formatter.formatToParts(1.9),
+        () => formatter.formatRange(-1.9, 1.9),
+        () => formatter.formatRangeToParts(-1.9, 1.9),
+      ]
+      const expected = runs.map(run => run())
+      const key = kind === 'exotic' ? Symbol.toPrimitive : 'valueOf'
+      const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+      let actual: unknown
+      try {
+        Object.defineProperty(Object.prototype, key, {
+          configurable: true,
+          get() {
+            throw new Error('Private timestamp coercion reached')
+          },
+        })
+        actual = runs.map(run => run())
+      } finally {
+        if (original) Object.defineProperty(Object.prototype, key, original)
+        else Reflect.deleteProperty(Object.prototype, key)
+      }
+      expect(actual).toEqual(expected)
+    }
+  )
+
+  it.each(['format', 'formatToParts'] as const)(
+    '%s reads current time without mutable Date.now',
+    method => {
+      const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+      const before = JSON.stringify(formatter[method](Date.now()))
+      const original = Object.getOwnPropertyDescriptor(Date, 'now')!
+      let actual: unknown
+      try {
+        Object.defineProperty(Date, 'now', {
+          configurable: true,
+          get() {
+            throw new Error('Mutable timestamp clock reached')
+          },
+        })
+        actual = formatter[method]()
+      } finally {
+        Object.defineProperty(Date, 'now', original)
+      }
+      const after = JSON.stringify(formatter[method](Date.now()))
+      expect([before, after]).toContain(JSON.stringify(actual))
+    }
+  )
+
   it('rejects values one millisecond beyond the exact TimeClip bounds', () => {
     const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
     const limit = 8_640_000_000_000_000
@@ -294,6 +413,160 @@ describe('Intl.DateTimeFormat', function () {
     ])
     const frozen = Object.freeze({timeZone: 'UTC'})
     expect(new DateTimeFormat('en', frozen).format(0)).toBe('1/1/1970')
+  })
+
+  it.each([
+    ['basic', {year: 'numeric', formatMatcher: 'basic'}],
+    ['best fit', {year: 'numeric', formatMatcher: 'best fit'}],
+    ['date style', {dateStyle: 'short'}],
+    ['combined styles', {dateStyle: 'short', timeStyle: 'short'}],
+    ['style hour-cycle match', {timeStyle: 'short', hourCycle: 'h23'}],
+  ] as const)(
+    'keeps %s constructor precision records private',
+    (_name, fields) => {
+      const options = {
+        __proto__: null,
+        ...fields,
+        timeZone: 'UTC',
+        fractionalSecondDigits: undefined,
+      } as const
+      const expected = new DateTimeFormat('en', options).formatToParts(0)
+      const original = Object.getOwnPropertyDescriptor(
+        Object.prototype,
+        'fractionalSecondDigits'
+      )
+      let calls = 0,
+        actual: Intl.DateTimeFormat | undefined,
+        error: unknown
+      try {
+        Object.defineProperty(Object.prototype, 'fractionalSecondDigits', {
+          configurable: true,
+          get() {
+            calls++
+            throw new Error('Inherited private constructor precision')
+          },
+        })
+        actual = new DateTimeFormat('en', options)
+      } catch (caught) {
+        error = caught
+      } finally {
+        if (original)
+          Object.defineProperty(
+            Object.prototype,
+            'fractionalSecondDigits',
+            original
+          )
+        else Reflect.deleteProperty(Object.prototype, 'fractionalSecondDigits')
+      }
+      expect(calls).toBe(0)
+      expect(error).toBeUndefined()
+      expect(actual!.formatToParts(0)).toEqual(expected)
+    }
+  )
+
+  it.each([
+    ['Object.create', Object, 'create'],
+    ['Object.keys', Object, 'keys'],
+    ['Array.find', Array.prototype, 'find'],
+    ['Array.map', Array.prototype, 'map'],
+    ['Array.join', Array.prototype, 'join'],
+    ['Array iterator', Array.prototype, Symbol.iterator],
+    ['String.replace', String.prototype, 'replace'],
+    ['String @@replace', String.prototype, Symbol.replace],
+    [
+      'opposite hour-cycle iterator',
+      Array.prototype,
+      Symbol.iterator,
+      'en',
+      'short',
+      'h23',
+    ],
+    ['numeric medium date lookup', Array.prototype, 'find', 'ja', 'medium'],
+    [
+      'numeric medium date inherited weekday',
+      Object.prototype,
+      'weekdayStandalone',
+      'ja',
+      'medium',
+      undefined,
+      true,
+    ],
+  ] as const)(
+    'keeps combined style construction private from %s',
+    (
+      _name,
+      target,
+      key,
+      locale = 'en',
+      dateStyle: 'short' | 'medium' = 'short',
+      hourCycle?: 'h23',
+      getter = false
+    ) => {
+      const fields = {
+        timeZone: 'UTC',
+        dateStyle,
+        timeStyle: 'short',
+        hourCycle,
+      } as const
+      const baseline = new DateTimeFormat(locale, fields)
+      const expectedDate = baseline.formatRangeToParts(0, 86400000)
+      const expectedTime = baseline.formatRangeToParts(0, 3600000)
+      const original = Object.getOwnPropertyDescriptor(target, key)
+      const sentinel = new Error('Private combined style operation')
+      let calls = 0,
+        reads = 0,
+        actual: Intl.DateTimeFormat | undefined,
+        error: unknown
+      try {
+        actual = new DateTimeFormat(locale, {
+          timeZone: 'UTC',
+          dateStyle,
+          hourCycle,
+          get timeStyle() {
+            reads++
+            const reject = () => {
+              calls++
+              throw sentinel
+            }
+            Object.defineProperty(target, key, {
+              configurable: true,
+              ...(getter ? {get: reject} : {...original, value: reject}),
+            })
+            return 'short' as const
+          },
+        })
+      } catch (caught) {
+        error = caught
+      } finally {
+        if (original) Object.defineProperty(target, key, original)
+        else Reflect.deleteProperty(target, key)
+      }
+      expect(reads).toBe(1)
+      expect(calls).toBe(0)
+      expect(error).toBeUndefined()
+      expect(actual!.formatRangeToParts(0, 86400000)).toEqual(expectedDate)
+      expect(actual!.formatRangeToParts(0, 3600000)).toEqual(expectedTime)
+    }
+  )
+
+  it('reads inherited public precision once before private matching', () => {
+    let reads = 0
+    const options = Object.assign(
+      Object.create({
+        get fractionalSecondDigits() {
+          reads++
+          return 1
+        },
+      }),
+      {timeZone: 'UTC', second: 'numeric'}
+    )
+    const formatter = new DateTimeFormat('en', options)
+    expect(reads).toBe(1)
+    expect(formatter.formatToParts(123)).toContainEqual({
+      type: 'fractionalSecond',
+      value: '1',
+    })
+    expect(reads).toBe(1)
   })
 
   it.each(['day', 'timeZone'])(
@@ -1337,11 +1610,22 @@ describe('hourCycle override', function () {
   })
 })
 
-it('rejects BigInt date arguments', () => {
+it('rejects BigInt and Symbol date arguments', () => {
   const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
-  for (const value of [0n, Object(0n), {valueOf: () => 0n}]) {
+  for (const value of [
+    0n,
+    Object(0n),
+    {valueOf: () => 0n},
+    Symbol(),
+    Object(Symbol()),
+    {valueOf: () => Symbol()},
+  ]) {
     expect(() => formatter.format(value as any)).toThrow(TypeError)
     expect(() => formatter.formatToParts(value as any)).toThrow(TypeError)
+    expect(() => formatter.formatRange(value as any, 0)).toThrow(TypeError)
+    expect(() => formatter.formatRangeToParts(0, value as any)).toThrow(
+      TypeError
+    )
   }
 })
 
@@ -1474,4 +1758,24 @@ it('preserves the CLDR day-period separator with Han decimal digits', () => {
       .map(part => part.value)
       .join('')
   ).toBe(formatter.format(date))
+})
+
+it('constructs private format records without mutable Object.assign', () => {
+  const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+  let actual: unknown
+  try {
+    Object.defineProperty(Object, 'assign', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable construction Object.assign reached')
+      },
+    })
+    actual = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+    }).format(0)
+  } finally {
+    Object.defineProperty(Object, 'assign', original)
+  }
+  expect(actual).toBe('1970')
 })

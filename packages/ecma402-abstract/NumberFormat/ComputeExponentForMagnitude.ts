@@ -25,19 +25,12 @@ export function ComputeExponentForMagnitude(
       invariant(notation === 'compact', 'Invalid notation')
       // Let exponent be an implementation- and locale-dependent (ILD) integer by which to scale a
       // number of the given magnitude in compact notation for the current locale.
-      const {compactDisplay, style, currencyDisplay} = internalSlots
-      let thresholdMap
-      if (style === 'currency' && currencyDisplay !== 'name') {
-        const currency =
-          dataLocaleData.numbers.currency[numberingSystem] ||
-          dataLocaleData.numbers.currency[dataLocaleData.numbers.nu[0]]
-        thresholdMap = currency.short
-      } else {
-        const decimal =
-          dataLocaleData.numbers.decimal[numberingSystem] ||
-          dataLocaleData.numbers.decimal[dataLocaleData.numbers.nu[0]]
-        thresholdMap = compactDisplay === 'long' ? decimal.long : decimal.short
-      }
+      const {compactDisplay} = internalSlots
+      const decimal =
+        dataLocaleData.numbers.decimal[numberingSystem] ||
+        dataLocaleData.numbers.decimal[dataLocaleData.numbers.nu[0]]
+      const thresholdMap =
+        compactDisplay === 'long' ? decimal.long : decimal.short
       return (
         getCompactPattern(thresholdMap, magnitude.toNumber())?.exponent ?? 0
       )

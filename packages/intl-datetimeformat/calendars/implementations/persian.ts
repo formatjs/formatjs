@@ -1,7 +1,6 @@
 import type {CalendarData} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
-import {getPersian} from 'temporal-polyfill/fns/Calendar'
-import {temporalCalendar} from '#packages/intl-datetimeformat/calendars/temporal.js'
+import {arithmeticCalendar} from '#packages/intl-datetimeformat/calendars/arithmetic.js'
 
-const data: CalendarData = temporalCalendar('persian', getPersian)
+const data: CalendarData = arithmeticCalendar('persian')
 
 export default data

@@ -95,8 +95,6 @@ pub(crate) struct DecimalPatterns {
 pub(crate) struct CurrencyPatterns {
     pub standard: String,
     pub accounting: String,
-    #[serde(default)]
-    pub short: Compact,
     pub unit_pattern: String,
     pub currency_spacing: CurrencySpacing,
 }

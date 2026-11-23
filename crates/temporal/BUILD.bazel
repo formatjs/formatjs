@@ -1,0 +1,381 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob(
+        [
+            "*.rs",
+            "Cargo.toml",
+            "README.md",
+        ],
+        exclude = [
+            "*.test.rs",
+        ],
+    ),
+    visibility = ["//crates:__pkg__"],
+)
+
+# gazelle:ignore
+
+# gazelle:ignore
+
+rust_library(
+    name = "temporal",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],  # keep
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
+)
+
+formatjs_rust_test(
+    name = "public_calendar_test",
+    size = "small",
+    srcs = ["calendar.test.rs"],
+    compile_data = [
+        "//conformance-tests/icu4j:temporal_short_calendar_fixtures",
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+        "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+    ],
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_SHORT_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_short_calendar_fixtures)",
+        "FORMATJS_ARITHMETIC_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+        "FORMATJS_TABLE_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+    },
+    deps = [
+        ":with_calendars",
+    ],  # keep
+)
+
+formatjs_rust_test(
+    name = "temporal_test",
+    size = "small",
+    srcs = ["lib.test.rs"],
+    compile_data = [
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+        "//conformance-tests/icu4j:temporal_plain_relative_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+        "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
+        "//conformance-tests/icu4j:temporal_zoned_rounding_fixtures",
+        "//conformance-tests/icu4j:temporal_transition_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_short_date_fixtures",
+        "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
+        "//packages/temporal:plain_time_string_fixtures",
+        "//conformance-tests/icu4j:temporal_time_fixtures",
+        "//packages/temporal:instant_string_fixtures",
+        "//conformance-tests/icu4j:temporal_rounding_fixtures",
+        "//conformance-tests/icu4j:temporal_duration_fixtures",
+        "//conformance-tests/icu4j:temporal_iso_fixtures",
+        "//conformance-tests/temporal:polyfill_regressions",
+    ],
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_ARITHMETIC_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+        "FORMATJS_TEMPORAL_PLAIN_RELATIVE": "$(execpath //conformance-tests/icu4j:temporal_plain_relative_fixtures)",
+        "FORMATJS_TEMPORAL_TZ_IDENTITIES": "$(execpath //conformance-tests/icu4j:temporal_timezone_identity_fixtures)",
+        "FORMATJS_TEMPORAL_ZONED_ROUNDING": "$(execpath //conformance-tests/icu4j:temporal_zoned_rounding_fixtures)",
+        "FORMATJS_TEMPORAL_ZONED_DIFFERENCE": "$(execpath //conformance-tests/icu4j:temporal_zoned_difference_fixtures)",
+        "FORMATJS_TEMPORAL_TRANSITIONS": "$(execpath //conformance-tests/icu4j:temporal_transition_fixtures)",
+        "FORMATJS_TEMPORAL_TIMEZONE": "$(execpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
+        "FORMATJS_TEMPORAL_SHORT_DATES": "$(execpath //conformance-tests/icu4j:temporal_short_date_fixtures)",
+        "FORMATJS_TEMPORAL_DATE_ARITHMETIC": "$(execpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
+        "FORMATJS_TEMPORAL_TIME_STRINGS": "$(execpath //packages/temporal:plain_time_string_fixtures)",
+        "FORMATJS_TEMPORAL_TIME": "$(execpath //conformance-tests/icu4j:temporal_time_fixtures)",
+        "FORMATJS_TEMPORAL_ROUNDING": "$(execpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
+        "FORMATJS_TEMPORAL_STRINGS": "$(execpath //packages/temporal:instant_string_fixtures)",
+        "FORMATJS_TEMPORAL_DURATION": "$(execpath //conformance-tests/icu4j:temporal_duration_fixtures)",
+        "FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)",
+        "FORMATJS_TEMPORAL_POLYFILL_REGRESSIONS": "$(execpath //conformance-tests/temporal:polyfill_regressions)",
+    },
+    deps = [
+        ":with_time_zones",
+        "@crates//:serde_json",
+    ],  # keep
+)
+
+generate_src_file(
+    name = "identifiers",
+    src = "identifiers_generated.rs",
+    data = ["//:node_modules/@formatjs_generated/tz"],
+    tool = "//crates/temporal/scripts:identifiers",
+)
+
+ts_run_binary(
+    name = "time_zones_data",
+    outs = ["timezones_data.rs"],
+    args = [
+        "--out",
+        "$(rootpath timezones_data.rs)",
+    ],
+    tool = "//crates/temporal/scripts:timezones",
+    use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
+)
+
+rust_library(
+    name = "with_time_zones",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],  # keep
+    compile_data = [":time_zones_data"],
+    crate_features = ["compiled_time_zones"],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)"},
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
+)
+
+formatjs_rust_test(
+    name = "registry_test",
+    size = "small",
+    srcs = ["registry.test.rs"],
+    edition = "2024",
+    deps = [":temporal"],
+)
+
+formatjs_rust_test(
+    name = "zoned_string_test",
+    size = "small",
+    srcs = ["zoned_string.test.rs"],
+    compile_data = ["//conformance-tests/icu4j:temporal_zoned_string_fixtures"],
+    edition = "2024",
+    rustc_env = {"FORMATJS_ZONED_STRINGS": "$(execpath //conformance-tests/icu4j:temporal_zoned_string_fixtures)"},
+    deps = [":with_time_zones"],  # keep
+)
+
+ts_run_binary(
+    name = "calendar_data",
+    outs = ["calendar_data.rs"],
+    args = [
+        "--out",
+        "$(rootpath calendar_data.rs)",
+    ],
+    tool = "//crates/temporal/scripts:calendars",
+    use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
+)
+
+rust_library(
+    name = "with_calendars",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],  # keep
+    compile_data = [":calendar_data"],
+    crate_features = ["compiled_calendars"],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)"},
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
+)
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],  # keep
+    compile_data = [
+        ":calendar_data",
+        ":time_zones_data",
+    ],
+    crate_features = [
+        "compiled_data",
+        "compiled_calendars",
+        "compiled_time_zones",
+    ],  # keep
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)",
+        "FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)",
+    },
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
+)
+
+formatjs_rust_test(
+    name = "context_test",
+    size = "small",
+    srcs = ["context.test.rs"],
+    edition = "2024",
+    deps = [":with_compiled_data"],  # keep
+)
+
+rust_library(
+    name = "with_ffi",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "ffi.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],  # keep
+    compile_data = [
+        ":calendar_data",
+        ":time_zones_data",
+    ],
+    crate_features = [
+        "ffi",
+        "compiled_calendars",
+        "compiled_time_zones",
+    ],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)",
+        "FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)",
+    },
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_datetimeformat_calendars:calendar_core",
+        "@crates//:serde_json",
+    ],  # keep
+)
+
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "temporal.h",
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["temporal.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+formatjs_rust_test(
+    name = "ffi_test",
+    size = "small",
+    srcs = ["ffi.test.rs"],
+    compile_data = ["//conformance-tests/icu4j:temporal_iso_fixtures"],
+    edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)"},
+    deps = [
+        ":with_ffi",
+        "@crates//:serde_json",
+    ],  # keep
+)

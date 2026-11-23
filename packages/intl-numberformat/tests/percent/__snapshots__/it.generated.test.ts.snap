@@ -18,10 +18,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "milione",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 milione - +2 milioni"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 milione% - +2 milioni%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDisplay=long 3`] = `
 [
@@ -46,6 +50,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDis
     "value": "milione",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " - ",
@@ -70,6 +79,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "milioni",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -91,10 +105,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "Mln",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 Mln - +2 Mln"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 Mln% - +2 Mln%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDisplay=short 3`] = `
 [
@@ -119,6 +137,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDis
     "value": "Mln",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " - ",
@@ -143,6 +166,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "Mln",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -160,10 +188,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "milione",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 milione - 2 milioni"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 milione% - 2 milioni%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDisplay=long 3`] = `
 [
@@ -181,6 +213,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDispl
     "source": "startRange",
     "type": "compact",
     "value": "milione",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "shared",
@@ -202,6 +239,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "milioni",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -219,10 +261,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "Mln",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 Mln - 2 Mln"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 Mln% - 2 Mln%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDisplay=short 3`] = `
 [
@@ -240,6 +286,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDispl
     "source": "startRange",
     "type": "compact",
     "value": "Mln",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "shared",
@@ -260,6 +311,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=auto, compactDispl
     "source": "endRange",
     "type": "compact",
     "value": "Mln",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
@@ -282,10 +338,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "milione",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 milione - +2 milioni"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 milione% - +2 milioni%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
@@ -310,6 +370,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compac
     "value": "milione",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " - ",
@@ -334,6 +399,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "milioni",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -355,10 +425,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "Mln",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 Mln - +2 Mln"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 Mln% - +2 Mln%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
@@ -383,6 +457,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compac
     "value": "Mln",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " - ",
@@ -407,6 +486,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "Mln",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -424,10 +508,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "milione",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 milione - 2 milioni"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 milione% - 2 milioni%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisplay=long 3`] = `
 [
@@ -445,6 +533,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisp
     "source": "startRange",
     "type": "compact",
     "value": "milione",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "shared",
@@ -466,6 +559,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "milioni",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -483,10 +581,14 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "Mln",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 Mln - 2 Mln"`;
+exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 Mln% - 2 Mln%"`;
 
 exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisplay=short 3`] = `
 [
@@ -504,6 +606,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisp
     "source": "startRange",
     "type": "compact",
     "value": "Mln",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "shared",
@@ -524,6 +631,11 @@ exports[`Intl.NumberFormat it > notation=compact, signDisplay=never, compactDisp
     "source": "endRange",
     "type": "compact",
     "value": "Mln",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;

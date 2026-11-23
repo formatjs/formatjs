@@ -5,6 +5,8 @@ A polyfill for [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web
 
 ## ECMA-402 Spec Compliance
 
+Private slot access uses WeakMap methods captured when the module loads.
+
 This package implements `Intl.PluralRules`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 ### ✅ Implemented Features
@@ -70,6 +72,28 @@ import {PluralRules} from '@formatjs/intl-pluralrules'
 const pr = new PluralRules('en')
 pr.select(0) // "other"
 ```
+
+## Keep trailing zeros (Stage 3)
+
+Implements the [Keep trailing zeros draft](https://tc39.es/proposal-intl-keep-trailing-zeros/).
+String precision contributes to visible plural operands; Number and BigInt inputs
+keep their existing behavior.
+
+```js
+const pr = new Intl.PluralRules('en')
+pr.select(1) // "one"
+pr.select('1.0') // "other"
+pr.selectRange('1', '1.0') // "other"
+
+new Intl.PluralRules('en', {trailingZeroDisplay: 'stripToMinimum'}).select(
+  '1.0'
+) // "one"
+```
+
+`stripToMinimum` strips source trailing zeros beyond the configured minimum
+fraction/significant digits. Digit maxima still limit precision. `stripIfInteger`
+strips the fraction when the rounded value is an integer. Both modes are returned
+by `resolvedOptions()`. The normal polyfill entry point detects missing native support.
 
 ## Installation
 

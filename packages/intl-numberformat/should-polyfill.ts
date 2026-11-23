@@ -62,6 +62,22 @@ function supportsES2023() {
   }
 }
 
+function supportsSourcePrecision() {
+  try {
+    const keep = new Intl.NumberFormat('en')
+    const strip = new Intl.NumberFormat('en', {
+      trailingZeroDisplay: 'stripToMinimum',
+    } as any)
+    return (
+      keep.format('1.00' as any) === '1.00' &&
+      keep.format(1) === '1' &&
+      strip.format('1.00' as any) === '1'
+    )
+  } catch {
+    return false
+  }
+}
+
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -76,6 +92,7 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
     !supportsES2023() ||
+    !supportsSourcePrecision() ||
     onlySupportsEn() ||
     !supportedLocalesOf(locale)
   ) {

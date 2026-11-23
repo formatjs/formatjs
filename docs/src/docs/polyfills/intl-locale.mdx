@@ -7,6 +7,9 @@ A polyfill/ponyfill for Intl.Locale tested by the [official ECMAScript Conforman
 
 This package implements `Intl.Locale`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+`-u-kn-false` sets `numeric` to `false`; extension comparison follows
+[ECMA-262 §7.2.9 SameValue](https://tc39.es/ecma262/#sec-samevalue).
+
 ### ✅ Implemented Features
 
 #### Core Properties
@@ -158,9 +161,21 @@ async function polyfill() {
 }
 ```
 
+When this package installs `Intl.Locale`, it also connects Locale values to
+`Intl.getCanonicalLocales`. If the installed canonicalizer cannot recognize
+FormatJS's private Locale slots, installation replaces it with the imported
+FormatJS canonicalizer. Native Locale values created before replacement remain
+recognized. Importing the `Locale` ponyfill alone preserves native global APIs.
+
 ## Tests
 
 The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-locale:test262-strict` to require zero failures.
+
+Locale Info coverage includes collation ordering, formatter defaults, script
+direction metadata, and Unicode extension aliases. The isolated suite exercises
+Locale installation, including its canonicalizer connection.
+`bazel test //tools/test262:combined-locale` installs all FormatJS polyfills to
+check their behavior together.
 
 ## Weekday and numeric options
 

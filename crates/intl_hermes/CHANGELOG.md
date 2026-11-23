@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.4.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.4.0...formatjs_intl_hermes_v0.4.1) (2026-11-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_datetimeformat_calendars bumped from 0.3.0 to 1.0.0
+
+## [0.4.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.3.3...formatjs_intl_hermes_v0.4.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_pluralrules bumped from 0.2.1 to 0.3.0
+    * formatjs_intl_supportedvaluesof bumped from 1.0.0 to 1.1.0
+    * formatjs_intl_numberformat bumped from 0.2.1 to 0.3.0
+    * formatjs_intl_relativetimeformat bumped from 0.2.1 to 0.2.2
+    * formatjs_intl_datetimeformat bumped from 1.0.2 to 1.1.0
+    * formatjs_intl_datetimeformat_calendars bumped from 0.2.3 to 0.3.0
+    * formatjs_intl_durationformat bumped from 1.0.0 to 1.0.1
+
 ## [0.3.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.3.2...formatjs_intl_hermes_v0.3.3) (2026-11-08)
 
 

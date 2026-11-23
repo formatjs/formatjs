@@ -1,0 +1,38 @@
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+
+# gazelle:ignore
+# gazelle:rust_cargo_lock @temporal_benchmark_crates Cargo.toml Cargo.lock
+
+exports_files([
+    "Cargo.toml",
+    "Cargo.lock",
+])
+
+rust_binary(
+    name = "native_benchmark",
+    srcs = [
+        "native.rs",
+        "utc_provider.rs",
+    ],
+    crate_name = "temporal_rs_benchmark",
+    crate_root = "native.rs",
+    edition = "2024",
+    visibility = ["//benchmarks/temporal:__pkg__"],
+    deps = [
+        "//crates/temporal:with_compiled_data",
+        "@temporal_benchmark_crates//:temporal_rs",
+        "@temporal_benchmark_crates//:timezone_provider",
+    ],
+)
+
+# gazelle:ignore
+
+rust_binary(
+    name = "lookup_benchmark",
+    srcs = ["lookup-probe.rs"],
+    crate_name = "temporal_lookup_benchmark",
+    crate_root = "lookup-probe.rs",
+    edition = "2024",
+    visibility = ["//benchmarks/temporal:__pkg__"],
+    deps = ["//crates/temporal:with_compiled_data"],
+)

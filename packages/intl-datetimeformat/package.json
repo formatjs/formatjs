@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-datetimeformat",
-  "version": "8.0.3",
+  "version": "8.2.0",
   "description": "Intl.DateTimeFormat polyfill",
   "keywords": [
     "datetimeformat",
@@ -35,7 +35,6 @@
     "./should-polyfill.js": "./should-polyfill.js"
   },
   "dependencies": {
-    "@formatjs/bigdecimal": "workspace:*",
     "@formatjs/intl-localematcher": "workspace:*"
   }
 }
