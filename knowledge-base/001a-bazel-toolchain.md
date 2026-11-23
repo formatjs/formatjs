@@ -102,6 +102,11 @@ compilation smoke tests on `macos-15-intel` and `windows-11-arm` with matching
 Node architectures. The existing smoke archive stays unchanged so trusted
 downloaders on main can validate PR builds before the new workflow lands.
 
+The FreeBSD x64 addon cross-builds on Linux x64 against the pinned FreeBSD
+14.4 base sysroot. Its release job loads the packaged addon under Node.js 24 on
+FreeBSD 15.1 and exercises evaluation, extraction, and compilation before the
+artifact can publish.
+
 BuildBuddy's `Verify hooks` action runs the existing all-files Lefthook checks
 and rejects any resulting tracked or untracked changes. An ignored, CI-only
 `.bazelrc.user` enables `--config=bb-workflow`, top-level downloads, and the

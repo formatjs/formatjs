@@ -4,6 +4,7 @@
   "packages/cli-lib": "10.4.1",
   "packages/cli-native-darwin-arm64": "1.1.38",
   "packages/cli-native-darwin-x64": "1.1.6",
+  "packages/cli-native-freebsd-x64": "1.0.0",
   "packages/cli-native-linux-arm64": "1.2.38",
   "packages/cli-native-linux-arm64-musl": "1.0.36",
   "packages/cli-native-linux-x64": "1.1.38",

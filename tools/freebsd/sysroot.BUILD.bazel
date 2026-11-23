@@ -1,0 +1,11 @@
+load("@bazel_skylib//rules/directory:directory.bzl", "directory")
+
+directory(
+    name = "sysroot",
+    srcs = glob([
+        "lib/**",
+        "usr/include/**",
+        "usr/lib/**",
+    ]),
+    visibility = ["//visibility:public"],
+)

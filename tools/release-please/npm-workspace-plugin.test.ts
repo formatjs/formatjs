@@ -155,6 +155,7 @@ const expectedNpmDependents = [
   'packages/cli-lib',
   'packages/cli-native-darwin-arm64',
   'packages/cli-native-darwin-x64',
+  'packages/cli-native-freebsd-x64',
   'packages/cli-native-linux-arm64',
   'packages/cli-native-linux-arm64-musl',
   'packages/cli-native-linux-x64',

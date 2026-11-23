@@ -74,6 +74,19 @@
       "version-file": "BUILD.bazel",
       "initial-version": "1.0.0"
     },
+    "packages/cli-native-freebsd-x64": {
+      "component": "@formatjs/cli-native-freebsd-x64",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-freebsd-x64",
+      "version-file": "BUILD.bazel",
+      "initial-version": "1.0.0"
+    },
     "packages/cli-native-linux-arm64": {
       "component": "@formatjs/cli-native-linux-arm64",
       "extra-files": [

@@ -8,6 +8,7 @@ module(
 bazel_dep(name = "platforms", version = "1.1.0")
 bazel_dep(name = "apple_support", version = "2.9.1")
 bazel_dep(name = "rules_cc", version = "0.2.27")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "hermes")
 
 # Commit-pinned until the committed overlay is available in BCR.
@@ -241,6 +242,7 @@ crate.from_cargo(
         "x86_64-apple-ios",
         "x86_64-linux-android",
         "x86_64-pc-windows-msvc",
+        "x86_64-unknown-freebsd",
         "x86_64-unknown-linux-gnu",
         "x86_64-unknown-linux-musl",
     ],
@@ -334,6 +336,13 @@ register_toolchains(
 ######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "freebsd_x86_64_sysroot",
+    build_file = "//tools/freebsd:sysroot.BUILD.bazel",
+    sha256 = "769f60a6eea2938ad6b7943cfbcc17dfaf7d1f7ba59a32b869a00349302df853",
+    urls = ["https://download.freebsd.org/releases/amd64/14.4-RELEASE/base.txz"],
+)
 
 # Pyright's bundled CLI and typeshed exercise generated Python declarations.
 http_archive(

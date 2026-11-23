@@ -409,12 +409,13 @@ def no_internal_imports_test(name, data):
         node_options = ["--experimental-transform-types"],
     )
 
-def package_exports_test(name, pkg):
+def package_exports_test(name, pkg, target_compatible_with = []):
     """Test that all files referenced in package.json exports actually exist in the npm package.
 
     Args:
         name: target name
         pkg: label of the npm_package target (e.g. ":pkg")
+        target_compatible_with: constraints of the package build platform
     """
     js_test(
         name = name,
@@ -423,6 +424,7 @@ def package_exports_test(name, pkg):
         data = [pkg, "//:node_modules/minimist"],
         entry_point = "//tools:check_package_exports",
         node_options = ["--experimental-transform-types"],
+        target_compatible_with = target_compatible_with,
     )
 
 def package_json_test(name, bundles, package_json = "package.json"):
