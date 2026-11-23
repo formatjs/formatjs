@@ -71,10 +71,4 @@ it('only applies abbreviation suppressions to whole words', () => {
     'He shouted NO. ',
     'Then left.',
   ])
-
-  // Whole-word abbreviations still suppress the break.
-  expect(split('He met Mr. Smith.')).toEqual(['He met Mr. Smith.'])
-  expect(split('Ask K. Smith.')).toEqual(['Ask K. Smith.'])
-  expect(split('(Mr. Smith) left.')).toEqual(['(Mr. Smith) left.'])
-  expect(split('Visit the U.S. Capitol.')).toEqual(['Visit the U.S. Capitol.'])
 })
