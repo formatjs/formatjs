@@ -397,17 +397,21 @@ fn locale(directory: &str, source: &str) -> Result<String> {
         (2..=3).contains(&language.len()) && language.bytes().all(|b| b.is_ascii_lowercase()),
         "Invalid Android locale: {qualifier}"
     );
-    let language = match language {
-        "iw" => "he",
-        "in" => "id",
-        "ji" => "yi",
-        other => other,
-    };
+    let language = canonical_language(language);
     Ok(if rest.is_empty() {
         language.into()
     } else {
         format!("{language}-{rest}")
     })
+}
+
+fn canonical_language(language: &str) -> &str {
+    match language {
+        "iw" => "he",
+        "in" => "id",
+        "ji" => "yi",
+        other => other,
+    }
 }
 
 fn items(resource: &Resource) -> BTreeMap<String, &Item> {
@@ -437,17 +441,20 @@ fn unused_plural_categories(
     language: &str,
     catalog: &BTreeMap<String, Resource>,
 ) -> Vec<VerificationIssue> {
-    let Some(categories) = crate::plural_categories::cardinal_categories(language) else {
+    let end = language.find(['-', '_']).unwrap_or(language.len());
+    let base = language[..end].to_ascii_lowercase();
+    let canonical = canonical_language(&base);
+    let locale = format!("{canonical}{}", &language[end..]);
+    let Some(categories) = crate::plural_categories::cardinal_categories(&locale) else {
         return Vec::new();
     };
-    let base = language.split(['-', '_']).next().unwrap_or(language);
     let allowed: Vec<&str> = categories
         .iter()
         .copied()
         .filter(|category| {
             !ANDROID_LINT_UNUSED
                 .iter()
-                .any(|(lang, unused)| lang.eq_ignore_ascii_case(base) && unused == category)
+                .any(|(lang, unused)| *lang == canonical && unused == category)
         })
         .collect();
     catalog

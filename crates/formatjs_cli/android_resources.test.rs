@@ -604,3 +604,17 @@ fn android_plural_categories_check_the_source_and_skip_unknown_languages() {
     assert_eq!(issues[0].message_id, "res: plurals/count/few");
     assert!(issues[0].error.contains("allowed: one, other"));
 }
+
+#[test]
+fn android_plural_categories_check_legacy_source_locale_aliases() {
+    let files = BTreeMap::from([(
+        "res/values/strings.xml".into(),
+        xml(&plurals(&["few", "other"])),
+    )]);
+    for locale in ["iw", "IW-IL", "in", "ji"] {
+        let issues = verify_resources(&files, locale, structural()).unwrap();
+        assert_eq!(issues.len(), 1, "{locale}");
+        assert_eq!(issues[0].locale, locale);
+        assert_eq!(issues[0].message_id, "res: plurals/count/few");
+    }
+}
