@@ -81,7 +81,7 @@ generate_package_json(
         "//:node_modules/vue",
     ],
     repository = "formatjs/formatjs.git",
-    version = "6.22.0",  # x-release-please-version
+    version = "6.23.0",  # x-release-please-version
     deps = [
         "//:node_modules/@emnapi/core",
         "//:node_modules/@emnapi/runtime",
