@@ -5,6 +5,7 @@ import {Temporal as Reference} from 'temporal-polyfill/full/implementation'
 import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {checkHostTimezoneOracle} from '#packages/temporal/tests/host-timezone-oracle.js'
 import {timeZoneIdentifier} from '#packages/temporal/zones.js'
+import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 import type {HostTimeZone} from '#packages/temporal/host-timezone.js'
 
 function referenceZone(id: string): HostTimeZone {
@@ -13,8 +14,9 @@ function referenceZone(id: string): HostTimeZone {
     fields,
     disambiguation = 'compatible'
   ) =>
-    Reference.PlainDateTime.from(fields).toZonedDateTime(id, {disambiguation})
-      .epochNanoseconds
+    Reference.PlainDateTime.from(
+      typeof fields === 'bigint' ? epochNanosecondsToISO(fields) : fields
+    ).toZonedDateTime(id, {disambiguation}).epochNanoseconds
   return {
     offsetNanoseconds: instant =>
       BigInt(new Reference.ZonedDateTime(instant, id).offsetNanoseconds),

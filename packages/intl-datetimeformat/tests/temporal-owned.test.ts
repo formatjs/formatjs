@@ -12,6 +12,10 @@ import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import calendars from '#packages/intl-datetimeformat/calendars/all.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 
+type DateTimeFormatParts = ReturnType<
+  InstanceType<typeof DateTimeFormat>['formatToParts']
+>
+
 DateTimeFormat.__addTZData(packed)
 DateTimeFormat.__addCalendarData(...calendars)
 DateTimeFormat.__addLocaleData(en as any, de as any, fr as any, ja as any)
@@ -942,9 +946,9 @@ test('Temporal numeric producers retain late supplied providers after first rend
     secondText: string | undefined,
     retainedText: string | undefined
   try {
-    Intl.NumberFormat = FirstProvider
+    Intl.NumberFormat = FirstProvider as unknown as typeof Original
     firstText = first.format(value)
-    Intl.NumberFormat = SecondProvider
+    Intl.NumberFormat = SecondProvider as unknown as typeof Original
     secondText = second.format(value)
     retainedText = first.format(value)
   } finally {
@@ -1000,7 +1004,7 @@ test.each([
   })
   const value = new Temporal.Instant(0n)
   const original = Object.getOwnPropertyDescriptor(String.prototype, method)
-  let actual: Intl.DateTimeFormatPart[][] | undefined, error: unknown
+  let actual: DateTimeFormatParts[] | undefined, error: unknown
   try {
     Object.defineProperty(String.prototype, method, {
       configurable: true,
@@ -1058,7 +1062,7 @@ test.each(['exec', Symbol.replace] as const)(
     })
     const value = new Temporal.Instant(0n)
     const original = Object.getOwnPropertyDescriptor(RegExp.prototype, key)!
-    let actual: Intl.DateTimeFormatPart[] | undefined, error: unknown
+    let actual: DateTimeFormatParts | undefined, error: unknown
     try {
       Object.defineProperty(RegExp.prototype, key, {
         ...original,
@@ -1096,8 +1100,8 @@ test.each([false, true])(
     const value = new Temporal.PlainDateTime(2024, 1, 2, 3, 4, 5, 6)
     const chineseValue = new Temporal.PlainDate(2024, 2, 10)
     let text: string | undefined,
-      parts: Intl.DateTimeFormatPart[] | undefined,
-      related: Intl.DateTimeFormatPart[] | undefined,
+      parts: DateTimeFormatParts | undefined,
+      related: DateTimeFormatParts | undefined,
       error: unknown,
       hooks = 0
     try {

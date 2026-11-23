@@ -250,7 +250,7 @@ it('uses exposed legacy transition rows for short folds and reloads', async () =
   }
   vi.resetModules()
   try {
-    Intl.DateTimeFormat = LegacyDateTimeFormat as typeof Original
+    Intl.DateTimeFormat = LegacyDateTimeFormat as unknown as typeof Original
     const {createHostTimeZone: create} =
       await import('#packages/temporal/host-timezone.js')
     const zone = create(name)

@@ -3,7 +3,7 @@
   "deliveryScope": {
     "active": ["pure TypeScript", "native Rust", "native Hermes"],
     "retired": ["WASM"],
-    "records": "Historical verification; current checks and open work are in knowledge-base/015a-temporal-completion-audit.md."
+    "records": "Historical verification. Current conformance targets are in packages/temporal/BUILD.bazel."
   },
   "runtimeCommit": "c6bb171f5ce805d2eeec139bed32977323e426a8",
   "method": "Parse every candidate Test262 YAML frontmatter with js-yaml; count default/strict scenarios from flags. Compare current specification property names and getter presence against the built default TS namespace.",

@@ -729,9 +729,9 @@ it('preserves late supplied NumberFormat providers through first rendering', () 
     }
   }
   try {
-    Intl.NumberFormat = FirstProvider
+    Intl.NumberFormat = FirstProvider as unknown as typeof Original
     const first = new DurationFormat('en', {style: 'long'})
-    Intl.NumberFormat = SecondProvider
+    Intl.NumberFormat = SecondProvider as unknown as typeof Original
     const second = new DurationFormat('en', {style: 'long'})
     Object.defineProperty(Intl, 'NumberFormat', descriptor)
     expect(first.format(duration)).toBe(expected('arab'))
@@ -812,7 +812,7 @@ it.each(['stringify', 'toJSON'] as const)(
     class Provider extends Original {}
     let formatter: DurationFormat
     try {
-      Intl.NumberFormat = Provider
+      Intl.NumberFormat = Provider as unknown as typeof Original
       formatter = new DurationFormat('en-u-nu-fullwide', {style: 'long'})
     } finally {
       Object.defineProperty(Intl, 'NumberFormat', providerDescriptor)
@@ -949,7 +949,7 @@ it.each(['filter', 'forEach', 'resolvedOptions'] as const)(
       error: unknown,
       calls = 0
     try {
-      Intl.NumberFormat = Provider
+      Intl.NumberFormat = Provider as unknown as typeof Original
       define(Intl, 'DurationFormat', {
         ...durationFormatDescriptor,
         value: DurationFormat,
@@ -1801,7 +1801,7 @@ it.each([
   ],
 ] as const)(
   'fresh Duration best fit keeps %s private',
-  (label, owner, key, distance, locale = 'de-AT-u-nu-arab') => {
+  (label, owner, key, distance = false, locale: string = 'de-AT-u-nu-arab') => {
     DurationFormat.__addTemporalNamespace(Temporal)
     // CLDR49: es-MX x es-419 uses partition 1 x [1, 3], with cells [4, 4].
     const matrix = locale === 'es-MX-u-nu-arab'
