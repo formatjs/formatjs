@@ -10,6 +10,7 @@ const require = createRequire(import.meta.url)
 const NATIVE_PACKAGES: Record<string, string[]> = {
   'darwin-arm64': ['@formatjs/cli-native-darwin-arm64'],
   'darwin-x64': ['@formatjs/cli-native-darwin-x64'],
+  'freebsd-x64': ['@formatjs/cli-native-freebsd-x64'],
   'linux-arm64': [
     '@formatjs/cli-native-linux-arm64',
     '@formatjs/cli-native-linux-arm64-musl',

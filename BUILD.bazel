@@ -170,7 +170,7 @@ copy_to_directory(
         "package.json",
         "pnpm-lock.yaml",
         "pnpm-workspace.yaml",
-    ] + [pkg["package_json"] for pkg in DIST_PACKAGES] + glob(["patches/*"]),
+    ] + [pkg["package_json"] for pkg in RELEASE_PLEASE_NPM_PACKAGES] + glob(["patches/*"]),
     out = "formatjs_release_manifests",
 )
 
@@ -207,13 +207,13 @@ js_test(
             pkg["dirname"],
             pkg["package_json"],
         )
-        for pkg in DIST_PACKAGES
+        for pkg in RELEASE_PLEASE_NPM_PACKAGES
     ],
     data = [
         ":release_manifests",
         "//:node_modules/minimist",
         "//:node_modules/semver",
-    ] + [pkg["package_json"] for pkg in DIST_PACKAGES],
+    ] + [pkg["package_json"] for pkg in RELEASE_PLEASE_NPM_PACKAGES],
     entry_point = "//tools:check_dist_package_json",
     node_options = ["--experimental-transform-types"],
 )

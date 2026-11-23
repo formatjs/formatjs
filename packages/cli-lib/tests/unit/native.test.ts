@@ -27,6 +27,7 @@ describe('native package selection', () => {
   it.each([
     ['darwin', 'arm64', '@formatjs/cli-native-darwin-arm64'],
     ['darwin', 'x64', '@formatjs/cli-native-darwin-x64'],
+    ['freebsd', 'x64', '@formatjs/cli-native-freebsd-x64'],
     ['win32', 'arm64', '@formatjs/cli-native-win32-arm64'],
     ['win32', 'x64', '@formatjs/cli-native-win32-x64'],
   ] as const)('selects %s %s binding', (platform, arch, name) => {

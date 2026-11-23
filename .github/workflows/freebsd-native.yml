@@ -1,0 +1,65 @@
+name: FreeBSD Native Binding
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/freebsd-native.yml'
+      - 'Cargo.lock'
+      - 'MODULE.bazel'
+      - 'crates/formatjs_cli*/**'
+      - 'packages/cli-native-freebsd-x64/**'
+      - 'tools/freebsd/**'
+      - 'tools/ci/native_binding_smoke.cjs'
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Cross-build FreeBSD x64 binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: bazel-contrib/setup-bazel@0.19.2
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+
+      - name: Cross-build package
+        run: |
+          bazel build -c opt //packages/cli-native-freebsd-x64:pkg
+          package=$(bazel cquery -c opt --output=files //packages/cli-native-freebsd-x64:pkg)
+          mkdir -p artifacts/cli-native-freebsd-x64
+          cp -RL "$package"/. artifacts/cli-native-freebsd-x64/
+
+      - uses: actions/upload-artifact@v8
+        with:
+          name: cli-native-freebsd-x64
+          path: artifacts/cli-native-freebsd-x64
+          if-no-files-found: error
+
+  smoke:
+    name: Smoke-test FreeBSD x64 binding
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: cli-native-freebsd-x64
+          path: artifacts/cli-native-freebsd-x64
+
+      - name: Smoke-test on FreeBSD
+        uses: vmactions/freebsd-vm@811efaaac0668df8bfb8308c3ec997b5ab50037b # v1
+        with:
+          release: '15.1'
+          prepare: pkg install -y node24
+          run: node tools/ci/native_binding_smoke.cjs ./artifacts/cli-native-freebsd-x64 freebsd x64

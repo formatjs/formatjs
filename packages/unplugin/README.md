@@ -112,6 +112,8 @@ export default defineConfig({
 
 ## Static message values
 
+On FreeBSD x64, static evaluation uses the optional `@formatjs/cli-native-freebsd-x64` package.
+
 Message fields can reference local `const` strings, including aliases, templates,
 string concatenations, and constant conditionals. OXC performs native scope analysis and static evaluation through
 `@formatjs/cli-lib`. Constants must be initialized before the reference. Lexical scope

@@ -1,0 +1,55 @@
+load("@llvm//toolchain:selects.bzl", "platform_cc_tool_map", "resource_dir_arg")
+load("@rules_cc//cc/toolchains:args.bzl", "cc_args")
+load("@rules_cc//cc/toolchains:toolchain.bzl", "cc_toolchain")
+load("@rules_cc//cc/toolchains/args:sysroot.bzl", "cc_sysroot")
+
+exports_files(["sysroot.BUILD.bazel"])
+
+cc_sysroot(
+    name = "sysroot",
+    allowlist_include_directories = ["@freebsd_x86_64_sysroot//:sysroot"],
+    sysroot = "@freebsd_x86_64_sysroot//:sysroot",
+)
+
+cc_args(
+    name = "target",
+    actions = [
+        "@rules_cc//cc/toolchains/actions:compile_actions",
+        "@rules_cc//cc/toolchains/actions:link_actions",
+    ],
+    args = ["--target=x86_64-unknown-freebsd14.4"],
+)
+
+cc_args(
+    name = "linker",
+    actions = ["@rules_cc//cc/toolchains/actions:link_actions"],
+    args = ["-fuse-ld=lld"],
+)
+
+cc_toolchain(
+    name = "cc",
+    args = [
+        ":target",
+        ":sysroot",
+        ":linker",
+        resource_dir_arg("linux", "x86_64"),
+    ],
+    compiler = "clang",
+    supports_param_files = True,
+    tool_map = platform_cc_tool_map("linux", "x86_64"),
+)
+
+toolchain(
+    name = "linux_x86_64_to_freebsd_x86_64",
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:freebsd",
+    ],
+    toolchain = ":cc",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    visibility = ["//visibility:public"],
+)
