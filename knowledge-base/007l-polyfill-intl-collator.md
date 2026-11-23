@@ -1,6 +1,6 @@
 # @formatjs/intl-collator
 
-The shared 69-case ordering fixture is checked independently by ICU4C 78.1,
+The shared ordering fixture is checked independently by ICU4C 78.1,
 ICU4J 78.1 and ICU4X Collator 2.3.1, as well as the Rust/TS differential suite.
 The ICU adapters preserve locale keyword defaults and explicitly map Intl
 sensitivity, case-first, numeric and punctuation options. See
@@ -9,6 +9,30 @@ sensitivity, case-first, numeric and punctuation options. See
 Generated locale metadata includes root `emoji` and `eor` types while excluding
 private LDML types. Runtime tailoring lookup falls back through locale parents
 to root, sharing cached TS rules and Rust `Arc` values across inheriting locales.
+The cache carries LDML `[backwards 2]` settings for secondary accent ordering.
+U+FFFE separates segments whose secondary weights are reversed independently.
+Script ordering uses the FDD1 primary-weight boundaries from FractionalUCA.
+Han implicit weights follow FractionalUCA's radical-stroke data. Symbolic Han
+references inherit those weights. Unassigned code points and lone surrogates
+use the unassigned group before trailing weights.
+LDML `[last regular]` anchors CJK primary chains at the start of the Han group,
+before implicit Han weights.
+Tailored mappings prefer the longest preceding context, then the longest
+target. Extension elements keep their original weights.
+Imports apply in rule order. Suppression removes existing contractions and
+prefixes for the listed characters. Later rules can add new mappings.
+The build expands Unicode escapes and starred ranges in CLDR rules.
+Primary weights leave room between root entries for tailored letters and
+contractions.
+Contraction lookahead uses the repository's Unicode canonical combining classes.
+Skipped marks retain their weights after the contraction.
+Generated metadata tracks separate sort and search defaults for case order and
+punctuation. An explicitly selected collation can supply its own defaults.
+Comparison uses the data locale selected during resolution, including when
+the public host locale is an alias of bundled parent data.
+Case sensitivity projects primary and case weights. Tailoring preserves the
+root case bits for expansions and contractions. Secondary relations inherit
+the most recent primary group, such as Swedish `ä` followed by `æ`.
 Forty-two fixtures exercise root ordering across six languages, independently
 checked by all three ICU implementations.
 
@@ -139,12 +163,18 @@ left-to-right order and rejects Symbols with `TypeError`.
 
 ### Built-in descriptors
 
+`Collator()` creates a fresh instance and ignores the call receiver. A construct
+call reads the new target's prototype once. `compare` and `resolvedOptions()`
+check the initialized instance slots. [ECMA-402 §10](https://tc39.es/ecma402/#collator-objects)
+
 `resolvedOptions` and `supportedLocalesOf` are writable, configurable methods,
 but cannot be constructed with `new`. The constructor's `prototype` property
 is non-writable; the compare getter and bound function expose the standard names.
 
 The default `ignorePunctuation` value follows the locale’s CLDR collation
 settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
+Shifted weighting also suppresses primary-ignorable elements after variable
+punctuation.
 
 CLDR `root` data remains available for collation inheritance, but is excluded
 from available locale identifiers used during negotiation.
@@ -173,9 +203,9 @@ private module manifest prevents package self-reference during execution.
 `crates/intl_collator` serializes the existing generated CLDR root/locale/tailoring
 modules into one compiled dataset. Rust owns locale extension negotiation, UCA
 level comparisons, LDML imports and contextual/contraction matching. ICU4X handles
-normalization and locale-sensitive lowercasing while preserving lone UTF-16 units.
-The sort/search profile mirrors TS, including its compact implicit weights and
-shifted approximation; it does not claim full ICU Collator ordering parity.
+normalization while preserving lone UTF-16 units. Both implementations choose
+case-sensitive weights after matching the original normalized strings.
+The sort/search profile shares TS implicit weights and variable-element filtering.
 Core conformance covers the existing TSV and every available locale/collation plus
 option combinations. The owned ABI preserves UTF-16 inputs. Hermes uses a callable
 constructor, private WeakMap brands, ordered coercions and a cached non-constructor
@@ -183,9 +213,12 @@ bound compare retaining the original JS instance. SDK `:collator` ships public
 headers, source, `37-IntlCollator.js` and a typed independent consumer smoke.
 Linux builds/cross-builds artifacts; non-Linux runners only download and smoke-test.
 
-Comparison consistency regressions cover unmatched digit runs, base/accent with
-caseFirst, and canonical-equivalent case-order keys. Rust and TS use the same
-per-string normalized case key; canonical equivalence returns positive zero.
+Comparison consistency regressions cover unmatched digit runs, case ordering,
+and canonical equivalence. Rust and TypeScript combine explicit `caseFirst`
+with tertiary weights at variant sensitivity.
+Numeric collation uses the generated Unicode decimal-digit table in both
+languages, including mixed-script runs and supplementary digits. Numeric runs
+use the FractionalUCA digit-group lead and compare before accent and case weights.
 
 FractionalUCA primary weights omit trailing zero bytes. Variable-top classification
 aligns them to the four-byte boundary; raw numeric comparison incorrectly marked

@@ -223,7 +223,8 @@ import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 
 The polyfill also replaces `Date.prototype.toLocaleString`,
 `toLocaleDateString`, and `toLocaleTimeString` with their ECMA-402 behavior,
-including the standard date and time defaults when only `timeZone` is set.
+including the standard date and time defaults when only `timeZone` is set. Invalid dates return
+`"Invalid Date"`. Invalid locales and options throw for valid dates.
 
 Replacing `Object.prototype.isPrototypeOf` does not affect formatter construction.
 
@@ -339,9 +340,13 @@ import '@formatjs/intl-datetimeformat/polyfill.js'
 import '@formatjs/intl-datetimeformat/add-golden-tz.js'
 ```
 
+Use date fields with `timeZoneName` to get a label such as `Jan 15, 2026, EST`.
+Explicit named zones with transitions require the matching data pack. An
+unavailable name or alias throws `RangeError`.
+
 ### UTC Offset Timezones
 
-This polyfill supports UTC offset timezone identifiers as specified in [ECMA-402](https://tc39.es/ecma402/) (ES2026). You can use offset-based timezone strings in addition to IANA timezone names.
+The `timeZone` option accepts IANA names and minute-precision UTC offsets. [ECMA-402 §11.1.2](https://tc39.es/ecma402/#sec-createdatetimeformat)
 
 #### Supported Formats
 
@@ -350,10 +355,8 @@ The following UTC offset formats are supported:
 - `±HH:MM` - e.g., `"+01:00"`, `"-05:00"` (recommended format)
 - `±HHMM` - e.g., `"+0100"`, `"-0500"`
 - `±HH` - e.g., `"+01"`, `"-05"`
-- `±HH:MM:SS` - e.g., `"+01:30:45"` (with seconds)
-- `±HH:MM:SS.sss` - e.g., `"+01:30:45.123"` (with fractional seconds)
 
-All offset formats are automatically canonicalized to `±HH:MM` format (with seconds/fractional seconds preserved if non-zero).
+`resolvedOptions().timeZone` normalizes offsets to `±HH:MM`. Offsets containing seconds throw `RangeError`.
 
 #### Usage Example
 
@@ -384,15 +387,20 @@ const dtf = new Intl.DateTimeFormat('en-GB', {
 
 #### Compatibility
 
-- UTC offset timezones work without loading any timezone data (`add-all-tz.js` or `add-golden-tz.js`)
+- UTC offsets and IANA `Etc/GMT±N` zones work without loading timezone data.
 - Compatible with libraries like `@date-fns/tz` in React Native/Hermes environments
 - Follows the same behavior as Chrome and Node.js 22+ native implementations
 
 ### Default Timezone
 
-Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in. Therefore, the default timezone in this polyfill is `UTC`.
+The polyfill prefers the primary name for the host Intl time zone. If the pack
+only has the host alias, it uses that alias. If neither is available, it uses
+`UTC`.
 
-You can change this by either calling `__setDefaultTimeZone` or always explicitly pass in `timeZone` option for accurate date time calculation.
+Pass `timeZone` to choose a zone per formatter, or call
+`__setDefaultTimeZone` to set an override. If a replacement pack drops the
+override's zone, new formatters use the host zone or UTC until the zone is
+available again.
 
 Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded, e.g:
 
@@ -484,10 +492,9 @@ non-breaking spaces where specified.
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
 
-`formatRangeToParts` marks unique fields and separators as `shared`. Repeated
-fields belong to their endpoint; punctuation between repeated fields stays with
-that endpoint. Shared month names retain the complete date pattern for
-grammatical context.
+`formatRangeToParts` labels each part `startRange`, `endRange`, or `shared`.
+When no interval pattern is available, each endpoint keeps its literals
+and the separator is shared.
 
 An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
 and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.

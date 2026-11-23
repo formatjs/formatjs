@@ -8,7 +8,7 @@ Collection of ECMA-402 abstract operations shared by all Intl polyfills. This is
 
 Implements abstract operations from across the ECMA-402 specification:
 
-- **Section 9** — Locale operations: `CanonicalizeLocaleList`, `ResolveLocale`, `LookupSupportedLocales`, `BestFitSupportedLocales`
+- **Section 9** — Locale operations include `CanonicalizeLocaleList`, `ResolveLocale`, and `FilterLocales`. Formatter `supportedLocalesOf` defaults to best fit and retains only requested tags that match loaded locales.
 - **Section 11 (NumberFormat)** — `InitializeNumberFormat`, `PartitionNumberPattern`, `ToRawFixed`, `ToRawPrecision`, `FormatNumericToString`
 - **Section 12 (DateTimeFormat)** — Date/time abstract operations
 - **General** — `GetOption`, `GetNumberOption`, `DefaultNumberOption`, `CoerceOptionsToObject`

@@ -14,6 +14,9 @@ Single-value parts use shared CreatePartsArray for ordered private-list projecti
 and own data properties. This implements the result-building steps of ECMA-402
 §16.5.6 without iterator/push/index-setter hooks.
 
+Installed Number and BigInt locale methods read their receiver slots before
+constructing a formatter, per ECMA-402 §20.2.1 and §20.3.1.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract` — Core ECMA-402 operations
@@ -253,6 +256,11 @@ added, removed, or changed differences fail. Fixture hashes guard the case matri
 and pinned oracle output.
 The `icu_audit` executable also supports inventory output and strict comparisons.
 
+The approximation audit checks that TypeScript and Rust add one sign while
+preserving the endpoint parts. ICU omits the sign for some Arabic unit-only
+outputs and removes the currency space in some Swiss German ranges. The
+snapshots record these differences. [ECMA-402 §16.5.19](https://tc39.es/ecma402/#sec-formatapproximately)
+
 NumberFormat passes its available-locale Set directly to ResolveLocale, retaining
 stable matcher state while the matcher checks for registry mutations. Compact
 thresholds use lazily compiled numeric magnitude/exponent indexes, shared across
@@ -332,6 +340,7 @@ Only decimal String primitives contribute counts. Coercion runs once with number
 hint; Number/BigInt, radix strings, empty input and non-numeric input use zero
 counts. Finite underflow retains source precision; overflow clears digit count.
 Counts describe the source before percent or notation scaling.
+Notation thresholds use the decimal mantissa's digit count and exponent to compute magnitude exactly.
 
 The shared rounding primitives preserve source precision up to their existing
 maxima; zero uses fraction width. `stripToMinimum` clears both counts before

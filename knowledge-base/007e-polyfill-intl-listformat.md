@@ -74,8 +74,9 @@ non-string elements throw `TypeError`; an invalid element also closes the iterat
 `crates/intl_listformat` compiles caller-loaded CLDR patterns and implements
 CreatePartsFromList, DeconstructPattern and FormatList. UTF-16 units preserve
 lone surrogates. Iterative pattern expansion avoids recursive stack growth and
-quadratic copying. The shared Rust Locale matcher negotiates registered packs;
-late registration leaves existing instances unchanged.
+quadratic copying. The shared Rust Locale matcher negotiates registered packs.
+Reloads update inferred entries still owned by the pack. Existing instances keep
+their captured templates.
 
 Instances retain their selected compiled templates directly. Pattern bodies cache
 literal UTF-16 lengths, allowing exact output reservation for pair and chain

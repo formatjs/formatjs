@@ -35,6 +35,9 @@ Its `format` and `resolvedOptions` methods use the hidden formatter.
 formatter and throw on these wrappers. Repeated legacy initialization throws.
 Calling an already initialized formatter preserves its original options.
 
+The installed Number and BigInt locale methods accept primitives and boxed
+values of their own type. Invalid receivers throw before options are read.
+
 #### Formatting Styles
 
 - **`'decimal'`** - Plain number format (default)
@@ -85,6 +88,7 @@ nf.format('12345678901234567890')
 
 Implements the [Keep trailing zeros draft](https://tc39.es/proposal-intl-keep-trailing-zeros/).
 Numeric strings retain their precision within the configured digit limits.
+Scientific and engineering notation use the exact decimal value to select the exponent.
 Number and BigInt inputs keep their existing behavior.
 
 ```js
