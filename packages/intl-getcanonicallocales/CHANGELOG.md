@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.4.0...@formatjs/intl-getcanonicallocales@3.4.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** preserve locale-list input coercion ([#8084](https://github.com/formatjs/formatjs/issues/8084)) ([4ca8116](https://github.com/formatjs/formatjs/commit/4ca811641f2d85a53ef9bea8c6165d56e7f6df49))
+* **@formatjs/intl-getcanonicallocales:** preserve private Locale brands ([#8085](https://github.com/formatjs/formatjs/issues/8085)) ([2104d63](https://github.com/formatjs/formatjs/commit/2104d63f22ab43d4a64b7a8eabb52056f243078d))
+* **@formatjs/temporal:** retain intrinsic array predicates ([#8076](https://github.com/formatjs/formatjs/issues/8076)) ([0274516](https://github.com/formatjs/formatjs/commit/02745160c469d642d24600188ca7d1cc8e644157))
+* **@formatjs/temporal:** retain private list search intrinsics ([#8083](https://github.com/formatjs/formatjs/issues/8083)) ([8e1640b](https://github.com/formatjs/formatjs/commit/8e1640bff229a5eef33f797c3a4318fb471cddd8))
+
 ## [3.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.3.1...@formatjs/intl-getcanonicallocales@3.4.0) (2026-11-17)
 
 

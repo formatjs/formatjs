@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@13.0.3...@formatjs/intl-relativetimeformat@13.0.4) (2026-11-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [13.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@13.0.2...@formatjs/intl-relativetimeformat@13.0.3) (2026-11-09)
 
 

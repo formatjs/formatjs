@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.5.0...@formatjs/intl-locale@5.5.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-getcanonicallocales:** preserve private Locale brands ([#8085](https://github.com/formatjs/formatjs/issues/8085)) ([2104d63](https://github.com/formatjs/formatjs/commit/2104d63f22ab43d4a64b7a8eabb52056f243078d))
+* **@formatjs/temporal:** fix array allocation and value comparison ([#8101](https://github.com/formatjs/formatjs/issues/8101)) ([2dcd6d9](https://github.com/formatjs/formatjs/commit/2dcd6d94993b81e4127d0f9289449fce040e3c03))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-getcanonicallocales bumped to 3.4.1
+    * @formatjs/intl-supportedvaluesof bumped to 3.1.1
+
 ## [5.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.3...@formatjs/intl-locale@5.5.0) (2026-11-17)
 
 

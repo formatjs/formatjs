@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.1.0...@formatjs/intl-numberformat@10.1.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** capture private cache operations ([#8107](https://github.com/formatjs/formatjs/issues/8107)) ([0d4ede7](https://github.com/formatjs/formatjs/commit/0d4ede7e982af51cf1875700202b5e7194f64bc9))
+* **@formatjs/temporal:** align fold probes and keep spec links inline ([d50198b](https://github.com/formatjs/formatjs/commit/d50198b52a506d527955b8f60dde0f0431217d8b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.11
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [10.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.0.4...@formatjs/intl-numberformat@10.1.0) (2026-11-17)
 
 

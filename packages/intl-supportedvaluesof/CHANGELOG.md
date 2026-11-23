@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.1.0...@formatjs/intl-supportedvaluesof@3.1.1) (2026-11-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/fast-memoize bumped to 3.1.8
+
 ## [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.0.1...@formatjs/intl-supportedvaluesof@3.1.0) (2026-11-17)
 
 
