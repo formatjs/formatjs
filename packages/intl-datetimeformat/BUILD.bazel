@@ -613,6 +613,7 @@ rolldown_bundle(
     name = "polyfill.iife",
     srcs = [":srcs"],
     entry_point = "polyfill.ts",
+    format = "iife",
     target = "es2020",
     deps = [
         "//:node_modules/@formatjs/intl-localematcher",
