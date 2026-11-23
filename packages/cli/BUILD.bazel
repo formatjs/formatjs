@@ -13,6 +13,8 @@ generate_package_json(
     },
     bugs = "https://github.com/formatjs/formatjs/issues",
     dependency_version_overrides = {
+        "@emnapi/core": "2.0.0-beta.3",
+        "@emnapi/runtime": "2.0.0-beta.3",
         "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.97.0",
     },
     description = "A CLI for formatjs.",
@@ -80,6 +82,10 @@ generate_package_json(
     ],
     repository = "formatjs/formatjs.git",
     version = "6.22.0",  # x-release-please-version
+    deps = [
+        "//:node_modules/@emnapi/core",
+        "//:node_modules/@emnapi/runtime",
+    ],
 )
 
 package_json_sync(
@@ -102,10 +108,14 @@ PACKAGE_NAME = "cli"
 # Assemble bin/ directory with the formatjs entry point and all dynamic chunks.
 copy_to_directory(
     name = "bin",
-    srcs = ["//packages/cli-lib:formatjs"],
+    srcs = [
+        "//packages/cli-lib:formatjs",
+        "//packages/cli-lib:wasi_binary",
+    ],
     out = "bin",
     replace_prefixes = {
         "-lib/formatjs/": "",
+        "-lib/": "",
     },
     visibility = [
         "//benchmarks/cli-comparison:__pkg__",

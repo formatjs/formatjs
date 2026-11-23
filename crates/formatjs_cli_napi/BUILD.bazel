@@ -8,6 +8,7 @@ load(
     "release_node_linux_arm64_musl",
     "release_node_linux_x64",
     "release_node_linux_x64_musl",
+    "release_node_wasi",
     "release_node_win32_arm64",
     "release_node_win32_x64",
 )
@@ -49,6 +50,7 @@ rust_shared_library(
     # The LLVM musl toolchain defaults to a static libc search directory. Node
     # addons must use Alpine's loaded musl runtime instead of embedding libc.
     compile_data = select({
+        "@rules_rs//rs/platforms/config:wasm32-wasip1": ["@emnapi_wasi//:lib/wasm32-wasip1/libemnapi-basic-napi-rs.a"],
         ":linux_musl": [
             "@llvm//runtimes/musl:musl_libc.so",
         ],
@@ -64,6 +66,21 @@ rust_shared_library(
         "@crates//:napi-derive",
     ],
     rustc_flags = select({
+        # Link the WASI reactor and export the entry points emnapi needs.
+        "@rules_rs//rs/platforms/config:wasm32-wasip1": [
+            "-Clink-arg=$(location @emnapi_wasi//:lib/wasm32-wasip1/libemnapi-basic-napi-rs.a)",
+            "-Clink-arg=-l:crt1-reactor.o",
+            "-Clink-arg=--export=_initialize",
+            "-Clink-arg=--import-undefined",
+            "-Clink-arg=--export-table",
+            "-Clink-arg=--export=malloc",
+            "-Clink-arg=--export=free",
+            "-Clink-arg=--export=emnapi_create_env",
+            "-Clink-arg=--export=emnapi_delete_env",
+            "-Clink-arg=--export=napi_register_wasm_v1",
+            "-Clink-arg=-zstack-size=8388608",
+            "-Clink-arg=--strip-debug",
+        ],
         "@platforms//os:macos": [
             "-Clink-arg=-Wl,-undefined,dynamic_lookup",
         ],
@@ -215,5 +232,13 @@ filegroup(
         ":release_node_linux_x64",
         ":release_node_linux_x64_musl",
     ],
+    visibility = ["//visibility:public"],
+)
+
+release_node_wasi(
+    name = "release_node_wasi",
+    srcs = [":formatjs_cli_napi"],
+    outs = ["formatjs_cli.wasm"],
+    cmd = "cp $< $@",
     visibility = ["//visibility:public"],
 )

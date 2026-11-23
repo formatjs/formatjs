@@ -232,11 +232,14 @@ The CLI and its N-API bindings require Rust 1.97 for OXC 0.153.
 
 ### `formatjs_cli_napi`
 
-**Purpose:** Native Node.js boundary used by `@formatjs/cli-lib`.
+**Purpose:** Rust binding for `@formatjs/cli` and `@formatjs/cli-lib`.
 
-Published bindings cover macOS arm64/x64, Windows arm64/x64, and Linux arm64/x64
-with GNU or musl libc. Release targets select pinned Rust/LLVM platforms;
-`crate.from_cargo` includes `aarch64-pc-windows-msvc` for Windows ARM64.
+Published native bindings cover macOS arm64/x64, FreeBSD x64, Windows
+arm64/x64, and Linux arm64/x64 with GNU or musl libc. Both npm packages
+include the Bazel-built `wasm32-wasip1` binding for fallback. The synchronous
+loader uses emnapi with Node's WASI runtime. Keep the emnapi link archive
+and npm runtime versions in sync. Use `FORMATJS_FORCE_WASI=1` to exercise
+the fallback on a platform with a native binding.
 
 - File-based `extract` and compile APIs support the CLI fast path.
 - Structured `extractSources` accepts in-memory virtual sources and returns

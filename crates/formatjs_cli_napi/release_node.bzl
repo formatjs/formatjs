@@ -35,3 +35,13 @@ release_node_win32_x64 = release_binary_windows_x64
 
 release_node_darwin_x64 = release_binary_darwin_x64
 release_node_win32_arm64 = release_binary_windows_arm64
+
+release_node_wasi, _release_node_wasi_internal = with_cfg(
+    native.genrule,
+).set(
+    "compilation_mode",
+    "opt",
+).set(
+    "platforms",
+    [Label("@rules_rs//rs/platforms:wasm32-wasip1")],
+).build()

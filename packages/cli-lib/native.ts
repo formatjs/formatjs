@@ -1,5 +1,11 @@
+import {readFileSync} from 'node:fs'
+import {parse, resolve, sep} from 'node:path'
 import {createRequire} from 'module'
 import {Runfiles} from '@bazel/runfiles'
+import type * as emnapiCore from '@emnapi/core'
+import type * as emnapiPlugins from '@emnapi/core/plugins'
+import type * as emnapiRuntime from '@emnapi/runtime'
+import type * as nodeWasi from 'node:wasi'
 import type {
   EvaluationSpan,
   EvaluatedString,
@@ -126,7 +132,60 @@ export interface NativeBinding {
   supportedBuiltinFormatters(): string[]
 }
 
-let nativeBinding: NativeBinding | null | undefined
+let nativeBinding: NativeBinding | undefined
+
+function loadWasi(): NativeBinding {
+  const {WASI} = require('node:wasi') as typeof nodeWasi
+  const {instantiateNapiModuleSync} =
+    require('@emnapi/core') as typeof emnapiCore
+  const {asyncWork, tsfn} =
+    require('@emnapi/core/plugins') as typeof emnapiPlugins
+  const {getDefaultContext} = require('@emnapi/runtime') as typeof emnapiRuntime
+  // Map host paths to the preopened WASI root.
+  const root = parse(process.cwd()).root
+  const wasi = new WASI({
+    version: 'preview1',
+    preopens: {'/': root},
+  })
+  const wasmPath = require.resolve('./formatjs_cli.wasm')
+  const binding = instantiateNapiModuleSync(readFileSync(wasmPath), {
+    context: getDefaultContext(),
+    wasi,
+    plugins: [asyncWork, tsfn],
+    overwriteImports(imports) {
+      return {
+        ...imports,
+        env: {...imports.env, ...imports.napi, ...imports.emnapi},
+      }
+    },
+    beforeInit({instance}) {
+      for (const [name, register] of Object.entries(instance.exports)) {
+        if (
+          name.startsWith('__napi_register__') &&
+          typeof register === 'function'
+        ) {
+          register()
+        }
+      }
+    },
+  }).napiModule.exports as NativeBinding
+
+  return {
+    ...binding,
+    compile(files, options) {
+      return binding.compile(
+        files.map(file => {
+          const absolute = resolve(file)
+          if (parse(absolute).root.toLowerCase() !== root.toLowerCase()) {
+            throw new Error(`WASI cannot read files outside ${root}: ${file}`)
+          }
+          return '/' + absolute.slice(root.length).split(sep).join('/')
+        }),
+        options
+      )
+    },
+  }
+}
 
 export function getInstalledNativePackageCandidates(
   candidates: readonly string[],
@@ -151,13 +210,31 @@ export function getNativePackageCandidates(
 }
 
 export function loadNative(): NativeBinding {
-  if (nativeBinding !== undefined) {
-    if (nativeBinding) {
-      return nativeBinding
-    }
-    throw new Error('Native @formatjs/cli-lib binding is unavailable')
+  if (nativeBinding) {
+    return nativeBinding
   }
 
+  const loadErrors: string[] = []
+  if (process.env.FORMATJS_FORCE_WASI !== '1') {
+    const binding = tryLoadNative(loadErrors)
+    if (binding) {
+      nativeBinding = binding
+      return binding
+    }
+  }
+
+  try {
+    nativeBinding = loadWasi()
+    return nativeBinding
+  } catch (error) {
+    loadErrors.push(`WASI: ${(error as Error).message}`)
+    throw new Error(
+      `@formatjs/cli-lib binding is unavailable.\n${loadErrors.join('\n')}`
+    )
+  }
+}
+
+function tryLoadNative(loadErrors: string[]): NativeBinding | undefined {
   let runfilesPath: string | undefined
   if (
     process.env.RUNFILES_DIR ||
@@ -181,21 +258,13 @@ export function loadNative(): NativeBinding {
       ? installedPackageCandidates
       : packageCandidates),
   ].filter(Boolean) as string[]
-  const loadErrors: string[] = []
-
   for (const candidate of candidates) {
     try {
-      nativeBinding = require(candidate) as NativeBinding
-      return nativeBinding
+      return require(candidate) as NativeBinding
     } catch (e) {
       loadErrors.push(`${candidate}: ${(e as Error).message}`)
     }
   }
-
-  nativeBinding = null
-  throw new Error(
-    `Native @formatjs/cli-lib binding is unavailable.\n${loadErrors.join('\n')}`
-  )
 }
 
 export function compileWithNative(

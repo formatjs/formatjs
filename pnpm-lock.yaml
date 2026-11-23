@@ -222,6 +222,12 @@ importers:
       '@commitlint/cli':
         specifier: ^21.0.0
         version: 21.2.4(conventional-commits-parser@7.1.2)(typescript@7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0))
+      '@emnapi/core':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
+      '@emnapi/runtime':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       '@formatjs/bigdecimal':
         specifier: workspace:*
         version: link:packages/bigdecimal
@@ -759,6 +765,12 @@ importers:
 
   packages/cli:
     dependencies:
+      '@emnapi/core':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
+      '@emnapi/runtime':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       '@glimmer/syntax':
         specifier: ^0.84.3 || ^0.95.0 || ^0.97.0
         version: 0.97.0
@@ -808,6 +820,12 @@ importers:
       '@bazel/runfiles':
         specifier: '6'
         version: 6.5.0
+      '@emnapi/core':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
+      '@emnapi/runtime':
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       '@formatjs/icu-messageformat-parser':
         specifier: workspace:*
         version: link:../icu-messageformat-parser

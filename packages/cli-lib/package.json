@@ -34,6 +34,8 @@
   "dependencies": {
     "@babel/types": "8",
     "@bazel/runfiles": "6",
+    "@emnapi/core": "2.0.0-beta.3",
+    "@emnapi/runtime": "2.0.0-beta.3",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/fs-extra": "11",
     "@types/node": "22 || 24 || 26",

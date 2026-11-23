@@ -42,16 +42,15 @@ Add the following command to your `package.json` `scripts`:
 }
 ```
 
-## Native bindings in the npm CLI
+## Rust bindings in the npm CLI
 
-`@formatjs/cli` and `@formatjs/cli-lib` are Node.js packages. Message
-extraction runs in Node.js, but `formatjs compile`, `formatjs compile-folder`,
-and the `compile` API from `@formatjs/cli-lib` use native Rust bindings.
-
-There is no JavaScript compiler fallback and no flag to force non-native
-compilation. If a native binding is unavailable for the current OS/CPU, or if
-your package manager omits optional dependencies, compilation fails with
-`Native @formatjs/cli-lib binding is unavailable`.
+`@formatjs/cli` and `@formatjs/cli-lib` use Rust bindings for message
+extraction, compilation, and resource verification. Both packages prefer the
+optional native binding for the current OS and CPU and fall back to the
+bundled WASI binding if it cannot load. WASI requires Node.js 20.19, 22.12, or
+later supported releases. Set `FORMATJS_FORCE_WASI=1` to test the fallback
+on a platform with a native binding. On Windows, WASI compilation reads
+files from the drive or UNC share where the binding is first loaded.
 
 The npm packages currently ship native bindings for:
 
@@ -63,12 +62,13 @@ The npm packages currently ship native bindings for:
 | Linux arm64 (musl)  | `@formatjs/cli-native-linux-arm64-musl` |
 | Linux x64 (glibc)   | `@formatjs/cli-native-linux-x64`        |
 | Linux x64 (musl)    | `@formatjs/cli-native-linux-x64-musl`   |
+| FreeBSD x64         | `@formatjs/cli-native-freebsd-x64`      |
 | Windows x64         | `@formatjs/cli-native-win32-x64`        |
 | Windows arm64       | `@formatjs/cli-native-win32-arm64`      |
 
 The Vite plugin also uses these bindings to evaluate non-literal message
-fields. Keep optional dependencies enabled so the matching OS/CPU package is
-installed.
+fields. On platforms without an Oxc native binding, install Oxc's matching
+WASI binding separately.
 
 ## Native CLI (Rust)
 
@@ -84,8 +84,7 @@ Install it from Cargo with `cargo install formatjs_cli`, or download a pre-built
   feature. It currently focuses on **JavaScript/TypeScript with JSX/TSX**,
   supports built-in formatters only, and does not load custom JavaScript
   formatter files. If you need Vue, Svelte, Glimmer, Handlebars, GTS/GJS, or
-  custom formatter support, use the npm CLI above. Its compilation commands
-  still require one of the npm native bindings listed above.
+  custom formatter support, use the npm CLI above.
 </Admonition>
 
 ### Installation
