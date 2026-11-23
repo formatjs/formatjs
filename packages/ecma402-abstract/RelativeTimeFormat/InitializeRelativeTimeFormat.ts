@@ -129,7 +129,7 @@ export function InitializeRelativeTimeFormat(
     ]
   }
   const select = findPluralRulesSelectMethod(PluralRules)
-  invariant(select, 'Missing supplied PluralRules select method')
+  invariant(select !== undefined, 'Missing supplied PluralRules select method')
   internalSlots.selectPlural = value => apply(select, pluralRules, [value])
   return rtf
 }

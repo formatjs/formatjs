@@ -75,7 +75,7 @@ it('coerces boolean options without calling the global Boolean', () => {
   try {
     globalThis.Boolean = (() => {
       throw new Error('visible Boolean')
-    }) as BooleanConstructor
+    }) as unknown as BooleanConstructor
     numeric = GetOption(
       {numeric: 'false'},
       'numeric',

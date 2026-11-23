@@ -160,7 +160,7 @@ it('keeps style around a numberless notation template', () => {
 })
 it('keeps the locale data resolved before reading style', () => {
   const localeData = NumberFormat.localeData.en!
-  let formatter: Intl.NumberFormat
+  let formatter: InstanceType<typeof NumberFormat>
   try {
     formatter = new NumberFormat('en', {
       get style() {

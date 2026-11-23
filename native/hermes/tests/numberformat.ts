@@ -426,12 +426,15 @@ try {
     let reads = 0
     throws(
       () =>
-        method.call({}, 'en', {
-          get style() {
-            reads++
-            return 'decimal'
+        Reflect.apply(method, {}, [
+          'en',
+          {
+            get style() {
+              reads++
+              return 'decimal'
+            },
           },
-        }),
+        ]),
       TypeError,
       'locale method checks receiver first'
     )

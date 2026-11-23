@@ -109,8 +109,9 @@ function observe(
           Intl.RelativeTimeFormat,
         ].every(
           Constructor =>
-            new Constructor(`${locale}-u-nu-${value}`).resolvedOptions()
-              .numberingSystem === value
+            Reflect.construct(Constructor, [
+              `${locale}-u-nu-${value}`,
+            ]).resolvedOptions().numberingSystem === value
         )
           ? {...candidate, resolved: value}
           : undefined

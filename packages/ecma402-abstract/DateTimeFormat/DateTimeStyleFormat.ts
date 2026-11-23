@@ -66,8 +66,8 @@ export function DateWithTimeZoneFormat(
     pattern,
     pattern12: pattern,
     // Date-only interval records lack the zone. Use the full endpoint fallback.
-    rangePatterns: {__proto__: null},
-    rangePatterns12: {__proto__: null},
+    rangePatterns: {__proto__: null} as unknown as Formats['rangePatterns'],
+    rangePatterns12: {__proto__: null} as unknown as Formats['rangePatterns12'],
   } as Formats
   setDateTimePatternFields(format, format)
   return format

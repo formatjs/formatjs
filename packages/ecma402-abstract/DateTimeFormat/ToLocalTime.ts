@@ -19,12 +19,15 @@ import {
   type CalendarRegistry,
 } from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 
-const NANOSECONDS_PER_MILLISECOND = 1_000_000n
+const NANOSECONDS_PER_MILLISECOND = bigIntFrom(1_000_000)
+const bigintZero = bigIntFrom(0)
+const bigintOne = bigIntFrom(1)
 
 function floorToMilliseconds(nanoseconds: bigint): bigint {
   const milliseconds = nanoseconds / NANOSECONDS_PER_MILLISECOND
-  return nanoseconds < 0n && nanoseconds % NANOSECONDS_PER_MILLISECOND !== 0n
-    ? milliseconds - 1n
+  return nanoseconds < bigintZero &&
+    nanoseconds % NANOSECONDS_PER_MILLISECOND !== bigintZero
+    ? milliseconds - bigintOne
     : milliseconds
 }
 

@@ -140,7 +140,10 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   const languageId = parseUnicodeLanguageId(tag)
   if (variants !== undefined) {
     const subtags = apply(split, variants, ['-']) as string[]
-    const seen = {__proto__: null} as Record<string, true | undefined>
+    const seen = {__proto__: null} as unknown as Record<
+      string,
+      true | undefined
+    >
     for (let index = 0; index < subtags.length; index++) {
       const original = subtags[index]
       if (!isUnicodeVariantSubtag(original)) {
@@ -581,6 +584,7 @@ function canonicalSubdivisionRegion(
     const keyword = keywords[index]
     if (keyword[0] !== key) continue
     const value = keyword[1]
+    if (value === undefined) return undefined
     // The locale parser has already validated the ASCII type subtags.
     // A subdivision is one region prefix followed by 1–4 alphanumerics.
     if (apply(indexOf, value, ['-']) !== -1) return undefined

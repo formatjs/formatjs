@@ -61,8 +61,7 @@ function readHostDefaultLocale(): string | undefined {
   for (const name of ['NumberFormat', 'DateTimeFormat'] as const) {
     try {
       const Constructor = localeDescriptorMember(intl, name) as
-        | typeof Intl.NumberFormat
-        | typeof Intl.DateTimeFormat
+        | (new () => object)
         | undefined
       if (
         typeof Constructor !== 'function' ||

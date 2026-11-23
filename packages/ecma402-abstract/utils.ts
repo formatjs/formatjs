@@ -211,9 +211,11 @@ function formatterMethodLookup<T>(name: 'formatToParts' | 'select') {
     }
   }
 }
-export const findFormatterPartsMethod =
+export const findFormatterPartsMethod: (Constructor: object) => unknown =
   formatterMethodLookup<unknown>('formatToParts')
-export const findPluralRulesSelectMethod =
+export const findPluralRulesSelectMethod: (
+  Constructor: object
+) => Intl.PluralRules['select'] | undefined =
   formatterMethodLookup<Intl.PluralRules['select']>('select')
 export function getFormatterPartsMethod<T>(Constructor: object): T {
   const method = findFormatterPartsMethod(Constructor)

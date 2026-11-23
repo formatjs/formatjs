@@ -204,7 +204,7 @@ function resolveHourCycle(
 ) {
   // ECMA-402 §11.1.2 steps 15–17 use separate locale preferences for hour12.
   // https://tc39.es/ecma402/#sec-createdatetimeformat
-  if (hour12 === undefined) return hc ?? data.hourCycle
+  if (hour12 === undefined) return hc ?? data.hourCycle ?? 'h23'
   const preference = hour12 ? 'hourCycle12' : 'hourCycle24'
   const preferred = HasOwnProperty(data, preference)
     ? data[preference]
@@ -215,6 +215,7 @@ function resolveHourCycle(
   const cycles = data.hc
   for (let index = 0; index < cycles.length; index++) {
     const cycle = cycles[index]
+    if (cycle === null) continue
     if (
       hour12
         ? cycle === 'h11' || cycle === 'h12'
