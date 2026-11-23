@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.10...@formatjs/bigdecimal@0.2.11) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/temporal:** preserve private reader and calendar operations ([24fd91a](https://github.com/formatjs/formatjs/commit/24fd91a558f8e44f8cf1b726c7f4e964cf6a2647))
+
 ## [0.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.9...@formatjs/bigdecimal@0.2.10) (2026-11-01)
 
 

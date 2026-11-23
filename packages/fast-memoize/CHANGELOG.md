@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/fast-memoize@3.1.7...@formatjs/fast-memoize@3.1.8) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/fast-memoize:** isolate private serialization wrappers ([b63dde6](https://github.com/formatjs/formatjs/commit/b63dde675ac50dbfa2dc339546550dd52f3aed04))
+* **@formatjs/temporal:** verify fresh duration locale construction ([87d5bc9](https://github.com/formatjs/formatjs/commit/87d5bc9eeffaba96f2c1ef61d8142a3e06df3242))
+
 ## 3.1.7 (2026-07-11)
 
 ## What's Changed

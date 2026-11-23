@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v1.0.0...formatjs_intl_datetimeformat_calendars_v1.0.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** normalize nonpositive display years ([#8106](https://github.com/formatjs/formatjs/issues/8106)) ([fe9fe72](https://github.com/formatjs/formatjs/commit/fe9fe722948a67ab1a4e0eecf719efed02c53241))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_datetimeformat bumped from 1.1.0 to 1.1.1
+
 ## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v0.3.0...formatjs_intl_datetimeformat_calendars_v1.0.0) (2026-11-19)
 
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.1.0...formatjs_intl_datetimeformat_v1.1.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** keep timestamp clipping on Numbers ([#8096](https://github.com/formatjs/formatjs/issues/8096)) ([8f68859](https://github.com/formatjs/formatjs/commit/8f688596db2aa01c22c03a0932639a85307f7bf7))
+* **@formatjs/intl-datetimeformat:** normalize nonpositive display years ([#8106](https://github.com/formatjs/formatjs/issues/8106)) ([fe9fe72](https://github.com/formatjs/formatjs/commit/fe9fe722948a67ab1a4e0eecf719efed02c53241))
+* **@formatjs/intl-datetimeformat:** preserve date pattern records ([#8104](https://github.com/formatjs/formatjs/issues/8104)) ([b14a361](https://github.com/formatjs/formatjs/commit/b14a3612991269d167984fee01025a4c9780e42a))
+* **@formatjs/intl-datetimeformat:** preserve signed local-time years ([#8110](https://github.com/formatjs/formatjs/issues/8110)) ([0030a91](https://github.com/formatjs/formatjs/commit/0030a91feca676990ef7a826dcffd0427493afd1))
+
 ## [1.1.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.2...formatjs_intl_datetimeformat_v1.1.0) (2026-11-17)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_segmenter_v1.0.0...formatjs_intl_segmenter_v1.0.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-segmenter:** only suppress sentence breaks after whole-word abbreviations ([#8147](https://github.com/formatjs/formatjs/issues/8147)) ([04977c4](https://github.com/formatjs/formatjs/commit/04977c431cac3d930e095f2f8bf06ceea7df4e06))
+
 ## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_segmenter_v0.2.0...formatjs_intl_segmenter_v1.0.0) (2026-10-31)
 
 
