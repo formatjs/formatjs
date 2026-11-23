@@ -2227,7 +2227,9 @@ fn independent_icu_zoned_calendar_rounding() {
 
 #[test]
 fn upstream_polyfill_regressions() {
-    use formatjs_temporal::{Duration, Precision, ZonedDateTime};
+    use formatjs_temporal::{
+        Disambiguation, Duration, PlainDateTime, Precision, TransitionDirection, ZonedDateTime,
+    };
 
     let zones = iana_registry();
     let parse_zoned = |input| ZonedDateTime::parse(input, zones, Default::default()).unwrap();
@@ -2294,6 +2296,26 @@ fn upstream_polyfill_regressions() {
                     expected.parse::<i128>().unwrap(),
                     "{line}"
                 );
+            }
+            ["zoned-next-transition", input, expected] => {
+                let next = parse_zoned(input)
+                    .transition(TransitionDirection::Next)
+                    .unwrap_or_else(|| panic!("expected a next transition: {line}"));
+                assert_eq!(
+                    next.instant().epoch_nanoseconds(),
+                    expected.parse::<i128>().unwrap(),
+                    "{line}"
+                );
+            }
+            ["zoned-from-local", input, zone, expected] => {
+                let local: PlainDateTime = input.parse().unwrap();
+                let zoned = ZonedDateTime::from_local(
+                    local.fields(),
+                    zones.resolve(zone).unwrap(),
+                    Disambiguation::Compatible,
+                )
+                .unwrap();
+                assert_eq!(zoned.to_string(), *expected, "{line}");
             }
             _ => panic!("invalid Temporal fixture: {line}"),
         }
