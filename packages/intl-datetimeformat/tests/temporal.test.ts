@@ -512,7 +512,7 @@ test.each(['get', 'set'] as const)(
     for (const warm of [false, true]) {
       let reads = 0
       const dtf = formatter({
-        get year() {
+        get year(): 'numeric' {
           reads++
           return 'numeric'
         },
