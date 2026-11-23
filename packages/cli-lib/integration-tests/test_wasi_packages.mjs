@@ -24,7 +24,6 @@ function runCli(...args) {
   return execFileSync(process.execPath, [cli, ...args], {
     cwd,
     encoding: 'utf8',
-    env: {...process.env, FORMATJS_FORCE_WASI: '1'},
   })
 }
 

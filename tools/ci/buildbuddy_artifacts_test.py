@@ -92,6 +92,22 @@ class ArtifactTest(unittest.TestCase):
             with self.subTest(values=values), self.assertRaises(ValueError):
                 artifacts.artifact_uris(invalid, "a" * 40)
 
+    def test_discovers_wasi_bundle_and_rejects_duplicates(self):
+        response = self.response()
+        declared = response["invocation"][0]["artifacts"]
+        bundle = {
+            "name": artifacts.WASI_ARCHIVE_NAME,
+            "uri": "bytestream://remote.buildbuddy.io/blobs/wasi/100",
+        }
+        declared.append(bundle)
+        self.assertEqual(
+            artifacts.artifact_uris(response, "a" * 40)[bundle["name"]],
+            bundle["uri"],
+        )
+        declared.append(bundle)
+        with self.assertRaisesRegex(ValueError, "Expected exactly one"):
+            artifacts.artifact_uris(response, "a" * 40)
+
     def test_extracts_complete_split_archives_and_runtime_library(self):
         member = tarfile.TarInfo("cli-native-linux-x64-musl/libstd-abc123.so")
         member.size = 1
