@@ -217,7 +217,7 @@ actions:
           (
             cd "$test_runner.runfiles/_main"
             # Preserve relative npm links and materialize links into the Linux execroot.
-            rsync -aR --copy-unsafe-links \
+            rsync -aR --copy-unsafe-links --chmod=Du+w \
               node_modules packages/cli/pkg packages/cli-lib/pkg \
               packages/cli-lib/integration-tests/test_wasi_packages.mjs "$smoke_dir/"
           )
