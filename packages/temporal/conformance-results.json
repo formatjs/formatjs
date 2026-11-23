@@ -3,7 +3,7 @@
   "deliveryScope": {
     "active": ["pure TypeScript", "native Rust", "native Hermes"],
     "retired": ["WASM"],
-    "records": "Historical verification; current checks and open work are in knowledge-base/015a-temporal-completion-audit.md."
+    "records": "Historical verification. Current conformance targets are in packages/temporal/BUILD.bazel."
   },
   "nativeFallback": false,
   "note": "Historical verification records. WASM profiles below are retired. fullNamespaceAudit records its original provider scopes; no complete conformance claim. See deliveryScope for current supported backends.",
@@ -1751,7 +1751,7 @@
       "benchmarks/temporal/rust-zoned-replacements-size-results.json",
       "benchmarks/temporal/rust-zoned-replacements-backend-size-results.json"
     ],
-    "remainingAudit": "knowledge-base/015a-temporal-completion-audit.md"
+    "remainingAudit": "https://github.com/formatjs/formatjs/blob/70ecc76dd00743b52d2e1046b788301eb26089a4/knowledge-base/015a-temporal-completion-audit.md"
   },
   "fullNamespaceAudit": {
     "date": "2026-11-16",
