@@ -250,3 +250,13 @@ it('compares all granularities, locale tailoring, word flags and containing resu
   expect(mismatches).toEqual([])
   expect(usedProfiles.size).toBe(profiles.length)
 }, 120_000)
+
+it('keeps whole-word English abbreviation suppressions in TypeScript', () => {
+  const segmenter = new TypeScriptSegmenter('en', {granularity: 'sentence'})
+  const split = (input: string) =>
+    Array.from(segmenter.segment(input)).map(part => part.segment)
+  expect(split('He met Mr. Smith.')).toEqual(['He met Mr. Smith.'])
+  expect(split('Ask K. Smith.')).toEqual(['Ask K. Smith.'])
+  expect(split('(Mr. Smith) left.')).toEqual(['(Mr. Smith) left.'])
+  expect(split('Visit the U.S. Capitol.')).toEqual(['Visit the U.S. Capitol.'])
+})

@@ -120,7 +120,7 @@ Format characters. Rust classifies words from pinned Word_Break/Alphabetic
 properties instead of inheriting ICU4X status. Unknown, changed and unused differences
 fail. Hermes consumes every case in source and bytecode, also checking
 containing() at every code-unit index, property order, descriptors and freshness.
-The TS implementation runs the same matrix in Node and Hermes. Its 42 exact
+The TS implementation runs the same matrix in Node and Hermes. Its 41 exact
 dictionary/sentence-suppression choices are recorded separately; unexpected,
 changed, redundant and unused differences fail. Word flags use generated Unicode
 properties rather than host regex Unicode data. Model, segment and cursor state

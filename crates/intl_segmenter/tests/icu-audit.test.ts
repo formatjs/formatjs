@@ -17,11 +17,11 @@ it('audits TS UTF-16 boundaries and word flags against independent ICU4C/J', () 
     .split('\n')
     .slice(1)
     .map(row => row.split('\t'))
-  expect(profileRows.length).toBe(42)
+  expect(profileRows.length).toBe(41)
   const profiles = new Map(
     profileRows.map(fields => [fields.slice(0, 3).join('\t'), fields])
   )
-  expect(profiles.size).toBe(42)
+  expect(profiles.size).toBe(41)
   const differences: string[] = []
   for (const row of rows) {
     const [locale, granularity, hex, expected] = row.split('\t')

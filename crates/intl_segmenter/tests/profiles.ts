@@ -64,7 +64,7 @@ export const profiles = [
   },
   // TS applies CLDR abbreviation suppressions; ICU uses sentence break rules.
   {
-    locales: ['en', 'en-GB', 'de'],
+    locales: ['en', 'en-GB'],
     granularity: 'sentence',
     input: 'Mr. Smith went home. Next day.',
     rust: [

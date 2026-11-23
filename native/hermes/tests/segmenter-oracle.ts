@@ -15,7 +15,7 @@ function encode(part: any): string {
 }
 check(rows.length === 1770, 'complete independent ICU matrix')
 check(
-  profiles.size === 42 && profileRows.length === 42,
+  profiles.size === 41 && profileRows.length === 41,
   'exact TS boundary profiles'
 )
 for (const [implementation, Model] of [
