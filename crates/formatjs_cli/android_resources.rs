@@ -397,17 +397,21 @@ fn locale(directory: &str, source: &str) -> Result<String> {
         (2..=3).contains(&language.len()) && language.bytes().all(|b| b.is_ascii_lowercase()),
         "Invalid Android locale: {qualifier}"
     );
-    let language = match language {
-        "iw" => "he",
-        "in" => "id",
-        "ji" => "yi",
-        other => other,
-    };
+    let language = canonical_language(language);
     Ok(if rest.is_empty() {
         language.into()
     } else {
         format!("{language}-{rest}")
     })
+}
+
+fn canonical_language(language: &str) -> &str {
+    match language {
+        "iw" => "he",
+        "in" => "id",
+        "ji" => "yi",
+        other => other,
+    }
 }
 
 fn items(resource: &Resource) -> BTreeMap<String, &Item> {
@@ -423,6 +427,58 @@ fn items(resource: &Resource) -> BTreeMap<String, &Item> {
             .map(|(key, item)| (key.clone(), item))
             .collect(),
     }
+}
+
+// Android only looks up quantities the locale's plural rules select, and lint's
+// UnusedQuantity flags the rest. Locales without CLDR rules are skipped, as lint does.
+// Current Android lint (targetSdk 34+) checks UnusedQuantity against CLDR 42.
+// CLDR added these categories later, so lint still flags them even though our
+// newer data allows them.
+const ANDROID_LINT_UNUSED: &[(&str, &str)] = &[("gl", "many"), ("vi", "one")];
+
+fn unused_plural_categories(
+    table: &Path,
+    language: &str,
+    catalog: &BTreeMap<String, Resource>,
+) -> Vec<VerificationIssue> {
+    let end = language.find(['-', '_']).unwrap_or(language.len());
+    let base = language[..end].to_ascii_lowercase();
+    let canonical = canonical_language(&base);
+    let locale = format!("{canonical}{}", &language[end..]);
+    let Some(categories) = crate::plural_categories::cardinal_categories(&locale) else {
+        return Vec::new();
+    };
+    let allowed: Vec<&str> = categories
+        .iter()
+        .copied()
+        .filter(|category| {
+            !ANDROID_LINT_UNUSED
+                .iter()
+                .any(|(lang, unused)| *lang == canonical && unused == category)
+        })
+        .collect();
+    catalog
+        .iter()
+        .filter_map(|(key, resource)| match resource {
+            Resource::Plurals(plurals) => Some((key, plurals)),
+            _ => None,
+        })
+        .flat_map(|(key, plurals)| {
+            let allowed = &allowed;
+            plurals
+                .keys()
+                .filter(move |quantity| !allowed.contains(&quantity.as_str()))
+                .map(move |quantity| VerificationIssue {
+                    locale: language.into(),
+                    message_id: format!("{}: {key}/{quantity}", table.display()),
+                    error: format!(
+                        "Plural quantity {quantity} is not used by {language} in CLDR {} or Android lint; allowed: {}",
+                        crate::plural_categories::CLDR_VERSION,
+                        allowed.join(", ")
+                    ),
+                })
+        })
+        .collect()
 }
 
 fn verify_item(
@@ -486,6 +542,13 @@ pub fn verify_resources(
         }
     }
     let mut issues = Vec::new();
+    if options.structural_equality {
+        for (table, catalogs) in &tables {
+            for (language, catalog) in catalogs {
+                issues.extend(unused_plural_categories(table, language, catalog));
+            }
+        }
+    }
     for (table, catalogs) in tables {
         let source = catalogs.get(source_locale).with_context(|| {
             format!(

@@ -720,3 +720,7 @@ and Android package namespace prefixes are normalized; resource lookup/linking
 and escaped HTML parsing remain outside
 this verifier. Both checks run per item, including formatted=false and source
 other fallback for target-only plural categories.
+
+Android structural equality checks each plural quantity against generated CLDR
+cardinal categories, with Android lint overrides for Galician and Vietnamese.
+Legacy language aliases are resolved for both source and translated catalogs.

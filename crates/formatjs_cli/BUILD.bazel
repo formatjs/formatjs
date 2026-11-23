@@ -1,5 +1,7 @@
+load("@bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 load(
     ":release_binary.bzl",
@@ -55,6 +57,8 @@ rust_library(
         "id_generator.rs",
         "java_printf.rs",
         "lib.rs",
+        "plural_categories.rs",
+        "plural_categories_data.rs",
         "printf_validation.rs",
         "python_extractor.rs",
         "rust_extractor.rs",
@@ -99,6 +103,22 @@ rust_library(
     ],
 )
 
+ts_run_binary(
+    name = "plural_categories_generate",
+    outs = ["plural_categories_data.generated.rs"],
+    args = [
+        "--out",
+        "$(rootpath plural_categories_data.generated.rs)",
+    ],
+    tool = "//crates/formatjs_cli/scripts:plural_categories",
+)
+
+write_source_file(
+    name = "plural_categories_data",
+    in_file = ":plural_categories_generate",
+    out_file = "plural_categories_data.rs",
+)
+
 # Base rust binary (builds for host platform)
 rust_binary(
     name = "formatjs_cli",
@@ -137,6 +157,7 @@ formatjs_rust_test(
         "id_generator.test.rs",
         "java_printf.test.rs",
         "main.test.rs",
+        "plural_categories.test.rs",
         "python_extractor.test.rs",
         "rust_extractor.test.rs",
         "static_evaluation.test.rs",
