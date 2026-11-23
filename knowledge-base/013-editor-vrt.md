@@ -43,8 +43,8 @@ separate npm workspace or lockfile. The root lock and `:playwright` version matc
 Chromium archive in `MODULE.bazel`. Bazel workspace npm links supply current package builds; no published formatter
 versions are duplicated in the VRT setup.
 
-E2E, component interactions, and VRT use `:browser`, with Chromium 156.0.8078.4
-pinned in `MODULE.bazel` for Playwright 1.64.0. Node comes from the versioned
+E2E, component interactions, and VRT use `:browser`, with Chromium 158.0.8127.18
+pinned in `MODULE.bazel` for Playwright 1.65.0. Node comes from the versioned
 `20260921` Linux amd64 preset; libraries and fonts use `noble_20260901`.
 No host browser cache, FFmpeg download, apt setup, or container image is needed.
 The browser CI script materializes the upstream worker supervisor, which verifies
@@ -170,8 +170,8 @@ LLVM and musl by rules_web_e2e; they require no Ubuntu test-tools package bundle
 ## Browser execution modes
 
 `rules_web_e2e` 3.9.0 supplies VM, local Linux namespace, host interaction, and
-aggregate Playwright UI execution. Chromium 156.0.8078.4 and Playwright
-1.64.0 remain pinned. `browser_tests` groups the existing actiond E2E/component/VRT
+aggregate Playwright UI execution. Chromium 158.0.8127.18 and Playwright
+1.65.0 remain pinned. `browser_tests` groups the existing actiond E2E/component/VRT
 lane; `local_browser_tests` reuses those inputs with `execution = "local"`.
 The latter needs Linux x64 user/mount/PID/network namespaces, not KVM. Both compare
 the committed PNGs; baseline updates remain VM-owned.
