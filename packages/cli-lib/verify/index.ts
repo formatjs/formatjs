@@ -1,17 +1,21 @@
 import {basename} from 'path'
-import {verifyXcstringsWithNative} from '#packages/cli-lib/native.js'
+import {
+  verifyAndroidResourcesWithNative,
+  verifyAppleResourcesWithNative,
+} from '#packages/cli-lib/native.js'
 import {debug, writeStderr} from '#packages/cli-lib/console_utils.js'
 import {checkJavaPrintfStructure} from '#packages/cli-lib/verify/checkJavaPrintfStructure.js'
 import {checkMissingKeys} from '#packages/cli-lib/verify/checkMissingKeys.js'
 import {checkExtraKeys} from '#packages/cli-lib/verify/checkExtraKeys.js'
 import {readJSON} from 'fs-extra/esm'
+import {readFile} from 'node:fs/promises'
 import {checkStructuralEquality} from '#packages/cli-lib/verify/checkStructuralEquality.js'
 export interface VerifyOpts {
   sourceLocale?: string
   missingKeys: boolean
   extraKeys: boolean
   structuralEquality: boolean
-  messageSyntax?: 'icu' | 'java-printf' | 'apple-printf'
+  messageSyntax?: 'icu' | 'java-printf' | 'apple-printf' | 'android'
   ignore?: string[]
   /**
    * Whether to follow symbolic links when traversing directories.
@@ -33,14 +37,22 @@ export async function verify(
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
 
-  if (messageSyntax === 'apple-printf') {
-    const catalogs = Object.fromEntries(
-      await Promise.all(files.map(async file => [file, await readJSON(file)]))
+  if (messageSyntax === 'apple-printf' || messageSyntax === 'android') {
+    const resources = await Promise.all(
+      files.map(async filename => ({
+        filename,
+        content: await readFile(filename),
+      }))
     )
-    const issues = verifyXcstringsWithNative(
-      catalogs,
+    const verifyResources =
+      messageSyntax === 'android'
+        ? verifyAndroidResourcesWithNative
+        : verifyAppleResourcesWithNative
+    const issues = verifyResources(
+      resources,
       sourceLocale,
       missingKeys,
+      extraKeys,
       structuralEquality
     )
     for (const issue of issues) {

@@ -1,11 +1,28 @@
 """PyO3 extension rule for the repository's rules_rs toolchain."""
 
-load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
+
+def _copy_python_extension_impl(ctx):
+    suffix = ".pyd" if ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo]) else ".abi3.so"
+    output = ctx.actions.declare_file(ctx.attr.module_name.replace(".", "/") + suffix)
+    libraries = [file for file in ctx.files.src if file.extension in ["dll", "so", "dylib", "pyd"]]
+    if len(libraries) != 1:
+        fail("Expected one Python shared library, got: " + str(ctx.files.src))
+    ctx.actions.symlink(output = output, target_file = libraries[0])
+    return [DefaultInfo(files = depset([output]))]
+
+copy_python_extension = rule(
+    implementation = _copy_python_extension_impl,
+    attrs = {
+        "src": attr.label(allow_files = True, mandatory = True),
+        "module_name": attr.string(mandatory = True),
+        "_windows": attr.label(default = "@platforms//os:windows"),
+    },
+    doc = "Place a native extension at its target-platform Python import path.",
+)
 
 def pyo3_extension(name, srcs, deps, module_name, visibility = None, crate_root = None, crate_name = "_native", edition = "2024", proc_macro_deps = []):
     """Build an abi3 extension at its import-package path."""
-    output = module_name.replace(".", "/") + ".abi3.so"
     basename = module_name.split(".")[-1]
 
     rust_shared_library(
@@ -28,7 +45,10 @@ def pyo3_extension(name, srcs, deps, module_name, visibility = None, crate_root 
         crate_name = crate_name,
         edition = edition,
         proc_macro_deps = proc_macro_deps,
-        deps = deps,
+        deps = deps + select({
+            "@platforms//os:windows": ["@rules_python//python/cc:current_py_cc_headers_abi3"],
+            "//conditions:default": [],
+        }),
         rustc_flags = select({
             "@platforms//os:macos": [
                 "-Clink-arg=-undefined",
@@ -46,10 +66,9 @@ def pyo3_extension(name, srcs, deps, module_name, visibility = None, crate_root 
         visibility = ["//visibility:private"],
     )
 
-    copy_file(
+    copy_python_extension(
         name = name,
         src = ":" + name + "_cdylib",
-        out = output,
-        allow_symlink = True,
+        module_name = module_name,
         visibility = visibility or ["//visibility:public"],
     )

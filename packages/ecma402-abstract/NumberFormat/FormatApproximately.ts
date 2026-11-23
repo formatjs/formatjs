@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import type {
   NumberFormatInternal,
@@ -13,7 +14,7 @@ import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/Pa
 // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1854-L1858
 export function FormatApproximately(
   internalSlots: NumberFormatInternal,
-  x: Decimal
+  x: Decimal | IntlMathematicalValue
 ): NumberFormatPart[] {
   return PartitionNumberPattern(internalSlots, x, true)
 }

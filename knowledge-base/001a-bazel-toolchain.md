@@ -192,8 +192,9 @@ package manifest against the corresponding `:package_json` wrapper. The
 all release-managed npm packages, including native packages assembled by
 platform-specific workflow jobs, and emits the npm workspace graph used by the
 custom Release Please `formatjs-bazel-workspace` plugin for dependent package
-bumps. Root `package.json` lists published packages as `workspace:*` dev
-dependencies, package-local manifests define their dependency graph, and
+bumps. Temporal also releases with DateTimeFormat and DurationFormat because it
+bundles their shared Intl helpers. Root `package.json` lists published packages as
+`workspace:*` dev dependencies, package-local manifests define their dependency graph, and
 their first-party dependencies also use `workspace:*`. `npm_link_all_packages()`
 turns the resulting lockfile entries into root `//:node_modules/<workspace>`
 labels.
@@ -465,7 +466,11 @@ and crate responsibilities.
 ### Native Python Packages (`tools/python`)
 
 `pyo3_extension()` builds a `cp312-abi3` extension with `rules_rs`, then places
-the shared library at its Python import path. `formatjs_python_wheel()` combines
+the shared library at its Python import path (`_native.pyd` on Windows,
+`_native.abi3.so` elsewhere). Windows links the target Python toolchain's stable
+`python3.lib` through `current_py_cc_headers_abi3`; it must not link a versioned
+`python312.dll`. The copy rule selects the DLL without shipping its import library
+or debug symbols. `formatjs_python_wheel()` combines
 that extension with a Python facade and emits a target-platform wheel through
 `rules_python`.
 
@@ -478,8 +483,12 @@ The published Python packages mirror the four non-CLI Rust layers:
 names match.
 
 `.github/workflows/python-release.yml` cross-compiles `cp312-abi3` wheels from
-one Linux runner for macOS arm64/x86_64 and manylinux 2.28 arm64/x86_64. The
-Linux platforms select hermetic LLVM's glibc 2.28 ABI; the macOS platforms use
+one Linux runner for Windows x86_64, macOS arm64/x86_64, and manylinux 2.28
+arm64/x86_64. Windows wheels use `win_amd64` and MSVC ABI. Native Windows
+smoke jobs install each release wheel and run binding tests on CPython 3.12 and
+3.15 before publication. `py_intl` also exercises code generation from the
+assembled wheel. Python packaging PRs run the same pipeline for `py_intl`
+without publishing. Linux platforms select hermetic LLVM's glibc 2.28 ABI; the macOS platforms use
 its hermetic Apple SDK. Release Please owns independent Python versions through
 its Python strategy; generic extra-file updaters change the wheel versions in
 `BUILD.bazel`. Published releases use PyPI trusted publishing through a
@@ -591,6 +600,17 @@ uses 120 seconds because `prototype/format/units.js` formats every sanctioned
 unit pair while the complete polyfill stack is installed. This is separate from
 Bazel's overall test timeout; expected-failure baselines stay unchanged.
 
+Temporal shell conformance tests use a package-local transition to `opt`, so
+Hermes source and bytecode checks exercise the shipping compiler/runtime profile
+even when the top-level CI command uses fastbuild. Standalone locale/Intl suites
+retain their one-hour timeout; other shell suites use 15 minutes. Test cases and
+baselines stay unchanged.
+
+The standalone Intl source suite runs in eight Bazel shards to fit BuildBuddy's
+one-hour free-tier runner limit. A stable hash assigns each scenario once. Every
+shard checks the full discovery count before validating its report against its
+share of the existing baseline.
+
 Hermes SDK release archive transitions set `@rules_rust//rust/settings:lto=thin`
 for both Linux and macOS. Keep this optimization scoped to the SDK archive graph;
 ordinary repository build defaults remain separate. Benchmark SDK changes using
@@ -610,3 +630,31 @@ current workflow. Every checkout uses that tag, including publication's version
 check. Optional `apple_run_id` reuses an SDK workflow artifact only after its
 source commit matches the checkout; the publish job needs Actions read access
 for this download. Use `dry_run` before publishing a repaired release.
+
+Temporal's installation entries share its published index to preserve private
+brands across imports. `formatjs_library(entry_point_external_paths = {...})`
+opts individual entries into external import mappings; `rolldown_bundle`
+forwards `external_paths` and rewrites emitted imports with Rolldown `paths`.
+Default bundling stays unchanged. The mapping is shell-quoted JSON and applies
+to JS and declaration output. Assembled-package tests must verify identity;
+source-only tests can hide independently bundled copies of the same classes.
+
+Rolldown temporary tsconfigs use unique directories, cleaned after output. Sandbox
+processes can share PIDs, so PID-only files in shared /tmp collide across parallel
+actions and can silently leave workspace imports unresolved in emitted bundles.
+
+## Temporal native builds
+
+Temporal ships pure TypeScript, native Rust and Hermes bindings. Temporal WASM
+backend and npm asset targets were removed; older benchmark records are historical.
+Use `bazel run -c opt //benchmarks/temporal:native_ts_benchmark` for native Rust/TS
+comparisons. Native timings exclude Hermes binding costs.
+
+### Constants for individual package entries
+
+`formatjs_library(entry_point_defines={"entry.ts": {"constant": "value"}})` passes
+constants to that entry's Rolldown bundle. `rolldown_bundle(define=...)` uses the
+same path. Values are JavaScript expressions. The runner supplies Rolldown's
+`transform.define` option; a top-level `define` is ignored by the pinned version.
+Temporal uses these constants to select host Intl for default entries and owned
+data for standalone.

@@ -1,5 +1,5 @@
 import {execFile as nodeExecFile} from 'child_process'
-import {mkdtemp, rm, writeFile} from 'fs/promises'
+import {mkdir, mkdtemp, rm, writeFile} from 'fs/promises'
 import {tmpdir} from 'os'
 import {join} from 'path'
 import {promisify} from 'util'
@@ -42,6 +42,54 @@ describe.each([
       await rm(directory, {recursive: true, force: true})
     }
   }
+  test('verifies native strings and stringsdict through the same command', async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'formatjs-apple-resources-'))
+    const plural = (text: string) => `<?xml version="1.0"?><plist><dict>
+      <key>count</key><dict>
+      <key>NSStringLocalizedFormatKey</key><string>%#@items@</string>
+      <key>items</key><dict>
+      <key>NSStringFormatSpecTypeKey</key><string>NSStringPluralRuleType</string>
+      <key>NSStringFormatValueTypeKey</key><string>lld</string>
+      <key>other</key><string>${text}</string>
+      </dict></dict></dict></plist>`
+    try {
+      for (const locale of ['en', 'fr']) {
+        await mkdir(join(directory, `${locale}.lproj`))
+        const text =
+          locale === 'en'
+            ? '"hello" = "Hello %@";'
+            : '"hello" = "Bonjour %1$@";'
+        await writeFile(
+          join(directory, `${locale}.lproj`, 'InfoPlist.strings'),
+          locale === 'fr' ? Buffer.from('\uFEFF' + text, 'utf16le') : text
+        )
+        await writeFile(
+          join(directory, `${locale}.lproj`, 'Localizable.stringsdict'),
+          plural(locale === 'en' ? '%lld items' : '%1$lld articles')
+        )
+      }
+      const run = () =>
+        execFile(binary!, [
+          'verify',
+          join(directory, '**/*.strings*'),
+          '--source-locale',
+          'en',
+          '--message-syntax',
+          'apple-printf',
+          '--structural-equality',
+          '--missing-keys',
+          '--extra-keys',
+        ])
+      await expect(run()).resolves.toBeTruthy()
+      await writeFile(
+        join(directory, 'fr.lproj/Localizable.stringsdict'),
+        plural('%1$s articles')
+      )
+      await expect(run()).rejects.toThrow(/Incompatible argument/)
+    } finally {
+      await rm(directory, {recursive: true, force: true})
+    }
+  }, 20000)
   test('reads one multilingual catalog and infers sourceLanguage', async () => {
     await expect(
       verify(

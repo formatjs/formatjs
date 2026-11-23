@@ -263,3 +263,108 @@ fn options_validate_only_active_digit_limits() {
     assert_eq!(value["maximumSignificantDigits"], 2);
     assert_eq!(value["maximumFractionDigits"], 0);
 }
+
+#[test]
+fn source_precision_retains_zeros_within_rounding_limits() {
+    for (input, digit_count, fraction_count, maximum, expected) in [
+        ("1", 3, 2, 3, "1.00"),
+        ("0", 3, 2, 3, "0.00"),
+        ("0", 1, 400, 3, "0.000"),
+        ("1", 0, 0, 3, "1"),
+        ("12", 3, 1, 3, "12.0"),
+        ("0.0012", 4, 6, 5, "0.00120"),
+        ("1.2", 4, 0, 5, "1.200"),
+        ("1", 3, 4, 3, "1.00"),
+        ("9.995", 4, 3, 2, "10.00"),
+        ("0.009995", 4, 6, 3, "0.010"),
+        ("0.0001", 1, 4, 3, "0.000"),
+    ] {
+        let value = digits(json!({"maximumFractionDigits":maximum}));
+        let result = value
+            .format_with_precision(input, digit_count, fraction_count)
+            .unwrap();
+        assert_eq!(
+            result.formatted_string, expected,
+            "{input}: {digit_count}, {fraction_count}"
+        );
+        assert_eq!(result.rounding_magnitude, -maximum);
+        assert_eq!(result.number.to_string(), expected);
+    }
+    for (input, digit_count, fraction_count, maximum, expected, magnitude) in [
+        ("1", 3, 2, 5, "1.00", -4),
+        ("0", 3, 2, 5, "0.00", -4),
+        ("0", 1, 400, 3, "0.00", -2),
+        ("1", 0, 0, 5, "1", -4),
+        ("0.0012", 4, 6, 5, "0.001200", -7),
+        ("1.2", 4, 0, 5, "1.200", -4),
+        ("9.995", 4, 3, 3, "10.0", -1),
+        ("99.95", 4, 2, 3, "100", 0),
+        ("0.0001", 1, 4, 3, "0.0001", -6),
+    ] {
+        let value = digits(json!({"maximumSignificantDigits":maximum}));
+        let result = value
+            .format_with_precision(input, digit_count, fraction_count)
+            .unwrap();
+        assert_eq!(
+            result.formatted_string, expected,
+            "{input}: {digit_count}, {fraction_count}"
+        );
+        assert_eq!(result.rounding_magnitude, magnitude);
+    }
+}
+
+#[test]
+fn source_precision_respects_rounding_mode_minima_and_integer_stripping() {
+    for (settings, input, expected) in [
+        (
+            json!({"maximumFractionDigits":2,"roundingMode":"halfEven"}),
+            "1.005",
+            "1.00",
+        ),
+        (
+            json!({"minimumFractionDigits":2,"maximumFractionDigits":2,"roundingIncrement":5,"roundingMode":"halfEven"}),
+            "1.025",
+            "1.00",
+        ),
+        (json!({"minimumFractionDigits":4}), "1", "1.0000"),
+        (json!({"minimumSignificantDigits":5}), "1", "1.0000"),
+        (json!({"trailingZeroDisplay":"stripIfInteger"}), "1", "1"),
+        (
+            json!({"maximumSignificantDigits":3,"roundingMode":"floor"}),
+            "-9.995",
+            "10.0",
+        ),
+        (
+            json!({"maximumSignificantDigits":3,"roundingMode":"ceil"}),
+            "-9.995",
+            "9.99",
+        ),
+    ] {
+        let value = digits(settings);
+        let result = value.format_with_precision(input, 4, 3).unwrap();
+        assert_eq!(result.formatted_string, expected, "{input}");
+    }
+    let value = digits(json!({"maximumFractionDigits":100}));
+    assert_eq!(
+        value
+            .format_with_precision("0", usize::MAX, usize::MAX)
+            .unwrap()
+            .formatted_string,
+        format!("0.{}", "0".repeat(100))
+    );
+    assert_eq!(
+        value
+            .format_with_precision("1", usize::MAX, 0)
+            .unwrap()
+            .formatted_string,
+        format!("1.{}", "0".repeat(100))
+    );
+    let value = digits(json!({"maximumSignificantDigits":21}));
+    assert_eq!(
+        value
+            .format_with_precision("0", usize::MAX, usize::MAX)
+            .unwrap()
+            .formatted_string,
+        format!("0.{}", "0".repeat(20))
+    );
+}

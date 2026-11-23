@@ -799,3 +799,22 @@ cc_library(
         ":supported_values",
     ],
 )
+
+cc_library(
+    name = "temporal",
+    srcs = [
+        "src/temporal.cpp",
+        "src/temporal.inc",
+    ],
+    hdrs = ["include/formatjs/hermes/temporal.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    strip_include_prefix = "include",
+    deps = [
+        ":bridge",
+        ":c_api",
+        "@hermes//:headers",
+    ],
+)

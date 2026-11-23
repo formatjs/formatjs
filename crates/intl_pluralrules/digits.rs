@@ -117,6 +117,7 @@ enum Priority {
 enum TrailingZeros {
     Auto,
     StripIfInteger,
+    StripToMinimum,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Kind {
@@ -232,7 +233,7 @@ impl Digits {
         let mut source =
             UnsignedDecimal::from_str(&integer[cut..]).map_err(|_| Error::InvalidNumber)?;
         source.trim_start();
-        let mut rounded = self.fraction(&source, mode).0;
+        let mut rounded = self.fraction(&source, mode, 0, 0).0;
         if self.trailing_zero_display == TrailingZeros::StripIfInteger {
             rounded.trim_end_if_integer();
         }
@@ -296,6 +297,7 @@ impl Digits {
         {
             "auto" => TrailingZeros::Auto,
             "stripIfInteger" => TrailingZeros::StripIfInteger,
+            "stripToMinimum" => TrailingZeros::StripToMinimum,
             _ => return Err(Error::Range("trailingZeroDisplay")),
         };
         let has_significant = options.minimum_significant_digits.is_some()
@@ -393,7 +395,42 @@ impl Digits {
             kind,
         })
     }
+    /// Keeps the arbitrary-length BigInt path when no source precision is needed.
+    pub fn format_string_with_precision(
+        &self,
+        input: &str,
+        digit_count: usize,
+        fraction_digit_count: usize,
+    ) -> Result<String, Error> {
+        if (digit_count == 0 && fraction_digit_count == 0)
+            || self.trailing_zero_display == TrailingZeros::StripToMinimum
+        {
+            self.format_string(input)
+        } else {
+            self.format_with_precision(input, digit_count, fraction_digit_count)
+                .map(|value| value.formatted_string)
+        }
+    }
+
     pub fn format(&self, input: &str) -> Result<Formatted, Error> {
+        self.format_with_precision(input, 0, 0)
+    }
+
+    /// Source digit counts from Keep trailing zeros' Intl MV record. Counts
+    /// precede notation/percent scaling; zero uses the source fraction count.
+    /// https://tc39.es/proposal-intl-keep-trailing-zeros/#sec-formatnumerictostring
+    pub fn format_with_precision(
+        &self,
+        input: &str,
+        digit_count: usize,
+        fraction_digit_count: usize,
+    ) -> Result<Formatted, Error> {
+        let (digit_count, fraction_digit_count) =
+            if self.trailing_zero_display == TrailingZeros::StripToMinimum {
+                (0, 0)
+            } else {
+                (digit_count, fraction_digit_count)
+            };
         let mut number = Decimal::from_str(input).map_err(|_| Error::InvalidNumber)?;
         // FormatNumericToString 1–6: retain sign for directed rounding, but its
         // FormattedString is unsigned. Plural range equality uses that string.
@@ -402,11 +439,12 @@ impl Digits {
         let mut source = number.absolute.clone();
         source.trim_start();
         let (mut rounded, magnitude) = match self.kind {
-            Kind::Fraction => self.fraction(&source, mode),
-            Kind::Significant => self.significant(&source, mode),
+            Kind::Fraction => self.fraction(&source, mode, digit_count, fraction_digit_count),
+            Kind::Significant => self.significant(&source, mode, digit_count, fraction_digit_count),
             Kind::More | Kind::Less => {
-                let significant = self.significant(&source, mode);
-                let fraction = self.fraction(&source, mode);
+                let significant =
+                    self.significant(&source, mode, digit_count, fraction_digit_count);
+                let fraction = self.fraction(&source, mode, digit_count, fraction_digit_count);
                 // Steps 7.c–d: compare rounding magnitudes, including carries.
                 // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L726-L738
                 if (significant.1 <= fraction.1) == (self.kind == Kind::More) {
@@ -435,6 +473,8 @@ impl Digits {
         &self,
         source: &UnsignedDecimal,
         mode: UnsignedRoundingMode,
+        digit_count: usize,
+        fraction_digit_count: usize,
     ) -> (UnsignedDecimal, i16) {
         let max = self.maximum_fraction_digits.unwrap();
         let mut increment = self.rounding_increment;
@@ -455,17 +495,36 @@ impl Digits {
         // fraction digits and report -maxFraction, independent of increment size.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1353-L1393
         result.round_with_mode_and_increment(-i16::from(max) + shift, mode, increment);
+        let source_fraction = if result.is_zero() {
+            fraction_digit_count
+        } else {
+            // Equivalent to digitCount - int + zn in ToRawFixed, including
+            // leading fractional zeros and carries from rounding.
+            let exponent = i64::from(result.nonzero_magnitude_start()) + 1;
+            usize::try_from(
+                i64::try_from(digit_count)
+                    .unwrap_or(i64::MAX)
+                    .saturating_sub(exponent)
+                    .max(0),
+            )
+            .unwrap_or(usize::MAX)
+        };
+        let minimum = usize::from(self.minimum_fraction_digits.unwrap())
+            .max(source_fraction)
+            .min(usize::from(max));
         result.trim_end();
-        result.pad_end(-i16::from(self.minimum_fraction_digits.unwrap()));
+        result.pad_end(-(minimum as i16));
         (result, -i16::from(max))
     }
     fn significant(
         &self,
         source: &UnsignedDecimal,
         mode: UnsignedRoundingMode,
+        digit_count: usize,
+        fraction_digit_count: usize,
     ) -> (UnsignedDecimal, i16) {
         let max = i16::from(self.maximum_significant_digits.unwrap());
-        let min = i16::from(self.minimum_significant_digits.unwrap());
+        let minimum = usize::from(self.minimum_significant_digits.unwrap());
         let mut result = source.clone();
         let position = source.nonzero_magnitude_start().saturating_sub(max - 1);
         result.round_with_mode(position, mode);
@@ -473,8 +532,14 @@ impl Digits {
         // ToRawPrecision: a carry can change e; minimum precision pads zeros,
         // and the returned rounding magnitude is e-maxPrecision+1.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1294-L1332
+        let source_precision = if result.is_zero() {
+            fraction_digit_count.saturating_add(1)
+        } else {
+            digit_count
+        };
+        let minimum = minimum.max(source_precision).min(max as usize) as i16;
         result.trim_end();
-        result.pad_end((exponent - min + 1).min(0));
+        result.pad_end((exponent - minimum + 1).min(0));
         (result, exponent - max + 1)
     }
 }

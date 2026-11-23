@@ -32,6 +32,11 @@ results with the History API. Navigation updates React state without reloading
 the page. Browser back/forward, modified clicks, external links, downloads, and
 same-page anchors retain their normal behavior.
 
+Intl polyfill pages, React Intl, and the Hermes/runtime guides show a shared
+recommendation banner in `docs/src/pages/docs/@path/+Page.tsx`. It directs Hermes
+apps to the Rust-backed native SDK and keeps TypeScript polyfills as a fallback
+when native integration or app rebuilds are unavailable.
+
 ## Static Generation
 
 `docs/vite.config.ts` runs the local `formatjs-prerender-pages` plugin after
@@ -53,6 +58,13 @@ The GitHub Pages deployment in `.github/workflows/website.yml` publishes
 build.
 
 ## Generated Documentation
+
+### Recent updates
+
+`RecentUpdatesSection.tsx` shows dated release announcements immediately below
+the homepage header, before the interactive hero. Keep newest entries first and
+link to public guides. Temporal 1.0 links to `polyfills/temporal` and
+`rust/temporal`; both also appear in the documentation sidebar.
 
 ### Homepage company logos
 

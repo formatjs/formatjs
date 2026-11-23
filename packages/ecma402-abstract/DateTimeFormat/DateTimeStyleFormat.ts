@@ -1,3 +1,4 @@
+import {arrayIncludes} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type DateTimeFormatLocaleInternalData,
   type Formats,
@@ -10,6 +11,31 @@ import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/Be
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 
+const styleRangeKeys = Object.keys
+const styleIndexOf = Function.prototype.call.bind(String.prototype.indexOf) as (
+  value: string,
+  search: string
+) => number
+const styleSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
+
+function replaceStyleToken(
+  pattern: string,
+  token: string,
+  value: string
+): string {
+  // ECMA-402 §11.5.1 steps 4.e and 4.g.i: insert the pattern literally.
+  const index = styleIndexOf(pattern, token)
+  return index < 0
+    ? pattern
+    : styleSlice(pattern, 0, index) +
+        value +
+        styleSlice(pattern, index + token.length)
+}
+
 function combineStyleRanges(
   date: Formats,
   ranges: Formats['rangePatterns'],
@@ -17,45 +43,75 @@ function combineStyleRanges(
   timePattern: string,
   fallbackConnector: string
 ): Formats['rangePatterns'] {
-  const result = Object.create(null) as Formats['rangePatterns']
-  const fields = Object.create(null) as Partial<RangePatterns>
+  // ECMA-402 §11.5.1 steps 4.h–j: supply private combined-style interval records.
+  const result = {__proto__: null} as unknown as Formats['rangePatterns']
+  const fields = {__proto__: null} as unknown as Partial<RangePatterns>
   fields.monthStandalone = date.monthStandalone
   fields.weekdayStandalone = date.weekdayStandalone
-  for (const field of DATE_TIME_PROPS) {
+  for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+    const field = DATE_TIME_PROPS[index]
     if (date[field] !== undefined) fields[field] = date[field] as never
   }
-  for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
-    if (['era', 'year', 'month', 'day'].includes(field)) continue
+  const keys = styleRangeKeys(ranges) as Array<TABLE_2 | 'default'>
+  for (let index = 0; index < keys.length; index++) {
+    const field = keys[index]
+    if (arrayIncludes(['era', 'year', 'month', 'day'], field)) continue
     const range = ranges[field]
-    let combined: string
-    const reversed =
-      range.patternParts.find(part => part.source !== RangePatternType.shared)
-        ?.source === RangePatternType.endRange
-    if (field === 'default') {
-      const endpoint = fallbackConnector
-        .replace('{0}', timePattern)
-        .replace('{1}', date.pattern)
-      combined = range.patternParts
-        .map(part =>
-          part.pattern === '{0}' || part.pattern === '{1}'
-            ? endpoint
-            : part.pattern
-        )
-        .join('')
-    } else {
-      combined = connector
-        .replace('{0}', range.patternParts.map(part => part.pattern).join(''))
-        .replace('{1}', date.pattern)
+    let reversed = false
+    for (
+      let partIndex = 0;
+      partIndex < range.patternParts.length;
+      partIndex++
+    ) {
+      const source = range.patternParts[partIndex].source
+      if (source !== RangePatternType.shared) {
+        reversed = source === RangePatternType.endRange
+        break
+      }
     }
+    let endpoint: string | undefined
+    if (field === 'default') {
+      endpoint = replaceStyleToken(
+        replaceStyleToken(fallbackConnector, '{0}', timePattern),
+        '{1}',
+        date.pattern
+      )
+    }
+    let combinedParts = ''
+    for (
+      let partIndex = 0;
+      partIndex < range.patternParts.length;
+      partIndex++
+    ) {
+      const pattern = range.patternParts[partIndex].pattern
+      combinedParts +=
+        endpoint !== undefined && (pattern === '{0}' || pattern === '{1}')
+          ? endpoint
+          : pattern
+    }
+    const combined =
+      field === 'default'
+        ? combinedParts
+        : replaceStyleToken(
+            replaceStyleToken(connector, '{0}', combinedParts),
+            '{1}',
+            date.pattern
+          )
     const patternParts = splitRangePattern(combined)
     if (reversed)
-      for (const part of patternParts) {
+      for (let partIndex = 0; partIndex < patternParts.length; partIndex++) {
+        const part = patternParts[partIndex]
         if (part.source === 'startRange')
           part.source = RangePatternType.endRange
         else if (part.source === 'endRange')
           part.source = RangePatternType.startRange
       }
-    result[field] = {...fields, ...range, patternParts}
+    result[field] = {
+      __proto__: null,
+      ...fields,
+      ...range,
+      patternParts,
+    } as RangePatterns
   }
   return result
 }
@@ -82,14 +138,14 @@ function getTimeStyleFormat(
     return timeFormat
   }
 
-  // Spec: ECMA-402 11.5.1 DateTimeStyleFormat selects the locale style record.
-  // FormatJS impl detail: our data has separate 12/24-hour format records, so
-  // use the implementation-defined matcher from 11.5.3 when 11.1.2 resolves
-  // hour12 to the opposite hc from the default timeStyle pattern.
+  // ECMA-402 §11.5.1 step 2.b selects the locale style record.
+  // Adapt its hour cycle through implementation-defined §11.5.3 matching.
   const matcherOptions = {
+    __proto__: null,
     hour12,
   } as Intl.DateTimeFormatOptions
-  for (const prop of DATE_TIME_PROPS) {
+  for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+    const prop = DATE_TIME_PROPS[index]
     const value = timeFormat[prop]
     if (value !== undefined) {
       matcherOptions[prop] = value as never
@@ -119,7 +175,8 @@ export function DateTimeStyleFormat(
   }
 
   if (dateStyle !== undefined && timeStyle !== undefined) {
-    const format = {} as Formats
+    // ECMA-402 §11.5.1 steps 4.a–c combine the fields into a private record.
+    const format = {__proto__: null} as unknown as Formats
     for (const field in dateFormat) {
       if (
         field !== 'pattern' &&
@@ -141,30 +198,41 @@ export function DateTimeStyleFormat(
         format[field] = timeFormat[field]
       }
     }
-    const connector = (dataLocaleData.dateTimeFormatAtTime ||
-      dataLocaleData.dateTimeFormat)[dateStyle]
+    const connector = (
+      dataLocaleData.dateTimeFormatAtTime || dataLocaleData.dateTimeFormat
+    )[dateStyle]
     const rangeConnector = dataLocaleData.dateTimeFormat[dateStyle]
-    const pattern = connector
-      .replace('{0}', timeFormat!.pattern)
-      .replace('{1}', dateFormat!.pattern)
+    const pattern = replaceStyleToken(
+      replaceStyleToken(connector, '{0}', timeFormat!.pattern),
+      '{1}',
+      dateFormat!.pattern
+    )
     format.pattern = pattern
     if ('pattern12' in timeFormat!) {
-      const pattern12 = connector
-        .replace('{0}', timeFormat!.pattern12)
-        .replace('{1}', dateFormat!.pattern)
+      const pattern12 = replaceStyleToken(
+        replaceStyleToken(connector, '{0}', timeFormat!.pattern12),
+        '{1}',
+        dateFormat!.pattern
+      )
       format.pattern12 = pattern12
     }
 
-    const rangeDateFormat =
+    let rangeDateFormat = dateFormat!
+    if (
       dateStyle === 'medium' &&
       (dateFormat!.month === 'numeric' || dateFormat!.month === '2-digit')
-        ? {
-            ...dateFormat!,
-            pattern:
-              formats.find(format => format.skeleton === 'yMd')?.pattern ||
-              dateFormat!.pattern,
-          }
-        : dateFormat!
+    ) {
+      // ECMA-402 §11.5.1 steps 4.h–j: prepare the numeric-date interval input.
+      let pattern = dateFormat!.pattern
+      for (let index = 0; index < formats.length; index++) {
+        const candidate = formats[index]
+        if (candidate.skeleton === 'yMd') {
+          pattern = candidate.pattern || pattern
+          break
+        }
+      }
+      rangeDateFormat = {__proto__: null, ...dateFormat!, pattern} as Formats
+    }
     // Merge rangePatterns from timeFormat (for time-related differences)
     // This is needed for formatRange to work with dateStyle/timeStyle
     // See: https://github.com/formatjs/formatjs/issues/4168

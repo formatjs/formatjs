@@ -78,6 +78,7 @@ enum MessageSyntaxType {
     Icu,
     JavaPrintf,
     ApplePrintf,
+    Android,
 }
 
 impl From<MessageSyntaxType> for verify::MessageSyntax {
@@ -86,6 +87,7 @@ impl From<MessageSyntaxType> for verify::MessageSyntax {
             MessageSyntaxType::Icu => Self::Icu,
             MessageSyntaxType::JavaPrintf => Self::JavaPrintf,
             MessageSyntaxType::ApplePrintf => Self::ApplePrintf,
+            MessageSyntaxType::Android => Self::Android,
         }
     }
 }
@@ -239,7 +241,7 @@ enum Commands {
         #[arg(value_name = "TRANSLATION_FILES")]
         translation_files: Vec<PathBuf>,
 
-        /// Source locale; inferred from sourceLanguage for Apple .xcstrings catalogs.
+        /// Source locale; required for .strings/.stringsdict and inferred for .xcstrings.
         /// Other modes require a matching <sourceLocale>.json file.
         #[arg(long, value_name = "LOCALE")]
         source_locale: Option<String>,
@@ -260,7 +262,7 @@ enum Commands {
         #[arg(long)]
         structural_equality: bool,
 
-        /// Message grammar used by --structural-equality.
+        /// Message grammar or native resource format (android or apple-printf).
         #[arg(long, value_enum, default_value = "icu")]
         message_syntax: MessageSyntaxType,
 

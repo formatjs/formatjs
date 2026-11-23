@@ -39,6 +39,11 @@ body {
   color: var(--color-foreground);
 }
 
+/* Prism's TOML table token overlaps Tailwind's display utility. */
+.token.table {
+  display: inline;
+}
+
 /* Dark theme scrollbar */
 * {
   scrollbar-color: #424242 #1e1e1e;

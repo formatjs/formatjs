@@ -119,7 +119,7 @@ formatjs_library(
     ],
     type = "module",
     types = True,
-    version = "10.0.4",  # x-release-please-version
+    version = "10.1.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -439,7 +439,10 @@ rolldown_bundle(
     entry_point = "test262-main.ts",
     format = "iife",
     target = "es2020",
-    visibility = ["//tools/test262:__pkg__"],
+    visibility = [
+        "//packages/temporal:__pkg__",
+        "//tools/test262:__pkg__",
+    ],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
@@ -490,10 +493,12 @@ formatjs_test(
         "tests/internal/decimal-cache.test.ts",
         "tests/internal/exponent-rounding.test.ts",
         "tests/internal/number-patterns.test.ts",
+        "tests/internal/should-polyfill.test.ts",
         "tests/legacy.test.ts",
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",
         "tests/notation-compact-zh-TW.test.ts",
+        "tests/notation-composition.test.ts",
         "tests/percent/percentTest.ts",
         "tests/signDisplay-currency-zh-TW.test.ts",
         "tests/signDisplay-zh-TW.test.ts",

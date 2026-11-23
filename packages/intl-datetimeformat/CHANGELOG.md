@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.1.0...@formatjs/intl-datetimeformat@8.2.0) (2026-11-18)
+
+
+### Features
+
+* **react-intl:** support Temporal formatting inputs ([ea82872](https://github.com/formatjs/formatjs/commit/ea8287271110d35123c3228af03d9b9d84caaf21))
+
+## [8.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.3...@formatjs/intl-datetimeformat@8.1.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+* **@formatjs/temporal:** document release and share owned calendars ([#8026](https://github.com/formatjs/formatjs/issues/8026)) ([9da6995](https://github.com/formatjs/formatjs/commit/9da69951b1b35811a971fec9f4ddd802fdba6cfb))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** preserve future timezone rules ([#7941](https://github.com/formatjs/formatjs/issues/7941)) ([be1683e](https://github.com/formatjs/formatjs/commit/be1683ed9d0b2661e2ac4f31f18de8de1e325f66))
+* **@formatjs/intl-datetimeformat:** preserve timezone identifiers ([#7928](https://github.com/formatjs/formatjs/issues/7928)) ([62d33d9](https://github.com/formatjs/formatjs/commit/62d33d93a6e916d4dc81bd80f2d274c9c8f93014))
+
 ## [8.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.2...@formatjs/intl-datetimeformat@8.0.3) (2026-11-08)
 
 

@@ -58,6 +58,7 @@ export interface IntlDateTimeFormatInternal {
   hourCycle: string
   numberingSystem: string
   timeZone: string
+  dataTimeZone?: string
   pattern: string
   format: Formats
   rangePatterns: Record<TABLE_2 | 'default', RangePatterns>
@@ -130,6 +131,10 @@ export type TimeZoneNameData = Record<
     short?: [string, string]
     shortGeneric?: string
     longGeneric?: string
+    longStandard?: string
+    longDaylight?: string
+    shortStandard?: string
+    shortDaylight?: string
   }
 >
 
@@ -286,6 +291,34 @@ export type UnpackedZoneData = [
   // Whether it's daylight, 0|1
   boolean,
 ]
+
+export type TimeZoneTransitionRule =
+  | {
+      kind: 'month'
+      month: number
+      week: number
+      weekday: number
+      seconds: number
+    }
+  | {kind: 'day' | 'julian'; day: number; seconds: number}
+
+export interface TimeZoneFutureRule {
+  standardOffset: number
+  daylightOffset?: number
+  start?: TimeZoneTransitionRule
+  end?: TimeZoneTransitionRule
+}
+
+export interface PackedTimeZoneData {
+  zones: string[]
+  abbrvs: string
+  offsets: string
+  future?: Record<string, TimeZoneFutureRule>
+}
+
+export interface UnpackedTimeZoneData extends Array<UnpackedZoneData> {
+  future?: TimeZoneFutureRule
+}
 
 export type IntlDateTimeFormatPartType =
   | Intl.DateTimeFormatPartTypes

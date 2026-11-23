@@ -4,7 +4,15 @@
 
 ## Purpose
 
+Private slot access captures WeakMap get/set/has. Number-pattern caches also
+capture get/set and the constructor used by nested composition maps. Compact-magnitude indexes and
+complete NumberFormat contracts retain separate audit status.
+
 Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, unit, and compact notation formatting across 657 locales.
+
+Single-value parts use shared CreatePartsArray for ordered private-list projection
+and own data properties. This implements the result-building steps of ECMA-402
+§16.5.6 without iterator/push/index-setter hooks.
 
 ## Dependencies
 
@@ -27,8 +35,8 @@ numeric numbering systems. The resolver applies parent locales, root aliases,
 and same-locale plural fallback; unconfirmed/provisional entries are excluded,
 matching the CLDR JSON threshold. Identical systems share Latin data through
 registration-time aliases without mutating the caller's data.
-When a numbering system has no short compact currency patterns, generation uses
-the locale's Latin patterns while retaining the selected digits and symbols.
+All styles share decimal compact tables inside their style/sign pattern.
+Generation drops currency compact tables; legacy payloads still load.
 
 `scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
 resolver, numbering-system projection, shared plural helpers, and resolver tests.
@@ -236,15 +244,13 @@ other decimal patterns retain the general fallback.
 
 ## Specification, ICU audit, and matching performance
 
-[2026-10-31 audit](audits/2026-10-31-numberformat.md) records independent ICU4C/J
-79.1 comparisons against CLDR 49, specification ambiguity probes, and benchmark
-tradeoffs. Rust/TS parity and tracked Test262 baselines remain separate evidence.
+Rust/TS parity and tracked Test262 baselines remain separate evidence.
 `//crates/intl_numberformat/tests:icu4j_conformance_snapshot_test` checks both
 implementations' text and parts against ICU4J. The Linux-only
 `:icu4c_conformance_snapshot_test` checks both against independent ICU4C text.
 Checked-in snapshots record current differences, including open correctness bugs;
 added, removed, or changed differences fail. Fixture hashes guard the case matrix
-and pinned oracle output. See the audit report for explicit regeneration commands.
+and pinned oracle output.
 The `icu_audit` executable also supports inventory output and strict comparisons.
 
 NumberFormat passes its available-locale Set directly to ResolveLocale, retaining
@@ -276,9 +282,9 @@ flowchart LR
 
 Runtime formatting selects an existing plan rather than splitting CLDR patterns,
 inferring grouping, or rewriting signs. Currency labels and spacing remain dynamic.
-Whole signed plans retain accounting affixes together; range collapse itself is
-unchanged. Unit-template composition, plural selection, and existing compact
-magnitude indexes also remain unchanged.
+Range collapse keeps negative endpoint signs and accounting pairs. TS caches
+composed plans; Rust binds style plan IDs at construction and streams notation
+into the number slot. The style plan supplies grouping.
 
 The field is optional: TS lazily compiles missing raw templates into a WeakMap
 cache; Rust caches its raw-template fallback per immutable locale record. Neither adapter changes the input
@@ -293,30 +299,68 @@ ranges, nonfinite values, custom grouping, and locale re-registration.
 
 ## Decimal normalization profile
 
-The [normalization follow-up](audits/2026-10-31-numberformat-normalization.md)
-profiles the remaining arithmetic work after compiled plans. BigDecimal strips
+BigDecimal strips
 trailing zeros in eight-digit chunks, retaining the single-digit tail and unsafe
 exponent fallback. NumberFormat benchmarks now distinguish host and polyfilled
 PluralRules with `--polyfill-plurals`. ICU snapshots remain unchanged.
 
 TS and Rust reuse positive exponent-preview rounding when final scaling stays
 unchanged. Negative directed rounding and exponent rollover retain their final
-pass. No data payload changes. See [measurement and guard coverage](audits/2026-10-31-numberformat-rounding-reuse.md).
+pass. No data payload changes.
 
 Shared TS BigDecimal arithmetic retains bounded small powers of ten and constructs
 safe integer Numbers without string parsing. Fractional/unsafe Numbers preserve
-the existing decimal-string path. See [benchmarks and boundaries](audits/2026-10-31-numberformat-decimal-powers.md).
+the existing decimal-string path.
 
 Decimal power lookup uses canonical Number exponent keys instead of serializing
 Decimal objects. At most 649 common integer scales remain cached; other scales
 compute without retention. Unscaled integer coefficients convert directly to
-Number. See [measurements and rounding guards](audits/2026-10-31-numberformat-exponent-cache.md).
+Number.
 
 Fixed rounding skips candidate arithmetic for integers with rounding increment
 one, retaining minimum fraction padding and the original rounding magnitude.
-Other increments still round normally. This especially helps DateTimeFormat's
-numeric fields; see [integer rendering](audits/2026-10-31-datetimeformat-integer-rendering.md).
+Other increments still round normally.
 
 BigDecimal division by powers of ten skips precision padding and zero stripping
 when exponent arithmetic stays safe. Default rounding increment `1` shares this
-path; general divisors retain fixed division precision. See [benchmarks and legacy arithmetic guards](audits/2026-10-31-numberformat-power-division.md).
+path; general divisors retain fixed division precision.
+
+## Keep trailing zeros
+
+`ToIntlMathematicalValue` returns a Decimal plus source digit/fraction counts.
+Only decimal String primitives contribute counts. Coercion runs once with number
+hint; Number/BigInt, radix strings, empty input and non-numeric input use zero
+counts. Finite underflow retains source precision; overflow clears digit count.
+Counts describe the source before percent or notation scaling.
+
+The shared rounding primitives preserve source precision up to their existing
+maxima; zero uses fraction width. `stripToMinimum` clears both counts before
+rounding. Exponent previews use zero counts and can be reused only when source
+counts are zero. Ranges retain both records when partitioning and comparing text.
+
+Rust shares `MathematicalValue::from_input` and the digit engine from PluralRules.
+NumberFormat's `format_value` / `format_range_values` families accept records;
+existing decimal-text methods retain zero-count behavior for internal numeric
+callers. The Hermes JSON boundary sends the original primitive kind with text.
+
+`//conformance-tests/precision:all` independently checks TS/Rust count handling
+and ICU4C/ICU4J rounding with explicit precision skeletons. ICU does not implement
+the draft's automatic source-count inference. Public TS/Rust and Hermes source/
+bytecode conformance cover strings, Number/BigInt, coercion, ranges and strip modes.
+
+## Legacy constructor calls
+
+TS and Hermes implement ECMA-402's optional ChainNumberFormat and
+UnwrapNumberFormat behavior. A call without `new` creates a fresh formatter,
+then checks the receiver with OrdinaryHasInstance, after option reads finish.
+A matching receiver gets a non-writable, non-enumerable, non-configurable
+`IntlLegacyConstructedSymbol` property holding the new formatter.
+
+Only `format` and `resolvedOptions` unwrap unbranded receivers through an ordinary
+property Get. Parts/range methods retain direct brand checks. Calling a branded
+formatter adds the fallback property without replacing its original slots or bound
+format function. Repeated legacy calls throw when redefining the fallback property.
+A Proxy construction trap reads `newTarget.prototype` once before locale/options,
+preserving unrelated subclass prototypes and the same-realm intrinsic fallback.
+Foreign-realm intrinsic fallback remains a documented JavaScript limitation.
+The Rust formatting backend is unchanged; Hermes owns JS receiver semantics.

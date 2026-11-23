@@ -9,14 +9,38 @@ A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformanc
   calendar.
 </Admonition>
 
-<Admonition type="caution">
-  Right now this polyfill supports daylight transition until 2100 to reduce the
-  dataset size
-</Admonition>
+Offset `timeZone` strings use hour/minute forms such as `+05:30`.
+
+Timezone packs retain historical transitions and recurring future rules from
+IANA TZif files. DST continues beyond 2100 using the pinned release's rules;
+later legal changes require updated timezone data.
 
 ## ECMA-402 Spec Compliance
 
+Private slot, locale and pattern caches capture their WeakMap methods when
+modules load.
+
 This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
+
+Pattern rendering preserves unrecognized fields as `unknown` parts. Two-digit
+fields retain their final two Unicode code points, including supplementary digits.
+
+Nonpositive calendar display years follow
+[ECMA-402 §11.5.4 step 15.f.iv](https://tc39.es/ecma402/#sec-formatdatetimepattern):
+the displayed year is `1 - year`. For example, Buddhist year 0 displays as 1;
+native ICU currently displays 0. Calendar arithmetic keeps its original year.
+Gregorian/ISO local-time records retain signed astronomical years under
+[§11.5.12 Table 17](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records);
+formatting converts year 0 to 1 BC and year −1 to 2 BC.
+
+Internal locale-pattern parsing follows [ECMA-402 §9.2.15](https://tc39.es/ecma402/#sec-partitionpattern)
+using captured string operations. Complete formatter conformance remains tracked
+in the report above.
+
+`formatToParts` result allocation follows
+[ECMA-262 §10.4.2.2 ArrayCreate](https://tc39.es/ecma262/#sec-arraycreate).
+Each returned part has own writable, enumerable and configurable `type` and
+`value` data properties.
 
 TypeScript and Rust also run independent ICU4J 79.1 snapshot comparisons in
 Bazel CI: 12,808 cases covering 17 locales, calendars, numbering systems, DST,
@@ -47,12 +71,16 @@ When `globalThis.Temporal` is available before importing this polyfill, all four
 formatting methods accept `Temporal.PlainDate`, `PlainDateTime`, `PlainTime`,
 `PlainYearMonth`, `PlainMonthDay`, and `Instant` values. Plain values use their
 wall-clock fields; `Instant` uses the formatter's timezone. Range endpoints must
-have the same Temporal type. `ZonedDateTime` is rejected, as required by the spec.
+have the same Temporal type. `ZonedDateTime` is rejected, as required by the
+[Temporal Intl integration](https://tc39.es/proposal-temporal/#sec-temporal-handledatetimevalue).
+Formatting reads captured Temporal intrinsics, ignoring instance overrides,
+and converts input fields without changing legacy `RegExp` state.
 
-For runtimes without native Temporal, install `temporal-polyfill` and load it first:
+For runtimes without native Temporal, install
+[`@formatjs/temporal`](/docs/polyfills/temporal) and load it first:
 
 ```js
-import 'temporal-polyfill/full/global'
+import '@formatjs/temporal/polyfill.js'
 import '@formatjs/intl-datetimeformat/polyfill-force'
 import '@formatjs/intl-datetimeformat/locale-data/en'
 ```
@@ -96,6 +124,9 @@ new DateTimeFormat('en', {dateStyle: 'long', timeStyle: 'short'})
 ```
 
 #### ✅ Extended timeZoneName Options
+
+Historical timezone formatting preserves direct CLDR names before 1970 and
+includes offset seconds when falling back to localized GMT names.
 
 All 6 `timeZoneName` values are supported:
 
@@ -193,6 +224,22 @@ import '@formatjs/intl-datetimeformat/add-all-tz.js' // Add ALL tz data
 The polyfill also replaces `Date.prototype.toLocaleString`,
 `toLocaleDateString`, and `toLocaleTimeString` with their ECMA-402 behavior,
 including the standard date and time defaults when only `timeZone` is set.
+
+Replacing `Object.prototype.isPrototypeOf` does not affect formatter construction.
+
+### Temporal namespaces
+
+DateTimeFormat recognizes Temporal intrinsic brands, including separately bundled
+namespaces. When loading an isolated namespace, register it once before formatting:
+
+```js
+DateTimeFormat.__addTemporalNamespace(Temporal)
+```
+
+The FormatJS Temporal installer performs this registration automatically. Readers
+are captured during registration; shadowing instance fields does not change the
+formatted value. Temporal locale methods reuse the formatter's loaded locale,
+calendar and timezone data.
 
 ### Optional calendars
 
@@ -375,7 +422,12 @@ separate from language-specific patterns, regardless of registration order.
 
 Formatting truncates fractional millisecond timestamps toward zero before
 calendar conversion. For example, `-0.9` formats as the Unix epoch, matching `0`.
-The same rule applies to both range endpoints.
+The same rule applies to both range endpoints. Numeric arguments use standard
+`ToNumber` conversion once; BigInt and Symbol values throw `TypeError`. Omitting
+the date in `format()` or `formatToParts()` uses the current time.
+
+Temporal Instant formatting preserves nanosecond flooring even when global
+`Number` or `Number.isSafeInteger` is replaced after initialization.
 
 ## Built-in methods
 
@@ -398,6 +450,12 @@ Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
 
 Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
 letter case only; non-ASCII lookalikes are rejected.
+
+Following Stage 4 Temporal timezone behavior, `resolvedOptions().timeZone`
+preserves named identifiers with IANA casing: `asia/calcutta` becomes
+`Asia/Calcutta`, and `Etc/GMT` stays `Etc/GMT`. Formatting uses the linked zone's
+transition data and localized names. `__setDefaultTimeZone` preserves names too.
+`shouldPolyfill()` detects native implementations that replace these identifiers.
 
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.

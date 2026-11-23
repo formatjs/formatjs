@@ -1,0 +1,213 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "platform": "linux x64",
+  "cpu": "Intel(R) Xeon(R) Platinum 8488C",
+  "memoryScope": "WASM linear memory only; excludes JS heap and compiled code.",
+  "scope": "Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant only; remaining algorithms/fallback/data remain TS. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.",
+  "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. Hot operations exclude startup. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+  "iterations": 10000,
+  "samples": 7,
+  "warmup": 3000,
+  "checksum": 20202750,
+  "typescript": [
+    {
+      "operation": "parse",
+      "medianNanoseconds": 1708.7638999999997,
+      "samplesNanoseconds": [
+        1610.6133999999997, 1629.0737000000008, 1691.5043999999996,
+        1708.7638999999997, 1759.5555999999988, 1764.7156999999993,
+        2778.5772999999995
+      ]
+    },
+    {
+      "operation": "format",
+      "medianNanoseconds": 692.5187999999991,
+      "samplesNanoseconds": [
+        664.6862999999996, 665.3413999999998, 678.7114000000031,
+        692.5187999999991, 724.911000000003, 759.5479000000012,
+        953.7489999999991
+      ]
+    },
+    {
+      "operation": "add",
+      "medianNanoseconds": 2329.8310999999953,
+      "samplesNanoseconds": [
+        2265.7459000000017, 2274.4028000000017, 2301.4868999999976,
+        2329.8310999999953, 2358.1012999999984, 2363.5296999999982,
+        2546.052199999997
+      ]
+    },
+    {
+      "operation": "round",
+      "medianNanoseconds": 570.5692999999997,
+      "samplesNanoseconds": [
+        298.19499999999834, 373.7835999999902, 399.61550000000443,
+        570.5692999999997, 785.952999999995, 813.0986000000007,
+        1033.0546000000027
+      ]
+    },
+    {
+      "operation": "until",
+      "medianNanoseconds": 2351.979700000004,
+      "samplesNanoseconds": [
+        2285.112600000002, 2331.5969999999993, 2350.1346000000012,
+        2351.979700000004, 2381.797699999993, 2720.471599999996,
+        2797.307999999998
+      ]
+    }
+  ],
+  "wasm": [
+    {
+      "operation": "parse",
+      "medianNanoseconds": 3103.6542000000054,
+      "samplesNanoseconds": [
+        2750.0640999999973, 2877.3889000000054, 3096.578999999997,
+        3103.6542000000054, 3128.0510999999933, 3257.147199999997,
+        4003.7867000000006
+      ]
+    },
+    {
+      "operation": "format",
+      "medianNanoseconds": 7039.718199999993,
+      "samplesNanoseconds": [
+        6948.0141, 7007.472899999994, 7011.5319, 7039.718199999993,
+        7071.143199999984, 7247.267800000009, 7530.077099999994
+      ]
+    },
+    {
+      "operation": "add",
+      "medianNanoseconds": 10077.676199999996,
+      "samplesNanoseconds": [
+        10050.24199999998, 10058.845199999996, 10068.728400000009,
+        10077.676199999996, 10173.674700000038, 10200.89270000001,
+        10214.446599999997
+      ]
+    },
+    {
+      "operation": "round",
+      "medianNanoseconds": 4013.636199999973,
+      "samplesNanoseconds": [
+        3996.3490999999976, 4010.2479000000126, 4011.301099999992,
+        4013.636199999973, 4015.3375999999753, 4016.864099999975,
+        4057.1434999999838
+      ]
+    },
+    {
+      "operation": "until",
+      "medianNanoseconds": 9404.836700000033,
+      "samplesNanoseconds": [
+        9334.123200000022, 9362.518200000022, 9367.422799999986,
+        9404.836700000033, 9410.957000000008, 9477.018099999987,
+        9664.472699999988
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "operation": "parse",
+      "medianNanoseconds": 2685.2931999999782,
+      "samplesNanoseconds": [
+        2534.2045000000326, 2535.1098000000093, 2636.0623000000032,
+        2685.2931999999782, 2798.5999999999876, 2800.8084999999937,
+        3085.0222999999914
+      ]
+    },
+    {
+      "operation": "format",
+      "medianNanoseconds": 1369.1756000000169,
+      "samplesNanoseconds": [
+        1355.1171999999951, 1357.7864000000318, 1368.7337000000298,
+        1369.1756000000169, 1467.7320000000236, 1559.9706999999853,
+        2640.9152000000176
+      ]
+    },
+    {
+      "operation": "add",
+      "medianNanoseconds": 1492.1915999999783,
+      "samplesNanoseconds": [
+        1335.436699999991, 1343.7053000000105, 1360.3826000000026,
+        1492.1915999999783, 1683.145000000013, 1783.974500000022,
+        2123.795199999995
+      ]
+    },
+    {
+      "operation": "round",
+      "medianNanoseconds": 676.0719000000336,
+      "samplesNanoseconds": [
+        642.0055000000048, 643.3416999999736, 674.4556000000102,
+        676.0719000000336, 697.7458999999726, 1010.1428999999825,
+        1195.0820999999905
+      ]
+    },
+    {
+      "operation": "until",
+      "medianNanoseconds": 24316.18040000003,
+      "samplesNanoseconds": [
+        23762.16529999997, 23876.566899999943, 23897.31410000004,
+        24316.18040000003, 24462.360700000045, 24704.48700000002,
+        29061.04889999997
+      ]
+    }
+  ],
+  "compileMilliseconds": 0.29952700000001187,
+  "instantiateMilliseconds": 0.07681600000000799,
+  "initialMemoryBytes": 1114112,
+  "finalMemoryBytes": 1179648,
+  "native": {
+    "backend": "rust-iso-instant",
+    "calls": 438056,
+    "operations": [
+      "isoToEpochNanoseconds",
+      "epochNanosecondsToISO",
+      "addISODays",
+      "parseInstant",
+      "formatInstant",
+      "addInstant",
+      "roundInstant",
+      "differenceInstant"
+    ],
+    "completeTemporalBackend": false
+  },
+  "size": {
+    "modules": [
+      {
+        "file": "index.js",
+        "raw": 3417375,
+        "minified": 3198787,
+        "gzip": 360382
+      },
+      {
+        "file": "native.js",
+        "raw": 3059,
+        "minified": 1589,
+        "gzip": 762
+      },
+      {
+        "file": "wasm.js",
+        "raw": 3242,
+        "minified": 1732,
+        "gzip": 804
+      }
+    ],
+    "binary": {
+      "raw": 132990,
+      "gzip": 58527
+    },
+    "consumer": {
+      "typescript": {
+        "minified": 3197527,
+        "gzip": 360183
+      },
+      "wasmJS": {
+        "minified": 3200677,
+        "gzip": 361477
+      },
+      "wasmCombinedGzip": 420004
+    },
+    "separateModules": {
+      "typescriptGzip": 361144,
+      "wasmCombinedGzip": 420475
+    }
+  }
+}

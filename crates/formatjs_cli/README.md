@@ -437,14 +437,14 @@ Width/precision changes are allowed when Java syntax permits them. Runtime Java 
 Input remains JSON catalogs with string leaves, optionally nested. This mode does not read Android XML.
 Decode XML, skip `formatted="false"`, and emit each independently formatted plural/array item as its own message before verification.
 
-### Apple Xcode catalog verification
+### Apple resource verification
 
 ```sh
 formatjs verify 'Resources/**/*.xcstrings' \
   --message-syntax apple-printf --structural-equality --missing-keys
 ```
 
-Apple mode accepts only `.xcstrings` versions 1.0/1.1. Rust and npm CLIs share
+Apple mode accepts `.xcstrings` versions 1.0/1.1. Rust and npm CLIs share
 catalog loading and validation in Rust. Source language is inferred; an explicit
 `--source-locale` must match `sourceLanguage`. Source values fall back to keys.
 
@@ -462,4 +462,105 @@ Formatting is inferred from source argument specifiers or substitution metadata;
 plain percentages remain literal. Whitespace after percent is ambiguous and alone
 does not identify a format. Root plurals with multiple numeric arguments need
 explicit substitution metadata; nested named substitutions and unknown axes fail
-explicitly. Legacy `.strings`/`.stringsdict` and flat JSON are unsupported.
+explicitly. Flat JSON is unsupported.
+
+Native `.strings` and XML `.stringsdict` files are supported directly:
+
+```sh
+formatjs verify 'Resources/**/*.strings*' --source-locale en \
+  --message-syntax apple-printf --structural-equality --missing-keys --extra-keys
+```
+
+Files must live under `<locale>.lproj`; `--source-locale` is required. The resource
+directory and table name namespace keys. Plain and plural files for the same table
+are checked together; plural entries override matching plain fallbacks, as in Foundation.
+Different tables
+may use the same key independently. Empty locale files still participate in missing-key
+checks; `--extra-keys` reports target keys absent from that table's source locale.
+
+The parser accepts UTF-8 (optional BOM) and BOM-marked UTF-16, quoted or bare strings,
+comments, Unicode/octal escapes, and XML plist dictionaries. It rejects duplicate keys,
+malformed escapes/XML, unbound plural variables, and unsupported plural metadata.
+Plural rules use `NSStringPluralRuleType`, `NSStringFormatValueTypeKey`, and required
+`other`. Existing Apple printf type, position, length, and plural-ownership checks apply.
+Parsing preserves source descriptions; verification never rewrites resource files.
+Binary plists and non-plural stringsdict rules are unsupported.
+
+### Android resource verification
+
+```sh
+formatjs verify 'app/src/main/res/**/*.xml' \
+  --message-syntax android --source-locale en \
+  --structural-equality --missing-keys --extra-keys
+```
+
+Both Rust and npm CLIs use the same Rust Android resource parser. It reads UTF-8
+`<resources>` XML containing strings, string arrays and plurals. Resources are
+grouped by their `res` directory, regardless of XML filename. `values` supplies
+`--source-locale`; localized folders support `values-fr`, `values-pt-rBR` and
+`values-b+sr+Latn`. Legacy `iw`, `in` and `ji` normalize to `he`, `id` and `yi`.
+Additional configuration qualifiers such as `values-fr-night` are rejected;
+verify separate configurations independently. Files from separate source sets
+are separate catalogs, without Android overlay resolution.
+
+XML entities (including declared internal entities) decode before Android quotes,
+backslash escapes and whitespace handling. Quoted apostrophes, `\'`, U+2019 and
+numeric non-breaking spaces are accepted. Undeclared entities, malformed XML,
+unescaped apostrophes and invalid Unicode escapes fail. External entities are
+never fetched. Verification never rewrites XML or enforces typography, brand spelling or CDATA
+spelling. Structural equality also preserves custom entity references.
+
+`--structural-equality` uses Java printf argument compatibility on decoded item
+text, checks array lengths and formatting-mode changes, and validates source and
+target printf syntax. `formatted="false"` skips printf checks; item attributes
+override their resource. Plurals require distinct supported quantities and
+`other`; target-only quantities compare against the source `other` item.
+Locale-specific category equality is not required. `translatable="false"`
+resources are excluded, and unrelated Android resource types are ignored.
+
+This is a string-resource verifier, not a replacement for AAPT2 resource linking.
+See [Android string resource rules](https://developer.android.com/guide/topics/resources/string-resource#FormattingAndStyling).
+
+#### Preserve custom entity references
+
+In Android mode, `--structural-equality` compares custom XML entity names and
+occurrence counts in each corresponding string, array item or plural item:
+
+```sh
+formatjs verify 'app/src/main/res/**/*.xml' \
+  --message-syntax android --source-locale en \
+  --structural-equality --missing-keys
+```
+
+`&brand;` cannot become literal text or another entity, and repeated references
+cannot be dropped or duplicated. Reordering within an item is allowed; moving
+references between array/plural items fails. Target-only plural categories use
+the source `other` item. Checks include inline attributes and apply even with
+`formatted="false"`, which only skips printf checks. Missing resources still
+require `--missing-keys`.
+
+Predefined XML entities (`amp`, `lt`, `gt`, `apos`, `quot`), numeric references,
+comments, processing instructions and CDATA contents are excluded. For example,
+`&amp;brand;` and `<![CDATA[&brand;]]>` are literal text, not references to `brand`.
+Entity definitions remain validated XML, but their replacement values are not
+compared. Basic XML verification without `--structural-equality` still accepts
+equivalent expanded text.
+
+#### Preserve native markup and resource references
+
+Android `--structural-equality` also compares inline element names, attributes,
+counts and nesting in each corresponding item. Sibling reordering is allowed;
+XLIFF wrappers are metadata and do not affect this comparison. XML namespace
+prefix spelling and attribute order do not matter. Escaped HTML and CDATA remain
+text; their HTML contents are not parsed. Text-to-span positions are not compared.
+
+Whole-value resource references such as `@string/name`, `@android:string/ok` and
+`?attr/name` must keep their targets. `@null` and `@empty` are also preserved.
+Theme shorthand `?name` is equivalent to `?attr/name`; package prefixes resolve
+through Android resource namespace declarations. Detection uses XML-decoded
+text before Android unescaping: `\@string/name` and `"@string/name"` are literal
+text, so neither can replace an actual reference. Native styled spans also force
+text interpretation, as in AAPT2. Resource lookup and linking remain AAPT2's job.
+
+These checks apply to strings, array items and plural items, including
+`formatted="false"`. Target-only plural quantities compare against source `other`.

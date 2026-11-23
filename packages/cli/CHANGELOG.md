@@ -3,6 +3,66 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.20.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.19.1...@formatjs/cli@6.20.0) (2026-11-17)
+
+
+### Features
+
+* **formatjs_cli:** preserve Android entities in structural equality ([#8030](https://github.com/formatjs/formatjs/issues/8030)) ([bd69221](https://github.com/formatjs/formatjs/commit/bd692214ef6c565db67cc65efed4e92d5ae99884))
+* **formatjs_cli:** verify Android markup and resource references ([#8031](https://github.com/formatjs/formatjs/issues/8031)) ([a3c1096](https://github.com/formatjs/formatjs/commit/a3c10961cd699ea321775e1ca1808d0a2416f285))
+* **formatjs_cli:** verify native Android string resources ([#8028](https://github.com/formatjs/formatjs/issues/8028)) ([f621d2f](https://github.com/formatjs/formatjs/commit/f621d2fa45ee3b1c7c2c6d8f4760840b2d74a441))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.37
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.5
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.37
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.35
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.37
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.35
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.5
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.38
+
+## [6.19.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.19.0...@formatjs/cli@6.19.1) (2026-11-17)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.36
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.4
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.36
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.34
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.36
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.34
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.4
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.37
+
+## [6.19.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.18.2...@formatjs/cli@6.19.0) (2026-11-12)
+
+
+### Features
+
+* **@formatjs/cli:** verify native Apple string resources ([#7922](https://github.com/formatjs/formatjs/issues/7922)) ([f747e83](https://github.com/formatjs/formatjs/commit/f747e8315af5a1835d04664f1e4ecb826ce30cbb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.35
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.3
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.35
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.33
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.35
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.33
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.3
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.36
+
 ## [6.18.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.18.1...@formatjs/cli@6.18.2) (2026-11-09)
 
 

@@ -1,0 +1,13 @@
+language = "C"
+cpp_compat = true
+pragma_once = true
+include_version = false
+usize_is_size_t = true
+documentation = true
+style = "both"
+
+[export.rename]
+"TemporalBytes" = "FormatjsTemporalBytes"
+
+[export]
+item_types = ["structs", "functions"]

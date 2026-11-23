@@ -23,6 +23,7 @@ fn affix_len(parts: &[Part], reverse: bool) -> usize {
 fn same(a: &[Part], b: &[Part], shared_unit: bool) -> bool {
     a.len() == b.len()
         && a.iter().any(|part| part.kind != "literal")
+        && !a.iter().any(|part| part.kind == "minusSign")
         && a.iter()
             .zip(b)
             .all(|(a, b)| a.kind == b.kind && a.value == b.value)
@@ -31,7 +32,7 @@ fn same(a: &[Part], b: &[Part], shared_unit: bool) -> bool {
             .map(|part| part.value.chars().count())
             .sum::<usize>()
             > 1
-            || shared_unit && a.len() == 1 && matches!(a[0].kind, "plusSign" | "minusSign"))
+            || shared_unit && a.len() == 1 && a[0].kind == "plusSign")
 }
 impl NumberFormat {
     pub fn format_range(&self, start: &str, end: &str) -> Result<String, Error> {
@@ -44,6 +45,27 @@ impl NumberFormat {
     pub fn format_range_to_parts(&self, start: &str, end: &str) -> Result<Vec<Part>, Error> {
         let start = Numeric::parse(start)?;
         let end = Numeric::parse(end)?;
+        self.partition_range(start, end)
+    }
+    pub fn format_range_values(
+        &self,
+        start: &crate::MathematicalValue,
+        end: &crate::MathematicalValue,
+    ) -> Result<String, Error> {
+        Ok(self
+            .format_range_values_to_parts(start, end)?
+            .iter()
+            .map(|part| part.value.as_str())
+            .collect())
+    }
+    pub fn format_range_values_to_parts(
+        &self,
+        start: &crate::MathematicalValue,
+        end: &crate::MathematicalValue,
+    ) -> Result<Vec<Part>, Error> {
+        self.partition_range(Numeric::from_value(start)?, Numeric::from_value(end)?)
+    }
+    fn partition_range(&self, start: Numeric, end: Numeric) -> Result<Vec<Part>, Error> {
         if start.special == Some("NaN") || end.special == Some("NaN") {
             return Err(Error::Range("range"));
         }
@@ -67,14 +89,18 @@ impl NumberFormat {
         let mut separator = self.data.numbers.symbols[&self.system].range_sign.clone();
         let (a_prefix, b_prefix) = (affix_len(&a, false), affix_len(&b, false));
         let (a_suffix, b_suffix) = (affix_len(&a, true), affix_len(&b, true));
-        let suffix_same = same(&a[a.len() - a_suffix..], &b[b.len() - b_suffix..], false);
+        let can_share = !a.iter().chain(&b).any(|part| {
+            part.kind == "literal" && (part.value.contains('(') || part.value.contains(')'))
+        });
+        let suffix_same =
+            can_share && same(&a[a.len() - a_suffix..], &b[b.len() - b_suffix..], false);
         let shared_unit = suffix_same
             && a[a.len() - a_suffix..]
                 .iter()
                 .any(|part| matches!(part.kind, "currency" | "unit" | "percentSign"));
         let mut prefix = Vec::new();
         let mut suffix = Vec::new();
-        if same(&a[..a_prefix], &b[..b_prefix], shared_unit) {
+        if can_share && same(&a[..a_prefix], &b[..b_prefix], shared_unit) {
             prefix.extend(a.drain(..a_prefix));
             b.drain(..b_prefix);
         }

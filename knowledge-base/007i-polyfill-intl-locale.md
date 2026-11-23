@@ -6,6 +6,9 @@
 
 Polyfill for `Intl.Locale` — provides locale information and manipulation, including calendar, hour cycle, numbering system, and week data preferences.
 
+Numeric collation uses the shared pure SameValue helper. Replacing Object.is
+after loading no longer interrupts construction of en-u-kn-false locales.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-getcanonicallocales`, `@formatjs/intl-supportedvaluesof`

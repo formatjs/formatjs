@@ -1,3 +1,4 @@
+import {arrayEvery, arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
@@ -35,14 +36,14 @@ function canCollapse(
 ): boolean {
   return (
     a.length === b.length &&
-    a.some(part => part.type !== 'literal') &&
-    a.every(
+    arraySome(a, part => part.type !== 'literal') &&
+    !arraySome(a, part => part.type === 'minusSign') &&
+    arrayEvery(
+      a,
       (part, i) => part.type === b[i].type && part.value === b[i].value
     ) &&
     (Array.from(a.map(part => part.value).join('')).length > 1 ||
-      (sharedSuffix &&
-        a.length === 1 &&
-        (a[0].type === 'plusSign' || a[0].type === 'minusSign')))
+      (sharedSuffix && a.length === 1 && a[0].type === 'plusSign'))
   )
 }
 
@@ -67,6 +68,11 @@ export function CollapseNumberRange(
   const separator = {...result[separatorIndex]}
   const prefix: NumberFormatPart[] = []
   const suffix: NumberFormatPart[] = []
+  // Keep accounting pairs and negative endpoints unambiguous.
+  const paired = (part: NumberFormatPart) =>
+    part.type === 'literal' &&
+    (part.value.includes('(') || part.value.includes(')'))
+  const canShare = !arraySome(start, paired) && !arraySome(end, paired)
 
   const startPrefix = start.slice(0, affixLength(start, false))
   const endPrefix = end.slice(0, affixLength(end, false))
@@ -74,19 +80,17 @@ export function CollapseNumberRange(
   const endSuffixLength = affixLength(end, true)
   const startSuffix = start.slice(start.length - startSuffixLength)
   const endSuffix = end.slice(end.length - endSuffixLength)
-  const collapseSuffix = canCollapse(startSuffix, endSuffix)
-  // A shared currency/unit suffix also permits sharing identical sign prefixes.
-  // The complete shared affix is more than one code point; mixed signs stay distinct.
-  // ECMA-402 §16.5.21, ambiguity constraint, and LDML collapsing steps 1–3 above.
+  const collapseSuffix = canShare && canCollapse(startSuffix, endSuffix)
   const sharedUnit =
     collapseSuffix &&
-    startSuffix.some(
+    arraySome(
+      startSuffix,
       part =>
         part.type === 'currency' ||
         part.type === 'unit' ||
         part.type === 'percentSign'
     )
-  if (canCollapse(startPrefix, endPrefix, sharedUnit)) {
+  if (canShare && canCollapse(startPrefix, endPrefix, sharedUnit)) {
     prefix.push(...start.splice(0, startPrefix.length))
     end.splice(0, endPrefix.length)
   }

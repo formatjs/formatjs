@@ -1,3 +1,4 @@
+import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
 import {match} from '@formatjs/intl-localematcher'
 import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-datetimeformat.js'
 
@@ -8,6 +9,19 @@ function supportsDateStyle() {
         dateStyle: 'short',
       } as any).resolvedOptions() as any
     ).dateStyle
+  } catch {
+    return false
+  }
+}
+
+function preservesTimeZoneIdentifiers() {
+  try {
+    return arrayEvery(
+      ['Asia/Calcutta', 'Etc/UTC'],
+      timeZone =>
+        new Intl.DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone ===
+        timeZone
+    )
   } catch {
     return false
   }
@@ -64,6 +78,7 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle() ||
+    !preservesTimeZoneIdentifiers() ||
     !supportedLocalesOf(locale)
   ) {
     return locale ? match([locale], supportedLocales, 'en') : undefined

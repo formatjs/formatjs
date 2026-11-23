@@ -35,7 +35,10 @@ const stringMf = new IntlMessageFormat(stringMsg, 'en-US')
 const preparsedMsg = IntlMessageFormat.__parse!(msg)
 
 const formatters: Formatters = {
-  getNumberFormat: memoize(Intl.NumberFormat),
+  getNumberFormat: memoize(
+    (locales, options) =>
+      new Intl.NumberFormat(locales, options as Intl.NumberFormatOptions)
+  ),
   getDateTimeFormat: memoize(Intl.DateTimeFormat),
   getPluralRules: memoize(Intl.PluralRules),
 }

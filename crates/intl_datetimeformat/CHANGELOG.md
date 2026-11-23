@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.2...formatjs_intl_datetimeformat_v1.1.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** preserve future timezone rules ([#7941](https://github.com/formatjs/formatjs/issues/7941)) ([be1683e](https://github.com/formatjs/formatjs/commit/be1683ed9d0b2661e2ac4f31f18de8de1e325f66))
+* **@formatjs/intl-datetimeformat:** preserve timezone identifiers ([#7928](https://github.com/formatjs/formatjs/issues/7928)) ([62d33d9](https://github.com/formatjs/formatjs/commit/62d33d93a6e916d4dc81bd80f2d274c9c8f93014))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_numberformat bumped from 0.2.1 to 0.3.0
+
 ## [1.0.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.1...formatjs_intl_datetimeformat_v1.0.2) (2026-11-08)
 
 

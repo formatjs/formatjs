@@ -22,6 +22,7 @@ formatjs_library(
         "canonicalizer.ts",
         "emitter.ts",
         "index.ts",
+        "locale-brand.ts",
         "parser.ts",
         "polyfill.ts",
         "polyfill-force.ts",
@@ -53,7 +54,7 @@ formatjs_library(
         "./polyfill.iife.js",
     ],
     type = "module",
-    version = "3.3.1",  # x-release-please-version
+    version = "3.4.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -73,6 +74,7 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/parser.test.ts",
+        "tests/should-polyfill.test.ts",
     ],
     deps = [
         ":intl-getcanonicallocales",
@@ -196,7 +198,11 @@ rolldown_bundle(
     entry_point = "polyfill-force.ts",
     format = "iife",
     target = "es2020",
-    visibility = ["//tools/test262:__pkg__"],
+    visibility = [
+        "//packages/intl-locale:__pkg__",
+        "//packages/temporal:__pkg__",
+        "//tools/test262:__pkg__",
+    ],
     deps = [
         "//:node_modules/@formatjs_generated/cldr.core",
         "//packages/ecma262-abstract",

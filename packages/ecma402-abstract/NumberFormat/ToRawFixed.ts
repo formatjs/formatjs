@@ -36,7 +36,8 @@ function findN2R2(x: Decimal, f: number, roundingIncrement: number) {
 
 /**
  * https://tc39.es/ecma402/#sec-torawfixed
- * @param x a finite non-negative Number or BigInt
+ * https://tc39.es/proposal-intl-keep-trailing-zeros/
+ * @param x a finite non-negative mathematical value
  * @param minFraction an integer between 0 and 100
  * @param maxFraction an integer between 0 and 100
  */
@@ -45,15 +46,24 @@ export function ToRawFixed(
   minFraction: number,
   maxFraction: number,
   roundingIncrement: number,
-  unsignedRoundingMode: UnsignedRoundingModeType
+  unsignedRoundingMode: UnsignedRoundingModeType,
+  digitCount = 0,
+  fractionDigitCount = 0
 ): RawNumberFormatResult {
   // With unit increment, every integer is already an exact rounding boundary.
   // https://tc39.es/ecma402/#sec-torawfixed
   if (roundingIncrement === 1 && x.isInteger()) {
     const integer = x.toString()
+    const minimum = Math.min(
+      maxFraction,
+      Math.max(
+        minFraction,
+        x.isZero() ? fractionDigitCount : digitCount - integer.length
+      )
+    )
     return {
       formattedString:
-        integer + (minFraction === 0 ? '' : '.' + repeat('0', minFraction)),
+        integer + (minimum === 0 ? '' : '.' + repeat('0', minimum)),
       roundedNumber: x,
       integerDigitsCount: integer.length,
       roundingMagnitude: -maxFraction,
@@ -98,6 +108,7 @@ export function ToRawFixed(
   }
 
   let int
+  let leadingZeros = 0
 
   // 9. If f is not 0, then
   if (f !== 0) {
@@ -107,7 +118,8 @@ export function ToRawFixed(
     // b. If k < f, then
     if (k <= f) {
       // i. Let z be the String value consisting of f + 1 - k occurrences of the character "0".
-      const z = repeat('0', f - k + 1)
+      leadingZeros = f - k + 1
+      const z = repeat('0', leadingZeros)
       // ii. Set m to the string-concatenation of z and m.
       m = z + m
       // iii. Set k to f + 1.
@@ -127,8 +139,12 @@ export function ToRawFixed(
     int = m.length
   }
 
-  // 11. Let cut be maxFraction - minFraction.
-  let cut = maxFraction - minFraction
+  // Source digit counts precede scaling; zero uses its fraction count instead.
+  // https://tc39.es/proposal-intl-keep-trailing-zeros/#sec-torawfixed
+  const sourceFraction = n.isZero()
+    ? fractionDigitCount
+    : digitCount - int + leadingZeros
+  let cut = maxFraction - Math.max(minFraction, sourceFraction)
 
   // 12. Repeat, while cut > 0 and the last character of m is "0",
   while (cut > 0 && m[m.length - 1] === '0') {

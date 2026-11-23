@@ -21,6 +21,7 @@ formatjs_library(
     srcs = [
         "get_internal_slots.ts",
         "index.ts",
+        "locale-brand.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "preference-data.ts",
@@ -51,7 +52,7 @@ formatjs_library(
     ],
     type = "module",
     types = True,
-    version = "5.4.3",  # x-release-please-version
+    version = "5.5.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -71,17 +72,25 @@ formatjs_library(
 formatjs_test(
     name = "intl-locale_test",
     srcs = [
+        "tests/canonicalization-brand.test.ts",
         "tests/index.test.ts",
         "tests/info-spec.test.ts",
         "tests/likely-subtags.test.ts",
         "tests/minimize.test.ts",
     ],
+    data = [
+        ":test262-polyfill.js",
+        "//packages/intl-getcanonicallocales:test262-polyfill.js",
+    ],  # keep: independent bundles loaded through runfiles
     no_copy_to_bin = [
         "//:package.json",
     ],
+    tsconfig_types = ["node"],
     deps = [
         ":intl-locale",
+        "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
 )
@@ -109,7 +118,10 @@ rolldown_bundle(
     entry_point = "polyfill-force.ts",
     format = "iife",
     target = "es2020",
-    visibility = ["//tools/test262:__pkg__"],
+    visibility = [
+        "//packages/temporal:__pkg__",
+        "//tools/test262:__pkg__",
+    ],
     deps = [
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@formatjs/intl-supportedvaluesof",

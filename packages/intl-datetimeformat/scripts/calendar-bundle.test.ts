@@ -173,6 +173,17 @@ test('published packages keep optional locale data out of base and within instal
   expect(base.bytes).toBeLessThan(250_000_000)
   expect(base.files).toBeLessThan(1700)
   for (const calendar of calendars) {
+    const map = JSON.parse(
+      readFileSync(
+        new URL(
+          `../../intl-datetimeformat-calendar-${calendar}/pkg/index.js.map`,
+          import.meta.url
+        ),
+        'utf8'
+      )
+    ).sources.join('\n')
+    expect(map, calendar).not.toContain('temporal-polyfill')
+    expect(map, calendar).not.toMatch(/packages\/temporal\//)
     const root = new URL(
       `../../intl-datetimeformat-calendar-${calendar}/pkg/`,
       import.meta.url

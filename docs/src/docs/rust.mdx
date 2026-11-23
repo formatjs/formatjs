@@ -3,12 +3,13 @@ title: Rust
 ---
 
 FormatJS provides Rust crates for message formatting, locale negotiation,
-message extraction, ICU parsers, and Java Formatter parsing.
+message extraction, ICU parsers, Java Formatter parsing, and Temporal date/time operations.
 
 ## Choose a crate
 
 | Crate                                                                                             | Use it for                                                                                                             |
 | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`formatjs_temporal`](/docs/rust/temporal)                                                        | Typed Temporal values, calendar arithmetic, and IANA time zones with an allocation-free `no_std` core                  |
 | [`formatjs_intl`](https://crates.io/crates/formatjs_intl)                                         | Application-level descriptors, translation catalogs, locale negotiation, and shared message caching                    |
 | [`formatjs_icu_messageformat`](https://crates.io/crates/formatjs_icu_messageformat)               | Low-level ICU MessageFormat formatting with a locale supplied for each call                                            |
 | [`formatjs_intl_macros`](https://crates.io/crates/formatjs_intl_macros)                           | Procedural macro used by `formatjs_intl::message_descriptor!`; applications normally depend on `formatjs_intl` instead |
@@ -67,6 +68,7 @@ uses semantic IDs.
 
 ## API documentation
 
+- [`formatjs_temporal`](https://docs.rs/formatjs_temporal)
 - [`formatjs_intl`](https://docs.rs/formatjs_intl)
 - [`formatjs_icu_messageformat`](https://docs.rs/formatjs_icu_messageformat)
 - [`formatjs_icu_messageformat_parser`](https://docs.rs/formatjs_icu_messageformat_parser)

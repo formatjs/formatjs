@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type NumberFormatInternal,
@@ -14,10 +15,13 @@ import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cach
  */
 export function PartitionNumberPattern(
   internalSlots: NumberFormatInternal,
-  _x: Decimal,
+  _x: Decimal | IntlMathematicalValue,
   approximately = false
 ): NumberFormatPart[] {
-  let x = _x
+  const record = 'value' in _x ? _x : undefined
+  const digitCount = record?.stringDigitCount || 0
+  const fractionDigitCount = record?.stringFractionDigitCount || 0
+  let x = 'value' in _x ? _x.value : _x
   // IMPL: We need to record the magnitude of the number
   let magnitude = 0
 
@@ -65,6 +69,7 @@ export function PartitionNumberPattern(
         ] = ComputeExponent(internalSlots, x)
 
         // 8.d. Let x be x × 10^(-exponent).
+        if (digitCount || fractionDigitCount) preview = undefined
         if (!preview) {
           x = x.times(getPowerOf10(-exponent))
         }
@@ -73,7 +78,8 @@ export function PartitionNumberPattern(
 
     // 8.e. Let formatNumberResult be FormatNumericToString(internalSlots, x).
     const formatNumberResult =
-      preview ?? FormatNumericToString(internalSlots, x)
+      preview ??
+      FormatNumericToString(internalSlots, x, digitCount, fractionDigitCount)
 
     // 8.f. Let n be formatNumberResult.[[formattedString]].
     n = formatNumberResult.formattedString

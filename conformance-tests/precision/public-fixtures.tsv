@@ -1,0 +1,18 @@
+input	digitCount	fractionDigitCount	options	skeleton	expected	plural
+1.00	-	-	{}	.00# rounding-mode-half-up	1.00	other
+001.00	-	-	{}	.00# rounding-mode-half-up	1.00	other
+1.20e1	-	-	{}	.0## rounding-mode-half-up	12.0	other
+1.20e-1	-	-	{}	.000 rounding-mode-half-up	0.120	other
+0.00e1	-	-	{}	.0## rounding-mode-half-up	0.0	other
+-0.00	-	-	{}	.00# rounding-mode-half-up	-0.00	other
+1.0000	-	-	{}	.000 rounding-mode-half-up	1.000	other
+9.995	-	-	{"maximumFractionDigits":2}	.00 rounding-mode-half-up	10.00	other
+.0100	-	-	{"style":"percent","maximumFractionDigits":3}	percent scale/100 .00# rounding-mode-half-up	1.00%	-
+1000	-	-	{"notation":"scientific"}	scientific .000 rounding-mode-half-up	1.000E3	-
+1.20e3	-	-	{"notation":"engineering"}	engineering .00# rounding-mode-half-up	1.20E3	-
+0.00	-	-	{"notation":"scientific"}	scientific .00# rounding-mode-half-up	0.00E0	-
+1000	-	-	{"notation":"compact"}	compact-short @@ group-min2 rounding-mode-half-up	1.0K	-
+1200	-	-	{"notation":"compact","maximumFractionDigits":3}	compact-short .000 group-min2 rounding-mode-half-up	1.200K	-
+1.00	-	-	{"trailingZeroDisplay":"stripToMinimum"}	.### rounding-mode-half-up	1	one
+1.000	-	-	{"minimumFractionDigits":2,"trailingZeroDisplay":"stripToMinimum"}	.00# rounding-mode-half-up	1.00	other
+1.20	-	-	{"trailingZeroDisplay":"stripIfInteger"}	.00#/w rounding-mode-half-up	1.20	other

@@ -22,14 +22,22 @@ fn etc_gmt_zones_use_tzdb_signs_without_transition_data() {
     }
 }
 #[test]
-fn named_aliases_resolve_to_primary_identifiers_and_use_target_offsets() {
+fn named_aliases_preserve_identifiers_and_use_target_offsets() {
     let registry = TimeZoneRegistry::default();
     registry.load_json(PACK).unwrap();
     let alias = registry.resolve("us/eastern").unwrap();
-    assert_eq!(alias.identifier(), "America/New_York");
+    assert_eq!(alias.identifier(), "US/Eastern");
+    assert_eq!(alias.data_identifier(), "America/New_York");
     assert_eq!(registry.offset_at(&alias, 0).seconds, -18000);
-    for (input, name) in [("etc/gmt", "UTC"), ("etc/utc", "UTC"), ("gmt", "UTC")] {
-        assert_eq!(registry.resolve(input).unwrap().identifier(), name);
+    for (input, name) in [
+        ("etc/gmt", "Etc/GMT"),
+        ("etc/utc", "Etc/UTC"),
+        ("gmt", "GMT"),
+        ("zulu", "Zulu"),
+    ] {
+        let zone = registry.resolve(input).unwrap();
+        assert_eq!(zone.identifier(), name);
+        assert_eq!(registry.offset_at(&zone, 0).seconds, 0);
     }
 }
 #[test]
@@ -37,7 +45,7 @@ fn loaded_transitions_switch_exactly_at_instant_and_keep_historical_seconds() {
     let registry = TimeZoneRegistry::default();
     registry.load_json(PACK).unwrap();
     let zone = registry.resolve("us/eastern").unwrap();
-    assert_eq!(zone.identifier(), "America/New_York");
+    assert_eq!(zone.identifier(), "US/Eastern");
     for (instant, seconds, in_dst) in [
         (0, -18000, false),
         (99_999_999_999, -18000, false),
@@ -131,7 +139,7 @@ fn offsets_and_default_zone_preserve_validation_and_ascii_matching() {
     assert_eq!(registry.default_time_zone().identifier(), "+05:30");
     registry.set_default_time_zone(None).unwrap();
     assert_eq!(registry.default_time_zone().identifier(), "UTC");
-    assert_eq!(registry.resolve("gmt0").unwrap().identifier(), "UTC");
+    assert_eq!(registry.resolve("gmt0").unwrap().identifier(), "GMT0");
 }
 
 #[test]
@@ -173,7 +181,7 @@ fn construction_snapshots_keep_name_availability_but_use_current_offsets() {
     );
     assert_eq!(
         before.resolve("US/Eastern").unwrap().identifier(),
-        "America/New_York"
+        "US/Eastern"
     );
     assert_eq!(before.resolve("-00").unwrap().identifier(), "+00:00");
 }
@@ -193,4 +201,11 @@ fn construction_reads_default_timezone_after_earlier_options() {
     );
     runtime.time_zones().set_default_time_zone(None).unwrap();
     assert_eq!(construction.time_zone(None).unwrap().identifier(), "UTC");
+    runtime
+        .time_zones()
+        .set_default_time_zone(Some("us/eastern"))
+        .unwrap();
+    let zone = construction.time_zone(None).unwrap();
+    assert_eq!(zone.identifier(), "US/Eastern");
+    assert_eq!(zone.data_identifier(), "America/New_York");
 }

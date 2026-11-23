@@ -1,4 +1,8 @@
 import {CanonicalizeUnicodeLocaleId} from '#packages/intl-localematcher/abstract/CanonicalizeUnicodeLocaleId.js'
+import {
+  stringIndexOf,
+  stringSlice,
+} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
 import {
   invariant,
@@ -15,11 +19,12 @@ export function InsertUnicodeExtensionAndCanonicalize(
     'Expected locale to not have a Unicode locale extension'
   )
   let extension = '-u'
-  for (const attr of attributes) {
-    extension += `-${attr}`
+  // ECMA-402 §9.2.6 steps 3–4: append private attributes and fields in order.
+  for (let i = 0; i < attributes.length; i++) {
+    extension += `-${attributes[i]}`
   }
-  for (const kw of keywords) {
-    const {key, value} = kw
+  for (let i = 0; i < keywords.length; i++) {
+    const {key, value} = keywords[i]
     extension += `-${key}`
     if (value !== '') {
       extension += `-${value}`
@@ -28,13 +33,14 @@ export function InsertUnicodeExtensionAndCanonicalize(
   if (extension === '-u') {
     return CanonicalizeUnicodeLocaleId(locale)
   }
-  let privateIndex = locale.indexOf('-x-')
+  // ECMA-402 §9.2.6 steps 6–8: insert before private-use subtags.
+  let privateIndex = stringIndexOf(locale, '-x-')
   let newLocale
   if (privateIndex === -1) {
     newLocale = locale + extension
   } else {
-    let preExtension = locale.slice(0, privateIndex)
-    let postExtension = locale.slice(privateIndex)
+    let preExtension = stringSlice(locale, 0, privateIndex)
+    let postExtension = stringSlice(locale, privateIndex)
     newLocale = preExtension + extension + postExtension
   }
   return CanonicalizeUnicodeLocaleId(newLocale)

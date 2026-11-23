@@ -1,3 +1,8 @@
+import {
+  arrayEvery,
+  arrayIncludes,
+  arrayIndexOf,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   extensionAlias,
@@ -70,13 +75,17 @@ function compareKV(t1: Array<any>, t2: Array<any>): number {
 }
 
 function compareExtension(e1: Extension, e2: Extension): number {
+  // Private use consumes following subtags, so it must follow every extension.
+  // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+  if (e1.type === 'x') return e2.type === 'x' ? 0 : 1
+  if (e2.type === 'x') return -1
   return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0
 }
 
 function mergeVariants(v1: string[], v2: string[]): string[] {
   const result = [...v1]
   for (const v of v2) {
-    if (v1.indexOf(v) < 0) {
+    if (arrayIndexOf(v1, v) < 0) {
       appendToList(result, v)
     }
   }
@@ -166,7 +175,9 @@ export function canonicalizeUnicodeLanguageId(
   const matches = ({type}: LanguageAliasRule) =>
     (!type.script || type.script === finalLangAst.script) &&
     (!type.region || type.region === finalLangAst.region) &&
-    type.variants.every(variant => finalLangAst.variants.includes(variant))
+    arrayEvery(type.variants, variant =>
+      arrayIncludes(finalLangAst.variants, variant)
+    )
   const languageRule = languageAliasRules[finalLangAst.lang]?.find(matches)
   const undRule =
     finalLangAst.lang === 'und'
@@ -193,7 +204,7 @@ export function canonicalizeUnicodeLanguageId(
         ? replacement.region
         : finalLangAst.region || replacement.region,
       variants: mergeVariants(
-        finalLangAst.variants.filter(v => !type.variants.includes(v)),
+        finalLangAst.variants.filter(v => !arrayIncludes(type.variants, v)),
         replacement.variants
       ),
     }
@@ -224,7 +235,7 @@ export function canonicalizeUnicodeLanguageId(
         const {region: likelyRegion} = parseUnicodeLanguageId(
           likelySubtag.split(SEPARATOR)
         )
-        if (likelyRegion && regions.indexOf(likelyRegion) > -1) {
+        if (likelyRegion && arrayIndexOf(regions, likelyRegion) > -1) {
           replacedRegion = likelyRegion
         }
       }

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.3...@formatjs/intl-locale@5.5.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-getcanonicallocales bumped to 3.4.0
+    * @formatjs/intl-supportedvaluesof bumped to 3.1.0
+
 ## [5.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.2...@formatjs/intl-locale@5.4.3) (2026-11-08)
 
 

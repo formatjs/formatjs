@@ -73,7 +73,7 @@ formatjs_library(
     ],
     type = "module",
     types = True,
-    version = "7.0.4",  # x-release-please-version
+    version = "7.1.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -97,6 +97,7 @@ formatjs_test(
     name = "intl-pluralrules_test",
     srcs = [
         "tests/index.test.ts",
+        "tests/should-polyfill.test.ts",
         "tests/supported-locales-of.test.ts",
         ":tests-locale-data-bs",  # keep: generated locale data imported by tests
         ":tests-locale-data-ca",  # keep: generated locale data imported by tests
@@ -236,7 +237,10 @@ rolldown_bundle(
     entry_point = "test262-main.ts",
     format = "iife",
     target = "es2020",
-    visibility = ["//tools/test262:__pkg__"],
+    visibility = [
+        "//packages/temporal:__pkg__",
+        "//tools/test262:__pkg__",
+    ],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

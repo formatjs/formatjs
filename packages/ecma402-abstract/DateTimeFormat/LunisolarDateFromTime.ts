@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 interface CalendarData {
   firstYear: number
   endDay: number
@@ -58,7 +59,7 @@ export function LunisolarDateFromTime(
   const epochDay = Math.floor(t / 86400000)
   const {checkpoints} = data
   if (epochDay < checkpoints[0] || epochDay >= data.endDay) {
-    throw new RangeError('Date outside calendar data range')
+    throw new RangeErrorConstructor('Date outside calendar data range')
   }
   let low = 0
   let high = checkpoints.length

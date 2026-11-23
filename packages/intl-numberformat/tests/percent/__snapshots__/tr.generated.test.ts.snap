@@ -7,6 +7,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
     "value": "+",
   },
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -21,14 +25,19 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 milyon – +2 milyon"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+%1 milyon – 2 milyon"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDisplay=long 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "startRange",
@@ -49,11 +58,6 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
     "source": "shared",
     "type": "literal",
     "value": " – ",
-  },
-  {
-    "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
   },
   {
     "source": "endRange",
@@ -80,6 +84,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
     "value": "+",
   },
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -94,14 +102,19 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 Mn – +2 Mn"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+%1 Mn – 2 Mn"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDisplay=short 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "startRange",
@@ -122,11 +135,6 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
     "source": "shared",
     "type": "literal",
     "value": " – ",
-  },
-  {
-    "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
   },
   {
     "source": "endRange",
@@ -149,6 +157,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=always, compactDis
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=long 1`] = `
 [
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -163,10 +175,15 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDispl
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 milyon – 2 milyon"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"%1 milyon – %2 milyon"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=long 3`] = `
 [
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
   {
     "source": "startRange",
     "type": "integer",
@@ -186,6 +203,11 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDispl
     "source": "shared",
     "type": "literal",
     "value": " – ",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "endRange",
@@ -208,6 +230,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDispl
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=short 1`] = `
 [
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -222,10 +248,15 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDispl
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 Mn – 2 Mn"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"%1 Mn – %2 Mn"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDisplay=short 3`] = `
 [
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
   {
     "source": "startRange",
     "type": "integer",
@@ -245,6 +276,11 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=auto, compactDispl
     "source": "shared",
     "type": "literal",
     "value": " – ",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "endRange",
@@ -271,6 +307,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
     "value": "+",
   },
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -285,14 +325,19 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 milyon – +2 milyon"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+%1 milyon – 2 milyon"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "startRange",
@@ -313,11 +358,6 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
     "source": "shared",
     "type": "literal",
     "value": " – ",
-  },
-  {
-    "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
   },
   {
     "source": "endRange",
@@ -344,6 +384,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
     "value": "+",
   },
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -358,14 +402,19 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 Mn – +2 Mn"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+%1 Mn – 2 Mn"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "startRange",
@@ -386,11 +435,6 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
     "source": "shared",
     "type": "literal",
     "value": " – ",
-  },
-  {
-    "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
   },
   {
     "source": "endRange",
@@ -413,6 +457,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=exceptZero, compac
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=long 1`] = `
 [
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -427,10 +475,15 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 milyon – 2 milyon"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"%1 milyon – %2 milyon"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=long 3`] = `
 [
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
   {
     "source": "startRange",
     "type": "integer",
@@ -450,6 +503,11 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisp
     "source": "shared",
     "type": "literal",
     "value": " – ",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "endRange",
@@ -472,6 +530,10 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisp
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=short 1`] = `
 [
   {
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "type": "integer",
     "value": "1",
   },
@@ -486,10 +548,15 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisp
 ]
 `;
 
-exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 Mn – 2 Mn"`;
+exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"%1 Mn – %2 Mn"`;
 
 exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisplay=short 3`] = `
 [
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
   {
     "source": "startRange",
     "type": "integer",
@@ -509,6 +576,11 @@ exports[`Intl.NumberFormat tr > notation=compact, signDisplay=never, compactDisp
     "source": "shared",
     "type": "literal",
     "value": " – ",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "endRange",

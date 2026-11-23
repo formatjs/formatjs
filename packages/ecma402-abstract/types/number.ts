@@ -133,6 +133,7 @@ export interface RawCurrencyData {
   currencySpacing: CurrencySpacingData
   standard: string
   accounting: string
+  /** Legacy CLDR payloads; notation now uses decimal compact patterns for every style. */
   short?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>
   // IMPORTANT: We're making the assumption here that currency unitPattern
   // are the same for all LDMLPluralRule
@@ -230,7 +231,7 @@ export type NumberFormatOptionsSignDisplay =
   | 'exceptZero'
   | 'negative'
 export type NumberFormatOptionsUnitDisplay = 'long' | 'short' | 'narrow'
-export type TrailingZeroDisplay = 'auto' | 'stripIfInteger'
+export type TrailingZeroDisplay = 'auto' | 'stripIfInteger' | 'stripToMinimum'
 
 export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
   locale: string
@@ -255,7 +256,7 @@ export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
 
 export type NumberFormatOptions = Omit<
   Intl.NumberFormatOptions,
-  'signDisplay' | 'useGrouping'
+  'signDisplay' | 'useGrouping' | 'trailingZeroDisplay'
 > &
   NumberFormatDigitOptions & {
     localeMatcher?: NumberFormatOptionsLocaleMatcher
@@ -275,7 +276,10 @@ export type NumberFormatOptions = Omit<
     useGrouping?: UseGroupingType
   }
 
-export type ResolvedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
+export type ResolvedNumberFormatOptions = Omit<
+  Intl.ResolvedNumberFormatOptions,
+  'trailingZeroDisplay'
+> &
   Pick<
     NumberFormatInternal,
     | 'currencySign'
@@ -284,6 +288,10 @@ export type ResolvedNumberFormatOptions = Intl.ResolvedNumberFormatOptions &
     | 'notation'
     | 'compactDisplay'
     | 'signDisplay'
+    | 'trailingZeroDisplay'
+    | 'roundingIncrement'
+    | 'roundingMode'
+    | 'roundingPriority'
   >
 
 export type NumberFormatPartTypes =

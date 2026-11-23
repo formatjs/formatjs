@@ -160,6 +160,36 @@ for (const receiver of [undefined, null, 123, Symbol(), {}]) {
 }
 
 // Support belongs to the current runtime, not a cached build-host snapshot.
+const timezoneValues = candidate('timeZone')
+const dateTimeResolved = Object.getOwnPropertyDescriptor(
+  Intl.DateTimeFormat.prototype,
+  'resolvedOptions'
+)!
+try {
+  Object.defineProperty(Intl.DateTimeFormat.prototype, 'resolvedOptions', {
+    configurable: true,
+    value() {
+      throw new Error('Timezone enumeration read resolvedOptions')
+    },
+  })
+  equal(
+    candidate('timeZone'),
+    timezoneValues,
+    'Timezone support uses construction, not resolved spelling'
+  )
+  equal(
+    reference('timeZone'),
+    timezoneValues,
+    'TS timezone support uses construction'
+  )
+} finally {
+  Object.defineProperty(
+    Intl.DateTimeFormat.prototype,
+    'resolvedOptions',
+    dateTimeResolved
+  )
+}
+
 const numberFormatDescriptor = Object.getOwnPropertyDescriptor(
   Intl,
   'NumberFormat'

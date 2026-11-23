@@ -43,6 +43,11 @@ fn main() {
         ),
         ("scientific", json!({"notation":"scientific"})),
         ("compact", json!({"notation":"compact"})),
+        ("percent", json!({"style":"percent"})),
+        (
+            "compact percent",
+            json!({"style":"percent","notation":"compact"}),
+        ),
         (
             "compact currency",
             json!({"style":"currency","currency":"USD","notation":"compact"}),

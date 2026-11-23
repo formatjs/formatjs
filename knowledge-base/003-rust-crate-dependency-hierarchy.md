@@ -56,7 +56,17 @@ It compares resolved argument indices and conversion requirement sets. The Rust
 `verify --message-syntax java-printf --structural-equality` command and npm CLI
 share this implementation through `formatjs_cli_napi::verify_java_printf`.
 ICU verification remains the default. Java printf catalogs contain string leaves;
-Android XML extraction and plural/array item splitting happen before verification.
+Android XML extraction and plural/array item splitting happen in `formatjs_cli::android_resources` for `--message-syntax android`; `java-printf` continues to accept JSON string catalogs.
+
+## Apple resource verification
+
+`formatjs_cli::apple_resources` parses text `.strings` and XML `.stringsdict`,
+including UTF-8/UTF-16 decoding, comments, escaping, and duplicate-key checks.
+Native paths identify locale (`*.lproj`) and owning string table. The CLI requires
+an explicit source locale, checks missing/extra keys within each table, and adapts
+plural dictionaries to the existing `xcstrings` argument/variation verifier.
+It reuses `formatjs_apple_printf_parser`; no second printf grammar is maintained.
+`roxmltree` parses plist XML without an external entity resolver.
 
 ## BUILD maintenance
 
@@ -93,8 +103,7 @@ formatjs_cli (v0.1.14)
 │   ├── icu 2.1 (Unicode ICU)
 │   ├── regex 1.11
 │   ├── serde + serde_json
-│   ├── once_cell, indexmap
-│   └── [WASM only] wasm-bindgen 0.2, serde-wasm-bindgen 0.6
+│   └── once_cell, indexmap
 ├── formatjs_icu_skeleton_parser (v0.1.1)
 ├── clap 4.5 (CLI argument parsing)
 ├── oxc 0.120 + oxc_parser + oxc_ast + oxc_allocator + oxc_span (JS/TS parsing)
@@ -161,7 +170,6 @@ formatters; it does not advertise unsupported candidate values.
 - `printer.rs` — AST-to-string serialization
 - `manipulator.rs` — AST transforms (hoist_selectors, structural equality)
 - `date_time_pattern_generator.rs` — CLDR datetime pattern generation
-- `lib_wasm.rs` — WebAssembly bindings via wasm-bindgen
 
 Structural comparison accepts shared date/time arguments and compares their
 roles without regard to order. Translations must retain both roles. TypeScript's
@@ -170,7 +178,6 @@ roles without regard to order. Translations must retain both roles. TypeScript's
 **Build targets:**
 
 - **Native library** — Standard Rust library for use by formatjs_cli
-- **WASM binary** — Compiled to `wasm32-unknown-unknown`, produces `.wasm` + JS glue via `rust_wasm_bindgen`
 - **Benchmark** — Criterion-based (`bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench`)
 
 **Generated files** (from TypeScript tooling):
@@ -568,3 +575,148 @@ with documented ambiguity around printf-looking literal text. Root plurals with
 multiple numeric arguments require substitution metadata; nested named
 substitutions and unknown variation axes fail explicitly. The verifier is
 read-only. Crate releases use Release Please and the existing release workflow.
+
+## Temporal core
+
+`formatjs_temporal` (`crates/temporal`) is published, allocation-free and `no_std`.
+Its Cargo package includes generated calendars/timezones through `compiled_data`;
+`//crates:intl_release` assembles those files and the Cargo build script.
+It owns checked Instant values, ISO conversion, instant string parsing, rounding
+and serialization with caller-supplied offsets.
+Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both
+conversion directions across Temporal’s full instant range. Hermes native
+bindings, complete WASM facades and remaining Temporal operations are pending.
+The core builds through a scoped WASM target for matched primitive benchmarks.
+
+`formatjs_temporal::Duration` now supplies Number-representable integer fields,
+ISO parsing, signed rounding, serialization, exact totals and arithmetic. Instant
+differences/addition reuse it. ICU independently checks signed rounding and
+rational-to-binary64 totals. Plain/zoned anchors below supply calendar-relative operations.
+
+`formatjs_temporal::PlainTime` adds ISO parsing, checked clock fields, wrapping
+arithmetic, signed differences, field-relative rounding and precision formatting.
+TS/Rust share grammar vectors and match 7,740 independent ICU clock cases.
+
+Temporal also owns calendar-aware PlainDate/PlainDateTime/zoned cores and
+PlainYearMonth/PlainMonthDay. The no_std TimeZone provider supplies exact nanosecond
+offsets and transition queries. FixedOffset supplies constant zones; TransitionZone
+borrows explicit records and recurring rules. Zoned differences round against
+actual calendar spans. Native IANA registry lookup uses caller-owned or optional
+Bazel-compiled records without runtime dependencies; Hermes bindings remain pending. ICU controls cover
+Gregorian conversion, calendar arithmetic, short-date references/rounding,
+clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
+
+The plain and zoned cores also supply relative Duration total/round/compare operations.
+ICU controls exercise the owned IANA provider through these adapters. Sealed
+CalendarProvider values retain all 16 calendars through public date/date-time
+and zoned operations; CalendarRef unifies arithmetic and borrowed table views.
+Short dates reuse bounded extended calendar coordinates for reference dates,
+with canonical MonthDay windows and calendar-aware YearMonth rounding.
+Independent short-date controls cover all 16 providers. Rational-to-f64
+conversion stays in the numeric core.
+
+Temporal now has a checked-in, Bazel-generated IANA spelling/primary table.
+`named_time_zone_identifier` performs allocation-free ASCII-case-insensitive
+lookup; `NamedTimeZone<Z>` adds primary identity to an existing provider. The
+build-time generator consumes `@formatjs_generated/tz`, without adding Rust runtime
+dependencies. Regenerate with `bazel run -c opt //crates/temporal:identifiers`.
+Independent ICU controls verify all 597 names and 178,503 identity pairs using
+real transition providers. Production lookup now uses caller-owned records or
+the optional Bazel-compiled IANA pack.
+
+`calendar_difference.rs` owns shared calendar-unit anchors and rounding.
+`plain_relative.rs` supplies calendar-aware PlainDate relative Duration adapters and plain
+Date/DateTime differences; timezone providers remain behind the zoned anchor.
+`DateTimeUnit` covers all ten units, with `ZonedUnit` retained as an alias.
+PlainDateTime still accepts TimeUnit arguments. Input endpoint checks include
+clock carry; post-round endpoints can exceed date bounds when allowed.
+Independent ICU controls cover 51,840 plain rounds, 17,280 totals, 20,736 date
+differences and 4,224 comparisons. Rust remains allocation-free with one pure numeric calendar dependency.
+
+Shared numeric calendar math lives in `intl_datetimeformat_calendars::calendar`.
+Its default `provider` feature enables DateTimeFormat, serde and the C ABI;
+`compiled_data` implies `provider`. Disabling defaults selects only the
+allocation-free, dependency-free no_std kernel. Bazel `:calendar_core` explicitly
+keeps empty deps because Gazelle does not evaluate feature-gated module imports.
+Default provider callers retain their API; callers disabling defaults must enable
+`provider` to keep registration APIs.
+
+```mermaid
+graph TD
+  Temporal[temporal] --> Core[calendar numeric module: no_std, no dependencies]
+  Provider[calendar provider feature] --> Core
+  Provider --> Formatter[intl_datetimeformat]
+  Provider --> Serde[serde / serde_json]
+  Compiled[compiled_data] --> Provider
+  Compiled --> Tables[generated calendar tables]
+```
+
+The 13 numeric engines expose conversion/inversion, month codes, signed eras,
+addition and differences. Native formatter adapters retain CLDR era/month keys;
+Temporal ISO conversion/addition/differences reuse the same math. Native public
+non-ISO date types remain pending. ICU controls run 34,366 field samples,
+32,352 additions and 176 range checks. The documented Hebrew/Persian oracle
+ranges and forward-only boundary checks avoid known ICU limitations without
+adding conformance exclusions.
+
+Temporal's existing RelativeAnchor now retains rounded date/time prefixes and
+bubbles only expanded boundaries. Calendar::until compares unregulated month
+codes/days before constructing its clamped remainder anchor. ICU forward-field
+controls add 32,352 independent numeric differences; they no longer assume
+constrained addition can be inverted. Native public date classes remain ISO.
+
+Borrowed `TableCalendar` views add Chinese, Dangi and Umm al-Qura to the same
+no_std numeric layer. Private `NumericCalendar` shares addition/difference math;
+loading, ownership and embedded packs remain outside the numeric core.
+
+Temporal's optional `with_time_zones` Bazel variant adds generated static timezone
+records through `compiled_time_zones`; no new crate dependency is added. The pure
+core retains borrowed registry APIs and excludes the pack. The generator imports
+`@formatjs_generated/tz` only at build time; checked const constructors validate
+records. Native ICU tests now resolve real zones through this production registry,
+including aliases and UTC, rather than decoding JSON in tests.
+
+`temporal/zoned_string.rs` resolves strings through TimeZoneRegistry. Typed offset
+hints keep UTC, wall time, exact and rounded-minute matching separate; date-only
+strings reuse the existing start-of-day operation. Resolved-zone formatting rounds
+instants before querying offsets and preserves calendar annotations. Plain/Instant
+and zoned formatting share offset-minute rounding. ICU/java.time/BigDecimal
+controls verify strings and all rounding modes; native Hermes installation remains
+pending.
+
+Temporal now has CalendarRegistry and TemporalContext. The optional
+`with_calendars` target builds static calendar descriptors from the existing
+`@formatjs_generated/icu.calendar` package; `with_compiled_data` adds timezone
+records too. Checked table constructors validate packs once when creating a
+context. Runtime views remain borrowed/no_std/allocation-free, without serde or
+formatter dependencies. Context string factories select all 16 calendars. Native
+ICU calendar tests now use this registry rather than a test-only JSON loader.
+
+The experimental Temporal SDK adapter links the same `intl_hermes` archive and its
+Bazel-only Temporal ABI exports. It embeds the TS facade, preserving coercion and
+brands while Rust owns numeric/calendar/timezone operations. Per-runtime host
+providers supply Now's clock and timezone. The prebuilt SDK includes this optional
+adapter; the published Cargo SDK source graph still excludes private Temporal.
+
+## Android resource verification
+
+`formatjs_cli::android_resources` parses native resource XML with roxmltree and
+then applies Android quoting/escaping before Java printf verification.
+`verify_resources` groups files by resource directory and locale, validates array
+shape and plural fallback compatibility, and reports missing/extra keys. Rust
+and npm use the same code through `verify_android_resources` in the N-API crate.
+Locale typography and brand rules remain caller policy.
+Android `--structural-equality` compares custom XML entity names and counts per
+item using source spellings after XML validation, excluding literal CDATA,
+comments, predefined entities and numeric references. Rust and npm share the
+check through the existing Android resource verifier, including formatted=false
+items; basic XML validation remains permissive.
+
+Structural equality also compares canonical inline-markup forests (sorted siblings,
+nesting and expanded attribute names/values, excluding XLIFF wrappers) and
+whole-value resource-reference identity. Reference detection uses XML-decoded raw
+text before Android unescaping and skips styled items. Theme attribute shorthand
+and Android package namespace prefixes are normalized; resource lookup/linking
+and escaped HTML parsing remain outside
+this verifier. Both checks run per item, including formatted=false and source
+other fallback for target-only plural categories.

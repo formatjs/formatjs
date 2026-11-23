@@ -1,0 +1,15 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+exports_files(
+    [
+        "hko-month-starts.tsv",
+        "hko-source-shas.tsv",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+copy_to_bin(
+    name = "hko_month_starts",
+    srcs = ["hko-month-starts.tsv"],
+    visibility = ["//visibility:public"],
+)

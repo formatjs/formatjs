@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {type RelativeTimeFormatSingularUnit} from '#packages/ecma402-abstract/types/relative-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
@@ -28,7 +29,7 @@ export function SingularRelativeTimeUnit(
     unit !== 'quarter' &&
     unit !== 'year'
   ) {
-    throw new RangeError('invalid unit')
+    throw new RangeErrorConstructor('invalid unit')
   }
   return unit
 }

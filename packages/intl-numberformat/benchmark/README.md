@@ -33,7 +33,6 @@ bazel run -c opt //crates/intl_numberformat:benchmark
 ```
 
 The audit varies supported-locale population, constructors, and numeric styles.
-Historical optimization comparisons remain in [audit notes](../../../knowledge-base/audits/).
 
 Current optimized Rust measurements: [shared report](../../../benchmarks/polyfills/README.md#earlier-focused-rust-suites).
 

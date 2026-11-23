@@ -105,6 +105,9 @@ Pre-commit hooks run sequentially:
 6. `gazelle` — regenerate BUILD files
 7. `bazel-lock-regen` — bazel mod deps
 
+`lint-codescythe` generates ignored package tsconfigs before analysis, so project
+references resolve in clean CI checkouts.
+
 All hook `bazel run` commands use `-c opt`, including the CI Lefthook entrypoint
 and commitlint, so Gazelle does not invalidate analysis by changing modes.
 The Rust formatter resolves the pinned toolchain directly without compiling
@@ -191,8 +194,14 @@ publishing. `formatjs_cli` is binary-only and excluded from crates.io publishing
 The custom Cargo workspace plugin excludes noncandidate crates with
 `package.publish = false` or `publish = []` before dependency release
 propagation. It retains explicit binary-only candidates such as `formatjs_cli`.
-Crate release runs share a FIFO `queue: max` concurrency group so
-dependency-ordered releases wait instead of replacing pending runs. The Rust
+Crate release runs share a FIFO `queue: max` concurrency group. Each run uses
+`//tools/cargo:publish` to expand selected crates' local Cargo dependencies,
+skip versions already published, and publish missing dependencies first.
+Each upload must appear in the crates.io sparse index before its dependents
+publish. Registry failures stop the run; only HTTP 404 means unpublished.
+Generated-data crates still use the Bazel-assembled release workspace.
+Manual dry runs validate missing crates together without uploads or OIDC tokens.
+The Rust
 CLI binary artifacts remain Bazel-owned in
 `rust-cli-release.yml`. Its release build job runs on Linux, uses BuildBuddy RBE
 when credentials are available, and cross-compiles the macOS, Linux, and Windows

@@ -8,6 +8,19 @@ load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 
+formatjs_rust_test(
+    name = "timezone_future_test",
+    size = "small",
+    srcs = ["timezone_future.rs"],
+    crate_name = "timezone_future_test",
+    crate_root = "timezone_future.rs",
+    edition = "2024",
+    deps = [
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)
+
 rust_ffi_header(
     name = "generate_header",
     out = "datetimeformat.h",
@@ -82,6 +95,7 @@ rust_library(
         "render.rs",
         "selection.rs",
         "timezone.rs",
+        "timezone_future.rs",
     ],
     compile_data = [
         ":timezone_links",
@@ -134,6 +148,7 @@ rust_library(
         "render.rs",
         "selection.rs",
         "timezone.rs",
+        "timezone_future.rs",
     ],
     compile_data = [
         ":timezone_links",
@@ -167,10 +182,25 @@ formatjs_rust_test(
     ],
     compile_data = [
         ":locale-data/en.json",
+        ":locale-data/de.json",
+        ":locale-data/fr.json",
+        ":locale-data/ja.json",
+        "//conformance-tests/icu4j:historical_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_locale_fixtures",
+        "//packages/intl-datetimeformat:tz_all_json",
     ],
     crate_name = "intl_datetimeformat_test",
     edition = "2024",
-    rustc_env = {"FORMATJS_DATETIME_EN": "$(execpath :locale-data/en.json)"},
+    rustc_env = {
+        "FORMATJS_DATETIME_EN": "$(execpath :locale-data/en.json)",
+        "FORMATJS_HISTORICAL_TIMEZONE_ORACLE": "$(execpath //conformance-tests/icu4j:historical_timezone_fixtures)",
+        "FORMATJS_HISTORICAL_TIMEZONES": "$(execpath //packages/intl-datetimeformat:tz_all_json)",
+        "FORMATJS_DATETIME_DE": "$(execpath :locale-data/de.json)",
+        "FORMATJS_DATETIME_FR": "$(execpath :locale-data/fr.json)",
+        "FORMATJS_DATETIME_JA": "$(execpath :locale-data/ja.json)",
+        "FORMATJS_DATETIME_TZ": "$(execpath //packages/intl-datetimeformat:tz_all_json)",
+        "FORMATJS_TEMPORAL_LOCALE_ORACLE": "$(execpath //conformance-tests/icu4j:temporal_locale_fixtures)",
+    },
     deps = [
         ":intl_datetimeformat",
         "@crates//:serde_json",

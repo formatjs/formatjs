@@ -1,4 +1,6 @@
-use formatjs_intl_numberformat::{Error, NumberFormat, Options, Part, registry::Registry};
+use formatjs_intl_numberformat::{
+    Error, MathematicalValue, NumberFormat, Options, Part, registry::Registry,
+};
 use serde::{Deserialize, Serialize};
 use std::{
     fs,
@@ -7,14 +9,33 @@ use std::{
 };
 
 #[derive(Deserialize)]
+#[serde(untagged)]
+enum Input {
+    Text(String),
+    Value(MathematicalValue),
+}
+impl Input {
+    fn value(&self) -> MathematicalValue {
+        match self {
+            Self::Text(value) => MathematicalValue {
+                value: value.clone(),
+                string_digit_count: 0,
+                string_fraction_digit_count: 0,
+            },
+            Self::Value(value) => value.clone(),
+        }
+    }
+}
+
+#[derive(Deserialize)]
 struct Request {
     locales: Vec<String>,
     #[serde(default)]
     options: Options,
     #[serde(default)]
-    values: Vec<String>,
+    values: Vec<Input>,
     #[serde(default)]
-    ranges: Vec<[String; 2]>,
+    ranges: Vec<[Input; 2]>,
 }
 #[derive(Serialize)]
 struct Output {
@@ -34,8 +55,8 @@ fn evaluate(registry: &Registry, request: Request) -> Result<Response, Error> {
         .iter()
         .map(|value| {
             Ok(Output {
-                text: model.format(value)?,
-                parts: model.format_to_parts(value)?,
+                text: model.format_value(&value.value())?,
+                parts: model.format_value_to_parts(&value.value())?,
             })
         })
         .collect::<Result<_, Error>>()?;
@@ -44,8 +65,8 @@ fn evaluate(registry: &Registry, request: Request) -> Result<Response, Error> {
         .iter()
         .map(|[start, end]| {
             Ok(Output {
-                text: model.format_range(start, end)?,
-                parts: model.format_range_to_parts(start, end)?,
+                text: model.format_range_values(&start.value(), &end.value())?,
+                parts: model.format_range_values_to_parts(&start.value(), &end.value())?,
             })
         })
         .collect::<Result<_, Error>>()?;

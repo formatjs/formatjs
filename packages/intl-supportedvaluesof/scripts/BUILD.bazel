@@ -9,6 +9,7 @@ ts_binary(
 
 ts_binary(
     name = "timezones",
+    data = ["//:node_modules/@formatjs_generated/tz"],
     entry_point = "timezones.ts",
     visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
 )

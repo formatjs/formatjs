@@ -191,6 +191,7 @@ impl Snapshot {
             time_style,
             cycle,
             main: profile,
+            zoned_locale: false,
             temporal: std::array::from_fn(|_| OnceLock::new()),
         })
     }
@@ -331,9 +332,15 @@ pub struct Configuration {
     pub time_style: Option<Style>,
     cycle: HourCycle,
     main: Profile,
+    zoned_locale: bool,
     temporal: [OnceLock<Arc<Profile>>; 6],
 }
 impl Configuration {
+    pub(crate) fn with_zoned_locale(mut self, value: bool) -> Self {
+        self.zoned_locale = value;
+        self
+    }
+
     pub fn profile(&self) -> &Profile {
         &self.main
     }
@@ -418,6 +425,9 @@ impl Configuration {
                         Second => selected.second = Some(NumericWidth::Numeric),
                         _ => {}
                     }
+                }
+                if kind == Kind::Instant && self.zoned_locale && selected.time_zone_name.is_none() {
+                    selected.time_zone_name = Some(ZoneWidth::Short);
                 }
             }
             selected.hour12 = Some(twelve(self.cycle));

@@ -75,8 +75,13 @@ category. String wrapper objects are accepted; Symbols throw `TypeError`.
 `Intl.supportedValuesOf` is callable but cannot be used as a constructor.
 
 Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
-in addition to continental transition zones. Runtime filtering retains primary
-identifiers and omits aliases such as `Etc/UTC`.
+in addition to continental transition zones. The generator maps them through
+the shared IANA/zone.tab/CLDR primary table, removing aliases such as
+`America/Yellowknife` while retaining country primaries such as `Africa/Accra`.
+Runtime filtering probes construction only: current DateTimeFormat preserves
+aliases, and older hosts may resolve a primary ID to an older spelling. Neither
+resolved spelling determines primary identity. Rust uses the same candidate list
+and successful-construction rule.
 
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.
@@ -109,3 +114,9 @@ Contrib setup uses `prepareSupportedValuesOf` before Locale captures its
 enumerator. Its private callback observes formatter loaders after the remaining
 constructors are installed, before application code can retain those methods.
 Regular installer overloads continue observing already-installed formatters.
+
+The isolated Test262 suite installs our English DateTimeFormat prelude before
+supportedValuesOf. Older native formatters otherwise canonicalize accepted primary
+IDs to legacy aliases. Standalone host compatibility remains covered by unit tests.
+The 50-case suite retains two existing DisplayNames currency failures; the two
+stale calendar failures are removed. No new exclusions.

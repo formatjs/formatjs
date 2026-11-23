@@ -4,11 +4,59 @@
 
 ## Purpose
 
+Private formatter WeakMap methods are captured when modules load, including
+pattern, skeleton, calendar-preference and interval caches.
+
+Nonpositive calendar display years follow ECMA-402 §11.5.4 step 15.f.iv in TS/Rust:
+`1 - year` applies before numeric or two-digit rendering, for every calendar.
+
+Precision tests cover fractional offsets near both Date limits and catch
+nanoseconds rounded through Number before Decimal construction.
+
+The central date-pattern loop uses private indexed traversal and own List writes.
+Fractional seconds use captured floor; two-digit fields use private Unicode
+truncation without mutable array methods. TS and Rust preserve
+unknown pattern fields with matching exact-epoch fallback text.
+
+Shared Pattern String parsing follows ECMA-402 §9.2.15 through captured String
+operations and own private-list writes.
+
+FormatDateTimeToParts delegates result construction to shared CreatePartsArray.
+The builder traverses private records by index and defines own array properties;
+result projection cannot invoke mutable iterators, push or numeric setters.
+
+Private formatToParts result allocation follows ECMA-262 ArrayCreate through a
+captured realm constructor, preserving sparse-array semantics and avoiding
+Array.from hooks. Date-range SameValue comparisons use pure equality, including
+NaN and signed-zero rules.
+
+Constructor instance checks use the captured realm intrinsic rather than mutable
+Object.prototype.isPrototypeOf.
+
+Historical timezone names retain direct CLDR standard/daylight overrides, including
+London's British Summer Time before 1970. Only metazone-derived names use the
+1970 cutoff. Localized GMT fallback preserves offset seconds in TS and Rust.
+The shared 64-row ICU oracle covers London, New York, Paris and Kathmandu across
+1900, 1960 and 2000 through ordinary numeric Date inputs.
+
 Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton support. The most complex polyfill in the repo (950+ line BUILD.bazel).
 
 ## Dependencies
 
-- `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`, `@formatjs/bigdecimal`
+- `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
+
+Numeric timestamps stay primitive through TimeClip. The direct bigdecimal
+dependency is removed from BUILD metadata, generated manifest and lockfile;
+shared arithmetic dependencies remain transitive. The Temporal host adapter
+can use the owned formatter’s private candidate lookup. It enumerates decoded
+offsets in the candidate interval and validates exact instants without numeric
+TimeClip. For interior gaps it projects decoded transition boundaries into
+local time and re-queries the shifted instant candidates. A timezone data
+reload advances the cache generation for the Temporal host adapter. The
+owned formatter also exposes exact offset and transition queries from those
+rows and footer rules.
+Standalone DateTimeFormat
+composite typechecks and package_json_sync_test are required integration gates.
 
 ## CLDR Data Pipeline
 
@@ -45,21 +93,21 @@ This is unique to DateTimeFormat — no other polyfill processes timezone data.
 ```
 Pinned IANA tzdata/tzcode archives from MODULE.bazel
     ↓
-Bazel builds zic/zdump from source for macOS and Linux execution platforms
+Bazel builds zic from source for macOS and Linux execution platforms
 with rules_cc and pinned hermetic LLVM
     ↓
-generate_tz_data: pinned Node runs zic, then zdump -c 2100 -v for 427 zones
+generate_tz_data: pinned Python runs zic for 427 zones
     ↓
-zdump files (raw transition dumps)
+Pinned CPython zoneinfo decodes TZif transitions and POSIX future rules
     ↓
-process-zdump.ts: parse transitions, pack with base-36 encoding
+process-zdump.ts: pack structured records with base-36 encoding
     ↓
-@formatjs_generated/tz/all-tz.js (~1.4MB packed)
+@formatjs_generated/tz/all-tz.js
 @formatjs_generated/tz/links.js (timezone aliases)
 ```
 
 **427 primary IANA zones plus 26 fixed Etc/GMT zones** in the full pack, with
-transitions from historical LMT through year 2100. The current golden output
+historical LMT transitions plus recurring rules for later years. The current golden output
 contains 247 zones selected by the shared golden-zone set.
 
 **Packing format:**
@@ -67,6 +115,16 @@ contains 247 zones selected by the shared golden-zone set.
 - Zone data: `"Zone_Name|timestamp_b36,abbr_idx,offset_idx,dst|..."`
 - Abbreviations: `"EST|EDT|GMT|..."` (indexed)
 - Offsets: Base-36 encoded seconds from UTC (indexed)
+- Future rules: optional per-zone structured offsets and transition rules. Explicit
+  transitions apply through the final transition; subsequent dates use footer rules.
+
+`tzdata/generator.py` uses `zoneinfo._common.load_data` and
+`zoneinfo._zoneinfo._parse_tz_str` from hermetic Python 3.12.7. These are private
+CPython interfaces; revalidate return shapes when upgrading Python. Runtime code
+parses no POSIX strings. TS and Rust evaluate month/week/weekday, Julian and
+ordinal-day rules, including signed transition times and southern-hemisphere DST.
+Packs without future rules retain legacy final-offset behavior. Future legal
+changes require a pinned tzdata update.
 
 **Two distribution sizes:**
 
@@ -96,7 +154,7 @@ Stage 2: locale-data (cldr.ts)
   Output: locale-data/{locale}.js + d.ts (1,314 files)
 
 Stage 3: Timezone processing (parallel)
-  generate_tz_data → zdump files (427 primary zones)
+  generate_tz_data → TZif JSON records (427 primary zones)
   process-zdump.ts → @formatjs_generated/tz/all-tz.js
   link.ts → @formatjs_generated/tz/links.js
   add-all-tz.js (polyfill bundle)
@@ -143,7 +201,7 @@ Stage 4: supported-locales.generated.ts
 
 ## Key Design Decisions
 
-- **Hermetic tz compilation**: Bazel fetches checksum-pinned IANA `tzdata`/`tzcode` archives, generates the tzcode headers without a host shell, builds `zic`/`zdump` for macOS and Linux execution platforms with pinned hermetic LLVM, and runs them through pinned Node actions
+- **Hermetic tz compilation**: Bazel fetches checksum-pinned IANA `tzdata`/`tzcode` archives, generates the tzcode headers without a host shell, builds `zic` for macOS and Linux execution platforms with pinned hermetic LLVM, and decodes its TZif output through pinned Python actions
 - **Base-36 packing**: Reduces timezone data size significantly vs raw JSON
 - **Golden timezone subset**: Allows apps to ship 251 zones instead of 427 for smaller bundles
 - **Hour cycle fallback**: When interval formats don't exist for a locale's hour cycle, synthesizes from alternate cycle
@@ -171,6 +229,19 @@ Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
 Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
 letter case only; non-ASCII lookalikes are rejected.
 
+Stage 4 Temporal timezone handling preserves the case-regularized identifier in
+`timeZone`, including aliases such as `Asia/Calcutta`, `US/Eastern`, and `Etc/GMT`.
+The separate `dataTimeZone` slot selects transition data and localized names
+for single dates, Temporal profiles, and ranges. Default timezone overrides also
+preserve identifiers. `shouldPolyfill` checks alias and UTC-name preservation.
+This follows the [Temporal integration text](https://tc39.es/proposal-temporal/#sec-intl.datetimeformat),
+which uses `[[Identifier]]` where the standalone ECMA-402 draft still uses
+`[[PrimaryIdentifier]]`.
+
+The alias generator reads both IANA `backward` and `etcetera`; the latter supplies
+`GMT`. Rust retains the same identifier/lookup-target distinction. Primary timezone
+enumeration in SupportedValuesOf remains separate from constructor alias support.
+
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.
 
@@ -189,14 +260,17 @@ Minute/second-only formats keep their requested fields.
 With all calendar modules and locale patterns loaded, negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
 `ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
 `japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share arithmetic;
-ISO patterns come from CLDR XML, and other calendars use CLDR calendar packages. Arithmetic conversion uses the public
-`temporal-polyfill/fns` APIs.
+ISO patterns come from CLDR XML, and other calendars use CLDR calendar packages. Arithmetic conversion uses owned numeric helpers in
+`ecma402-abstract/Calendar/Arithmetic.ts`, shared with Temporal. Formatter runtime
+packages do not import `temporal-polyfill` or the Temporal facade.
 Umm al-Qura uses `@formatjs_generated/icu.calendar` month lengths generated from
 pinned ICU4X, with its documented civil-calendar fallback outside the official
 AH 1300–1600 table. Runtime conversion does not call native Intl.
 Chinese and Dangi use separate ICU4X month tables covering the full Date range,
 including timezone shifts. Each table encodes month lengths and leap-month
-positions, with a year-start checkpoint every 64 years. Outside ICU's official
+positions, with year-start and elapsed-month checkpoints every 64 years. Temporal inverse
+lookup and month arithmetic reuse those checkpoints; formatter conversion keeps
+its existing calendar contract. Outside ICU's official
 1900–2100 data, conversion follows its proleptic calendar calculation. CLDR
 provides cyclic year names, related-year patterns, and leap-month markers.
 The CLDR generator writes one locale at a time so expanded calendar patterns do
@@ -247,6 +321,27 @@ grammatical context.
 An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
 and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
 
+## Future timezone validation
+
+`bazel test -c opt //packages/intl-datetimeformat:timezone_icu_test` compares
+TS and Rust total offsets with ICU4J-generated seasonal and transition-boundary
+samples beyond 2100. ICU fixtures use their own compiled timezone rules; they do
+not derive expectations from FormatJS data. The oracle and IANA pins can differ,
+so investigate newly introduced rule differences before updating expectations.
+
+The private [Temporal package](../packages/temporal/README.md)
+adds ICU-derived gap/fold checks and records timezone bundle-size comparisons.
+It reuses shared ISO/timezone primitives, not a complete Temporal implementation.
+Its internal ISO/Hebrew arithmetic adds reverse field conversion and
+date addition without the TS formatter calendars’ existing Temporal dependency.
+ICU conversion fixtures use a bounded range; full-range boundary checks use the
+forced JS Temporal implementation. See the benchmark README for oracle limits.
+Shared `UnpackTimeZoneData` lives in `ecma402-abstract/DateTimeFormat`;
+DateTimeFormat preserves its `unpack` export as a compatibility alias.
+The subsequent Instant facade has a strict 346-execution Instant Test262 slice and a
+separate failing full-corpus diagnostic. Native Temporal is replaced in every
+test realm; the slice does not establish full Temporal compliance.
+
 ## Benchmarks
 
 Run `bazel run //packages/intl-datetimeformat:benchmark` from the repository.
@@ -257,15 +352,23 @@ registration are excluded.
 
 ## Temporal input handling
 
-`TemporalDateTime.ts` captures the available Temporal intrinsic methods when the
-module loads. Brand-checking calls recognize foreign-realm values without reading
-instance properties. Intrinsic ISO serialization preserves the reference date of
-`PlainYearMonth` and `PlainMonthDay`; arithmetic conversion avoids Date's TimeClip.
-Load any Temporal polyfill before importing DateTimeFormat.
+`TemporalDateTime.ts` captures available global Temporal intrinsics at module load;
+`__addTemporalNamespace` registers later or isolated namespaces. Brand-checking calls
+avoid instance properties. Intrinsic ISO serialization preserves YearMonth/MonthDay
+reference dates; arithmetic conversion avoids Date's TimeClip. Fixed-field ISO
+parsing and numeric offset scanning preserve legacy RegExp statics during
+Temporal formatting, including parts and ranges. The FormatJS Temporal
+installer registers its namespace automatically.
 
 `InitializeDateTimeFormat` retains the already-read component options and caches
 formats by Temporal type. Plain values format in `+00:00` without changing the
 formatter's resolved timezone. Instants use its configured timezone.
+Numeric formattable values remain primitive Numbers through TimeClip. Public
+conversion uses unary plus once; private Decimal objects no longer undergo a
+second observable ToPrimitive. TimeClip follows published ECMA-262 §21.4.1.31
+with captured finite/absolute/truncation operations and positive-zero
+normalization. Omitted format/formatToParts timestamps call captured Date.now.
+
 `HandleDateTimeValue` produces the proposal's value-format record: selected format,
 exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip.
 Partitioning and pattern formatting consume that record without a Temporal bypass
@@ -345,10 +448,10 @@ existing records use its current transitions. Local conversion preserves exact
 historical seconds and DST flags, with binary search and nanosecond boundaries.
 Fixed offsets and ASCII-only matching follow the TS validation contract.
 
-Differential coverage compares 428,850 samples across all 453 full/247 golden
-zones, every transition, aliases and Date endpoints. Raw JSON must equal the
-shipped JS payload. Generator flags are explicitly boolean so the first zdump
-file stays positional. End markers outside Date's range are excluded before
+Differential coverage compares all 453 full/247 golden zones, every explicit
+transition, aliases, Date endpoints and year-2500 samples. Raw JSON must equal the
+shipped JS payload. Generator flags are explicitly boolean so the first TZif JSON
+file stays positional. TZif timestamps outside the supported range are excluded before
 packing; IANA `Zone` lines and comments cannot become bogus link aliases.
 Canonicalization also recognizes known alias targets before transitions load.
 
@@ -624,7 +727,7 @@ oracles remains in the snapshot.
 The matrix also covers month/year boundaries. Every case requires TS/Rust equality
 and parts that concatenate to the formatted string.
 The Test262 baseline gate remains separate from ICU parity. Passing it means no
-change to the 488-case baseline, which currently tracks 18 failures; it does not
+change to the 488-case baseline, which currently tracks 10 failures; it does not
 claim complete ECMA-402 conformance.
 
 Update explicitly, review every changed difference:
@@ -645,5 +748,81 @@ bazel run -c opt //crates/intl_datetimeformat:audit -- --benchmark --iterations=
 Integer rendering avoids Decimal for safe epoch-millisecond/offset addition and
 fractional-second truncation. Negative nanoseconds floor before Number conversion;
 fractional offsets retain Decimal addition before flooring. Numeric date fields
-also benefit from NumberFormat's exact-integer fixed-rounding path. See
-[arithmetic guards and measurements](audits/2026-10-31-datetimeformat-integer-rendering.md).
+also benefit from NumberFormat's exact-integer fixed-rounding path.
+
+## Primary timezone identities
+
+`//packages/intl-datetimeformat:tz_primary` generates
+`@formatjs_generated/tz/primary.js` from pinned IANA regional files, etcetera,
+backward, zone.tab and CLDR BCP47 timezone aliases. Zone records and zone.tab IDs
+remain primary; CLDR chooses remaining aliases. UTC/GMT aliases normalize to UTC.
+Generation fails for unmapped aliases rather than guessing a raw Link target.
+
+This identity file is separate from transitions and per-locale CLDR data.
+Temporal consumes it for equality, calendar differences and Now system IDs;
+DateTimeFormat locale payloads do not gain this table. ICU4J's independent IANA
+identity oracle verifies all 597 available names in TS and Rust.
+
+Native arithmetic providers now delegate to the shared no_std numeric calendar
+kernel in `crates/intl_datetimeformat_calendars/core.rs`. The provider adapter
+preserves formatter era keys, Hebrew name indices and field contracts. Provider
+and compiled-data features keep formatter/serde/table dependencies optional;
+Temporal consumes only `:calendar_core` / Cargo `default-features = false`.
+The numeric API adds inverse conversion, month codes, eras and checked add/until
+for 13 calendars. Table providers and locale patch data remain separate.
+Independent forward ICU controls validate negative/proleptic years; boundary
+searches avoid ICU's negative Coptic/Ethiopic length and reverse Indian-setting
+bugs. Persian's 33-year approximation remains the existing provider policy.
+
+## Owned Temporal locale bridge
+
+`__addTemporalNamespace(namespace)` snapshots intrinsic getters/serializers into
+DateTimeFormat's private reader list. Registration is explicit and idempotent;
+namespace installation also registers automatically. Instance properties and
+Symbol.toStringTag do not confer a brand. Passing readers through the constructor
+keeps independently bundled packages interoperable without a shared global registry.
+
+`__formatTemporal(record, locales, options)` is the internal locale-method seam.
+It initializes a formatter with type-specific required/default fields and the
+ZonedDateTime timezone override. It formats exact nanoseconds directly; plain
+values avoid Date TimeClip. Zoned callers cannot supply a timeZone option.
+The formatter checks calendar compatibility and converts zoned records into
+Instant formatting records after initialization.
+
+Offset names retain historical seconds, including negative sub-minute offsets.
+Pre-1970 metazone names fall back to numeric offsets, matching ICU's name-data
+coverage; UTC names remain invariant. CLDR49 no longer has gmtZeroFormat and
+renders explicit numeric zero. Pinned Test262's older English assertion is
+retained as an unfiltered data-version diagnostic.
+
+`temporal_owned_test` checks independent namespace brands, constructor/instance
+poisoning, full plain ranges and 768 ICU4J style/skeleton/offset cases. Its English,
+German, French and Japanese locale data is test-only. The Temporal conformance
+prelude loads de/en/ja, the languages declared by pinned intl402/Temporal metadata,
+instead of every Intl test locale. Published locale data gains no fields.
+
+### Native Temporal locale records
+
+Hermes exposes the private `__formatTemporal` bridge used by `@formatjs/temporal`.
+It passes kind, calendar and decimal epoch nanoseconds into Rust's structured epoch
+input, preserving extra plain-date bounds and short-date style filtering. Numeric
+Date inputs retain TimeClip. A private construction context supplies ZonedDateTime's
+timezone and default short zone name without reading extra public options or moving
+the locale-data snapshot past late style getters. Public DateTimeFormat continues
+to reject ZonedDateTime. SDK regressions compare 768 independent ICU4J cases in
+source and optimized Hermes bytecode; full Intl diagnostics remain unfiltered.
+
+### Temporal formatter conformance scope
+
+The Temporal package separately runs every DateTimeFormat test with the Temporal
+feature (65 files, 130 executions) using owned TS, WASM and native Hermes SDK
+namespaces. This covers formatting, parts, ranges, styles, calendar compatibility
+and extra plain dates beyond Date TimeClip. The test-only `-temporal` locale
+prelude includes ar/ar-EG for the non-Latin numeral boundary case. Runtime locale
+loading remains unchanged. See [Temporal implementation](015-temporal.md).
+
+Temporal's default namespace now uses compact Chinese/Dangi calendar engines.
+DateTimeFormat's public builds explicitly select the standalone calendar path,
+so their calendar calculations do not call host Intl recursively. The shared
+`icu.calendar` generated package adds bounded historical modules for Temporal;
+per-locale DateTimeFormat data is unchanged.

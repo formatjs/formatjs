@@ -23,10 +23,10 @@ function prepareCompactPatterns(patterns: Patterns): void {
     const magnitude = key.length - 1
     const rules = patterns[key]
     const zeros = rules.other.match(/0+/)
-    invariant(zeros !== null, 'Missing compact number slot')
     entries.set(magnitude, {
       rules,
-      exponent: rules.other === '0' ? 0 : magnitude + 1 - zeros[0].length,
+      exponent:
+        rules.other === '0' ? 0 : magnitude + 1 - (zeros?.[0].length ?? 1),
     })
     maximum = Math.max(maximum, magnitude)
   }

@@ -1,0 +1,95 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Owned ICU4X calendar and IANA 2026f timezone data included except detection. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl and has broader locale integration; basic ISO/Gregorian implementation entry measured separately. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "referenceEntries": {
+    "reference-bundle.js": "temporal-polyfill/implementation (ISO/Gregorian)",
+    "reference-full-bundle.js": "temporal-polyfill/full/implementation (all calendars)"
+  },
+  "sizes": [
+    {
+      "file": "instant-code.js",
+      "raw": 3409830,
+      "minified": 3194662,
+      "minifiedGzip": 358928
+    },
+    {
+      "file": "polyfill-code.js",
+      "raw": 3411373,
+      "minified": 3195319,
+      "minifiedGzip": 359076
+    },
+    {
+      "file": "polyfill-force-code.js",
+      "raw": 3411389,
+      "minified": 3195321,
+      "minifiedGzip": 359078
+    },
+    {
+      "file": "should-polyfill-code.js",
+      "raw": 1283,
+      "minified": 696,
+      "minifiedGzip": 361
+    },
+    {
+      "file": "reference-bundle.js",
+      "raw": 172962,
+      "minified": 56696,
+      "minifiedGzip": 19393
+    },
+    {
+      "file": "reference-full-bundle.js",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
+    }
+  ],
+  "publishedModules": [
+    {
+      "file": "index.js",
+      "raw": 3409662,
+      "minified": 3194547,
+      "minifiedGzip": 358801
+    },
+    {
+      "file": "polyfill.js",
+      "raw": 2108,
+      "minified": 1058,
+      "minifiedGzip": 485
+    },
+    {
+      "file": "polyfill-force.js",
+      "raw": 2124,
+      "minified": 1060,
+      "minifiedGzip": 486
+    },
+    {
+      "file": "should-polyfill.js",
+      "raw": 1117,
+      "minified": 587,
+      "minifiedGzip": 302
+    }
+  ],
+  "primitiveProfile": {
+    "scope": "Matched data-free Instant/Duration primitives only, not full facades or calendars/timezones. Prior throughput measurements remain separate.",
+    "js": [
+      {
+        "file": "wasm-ts-code.js",
+        "raw": 17864,
+        "minified": 9527,
+        "minifiedGzip": 3757
+      },
+      {
+        "file": "wasm-bridge-code.js",
+        "raw": 1412,
+        "minified": 799,
+        "minifiedGzip": 463
+      }
+    ],
+    "wasm": {
+      "raw": 43669,
+      "gzip": 19557
+    }
+  }
+}

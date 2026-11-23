@@ -2,6 +2,28 @@ load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load(":dist.bzl", "smoke_macos_arm64")
 
+[
+    cc_binary(
+        name = name,
+        srcs = ["size.cpp"],
+        copts = [
+            "-std=c++17",
+            "-fexceptions",
+        ],
+        defines = ["FORMATJS_TEMPORAL"] if temporal else [],
+        linkstatic = True,
+        tags = ["manual"],
+        deps = [
+            "@formatjs_intl_getcanonicallocales_hermes//:intl",
+            "@hermes//:hermes_vm",
+        ] + (["@formatjs_intl_getcanonicallocales_hermes//:temporal"] if temporal else []),
+    )
+    for name, temporal in [
+        ("intl_size", False),
+        ("temporal_size", True),
+    ]
+]
+
 genrule(
     name = "pluralrules_smoke_source",
     srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/pluralrules-smoke.js"],
@@ -125,6 +147,7 @@ cc_binary(
         "@formatjs_intl_getcanonicallocales_hermes//:relativetimeformat",
         "@formatjs_intl_getcanonicallocales_hermes//:segmenter",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
+        "@formatjs_intl_getcanonicallocales_hermes//:temporal",
         "@hermes//:hermes_vm",
     ],
 )
@@ -154,6 +177,7 @@ cc_test(
         "@formatjs_intl_getcanonicallocales_hermes//:relativetimeformat",
         "@formatjs_intl_getcanonicallocales_hermes//:segmenter",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
+        "@formatjs_intl_getcanonicallocales_hermes//:temporal",
         "@hermes//:hermes_vm",
     ],
 )

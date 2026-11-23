@@ -8,7 +8,13 @@ A polyfill for ESNext [`Intl.NumberFormat`][numberformat] and [`Number.prototype
 
 ## ECMA-402 Spec Compliance
 
+Private slot access and standard number-pattern caches use WeakMap operations
+captured when modules load.
+
 This package implements `Intl.NumberFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
+
+Single-value `formatToParts` results contain fresh objects with own writable,
+enumerable and configurable `type` and `value` data properties.
 
 ### ✅ All Features Implemented
 
@@ -19,6 +25,15 @@ This package implements `Intl.NumberFormat`. See the [conformance report](https:
 - **`formatRange(start, end)`** - Format a number range ([NumberFormat v3](https://github.com/tc39/proposal-intl-numberformat-v3))
 - **`formatRangeToParts(start, end)`** - Format a number range and return parts array with source attribution
 - **`resolvedOptions()`** - Return resolved formatting options
+
+#### Legacy constructor calls
+
+Calling `NumberFormat.call(receiver, locales, options)` with a receiver inheriting
+from `NumberFormat.prototype` returns that receiver with a hidden formatter.
+Its `format` and `resolvedOptions` methods use the hidden formatter.
+`formatToParts`, `formatRange`, and `formatRangeToParts` require an initialized
+formatter and throw on these wrappers. Repeated legacy initialization throws.
+Calling an already initialized formatter preserves its original options.
 
 #### Formatting Styles
 
@@ -66,6 +81,30 @@ nf.format('12345678901234567890')
 
 - `'auto'` (default), `'always'`, `'never'`, `'exceptZero'`, `'negative'`
 
+#### Keep trailing zeros (Stage 3)
+
+Implements the [Keep trailing zeros draft](https://tc39.es/proposal-intl-keep-trailing-zeros/).
+Numeric strings retain their precision within the configured digit limits.
+Number and BigInt inputs keep their existing behavior.
+
+```js
+const nf = new Intl.NumberFormat('en')
+nf.format('1.00') // "1.00"
+nf.format(1) // "1"
+nf.format('1.0000') // "1.000" (default maximumFractionDigits: 3)
+nf.formatRange('1.0', '1.00') // "1.0–1.00"
+
+new Intl.NumberFormat('en', {trailingZeroDisplay: 'stripToMinimum'}).format(
+  '1.00'
+) // "1"
+```
+
+`stripToMinimum` removes source trailing zeros beyond the configured minimum
+fraction/significant digits. `stripIfInteger` removes the fraction only when the
+rounded result is an integer. Exponent notation in input strings retains source
+precision too: `nf.format('1.20e1')` returns `"12.0"`.
+The normal polyfill entry point replaces native implementations missing this behavior.
+
 #### Notation Styles
 
 - **`'standard'`** - Plain notation (default)
@@ -73,6 +112,10 @@ nf.format('12345678901234567890')
 - **`'engineering'`** - Engineering notation (e.g., "1.234E3")
 - **`'compact'`** - Compact notation (e.g., "1.2K", "1.2M")
   - `compactDisplay`: `'short'` or `'long'`
+
+Compact notation keeps percent signs and currency/accounting formatting.
+`useGrouping` still applies. Percent parts stay `percentSign`. Some native ICU layouts differ
+from ECMA-402's current model; see [spec PR #1117](https://github.com/tc39/ecma402/pull/1117).
 
 #### Currency Options
 
@@ -224,6 +267,8 @@ pnpm add @formatjs/intl-numberformat
 ## Requirements
 
 This package requires the following capabilities:
+
+- Native `Proxy` support for constructor behavior.
 
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale).
