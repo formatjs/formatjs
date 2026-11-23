@@ -1,3 +1,15 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {
+  arrayEvery,
+  arrayIncludes,
+  arrayIndexOf,
+  bigIntFrom,
+  numberFrom,
+  numberIsInteger,
+  RangeErrorConstructor,
+  setDataProperty,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
   CalendarRegistry,
@@ -28,7 +40,6 @@ import {
   createDataProperty,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
-import Decimal from '@formatjs/bigdecimal'
 import {FormatDateTime} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTime.js'
 import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRange.js'
 import {FormatDateTimeRangeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRangeToParts.js'
@@ -42,6 +53,13 @@ import {
   getRangePatternInfo,
   expandIntervalFormatTemplates,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {
+  NearestTimeZoneLocalAfter,
+  TimeZoneOffset,
+  TimeZoneTransition,
+  VisitTimeZoneBoundaries,
+  VisitTimeZoneOffsets,
+} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '@formatjs_generated/tz/links.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
@@ -51,6 +69,9 @@ import {
   type RawCalendarLocaleData,
   type RawDateTimeLocaleData,
 } from '#packages/intl-datetimeformat/types.js'
+
+const now = Date.now
+const createObject = Object.create
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -110,13 +131,17 @@ const formatDescriptor = {
     const internalSlots = getInternalSlots(this)
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const dtf = this
-    let boundFormat = internalSlots.boundFormat
-    if (boundFormat === undefined) {
-      // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
-      boundFormat = (date?: Date | number | TemporalDateTimeInput) => {
-        let x: Decimal | TemporalDateTimeValue
+    // ECMA-402 §11.3.3 steps 4–5 cache an anonymous, one-argument function.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
+    if (internalSlots.boundFormat === undefined) {
+      // Temporal amendment §15.6.3: convert the argument and format the prepared value.
+      // https://tc39.es/proposal-temporal/#sec-datetime-format-functions
+      internalSlots.boundFormat = (
+        date?: Date | number | TemporalDateTimeInput
+      ) => {
+        let x: number | TemporalDateTimeValue
         if (date === undefined) {
-          x = new Decimal(Date.now())
+          x = now()
         } else {
           x = ToDateTimeFormattable(date)
         }
@@ -126,21 +151,8 @@ const formatDescriptor = {
           getDateTimeImplementationDetails()
         )
       }
-      try {
-        // https://github.com/tc39/test262/blob/master/test/intl402/NumberFormat/prototype/format/format-function-name.js
-        Object.defineProperty(boundFormat, 'name', {
-          configurable: true,
-          enumerable: false,
-          writable: false,
-          value: '',
-        })
-      } catch {
-        // In older browser (e.g Chrome 36 like polyfill-fastly.io)
-        // TypeError: Cannot redefine property: name
-      }
-      internalSlots.boundFormat = boundFormat
     }
-    return boundFormat
+    return internalSlots.boundFormat
   },
 } as const
 try {
@@ -256,7 +268,9 @@ defineProperty(DateTimeFormat, '__formatTemporal', {
     locales?: string | string[],
     options?: Intl.DateTimeFormatOptions
   ): string {
-    const dtf = Object.create(DateTimeFormat.prototype) as IDateTimeFormat
+    // Temporal §15.11.8.1 step 3 creates the formatter before calendar checks.
+    // https://tc39.es/proposal-temporal/#sup-temporal.zoneddatetime.prototype.tolocalestring
+    const dtf = createObject(DateTimeFormat.prototype) as IDateTimeFormat
     const date =
       value.kind === 'PlainDate' ||
       value.kind === 'PlainYearMonth' ||
@@ -267,11 +281,14 @@ defineProperty(DateTimeFormat, '__formatTemporal', {
       timeZone: value.kind === 'ZonedDateTime' ? value.timeZone : undefined,
     })
     if (value.kind === 'ZonedDateTime') {
+      // Temporal §15.11.8.1 steps 4–5 validate the calendar and use the instant.
       if (
         value.calendar !== 'iso8601' &&
         value.calendar !== getInternalSlots(dtf).calendar
       )
-        throw new RangeError('Temporal calendar does not match DateTimeFormat')
+        throw new RangeErrorConstructor(
+          'Temporal calendar does not match DateTimeFormat'
+        )
       value = {kind: 'Instant', epochNanoseconds: value.epochNanoseconds}
     }
     return FormatDateTime(dtf, value, getDateTimeImplementationDetails())
@@ -313,7 +330,7 @@ const {resolvedOptions} = {
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
       let value = internalSlots[key]
-      if (DATE_TIME_PROPS.indexOf(key as TABLE_6) > -1) {
+      if (arrayIndexOf(DATE_TIME_PROPS, key as TABLE_6) > -1) {
         if (
           internalSlots.dateStyle !== undefined ||
           internalSlots.timeStyle !== undefined
@@ -358,9 +375,9 @@ const {formatToParts} = {
     date?: number | Date | TemporalDateTimeInput
   ) {
     getInternalSlots(this)
-    let x: Decimal | TemporalDateTimeValue
+    let x: number | TemporalDateTimeValue
     if (date === undefined) {
-      x = new Decimal(Date.now())
+      x = now()
     } else {
       x = ToDateTimeFormattable(date)
     }
@@ -372,6 +389,210 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
   value: formatToParts,
 })
 
+const candidateMillisecond = bigIntFrom(1_000_000)
+const candidateSecond = candidateMillisecond * bigIntFrom(1_000)
+const dayMilliseconds = 86_400_000
+const localLimit =
+  bigIntFrom(8_640_000_000_000_000 + dayMilliseconds) * candidateMillisecond
+const instantLimit = bigIntFrom(8_640_000_000_000_000) * candidateMillisecond
+
+function temporalLocalMilliseconds(local: bigint): number {
+  let milliseconds = local / candidateMillisecond
+  if (local < 0 && local % candidateMillisecond) milliseconds--
+  return numberFrom(milliseconds)
+}
+
+function validTemporalOffset(offset: number): boolean {
+  return numberIsInteger(offset) && offset > -86_400 && offset < 86_400
+}
+
+// Proposal comparison §8.5.1 step 1: accept both Instant limits.
+function validTemporalInstant(instant: bigint): boolean {
+  return instant >= -instantLimit && instant <= instantLimit
+}
+
+// Proposal comparison §11.1.13 step 3.a: collect actual candidates.
+function temporalCandidates(
+  local: bigint,
+  zone: UnpackedTimeZoneData
+): bigint[] {
+  // At these bounds, whole milliseconds and sub-day offsets fit in Number.
+  const localMilliseconds = temporalLocalMilliseconds(local)
+  const candidates: bigint[] = []
+  VisitTimeZoneOffsets(
+    localMilliseconds - dayMilliseconds,
+    localMilliseconds + dayMilliseconds,
+    zone,
+    offset => {
+      if (!validTemporalOffset(offset)) return
+      const instant = local - bigIntFrom(offset) * candidateSecond
+      if (
+        arrayIncludes(candidates, instant) ||
+        TimeZoneOffset(localMilliseconds - offset * 1_000, zone)[0] !== offset
+      )
+        return
+      setDataProperty(candidates, candidates.length, instant)
+    }
+  )
+  return candidates
+}
+
+// Proposal comparison §11.1.13 step 4.a: reject any actual out-of-range candidate.
+function checkedTemporalCandidates(
+  local: bigint,
+  zone: UnpackedTimeZoneData
+): bigint[] {
+  const candidates = temporalCandidates(local, zone)
+  for (let index = 0; index < candidates.length; index++) {
+    if (!validTemporalInstant(candidates[index]))
+      throw new RangeErrorConstructor('Instant out of range')
+  }
+  return candidates
+}
+
+const gapWindowMilliseconds = 3 * dayMilliseconds
+const gapDay = bigIntFrom(dayMilliseconds) * candidateMillisecond
+const oneNanosecond = bigIntFrom(1)
+
+// Proposal comparison §11.1.12 steps 6–14: recover the nearest reachable local boundaries.
+function resolveTemporalGap(
+  local: bigint,
+  zone: UnpackedTimeZoneData,
+  direction: 'earlier' | 'later'
+): bigint | undefined {
+  const milliseconds = temporalLocalMilliseconds(local)
+  const earlier = direction === 'earlier'
+  let before: bigint | undefined
+  let after: bigint | undefined
+  let fallback: bigint | undefined
+  let validOffsets = true
+  const covered = VisitTimeZoneBoundaries(
+    milliseconds - gapWindowMilliseconds,
+    milliseconds + gapWindowMilliseconds,
+    zone,
+    boundary => {
+      const instant = bigIntFrom(boundary) * candidateMillisecond
+      const oldOffset = TimeZoneOffset(boundary - 1, zone)[0]
+      const newOffset = TimeZoneOffset(boundary, zone)[0]
+      if (!validTemporalOffset(oldOffset) || !validTemporalOffset(newOffset)) {
+        validOffsets = false
+        return
+      }
+      const end =
+        instant - oneNanosecond + bigIntFrom(oldOffset) * candidateSecond
+      const start = instant + bigIntFrom(newOffset) * candidateSecond
+      if (end < local && (before === undefined || end > before)) before = end
+      if (start > local && (after === undefined || start < after)) after = start
+      if (fallback === undefined && local > end && local < start)
+        fallback =
+          local - bigIntFrom(earlier ? newOffset : oldOffset) * candidateSecond
+    }
+  )
+  if (!covered || !validOffsets || before === undefined || after === undefined)
+    return undefined
+  const beforeCandidates = temporalCandidates(before, zone)
+  const afterCandidates = temporalCandidates(after, zone)
+  // Only actual candidates determine whether both neighbors fit.
+  if (
+    beforeCandidates.length !== 1 ||
+    afterCandidates.length !== 1 ||
+    !validTemporalInstant(beforeCandidates[0]) ||
+    !validTemporalInstant(afterCandidates[0])
+  )
+    return undefined
+  const shift = after - afterCandidates[0] - (before - beforeCandidates[0])
+  // Keep the existing fallback when the comparison's gap assumptions fail.
+  if (!shift || shift < -gapDay || shift > gapDay) return undefined
+
+  // Proposal comparison §11.1.12 steps 16.e–16.g and 22–25: requery and select the first or last instant.
+  const shifted = checkedTemporalCandidates(
+    local + (earlier ? -shift : shift),
+    zone
+  )
+  // A shifted clock can still be missing when transitions overlap.
+  // Reuse the containing transition, as the loaded Temporal kernels do.
+  if (!shifted.length && fallback !== undefined) {
+    if (!validTemporalInstant(fallback))
+      throw new RangeErrorConstructor('Instant out of range')
+    return fallback
+  }
+  let instant = shifted[0]
+  for (let index = 1; index < shifted.length; index++) {
+    const candidate = shifted[index]
+    if (earlier ? candidate < instant : candidate > instant) instant = candidate
+  }
+  return instant
+}
+
+// ECMA-262 §21.4.1.20–21: Read the same named-zone rows as the formatter.
+function temporalTimeZoneData(
+  formatter: Intl.DateTimeFormat
+): UnpackedTimeZoneData | undefined {
+  const {dataTimeZone, timeZone} = getInternalSlots(formatter)
+  return DateTimeFormat.tzData[dataTimeZone ?? timeZone]
+}
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates'),
+  {
+    value(
+      this: Intl.DateTimeFormat,
+      local: bigint,
+      direction?: 'earlier' | 'later'
+    ): bigint[] | bigint | undefined {
+      const zone = temporalTimeZoneData(this)
+      if (!zone?.length || local <= -localLimit || local >= localLimit)
+        return undefined
+      return direction
+        ? resolveTemporalGap(local, zone, direction)
+        : checkedTemporalCandidates(local, zone)
+    },
+  }
+)
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/queryTemporalTimeZone'),
+  {
+    value(
+      this: Intl.DateTimeFormat,
+      instant: bigint,
+      direction?: 'next' | 'previous'
+    ): bigint | null | undefined {
+      const zone = temporalTimeZoneData(this)
+      if (!zone?.length || !validTemporalInstant(instant)) return undefined
+      if (direction) return TimeZoneTransition(instant, direction, zone)
+      // Proposal comparison §11.1.9 step 3: read the same rows at millisecond precision.
+      const [offset] = TimeZoneOffset(temporalLocalMilliseconds(instant), zone)
+      return validTemporalOffset(offset)
+        ? bigIntFrom(offset) * candidateSecond
+        : undefined
+    },
+  }
+)
+
+let timeZoneDataGeneration = {}
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/nearestTemporalLocalAfter'),
+  {
+    value(this: Intl.DateTimeFormat, local: bigint): bigint | undefined {
+      const zone = temporalTimeZoneData(this)
+      if (!zone?.length || local <= -localLimit || local >= localLimit)
+        return undefined
+      return NearestTimeZoneLocalAfter(local, zone)
+    },
+  }
+)
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/timeZoneDataGeneration'),
+  {value: () => timeZoneDataGeneration}
+)
+
 const {formatRangeToParts} = {
   formatRangeToParts(
     this: Intl.DateTimeFormat,
@@ -380,16 +601,13 @@ const {formatRangeToParts} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    // ECMA-402 §11.3.5, step 2: validate before reading arguments.
-    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1072-L1077
+    // Temporal §15.7.3 steps 2–3 validate before converting endpoints.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
     getInternalSlots(dtf)
-    invariant(
-      startDate !== undefined && endDate !== undefined,
-      'startDate/endDate cannot be undefined',
-      TypeError
-    )
+    if (startDate === undefined || endDate === undefined)
+      throw new TypeErrorConstructor('startDate/endDate cannot be undefined')
 
+    // Steps 4–6 convert left to right, then format the range parts.
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
     return FormatDateTimeRangeToParts(
@@ -413,15 +631,12 @@ const {formatRange} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    // ECMA-402 §11.3.4, step 2: validate before reading arguments.
-    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1057-L1062
+    // Temporal §15.7.2 steps 2–3 validate before converting endpoints.
+    // https://tc39.es/proposal-temporal/#sec-intl.datetimeformat.prototype.formatRange
     getInternalSlots(dtf)
-    invariant(
-      startDate !== undefined && endDate !== undefined,
-      'startDate/endDate cannot be undefined',
-      TypeError
-    )
+    if (startDate === undefined || endDate === undefined)
+      throw new TypeErrorConstructor('startDate/endDate cannot be undefined')
+    // Steps 4–6 convert left to right, then format the range.
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
     return FormatDateTimeRange(dtf, x, y, getDateTimeImplementationDetails())
@@ -469,6 +684,10 @@ const intervalCandidates = new WeakMap<
   object,
   Map<number, IntervalCandidate[]>
 >()
+const getIntervalCandidates = intervalCandidates.get.bind(intervalCandidates)
+const setIntervalCandidates = intervalCandidates.set.bind(intervalCandidates)
+const deleteIntervalCandidates =
+  intervalCandidates.delete.bind(intervalCandidates)
 function intervalSignature(format: Formats): number {
   const fields = DATE_TIME_PROPS.reduce(
     (mask, field, index) =>
@@ -511,7 +730,7 @@ function findIntervalFormat(
   const target = parseDateTimeSkeleton(rawPattern)
   let best: Record<string, string> | undefined
   let bestScore = Infinity
-  let candidates = intervalCandidates.get(intervalFormats)
+  let candidates = getIntervalCandidates(intervalFormats)
   if (!candidates) {
     candidates = new Map()
     for (const key of Object.keys(intervalFormats)) {
@@ -535,7 +754,7 @@ function findIntervalFormat(
         configurable: true,
       })
     }
-    intervalCandidates.set(intervalFormats, candidates)
+    setIntervalCandidates(intervalFormats, candidates)
   }
   for (const {key, format: candidate} of candidates.get(
     intervalSignature(target)
@@ -550,7 +769,8 @@ function findIntervalFormat(
     )
       continue
     if (
-      DATE_TIME_PROPS.every(
+      arrayEvery(
+        DATE_TIME_PROPS,
         field =>
           (target[field] !== undefined) === (candidate[field] !== undefined)
       )
@@ -654,23 +874,20 @@ const calendarPreferences = new WeakMap<
   DateTimeFormatLocaleInternalData,
   string[]
 >()
+const getCalendarPreferences = calendarPreferences.get.bind(calendarPreferences)
+const setCalendarPreferences = calendarPreferences.set.bind(calendarPreferences)
 
 function updateAvailableCalendars(data: DateTimeFormatLocaleInternalData) {
   // ResolveLocale must only select calendars with both arithmetic and patterns.
   // Preserve CLDR preference order; Gregorian remains available without add-ons.
   // https://tc39.es/ecma402/#sec-resolvelocale
-  data.ca = calendarPreferences
-    .get(data)!
-    .filter(
-      calendar =>
-        Object.prototype.hasOwnProperty.call(data.formats, calendar) &&
-        (calendar === 'gregory' ||
-          calendar === 'iso8601' ||
-          Object.prototype.hasOwnProperty.call(
-            DateTimeFormat.calendarData,
-            calendar
-          ))
-    )
+  data.ca = getCalendarPreferences(data)!.filter(
+    calendar =>
+      HasOwnProperty(data.formats, calendar) &&
+      (calendar === 'gregory' ||
+        calendar === 'iso8601' ||
+        HasOwnProperty(DateTimeFormat.calendarData, calendar))
+  )
 }
 
 DateTimeFormat.__addLocaleData = function __addLocaleData(
@@ -678,9 +895,9 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
 ) {
   for (const entry of data) {
     const {locale} = entry
-    intervalCandidates.delete(entry.data.intervalFormats)
+    deleteIntervalCandidates(entry.data.intervalFormats)
     for (const calendar of Object.keys(entry.data.calendarData || {}))
-      intervalCandidates.delete(
+      deleteIntervalCandidates(
         entry.data.calendarData![calendar].intervalFormats
       )
     rawLocaleData.set(locale, entry)
@@ -691,7 +908,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       calendarData: {...entry.data.calendarData},
     }
     for (const patch of calendarLocaleData.get(locale)?.values() ?? []) {
-      if (d.ca.indexOf(patch.calendar) < 0) d.ca.push(patch.calendar)
+      if (arrayIndexOf(d.ca, patch.calendar) < 0) d.ca.push(patch.calendar)
       d.formats[patch.calendar] = patch.formats
       d.calendarData[patch.calendar] = patch.data
     }
@@ -791,7 +1008,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       }
     }
 
-    calendarPreferences.set(processedData, [...d.ca])
+    setCalendarPreferences(processedData, [...d.ca])
     updateAvailableCalendars(processedData)
     const previous = processedLocales.get(locale)
     if (previous) {
@@ -855,6 +1072,7 @@ DateTimeFormat.__addCalendarLocaleData = function (
 DateTimeFormat.tzData = {}
 DateTimeFormat.__addTZData = function (d: PackedData) {
   DateTimeFormat.tzData = unpack(d)
+  timeZoneDataGeneration = {}
 }
 
 try {

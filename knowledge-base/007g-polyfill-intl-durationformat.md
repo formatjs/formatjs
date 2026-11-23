@@ -6,6 +6,10 @@
 
 Polyfill for `Intl.DurationFormat` — formats durations (hours, minutes, seconds) with locale-aware separators.
 
+Duration-like field conversion keeps primitive Numbers through ToIntegerIfIntegral.
+Captured Number.isInteger validates the full finite integral Number domain;
+private Decimal construction cannot interrupt consecutive field Gets.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
@@ -18,12 +22,31 @@ global namespace and exposes `__addTemporalNamespace` for late installation and
 isolated namespaces. Registration is idempotent per constructor and checks for
 duplicates before reading mutable `from`/prototype properties. Each bundled
 formatter registers through its own hook, preserving independent namespace brands.
-Ordinary duration-like inputs retain the specified property-read order.
+Ordinary duration-like inputs retain the specified property-read order, including
+host exotic objects such as `document.all`. Shared option coercion preserves such
+objects instead of treating their `typeof` result or loose equality as undefined/null.
+Temporal's `Duration.toLocaleString` uses the same provider option semantics.
 
 Temporal's installer calls this hook and adapts legacy host DurationFormat when
 needed. The adapter preserves native prototype identity and method descriptor flags and validates
 the receiver through captured `resolvedOptions` before converting input. Native
 Hermes already has a registration hook and keeps its direct Rust formatter path.
+
+## Supplied formatter providers
+
+Each DurationFormat instance retains selected NumberFormat/ListFormat constructors
+and captured formatToParts methods. Callable own data-valued replacements on the
+supplied Intl object are adopted for new instances, including polyfills installed
+after module import. Accessor replacements are skipped, retaining the previously
+captured provider. Existing instances keep their choices through first rendering.
+Parts methods are captured per constructor through data descriptors, including
+inherited supplied methods. Initial providers are captured during module load;
+later constructors are captured when first selected.
+
+Constructor-keyed memoizers reuse existing memoize/cache behavior. Numbering-system
+support follows the same selected provider. The memoizer captures runtime operations
+and isolates private argument wrappers, preserving custom serializers and public
+argument toJSON.
 
 ## CLDR Data Pipeline
 
@@ -90,9 +113,10 @@ an empty record throws `TypeError`. Absolute years, months, and weeks must be
 less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
 Subsecond contributions participate in the bound comparison exactly.
 
-Numbering-system resolution includes systems supported by the active
-`Intl.NumberFormat` dependency, keeping the locale default first. Support is
-checked lazily and refreshed when that constructor is replaced. Time-separator
+Numbering-system resolution includes systems supported by the selected
+`Intl.NumberFormat` provider, keeping the locale default first. Support is checked
+lazily per constructor. A supplied data-valued replacement updates new
+DurationFormat instances; existing instances retain their provider. Time-separator
 data includes every numbering-system symbol record supplied by CLDR.
 
 ### Temporal inputs

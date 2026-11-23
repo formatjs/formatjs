@@ -471,3 +471,53 @@ test('Unicode options preserve other extensions and private use', () => {
     }).toString()
   ).toBe('en-u-attr-ca-gregory-kn-false-z-foo-x-private')
 })
+
+it('passes ponyfill Locale brands to canonicalization without public property reads', () => {
+  const value = new Locale('en-US')
+  Object.defineProperties(value, {
+    toString: {
+      get() {
+        throw new Error('Locale public toString read')
+      },
+    },
+    length: {
+      get() {
+        throw new Error('Locale public length read')
+      },
+    },
+  })
+  expect(getCanonicalLocales(value as any)).toEqual(['en-US'])
+  expect(getCanonicalLocales([value] as any)).toEqual(['en-US'])
+})
+
+it('brand access retains private WeakMap lookup after prototype replacement', () => {
+  const value = new Locale('en-US')
+  const original = WeakMap.prototype.get
+  let actual: unknown
+  try {
+    WeakMap.prototype.get = () => {
+      throw new Error('Mutable Locale slot lookup reached')
+    }
+    actual = getCanonicalLocales([value] as any)
+  } finally {
+    WeakMap.prototype.get = original
+  }
+  expect(actual).toEqual(['en-US'])
+})
+
+it('resolves numeric collation without mutable Object.is', () => {
+  const original = Object.is
+  let actual: unknown, error: unknown
+  try {
+    Object.is = () => {
+      throw new Error('Mutable equality reached')
+    }
+    actual = new Locale('en-u-kn-false').numeric
+  } catch (caught) {
+    error = caught
+  } finally {
+    Object.is = original
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toBe(false)
+})

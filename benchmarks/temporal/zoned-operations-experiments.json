@@ -1,0 +1,2073 @@
+{
+  "baselineCommit": "5e3192dcf33d9808767eea00b1d1ff49dc404202",
+  "method": "Measured typed zoned operations, complete direct Rust ISO records and private validated-nanosecond resolution. Shared-process trials retained as diagnostics; alternating fresh-process controls separate core/transport/construction effects. Full isolated 48-workload checkpoint is zoned-operations-hillclimb-results.json. No field omission, new data/cache/dependency or Test262 exclusions.",
+  "trials": [
+    {
+      "name": "zoned-typed-round",
+      "retained": true,
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 10128.187600000001,
+          "samplesNanoseconds": [
+            9942.6919, 10012.35170000001, 10119.792200000005,
+            10128.187600000001, 11259.413899999998, 11289.137499999993,
+            11682.6142
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3870.232400000009,
+          "samplesNanoseconds": [
+            3842.1021999999994, 3852.4750999999924, 3862.876299999993,
+            3870.232400000009, 3958.9268999999827, 4299.705500000005,
+            5605.90850000001
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2810.058099999992,
+          "samplesNanoseconds": [
+            2733.4147999999914, 2770.9601999999904, 2776.161000000002,
+            2810.058099999992, 2812.717799999996, 2919.927500000017,
+            3537.5796999999916
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1889.4452,
+          "samplesNanoseconds": [
+            1779.5560999999907, 1805.4847999999993, 1883.9574000000086,
+            1889.4452, 1906.5261999999848, 2165.421100000003, 2169.1136000000142
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 19676.17970000001,
+          "samplesNanoseconds": [
+            19279.21299999998, 19342.019699999946, 19347.245199999998,
+            19676.17970000001, 20064.829400000053, 20890.621099999953,
+            21355.652699999973
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 7391.117899999972,
+          "samplesNanoseconds": [
+            6998.89919999996, 7323.418700000001, 7362.329199999931,
+            7391.117899999972, 7411.771899999985, 7430.767400000058,
+            7449.021600000015
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 4336.451600000055,
+          "samplesNanoseconds": [
+            4176.440400000047, 4239.890900000046, 4283.846999999969,
+            4336.451600000055, 4479.943299999923, 4819.961599999988,
+            7292.593699999997
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 10703.75469999999,
+          "samplesNanoseconds": [
+            9983.5947999999, 10588.357799999994, 10593.690799999968,
+            10703.75469999999, 10750.522300000011, 11083.399199999985,
+            11109.102599999915
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3508079,
+        "gzip": 474738
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    },
+    {
+      "name": "zoned-typed-operations",
+      "retained": true,
+      "typescript": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3897.6181999999994,
+          "samplesNanoseconds": [
+            3831.5062000000016, 3841.6539, 3876.6940000000036,
+            3897.6181999999994, 4307.7748999999985, 4437.174499999997, 5317.6007
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6473.417299999994,
+          "samplesNanoseconds": [
+            6284.945600000003, 6336.355199999991, 6344.775299999992,
+            6473.417299999994, 6475.669300000004, 6500.592099999994,
+            6835.871299999997
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2761.287200000015,
+          "samplesNanoseconds": [
+            2691.6672999999946, 2696.7073000000028, 2756.195100000002,
+            2761.287200000015, 2822.177399999987, 2873.2893999999987, 3590.4808
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1871.8085999999857,
+          "samplesNanoseconds": [
+            1771.6904999999997, 1782.8130999999985, 1821.5427999999974,
+            1871.8085999999857, 1881.4304999999877, 1884.3849999999975,
+            2095.0112999999874
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 7247.608300000048,
+          "samplesNanoseconds": [
+            6741.350899999997, 7051.7823000000135, 7225.370799999973,
+            7247.608300000048, 7317.500999999993, 7351.087899999948,
+            8330.238800000006
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6507.589499999995,
+          "samplesNanoseconds": [
+            6040.25330000004, 6231.856599999992, 6313.831300000038,
+            6507.589499999995, 6775.915199999963, 7163.9524000000165,
+            7447.040100000049
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 4219.18770000002,
+          "samplesNanoseconds": [
+            4179.161199999999, 4192.189600000074, 4218.193400000018,
+            4219.18770000002, 4626.630699999987, 5431.694799999968,
+            6713.218299999971
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 4209.462199999962,
+          "samplesNanoseconds": [
+            4171.692900000016, 4201.97849999995, 4207.851800000026,
+            4209.462199999962, 4237.268099999983, 4324.960199999987,
+            5448.550399999931
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3513453,
+        "gzip": 475691
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    },
+    {
+      "name": "zoned-direct-snapshots",
+      "retained": true,
+      "typescript": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3933.838800000001,
+          "samplesNanoseconds": [
+            3832.262100000003, 3854.5457, 3904.133799999999, 3933.838800000001,
+            4277.586199999999, 4425.0466000000015, 5261.2905999999975
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6175.3525999999965,
+          "samplesNanoseconds": [
+            6110.386600000003, 6140.155199999993, 6141.073700000004,
+            6175.3525999999965, 6322.096300000009, 6400.026200000002,
+            6704.925299999996
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2754.7589000000016,
+          "samplesNanoseconds": [
+            2699.185599999987, 2713.617799999986, 2716.6852999999946,
+            2754.7589000000016, 2762.327099999993, 2787.269900000001,
+            3506.751999999995
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1876.626299999998,
+          "samplesNanoseconds": [
+            1766.0978000000116, 1766.4639999999963, 1769.2186999999876,
+            1876.626299999998, 1878.7954000000127, 1922.6200000000063,
+            2073.7247000000025
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6531.530500000008,
+          "samplesNanoseconds": [
+            6067.142899999999, 6418.909200000007, 6508.635999999979,
+            6531.530500000008, 6629.510899999968, 6735.026500000003,
+            7372.151699999996
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5773.233300000038,
+          "samplesNanoseconds": [
+            5703.472099999999, 5713.4195000000545, 5723.703100000057,
+            5773.233300000038, 6375.359899999967, 6549.953300000016,
+            6897.814699999981
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3770.0468,
+          "samplesNanoseconds": [
+            3698.7680000000178, 3718.9112000000023, 3768.5548999999805,
+            3770.0468, 3884.385999999995, 4989.735699999983, 5025.514999999996
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3728.9213000000013,
+          "samplesNanoseconds": [
+            3631.4112000000023, 3700.181100000009, 3725.825799999984,
+            3728.9213000000013, 3793.95340000001, 3954.728499999965,
+            4799.451500000032
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3515017,
+        "gzip": 476313
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    },
+    {
+      "name": "zoned-nanosecond-resolution",
+      "retained": true,
+      "typescript": [
+        {
+          "operation": "dateTimeParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2254.836799999998,
+          "samplesNanoseconds": [
+            1867.6962000000003, 2139.1130000000003, 2247.1408999999994,
+            2254.836799999998, 2447.392499999998, 2720.888400000001,
+            3374.616999999998
+          ]
+        },
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 9220.201500000008,
+          "samplesNanoseconds": [
+            9103.748999999994, 9146.482200000002, 9168.65479999999,
+            9220.201500000008, 9260.817199999998, 9463.1009, 10920.438100000001
+          ]
+        },
+        {
+          "operation": "dateTimeAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5885.62579999998,
+          "samplesNanoseconds": [
+            5813.932799999998, 5827.7622000000065, 5857.532300000003,
+            5885.62579999998, 5898.229900000001, 6154.019600000015,
+            6361.257299999988
+          ]
+        },
+        {
+          "operation": "dateTimeRoundFormat",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1481.3266999999996,
+          "samplesNanoseconds": [
+            1441.7682000000013, 1462.918999999988, 1466.5203999999903,
+            1481.3266999999996, 1504.1946000000053, 1626.9858000000113,
+            1815.3461999999988
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3929.16439999999,
+          "samplesNanoseconds": [
+            3901.3650999999986, 3907.3306, 3908.687400000008, 3929.16439999999,
+            3972.714299999984, 3978.4012000000075, 4329.2675000000145
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6218.441500000017,
+          "samplesNanoseconds": [
+            6206.007599999975, 6209.71340000001, 6215.8244000000195,
+            6218.441500000017, 6237.720000000013, 6269.1237, 7697.038900000008
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2825.7247000000007,
+          "samplesNanoseconds": [
+            2797.9709000000184, 2801.049000000012, 2803.882900000008,
+            2825.7247000000007, 2853.441900000007, 2913.706600000023,
+            3132.5098000000253
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2497.8262000000086,
+          "samplesNanoseconds": [
+            1842.707799999971, 2026.683600000024, 2027.9381999999714,
+            2497.8262000000086, 3009.7045999999864, 3055.953899999986, 3329.2011
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "dateTimeParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1917.1653999999762,
+          "samplesNanoseconds": [
+            1808.5825999999543, 1847.3643000000266, 1865.361500000017,
+            1917.1653999999762, 1959.889899999962, 2642.718100000002,
+            3748.7067000000025
+          ]
+        },
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 18448.12550000006,
+          "samplesNanoseconds": [
+            18165.23020000004, 18178.83380000003, 18267.17840000001,
+            18448.12550000006, 18536.020000000008, 19116.264199999932,
+            19211.82920000001
+          ]
+        },
+        {
+          "operation": "dateTimeAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3771.989899999972,
+          "samplesNanoseconds": [
+            3641.9035000000804, 3660.8679999999367, 3681.543899999997,
+            3771.989899999972, 4086.052700000073, 4350.969400000031,
+            4550.455099999999
+          ]
+        },
+        {
+          "operation": "dateTimeRoundFormat",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2285.214099999939,
+          "samplesNanoseconds": [
+            2221.6787999999724, 2228.8291000000754, 2264.138599999933,
+            2285.214099999939, 2474.7937000000093, 3492.091599999912,
+            5517.678899999919
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6783.758499999932,
+          "samplesNanoseconds": [
+            6313.170499999978, 6721.080199999959, 6726.260499999989,
+            6783.758499999932, 6805.906800000048, 6941.633899999942,
+            7151.712900000165
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5905.828600000132,
+          "samplesNanoseconds": [
+            5845.041200000014, 5851.571399999921, 5867.11379999997,
+            5905.828600000132, 6509.711299999981, 6892.632400000003,
+            8942.19290000001
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 4854.04180000005,
+          "samplesNanoseconds": [
+            3807.059300000037, 3835.650600000008, 3863.0888000001505,
+            4854.04180000005, 4947.15580000011, 5274.7613999999885,
+            5835.3877999999895
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3787.2447000001557,
+          "samplesNanoseconds": [
+            3700.9061000000656, 3720.9577999999965, 3731.1775000000125,
+            3787.2447000001557, 3805.5035999999745, 3835.0793999999946,
+            5251.493500000106
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3513626,
+        "gzip": 479310
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    },
+    {
+      "name": "zoned-typed-validation",
+      "retained": false,
+      "typescript": [
+        {
+          "operation": "dateAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5946.885300000003,
+          "samplesNanoseconds": [
+            5766.1608, 5780.667699999998, 5862.5841999999975, 5946.885300000003,
+            6139.960500000001, 6180.1550000000025, 6704.058499999999
+          ]
+        },
+        {
+          "operation": "dateTimeAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5673.457399999996,
+          "samplesNanoseconds": [
+            5621.939099999997, 5639.005399999996, 5661.135100000001,
+            5673.457399999996, 5675.518999999997, 5719.782899999996, 6113.1528
+          ]
+        },
+        {
+          "operation": "yearMonthAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5288.581499999987,
+          "samplesNanoseconds": [
+            5176.384900000016, 5216.906300000005, 5245.654500000001,
+            5288.581499999987, 5317.413799999986, 5361.945900000001,
+            5950.523100000009
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6195.01580000001,
+          "samplesNanoseconds": [
+            6069.924500000002, 6130.4979, 6157.2022999999945, 6195.01580000001,
+            6842.294500000003, 6897.226899999987, 7170.090600000003
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2897.1202000000176,
+          "samplesNanoseconds": [
+            2865.8280000000104, 2876.8118999999842, 2894.955700000014,
+            2897.1202000000176, 2942.3022000000174, 2962.549200000012,
+            3578.1820999999804
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1931.9194000000152,
+          "samplesNanoseconds": [
+            1825.3358999999818, 1851.693499999965, 1882.4243000000022,
+            1931.9194000000152, 1949.0600000000086, 1950.8491999999933,
+            2222.5017000000207
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "dateAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3250.477099999989,
+          "samplesNanoseconds": [
+            3099.3805000000066, 3165.124199999991, 3230.3875999999946,
+            3250.477099999989, 3338.6383000000023, 3587.3931000000084,
+            5173.682000000008
+          ]
+        },
+        {
+          "operation": "dateTimeAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3689.551000000028,
+          "samplesNanoseconds": [
+            3621.4431000000327, 3631.2009000000216, 3661.217399999987,
+            3689.551000000028, 3887.074699999994, 4965.295800000058,
+            5497.749500000009
+          ]
+        },
+        {
+          "operation": "yearMonthAdd",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 10032.572100000016,
+          "samplesNanoseconds": [
+            9547.940699999981, 9547.985599999993, 9983.975499999997,
+            10032.572100000016, 10045.19850000006, 10200.40369999997,
+            10397.317199999998
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6730.630000000019,
+          "samplesNanoseconds": [
+            6231.121699999949, 6249.554999999964, 6530.492900000081,
+            6730.630000000019, 6797.192600000017, 7321.909700000015,
+            8977.176400000008
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 4303.469899999982,
+          "samplesNanoseconds": [
+            4275.2958000000035, 4284.581100000014, 4295.619099999931,
+            4303.469899999982, 4313.966100000016, 4416.52780000004,
+            5586.989200000062
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 4231.757999999991,
+          "samplesNanoseconds": [
+            4185.51350000007, 4188.1617999999435, 4223.757500000011,
+            4231.757999999991, 4234.0462999999545, 4242.807600000015,
+            5834.404600000016
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3514022,
+        "gzip": 475775
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    },
+    {
+      "name": "zoned-lazy-bindings",
+      "retained": false,
+      "typescript": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3986.013700000001,
+          "samplesNanoseconds": [
+            3934.8741999999957, 3954.406, 3957.763799999998, 3986.013700000001,
+            4366.177399999998, 4462.379800000002, 5378.527700000001
+          ]
+        },
+        {
+          "operation": "zonedOffset",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 146.46420000000262,
+          "samplesNanoseconds": [
+            122.1648000000016, 130.00000000000114, 144.74670000000174,
+            146.46420000000262, 166.57989999999927, 180.19259999999804,
+            197.1589999999992
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6384.771999999998,
+          "samplesNanoseconds": [
+            6183.801600000003, 6185.106199999996, 6303.524000000005,
+            6384.771999999998, 6471.7080000000005, 6605.208400000004,
+            6711.265899999996
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2747.728300000017,
+          "samplesNanoseconds": [
+            2735.9684000000016, 2740.3471999999965, 2744.1491999999926,
+            2747.728300000017, 2815.653700000007, 2852.6289999999904,
+            3298.735899999997
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1975.1614000000018,
+          "samplesNanoseconds": [
+            1830.26890000001, 1839.5153000000164, 1967.0730000000049,
+            1975.1614000000018, 1975.547000000006, 2035.6822999999852,
+            2051.281700000004
+          ]
+        },
+        {
+          "operation": "zonedHoursInDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2741.7322000000013,
+          "samplesNanoseconds": [
+            2720.7602999999835, 2734.8367999999937, 2739.8684999999887,
+            2741.7322000000013, 2748.5321999999996, 2749.160599999982,
+            2859.1386000000057
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6950.9798999999475,
+          "samplesNanoseconds": [
+            6613.306199999988, 6763.862700000027, 6830.29290000004,
+            6950.9798999999475, 6982.958899999994, 7148.889300000019,
+            7602.4237999999505
+          ]
+        },
+        {
+          "operation": "zonedOffset",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 59.35830000007628,
+          "samplesNanoseconds": [
+            49.89610000002358, 50.22079999998823, 52.81439999998838,
+            59.35830000007628, 62.710500000048334, 65.05609999994704,
+            70.42129999999815
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5832.02110000002,
+          "samplesNanoseconds": [
+            5658.025499999985, 5718.5395999999855, 5753.4834999999475,
+            5832.02110000002, 5862.414799999988, 6350.662100000045,
+            6891.396900000018
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3878.676300000007,
+          "samplesNanoseconds": [
+            3725.366800000029, 3743.5778000000028, 3777.048100000047,
+            3878.676300000007, 3967.858299999989, 6343.736500000068,
+            8225.448400000005
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3794.544700000006,
+          "samplesNanoseconds": [
+            3668.871899999976, 3746.1976999999933, 3772.3151000000144,
+            3794.544700000006, 3869.410499999958, 4039.4077000000834,
+            10154.692400000022
+          ]
+        },
+        {
+          "operation": "zonedHoursInDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 60.376499999983935,
+          "samplesNanoseconds": [
+            54.9974000000475, 56.0990999999376, 57.673699999941164,
+            60.376499999983935, 76.20280000001003, 78.76430000005712,
+            108.16359999998895
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3515017,
+        "gzip": 476313
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    },
+    {
+      "name": "zoned-flat-decoder",
+      "retained": false,
+      "typescript": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3932.617699999997,
+          "samplesNanoseconds": [
+            3843.446299999999, 3845.6051, 3859.6904999999992, 3932.617699999997,
+            4335.599800000003, 4427.181200000002, 5270.6963
+          ]
+        },
+        {
+          "operation": "zonedOffset",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 168.73689999999897,
+          "samplesNanoseconds": [
+            128.89279999999985, 131.17839999999887, 132.30749999999603,
+            168.73689999999897, 175.8974999999964, 177.7832999999987,
+            188.94369999999867
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 6487.114299999997,
+          "samplesNanoseconds": [
+            6221.317399999998, 6280.6328, 6280.6421, 6487.114299999997,
+            6551.311799999996, 6659.926399999995, 6681.335700000005
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2761.432200000013,
+          "samplesNanoseconds": [
+            2693.8603000000057, 2705.8659000000034, 2707.267899999988,
+            2761.432200000013, 2802.8330000000096, 2815.9366999999975,
+            3586.337200000003
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1865.2558,
+          "samplesNanoseconds": [
+            1781.5913000000137, 1793.4578999999985, 1829.527199999984,
+            1865.2558, 1870.456100000001, 1872.666299999992, 2089.593200000013
+          ]
+        },
+        {
+          "operation": "zonedHoursInDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2716.6611000000103,
+          "samplesNanoseconds": [
+            2702.1920000000136, 2704.2477999999846, 2714.6614999999883,
+            2716.6611000000103, 2723.9340999999968, 2758.516600000007,
+            2809.416999999985
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 7174.9964999999975,
+          "samplesNanoseconds": [
+            6093.94769999999, 6555.733899999996, 6692.541399999982,
+            7174.9964999999975, 7267.330700000003, 7408.921199999987,
+            7851.387300000033
+          ]
+        },
+        {
+          "operation": "zonedOffset",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 47.397000000000844,
+          "samplesNanoseconds": [
+            43.43980000003285, 43.544699999984005, 45.974200000000565,
+            47.397000000000844, 47.98059999993711, 50.416099999984,
+            51.75760000001901
+          ]
+        },
+        {
+          "operation": "zonedAddDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 5560.926999999992,
+          "samplesNanoseconds": [
+            5478.340599999956, 5481.534899999951, 5546.4350000000195,
+            5560.926999999992, 5579.352100000051, 6948.073299999942,
+            8070.506399999977
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3905.587600000035,
+          "samplesNanoseconds": [
+            3670.4596999999917, 3702.4332999999388, 3776.3954000000017,
+            3905.587600000035, 3936.978799999997, 3945.157399999971,
+            4028.9066000000275
+          ]
+        },
+        {
+          "operation": "zonedDayStart",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3609.741800000029,
+          "samplesNanoseconds": [
+            3552.6012999999693, 3589.281000000028, 3604.2393000000625,
+            3609.741800000029, 4890.410800000063, 6178.274800000054,
+            7026.435500000025
+          ]
+        },
+        {
+          "operation": "zonedHoursInDay",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 50.45610000006491,
+          "samplesNanoseconds": [
+            44.69820000003892, 44.79089999995267, 48.038699999960954,
+            50.45610000006491, 51.703899999938585, 52.35210000000734,
+            52.80409999995754
+          ]
+        }
+      ],
+      "binary": {
+        "raw": 3515017,
+        "gzip": 476313
+      },
+      "scope": "Shared-process diagnostic; isolated controls/checkpoint govern claims."
+    }
+  ],
+  "durationPrevalidation": {
+    "retained": false,
+    "reason": "Extra Rust boundary showed no consistent benefit; DateTime addition slowed in both Rust variants. Existing early JS validation preserves options order; public Rust Duration/core operations still validate independently.",
+    "control": {
+      "method": "Fresh sequential native-data WASM processes, Rust/JS/JS/Rust prevalidation order. Same four matched arithmetic workloads, eight varying inputs/parity, 20000 warmup and nine samples of 50000 calls. Rust binary identical between variants; only duration prevalidation delegation differs.",
+      "trials": [
+        {
+          "variant": "rust",
+          "nativeDataWasm": [
+            {
+              "operation": "dateAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3375.10088,
+              "samplesNanoseconds": [
+                3188.1834799999974, 3195.568840000001, 3251.4793800000007,
+                3332.1529200000014, 3375.10088, 3409.8404000000005,
+                3555.1489800000036, 3615.1222799999996, 3818.187359999997
+              ]
+            },
+            {
+              "operation": "dateTimeAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3969.736439999997,
+              "samplesNanoseconds": [
+                3857.875300000005, 3884.420179999998, 3900.525239999997,
+                3902.768820000001, 3969.736439999997, 3972.2818800000005,
+                4033.463579999998, 4126.248059999998, 4327.838979999997
+              ]
+            },
+            {
+              "operation": "yearMonthAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 9693.24004,
+              "samplesNanoseconds": [
+                9659.390299999995, 9662.751959999987, 9674.642320000003,
+                9693.030980000003, 9693.24004, 9701.020880000005,
+                9774.345200000007, 9778.675779999994, 9781.25962
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6544.833260000014,
+              "samplesNanoseconds": [
+                6387.9335600000195, 6445.411400000012, 6498.524460000009,
+                6527.6657200000045, 6544.833260000014, 6548.737880000009,
+                6652.777580000001, 6682.947979999991, 6692.951119999998
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172641,
+              "gzip": 48838,
+              "sha256": "6bda6fe35b449b19971cf9c2b8bae61d7384cd919664282a4856584eb7e57997"
+            },
+            "wasmCombinedGzip": 524613,
+            "nativeDataWasmJS": {
+              "minified": 133811,
+              "gzip": 36990,
+              "sha256": "1e29d481e2c5e0046bc25d5d54346ada3bee4f4bcc1e7cc7ffbbfee884f5f78f"
+            },
+            "nativeDataWasmCombinedGzip": 512765
+          },
+          "binary": {
+            "raw": 3514022,
+            "gzip": 475775
+          }
+        },
+        {
+          "variant": "javascript",
+          "nativeDataWasm": [
+            {
+              "operation": "dateAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3960.7942200000025,
+              "samplesNanoseconds": [
+                3713.28344, 3800.030859999997, 3871.484859999998,
+                3879.9620000000004, 3960.7942200000025, 3968.386940000001,
+                3990.545319999999, 4026.54172, 4208.35056
+              ]
+            },
+            {
+              "operation": "dateTimeAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3804.6212599999944,
+              "samplesNanoseconds": [
+                3762.953419999995, 3763.7150200000087, 3792.589560000006,
+                3793.5560999999966, 3804.6212599999944, 3892.16582,
+                3949.2388200000005, 4392.779419999997, 4509.0855999999985
+              ]
+            },
+            {
+              "operation": "yearMonthAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 9626.202319999993,
+              "samplesNanoseconds": [
+                9576.488680000002, 9591.455420000002, 9603.41425999999,
+                9619.162699999997, 9626.202319999993, 9695.48992,
+                9709.437319999997, 9717.263759999987, 9750.520940000006
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6682.008459999997,
+              "samplesNanoseconds": [
+                6453.031980000014, 6467.470799999974, 6529.536279999993,
+                6581.327560000027, 6682.008459999997, 6701.400519999988,
+                6709.414280000019, 6937.622139999985, 7776.194240000004
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172641,
+              "gzip": 48838,
+              "sha256": "6bda6fe35b449b19971cf9c2b8bae61d7384cd919664282a4856584eb7e57997"
+            },
+            "wasmCombinedGzip": 524613,
+            "nativeDataWasmJS": {
+              "minified": 133781,
+              "gzip": 36976,
+              "sha256": "3c406a956c8a88279dc1c3218698bcbde023cff751b9d0547aa9293681e0c4ab"
+            },
+            "nativeDataWasmCombinedGzip": 512751
+          },
+          "binary": {
+            "raw": 3514022,
+            "gzip": 475775
+          }
+        },
+        {
+          "variant": "javascript",
+          "nativeDataWasm": [
+            {
+              "operation": "dateAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3389.2158000000004,
+              "samplesNanoseconds": [
+                3181.211419999999, 3233.7901800000004, 3299.6857,
+                3367.1242600000005, 3389.2158000000004, 3490.551720000003,
+                3530.4803800000013, 3616.01812, 3810.3724999999986
+              ]
+            },
+            {
+              "operation": "dateTimeAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3862.634320000002,
+              "samplesNanoseconds": [
+                3743.2125799999994, 3795.147379999999, 3805.9522800000013,
+                3836.0293600000023, 3862.634320000002, 3910.6889799999954,
+                3980.038400000003, 4169.930340000001, 5126.755720000001
+              ]
+            },
+            {
+              "operation": "yearMonthAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 9609.411799999998,
+              "samplesNanoseconds": [
+                9512.708519999996, 9513.466099999987, 9561.010299999998,
+                9578.426820000004, 9609.411799999998, 9612.30528,
+                9683.577960000002, 9772.878279999986, 9838.555820000001
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6586.146599999993,
+              "samplesNanoseconds": [
+                6351.064020000013, 6402.718979999991, 6550.862300000008,
+                6566.360679999998, 6586.146599999993, 6618.23980000001,
+                6756.514659999994, 6836.48956000001, 6841.955679999992
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172641,
+              "gzip": 48838,
+              "sha256": "6bda6fe35b449b19971cf9c2b8bae61d7384cd919664282a4856584eb7e57997"
+            },
+            "wasmCombinedGzip": 524613,
+            "nativeDataWasmJS": {
+              "minified": 133781,
+              "gzip": 36976,
+              "sha256": "3c406a956c8a88279dc1c3218698bcbde023cff751b9d0547aa9293681e0c4ab"
+            },
+            "nativeDataWasmCombinedGzip": 512751
+          },
+          "binary": {
+            "raw": 3514022,
+            "gzip": 475775
+          }
+        },
+        {
+          "variant": "rust",
+          "nativeDataWasm": [
+            {
+              "operation": "dateAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3404.997619999999,
+              "samplesNanoseconds": [
+                3267.4473799999987, 3269.269220000001, 3321.794699999998,
+                3360.9784000000013, 3404.997619999999, 3453.6972399999986,
+                3609.4648199999983, 3625.9378200000006, 3876.4697399999977
+              ]
+            },
+            {
+              "operation": "dateTimeAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4045.34036,
+              "samplesNanoseconds": [
+                3939.3502799999987, 3949.4431799999984, 3975.3476200000023,
+                3995.079079999996, 4045.34036, 4059.873259999995,
+                4126.9674399999985, 4280.572479999992, 4475.018580000005
+              ]
+            },
+            {
+              "operation": "yearMonthAdd",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 9722.05164,
+              "samplesNanoseconds": [
+                9601.653699999988, 9628.933259999994, 9653.554060000006,
+                9675.021300000008, 9722.05164, 9771.29006000001,
+                9790.807339999992, 10079.927940000016, 10101.84878
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6603.328540000002,
+              "samplesNanoseconds": [
+                6431.014839999989, 6489.669100000028, 6507.383420000006,
+                6510.197220000009, 6603.328540000002, 6640.70068000001,
+                6710.044879999987, 6722.016100000002, 7905.56364
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172641,
+              "gzip": 48838,
+              "sha256": "6bda6fe35b449b19971cf9c2b8bae61d7384cd919664282a4856584eb7e57997"
+            },
+            "wasmCombinedGzip": 524613,
+            "nativeDataWasmJS": {
+              "minified": 133811,
+              "gzip": 36990,
+              "sha256": "1e29d481e2c5e0046bc25d5d54346ada3bee4f4bcc1e7cc7ffbbfee884f5f78f"
+            },
+            "nativeDataWasmCombinedGzip": 512765
+          },
+          "binary": {
+            "raw": 3514022,
+            "gzip": 475775
+          }
+        }
+      ]
+    }
+  },
+  "rawLocalResolution": {
+    "retained": true,
+    "reason": "Alternating controls consistently improve parse/round/day start relative to field round trips. Both variants retain bounds-only DateTime checks and bounded offset-hint visitation. DateTime parse controls vary and do not establish a per-variant gain.",
+    "control": {
+      "method": "Fresh sequential native-data WASM processes, nanoseconds/fields/fields/nanoseconds. Same four public workloads, eight inputs/parity, 20000 warmup and nine samples of 50000 calls. Both variants retain bounds-only DateTime constructor validation and bounded offset-hint visitation. Only the larger raw local-resolution/day-boundary refactor differs.",
+      "trials": [
+        {
+          "variant": "nanoseconds",
+          "nativeDataWasm": [
+            {
+              "operation": "dateTimeParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 2877.42878,
+              "samplesNanoseconds": [
+                1925.9279199999992, 2157.9483600000026, 2643.2236599999987,
+                2702.3857, 2877.42878, 3064.4707199999993, 3240.5787400000004,
+                3496.7674199999988, 5469.399900000004
+              ]
+            },
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6344.513940000006,
+              "samplesNanoseconds": [
+                6316.262080000006, 6333.764300000003, 6337.88646,
+                6344.298020000006, 6344.513940000006, 6392.600320000001,
+                6441.422040000002, 6501.880879999999, 7127.957299999999
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3916.629379999995,
+              "samplesNanoseconds": [
+                3602.701699999998, 3621.400300000005, 3874.665640000003,
+                3882.5666599999927, 3916.629379999995, 3991.8516199999976,
+                4172.5312400000075, 4261.546699999999, 4280.306880000007
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3883.1583399999727,
+              "samplesNanoseconds": [
+                3831.142560000008, 3845.0119200000154, 3858.901459999997,
+                3860.0217400000115, 3883.1583399999727, 3886.9189799999913,
+                3891.544120000017, 4001.6537599999897, 4052.079040000008
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528091,
+            "nativeDataWasmJS": {
+              "minified": 133569,
+              "gzip": 36922,
+              "sha256": "73bf6f6cc0706e33e4a7f6a8fbbb0f8e6b59eece6979014fddf931e26e6f0b7a"
+            },
+            "nativeDataWasmCombinedGzip": 516232
+          },
+          "binary": {
+            "raw": 3513626,
+            "gzip": 479310
+          }
+        },
+        {
+          "variant": "fields",
+          "nativeDataWasm": [
+            {
+              "operation": "dateTimeParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 2837.4784000000004,
+              "samplesNanoseconds": [
+                1984.267560000003, 2209.318199999998, 2645.96904,
+                2711.2008400000013, 2837.4784000000004, 3221.97998,
+                3349.200419999999, 3543.74004, 5266.402480000002
+              ]
+            },
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6764.731139999994,
+              "samplesNanoseconds": [
+                6698.372220000001, 6703.711019999992, 6730.904599999994,
+                6761.763539999997, 6764.731139999994, 6798.510960000003,
+                6859.845800000003, 6876.706899999999, 7041.06468
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4286.02726000001,
+              "samplesNanoseconds": [
+                3783.085659999997, 4070.954419999998, 4087.5229000000036,
+                4148.0164799999875, 4286.02726000001, 4481.536219999998,
+                4596.430299999993, 5131.811580000012, 9056.174439999995
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4325.815359999979,
+              "samplesNanoseconds": [
+                4151.2804999999935, 4181.578499999996, 4238.693839999996,
+                4242.820920000013, 4325.815359999979, 4900.790280000001,
+                5068.730839999989, 5220.107499999995, 7201.893039999995
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528526,
+            "nativeDataWasmJS": {
+              "minified": 133569,
+              "gzip": 36922,
+              "sha256": "73bf6f6cc0706e33e4a7f6a8fbbb0f8e6b59eece6979014fddf931e26e6f0b7a"
+            },
+            "nativeDataWasmCombinedGzip": 516667
+          },
+          "binary": {
+            "raw": 3513795,
+            "gzip": 479745
+          }
+        },
+        {
+          "variant": "fields",
+          "nativeDataWasm": [
+            {
+              "operation": "dateTimeParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4835.130640000002,
+              "samplesNanoseconds": [
+                2813.235439999999, 2883.1313199999995, 3173.6249,
+                4234.969919999994, 4835.130640000002, 4910.237419999999,
+                6307.813820000001, 7279.154900000003, 9905.187039999999
+              ]
+            },
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6864.930299999996,
+              "samplesNanoseconds": [
+                6606.640559999996, 6661.322400000008, 6775.537720000011,
+                6803.230939999994, 6864.930299999996, 6923.25506000001,
+                6939.9586, 7052.824719999999, 8986.540379999997
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4286.835579999988,
+              "samplesNanoseconds": [
+                3976.1315600000125, 4002.269099999994, 4070.2776399999857,
+                4108.7511599999925, 4286.835579999988, 4449.045540000006,
+                4489.233400000012, 4579.98732, 5624.856639999997
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4168.415819999973,
+              "samplesNanoseconds": [
+                3994.185859999998, 4001.187920000011, 4021.7723600000136,
+                4035.4186800000025, 4168.415819999973, 4181.369999999988,
+                4459.460859999999, 4518.351400000029, 4591.944939999994
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528526,
+            "nativeDataWasmJS": {
+              "minified": 133569,
+              "gzip": 36922,
+              "sha256": "73bf6f6cc0706e33e4a7f6a8fbbb0f8e6b59eece6979014fddf931e26e6f0b7a"
+            },
+            "nativeDataWasmCombinedGzip": 516667
+          },
+          "binary": {
+            "raw": 3513795,
+            "gzip": 479745
+          }
+        },
+        {
+          "variant": "nanoseconds",
+          "nativeDataWasm": [
+            {
+              "operation": "dateTimeParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 2990.7061199999994,
+              "samplesNanoseconds": [
+                1936.8019400000003, 1997.7688999999964, 2643.9091400000007,
+                2646.072740000002, 2990.7061199999994, 3040.98202,
+                3625.0295600000004, 3787.0275800000013, 5740.55762
+              ]
+            },
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6552.891020000006,
+              "samplesNanoseconds": [
+                6364.388159999999, 6367.040340000003, 6525.097919999999,
+                6536.996140000001, 6552.891020000006, 6643.192339999997,
+                6762.720680000002, 6976.683000000012, 7575.7059800000025
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3939.84246,
+              "samplesNanoseconds": [
+                3603.129800000006, 3628.181220000006, 3887.459600000002,
+                3904.166299999997, 3939.84246, 4204.660339999991,
+                4337.6837200000045, 4409.356859999989, 4468.7536999999975
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3896.8528199999855,
+              "samplesNanoseconds": [
+                3810.100579999998, 3845.1404, 3870.988199999992,
+                3888.9102400000047, 3896.8528199999855, 3950.8408799999956,
+                3968.80188000001, 4004.4468999999845, 4338.575499999988
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528091,
+            "nativeDataWasmJS": {
+              "minified": 133569,
+              "gzip": 36922,
+              "sha256": "73bf6f6cc0706e33e4a7f6a8fbbb0f8e6b59eece6979014fddf931e26e6f0b7a"
+            },
+            "nativeDataWasmCombinedGzip": 516232
+          },
+          "binary": {
+            "raw": 3513626,
+            "gzip": 479310
+          }
+        }
+      ]
+    }
+  },
+  "trustedZonedConstruction": {
+    "retained": true,
+    "reason": "Modest alternating-control parse/add/round gains; day-start changes mixed. Same prototype/brands and numeric user-input validation. Not a universal stable-win claim.",
+    "control": {
+      "method": "Fresh sequential native-data WASM processes, checked/trusted/trusted/checked construction. Same four public zoned workloads, eight inputs/parity, 20000 warmup and nine samples of 50000 calls. Rust binary unchanged; trusted construction accepts only private branded or Rust-result slots, with numeric user constructors unchanged.",
+      "trials": [
+        {
+          "variant": "checked",
+          "nativeDataWasm": [
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 7125.978599999999,
+              "samplesNanoseconds": [
+                6308.785500000004, 6322.473239999998, 6387.7765,
+                6752.573160000001, 7125.978599999999, 7244.837339999994,
+                7894.0164, 8866.96854, 9655.94336
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 5861.632280000013,
+              "samplesNanoseconds": [
+                5748.584439999995, 5783.163319999986, 5814.389420000007,
+                5836.206739999998, 5861.632280000013, 5886.408140000003,
+                5963.449139999992, 6126.084579999988, 6173.39226
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4039.2117399999916,
+              "samplesNanoseconds": [
+                3737.6500599999963, 3841.276939999989, 3872.02636,
+                3896.85174000002, 4039.2117399999916, 4049.455360000011,
+                4088.74953999999, 4097.377920000017, 4497.084139999988
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3899.7356800000125,
+              "samplesNanoseconds": [
+                3614.461259999989, 3666.79494, 3747.310200000029,
+                3859.0388600000006, 3899.7356800000125, 3977.913640000006,
+                3999.8609000000215, 4072.387860000017, 5203.13001999999
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528091,
+            "nativeDataWasmJS": {
+              "minified": 133569,
+              "gzip": 36922,
+              "sha256": "73bf6f6cc0706e33e4a7f6a8fbbb0f8e6b59eece6979014fddf931e26e6f0b7a"
+            },
+            "nativeDataWasmCombinedGzip": 516232
+          },
+          "binary": {
+            "raw": 3513626,
+            "gzip": 479310
+          }
+        },
+        {
+          "variant": "trusted",
+          "nativeDataWasm": [
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6531.17342,
+              "samplesNanoseconds": [
+                6239.563500000004, 6243.644139999997, 6495.774019999999,
+                6522.133920000006, 6531.17342, 6539.248920000005,
+                6591.892539999999, 6839.560560000003, 7217.71064
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 5723.208480000012,
+              "samplesNanoseconds": [
+                5674.627840000003, 5679.471160000003, 5696.846060000007,
+                5717.90656000001, 5723.208480000012, 5762.374039999995,
+                5860.726200000008, 5943.679759999995, 6102.97301999999
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3866.499279999989,
+              "samplesNanoseconds": [
+                3787.4491599999965, 3833.6893600000076, 3845.050539999993,
+                3856.2029399999847, 3866.499279999989, 3869.383019999986,
+                3896.9233600000007, 4081.1365999999903, 4120.169580000002
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3987.4502799999755,
+              "samplesNanoseconds": [
+                3557.453800000003, 3856.9315800000186, 3864.1337199999903,
+                3881.9059600000037, 3987.4502799999755, 4129.004359999999,
+                4159.558700000016, 4208.020759999981, 4278.728080000001
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528091,
+            "nativeDataWasmJS": {
+              "minified": 133665,
+              "gzip": 36959,
+              "sha256": "45bdb09da82eaa276fc0381517b00c0e250ff7b2e45b2fbd2b4fcbbbf74b19c3"
+            },
+            "nativeDataWasmCombinedGzip": 516269
+          },
+          "binary": {
+            "raw": 3513626,
+            "gzip": 479310
+          }
+        },
+        {
+          "variant": "trusted",
+          "nativeDataWasm": [
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6402.952779999996,
+              "samplesNanoseconds": [
+                6234.056519999994, 6299.615600000003, 6333.199080000004,
+                6337.887920000002, 6402.952779999996, 6498.174960000001,
+                6509.744120000002, 6754.931299999998, 6907.54398
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 5751.0737399999925,
+              "samplesNanoseconds": [
+                5601.684960000002, 5651.801899999991, 5658.256400000009,
+                5723.607040000006, 5751.0737399999925, 5757.525480000004,
+                5759.642539999995, 5880.386899999994, 5882.475239999994
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4194.218520000013,
+              "samplesNanoseconds": [
+                3697.240959999999, 3858.578800000014, 3888.317920000008,
+                4110.366119999999, 4194.218520000013, 4200.435099999995,
+                4201.794740000005, 4216.957280000006, 4313.543279999994
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3923.0222800000047,
+              "samplesNanoseconds": [
+                3753.8253199999963, 3769.0519399999903, 3801.390019999999,
+                3816.6408200000296, 3923.0222800000047, 3928.1431599999996,
+                4013.825299999989, 4109.902680000014, 4951.165060000003
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528091,
+            "nativeDataWasmJS": {
+              "minified": 133665,
+              "gzip": 36959,
+              "sha256": "45bdb09da82eaa276fc0381517b00c0e250ff7b2e45b2fbd2b4fcbbbf74b19c3"
+            },
+            "nativeDataWasmCombinedGzip": 516269
+          },
+          "binary": {
+            "raw": 3513626,
+            "gzip": 479310
+          }
+        },
+        {
+          "variant": "checked",
+          "nativeDataWasm": [
+            {
+              "operation": "zonedParse",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 6447.909600000003,
+              "samplesNanoseconds": [
+                6302.263499999999, 6347.039139999998, 6357.326920000005,
+                6423.76616, 6447.909600000003, 6623.833500000002,
+                6786.103959999995, 7019.400820000001, 7151.584320000001
+              ]
+            },
+            {
+              "operation": "zonedAddDay",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 5928.093840000001,
+              "samplesNanoseconds": [
+                5771.976260000001, 5812.586339999998, 5816.572240000005,
+                5841.572539999997, 5928.093840000001, 6193.25358,
+                6464.285380000001, 6531.591800000006, 6909.07948
+              ]
+            },
+            {
+              "operation": "zonedRound",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 4320.868680000003,
+              "samplesNanoseconds": [
+                3979.82383999999, 4026.912799999991, 4119.119719999999,
+                4219.715180000003, 4320.868680000003, 5474.868940000014,
+                5734.8188800000025, 5964.5367799999985, 6278.699239999987
+              ]
+            },
+            {
+              "operation": "zonedDayStart",
+              "iterations": 50000,
+              "warmup": 20000,
+              "medianNanoseconds": 3836.5611200000058,
+              "samplesNanoseconds": [
+                3675.6824399999823, 3740.182939999977, 3785.412799999976,
+                3802.9053600000043, 3836.5611200000058, 3836.886279999999,
+                3855.2168000000165, 4004.3685200000255, 4973.434760000018
+              ]
+            }
+          ],
+          "consumer": {
+            "typescript": {
+              "minified": 141410,
+              "gzip": 39748,
+              "sha256": "f763cee0f9fefb30f39dea4e42933d374e2cc5945e82bac140ddc56d7524cb25"
+            },
+            "wasmJS": {
+              "minified": 172428,
+              "gzip": 48781,
+              "sha256": "9b43c0f28a07448d8a74f439a8c657b32431d4d8dc081015f259f2ffdd0c1584"
+            },
+            "wasmCombinedGzip": 528091,
+            "nativeDataWasmJS": {
+              "minified": 133569,
+              "gzip": 36922,
+              "sha256": "73bf6f6cc0706e33e4a7f6a8fbbb0f8e6b59eece6979014fddf931e26e6f0b7a"
+            },
+            "nativeDataWasmCombinedGzip": 516232
+          },
+          "binary": {
+            "raw": 3513626,
+            "gzip": 479310
+          }
+        }
+      ]
+    }
+  },
+  "discardedRepresentations": [
+    {
+      "name": "Copied lazy JS snapshots",
+      "reason": "Complete Rust data preserved, but copying plus cache objects showed no matched throughput win; getter paths also cost more."
+    },
+    {
+      "name": "Direct flat JS decoder",
+      "reason": "Mixed shared-process results, no consistent advantage over simpler existing decoder."
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "targets": [
+      "//packages/temporal:sdk_hermes_instant_source_test262",
+      "//packages/temporal:sdk_hermes_instant_bytecode_test262",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_yearmonth_source_test262",
+      "//packages/temporal:sdk_hermes_yearmonth_bytecode_test262",
+      "//packages/temporal:sdk_hermes_monthday_source_test262",
+      "//packages/temporal:sdk_hermes_monthday_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:sdk_hermes_calendars_source_test262",
+      "//packages/temporal:sdk_hermes_calendars_bytecode_test262",
+      "//packages/temporal:sdk_hermes_now_source_test262",
+      "//packages/temporal:sdk_hermes_now_bytecode_test262",
+      "//packages/temporal:sdk_hermes_installation_source_test262",
+      "//packages/temporal:sdk_hermes_installation_bytecode_test262",
+      "//packages/temporal:sdk_hermes_staging_source_test262",
+      "//packages/temporal:sdk_hermes_staging_bytecode_test262",
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:zoned_test262",
+      "//packages/temporal:calendars_test262",
+      "//packages/temporal:now_test262",
+      "//packages/temporal:installation_test262",
+      "//packages/temporal:wasm_instant_test262",
+      "//packages/temporal:wasm_date_test262",
+      "//packages/temporal:wasm_datetime_test262",
+      "//packages/temporal:wasm_time_test262",
+      "//packages/temporal:wasm_yearmonth_test262",
+      "//packages/temporal:wasm_monthday_test262",
+      "//packages/temporal:wasm_duration_test262",
+      "//packages/temporal:wasm_zoned_test262",
+      "//packages/temporal:wasm_calendars_test262",
+      "//packages/temporal:wasm_now_test262",
+      "//packages/temporal:wasm_installation_test262",
+      "//packages/temporal:wasm_staging_test262",
+      "//packages/temporal:wasm_package_test",
+      "//packages/temporal:wasm_native_package_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//benchmarks/temporal:temporal-esm_typecheck_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:ffi_test",
+      "//crates/temporal:binary_test",
+      "//packages/temporal:sdk_intl_compat_hermes_source_test262",
+      "//packages/temporal:sdk_intl_compat_hermes_bytecode_test262",
+      "//packages/temporal:wasm_host_intl_compat_test262",
+      "//packages/temporal:native_duration_hermes_oracle_test",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:native_iso_hermes_oracle_test",
+      "//packages/temporal:public_calendar_hermes_oracle_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/temporal:context_test",
+      "//crates/temporal:registry_test"
+    ],
+    "count": 66,
+    "sourceHashes": "Final formatted Rust/TS/WASM test sources matched their saved SHA-256 values after all 66 targets passed.",
+    "controls": [
+      "All ISO fields versus generic FFI at week/year/BCE/instant bounds, ownership across memory growth and getter reuse.",
+      "Correct public prototypes/constructor identity, numeric input range checks and poisoned Array iterator.",
+      "Typed packet signed/full range values, nine rounding modes, optional days, overflow/duration validation, malformed enums/UTF8/trailing bytes and recovery.",
+      "Bounded versus full-history offset-hint resolution for all four policies/disambiguations; wide Number-representable duration fields.",
+      "Independent Rust, TS, WASM and Hermes source/bytecode Test262/ICU plus Rust public calendar/context/registry tests. No new exclusions."
+    ],
+    "sourceSha256": {
+      "crates/temporal/binary.test.rs": "b26b32c9cb6f2e3899f46f28cff0cae4da4b64f5873d3abd82fec97abf3b499c",
+      "crates/temporal/binary_typed.rs": "7c129ff998884a532bdad3ac47d941895ff1dcfe8481285b1de9e1141243fb4c",
+      "crates/temporal/date.rs": "57b82dc407580eef64c9a8d1587be889b642fdcd5d02e76fcb107909d5658532",
+      "crates/temporal/ffi.rs": "d216dcc699ec8f3eb557e4631b3880253f779acff5f2f5677847d08f9cd2763f",
+      "crates/temporal/iso.rs": "5e4ff2b5df38f908d155bf2a1c1469ecc69aea11c18abb196f81a6985aa4b001",
+      "crates/temporal/lib.test.rs": "be7399db37c3b21af18794be52639d34300b2209ab484b7f3161a53150f2daea",
+      "crates/temporal/wasm_backend.rs": "ccf73553574cc96074eb6cde40fb7856dca39d7277f7d26aea7f1db4becdbdda",
+      "crates/temporal/zoned.rs": "43200dfed025d53c3e6dd639d0480888eaf49e02b6f68b5898636ca912e3ae04",
+      "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
+      "packages/temporal/native.ts": "32c187e21bdb266a5b93298770745075f6b648e1531e576a61e778afb1f9bc26",
+      "packages/temporal/tests/wasm.test.mjs": "ccd7c8f4475844bbfe12e0b60d353c5a96c821168efe7146e9849bf807166f10",
+      "packages/temporal/wasm.ts": "f33561d2e4a654696dfe55d7b7ec31d3ac7c56bccd6f26981551dff53d77dc95",
+      "packages/temporal/zoned-date-time.ts": "93d96bfa0c43e4b1bbef92fdbcd7b5ae1e67e3fac10205ac18bda5b44b4e9bf3"
+    }
+  },
+  "remainingSlowerWorkloads": [
+    {
+      "operation": "round",
+      "typescriptNanoseconds": 452.65526000000136,
+      "nativeDataWasmNanoseconds": 570.3757199999973,
+      "ratio": 1.2600664797311658
+    },
+    {
+      "operation": "until",
+      "typescriptNanoseconds": 2532.3683600000004,
+      "nativeDataWasmNanoseconds": 9905.096979999998,
+      "ratio": 3.9113965947671203
+    },
+    {
+      "operation": "dateTimeParse",
+      "typescriptNanoseconds": 2470.2114000000074,
+      "nativeDataWasmNanoseconds": 2900.6522999999656,
+      "ratio": 1.1742526570802632
+    },
+    {
+      "operation": "dateFromFields",
+      "typescriptNanoseconds": 1423.8035600000148,
+      "nativeDataWasmNanoseconds": 1680.7204399999682,
+      "ratio": 1.180444049458586
+    },
+    {
+      "operation": "dateTimeWith",
+      "typescriptNanoseconds": 6415.123739999981,
+      "nativeDataWasmNanoseconds": 8447.336880000003,
+      "ratio": 1.316784714116836
+    },
+    {
+      "operation": "zonedWith",
+      "typescriptNanoseconds": 9537.71762000004,
+      "nativeDataWasmNanoseconds": 18641.042979999984,
+      "ratio": 1.9544553238723277
+    },
+    {
+      "operation": "dateUntil",
+      "typescriptNanoseconds": 6286.8807599999855,
+      "nativeDataWasmNanoseconds": 10820.593679999874,
+      "ratio": 1.7211386843608434
+    },
+    {
+      "operation": "dateTimeUntil",
+      "typescriptNanoseconds": 6378.898840000038,
+      "nativeDataWasmNanoseconds": 12178.676819999964,
+      "ratio": 1.9092130358975705
+    },
+    {
+      "operation": "dateTimeRoundFormat",
+      "typescriptNanoseconds": 1676.5329600000405,
+      "nativeDataWasmNanoseconds": 2603.6514599999646,
+      "ratio": 1.5529974787968985
+    },
+    {
+      "operation": "yearMonthFormat",
+      "typescriptNanoseconds": 434.4168800000625,
+      "nativeDataWasmNanoseconds": 669.3761799999629,
+      "ratio": 1.5408613495862928
+    },
+    {
+      "operation": "monthDayFormat",
+      "typescriptNanoseconds": 401.1268000000564,
+      "nativeDataWasmNanoseconds": 681.7066999999224,
+      "ratio": 1.6994793167642417
+    },
+    {
+      "operation": "zonedFormat",
+      "typescriptNanoseconds": 2171.5029199999117,
+      "nativeDataWasmNanoseconds": 5557.681759999978,
+      "ratio": 2.559371073744724
+    },
+    {
+      "operation": "yearMonthUntil",
+      "typescriptNanoseconds": 5717.2817800000485,
+      "nativeDataWasmNanoseconds": 10944.45206000004,
+      "ratio": 1.914275433875842
+    },
+    {
+      "operation": "yearMonthToDate",
+      "typescriptNanoseconds": 2350.551039999991,
+      "nativeDataWasmNanoseconds": 5561.9630999999945,
+      "ratio": 2.366237960950644
+    },
+    {
+      "operation": "monthDayToDate",
+      "typescriptNanoseconds": 2691.797579999984,
+      "nativeDataWasmNanoseconds": 6075.337660000077,
+      "ratio": 2.256981618952237
+    },
+    {
+      "operation": "yearMonthAdd",
+      "typescriptNanoseconds": 5549.500419999968,
+      "nativeDataWasmNanoseconds": 10012.153439999965,
+      "ratio": 1.8041540106775997
+    },
+    {
+      "operation": "zonedParse",
+      "typescriptNanoseconds": 3998.8248600000225,
+      "nativeDataWasmNanoseconds": 6338.684519999951,
+      "ratio": 1.5851368194204722
+    },
+    {
+      "operation": "zonedUntilDay",
+      "typescriptNanoseconds": 12908.34898000001,
+      "nativeDataWasmNanoseconds": 21747.64118000021,
+      "ratio": 1.6847732590508406
+    },
+    {
+      "operation": "zonedRound",
+      "typescriptNanoseconds": 2869.086180000013,
+      "nativeDataWasmNanoseconds": 3870.30792000005,
+      "ratio": 1.3489688622737825
+    },
+    {
+      "operation": "zonedDayStart",
+      "typescriptNanoseconds": 2074.960599999904,
+      "nativeDataWasmNanoseconds": 3818.0730800001766,
+      "ratio": 1.840070158440769
+    },
+    {
+      "operation": "zonedTransition",
+      "typescriptNanoseconds": 435.4112000000896,
+      "nativeDataWasmNanoseconds": 1416.749599998002,
+      "ratio": 3.253819837426576
+    },
+    {
+      "operation": "durationParse",
+      "typescriptNanoseconds": 2388.468040000007,
+      "nativeDataWasmNanoseconds": 6732.27555999998,
+      "ratio": 2.8186584234135115
+    },
+    {
+      "operation": "durationAdd",
+      "typescriptNanoseconds": 4961.363999999885,
+      "nativeDataWasmNanoseconds": 15412.557380000071,
+      "ratio": 3.106516147575632
+    },
+    {
+      "operation": "durationTotalRelative",
+      "typescriptNanoseconds": 5584.032240000088,
+      "nativeDataWasmNanoseconds": 7597.962100000005,
+      "ratio": 1.3606587092340796
+    }
+  ],
+  "finalEvidence": {
+    "throughput": "zoned-operations-hillclimb-results.json",
+    "startup": "zoned-operations-startup-results.json",
+    "profiles": "zoned-operations-profile-results.json",
+    "typescriptGuard": "ts-regression-guard.json",
+    "wins": 24,
+    "total": 48,
+    "note": "Median count is not stable-win proof. All-workload goal remains open."
+  },
+  "nextTargets": [
+    "Duration parse: createDuration 29.08% sampled self time, generic decode 9.86%, decodeResult 4.83%; Rust parser function self time 1.57%. Typed duration transport and private Rust-result construction are next candidates.",
+    "Zoned rounding: zonedResult 12.40%, dateTimeResult 5.94%, recurring-rule events 10.20% sampled self time. Full results remain eager.",
+    "YearMonth format: request wrapper, UTF-8 encoding and Rust formatter/writer overhead remain visible."
+  ]
+}

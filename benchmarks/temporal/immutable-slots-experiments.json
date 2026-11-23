@@ -1,0 +1,1063 @@
+{
+  "baseCommit": "d2c616ca17391fa089414c34cc4c75e1974a3647",
+  "comparisonCommit": "6588cdf79ea083651967a323ea5d72cf6dad3fbb",
+  "changes": "Retain owned readonly short-date slots; parsed ISO strings and year-month addition retain validated ISO fields under private symbol. Short-date formatting reuses fields. Explicit readonly dateFieldsView serves date arithmetic/PlainDate updates/year-month addition; original general field reader stays fresh in pure TS. Native/range guards precede view reuse. Arithmetic input types readonly. No formatted-string/global-result cache.",
+  "sourceHashes": {
+    "packages/temporal/calendar.ts": "eea8c49e3a32e3ba4fbdbfe0978f9d2a292a29bb9de7b15876389d0c5ddcec9b",
+    "packages/temporal/date-core.ts": "cce02be93405d1fac0a8863d17a01fbc85644f70e00053dd6abc30909ea6ebe4",
+    "packages/temporal/plain-date.ts": "26a5822ee22735abce575f563b7da1fff8b34aa6bc2d1c81a79d2a91129bc6be",
+    "packages/temporal/plain-year-month.ts": "4a9e18ca75301bd0db8784d53f63af6d4004193380d7f96aa26353f011a7518c",
+    "packages/temporal/plain-month-day.ts": "cc9c415f639bbf3c62a658f6b4042bab23cd5c2fa71776fb1d24621ca8d8e985",
+    "packages/temporal/short-date-core.ts": "22f8ccce8851691507fd936a101c8c9b04bc1fb8b6375f039a28ca5fcfe09b65"
+  },
+  "javascript": "immutable-slots-results.json",
+  "native": "native-ts-slots-results.json",
+  "startup": "immutable-slots-startup-results.json",
+  "sizes": "immutable-slots-size-results.json",
+  "raw": {
+    "rawArtifact": "immutable-slots-controls.json.gz",
+    "rawSha256": "be0fcb8038e6a04c908f353006791075f538a6400132051cec4cd7738580331b"
+  },
+  "profile": {
+    "comparisonCommit": "6588cdf79ea083651967a323ea5d72cf6dad3fbb",
+    "method": "Separate V8 profiles per runtime state over six selected public workloads;100k warmup,5x200k; profiling includes setup/warmup/GC and is excluded from throughput. Same benchmark harness in both states.",
+    "profiles": {
+      "parent": {
+        "sourceHashes": {
+          "packages/temporal/calendar.ts": "39a958517baca1dba257f4f8f3b9adab203fe68eb60cfe0f309275be87f4fb23",
+          "packages/temporal/date-core.ts": "6f00e165832f6c35d10c964437205c7e8cb515707f13370b9a851ba0bb4d648f",
+          "packages/temporal/plain-date.ts": "be0d519f934508f2c9d79b76c59c9a89d02615f55cea050f8c34218e27be0866",
+          "packages/temporal/plain-year-month.ts": "272bad30c0f636d5519a1dd56399abb599a1f5f39033d02fa321ab01d126e953",
+          "packages/temporal/plain-month-day.ts": "f6180e18b2f8a0b03ad4605a3d1eaa9c549febd9eb44346ab352a28ca4e9765e",
+          "packages/temporal/short-date-core.ts": "13cf0e0b79de5dd905b34874b6e1d963cabd274abd67e0f8251ca8ef29788097"
+        },
+        "rawSha256": "52f7eac935b2b1f87238e2a53cdd29848659f5351fbda37ae85e97fe4bc5bc33",
+        "sampledMicroseconds": 10185871,
+        "selfTime": [
+          {
+            "function": "(garbage collector)",
+            "file": "",
+            "line": 0,
+            "percent": 13.052786551096121
+          },
+          {
+            "function": "createPlainDate",
+            "file": "index.js",
+            "line": 6549,
+            "percent": 9.212761481075109
+          },
+          {
+            "function": "ArithmeticCalendarFromEpochDay",
+            "file": "index.js",
+            "line": 3483,
+            "percent": 9.187334102307009
+          },
+          {
+            "function": "createPlainYearMonth",
+            "file": "index.js",
+            "line": 6251,
+            "percent": 7.363317285286648
+          },
+          {
+            "function": "toNativeDurationFields",
+            "file": "index.js",
+            "line": 6894,
+            "percent": 5.184995961562835
+          },
+          {
+            "function": "durationNanoseconds",
+            "file": "index.js",
+            "line": 5044,
+            "percent": 4.2942326679770435
+          },
+          {
+            "function": "toDurationFields",
+            "file": "index.js",
+            "line": 6887,
+            "percent": 4.188115086083458
+          },
+          {
+            "function": "calendarToEpochDayRaw",
+            "file": "index.js",
+            "line": 3689,
+            "percent": 3.326568734279081
+          },
+          {
+            "function": "parseShortDateString",
+            "file": "index.js",
+            "line": 4679,
+            "percent": 3.1312491587611904
+          },
+          {
+            "function": "add$2",
+            "file": "index.js",
+            "line": 6591,
+            "percent": 2.8935571636436395
+          },
+          {
+            "function": "createPlainMonthDay",
+            "file": "index.js",
+            "line": 6436,
+            "percent": 2.8848195701673425
+          },
+          {
+            "function": "monthFromCode",
+            "file": "index.js",
+            "line": 3670,
+            "percent": 2.4054398489829687
+          },
+          {
+            "function": "add$3",
+            "file": "index.js",
+            "line": 6272,
+            "percent": 2.086468599494339
+          },
+          {
+            "function": "calendarFromEpochDayRaw",
+            "file": "index.js",
+            "line": 3718,
+            "percent": 2.0141036539732338
+          },
+          {
+            "function": "validateDuration",
+            "file": "index.js",
+            "line": 5049,
+            "percent": 2.0130433617311665
+          },
+          {
+            "function": "add",
+            "file": "index.js",
+            "line": 6659,
+            "percent": 1.6942390100954547
+          },
+          {
+            "function": "",
+            "file": "comparison-benchmark.ts",
+            "line": 628,
+            "percent": 1.6547529415992013
+          },
+          {
+            "function": "ArithmeticCalendarToEpochDay",
+            "file": "index.js",
+            "line": 3436,
+            "percent": 1.5577460189707881
+          },
+          {
+            "function": "daysInMonth",
+            "file": "index.js",
+            "line": 3654,
+            "percent": 1.4321504758895927
+          },
+          {
+            "function": "isValidDate",
+            "file": "index.js",
+            "line": 4622,
+            "percent": 1.3891202823990212
+          },
+          {
+            "function": "ArithmeticCalendarMonthsInYear",
+            "file": "index.js",
+            "line": 3445,
+            "percent": 1.2466287860900653
+          },
+          {
+            "function": "add",
+            "file": "index.js",
+            "line": 6344,
+            "percent": 1.1680297148864343
+          },
+          {
+            "function": "readDateFields",
+            "file": "index.js",
+            "line": 5504,
+            "percent": 1.0466753407735088
+          },
+          {
+            "function": "ArithmeticCalendarDaysInMonth",
+            "file": "index.js",
+            "line": 3452,
+            "percent": 0.8974195726609929
+          },
+          {
+            "function": "addCalendarEpochDay",
+            "file": "index.js",
+            "line": 3775,
+            "percent": 0.8059595492619139
+          }
+        ],
+        "rawArtifact": "immutable-slots-parent.cpuprofile.gz"
+      },
+      "candidate": {
+        "sourceHashes": {
+          "packages/temporal/calendar.ts": "eea8c49e3a32e3ba4fbdbfe0978f9d2a292a29bb9de7b15876389d0c5ddcec9b",
+          "packages/temporal/date-core.ts": "cce02be93405d1fac0a8863d17a01fbc85644f70e00053dd6abc30909ea6ebe4",
+          "packages/temporal/plain-date.ts": "26a5822ee22735abce575f563b7da1fff8b34aa6bc2d1c81a79d2a91129bc6be",
+          "packages/temporal/plain-year-month.ts": "4a9e18ca75301bd0db8784d53f63af6d4004193380d7f96aa26353f011a7518c",
+          "packages/temporal/plain-month-day.ts": "cc9c415f639bbf3c62a658f6b4042bab23cd5c2fa71776fb1d24621ca8d8e985",
+          "packages/temporal/short-date-core.ts": "22f8ccce8851691507fd936a101c8c9b04bc1fb8b6375f039a28ca5fcfe09b65"
+        },
+        "rawSha256": "0b7cff5d284bce01b9fbc5f8eca31232cfaaa454a0760f23524c1154294ff6ab",
+        "sampledMicroseconds": 8796794,
+        "selfTime": [
+          {
+            "function": "createPlainDate",
+            "file": "index.js",
+            "line": 6563,
+            "percent": 10.487718593842256
+          },
+          {
+            "function": "(garbage collector)",
+            "file": "",
+            "line": 0,
+            "percent": 8.8730735311069
+          },
+          {
+            "function": "createPlainYearMonth",
+            "file": "index.js",
+            "line": 6263,
+            "percent": 6.714548504830282
+          },
+          {
+            "function": "toNativeDurationFields",
+            "file": "index.js",
+            "line": 6908,
+            "percent": 6.307036404399148
+          },
+          {
+            "function": "ArithmeticCalendarFromEpochDay",
+            "file": "index.js",
+            "line": 3483,
+            "percent": 5.9494288487373925
+          },
+          {
+            "function": "durationNanoseconds",
+            "file": "index.js",
+            "line": 5044,
+            "percent": 4.790961343416704
+          },
+          {
+            "function": "toDurationFields",
+            "file": "index.js",
+            "line": 6901,
+            "percent": 4.735759414168389
+          },
+          {
+            "function": "createPlainMonthDay",
+            "file": "index.js",
+            "line": 6450,
+            "percent": 4.116761174582467
+          },
+          {
+            "function": "parseShortDateString",
+            "file": "index.js",
+            "line": 4679,
+            "percent": 3.403865089940722
+          },
+          {
+            "function": "add$2",
+            "file": "index.js",
+            "line": 6605,
+            "percent": 3.2712144901881297
+          },
+          {
+            "function": "add$3",
+            "file": "index.js",
+            "line": 6284,
+            "percent": 2.8535850674688983
+          },
+          {
+            "function": "monthFromCode",
+            "file": "index.js",
+            "line": 3670,
+            "percent": 2.5988786369215875
+          },
+          {
+            "function": "validateDuration",
+            "file": "index.js",
+            "line": 5049,
+            "percent": 2.523407959763523
+          },
+          {
+            "function": "parseShortSlot",
+            "file": "index.js",
+            "line": 6212,
+            "percent": 2.289095322682332
+          },
+          {
+            "function": "",
+            "file": "comparison-benchmark.ts",
+            "line": 628,
+            "percent": 2.2203998411239367
+          },
+          {
+            "function": "calendarToEpochDayRaw",
+            "file": "index.js",
+            "line": 3689,
+            "percent": 2.1476915339838585
+          },
+          {
+            "function": "add",
+            "file": "index.js",
+            "line": 6673,
+            "percent": 1.5880558303400079
+          },
+          {
+            "function": "ArithmeticCalendarToEpochDay",
+            "file": "index.js",
+            "line": 3436,
+            "percent": 1.507844789817745
+          },
+          {
+            "function": "isValidDate",
+            "file": "index.js",
+            "line": 4622,
+            "percent": 1.4168343603362772
+          },
+          {
+            "function": "readDateFields",
+            "file": "index.js",
+            "line": 5511,
+            "percent": 1.2428505203145601
+          },
+          {
+            "function": "calendarFromEpochDayRaw",
+            "file": "index.js",
+            "line": 3718,
+            "percent": 1.153681670845083
+          },
+          {
+            "function": "add",
+            "file": "index.js",
+            "line": 6358,
+            "percent": 1.1452467796790513
+          },
+          {
+            "function": "daysInMonth",
+            "file": "index.js",
+            "line": 3654,
+            "percent": 1.1007191938335716
+          },
+          {
+            "function": "ArithmeticCalendarMonthsInYear",
+            "file": "index.js",
+            "line": 3445,
+            "percent": 1.0376734978675186
+          },
+          {
+            "function": "formatISODate",
+            "file": "index.js",
+            "line": 5611,
+            "percent": 0.8624846733935112
+          }
+        ],
+        "rawArtifact": "immutable-slots-candidate.cpuprofile.gz"
+      }
+    },
+    "memory": {
+      "method": "Separate pinned Bazel Node processes with --expose-gc and built package resolved via cquery.20k warmup,200k live objects,eight varying ISO strings,3forced GCs before/after. Arrays and values pinned globally; endpoint equality checks. One process per state/kind/access mode; approximate retained V8 heap, includes array/WeakMap capacity, excludes throughput/native/Hermes claims.",
+      "states": {
+        "parent": [
+          {
+            "node": "v24.14.0",
+            "kind": "year-month",
+            "read": false,
+            "count": 200000,
+            "beforeHeapBytes": 4799368,
+            "retainedHeapBytes": 33922656,
+            "deltaBytes": 29123288,
+            "bytesPerObject": 145.61644
+          },
+          {
+            "node": "v24.14.0",
+            "kind": "year-month",
+            "read": true,
+            "count": 200000,
+            "beforeHeapBytes": 4930592,
+            "retainedHeapBytes": 57992432,
+            "deltaBytes": 53061840,
+            "bytesPerObject": 265.3092
+          },
+          {
+            "node": "v24.14.0",
+            "kind": "month-day",
+            "read": false,
+            "count": 200000,
+            "beforeHeapBytes": 4792752,
+            "retainedHeapBytes": 33916256,
+            "deltaBytes": 29123504,
+            "bytesPerObject": 145.61752
+          },
+          {
+            "node": "v24.14.0",
+            "kind": "month-day",
+            "read": true,
+            "count": 200000,
+            "beforeHeapBytes": 4923616,
+            "retainedHeapBytes": 57986080,
+            "deltaBytes": 53062464,
+            "bytesPerObject": 265.31232
+          }
+        ],
+        "candidate": [
+          {
+            "node": "v24.14.0",
+            "kind": "year-month",
+            "read": false,
+            "count": 200000,
+            "beforeHeapBytes": 4805472,
+            "retainedHeapBytes": 51467296,
+            "deltaBytes": 46661824,
+            "bytesPerObject": 233.30912
+          },
+          {
+            "node": "v24.14.0",
+            "kind": "year-month",
+            "read": true,
+            "count": 200000,
+            "beforeHeapBytes": 4830720,
+            "retainedHeapBytes": 51493128,
+            "deltaBytes": 46662408,
+            "bytesPerObject": 233.31204
+          },
+          {
+            "node": "v24.14.0",
+            "kind": "month-day",
+            "read": false,
+            "count": 200000,
+            "beforeHeapBytes": 4729608,
+            "retainedHeapBytes": 51457032,
+            "deltaBytes": 46727424,
+            "bytesPerObject": 233.63712
+          },
+          {
+            "node": "v24.14.0",
+            "kind": "month-day",
+            "read": true,
+            "count": 200000,
+            "beforeHeapBytes": 4759408,
+            "retainedHeapBytes": 51485008,
+            "deltaBytes": 46725600,
+            "bytesPerObject": 233.628
+          }
+        ]
+      }
+    }
+  },
+  "memoryDelta": [
+    {
+      "kind": "year-month",
+      "read": false,
+      "candidateMinusParentBytesPerObject": 87.69268
+    },
+    {
+      "kind": "year-month",
+      "read": true,
+      "candidateMinusParentBytesPerObject": -31.99715999999998
+    },
+    {
+      "kind": "month-day",
+      "read": false,
+      "candidateMinusParentBytesPerObject": 88.0196
+    },
+    {
+      "kind": "month-day",
+      "read": true,
+      "candidateMinusParentBytesPerObject": -31.684320000000014
+    }
+  ],
+  "typescriptWins": {
+    "reference": 41,
+    "officialReference": 48
+  },
+  "remainingSlowerWorkloads": {
+    "reference": [
+      {
+        "operation": "yearMonthParse",
+        "typescriptOverReference": 1.081698383526494
+      },
+      {
+        "operation": "dateFromFields",
+        "typescriptOverReference": 1.0920885569137022
+      },
+      {
+        "operation": "zonedWith",
+        "typescriptOverReference": 1.1115775912699084
+      },
+      {
+        "operation": "zonedOffset",
+        "typescriptOverReference": 2.6659936303847425
+      },
+      {
+        "operation": "zonedAddDay",
+        "typescriptOverReference": 1.087128157753867
+      },
+      {
+        "operation": "zonedDayStart",
+        "typescriptOverReference": 1.230481431610276
+      },
+      {
+        "operation": "zonedHoursInDay",
+        "typescriptOverReference": 1.0572482073892915
+      }
+    ],
+    "officialReference": []
+  },
+  "rustWins": {
+    "original": 25,
+    "originalWorkloads": 25,
+    "namedZones": 7,
+    "namedZoneWorkloads": 7
+  },
+  "fullMatrixAudit": {
+    "pairedResults": [
+      {
+        "operation": "parse",
+        "parentProcessMedians": [
+          1323.048080000001, 1329.9495000000002, 1346.75658
+        ],
+        "candidateProcessMedians": [
+          1334.8238200000014, 1350.4175599999985, 1330.9635000000003
+        ],
+        "candidateOverParent": 1.003665041416987
+      },
+      {
+        "operation": "format",
+        "parentProcessMedians": [
+          619.9874199999977, 639.6320200000014, 645.127100000002
+        ],
+        "candidateProcessMedians": [
+          624.51458, 632.5264199999992, 638.3013600000004
+        ],
+        "candidateOverParent": 0.9888911127369732
+      },
+      {
+        "operation": "add",
+        "parentProcessMedians": [
+          1251.7608999999993, 1220.43768, 1260.5123400000002
+        ],
+        "candidateProcessMedians": [
+          1246.7881799999986, 1229.8419999999987, 1213.5348599999998
+        ],
+        "candidateOverParent": 0.982489547324892
+      },
+      {
+        "operation": "round",
+        "parentProcessMedians": [
+          469.79284000000007, 466.1901399999988, 474.5585600000004
+        ],
+        "candidateProcessMedians": [
+          464.44838000000345, 462.8199799999993, 565.9591200000023
+        ],
+        "candidateOverParent": 0.9886237942664332
+      },
+      {
+        "operation": "until",
+        "parentProcessMedians": [
+          2504.6499799999947, 2445.950120000007, 2507.692619999998
+        ],
+        "candidateProcessMedians": [
+          2450.0572400000055, 2404.0754800000013, 2458.877079999993
+        ],
+        "candidateOverParent": 0.978203445417156
+      },
+      {
+        "operation": "timeParse",
+        "parentProcessMedians": [
+          1230.9339799999998, 1264.1256800000065, 1248.6956800000007
+        ],
+        "candidateProcessMedians": [
+          1245.2829799999927, 1275.3264200000012, 1268.5434200000054
+        ],
+        "candidateOverParent": 1.0158947775009557
+      },
+      {
+        "operation": "timeFormat",
+        "parentProcessMedians": [
+          178.7536, 173.3824400000049, 180.16178000000764
+        ],
+        "candidateProcessMedians": [
+          172.11576000000605, 177.62842000000094, 178.87426000000232
+        ],
+        "candidateOverParent": 0.993705413485384
+      },
+      {
+        "operation": "timeAdd",
+        "parentProcessMedians": [
+          1537.1715399999994, 1468.9474399999926, 1574.9449199999983
+        ],
+        "candidateProcessMedians": [
+          1511.2921000000094, 1454.6112199999882, 1486.6523600000075
+        ],
+        "candidateOverParent": 0.9671349757100032
+      },
+      {
+        "operation": "timeRoundFormat",
+        "parentProcessMedians": [
+          643.4570200000053, 622.4640200000067, 652.4090799999976
+        ],
+        "candidateProcessMedians": [
+          906.7823000000136, 630.0347399999919, 638.5326999999961
+        ],
+        "candidateOverParent": 0.9923470879220354
+      },
+      {
+        "operation": "timeUntil",
+        "parentProcessMedians": [
+          2837.673900000009, 2732.193200000002, 2801.0641599999867
+        ],
+        "candidateProcessMedians": [
+          2720.2128600000106, 2729.15884, 2783.9464800000133
+        ],
+        "candidateOverParent": 0.9743292849100654
+      },
+      {
+        "operation": "dateParse",
+        "parentProcessMedians": [
+          1328.2395599999836, 1466.4521400000012, 1378.442640000012
+        ],
+        "candidateProcessMedians": [
+          1396.1910600000008, 1329.723240000003, 1305.4837000000043
+        ],
+        "candidateOverParent": 0.964656200710674
+      },
+      {
+        "operation": "dateTimeParse",
+        "parentProcessMedians": [
+          1393.988879999997, 1404.4910600000003, 1418.1778200000008
+        ],
+        "candidateProcessMedians": [
+          1379.617360000011, 1362.0183399999949, 1423.842280000008
+        ],
+        "candidateOverParent": 0.9822898837106239
+      },
+      {
+        "operation": "yearMonthParse",
+        "parentProcessMedians": [
+          1129.6904600000016, 1148.5773599999993, 1159.1987400000107
+        ],
+        "candidateProcessMedians": [
+          685.0490399999945, 949.6966400000019, 949.9737599999935
+        ],
+        "candidateOverParent": 0.8268460384766791
+      },
+      {
+        "operation": "monthDayParse",
+        "parentProcessMedians": [
+          1093.464700000004, 1092.520919999988, 1131.0693000000174
+        ],
+        "candidateProcessMedians": [
+          932.8400799999872, 677.3379800000112, 659.2168799999854
+        ],
+        "candidateOverParent": 0.6194420176527039
+      },
+      {
+        "operation": "dateFromFields",
+        "parentProcessMedians": [
+          1171.9834600000104, 1183.12031999998, 1240.3667199999836
+        ],
+        "candidateProcessMedians": [
+          1087.6996199999849, 1113.9236799999708, 1103.3604200000264
+        ],
+        "candidateOverParent": 0.9325851321698583
+      },
+      {
+        "operation": "dateFields",
+        "parentProcessMedians": [
+          353.7019599999985, 347.54414000002726, 354.6263199999884
+        ],
+        "candidateProcessMedians": [
+          354.25500000001193, 378.57501999998925, 356.09644000000117
+        ],
+        "candidateOverParent": 1.006769767405311
+      },
+      {
+        "operation": "dateWith",
+        "parentProcessMedians": [
+          1154.7154199999932, 1187.7886399999988, 1161.6144799999893
+        ],
+        "candidateProcessMedians": [
+          1021.0135200000151, 1014.056359999995, 1012.1990799999912
+        ],
+        "candidateOverParent": 0.8729715214982551
+      },
+      {
+        "operation": "dateTimeWith",
+        "parentProcessMedians": [
+          3070.7807200000025, 3165.3881000000183, 3083.623119999975
+        ],
+        "candidateProcessMedians": [
+          3073.190739999991, 3042.6028399999996, 3101.5731199999937
+        ],
+        "candidateOverParent": 0.996616843370929
+      },
+      {
+        "operation": "yearMonthWith",
+        "parentProcessMedians": [
+          1099.8163800000111, 1134.908800000012, 1152.7546200000143
+        ],
+        "candidateProcessMedians": [
+          1077.9271999999764, 1062.389719999992, 1054.2141999999876
+        ],
+        "candidateOverParent": 0.9361014030378306
+      },
+      {
+        "operation": "monthDayWith",
+        "parentProcessMedians": [
+          1380.6928799999878, 1453.3631000000241, 1415.6074799999988
+        ],
+        "candidateProcessMedians": [
+          1332.8944000000047, 1313.7399199999709, 1319.6068600000217
+        ],
+        "candidateOverParent": 0.9321841531947986
+      },
+      {
+        "operation": "zonedWith",
+        "parentProcessMedians": [
+          6446.978559999988, 6567.840640000031, 6461.505020000003
+        ],
+        "candidateProcessMedians": [
+          6494.064899999976, 6385.498899999984, 6449.1776799999925
+        ],
+        "candidateOverParent": 0.9980921875071126
+      },
+      {
+        "operation": "dateAdd",
+        "parentProcessMedians": [
+          2158.2946600000287, 2088.92319999999, 2191.779119999992
+        ],
+        "candidateProcessMedians": [
+          2061.878039999974, 2061.0561600000074, 2082.6053200000024
+        ],
+        "candidateOverParent": 0.9553274064996976
+      },
+      {
+        "operation": "dateUntil",
+        "parentProcessMedians": [
+          5481.5658200000325, 5457.521819999965, 5558.136299999969
+        ],
+        "candidateProcessMedians": [
+          5376.830120000013, 5450.488039999982, 5464.877019999985
+        ],
+        "candidateOverParent": 0.994330492231497
+      },
+      {
+        "operation": "dateTimeAdd",
+        "parentProcessMedians": [
+          3170.396519999995, 3233.17955999999, 3226.6695600000094
+        ],
+        "candidateProcessMedians": [
+          3252.480559999967, 3233.687659999996, 3243.7676400000055
+        ],
+        "candidateOverParent": 1.005298986983965
+      },
+      {
+        "operation": "dateTimeUntil",
+        "parentProcessMedians": [
+          5403.399560000034, 5427.231699999975, 5488.204879999977
+        ],
+        "candidateProcessMedians": [
+          5426.856200000038, 5465.441060000012, 5469.370120000021
+        ],
+        "candidateOverParent": 1.0070403038071947
+      },
+      {
+        "operation": "dateTimeRoundFormat",
+        "parentProcessMedians": [
+          1647.9546399999526, 1626.1086000000068, 1766.416539999991
+        ],
+        "candidateProcessMedians": [
+          1632.5237199999538, 1652.5496399999972, 1565.2737799999886
+        ],
+        "candidateOverParent": 0.990636319941428
+      },
+      {
+        "operation": "dateFormat",
+        "parentProcessMedians": [
+          181.89464000002772, 178.51615999999922, 182.98181999998633
+        ],
+        "candidateProcessMedians": [
+          174.27009999999427, 179.8510399999941, 177.2762199999852
+        ],
+        "candidateOverParent": 0.9746093672686461
+      },
+      {
+        "operation": "dateTimeFormat",
+        "parentProcessMedians": [
+          1109.471379999959, 1136.2958800000342, 1113.5554000000411
+        ],
+        "candidateProcessMedians": [
+          1117.3207199999888, 1131.2190800000099, 1113.9474200000404
+        ],
+        "candidateOverParent": 1.003381349504432
+      },
+      {
+        "operation": "yearMonthFormat",
+        "parentProcessMedians": [
+          189.82294000001275, 184.7262200000114, 189.1132999999536
+        ],
+        "candidateProcessMedians": [
+          104.87454000001888, 105.00099999997474, 106.32642000004125
+        ],
+        "candidateOverParent": 0.5552280035301616
+      },
+      {
+        "operation": "monthDayFormat",
+        "parentProcessMedians": [
+          171.87489999996615, 167.23167999996804, 171.8916000000172
+        ],
+        "candidateProcessMedians": [
+          167.33352000002924, 175.9158000000025, 168.98392000002787
+        ],
+        "candidateOverParent": 0.9831797429412972
+      },
+      {
+        "operation": "zonedFormat",
+        "parentProcessMedians": [
+          2077.3618200000055, 2124.8802199999773, 2053.150040000037
+        ],
+        "candidateProcessMedians": [
+          2136.359999999986, 2064.0804400000343, 2089.2385999999533
+        ],
+        "candidateOverParent": 1.0057172418813145
+      },
+      {
+        "operation": "yearMonthUntil",
+        "parentProcessMedians": [
+          3681.3982599999877, 3859.54316000003, 3847.2067600000446
+        ],
+        "candidateProcessMedians": [
+          3685.6308400000125, 3793.539680000031, 3713.4185399999847
+        ],
+        "candidateOverParent": 0.965224582834727
+      },
+      {
+        "operation": "yearMonthToDate",
+        "parentProcessMedians": [
+          1100.3963199999998, 1050.4229200000555, 981.3114200000563
+        ],
+        "candidateProcessMedians": [
+          954.5979599999555, 931.5429399999994, 943.7937200000306
+        ],
+        "candidateOverParent": 0.898489267541859
+      },
+      {
+        "operation": "monthDayToDate",
+        "parentProcessMedians": [
+          1148.6276999999973, 1166.6235400000005, 1196.1812199999986
+        ],
+        "candidateProcessMedians": [
+          1150.4898200000025, 1095.673999999999, 1141.3007600000128
+        ],
+        "candidateOverParent": 0.9782939576206497
+      },
+      {
+        "operation": "yearMonthAdd",
+        "parentProcessMedians": [
+          2221.720520000017, 2185.529779999997, 2235.0417000000016
+        ],
+        "candidateProcessMedians": [
+          1924.6888800000306, 1949.2413400000078, 1958.4875000000466
+        ],
+        "candidateOverParent": 0.8773566803082832
+      },
+      {
+        "operation": "zonedParse",
+        "parentProcessMedians": [
+          3516.0939599999983, 3523.5178999999334, 3523.8327199999912
+        ],
+        "candidateProcessMedians": [
+          3502.57332000001, 3474.297280000028, 3504.1905799999954
+        ],
+        "candidateOverParent": 0.9940557759051192
+      },
+      {
+        "operation": "zonedOffset",
+        "parentProcessMedians": [
+          118.97976000000199, 118.36045999996715, 121.33163999998942
+        ],
+        "candidateProcessMedians": [
+          117.01174000001627, 119.62392000001275, 121.02139999995416
+        ],
+        "candidateOverParent": 1.0054140300838625
+      },
+      {
+        "operation": "zonedAddDay",
+        "parentProcessMedians": [
+          3315.196680000008, 3336.0690199999954, 3311.0333599999285
+        ],
+        "candidateProcessMedians": [
+          3285.0503600000225, 3269.923280000003, 3311.8113199999793
+        ],
+        "candidateOverParent": 0.9909066269938513
+      },
+      {
+        "operation": "zonedUntilDay",
+        "parentProcessMedians": [
+          7662.845379999926, 7640.691700000025, 7775.421179999976
+        ],
+        "candidateProcessMedians": [
+          7623.1237800000235, 7595.114579999936, 7638.568300000043
+        ],
+        "candidateOverParent": 0.9948163380532803
+      },
+      {
+        "operation": "zonedRound",
+        "parentProcessMedians": [
+          2573.334659999964, 2603.089120000077, 2583.445039999933
+        ],
+        "candidateProcessMedians": [
+          2587.758560000075, 2597.5987599999644, 2610.655220000044
+        ],
+        "candidateOverParent": 1.0054786224521468
+      },
+      {
+        "operation": "zonedDayStart",
+        "parentProcessMedians": [
+          1796.1572199998773, 1868.938679999992, 1825.9763600000588
+        ],
+        "candidateProcessMedians": [
+          2039.089340000064, 1802.7105399999707, 1838.6476799999946
+        ],
+        "candidateOverParent": 1.0069394764781814
+      },
+      {
+        "operation": "zonedHoursInDay",
+        "parentProcessMedians": [
+          2290.738859999983, 2338.4291599999415, 2324.93948000003
+        ],
+        "candidateProcessMedians": [
+          2296.6292200000316, 2302.0546399999876, 2304.5507799999905
+        ],
+        "candidateOverParent": 0.9901568018449917
+      },
+      {
+        "operation": "zonedTransition",
+        "parentProcessMedians": [
+          422.7313999988837, 433.60519999987446, 416.4128000003984
+        ],
+        "candidateProcessMedians": [
+          454.28479999973206, 393.3253999988665, 421.74140000133775
+        ],
+        "candidateOverParent": 0.9976580873870534
+      },
+      {
+        "operation": "durationParse",
+        "parentProcessMedians": [
+          1813.9268599999195, 1757.6618599999347, 1777.8859199999713
+        ],
+        "candidateProcessMedians": [
+          1789.076139999961, 1775.8253200000036, 1758.326420000085
+        ],
+        "candidateOverParent": 0.998840983003022
+      },
+      {
+        "operation": "durationFormat",
+        "parentProcessMedians": [
+          2443.712280000036, 2465.693420000025, 2459.6217199999955
+        ],
+        "candidateProcessMedians": [
+          2424.2720000000554, 2414.29323999997, 2392.2913799999515
+        ],
+        "candidateOverParent": 0.9815709547401356
+      },
+      {
+        "operation": "durationAdd",
+        "parentProcessMedians": [
+          3877.480099999957, 3818.6243199999444, 3921.6997199998877
+        ],
+        "candidateProcessMedians": [
+          3814.2585800000234, 3838.1385200000664, 3836.8612799998664
+        ],
+        "candidateOverParent": 0.989524428507037
+      },
+      {
+        "operation": "durationRoundRelative",
+        "parentProcessMedians": [
+          13652.181120000025, 13437.047179999936, 13804.102120000023
+        ],
+        "candidateProcessMedians": [
+          13457.584920000081, 13419.061959999963, 13574.200199999905
+        ],
+        "candidateOverParent": 0.985746145741147
+      },
+      {
+        "operation": "durationTotalRelative",
+        "parentProcessMedians": [
+          2614.3050999999105, 2609.1364199999953, 2601.8928000000597
+        ],
+        "candidateProcessMedians": [
+          2524.8003599999356, 2569.9182799999835, 2563.3757399999013
+        ],
+        "candidateOverParent": 0.9824613693445381
+      }
+    ],
+    "largestCandidateOverParent": 1.0158947775009557,
+    "method": "Four fresh TS processes parent/candidate/candidate/parent. All48 public workloads, eight inputs, parity.20000 warmup,9x50000 calls;transition1000warm9x5000. Six runtime files swapped against6588 before provisional short-date parsing. Benchmark chronological-sample harness held identical. Tests and unchanged BigInt clock held. Checks combined parser/immutable-slot/targeted ISO read-only view/formatter changes against earlier baseline and prior rounding concern. No concurrent tests/builds/profiler. Two additional full profiles parent/candidate fixed before observing results, six total (three per state). Original four profiles retained separately. Median of three process medians limits one-process outlier influence; all raw samples retained.",
+    "interpretation": "Three processes per state, all48 cases. Initial broad reader showed ~6% MonthDay conversion slowdown; explicit view isolates reuse to audited callers. Six-process controls keep all initial outliers: one clock-rounding process was ~907ns and one Instant rounding process ~566ns; three-process medians avoid treating those as reproducible regressions. Largest increase ~1.6%; this does not prove all smaller variations harmless or close earlier baseline audit."
+  },
+  "retentionTradeoff": "Eager ISO fields cost about88 additional retained bytes per unread parsed value in this Node diagnostic; after getter access candidate retains about32 fewer bytes/value. Array/WeakMap capacity included. One process per state/kind/access mode; approximate heap diagnosis, not universal memory bounds. No native/Hermes heap claim.",
+  "payloadControlByteSizesMatch": true,
+  "validation": {
+    "targets": [
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:instant_hermes_test262_full",
+      "//packages/temporal:instant_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_hermes_test262_full",
+      "//packages/temporal:plain_date_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_date_time_hermes_test262_full",
+      "//packages/temporal:plain_date_time_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:plain_time_hermes_test262_full",
+      "//packages/temporal:plain_time_hermes_bytecode_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:year_month_hermes_test262_full",
+      "//packages/temporal:year_month_hermes_bytecode_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:month_day_hermes_test262_full",
+      "//packages/temporal:month_day_hermes_bytecode_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:duration_hermes_test262_full",
+      "//packages/temporal:duration_hermes_bytecode_test262_full",
+      "//packages/temporal:zoned_test262_full",
+      "//packages/temporal:zoned_hermes_test262_full",
+      "//packages/temporal:zoned_hermes_bytecode_test262_full",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:public_calendar_test",
+      "//packages/temporal:short_date_test",
+      "//packages/temporal:instant_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//packages/temporal:no_internal_imports_test",
+      "//packages/temporal:package_json_test",
+      "//packages/temporal:package_exports_test",
+      "//packages/temporal:kernel_test",
+      "//packages/temporal:plain_time_test",
+      "//packages/temporal:arithmetic_calendar_test",
+      "//packages/temporal:calendar_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:registry_test",
+      "//crates/temporal:zoned_string_test",
+      "//packages/temporal:plain_date_time_test",
+      "//packages/temporal:table_calendar_test",
+      "//packages/temporal:duration_oracle_test",
+      "//packages/temporal:zoned_difference_test",
+      "//packages/temporal:relative_duration_test",
+      "//packages/temporal:native_date_output_hermes_oracle_test",
+      "//packages/temporal:native_plain_hermes_oracle_test"
+    ],
+    "summary": "56 focused Rust/Node/ICU/package/Hermes targets pass. Prior54 plus native date-output and plain arithmetic ICU oracles with backend replacement/fault controls. Includes full Node/pure-TS Hermes/native SDK Hermes selections."
+  },
+  "discardedVariant": "Broad readonly dateFields implementation replaced by targeted dateFieldsView; original mutable reader contract retained. Copies of readonly cached data did not justify keeping general reader on cache path. All raw phases retained.",
+  "limits": "Goal remains active: remaining basic-reference losses, final repeated fresh references, earlier baseline regression audit and close cases. JS snapshot uses retained references. Native original25/named7 separate and exclude bindings/startup; no universal/native temporal_rs named-zone claim. Same published size metadata before/after formatting. Profile contains setup/warmup/GC and is excluded from throughput."
+}

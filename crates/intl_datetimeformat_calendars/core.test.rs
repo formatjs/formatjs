@@ -290,3 +290,64 @@ fn differences_balance_with_one_sign_and_exact_endpoints() {
         }
     }
 }
+
+#[test]
+fn iso_fields_round_trip_across_complete_eras() {
+    use formatjs_intl_datetimeformat_calendars::calendar::{iso_day, iso_fields};
+    for day in (-865_565_i64..=-573_372).chain([-100_000_001, 100_000_000]) {
+        let (year, month, date) = iso_fields(day);
+        assert!((1..=12).contains(&month));
+        let length = match month {
+            2 => 28 + u8::from(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)),
+            4 | 6 | 9 | 11 => 30,
+            _ => 31,
+        };
+        assert!(date >= 1 && date <= length);
+        assert_eq!(iso_day(year, month, date), day, "{year}-{month}-{date}");
+    }
+}
+
+#[test]
+fn extended_gregorian_endpoints_have_exact_fields() {
+    use formatjs_intl_datetimeformat_calendars::calendar::{iso_day, iso_fields};
+    for (epoch, year, month, day) in [
+        (-110_000_000, -299200, 3, 25),
+        (110_000_000, 303139, 10, 10),
+    ] {
+        assert_eq!(iso_fields(epoch), (year, month, day));
+        assert_eq!(iso_day(year, month, day), epoch);
+    }
+}
+
+#[test]
+fn iso_differences_keep_maximal_unregulated_prefixes() {
+    for (one, two, largest, years, months, days) in [
+        (18321, 18686, DateUnit::Year, 0, 11, 30),
+        (18686, 18321, DateUnit::Year, 0, -11, -28),
+        (18658, 18716, DateUnit::Month, 0, 1, 30),
+        (18716, 18658, DateUnit::Month, 0, -1, -28),
+        (18321, 18687, DateUnit::Year, 1, 0, 1),
+        (18321, 18687, DateUnit::Month, 0, 12, 1),
+        (-110_000_000, 110_000_000, DateUnit::Year, 602339, 6, 15),
+        (110_000_000, -110_000_000, DateUnit::Year, -602339, -6, -16),
+        (-110_000_000, 110_000_000, DateUnit::Month, 0, 7228074, 15),
+        (110_000_000, -110_000_000, DateUnit::Month, 0, -7228074, -16),
+    ] {
+        let actual = Calendar::Iso8601.until_raw(one, two, largest).unwrap();
+        assert_eq!(
+            actual,
+            DateDuration {
+                years,
+                months,
+                weeks: 0,
+                days
+            }
+        );
+        assert_eq!(
+            Calendar::Iso8601
+                .add_extended(one, actual, Overflow::Constrain)
+                .unwrap(),
+            two
+        );
+    }
+}

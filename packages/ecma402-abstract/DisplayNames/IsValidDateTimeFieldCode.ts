@@ -1,3 +1,4 @@
+import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
 const CODES_FOR_DATE_TIME_FIELD: Array<string> = [
   'era',
   'year',
@@ -14,5 +15,5 @@ const CODES_FOR_DATE_TIME_FIELD: Array<string> = [
 ]
 
 export function IsValidDateTimeFieldCode(field: string): boolean {
-  return CODES_FOR_DATE_TIME_FIELD.indexOf(field) >= 0
+  return arrayIndexOf(CODES_FOR_DATE_TIME_FIELD, field) >= 0
 }

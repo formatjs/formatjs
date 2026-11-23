@@ -1,5 +1,8 @@
 import {
   addCalendarDate,
+  addCalendarDateRaw,
+  calendarFromEpochDayRaw,
+  calendarToEpochDayRaw,
   calendarDateUntilRaw,
   calendarFromEpochDay,
   calendarToEpochDay,
@@ -11,6 +14,44 @@ import {
   type CalendarId,
   type DateDuration,
 } from '#packages/temporal/calendar.js'
+
+export function checkISODateUntilPrefixes(
+  equal: (actual: number, expected: number, context: string) => void
+): void {
+  for (const [one, two, largest, years, months, days] of [
+    [18321, 18686, 'year', 0, 11, 30],
+    [18686, 18321, 'year', 0, -11, -28],
+    [18658, 18716, 'month', 0, 1, 30],
+    [18716, 18658, 'month', 0, -1, -28],
+    [18321, 18687, 'year', 1, 0, 1],
+    [18321, 18687, 'month', 0, 12, 1],
+    [-110000000, 110000000, 'year', 602339, 6, 15],
+    [110000000, -110000000, 'year', -602339, -6, -16],
+    [-110000000, 110000000, 'month', 0, 7228074, 15],
+    [110000000, -110000000, 'month', 0, -7228074, -16],
+  ] as const) {
+    const actual = calendarDateUntilRaw('iso8601', one, two, largest),
+      context = `${one} to ${two}, largest ${largest}`
+    equal(actual.years!, years, context)
+    equal(actual.months!, months, context)
+    equal(actual.weeks!, 0, context)
+    equal(actual.days!, days, context)
+    equal(
+      calendarToEpochDayRaw(
+        'iso8601',
+        addCalendarDateRaw(
+          'iso8601',
+          calendarFromEpochDayRaw('iso8601', one),
+          actual,
+          'constrain'
+        ),
+        'reject'
+      ),
+      two,
+      context
+    )
+  }
+}
 
 export function checkArithmeticCalendarOracle(
   fixture: string,
@@ -26,6 +67,7 @@ export function checkArithmeticCalendarOracle(
   differences: number
   calendars: number
 } {
+  checkISODateUntilPrefixes(equal)
   let fields = 0,
     additions = 0,
     bounds = 0,

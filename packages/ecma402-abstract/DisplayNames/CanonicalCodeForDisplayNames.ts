@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
@@ -33,13 +34,13 @@ export function CanonicalCodeForDisplayNames(
   }
   if (type === 'region') {
     if (!isUnicodeRegionSubtag(code)) {
-      throw RangeError('invalid region')
+      throw RangeErrorConstructor('invalid region')
     }
     return code.toUpperCase()
   }
   if (type === 'script') {
     if (!isUnicodeScriptSubtag(code)) {
-      throw RangeError('invalid script')
+      throw RangeErrorConstructor('invalid script')
     }
     return `${code[0].toUpperCase()}${code.slice(1).toLowerCase()}`
   }
@@ -49,19 +50,19 @@ export function CanonicalCodeForDisplayNames(
     // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L249-L251
     if (!IsUnicodeLocaleIdentifierType(code)) {
-      throw RangeError('invalid calendar')
+      throw RangeErrorConstructor('invalid calendar')
     }
     return code.toLowerCase()
   }
   if (type === 'dateTimeField') {
     if (!IsValidDateTimeFieldCode(code)) {
-      throw RangeError('invalid dateTimeField')
+      throw RangeErrorConstructor('invalid dateTimeField')
     }
     return code
   }
   invariant(type === 'currency', 'invalid type')
   if (!IsWellFormedCurrencyCode(code)) {
-    throw RangeError('invalid currency')
+    throw RangeErrorConstructor('invalid currency')
   }
   return code.toUpperCase()
 }

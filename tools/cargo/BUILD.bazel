@@ -3,6 +3,23 @@ load("@rules_python//python:py_binary.bzl", "py_binary")
 load("@rules_python//python:py_test.bzl", "py_test")
 
 py_binary(
+    name = "publish",
+    srcs = ["publish.py"],
+    main = "publish.py",
+    visibility = ["//visibility:public"],
+)
+
+py_test(
+    name = "publish_test",
+    size = "small",
+    srcs = [
+        "publish.py",
+        "publish_test.py",
+    ],
+    main = "publish_test.py",
+)
+
+py_binary(
     name = "package",
     srcs = ["package.py"],
     main = "package.py",

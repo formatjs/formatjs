@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/temporal@1.1.1...@formatjs/temporal@2.0.0) (2026-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/temporal:** removes @formatjs/temporal/wasm.js, wasm-native.js, temporal-backend.wasm, and Rust's WASM binary module.
+
+### Performance Improvements
+
+* **@formatjs/temporal:** drop WASM and speed up Rust and TS ([1e56b50](https://github.com/formatjs/formatjs/commit/1e56b50d533d08c1c2d6a05e909d4414c2562eaa))
+
+## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/temporal@1.1.0...@formatjs/temporal@1.1.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* **@formatjs/temporal:** release bundled Intl fixes ([e05a7a5](https://github.com/formatjs/formatjs/commit/e05a7a52680285c40e6315a5c10ed4c975d3dbd3))
+
 ## [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/temporal@1.0.0...@formatjs/temporal@1.1.0) (2026-11-17)
 
 

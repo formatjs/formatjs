@@ -1,0 +1,138 @@
+{
+  "baselineCommit": "97d2045a65b5c5abb6352c7c25d323ae06b95d62",
+  "method": "Exploratory shared-process filters differ and can alter JIT context. Final retained full-workload evidence in date-time-hillclimb-results.json. Before-flat isolated run is diagnostic, not shipped code. Inherited setter/getter controls reproduced failures before fixed snapshot literals.",
+  "experiments": [
+    {
+      "name": "datetime-baseline",
+      "change": "ABI 12 before direct DateTime routes",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "dateTimeParse": 2612.4991999999993,
+          "dateTimeAdd": 5702.680199999998,
+          "dateTimeRoundFormat": 1396.9206999999983,
+          "dateTimeFormat": 1090.0324999999953
+        },
+        "nativeDataWasm": {
+          "dateTimeParse": 6756.980999999995,
+          "dateTimeAdd": 13589.030600000024,
+          "dateTimeRoundFormat": 10298.924199999965,
+          "dateTimeFormat": 3877.3371000000225
+        },
+        "reference": {
+          "dateTimeParse": 4909.4936999999845,
+          "dateTimeAdd": 5375.451799999973,
+          "dateTimeRoundFormat": 3813.3473000000777,
+          "dateTimeFormat": 2286.093600000004
+        },
+        "officialReference": {
+          "dateTimeParse": 1904.0656000000126,
+          "dateTimeAdd": 7241.8705000000045,
+          "dateTimeRoundFormat": 3887.2647000000143,
+          "dateTimeFormat": 1791.085000000021
+        }
+      }
+    },
+    {
+      "name": "datetime-typed-parse-format",
+      "change": "Typed parsing/formatting plus complete ISO records",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "dateTimeParse": 2325.6247000000003,
+          "dateTimeAdd": 5742.810999999995,
+          "dateTimeRoundFormat": 1435.2815000000078,
+          "dateTimeFormat": 1090.448600000002
+        },
+        "nativeDataWasm": {
+          "dateTimeParse": 2077.1925999999894,
+          "dateTimeAdd": 11954.1561,
+          "dateTimeRoundFormat": 8065.994299999966,
+          "dateTimeFormat": 1305.0932000000103
+        },
+        "reference": {
+          "dateTimeParse": 4626.746000000003,
+          "dateTimeAdd": 5291.189899999972,
+          "dateTimeRoundFormat": 3714.570000000003,
+          "dateTimeFormat": 2248.6979999999676
+        },
+        "officialReference": {
+          "dateTimeParse": 2465.616500000033,
+          "dateTimeAdd": 7288.779800000066,
+          "dateTimeRoundFormat": 3828.4156000000617,
+          "dateTimeFormat": 1722.6701999999932
+        }
+      }
+    },
+    {
+      "name": "datetime-ascii",
+      "change": "Shared Rust bounded ASCII formatter",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1643.8406000000016,
+          "format": 671.8479000000002,
+          "dateTimeParse": 2183.2662000000028,
+          "dateTimeAdd": 6058.7492999999995,
+          "dateTimeRoundFormat": 1466.369199999997,
+          "dateTimeFormat": 1100.6283999999823
+        },
+        "nativeDataWasm": {
+          "parse": 694.4193000000269,
+          "format": 512.2460000000046,
+          "dateTimeParse": 3120.966899999985,
+          "dateTimeAdd": 10930.542500000001,
+          "dateTimeRoundFormat": 7644.5214000000315,
+          "dateTimeFormat": 904.2340999999396
+        },
+        "reference": {
+          "parse": 2975.9518999999273,
+          "format": 1519.409799999994,
+          "dateTimeParse": 4758.2916999999725,
+          "dateTimeAdd": 5307.972599999994,
+          "dateTimeRoundFormat": 3778.952699999991,
+          "dateTimeFormat": 2321.47700000005
+        },
+        "officialReference": {
+          "parse": 4582.181499999933,
+          "format": 6415.225099999952,
+          "dateTimeParse": 2559.672099999989,
+          "dateTimeAdd": 7255.939699999998,
+          "dateTimeRoundFormat": 4113.910200000009,
+          "dateTimeFormat": 1817.066899999918
+        }
+      }
+    },
+    {
+      "name": "typed-arithmetic-before-flat-decoder",
+      "change": "Direct DateTime arithmetic; before fixed own-property snapshots and inherited-prototype controls",
+      "method": "All 48 native-data WASM workloads retimed in one fresh Node process: eight varying inputs and parity checks, 20000 warmup and 9x50000 calls (transitions:1000 warmup,9x5000). TS and pinned references retained from profile-hillclimb-results.json; executable TS and reference source unchanged. Hybrid throughput omitted. No profiler. Hot-loop timing excludes startup. Browser export-all consumer size differs from Node startup namespace payload.",
+      "medianNanoseconds": {
+        "typescript": {
+          "dateTimeParse": 2596.4901200000168,
+          "dateTimeAdd": 5941.7720000000545,
+          "dateTimeRoundFormat": 1698.9093400001002,
+          "dateTimeFormat": 1110.6224599998677
+        },
+        "nativeDataWasm": {
+          "dateTimeParse": 3613.1732999999804,
+          "dateTimeAdd": 3859.408360000089,
+          "dateTimeRoundFormat": 2589.496979999967,
+          "dateTimeFormat": 922.569999999978
+        },
+        "reference": {
+          "dateTimeParse": 3940.4978400000255,
+          "dateTimeAdd": 5342.573200000043,
+          "dateTimeRoundFormat": 3663.0779599997913,
+          "dateTimeFormat": 2222.3763200000394
+        },
+        "officialReference": {
+          "dateTimeParse": 2155.3339199999755,
+          "dateTimeAdd": 7795.880339999858,
+          "dateTimeRoundFormat": 4193.916179999942,
+          "dateTimeFormat": 1771.5543199999956
+        }
+      }
+    }
+  ]
+}

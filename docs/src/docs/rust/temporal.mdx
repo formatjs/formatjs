@@ -4,8 +4,8 @@ An allocation-free `no_std` Temporal core for Rust, with calendar arithmetic and
 
 `formatjs_temporal` supplies eight typed date/time values, calendar/timezone
 providers, and `Now`.
-The [TypeScript package](/docs/polyfills/temporal) supplies the JavaScript API and
-optional WASM integration.
+The [TypeScript package](/docs/polyfills/temporal) supplies the JavaScript API;
+the native Hermes SDK binds the Rust engine.
 
 ## Installation
 
@@ -37,6 +37,10 @@ fn main() -> Result<(), formatjs_temporal::Error> {
 
 Create a context once and reuse its validated registries. Values retain their
 calendar and timezone providers.
+
+Calendar-unit `total_duration` calls validate both interpolation endpoints, even
+when the result is an integer. They can return an error near date limits. Zero
+zoned calendar totals also validate the positive window; plain zero totals return zero.
 
 ## Choose how to supply data
 
@@ -80,7 +84,7 @@ uses its numeric calendar core without pulling in the DateTimeFormat formatter,
 locale data, or the application-level `formatjs_intl` runtime. `serde_json` is
 optional and used by `ffi`.
 
-## JavaScript, WASM, and Hermes
+## JavaScript and Hermes
 
 Rust owns typed values and normalized date/time operations. The JavaScript facade
 owns ECMAScript coercion, property access order, object allocation, and brands.
@@ -93,8 +97,8 @@ Rust APIs are idiomatic typed APIs rather than a JavaScript object runtime.
 ## Verification
 
 Rust tests compare calendar math, parsing, rounding, offsets, transitions, and
-relative arithmetic with independent ICU controls. WASM and Hermes adapters also
-run the pinned Temporal-feature Test262 corpus through the JavaScript facade.
+relative arithmetic with independent ICU controls. TypeScript and Hermes bindings
+run the pinned Temporal-feature Test262 corpus through their JavaScript APIs.
 Documented IANA/CLDR exclusions and calendar authority ranges are recorded in the
 [completion audit](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015a-temporal-completion-audit.md).
 

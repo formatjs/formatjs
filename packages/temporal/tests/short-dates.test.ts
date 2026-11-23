@@ -1,3 +1,16 @@
+import {
+  checkPlainDateTimeFormattingHooks,
+  checkMonthDayPrivateMerge,
+  checkMonthDayOriginalDateLimits,
+  checkShortDatePrivateEra,
+  checkMonthDayLeapCodeHooks,
+  checkPlainDateTimeConversion,
+  checkPlainDateZoneBranch,
+  checkPlainDateShortFields,
+  checkCalendarEraIndexOf,
+  checkJapaneseEraIterator,
+  checkPlainDateYearFormatting,
+} from '#packages/temporal/tests/date-output-oracle.js'
 import {checkDateOutputOracle} from '#packages/temporal/tests/date-output-oracle.js'
 import {it, expect} from 'vitest'
 import {readFileSync} from 'node:fs'
@@ -5,6 +18,58 @@ import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal as fullReference} from 'temporal-polyfill/full/implementation'
 import {Temporal} from '#packages/temporal/index.js'
+
+it('ignores inherited era state when replacing Chinese years', () => {
+  const date = Temporal.PlainDate.from('2024-02-10').withCalendar('chinese')
+  const year = date.year
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'era')
+  let changed: typeof date | undefined
+  Object.defineProperty(Object.prototype, 'era', {
+    configurable: true,
+    get() {
+      throw new Error('Inherited era state')
+    },
+    set() {
+      throw new Error('Inherited era state')
+    },
+  })
+  try {
+    changed = date.with({year: year + 1})
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'era', original)
+    else Reflect.deleteProperty(Object.prototype, 'era')
+  }
+  expect(changed!.year).toBe(year + 1)
+  expect(changed!.monthCode).toBe('M01')
+  expect(changed!.day).toBe(1)
+})
+
+it('ignores inherited properties while reading private date fields', () => {
+  const date = new Temporal.PlainDate(2020, 2, 29)
+  const yearMonth = new Temporal.PlainYearMonth(2020, 2)
+  const monthDay = new Temporal.PlainMonthDay(2, 29)
+  const original = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'isoFields'
+  )
+  let fields: unknown[] | undefined
+  Object.defineProperty(Object.prototype, 'isoFields', {
+    configurable: true,
+    get() {
+      throw new Error('Inherited date fields')
+    },
+    set() {
+      throw new Error('Inherited date fields')
+    },
+  })
+  try {
+    fields = [date.year, date.day, yearMonth.month, monthDay.monthCode]
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'isoFields', original)
+    else Reflect.deleteProperty(Object.prototype, 'isoFields')
+  }
+  expect(fields).toEqual([2020, 29, 2, 'M02'])
+})
 
 it('does not observe array iteration while preparing builtin calendar fields', () => {
   const original = Array.prototype[Symbol.iterator]
@@ -115,3 +180,81 @@ it('preserves Hebrew month codes through short-date conversion and leap years', 
     )
   }
 })
+
+it('reads short-date overflow after parsing but before range checks', () => {
+  const failure = new Error('overflow getter reached')
+  const options = {
+    get overflow(): never {
+      throw failure
+    },
+  }
+  const warm = Temporal.PlainYearMonth.from('2024-02')
+  expect(Temporal.PlainYearMonth.from('2024-02')).not.toBe(warm)
+  expect(() => Temporal.PlainYearMonth.from('2024-02', options)).toThrow(
+    failure
+  )
+  for (const text of ['+275760-10', '-271821-03', '+999999-01']) {
+    expect(() => Temporal.PlainYearMonth.from(text, options), text).toThrow(
+      failure
+    )
+    expect(() => Temporal.PlainYearMonth.from(text, 1), text).toThrow(TypeError)
+  }
+  for (const text of [
+    '+999999-01-01[u-ca=gregory]',
+    '+275760-09-14[u-ca=gregory]',
+  ]) {
+    expect(() => Temporal.PlainMonthDay.from(text, options), text).toThrow(
+      failure
+    )
+    expect(() => Temporal.PlainMonthDay.from(text, 1), text).toThrow(TypeError)
+  }
+  for (const from of [
+    Temporal.PlainYearMonth.from,
+    Temporal.PlainMonthDay.from,
+  ]) {
+    for (const text of [
+      '2020-02-30',
+      '2020-01-01[u-ca=invalid]',
+      '2020-02\n',
+      '02-29\n',
+    ]) {
+      expect(() => from(text, options), text).toThrow(RangeError)
+    }
+  }
+})
+
+it('reads short-date overflow once and keeps constrained string normalization', () => {
+  for (const [from, text, expected] of [
+    [Temporal.PlainYearMonth.from, '2020-02-29', '2020-02'],
+    [Temporal.PlainMonthDay.from, '2020-02-29', '02-29'],
+  ] as const) {
+    let reads = 0
+    expect(
+      from(text, {
+        get overflow() {
+          reads++
+          return 'reject'
+        },
+      }).toString()
+    ).toBe(expected)
+    expect(reads).toBe(1)
+  }
+})
+
+for (const check of [
+  checkPlainDateTimeFormattingHooks,
+  checkMonthDayPrivateMerge,
+  checkMonthDayOriginalDateLimits,
+  checkShortDatePrivateEra,
+  checkMonthDayLeapCodeHooks,
+  checkPlainDateTimeConversion,
+  checkPlainDateZoneBranch,
+  checkPlainDateShortFields,
+  checkCalendarEraIndexOf,
+  checkJapaneseEraIterator,
+  checkPlainDateYearFormatting,
+]) {
+  it(check.name, () =>
+    check(Temporal, (actual, expected) => expect(actual).toEqual(expected))
+  )
+}

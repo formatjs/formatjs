@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {
@@ -27,7 +28,7 @@ export function PartitionNumberRangePattern(
     !('value' in x ? x.value : x).isNaN() &&
       !('value' in y ? y.value : y).isNaN(),
     'Input must be a number',
-    RangeError
+    RangeErrorConstructor
   )
   const internalSlots = getInternalSlots(numberFormat)
 

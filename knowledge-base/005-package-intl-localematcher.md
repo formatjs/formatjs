@@ -6,10 +6,14 @@ Implements UTS #35 locale matching algorithms: Lookup matcher and BestFit matche
 
 ## ECMA-402 Conformance
 
-- **Section 9.1** — `ResolveLocale` abstract operation
+- **Section 9.2.8** — `ResolveLocale` abstract operation
 - **UTS #35 Section 4.4** — Language Matching (CLDR distance-based algorithm)
 
 ## Design Decisions
+
+Private available-locale and prepared-match WeakMap caches capture get/set during
+module initialization. Public DateTimeFormat controls cover both lookup and
+best-fit matching after WeakMap methods are replaced.
 
 ### ICU best-fit matching
 
@@ -37,7 +41,6 @@ snapshot. Contents/order are checked once per call; the prepared matcher trusts
 only factory-created snapshots, avoiding a second scan. Public frozen arrays
 can contain changing getters and retain normal validation.
 Lookup stays on the validation buffer and creates no best-fit snapshot.
-See [constructor measurements](audits/2026-10-31-numberformat-constructor-snapshots.md).
 
 Exact matches build the raw index only as far as the first match. Alias-free,
 canonical LSR strings bypass native canonicalization using generated CLDR alias

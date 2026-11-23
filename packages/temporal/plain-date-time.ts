@@ -1,3 +1,19 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  arrayIndexOf,
+  bigIntFrom,
+  mathMin,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  argumentAt,
+  constructorPrototype,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
+import {nativeDateSnapshot} from '#packages/temporal/date-core.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -12,7 +28,7 @@ import {
   type DateProperties,
 } from '#packages/temporal/plain-date.js'
 import {
-  PlainTime,
+  toPlainTimeNanoseconds,
   createPlainTime,
   roundTime,
   type PlainTimeObject,
@@ -21,11 +37,10 @@ import {
   getDateSlot,
   getZonedDateTimeSlot,
   getDateTimeSlot,
-  setDateTimeSlot,
-  getTimeSlot,
+  allocateDateTime,
+  setNativeDateTimeSlot,
   type DateTimeSlot,
 } from '#packages/temporal/plain-slots.js'
-import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
 import {
   epochNanosecondsToISO,
   isoToEpochNanoseconds,
@@ -35,6 +50,7 @@ import {
   calendarId,
   calendarFromObject,
   constructorCalendar,
+  prepareDateTimeString,
   calendarAnnotation,
   calendarNameOption,
   object,
@@ -60,12 +76,18 @@ import {
 } from '#packages/temporal/date-core.js'
 import {
   createDuration,
+  createNativeDuration,
   toDurationFields,
+  toNativeDurationFields,
   type DurationObject,
 } from '#packages/temporal/duration.js'
-import {durationNanoseconds} from '#packages/temporal/duration-core.js'
+import {
+  durationFieldNames,
+  durationNanoseconds,
+} from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
+  unitOptions,
   fractionalSecondDigits,
   roundingIncrement,
   roundingMode,
@@ -74,6 +96,13 @@ import {
   roundInstant,
   type Precision,
 } from '#packages/temporal/rounding.js'
+
+// Private ISO formatting retains the original runtime method.
+const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
 
 export interface PlainDateTimeObject extends DateProperties {
   readonly [Symbol.toStringTag]: 'Temporal.PlainDateTime'
@@ -117,25 +146,69 @@ export interface PlainDateTimeConstructor {
   from(item: unknown, options?: unknown): PlainDateTimeObject
   compare(one: unknown, two: unknown): -1 | 0 | 1
 }
+// Temporal comparison §5.3.10 step 2.
+// Check the PlainDateTime receiver before projection.
 function read(item: unknown): DateTimeSlot {
   const slot = getDateTimeSlot(item as object)
-  if (!slot) throw new TypeError('Invalid PlainDateTime receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid PlainDateTime receiver')
   return slot
 }
+const NativePlainDateTime = function (
+  this: PlainDateTimeObject,
+  slot: DateTimeSlot
+) {
+  setNativeDateTimeSlot(this, slot)
+}
+// Temporal comparison §5.5.8 steps 1–5. Allocate with the local prototype.
+// ECMA-262 preview §22.10.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaindatetime-instances
 export function createPlainDateTime(
-  value: bigint,
+  input: bigint | DateTimeSlot,
   calendar: string
 ): PlainDateTimeObject {
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    typeof input !== 'bigint'
+  )
+    return new (NativePlainDateTime as unknown as new (
+      slot: DateTimeSlot
+    ) => PlainDateTimeObject)(input)
+  const value = typeof input === 'bigint' ? input : input.epochNanoseconds
   checkDateTime(value)
-  const result = Object.create(
-    PlainDateTimeValue.prototype
+  return allocateDateTime(
+    PlainDateTimeValue.prototype,
+    typeof input === 'bigint' ? {epochNanoseconds: value, calendar} : input
   ) as PlainDateTimeObject
-  setDateTimeSlot(result, {epochNanoseconds: value, calendar})
-  return result
 }
-function dateSlot(slot: DateTimeSlot): {epochDay: number; calendar: string} {
-  return {epochDay: epochDayOf(slot.epochNanoseconds), calendar: slot.calendar}
+const dateSlots = new WeakMap<
+  DateTimeSlot,
+  {epochDay: number; calendar: string; properties?: DateTimeSlot['properties']}
+>()
+const getCachedDateSlot = dateSlots.get.bind(dateSlots)
+const setCachedDateSlot = dateSlots.set.bind(dateSlots)
+// Temporal comparison §5.3.6 step 3.
+// Reuse the private ISO date needed for calendar year projection.
+function dateSlot(slot: DateTimeSlot) {
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    slot.epochDay !== undefined
+  )
+    return slot as DateTimeSlot & {epochDay: number}
+  let value = getCachedDateSlot(slot)
+  if (!value) {
+    value = {
+      epochDay: epochDayOf(slot.epochNanoseconds),
+      calendar: slot.calendar,
+      properties: HasOwnProperty(slot, 'properties')
+        ? slot.properties
+        : undefined,
+    }
+    setCachedDateSlot(slot, value)
+  }
+  return value
 }
+// ECMA-262 preview §22.10.5.2: convert a branded value, prepared fields, or a string.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaldatetime
 export function toPlainDateTimeSlot(
   item: unknown,
   options?: unknown
@@ -147,7 +220,7 @@ export function toPlainDateTimeSlot(
     overflowOption(options)
     return (
       existing ?? {
-        epochNanoseconds: checkDateTime(BigInt(date!.epochDay) * nsPerDay),
+        epochNanoseconds: checkDateTime(bigIntFrom(date!.epochDay) * nsPerDay),
         calendar: date!.calendar,
       }
     )
@@ -156,31 +229,46 @@ export function toPlainDateTimeSlot(
     const calendar = calendarFromObject(item)
     const fields = readDateFields(item, true, false, 'date', calendar),
       overflow = overflowOption(options)
+    // ECMA-262 preview §22.10.5.7 steps 2–4: resolve the date before regulating the clock.
+    // https://tc39.es/ecma262/pr/3966/#sec-interprettemporaldatetimefields
     const day = dayFromFields(calendar, fields, overflow),
       clock = clockNanoseconds(fields, overflow)
     return {
-      epochNanoseconds: checkDateTime(BigInt(day) * nsPerDay + clock),
+      epochNanoseconds: checkDateTime(bigIntFrom(day) * nsPerDay + clock),
       calendar,
     }
   }
   if (typeof item !== 'string')
-    throw new TypeError('Expected date/time string or object')
-  const parsed = parsePlainDateTimeString(item),
-    calendar = constructorCalendar(parsed.calendar)
-  overflowOption(options)
-  return {...parsed, calendar}
+    throw new TypeErrorConstructor('Expected date/time string or object')
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    if (options !== undefined) prepareDateTimeString(item, options)
+    const parsed = native!.parsePlainDateTime(item)
+    return {...parsed, calendar: constructorCalendar(parsed.calendar)}
+  }
+  const fields = prepareDateTimeString(item, options)
+  return {
+    epochNanoseconds: isoToEpochNanoseconds(fields),
+    calendar: fields.calendar,
+  }
 }
+// ECMA-262 preview §22.10.5.3: add the clock before the calendar date.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurationtodatetime
 function add(
   slot: DateTimeSlot,
   duration: unknown,
   options: unknown,
   sign: number
 ): PlainDateTimeObject {
-  const fields = toDurationFields(duration)
+  // Steps 1–2: read duration fields before options and negate for subtraction.
+  const fields =
+    import.meta.formatjsTemporalNativeData === true
+      ? toNativeDurationFields(duration)
+      : toDurationFields(duration)
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createPlainDateTime(
-      native.addPlainDateTime(
+      native!.addPlainDateTime(
         slot.epochNanoseconds,
         slot.calendar,
         fields,
@@ -189,19 +277,23 @@ function add(
       ),
       slot.calendar
     )
-  for (const key of Object.keys(fields) as (keyof typeof fields)[])
-    fields[key] *= sign
+  for (let index = 0; index < durationFieldNames.length; index++)
+    fields[durationFieldNames[index]] *= sign
   const overflow = overflowOption(options)
+  // Steps 5–7: fold 24-hour days and the clock carry into the calendar days.
   const time =
     timeOf(slot.epochNanoseconds) + durationNanoseconds(fields, false)
   const carry = epochDayOf(time)
   fields.days += carry
+  // Steps 8–10: check the calendar date, then check the exact date-time.
   const day = addDate(dateSlot(slot), fields, overflow)
   return createPlainDateTime(
-    BigInt(day) * nsPerDay + timeOf(time),
+    bigIntFrom(day) * nsPerDay + timeOf(time),
     slot.calendar
   )
 }
+// ECMA-262 preview §22.10.5.4: prepare both dates, check their calendars, and round the difference.
+// https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplaindatetime
 function difference(
   slot: DateTimeSlot,
   other: unknown,
@@ -209,25 +301,40 @@ function difference(
   since: boolean
 ): DurationObject {
   const end = toPlainDateTimeSlot(other)
-  if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  if (slot.calendar !== end.calendar)
+    throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options)
   const largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw),
+    largestOption = largestText === 'auto' ? undefined : unitOption(largestText)
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
-  const names = ['year', 'month', 'week', 'day', ...clockNames]
-  const smallIndex = names.indexOf(smallest)
+  const names = [
+    'year',
+    'month',
+    'week',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+    'microsecond',
+    'nanosecond',
+  ]
+  const smallIndex = arrayIndexOf(names, smallest)
   const largest =
-    largestText === 'auto'
-      ? names[Math.min(3, smallIndex)]
-      : unitOption(largestText)!
-  if (names.indexOf(largest) > smallIndex)
-    throw new RangeError('Largest unit smaller than smallest unit')
+    largestText === 'auto' ? names[mathMin(3, smallIndex)] : largestOption!
+  if (arrayIndexOf(names, largest) > smallIndex)
+    throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   const native = nativeTemporal()
-  if (native)
-    return createDuration(
-      native.differencePlainDateTime(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
+      native!.differencePlainDateTime(
         slot.epochNanoseconds,
         end.epochNanoseconds,
         slot.calendar,
@@ -251,6 +358,8 @@ function difference(
     )
   )
 }
+// Temporal comparison §5.5.9 steps 1, 2, 3, 4, 5, 6, 7.
+// Format prepared local fields without a UTC suffix.
 function format(
   slot: DateTimeSlot,
   precision: Precision = 'auto',
@@ -259,16 +368,17 @@ function format(
 ): string {
   const show = calendarNameOption(annotation),
     native = nativeTemporal()
-  if (native)
-    return native.formatPlainDateTime(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.formatPlainDateTime(
       value,
       slot.calendar,
       precision,
       'trunc',
       show
     )
+  // Temporal comparison §5.3.36 step3: format private ISO fields without public hooks.
   return (
-    formatInstant(value, precision).slice(0, -1) +
+    stringSlice(formatInstant(value, precision), 0, -1) +
     calendarAnnotation(slot.calendar, show)
   )
 }
@@ -285,21 +395,32 @@ class PlainDateTimeValue {
     _nanosecond?: unknown,
     _calendar?: unknown
   ) {
-    throw new TypeError('Use exported PlainDateTime constructor')
+    throw new TypeErrorConstructor('Use exported PlainDateTime constructor')
   }
   static from(
     item: unknown,
     options: unknown = undefined
   ): PlainDateTimeObject {
+    // Temporal comparison §5.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.from
     const slot = toPlainDateTimeSlot(item, options)
-    return createPlainDateTime(slot.epochNanoseconds, slot.calendar)
+    return createPlainDateTime(slot, slot.calendar)
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // Temporal comparison §5.2.3 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.compare
     const a = toPlainDateTimeSlot(one).epochNanoseconds,
       b = toPlainDateTimeSlot(two).epochNanoseconds
+    // ECMA-262 preview §22.3.10.2 steps 1–3: epoch days order the dates,
+    // then the remainder orders the six clock fields on equal dates.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareisodatetime
+    // §22.10.2.3 step 3 returns the comparison as a Number.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaindatetime.compare
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainDateTimeObject {
+    // Temporal comparison §5.3.25 steps 1–17.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.with
     const slot = read(this),
       partial = readDateFields(
         partialObject(item),
@@ -308,48 +429,72 @@ class PlainDateTimeValue {
         'date',
         slot.calendar
       )
-    const current = {
-      ...dateFields(dateSlot(slot)),
-      ...epochNanosecondsToISO(slot.epochNanoseconds),
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(dateSlot(slot))
+      return createPlainDateTime(
+        native!.withDateTime(slot, partial, overflowOption(options)),
+        slot.calendar
+      )
     }
-    Object.assign(current, dateFields(dateSlot(slot)))
+    const current = {
+      ...epochNanosecondsToISO(slot.epochNanoseconds),
+      ...dateFields(dateSlot(slot)),
+    }
     const fields = mergeDateFields(slot.calendar, current, partial)
     const overflow = overflowOption(options)
     return createPlainDateTime(
-      BigInt(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
+      bigIntFrom(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
         clockNanoseconds(fields, overflow),
       slot.calendar
     )
   }
   withCalendar(calendar: unknown): PlainDateTimeObject {
+    // Temporal comparison §5.3.27 steps 1–4.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withcalendar
     const slot = read(this)
-    if (calendar === undefined) throw new TypeError('Calendar required')
+    if (calendar === undefined)
+      throw new TypeErrorConstructor('Calendar required')
     return createPlainDateTime(slot.epochNanoseconds, calendarId(calendar))
   }
   withPlainTime(time: unknown = undefined): PlainDateTimeObject {
+    // Temporal comparison §5.3.26 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withplaintime
+    // ECMA-262 preview §22.3.15.14 steps 1–3: default to midnight or convert the input.
+    // https://tc39.es/ecma262/pr/3966/#sec-totimerecordormidnight
     const slot = read(this)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return createPlainDateTime(
-      BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay + clock,
+      bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay + clock,
       slot.calendar
     )
   }
   add(duration: unknown, options: unknown = undefined): PlainDateTimeObject {
+    // Temporal comparison §5.3.28 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.add
     return add(read(this), duration, options, 1)
   }
   subtract(
     duration: unknown,
     options: unknown = undefined
   ): PlainDateTimeObject {
+    // Temporal comparison §5.3.29 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.subtract
     return add(read(this), duration, options, -1)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §5.3.30 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.until
     return difference(read(this), other, options, false)
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §5.3.31 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.since
     return difference(read(this), other, options, true)
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §5.3.33 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.equals
     const a = read(this),
       b = toPlainDateTimeSlot(other)
     return (
@@ -360,6 +505,8 @@ class PlainDateTimeValue {
     timeZone: unknown,
     options: unknown = undefined
   ): ZonedDateTimeObject {
+    // Temporal comparison §5.3.38 steps 1–7.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tozoneddatetime
     const slot = read(this)
     return zonedFromLocal(
       slot.epochNanoseconds,
@@ -369,26 +516,36 @@ class PlainDateTimeValue {
     )
   }
   toPlainDate(): PlainDateObject {
+    // Temporal comparison §5.3.39 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.toplaindate
     const slot = read(this)
     return createPlainDate(epochDayOf(slot.epochNanoseconds), slot.calendar)
   }
   toPlainTime(): PlainTimeObject {
+    // Temporal comparison §5.3.40 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.toplaintime
     return createPlainTime(timeOf(read(this).epochNanoseconds))
   }
   round(roundTo: unknown): PlainDateTimeObject {
+    // Temporal comparison §5.3.32 steps 1–16.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.round
     const slot = read(this)
-    if (roundTo === undefined) throw new TypeError('roundTo required')
+    if (roundTo === undefined)
+      throw new TypeErrorConstructor('roundTo required')
+    // ECMA-262 preview §22.10.3.32 steps 4–4.c: make an own smallestUnit
+    // data property on a null-prototype options object for string shorthand.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaindatetime.prototype.round
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        ? unitOptions(roundTo)
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
     const native = nativeTemporal()
-    if (native)
+    if (import.meta.formatjsTemporalNativeData === true || native)
       return createPlainDateTime(
-        native.roundPlainDateTime(
+        native!.roundPlainDateTime(
           slot.epochNanoseconds,
           slot.calendar,
           unit === 'day' ? 'day' : timeUnit(unit),
@@ -400,15 +557,18 @@ class PlainDateTimeValue {
     const clock = timeOf(slot.epochNanoseconds)
     let rounded: bigint
     if (unit === 'day') {
-      if (increment !== 1) throw new RangeError('Invalid day increment')
+      if (increment !== 1)
+        throw new RangeErrorConstructor('Invalid day increment')
       rounded = roundInstant(clock, nsPerDay, mode)
     } else rounded = roundTime(clock, timeUnit(unit), increment, mode)
     return createPlainDateTime(
-      BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay + rounded,
+      bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay + rounded,
       slot.calendar
     )
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §5.3.34 steps 1–14.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tostring
     const slot = read(this),
       resolved = optionsObject(options)
     const show = calendarNameOption(resolved.calendarName)
@@ -417,7 +577,7 @@ class PlainDateTimeValue {
       mode = roundingMode(resolved.roundingMode, 'trunc'),
       raw = unitOption(resolved.smallestUnit)
     if (raw !== undefined && timeUnit(raw) === 'hour')
-      throw new RangeError('Cannot format hours only')
+      throw new RangeErrorConstructor('Cannot format hours only')
     const precision: Precision =
       raw === 'minute'
         ? 'minute'
@@ -431,8 +591,8 @@ class PlainDateTimeValue {
                 ? 9
                 : digits
     const native = nativeTemporal()
-    if (native)
-      return native.formatPlainDateTime(
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.formatPlainDateTime(
         slot.epochNanoseconds,
         slot.calendar,
         precision,
@@ -444,74 +604,147 @@ class PlainDateTimeValue {
         ? 1n
         : precision === 'minute'
           ? 60_000_000_000n
-          : 10n ** BigInt(9 - precision)
+          : 10n ** bigIntFrom(9 - precision)
     const value =
-      BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay +
+      bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay +
       roundInstant(timeOf(slot.epochNanoseconds), quantum, mode)
-    return formatInstant(value, precision).slice(0, -1) + suffix
+    // Temporal comparison §5.3.34 step14: combine private ISO text and annotation.
+    return stringSlice(formatInstant(value, precision), 0, -1) + suffix
   }
   toLocaleString(
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal Intl §15.11.4.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plaindatetime.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {kind: 'PlainDateTime', ...slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {
+    // Temporal comparison §5.3.36 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tojson
     return format(read(this))
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainDateTime to primitive')
+    // Temporal comparison §5.3.37 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.valueof
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainDateTime to primitive'
+    )
   }
 }
+if (import.meta.formatjsTemporalNativeData === true)
+  NativePlainDateTime.prototype = PlainDateTimeValue.prototype
 const localeStringIntrinsic = PlainDateTimeValue.prototype.toString
 
 Object.defineProperty(PlainDateTimeValue, 'name', {
   value: 'PlainDateTime',
   configurable: true,
 })
-export const PlainDateTime: PlainDateTimeConstructor = new Proxy(
+// Temporal comparison §5.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype
+// ECMA-262 preview §22.10.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindatetime-constructor
+// ECMA-262 preview §22.10.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaindatetime-constructor
+export const PlainDateTime: PlainDateTimeConstructor = createProxy(
   PlainDateTimeValue,
   {
     construct(target, args, newTarget) {
-      const year = integer(args[0]),
-        month = integer(args[1]),
-        day = integer(args[2])
-      const clock = Object.create(null) as Record<string, number>
+      // Temporal comparison §5.1.1 steps 1–19.
+      // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime
+      const year = integer(argumentAt(args, 0)),
+        month = integer(argumentAt(args, 1)),
+        day = integer(argumentAt(args, 2))
+      const clock = createObject(null) as Record<string, number>
       for (let index = 0; index < 6; index++)
         clock[clockNames[index]] =
-          args[index + 3] === undefined ? 0 : integer(args[index + 3])
-      const calendar = constructorCalendar(args[9])
+          argumentAt(args, index + 3) === undefined
+            ? 0
+            : integer(argumentAt(args, index + 3))
+      const calendar = constructorCalendar(argumentAt(args, 9))
       const value = isoToEpochNanoseconds({year, month, day, ...clock})
-      const prototype = Reflect.get(newTarget, 'prototype')
-      const result = Object.create(
-        object(prototype) ? prototype : target.prototype
-      )
-      setDateTimeSlot(result, {epochNanoseconds: value, calendar})
-      return result
+      const prototype = constructorPrototype(newTarget, target)
+      return allocateDateTime(prototype, {epochNanoseconds: value, calendar})
     },
   }
 ) as unknown as PlainDateTimeConstructor
+// ECMA-262 preview §22.10.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaindatetime-prototype-object
 Object.defineProperties(PlainDateTimeValue.prototype, {
+  // Temporal comparison §5.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.constructor
   constructor: {value: PlainDateTime, writable: true, configurable: true},
+  // Temporal comparison §5.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainDateTime', configurable: true},
 })
+// Temporal comparison §5.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.calendarid
+// Temporal comparison §5.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.era
+// Temporal comparison §5.3.5 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.erayear
+// Temporal comparison §5.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.year
+// Temporal comparison §5.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.month
+// Temporal comparison §5.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.monthcode
+// Temporal comparison §5.3.9 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.day
+// Temporal comparison §5.3.10 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.hour
+// Temporal comparison §5.3.11 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.minute
+// Temporal comparison §5.3.12 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.second
+// Temporal comparison §5.3.13 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.millisecond
+// Temporal comparison §5.3.14 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.microsecond
+// Temporal comparison §5.3.15 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.nanosecond
+// Temporal comparison §5.3.16 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.dayofweek
+// Temporal comparison §5.3.17 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.dayofyear
+// Temporal comparison §5.3.18 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.weekofyear
+// Temporal comparison §5.3.19 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.yearofweek
+// Temporal comparison §5.3.20 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.daysinweek
+// Temporal comparison §5.3.21 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.daysinmonth
+// Temporal comparison §5.3.22 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.daysinyear
+// Temporal comparison §5.3.23 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.monthsinyear
+// Temporal comparison §5.3.24 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.inleapyear
 defineGetters(
   PlainDateTimeValue.prototype,
   [...datePropertyNames, ...clockNames],
   (receiver, name) => {
     const slot = read(receiver),
-      index = (clockNames as readonly string[]).indexOf(name)
+      index = arrayIndexOf(clockNames as readonly string[], name)
+    const snapshot =
+      import.meta.formatjsTemporalNativeData === true || nativeTemporal()
+        ? nativeDateSnapshot(dateSlot(slot), false, slot.epochNanoseconds)
+        : undefined
+    if (snapshot && index >= 0) return snapshot.values[name]
     return index < 0
       ? dateProperty(dateSlot(slot), name)
-      : Number(
+      : numberFrom(
           (timeOf(slot.epochNanoseconds) / clockFactors[index]) %
-            BigInt(clockBounds[index] + 1)
+            bigIntFrom(clockBounds[index] + 1)
         )
   }
 )

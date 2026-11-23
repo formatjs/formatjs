@@ -176,9 +176,9 @@ export class BigDecimal {
 
   constructor(value: number | string | bigint) {
     if (typeof value === 'bigint') {
-      const [m, e] = removeTrailingZeros(value, 0)
-      this._mantissa = m
-      this._exponent = e
+      const normalized = removeTrailingZeros(value, 0)
+      this._mantissa = normalized[0]
+      this._exponent = normalized[1]
       this._special = SpecialValue.NONE
       this._negativeZero = false
       return
@@ -214,9 +214,9 @@ export class BigDecimal {
         return
       }
       if (Number.isSafeInteger(value)) {
-        const [m, e] = removeTrailingZeros(BigInt(value), 0)
-        this._mantissa = m
-        this._exponent = e
+        const normalized = removeTrailingZeros(BigInt(value), 0)
+        this._mantissa = normalized[0]
+        this._exponent = normalized[1]
         this._special = SpecialValue.NONE
         this._negativeZero = false
         return
@@ -340,8 +340,13 @@ export class BigDecimal {
     if (sum === 0n) {
       return BigDecimal._create(0n, 0, SpecialValue.NONE, false)
     }
-    const [nm, ne] = removeTrailingZeros(sum, minE)
-    return BigDecimal._create(nm, ne, SpecialValue.NONE, false)
+    const normalized = removeTrailingZeros(sum, minE)
+    return BigDecimal._create(
+      normalized[0],
+      normalized[1],
+      SpecialValue.NONE,
+      false
+    )
   }
 
   minus(y: BigDecimal | number | string | bigint): BigDecimal {

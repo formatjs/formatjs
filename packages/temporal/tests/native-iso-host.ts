@@ -1,3 +1,4 @@
+import {checkISODateUntilPrefixes} from '#packages/temporal/tests/arithmetic-calendar-oracle.js'
 import {
   calendarStartOfYear,
   monthsInYear,
@@ -10,9 +11,18 @@ import {
   calendarEra,
   calendarYearFromEra,
 } from '#packages/temporal/calendar.js'
-import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
+import {
+  checkPublicCalendarOracle,
+  checkCalendarDifferencePolicy,
+  checkYearMonthDifferencePrivateFields,
+  checkDateTimeDifferencePrivateUnits,
+  checkUmmAlQuraJoins,
+  checkDifferenceOptionOrder,
+  checkDateDifferenceUnitGroup,
+} from '#packages/temporal/tests/public-calendar-oracle.js'
 import {
   configureNativeTemporal,
+  nativeTemporal,
   type NativeQuery,
 } from '#packages/temporal/native.js'
 import {installTemporal} from '#packages/temporal/install.js'
@@ -38,6 +48,83 @@ installTemporal(true)
 function check(value: boolean, context: string): void {
   if (!value) throw new Error(context)
 }
+{
+  const zoned = new Temporal.ZonedDateTime(0n, '-01:00')
+  const date = new Temporal.PlainDate(1969, 12, 31)
+  const dateTime = new Temporal.PlainDateTime(1969, 12, 31, 23)
+  const originalGet = WeakMap.prototype.get
+  const originalSet = WeakMap.prototype.set
+  const originalOwner = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'owner'
+  )
+  const unexpected = () => {
+    throw new Error('Calendar getter invoked a user hook')
+  }
+  try {
+    WeakMap.prototype.get = unexpected
+    WeakMap.prototype.set = unexpected
+    Object.defineProperty(Object.prototype, 'owner', {
+      configurable: true,
+      get: unexpected,
+      set: unexpected,
+    })
+    check(zoned.calendarId === 'iso8601', 'Zoned calendar identifier')
+    check(zoned.hour === 23 && zoned.year === 1969, 'Cold zoned projection')
+    check(zoned.minute === 0 && zoned.day === 31, 'Cached zoned projection')
+    check(date.year === 1969, 'Cold date projection')
+    check(date.day === 31, 'Cached date projection')
+    check(
+      dateTime.hour === 23 && dateTime.year === 1969,
+      'Cold date-time projection'
+    )
+    check(dateTime.day === 31, 'Cached date-time projection')
+  } finally {
+    WeakMap.prototype.get = originalGet
+    WeakMap.prototype.set = originalSet
+    if (originalOwner)
+      Object.defineProperty(Object.prototype, 'owner', originalOwner)
+    else Reflect.deleteProperty(Object.prototype, 'owner')
+  }
+}
+configureNativeTemporal(source => {
+  const request = JSON.parse(source)
+  delete request.clockSnapshot
+  return query(JSON.stringify(request))
+})
+const legacyClock = nativeTemporal()!.roundPlainTimeResult(
+  86399999999999n,
+  'hour',
+  1,
+  'ceil'
+)
+check(
+  legacyClock.nanoseconds === 0 &&
+    legacyClock.fields.every(value => value === 0),
+  'Legacy clock responses must balance midnight'
+)
+configureNativeTemporal(query)
+checkUmmAlQuraJoins(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkYearMonthDifferencePrivateFields(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDateTimeDifferencePrivateUnits(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDifferenceOptionOrder(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkCalendarDifferencePolicy(Temporal, (actual, expected, context) =>
+  check(actual === expected, context)
+)
+checkISODateUntilPrefixes((actual, expected, context) =>
+  check(actual === expected, context)
+)
 let count = 0
 for (const row of __temporalISOOracle) {
   const [milliseconds, year, month, day, hour, minute, second, millisecond] =

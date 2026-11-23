@@ -1,4 +1,13 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  numberFrom,
+  objectFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
+import {registerLegacyTimeZoneProvider} from '#packages/temporal/native.js'
+import {
   registerTemporalDateTimeNamespace,
   ToDateTimeFormattable,
   type TemporalDateTimeValue,
@@ -10,6 +19,7 @@ import {
 } from '#packages/temporal/locale.js'
 import type {TemporalNamespace} from '#packages/temporal/index.js'
 import {
+  hostDateBoundary,
   legacyDateTimeFormat,
   legacyDateTimeParts,
   legacyDateTimeRangeFormat,
@@ -18,6 +28,26 @@ import {
 } from '#packages/temporal/legacy-extended-date.js'
 
 const now = Date.now
+// ECMA-262 §28.1.1 step 4 invokes the captured Intl methods directly.
+// https://tc39.es/ecma262/#sec-reflect.apply
+const apply = Reflect.apply
+const construct = Reflect.construct
+const defineProperty = Object.defineProperty
+const WeakMapConstructor = WeakMap
+const MapConstructor = Map
+const weakMapGet = WeakMap.prototype.get
+const weakMapSet = WeakMap.prototype.set
+const mapGet = Map.prototype.get
+const mapSet = Map.prototype.set
+
+function staticDataValue(
+  descriptors: PropertyDescriptorMap,
+  key: string
+): unknown {
+  if (!HasOwnProperty(descriptors, key)) return undefined
+  const descriptor = descriptors[key]
+  return HasOwnProperty(descriptor, 'value') ? descriptor.value : undefined
+}
 
 export function installLegacyDateTimeFormat(
   namespace: TemporalNamespace
@@ -44,20 +74,20 @@ export function installLegacyDateTimeFormat(
     locale: string
     calendar: string
     options: Record<string, unknown>
-    bound?: (value?: unknown) => string
+    bound: ((value?: unknown) => string) | undefined
     projections: Map<string, Intl.DateTimeFormat>
   }
-  const states = new WeakMap<object, State>()
+  const states = new WeakMapConstructor<object, State>()
   // Native bound functions identify the formatter without rereading its legacy symbol.
-  const boundStates = new WeakMap<Function, State>()
-  const probe = Object.create(Native.prototype)
-  const chained = Reflect.apply(Native, probe, [])
+  const boundStates = new WeakMapConstructor<Function, State>()
+  const probe = createObject(Native.prototype)
+  const chained = apply(Native, probe, [])
   const legacySymbol =
     chained === probe ? Object.getOwnPropertySymbols(probe)[0] : undefined
   const hasInstance = Function.prototype[Symbol.hasInstance]
   function project(state: State, value: TemporalDateTimeValue): Projection {
     if (value.kind === 'ZonedDateTime')
-      throw new TypeError(
+      throw new TypeErrorConstructor(
         'Temporal.ZonedDateTime is not supported by DateTimeFormat'
       )
     if (
@@ -67,18 +97,27 @@ export function installLegacyDateTimeFormat(
         value.kind === 'PlainYearMonth' ||
         value.kind === 'PlainMonthDay')
     )
-      throw new RangeError('Temporal calendar does not match DateTimeFormat')
-    const cached = state.projections.get(value.kind)
-    if (cached) {
+      throw new RangeErrorConstructor(
+        'Temporal calendar does not match DateTimeFormat'
+      )
+    const cached: Intl.DateTimeFormat | undefined = apply(
+      mapGet,
+      state.projections,
+      [value.kind]
+    )
+    const boundary = hostDateBoundary(value, state.calendar)
+    if (cached && boundary === undefined) {
       const ns = value.epochNanoseconds
       return {
         formatter: cached,
         plain: value.kind !== 'Instant',
-        milliseconds: Number(
+        milliseconds: numberFrom(
           ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
         ),
       }
     }
+    // ECMA-402 §11.5.5 step 7: Project the Temporal record for the host pattern
+    // call.
     const result = legacyDateTimeProjection(
       Native!,
       value,
@@ -87,10 +126,13 @@ export function installLegacyDateTimeFormat(
       false,
       intrinsics
     )
-    state.projections.set(value.kind, result.formatter)
+    if (boundary === undefined)
+      apply(mapSet, state.projections, [value.kind, result.formatter])
     return result
   }
   function single(state: State, input: unknown): Projection | undefined {
+    // ECMA-402 §11.3.6 steps 3–4: Use the native default or prepare the
+    // supplied value.
     if (input === undefined)
       return state.calendar !== 'gregory' && state.calendar !== 'iso8601'
         ? {formatter: state.formatter, milliseconds: now()}
@@ -98,26 +140,28 @@ export function installLegacyDateTimeFormat(
     const value = ToDateTimeFormattable(input)
     return isTemporalDateTimeValue(value)
       ? project(state, value)
-      : {formatter: state.formatter, milliseconds: value.toNumber()}
+      : {formatter: state.formatter, milliseconds: value}
   }
   function range(
     state: State,
     start: unknown,
     end: unknown
   ): [Projection, Projection] {
+    // ECMA-402 §11.3.4 steps 3–5: Reject missing endpoints, then prepare start
+    // before end.
     if (start === undefined || end === undefined)
-      throw new TypeError('DateTimeFormat range requires two values')
+      throw new TypeErrorConstructor('DateTimeFormat range requires two values')
     const first = ToDateTimeFormattable(start)
     const last = ToDateTimeFormattable(end)
     const firstTemporal = isTemporalDateTimeValue(first)
     const lastTemporal = isTemporalDateTimeValue(last)
     if (!firstTemporal && !lastTemporal)
       return [
-        {formatter: state.formatter, milliseconds: first.toNumber()},
-        {formatter: state.formatter, milliseconds: last.toNumber()},
+        {formatter: state.formatter, milliseconds: first},
+        {formatter: state.formatter, milliseconds: last},
       ]
     if (!firstTemporal || !lastTemporal || first.kind !== last.kind)
-      throw new TypeError(
+      throw new TypeErrorConstructor(
         'DateTimeFormat range requires matching Temporal types'
       )
     return [project(state, first), project(state, last)]
@@ -127,45 +171,58 @@ export function installLegacyDateTimeFormat(
     options: unknown,
     newTarget: Function
   ): Intl.DateTimeFormat {
-    let source: Record<string, unknown> | undefined
-    const snapshot: Record<string, unknown> = Object.create(null)
-    const tracked = new Proxy(Object.create(null), {
+    let source: Record<PropertyKey, unknown> | undefined
+    const snapshot: Record<string, unknown> = createObject(null)
+    const tracked = createProxy(createObject(null), {
       get(_target, key) {
-        if (!source) {
-          if (options === null) throw new TypeError('Invalid options')
-          source = options === undefined ? Object.create(null) : Object(options)
+        // ECMA-402 §11.1.2 step 4: Record options as the host resolves them.
+        if (source === undefined) {
+          // ECMA-402 §9.2.10 steps 1–2: default or coerce the options object.
+          // https://tc39.es/ecma402/#sec-coerceoptionstoobject
+          if (options === null)
+            throw new TypeErrorConstructor('Invalid options')
+          source =
+            options === undefined ? createObject(null) : objectFrom(options)
         }
-        const raw = Reflect.get(source!, key)
+        const raw = source![key]
         if (typeof key !== 'string' || raw === undefined) return raw
         const value = legacyDateTimeOption(key, raw)
         snapshot[key] = value
         return value
       },
     })
-    const formatter = Reflect.construct(
+    // ECMA-402 §11.1.1 step 2: Delegate formatter construction to the host.
+    const formatter = construct(
       Native!,
       [locales, tracked],
       newTarget
     ) as Intl.DateTimeFormat
-    const resolved = nativeResolved.call(formatter)
+    const resolved = apply(nativeResolved, formatter, [])
     const state: State = {
       formatter,
       locale: resolved.locale,
       calendar: resolved.calendar,
       options: snapshot,
-      projections: new Map(),
+      bound: undefined,
+      projections: new MapConstructor(),
     }
-    states.set(formatter, state)
-    boundStates.set(nativeFormat.call(formatter), state)
+    apply(weakMapSet, states, [formatter, state])
+    apply(weakMapSet, boundStates, [apply(nativeFormat, formatter, []), state])
     return formatter
   }
   class LegacyDateTimeFormat {
     get format(): (value?: unknown) => string {
-      const bound = nativeFormat.call(this)
-      const state = boundStates.get(bound)
+      // ECMA-402 §11.3.3 steps 4–5 cache the bound formatter on the private state.
+      // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
+      const bound = apply(nativeFormat, this, [])
+      const state: State | undefined = apply(weakMapGet, boundStates, [bound])
       if (!state) return bound
       if (!state.bound) {
+        // Temporal amendment §15.6.3: convert the argument and format the prepared value.
+        // https://tc39.es/proposal-temporal/#sec-datetime-format-functions
         state.bound = (input?: unknown): string => {
+          // ECMA-402 §11.3.3 steps 4.a.i–ii: Prepare the bound call input and
+          // return its formatted value.
           const value = single(state, input)
           return value
             ? legacyDateTimeFormat(
@@ -174,27 +231,30 @@ export function installLegacyDateTimeFormat(
                 nativeParts,
                 nativeResolved
               )
-            : nativeFormat.call(state.formatter)()
+            : apply(nativeFormat, state.formatter, [])()
         }
-        Object.defineProperty(state.bound, 'name', {value: ''})
       }
       return state.bound
     }
     formatToParts(input?: unknown): Intl.DateTimeFormatPart[] {
-      const state = states.get(this)
-      if (!state) return Reflect.apply(nativeParts, this, [input])
+      const state: State | undefined = apply(weakMapGet, states, [this])
+      if (!state) return apply(nativeParts, this, [input])
+      // ECMA-402 §11.3.6 step 5: Route the prepared value to its parts
+      // formatter.
       const value = single(state, input)
       return value
         ? legacyDateTimeParts(value, nativeParts, nativeResolved)
-        : nativeParts.call(state.formatter)
+        : apply(nativeParts, state.formatter, [])
     }
     formatRange(start: unknown, end: unknown): string {
-      const state = states.get(this)
-      if (!state) return Reflect.apply(nativeRange, this, [start, end])
-      const [first, last] = range(state, start, end)
+      const state: State | undefined = apply(weakMapGet, states, [this])
+      if (!state) return apply(nativeRange, this, [start, end])
+      // ECMA-402 §11.3.4 step 6: Return the formatted range for the prepared
+      // endpoints.
+      const endpoints = range(state, start, end)
       return legacyDateTimeRangeFormat(
-        first,
-        last,
+        endpoints[0],
+        endpoints[1],
         nativeRange,
         nativeRangeParts,
         nativeResolved
@@ -204,18 +264,21 @@ export function installLegacyDateTimeFormat(
       start: unknown,
       end: unknown
     ): Intl.DateTimeRangeFormatPart[] {
-      const state = states.get(this)
-      if (!state) return Reflect.apply(nativeRangeParts, this, [start, end])
-      const [first, last] = range(state, start, end)
+      const state: State | undefined = apply(weakMapGet, states, [this])
+      if (!state) return apply(nativeRangeParts, this, [start, end])
+      // ECMA-402 §11.3.5 step 6: Return the range parts for the prepared
+      // endpoints.
+      const endpoints = range(state, start, end)
       return legacyDateTimeRangeParts(
-        first,
-        last,
+        endpoints[0],
+        endpoints[1],
         nativeRangeParts,
         nativeResolved
       )
     }
     resolvedOptions(): Intl.ResolvedDateTimeFormatOptions {
-      return Reflect.apply(nativeResolved, this, [])
+      // ECMA-402 §11.3.2 step 6: Return the host's resolved options record.
+      return apply(nativeResolved, this, [])
     }
   }
   function DateTimeFormat(
@@ -223,20 +286,27 @@ export function installLegacyDateTimeFormat(
     locales: unknown = undefined,
     options: unknown = undefined
   ): Intl.DateTimeFormat {
+    // ECMA-402 §11.1.1 step 2: Create the formatter with the selected
+    // constructor target.
     const formatter = create(locales, options, new.target || DateTimeFormat)
-    if (!new.target && legacySymbol && hasInstance.call(Native, this)) {
-      Object.defineProperty(this, legacySymbol, {
+    if (!new.target && legacySymbol && apply(hasInstance, Native, [this])) {
+      // ECMA-402 §11.1.1.1 step 1.a defines the private fallback symbol.
+      // https://tc39.es/ecma402/#sec-chaindatetimeformat
+      const descriptor = {
+        __proto__: null,
         value: formatter,
         writable: false,
         enumerable: false,
         configurable: false,
-      })
+      }
+      defineProperty(this, legacySymbol, descriptor)
       return this as Intl.DateTimeFormat
     }
     return formatter
   }
+  const staticDescriptors = Object.getOwnPropertyDescriptors(Native)
   Object.defineProperties(DateTimeFormat, {
-    ...Object.getOwnPropertyDescriptors(Native),
+    ...staticDescriptors,
     __addTemporalNamespace: {value: registerTemporalDateTimeNamespace},
     __formatTemporal: {
       value(
@@ -254,6 +324,8 @@ export function installLegacyDateTimeFormat(
           intrinsics,
           localNanoseconds
         )
+        // ECMA-402 §11.5.6 step 1: Pass the private Temporal projection to the
+        // formatter.
         return legacyDateTimeFormat(
           result,
           nativeFormat,
@@ -274,4 +346,15 @@ export function installLegacyDateTimeFormat(
   })
   globalThis.Intl.DateTimeFormat =
     DateTimeFormat as unknown as Intl.DateTimeFormatConstructor
+  const legacyTimeZoneData = staticDataValue(staticDescriptors, 'tzData')
+  // Proposal comparison §11.1.9 step 3: Remember installed mutable legacy timezone data.
+  if (
+    staticDataValue(staticDescriptors, 'polyfilled') === true &&
+    typeof staticDataValue(staticDescriptors, '__addTZData') === 'function' &&
+    typeof legacyTimeZoneData === 'object' &&
+    legacyTimeZoneData !== null &&
+    typeof nativeParts === 'function'
+  ) {
+    registerLegacyTimeZoneProvider(Native, nativeParts)
+  }
 }

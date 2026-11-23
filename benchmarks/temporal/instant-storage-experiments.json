@@ -1,0 +1,1235 @@
+{
+  "baselineCommit": "785e53dddfc10f1d202382b21573505164f832d2",
+  "method": "Native-data-only Instant slots use private fields instead of WeakMap. Rust still computes complete Instant results. SDK JSON, ABI 22, 43 typed routes and 69 normalized operations unchanged. No arithmetic/data/cache/dependency/exclusion changes. Default TS executable bundle unchanged.",
+  "baselineProfiles": {
+    "baselineCommit": "785e53dddfc10f1d202382b21573505164f832d2",
+    "phase": "ABI 22 baseline rounding costs",
+    "method": "Separate V8 Inspector profiles per workload with named WASM enabled only by --define=temporal_wasm_profile=true. Self samples weighted by timeDeltas; inspector/root/idle/program bookkeeping excluded. Setup, warmup, runtime helpers and GC remain explicit. Profile timings/sizes are not production claims; use short-date-hillclimb-results.json.",
+    "environment": {
+      "node": "v24.14.0",
+      "v8": "13.6.233.17-node.41",
+      "icu": "78.2",
+      "cpu": "Intel(R) Xeon(R) Platinum 8488C"
+    },
+    "workloads": {
+      "round": [
+        {
+          "operation": "round",
+          "iterations": 100000,
+          "warmup": 10000,
+          "medianNanoseconds": 653.92743,
+          "samplesNanoseconds": [524.4899300000003, 653.92743, 797.08032]
+        }
+      ],
+      "until": [
+        {
+          "operation": "until",
+          "iterations": 100000,
+          "warmup": 10000,
+          "medianNanoseconds": 2618.48346,
+          "samplesNanoseconds": [2519.7768699999992, 2618.48346, 2641.0566]
+        }
+      ],
+      "dateTimeRoundFormat": [
+        {
+          "operation": "dateTimeRoundFormat",
+          "iterations": 100000,
+          "warmup": 10000,
+          "medianNanoseconds": 2539.1762599999993,
+          "samplesNanoseconds": [
+            2414.9894999999997, 2539.1762599999993, 2665.43336
+          ]
+        }
+      ]
+    },
+    "attribution": {
+      "round": {
+        "sampledMilliseconds": 227.866,
+        "selfPercent": {
+          "harnessOther": 21.05,
+          "javascript": 53.36,
+          "rustWasm": 6.73,
+          "gc": 18.86
+        },
+        "top": [
+          {
+            "name": "NativeInstant",
+            "percent": 35.49,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "(garbage collector)",
+            "percent": 18.86,
+            "source": ""
+          },
+          {
+            "name": "",
+            "percent": 8.71,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "run",
+            "percent": 6.46,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "roundInstantOptions",
+            "percent": 4.71,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "invoke.roundInstantUnit",
+            "percent": 4.19,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::round_instant_i64",
+            "percent": 3.23,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "timeUnit",
+            "percent": 1.86,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "read$1",
+            "percent": 1.44,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "roundingMode",
+            "percent": 1.17,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "",
+            "percent": 0.96,
+            "source": "internal.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::rounding::round_instant",
+            "percent": 0.96,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "unitOption",
+            "percent": 0.81,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "get epochNanoseconds",
+            "percent": 0.76,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "measure",
+            "percent": 0.69,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::round_instant_i64",
+            "percent": 0.62,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "temporal_round_instant",
+            "percent": 0.55,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "from",
+            "percent": 0.41,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "round",
+            "percent": 0.34,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "ToString",
+            "percent": 0.34,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::execute",
+            "percent": 0.28,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "measureProfile",
+            "percent": 0.24,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "js-to-wasm:liii:l",
+            "percent": 0.21,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "parseDateTimeLike",
+            "percent": 0.21,
+            "source": "internal.js"
+          },
+          {
+            "name": "parseDuration",
+            "percent": 0.21,
+            "source": "internal.js"
+          },
+          {
+            "name": "decodeResult",
+            "percent": 0.18,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "monthDayFields",
+            "percent": 0.17,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "from",
+            "percent": 0.14,
+            "source": "classApi-basic.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::parse::plain_time",
+            "percent": 0.14,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "createDurationSlots",
+            "percent": 0.14,
+            "source": "internal.js"
+          }
+        ]
+      },
+      "until": {
+        "sampledMilliseconds": 842.029,
+        "selfPercent": {
+          "harnessOther": 11.6,
+          "javascript": 46.08,
+          "rustWasm": 37.91,
+          "gc": 4.42
+        },
+        "top": [
+          {
+            "name": "createNativeDuration",
+            "percent": 9.23,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "invoke.formatDuration",
+            "percent": 8.96,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "<formatjs_temporal[40b6354e2dba9ca5]::duration::Duration>::new",
+            "percent": 6.73,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "durationResult",
+            "percent": 5.82,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "__floattidf",
+            "percent": 5.05,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "(garbage collector)",
+            "percent": 4.42,
+            "source": ""
+          },
+          {
+            "name": "formatDuration",
+            "percent": 4.02,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::execute",
+            "percent": 3.34,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::duration",
+            "percent": 2.72,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "difference",
+            "percent": 2.64,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "__fixdfti",
+            "percent": 2.59,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "",
+            "percent": 2.51,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "<formatjs_temporal[40b6354e2dba9ca5]::Instant>::until",
+            "percent": 2.23,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "decode",
+            "percent": 2.23,
+            "source": "encoding"
+          },
+          {
+            "name": "decodeUTF8",
+            "percent": 2.13,
+            "source": ""
+          },
+          {
+            "name": "writeDifferenceOptions",
+            "percent": 2.09,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "invoke.differenceInstant",
+            "percent": 2.0,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "integer",
+            "percent": 1.82,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "get buffer",
+            "percent": 1.65,
+            "source": ""
+          },
+          {
+            "name": "buffer",
+            "percent": 1.65,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "__divti3",
+            "percent": 1.56,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::run",
+            "percent": 1.54,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::duration::write_duration",
+            "percent": 1.39,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "begin",
+            "percent": 1.37,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "until",
+            "percent": 1.37,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "__muloti4",
+            "percent": 1.35,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::read_request",
+            "percent": 1.16,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "run",
+            "percent": 1.12,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "<formatjs_temporal[40b6354e2dba9ca5]::binary::typed::Text as core[7d5f0a2ba6a62c33]::fmt::Write>::write_str",
+            "percent": 1.12,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "__multi3",
+            "percent": 1.02,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          }
+        ]
+      },
+      "dateTimeRoundFormat": {
+        "sampledMilliseconds": 826.606,
+        "selfPercent": {
+          "harnessOther": 12.41,
+          "javascript": 46.14,
+          "rustWasm": 34.87,
+          "gc": 6.57
+        },
+        "top": [
+          {
+            "name": "NativePlainDateTime",
+            "percent": 10.5,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "dateTimeResult",
+            "percent": 9.68,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "(garbage collector)",
+            "percent": 6.57,
+            "source": ""
+          },
+          {
+            "name": "invoke.roundPlainDateTime",
+            "percent": 5.33,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "invoke.formatPlainDateTime",
+            "percent": 4.63,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "<formatjs_intl_datetimeformat_calendars[8a28f11efdf5849e]::calendar::Calendar>::from_epoch_day_raw",
+            "percent": 3.9,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "core[7d5f0a2ba6a62c33]::ptr::drop_glue::<serde_json[25a24d283d9a1626]::value::Value>",
+            "percent": 3.03,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::execute",
+            "percent": 3.01,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_intl_datetimeformat_calendars[8a28f11efdf5849e]::calendar::iso_fields",
+            "percent": 2.59,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "decode",
+            "percent": 2.21,
+            "source": "encoding"
+          },
+          {
+            "name": "toString",
+            "percent": 2.18,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::ffi::calendar_snapshot",
+            "percent": 2.07,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "decodeUTF8",
+            "percent": 2.04,
+            "source": ""
+          },
+          {
+            "name": "begin",
+            "percent": 1.96,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::read_request",
+            "percent": 1.93,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "integer",
+            "percent": 1.87,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "buffer",
+            "percent": 1.83,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::ffi::date_time_snapshot",
+            "percent": 1.82,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "round",
+            "percent": 1.74,
+            "source": "wasm-native.js"
+          },
+          {
+            "name": "__divti3",
+            "percent": 1.68,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "encodeInto",
+            "percent": 1.68,
+            "source": ""
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::run",
+            "percent": 1.66,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "run",
+            "percent": 1.65,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "get buffer",
+            "percent": 1.51,
+            "source": ""
+          },
+          {
+            "name": "compiler_builtins[ce512ac70534e1d]::int::specialized_div_rem::u128_div_rem",
+            "percent": 1.3,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "",
+            "percent": 1.26,
+            "source": "wasm-facade-benchmark.ts"
+          },
+          {
+            "name": "__multi3",
+            "percent": 1.19,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "<formatjs_temporal[40b6354e2dba9ca5]::date::FormattedDateTime<formatjs_temporal[40b6354e2dba9ca5]::calendar_provider::CalendarRef> as core[7d5f0a2ba6a62c33]::fmt::Display>::fmt",
+            "percent": 1.06,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::encode_date_time",
+            "percent": 1.05,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          },
+          {
+            "name": "<formatjs_temporal[40b6354e2dba9ca5]::date::PlainDateTime<formatjs_temporal[40b6354e2dba9ca5]::calendar_provider::CalendarRef>>::round",
+            "percent": 0.85,
+            "source": "formatjs_temporal_wasm_backend.wasm-00dbdb2e"
+          }
+        ]
+      }
+    }
+  },
+  "storageControls": {
+    "method": "Four fresh native-data WASM processes in WeakMap/private/private/WeakMap Instant storage order. Rust computes complete Instant results; public constructors remain checked in both variants. 100000 warmup,9x200000 calls,eight varying inputs/parity. No profiler; complete metadata retained.",
+    "trials": [
+      {
+        "state": "weak",
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 877.5490249999998,
+            "samplesNanoseconds": [
+              798.3169799999996, 842.1315099999998, 843.7836699999997,
+              850.8457850000002, 877.5490249999998, 896.2106500000001,
+              1031.3860699999998, 1065.7165650000002, 1422.5170650000007
+            ]
+          },
+          {
+            "operation": "add",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1395.8405349999996,
+            "samplesNanoseconds": [
+              1106.9700749999993, 1161.9899550000014, 1265.93071, 1352.65803,
+              1395.8405349999996, 1402.7818550000006, 1418.9374050000015,
+              1420.0188099999991, 1435.8716349999986
+            ]
+          },
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 580.7475250000016,
+            "samplesNanoseconds": [
+              379.038415, 436.8922950000024, 473.90593999999965,
+              535.4746999999998, 580.7475250000016, 987.7541699999983,
+              996.2151900000027, 1042.742234999996, 1908.79414
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2484.0264000000025,
+            "samplesNanoseconds": [
+              2406.019145, 2427.906334999998, 2435.0467449999996,
+              2481.3692549999996, 2484.0264000000025, 2567.7914750000036,
+              2609.954705, 2631.9264900000007, 2642.6392149999992
+            ]
+          }
+        ]
+      },
+      {
+        "state": "private",
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 470.64036500000043,
+            "samplesNanoseconds": [
+              466.334655, 466.71808, 469.1638999999998, 470.0117100000006,
+              470.64036500000043, 472.60307500000005, 473.4185550000001,
+              474.3667900000003, 474.7500050000001
+            ]
+          },
+          {
+            "operation": "add",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 785.6997049999995,
+            "samplesNanoseconds": [
+              779.6662149999997, 783.3572900000001, 784.0466049999986,
+              785.3295300000002, 785.6997049999995, 786.4130999999998,
+              787.7099450000003, 795.462665, 798.0687699999999
+            ]
+          },
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 136.74056000000064,
+            "samplesNanoseconds": [
+              136.09288500000048, 136.35579000000007, 136.44110499999897,
+              136.65849499999922, 136.74056000000064, 137.18411999999944,
+              137.31603999999834, 138.31806500000084, 156.0822250000001
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2394.523680000002,
+            "samplesNanoseconds": [
+              2369.0617099999963, 2374.6282050000013, 2383.6750800000004,
+              2384.7900000000027, 2394.523680000002, 2404.5902449999994,
+              2437.867620000002, 2458.833219999999, 2491.2071549999973
+            ]
+          }
+        ]
+      },
+      {
+        "state": "private",
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 470.05011500000023,
+            "samplesNanoseconds": [
+              468.92533999999955, 469.29422000000045, 469.68844499999983,
+              470.03496499999983, 470.05011500000023, 471.9998750000002,
+              472.24086, 473.648675, 474.068295
+            ]
+          },
+          {
+            "operation": "add",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 762.2038800000007,
+            "samplesNanoseconds": [
+              757.8673649999996, 760.7225300000005, 761.0459450000008,
+              761.677944999999, 762.2038800000007, 763.8681299999995,
+              764.7463450000009, 765.2412400000003, 768.951065
+            ]
+          },
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 136.79800999999998,
+            "samplesNanoseconds": [
+              136.32332499999848, 136.4804099999992, 136.54614000000038,
+              136.6978549999999, 136.79800999999998, 136.8467899999996,
+              136.85908500000096, 137.19595499999969, 138.79828999999972
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2436.5255049999996,
+            "samplesNanoseconds": [
+              2373.8143949999994, 2415.719495000003, 2421.5024649999987,
+              2432.167015, 2436.5255049999996, 2438.9052999999967, 2439.2877,
+              2482.3920050000015, 2529.426520000002
+            ]
+          }
+        ]
+      },
+      {
+        "state": "weak",
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 949.9658549999998,
+            "samplesNanoseconds": [
+              847.4030199999993, 854.5889149999994, 902.5928399999998,
+              908.51425, 949.9658549999998, 975.0842499999999,
+              1028.3695350000005, 1060.3812399999993, 1138.3924249999995
+            ]
+          },
+          {
+            "operation": "add",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 1394.0184100000008,
+            "samplesNanoseconds": [
+              1106.6070249999984, 1227.4628550000011, 1287.6018150000004,
+              1380.1580249999981, 1394.0184100000008, 1396.9843749999973,
+              1414.8562749999996, 1496.816765000001, 1517.7418750000015
+            ]
+          },
+          {
+            "operation": "round",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 957.8728150000006,
+            "samplesNanoseconds": [
+              407.7617250000003, 417.4515900000006, 442.5180399999999,
+              461.886884999999, 957.8728150000006, 1005.5890700000009,
+              1016.1382749999983, 1024.0387250000003, 1145.7730899999979
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 200000,
+            "warmup": 100000,
+            "medianNanoseconds": 2502.0839799999976,
+            "samplesNanoseconds": [
+              2448.0832499999997, 2449.6247949999997, 2449.953264999999,
+              2452.7509850000024, 2502.0839799999976, 2502.7485100000013,
+              2535.111800000004, 2781.839289999998, 2835.687440000002
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "storageControlsScope": "WeakMap/private/private/WeakMap controls preceded removal of an extra Object.getPrototypeOf call in public construction. Hot parse/add/round storage code is identical to final; final source independently validated and full matrix/close controls/profiles refreshed.",
+  "diagnostic": {
+    "method": "Shared-process diagnostic only; do not use as final throughput.",
+    "results": {
+      "typescript": [
+        {
+          "operation": "parse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 1569.3632000000007,
+          "samplesNanoseconds": [
+            1560.0177, 1563.213300000001, 1565.0107999999989,
+            1569.3632000000007, 1629.0064999999997, 1695.3314000000007,
+            2144.032900000002
+          ]
+        },
+        {
+          "operation": "add",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2248.308900000001,
+          "samplesNanoseconds": [
+            2193.9344000000006, 2194.1063999999983, 2214.7857999999983,
+            2248.308900000001, 2255.682200000001, 2386.8535000000006,
+            2930.2466000000036
+          ]
+        },
+        {
+          "operation": "round",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 762.355500000001,
+          "samplesNanoseconds": [
+            301.4858000000004, 305.82069999999817, 332.8187000000014,
+            762.355500000001, 795.8634000000018, 802.276500000005,
+            823.5106999999971
+          ]
+        },
+        {
+          "operation": "until",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2468.101800000011,
+          "samplesNanoseconds": [
+            2340.680700000007, 2353.297800000007, 2399.1824000000065,
+            2468.101800000011, 2740.9627, 2759.5072000000073, 2833.6455
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "parse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 499.92019999999684,
+          "samplesNanoseconds": [
+            494.6367999999893, 498.17330000000766, 498.727000000008,
+            499.92019999999684, 521.3990999999851, 556.1063999999988,
+            639.5263999999997
+          ]
+        },
+        {
+          "operation": "add",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 813.4796000000051,
+          "samplesNanoseconds": [
+            796.2457000000086, 797.6732999999967, 802.6544000000058,
+            813.4796000000051, 827.5748999999905, 841.9107000000167,
+            979.6276000000033
+          ]
+        },
+        {
+          "operation": "round",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 163.08120000001054,
+          "samplesNanoseconds": [
+            141.30689999999504, 142.87469999999303, 144.95539999998073,
+            163.08120000001054, 167.4935000000005, 272.38079999999627,
+            276.9473000000062
+          ]
+        },
+        {
+          "operation": "until",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2450.2390000000105,
+          "samplesNanoseconds": [
+            2209.5522000000074, 2287.838499999998, 2302.0296000000144,
+            2450.2390000000105, 2530.5706999999984, 3202.513399999998,
+            3548.0812000000014
+          ]
+        }
+      ]
+    }
+  },
+  "closeControls": {
+    "method": "Four fresh sequential processes in TS/native/native/TS order. round/until/dateFromFields/zonedFormat only; 100000 warmup, 9x300000 calls, eight varying inputs and parity. Production stripped WASM, no profiler. Checks rounding and narrow Instant difference/date construction/zoned formatting margins; full 48-workload raw checkpoint retained separately.",
+    "trials": [
+      {
+        "profile": "typescript",
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 534.2997366666668,
+            "samplesNanoseconds": [
+              457.93473333333344, 463.5434000000002, 489.81946333333326,
+              526.7293266666669, 534.2997366666668, 546.1221933333335,
+              570.1640233333335, 580.27229, 585.5028166666665
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 2550.0623633333335,
+            "samplesNanoseconds": [
+              2523.032356666669, 2533.4898233333324, 2534.3700133333336,
+              2549.31595, 2550.0623633333335, 2567.864426666665,
+              2575.3338166666663, 2581.3317566666665, 2735.5381499999994
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1424.2960633333375,
+            "samplesNanoseconds": [
+              1401.9790700000035, 1407.9217100000035, 1409.049700000002,
+              1419.5010300000044, 1424.2960633333375, 1427.9104566666683,
+              1428.1837799999994, 1458.341916666668, 1495.373839999999
+            ]
+          },
+          {
+            "operation": "zonedFormat",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 2035.180776666669,
+            "samplesNanoseconds": [
+              2019.3093233333398, 2021.1667766666626, 2023.9627799999955,
+              2027.2876966666627, 2035.180776666669, 2038.3736466666658,
+              2041.1371899999965, 2062.146576666661, 2062.498230000001
+            ]
+          }
+        ]
+      },
+      {
+        "profile": "nativeDataWasm",
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 143.00091999999987,
+            "samplesNanoseconds": [
+              140.5279833333334, 141.66134666666665, 141.90685000000013,
+              141.90887999999993, 143.00091999999987, 143.14391999999998,
+              143.50577000000004, 144.80807666666675, 147.9803633333333
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 2335.2043866666645,
+            "samplesNanoseconds": [
+              2324.7870166666657, 2327.0427899999986, 2333.63073,
+              2335.120616666666, 2335.2043866666645, 2358.9742133333343,
+              2415.4482066666665, 2433.8632633333327, 2536.32833
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1361.8074100000013,
+            "samplesNanoseconds": [
+              1316.8909566666662, 1324.6426400000018, 1328.8104700000015,
+              1353.1608899999992, 1361.8074100000013, 1363.505603333333,
+              1482.3995433333282, 1488.8881133333296, 1516.0798066666637
+            ]
+          },
+          {
+            "operation": "zonedFormat",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1791.3049533333349,
+            "samplesNanoseconds": [
+              1788.5204499999963, 1789.6247799999949, 1790.4492633333334,
+              1790.5408300000029, 1791.3049533333349, 1792.6742366666624,
+              1792.837543333329, 1794.6984666666688, 1806.3403600000008
+            ]
+          }
+        ]
+      },
+      {
+        "profile": "nativeDataWasm",
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 141.16651333333323,
+            "samplesNanoseconds": [
+              140.64503333333334, 140.82407666666674, 140.93480666666665,
+              140.96019333333325, 141.16651333333323, 141.29204333333328,
+              144.26027666666658, 145.18997333333346, 146.09054666666668
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 2388.0719000000017,
+            "samplesNanoseconds": [
+              2347.1469633333313, 2361.615706666668, 2363.6123166666675,
+              2387.7447166666675, 2388.0719000000017, 2422.307119999999,
+              2428.7845333333335, 2431.921676666667, 2620.077933333334
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1351.67341,
+            "samplesNanoseconds": [
+              1302.9741166666645, 1318.0682333333366, 1330.6627033333339,
+              1333.0644133333346, 1351.67341, 1352.7012300000024,
+              1409.251779999995, 1522.960283333335, 1700.7289566666682
+            ]
+          },
+          {
+            "operation": "zonedFormat",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1802.6561666666687,
+            "samplesNanoseconds": [
+              1800.5415866666651, 1801.0491966666632, 1801.136556666667,
+              1801.844386666671, 1802.6561666666687, 1802.7419199999956,
+              1804.0839933333277, 1807.2655233333353, 1812.8475166666674
+            ]
+          }
+        ]
+      },
+      {
+        "profile": "typescript",
+        "results": [
+          {
+            "operation": "round",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 585.7489499999997,
+            "samplesNanoseconds": [
+              453.0937466666667, 490.97979666666714, 508.08447333333334,
+              573.4264999999997, 585.7489499999997, 604.8064566666661,
+              627.5122200000002, 630.9832833333336, 872.70805
+            ]
+          },
+          {
+            "operation": "until",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 2514.5908666666674,
+            "samplesNanoseconds": [
+              2491.52370666667, 2508.416953333332, 2509.165853333334,
+              2510.855153333335, 2514.5908666666674, 2526.4947033333347,
+              2530.7580700000017, 2534.1082633333326, 2541.3808966666693
+            ]
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1404.9228666666688,
+            "samplesNanoseconds": [
+              1382.878550000005, 1395.173103333333, 1400.6675266666693,
+              1401.7631700000009, 1404.9228666666688, 1440.9843333333326,
+              1441.1496533333352, 1459.6462399999957, 1695.8761233333341
+            ]
+          },
+          {
+            "operation": "zonedFormat",
+            "iterations": 300000,
+            "warmup": 100000,
+            "medianNanoseconds": 1999.214899999994,
+            "samplesNanoseconds": [
+              1987.8161566666615, 1992.3043000000023, 1992.3955433333322,
+              1997.7435933333377, 1999.214899999994, 2011.22671000001,
+              2014.0262000000016, 2017.5650400000025, 2035.6852333333338
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "closeControlAssessments": [
+    {
+      "operation": "round",
+      "status": "separated native win",
+      "mediansNanoseconds": {
+        "typescript": [534.2997366666668, 585.7489499999997],
+        "nativeDataWasm": [143.00091999999987, 141.16651333333323]
+      }
+    },
+    {
+      "operation": "until",
+      "status": "separated native win",
+      "mediansNanoseconds": {
+        "typescript": [2550.0623633333335, 2514.5908666666674],
+        "nativeDataWasm": [2335.2043866666645, 2388.0719000000017]
+      }
+    },
+    {
+      "operation": "dateFromFields",
+      "status": "separated native win",
+      "mediansNanoseconds": {
+        "typescript": [1424.2960633333375, 1404.9228666666688],
+        "nativeDataWasm": [1361.8074100000013, 1351.67341]
+      }
+    },
+    {
+      "operation": "zonedFormat",
+      "status": "separated native win",
+      "mediansNanoseconds": {
+        "typescript": [2035.180776666669, 1999.214899999994],
+        "nativeDataWasm": [1791.3049533333349, 1802.6561666666687]
+      }
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "count": 66,
+    "targets": [
+      "//packages/temporal:sdk_hermes_instant_source_test262",
+      "//packages/temporal:sdk_hermes_instant_bytecode_test262",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_yearmonth_source_test262",
+      "//packages/temporal:sdk_hermes_yearmonth_bytecode_test262",
+      "//packages/temporal:sdk_hermes_monthday_source_test262",
+      "//packages/temporal:sdk_hermes_monthday_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:sdk_hermes_calendars_source_test262",
+      "//packages/temporal:sdk_hermes_calendars_bytecode_test262",
+      "//packages/temporal:sdk_hermes_now_source_test262",
+      "//packages/temporal:sdk_hermes_now_bytecode_test262",
+      "//packages/temporal:sdk_hermes_installation_source_test262",
+      "//packages/temporal:sdk_hermes_installation_bytecode_test262",
+      "//packages/temporal:sdk_hermes_staging_source_test262",
+      "//packages/temporal:sdk_hermes_staging_bytecode_test262",
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:zoned_test262",
+      "//packages/temporal:calendars_test262",
+      "//packages/temporal:now_test262",
+      "//packages/temporal:installation_test262",
+      "//packages/temporal:wasm_instant_test262",
+      "//packages/temporal:wasm_date_test262",
+      "//packages/temporal:wasm_datetime_test262",
+      "//packages/temporal:wasm_time_test262",
+      "//packages/temporal:wasm_yearmonth_test262",
+      "//packages/temporal:wasm_monthday_test262",
+      "//packages/temporal:wasm_duration_test262",
+      "//packages/temporal:wasm_zoned_test262",
+      "//packages/temporal:wasm_calendars_test262",
+      "//packages/temporal:wasm_now_test262",
+      "//packages/temporal:wasm_installation_test262",
+      "//packages/temporal:wasm_staging_test262",
+      "//packages/temporal:wasm_package_test",
+      "//packages/temporal:wasm_native_package_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//benchmarks/temporal:temporal-esm_typecheck_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:ffi_test",
+      "//crates/temporal:binary_test",
+      "//packages/temporal:sdk_intl_compat_hermes_source_test262",
+      "//packages/temporal:sdk_intl_compat_hermes_bytecode_test262",
+      "//packages/temporal:wasm_host_intl_compat_test262",
+      "//packages/temporal:native_duration_hermes_oracle_test",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:native_iso_hermes_oracle_test",
+      "//packages/temporal:public_calendar_hermes_oracle_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/temporal:context_test",
+      "//crates/temporal:registry_test"
+    ],
+    "formattedPackageControls": "Both WASM package targets rerun after test-only formatting; runtime source hash unchanged.",
+    "sourceHashes": {
+      "packages/temporal/instant.ts": "7e9a6581bcfb8fa9ca086140e699d99da3f4ad5cdf7a5b7df08fe3b3d54158c9",
+      "packages/temporal/tests/wasm.test.mjs": "44304ef82c773d385612f0d267a8854a7ef42b35da2ec9cbe6baedb06bd43f02"
+    },
+    "controls": [
+      "Instant subclass prototypes, primitive/custom newTarget prototype fallback, exactly-once coercion-before-prototype access.",
+      "Frozen instances, clone identity, original primitive slots after prototype mutation, forged/proxied/wrong receivers reject.",
+      "Branded clones skip custom coercion; no exposed own slots. Public constructor does not call mutable Object.getPrototypeOf.",
+      "Full Rust/TS/WASM Test262, ICU, Hermes source/bytecode and provider targets; no new exclusions.",
+      "Default TS executable AST matches independent baseline; negative control rejected."
+    ]
+  },
+  "remainingSlowerWorkloads": [
+    {
+      "operation": "monthDayParse",
+      "typescriptNanoseconds": 1658.6823999999979,
+      "nativeDataWasmNanoseconds": 1676.6050600000017,
+      "ratio": 1.010805359724082
+    },
+    {
+      "operation": "dateTimeWith",
+      "typescriptNanoseconds": 6587.692619999944,
+      "nativeDataWasmNanoseconds": 8169.821819999997,
+      "ratio": 1.2401643930982418
+    },
+    {
+      "operation": "zonedWith",
+      "typescriptNanoseconds": 9950.208140000032,
+      "nativeDataWasmNanoseconds": 14530.848719999995,
+      "ratio": 1.4603562574320128
+    },
+    {
+      "operation": "dateTimeRoundFormat",
+      "typescriptNanoseconds": 1603.7370999999985,
+      "nativeDataWasmNanoseconds": 2396.6298000000097,
+      "ratio": 1.4944031662047426
+    },
+    {
+      "operation": "yearMonthFormat",
+      "typescriptNanoseconds": 431.8070399999851,
+      "nativeDataWasmNanoseconds": 606.9528400000127,
+      "ratio": 1.4056112656246496
+    },
+    {
+      "operation": "monthDayFormat",
+      "typescriptNanoseconds": 399.65843999991193,
+      "nativeDataWasmNanoseconds": 580.2012600000307,
+      "ratio": 1.4517427931714857
+    },
+    {
+      "operation": "zonedParse",
+      "typescriptNanoseconds": 3984.158640000096,
+      "nativeDataWasmNanoseconds": 6308.983060000028,
+      "ratio": 1.5835170308378774
+    },
+    {
+      "operation": "zonedUntilDay",
+      "typescriptNanoseconds": 13314.92452000006,
+      "nativeDataWasmNanoseconds": 21126.817319999973,
+      "ratio": 1.5867019965652707
+    },
+    {
+      "operation": "zonedRound",
+      "typescriptNanoseconds": 2893.167739999917,
+      "nativeDataWasmNanoseconds": 3855.509699999966,
+      "ratio": 1.3326257052762784
+    },
+    {
+      "operation": "zonedDayStart",
+      "typescriptNanoseconds": 2115.632040000055,
+      "nativeDataWasmNanoseconds": 3796.347160000005,
+      "ratio": 1.7944269552657683
+    },
+    {
+      "operation": "zonedTransition",
+      "typescriptNanoseconds": 375.7314000002225,
+      "nativeDataWasmNanoseconds": 1309.9648000003072,
+      "ratio": 3.4864395150352925
+    },
+    {
+      "operation": "durationTotalRelative",
+      "typescriptNanoseconds": 5627.197800000139,
+      "nativeDataWasmNanoseconds": 7289.416280000005,
+      "ratio": 1.2953900927384896
+    }
+  ],
+  "finalEvidence": {
+    "throughput": "instant-storage-hillclimb-results.json",
+    "startup": "instant-storage-startup-results.json",
+    "profiles": "instant-storage-profile-results.json",
+    "typescriptGuard": "ts-regression-guard.json",
+    "wins": {
+      "typescript": 36,
+      "reference": 29,
+      "officialReference": 44
+    },
+    "total": 48,
+    "note": "Raw median counts do not establish stable wins. Close controls and all slower workloads remain explicit. All-workload goal remains open."
+  }
+}

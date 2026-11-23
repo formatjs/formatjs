@@ -31,6 +31,9 @@ export function primaryZones(
       } else if (fields[0] === 'Link') identifiers.add(fields[2])
     }
   }
+  // ECMA-402 §6.5 keeps the restored POSIX zones primary.
+  // https://tc39.es/ecma402/#sec-use-of-iana-time-zone-database
+  // Pending alias policy: https://github.com/tc39/ecma402/issues/1103
   const primary = new Set(zones)
   for (const line of tab.split(newline)) {
     if (!line || line.startsWith('#')) continue

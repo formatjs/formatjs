@@ -68,11 +68,11 @@
   "crates/intl_data": "0.2.0",
   "crates/intl_data_build": "0.2.1",
   "crates/intl_datetimeformat": "1.1.0",
-  "crates/intl_datetimeformat_calendars": "0.3.0",
+  "crates/intl_datetimeformat_calendars": "1.0.0",
   "crates/intl_displaynames": "0.2.2",
   "crates/intl_durationformat": "1.0.1",
   "crates/intl_getcanonicallocales": "1.0.0",
-  "crates/intl_hermes": "0.4.0",
+  "crates/intl_hermes": "0.4.1",
   "crates/intl_listformat": "1.0.0",
   "crates/intl_locale": "1.0.0",
   "crates/intl_localematcher": "1.0.0",
@@ -81,8 +81,8 @@
   "crates/intl_relativetimeformat": "0.2.2",
   "crates/intl_segmenter": "1.0.0",
   "crates/intl_supportedvaluesof": "1.1.0",
-  "native/hermes": "1.1.0",
+  "native/hermes": "2.0.0",
   "crates/apple_printf_parser": "0.2.0",
-  "packages/temporal": "1.1.0",
-  "crates/temporal": "1.1.0"
+  "packages/temporal": "2.0.0",
+  "crates/temporal": "2.0.0"
 }

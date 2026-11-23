@@ -1,5 +1,11 @@
-// Cached regex patterns for performance
-const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
+import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
+
+const apply = Reflect.apply
+const regexpExec = RegExp.prototype.exec
+const charCodeAt = String.prototype.charCodeAt
+const toUpperCase = String.prototype.toUpperCase
+const objectKeys = Object.keys
+
 const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
 
 /**
@@ -15,23 +21,19 @@ const OFFSET_TIMEZONE_FORMAT_REGEX = /^([+-])(\d{2})(?::?(\d{2}))?$/
  * @returns true if offsetString is a valid UTC offset format
  */
 function IsValidDateTimeFormatOffset(offsetString: string): boolean {
-  if (!OFFSET_TIMEZONE_PREFIX_REGEX.test(offsetString)) {
-    return false
-  }
-
   // CreateDateTimeFormat step 19.c rejects more than one MinuteSecond node:
   // minutes are allowed, but seconds (including :00) are not.
   // ECMA-402 §11.1.2 CreateDateTimeFormat, step 19.c.
   // https://tc39.es/ecma402/#sec-createdatetimeformat
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L94
-  const match = OFFSET_TIMEZONE_FORMAT_REGEX.exec(offsetString)
+  const match = apply(regexpExec, OFFSET_TIMEZONE_FORMAT_REGEX, [offsetString])
 
   if (!match) {
     return false
   }
 
-  const hours = parseInt(match[2], 10)
-  const minutes = match[3] ? parseInt(match[3], 10) : 0
+  const hours = numberFrom(match[2])
+  const minutes = match[3] ? numberFrom(match[3]) : 0
 
   if (hours > 23 || minutes > 59) {
     return false
@@ -77,20 +79,21 @@ export function IsValidTimeZoneName(
   // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L318
   for (let i = 0; i < tz.length; i++) {
-    if (tz.charCodeAt(i) > 0x7f) return false
+    if (apply(charCodeAt, tz, [i]) > 0x7f) return false
   }
-  const uppercasedTz = tz.toUpperCase()
-  const zoneNames = new Set()
-  const linkNames = new Set()
-
-  zoneNamesFromData.map(z => z.toUpperCase()).forEach(z => zoneNames.add(z))
-  Object.keys(uppercaseLinks).forEach(linkName => {
-    linkNames.add(linkName.toUpperCase())
-    zoneNames.add(uppercaseLinks[linkName].toUpperCase())
-  })
-
-  if (zoneNames.has(uppercasedTz) || linkNames.has(uppercasedTz)) {
-    return true
+  const uppercasedTz = apply(toUpperCase, tz, [])
+  for (let index = 0; index < zoneNamesFromData.length; index++) {
+    if (apply(toUpperCase, zoneNamesFromData[index], []) === uppercasedTz)
+      return true
+  }
+  const links = objectKeys(uppercaseLinks)
+  for (let index = 0; index < links.length; index++) {
+    const link = links[index]
+    if (
+      apply(toUpperCase, link, []) === uppercasedTz ||
+      apply(toUpperCase, uppercaseLinks[link], []) === uppercasedTz
+    )
+      return true
   }
 
   // 4. Return false

@@ -1,3 +1,4 @@
+import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
 /**
  * https://tc39.es/ecma402/#table-sanctioned-simple-unit-identifiers
  */
@@ -69,5 +70,5 @@ export const SIMPLE_UNITS: string[] = SANCTIONED_UNITS.map(removeUnitNamespace)
 export function IsSanctionedSimpleUnitIdentifier(
   unitIdentifier: string
 ): boolean {
-  return SIMPLE_UNITS.indexOf(unitIdentifier) > -1
+  return arrayIndexOf(SIMPLE_UNITS, unitIdentifier) > -1
 }

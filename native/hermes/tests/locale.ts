@@ -476,6 +476,22 @@ check(
   'Bengali initially unloaded'
 )
 equal(bengali.getNumberingSystems(), ['latn'], 'unloaded locale fallback')
+for (const Constructor of [NativeLocale, TypeScriptLocale]) {
+  const original = Object.is
+  let actual: unknown, error: unknown
+  try {
+    Object.is = () => {
+      throw new Error('Mutable equality reached')
+    }
+    actual = new Constructor('en-u-kn-false').numeric
+  } catch (caught) {
+    error = caught
+  } finally {
+    Object.is = original
+  }
+  check(error === undefined, 'numeric collation ignores mutable Object.is')
+  equal(actual, false, 'numeric collation value under equality mutation')
+}
 root.__finishLocaleConformance = () => {
   const expected = new NumberFormat('bn').resolvedOptions().numberingSystem
   check(expected !== 'latn', 'new locale has distinct numbering system')

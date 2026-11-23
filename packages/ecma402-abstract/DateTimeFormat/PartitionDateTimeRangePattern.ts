@@ -1,4 +1,11 @@
-import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
+import {
+  TypeErrorConstructor,
+  arrayIndexOf,
+  arraySome,
+  floor,
+  mathMax,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
   type IntlDateTimeFormatPart,
@@ -23,6 +30,8 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 
+// Temporal comparison §15.6.8 step 23.a reads the ECMA-402 Table 6 order.
+// The default row supplies fallback data and has no field to compare.
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
   'year',
@@ -45,6 +54,22 @@ const DATE_FIELDS = [
   '{day}',
   '{weekday}',
 ]
+const stringIncludes = Function.prototype.call.bind(
+  String.prototype.includes
+) as (value: string, search: string) => boolean
+
+function expandRangePattern(
+  parts: RangePatterns['patternParts'],
+  pattern: string
+): string {
+  // ECMA-402 §11.5.8 steps 19.a–b: read the private pattern records in order.
+  let expanded = ''
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index].pattern
+    expanded += part === '{0}' || part === '{1}' ? pattern : part
+  }
+  return expanded
+}
 
 export function PartitionDateTimeRangePattern(
   dtf: Intl.DateTimeFormat,
@@ -52,17 +77,25 @@ export function PartitionDateTimeRangePattern(
   y: DateTimeFormattable,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
+  // Temporal §15.6.8 step 7 rejects mismatched Temporal endpoint types.
+  // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
+  // §15.6.13 steps 1–7 compare the types identified by their internal slots.
+  // https://tc39.es/proposal-temporal/#sec-temporal-sametemporaltype
   const firstTemporal = isTemporalDateTimeValue(x)
   const secondTemporal = isTemporalDateTimeValue(y)
   if (
     firstTemporal !== secondTemporal ||
     (firstTemporal && secondTemporal && x.kind !== y.kind)
   ) {
-    throw new TypeError('Range endpoints must have the same Temporal type')
+    throw new TypeErrorConstructor(
+      'Range endpoints must have the same Temporal type'
+    )
   }
   const slots = implDetails.getInternalSlots(dtf)
+  // Steps 8–11 prepare each endpoint and retain its epoch nanoseconds.
   const first = HandleDateTimeValue(slots, x)
   const second = HandleDateTimeValue(slots, y)
+  // Step 15 uses the first endpoint's format for the range.
   const internalSlots = first.format
   implDetails = {...implDetails, getInternalSlots: () => internalSlots}
   const {tzData, calendarData, localeData} = implDetails
@@ -71,6 +104,9 @@ export function PartitionDateTimeRangePattern(
   const dataLocaleData =
     rootLocaleData.calendarData?.[internalSlots.calendar!] ?? rootLocaleData
   /** IMPL END */
+  // §15.6.8 steps 12–13 use the formatter zone. §15.6.4 step 12 renders
+  // Plain values in UTC. Compare in UTC too to preserve distinct wall times.
+  // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
   const tm1 = ToLocalTime(
     first.epochNanoseconds,
     // @ts-ignore
@@ -92,50 +128,68 @@ export function PartitionDateTimeRangePattern(
   const {pattern, rangePatterns} = internalSlots
   const parts = PartitionPattern<IntlDateTimeFormatPartType>(pattern)
   let lastField = -1
-  for (const part of parts) {
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index]
     const field =
       part.type === 'weekday'
         ? 'day'
         : part.type === 'relatedYear' || part.type === 'yearName'
           ? 'year'
           : part.type
-    lastField = Math.max(lastField, TABLE_2_FIELDS.indexOf(field as TABLE_2))
+    lastField = mathMax(
+      lastField,
+      arrayIndexOf(TABLE_2_FIELDS, field as TABLE_2)
+    )
   }
 
-  const fallback: RangePatterns = rangePatterns.default || {
-    patternParts: PartitionPattern<'0' | '1' | 'literal'>(
+  let fallback = rangePatterns.default
+  if (!fallback) {
+    // ECMA-402 §11.5.8 step 18.a: prepare the default interval as a private List.
+    const parsed = PartitionPattern<'0' | '1' | 'literal'>(
       dataLocaleData.intervalFormatFallback
-    ).map(part => ({
-      source:
-        part.type === 'literal'
-          ? RangePatternType.shared
-          : part.type === '0'
-            ? RangePatternType.startRange
-            : RangePatternType.endRange,
-      pattern: part.type === 'literal' ? part.value! : pattern,
-    })),
+    )
+    const patternParts: RangePatterns['patternParts'] = []
+    for (let index = 0; index < parsed.length; index++) {
+      const part = parsed[index]
+      setDataProperty(patternParts, index, {
+        source:
+          part.type === 'literal'
+            ? RangePatternType.shared
+            : part.type === '0'
+              ? RangePatternType.startRange
+              : RangePatternType.endRange,
+        pattern: part.type === 'literal' ? part.value! : pattern,
+      })
+    }
+    fallback = {__proto__: null, patternParts} as RangePatterns
   }
 
   // ECMA-402 §11.5.8, steps 15–16 compare relevant fields and collapse
   // equal ranges. Use fallback intervals through displayed precision;
   // smaller undisplayed fields must not make the endpoints differ.
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1537-L1577
   let rangePattern: RangePatterns | undefined
   for (let index = 0; index <= lastField; index++) {
     const field = TABLE_2_FIELDS[index]
-    // Hidden day periods must not override an hour or minute interval.
+    // Temporal amendment §15.6.8 steps 23.c–d.i: keep scanning displayed fields
+    // past absent period fields. An equal date prefix can still hide unequal seconds.
+    // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
     if (
       (field === 'ampm' || field === 'dayPeriod') &&
-      !parts.some(part => part.type === field)
+      !arraySome(parts, part => part.type === field)
     ) {
       continue
     }
     let equal
+    // Temporal comparison §15.6.8 steps 23.d.ii, 23.d.iii, 23.d.iv and 23.d.v
+    // dispatch the encountered field by its private table key.
     if (field === 'ampm') {
       // Step 15.d.ii: noon starts at hour 12, including an 11 AM endpoint.
+      // Temporal comparison §15.6.8 steps 23.d.ii.1–2 encode am/pm as Booleans.
       equal = tm1.hour < 12 === tm2.hour < 12
     } else if (field === 'dayPeriod') {
+      // Temporal comparison §15.6.8 steps 23.d.iii.1–2 resolve each local
+      // day period with the selected locale and available clock fields.
       const first = getDayPeriodName(
         dataLocaleData,
         tm1,
@@ -150,19 +204,39 @@ export function PartitionDateTimeRangePattern(
       )
       equal = first === second
     } else if (field === 'fractionalSecondDigits') {
+      // Temporal comparison §15.6.8 step 23.d.iv.1 uses the requested
+      // precision carried unchanged into this selected format.
+      // ECMA-402 §11.5.8 steps 15.d.iv.3–5: floor at the selected precision.
+      // Temporal comparison §15.6.8 steps 23.d.iv.2, 23.d.iv.2.a and 23.d.iv.3–5.
       const digits = internalSlots.fractionalSecondDigits ?? 3
       equal =
-        Math.floor(tm1.millisecond * 10 ** (digits - 3)) ===
-        Math.floor(tm2.millisecond * 10 ** (digits - 3))
+        floor(tm1.millisecond * 10 ** (digits - 3)) ===
+        floor(tm2.millisecond * 10 ** (digits - 3))
     } else {
-      equal = SameValue(tm1[field], tm2[field])
+      // Temporal comparison §15.6.8 steps 23.d.v.1–2 read the two own fields.
+      equal = tm1[field] === tm2[field]
     }
+    // Temporal comparison §15.6.8 step 23.d.vi compares the prepared values;
+    // numeric equality includes both signs of zero from calendar providers.
     if (!equal) {
-      rangePattern = rangePatterns[field] || fallback
+      // Temporal comparison §15.6.8 step 23.d.vi.1 encodes inequality with
+      // a selected pattern and ends the search.
+      // ECMA-402 §11.5.8 step 15.b and Temporal comparison §15.6.8 step 23.b.
+      // A missing field on the private interval map yields undefined.
+      const interval = rangePatterns[field]
+      rangePattern = interval || fallback
       break
     }
   }
+  // Temporal comparison §15.6.8 step 24: undefined encodes no unequal
+  // encountered field; full field coverage remains a separate premise.
   if (rangePattern === undefined) {
+    // ECMA-402 §11.5.8 step 16.b: pass the selected local time privately.
+    // Temporal comparison §15.6.8 step 24.b reuses the rendering local time.
+    // Both render paths use +00:00 for Plain endpoints.
+    const rangeFormatOptions = {__proto__: null, localTime: tm1}
+    // Temporal comparison §15.6.8 step 24.a reuses the formatter's fresh List.
+    // The records stay private until the public wrapper creates its own parts.
     const result = FormatDateTimePattern(
       dtf,
       parts,
@@ -170,44 +244,51 @@ export function PartitionDateTimeRangePattern(
       first.isPlain,
       {
         ...implDetails,
-        rangeFormatOptions: {localTime: tm1},
+        rangeFormatOptions,
       }
     )
-    for (const part of result) part.source = RangePatternType.shared
+    // ECMA-402 §11.5.8 step 16.c.i: create private records without setters.
+    // Temporal comparison §15.6.8 steps 24.c, 24.c.i and 24.d.
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+    for (let index = 0; index < result.length; index++)
+      setDataProperty(result[index], 'source', RangePatternType.shared)
     return result
   }
 
   // Some combined-style intervals contain only the time pattern.
   const selected = rangePattern
   if (
-    DATE_FIELDS.some(
+    arraySome(
+      DATE_FIELDS,
       field =>
-        pattern.includes(field) &&
-        !selected.patternParts.some(
+        stringIncludes(pattern, field) &&
+        !arraySome(
+          selected.patternParts,
           part =>
             part.pattern === '{0}' ||
             part.pattern === '{1}' ||
-            part.pattern.includes(field)
+            stringIncludes(part.pattern, field)
         )
     )
   ) {
     rangePattern = fallback
   }
-  const firstEndpoint = rangePattern.patternParts.find(
-    part => part.pattern === '{0}' || part.pattern === '{1}'
-  )
+  const originalParts = rangePattern.patternParts
+  let firstEndpoint: (typeof originalParts)[number] | undefined
+  for (let index = 0; index < originalParts.length; index++) {
+    const part = originalParts[index]
+    if (part.pattern === '{0}' || part.pattern === '{1}') {
+      firstEndpoint = part
+      break
+    }
+  }
   if (firstEndpoint) {
     const expanded = splitRangePattern(
-      rangePattern.patternParts
-        .map(part =>
-          part.pattern === '{0}' || part.pattern === '{1}'
-            ? pattern
-            : part.pattern
-        )
-        .join('')
+      expandRangePattern(originalParts, pattern)
     )
     if (firstEndpoint.source === RangePatternType.endRange) {
-      for (const part of expanded) {
+      for (let index = 0; index < expanded.length; index++) {
+        const part = expanded[index]
         if (part.source !== RangePatternType.shared)
           part.source =
             part.source === RangePatternType.startRange
@@ -215,39 +296,49 @@ export function PartitionDateTimeRangePattern(
               : RangePatternType.startRange
       }
     }
-    rangePattern = {...rangePattern, patternParts: expanded}
+    rangePattern = {
+      __proto__: null,
+      ...rangePattern,
+      patternParts: expanded,
+    } as RangePatterns
   }
   const result: IntlDateTimeFormatPart[] = []
   const contextParts = PartitionPattern<IntlDateTimeFormatPartType>(
-    rangePattern.patternParts
-      .map(part =>
-        part.pattern === '{0}' || part.pattern === '{1}'
-          ? pattern
-          : part.pattern
-      )
-      .join('')
+    expandRangePattern(rangePattern.patternParts, pattern)
   )
-  const rangeFormatOptions: NonNullable<
-    FormatDateTimePatternImplDetails['rangeFormatOptions']
-  > = {patternParts: contextParts, format: rangePattern}
+  // ECMA-402 §11.5.8 step 19.e: keep optional formatter inputs private.
+  const rangeFormatOptions = {
+    __proto__: null,
+    patternParts: contextParts,
+    format: rangePattern,
+  }
   const rangeImplDetails = {...implDetails, rangeFormatOptions}
-  for (const part of rangePattern.patternParts) {
+  for (let index = 0; index < rangePattern.patternParts.length; index++) {
+    const part = rangePattern.patternParts[index]
     const {source} = part
     // Steps 19.a and 19.f use each pattern without changing locale data.
     // Resolve fallback placeholders per call; other formatters share records.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
     const partPattern =
       part.pattern === '{0}' || part.pattern === '{1}' ? pattern : part.pattern
-    if (!partPattern.includes('{')) {
-      result.push({type: 'literal', value: partPattern, source})
+    if (!stringIncludes(partPattern, '{')) {
+      setDataProperty(result, result.length, {
+        type: 'literal',
+        value: partPattern,
+        source,
+      })
       continue
     }
     const value =
       source === RangePatternType.endRange
         ? second.epochNanoseconds
         : first.epochNanoseconds
-    rangeFormatOptions.localTime =
+    // ECMA-402 §11.5.8 step 19.e: private local-time input ignores setters.
+    setDataProperty(
+      rangeFormatOptions,
+      'localTime',
       source === RangePatternType.endRange ? tm2 : tm1
+    )
     const formatted = FormatDateTimePattern(
       dtf,
       PartitionPattern<IntlDateTimeFormatPartType>(partPattern),
@@ -255,9 +346,11 @@ export function PartitionDateTimeRangePattern(
       first.isPlain,
       rangeImplDetails
     )
-    for (const item of formatted) {
-      item.source = source
-      result.push(item)
+    for (let index = 0; index < formatted.length; index++) {
+      const item = formatted[index]
+      // ECMA-402 §11.5.8 step 19.f.i: own source on each private record.
+      setDataProperty(item, 'source', source)
+      setDataProperty(result, result.length, item)
     }
   }
   return result

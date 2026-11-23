@@ -76,7 +76,7 @@ work from numeric date fields. Fractional offsets and non-unit rounding incremen
 retain their general paths. Full-polyfill `removeTrailingZeros` self samples fall
 from 26.2% to 2.8%. Percentages describe separate profiles, not additive costs.
 
-See [full results](./integer-results.json) and [correctness guards](../../../knowledge-base/audits/2026-10-31-datetimeformat-integer-rendering.md).
+See [full results](./integer-results.json).
 Rust rendering and locale payloads are unchanged.
 
 Current optimized Rust measurements: [shared report](../../../benchmarks/polyfills/README.md#earlier-focused-rust-suites).

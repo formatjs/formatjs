@@ -5,6 +5,7 @@ use std::panic::{AssertUnwindSafe, catch_unwind};
 /// Registry live on its creating thread; input readable for len bytes.
 /// Replaced provider contexts may release after registry borrows end.
 #[unsafe(no_mangle)]
+// Proposal comparison §15.6.23 step 5.a: Load a calendar projection provider over the Intl ABI.
 pub unsafe extern "C" fn formatjs_datetime_calendar_load(
     registry: *const DateTimeRegistry,
     data: *const u8,
@@ -27,6 +28,7 @@ pub unsafe extern "C" fn formatjs_datetime_calendar_load(
 /// # Safety
 /// Registry live on its creating thread.
 #[unsafe(no_mangle)]
+// Proposal comparison §15.6.23 step 5.a: Load compiled calendar projection providers over the Intl ABI.
 pub unsafe extern "C" fn formatjs_datetime_calendar_load_compiled(
     registry: *const DateTimeRegistry,
 ) -> i32 {

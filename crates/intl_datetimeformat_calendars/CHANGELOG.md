@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v0.3.0...formatjs_intl_datetimeformat_calendars_v1.0.0) (2026-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **@formatjs/temporal:** removes @formatjs/temporal/wasm.js, wasm-native.js, temporal-backend.wasm, and Rust's WASM binary module.
+
+### Performance Improvements
+
+* **@formatjs/temporal:** drop WASM and speed up Rust and TS ([1e56b50](https://github.com/formatjs/formatjs/commit/1e56b50d533d08c1c2d6a05e909d4414c2562eaa))
+
 ## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v0.2.3...formatjs_intl_datetimeformat_calendars_v0.3.0) (2026-11-17)
 
 

@@ -600,3 +600,38 @@ it('loads optional calendar patterns lazily and advertises only calendars with a
   ).toEqual([{error: 'RangeError'}])
   Reference.__addLocaleData(entry)
 })
+
+it.each(['record', 'lazy ranges'])(
+  'creates private skeleton %s without mutable Object.assign',
+  stage => {
+    const prepare = () =>
+      parseDateTimeSkeleton(
+        'yMd',
+        'y-MM-dd',
+        {d: 'y-MM-dd – y-MM-dd'},
+        '{0} – {1}',
+        true
+      )
+    const ready = stage === 'lazy ranges' ? prepare() : undefined
+    const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+    let actual: unknown
+    try {
+      Object.defineProperty(Object, 'assign', {
+        configurable: true,
+        get() {
+          throw new Error('Mutable skeleton Object.assign reached')
+        },
+      })
+      const result = ready ?? prepare()
+      actual = [
+        result.year,
+        result.month,
+        result.day,
+        result.rangePatterns.day.patternParts.length > 0,
+      ]
+    } finally {
+      Object.defineProperty(Object, 'assign', original)
+    }
+    expect(actual).toEqual(['numeric', 'numeric', 'numeric', true])
+  }
+)

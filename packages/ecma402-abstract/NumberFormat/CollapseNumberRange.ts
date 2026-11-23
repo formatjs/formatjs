@@ -1,3 +1,4 @@
+import {arrayEvery, arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
@@ -35,9 +36,10 @@ function canCollapse(
 ): boolean {
   return (
     a.length === b.length &&
-    a.some(part => part.type !== 'literal') &&
-    !a.some(part => part.type === 'minusSign') &&
-    a.every(
+    arraySome(a, part => part.type !== 'literal') &&
+    !arraySome(a, part => part.type === 'minusSign') &&
+    arrayEvery(
+      a,
       (part, i) => part.type === b[i].type && part.value === b[i].value
     ) &&
     (Array.from(a.map(part => part.value).join('')).length > 1 ||
@@ -70,7 +72,7 @@ export function CollapseNumberRange(
   const paired = (part: NumberFormatPart) =>
     part.type === 'literal' &&
     (part.value.includes('(') || part.value.includes(')'))
-  const canShare = !start.some(paired) && !end.some(paired)
+  const canShare = !arraySome(start, paired) && !arraySome(end, paired)
 
   const startPrefix = start.slice(0, affixLength(start, false))
   const endPrefix = end.slice(0, affixLength(end, false))
@@ -81,7 +83,8 @@ export function CollapseNumberRange(
   const collapseSuffix = canShare && canCollapse(startSuffix, endSuffix)
   const sharedUnit =
     collapseSuffix &&
-    startSuffix.some(
+    arraySome(
+      startSuffix,
       part =>
         part.type === 'currency' ||
         part.type === 'unit' ||

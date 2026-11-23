@@ -20,6 +20,7 @@ formatjs_library(
     srcs = [
         "benchmark.ts",
         "calendar-entry.ts",
+        "comparison-benchmark.ts",
         "facade-benchmark.ts",
         "hermes-instant.ts",
         "host-data-size-benchmark.ts",
@@ -29,6 +30,7 @@ formatjs_library(
         "legacy-date-benchmark.ts",
         "locale-benchmark.ts",
         "locale-entry.ts",
+        "native-ts-benchmark.ts",
         "polyfill-entry.ts",
         "polyfill-force-entry.ts",
         "reference.ts",
@@ -37,13 +39,6 @@ formatjs_library(
         "size-audit.ts",
         "size-benchmark.ts",
         "startup-benchmark.ts",
-        "temporal-rs-benchmark.ts",
-        "wasm-benchmark.ts",
-        "wasm-bridge.ts",
-        "wasm-facade-benchmark.ts",
-        "wasm-inputs.ts",
-        "wasm-test.ts",
-        "wasm-ts-entry.ts",
         "zoned-inputs.ts",
         "zones-entry.ts",
         "//crates/intl_datetimeformat:locale-data/en.json",
@@ -54,6 +49,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@js-temporal/polyfill",
         "//:node_modules/@types/node",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
@@ -166,80 +162,14 @@ rolldown_bundle(
         ("kernel-all-zones", "zones-entry.ts"),
         ("reference-bundle", "reference.ts"),
         ("reference-full-bundle", "reference-full.ts"),
-        ("wasm-ts-code", "wasm-ts-entry.ts"),
-        ("wasm-bridge-code", "wasm-bridge.ts"),
     ]
 ]
-
-js_binary(
-    name = "temporal_rs_benchmark",
-    data = [
-        "wasm-inputs.ts",
-        ":generated_package_json",
-        ":reference-bundle",
-        ":wasm-ts-code",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/esbuild",
-        "//benchmarks/temporal/rust:wasm",
-        "//crates/temporal:wasm",
-    ],
-    entry_point = "temporal-rs-benchmark.ts",
-)
-
-js_binary(
-    name = "wasm_benchmark",
-    data = [
-        "wasm-inputs.ts",
-        ":generated_package_json",
-        ":reference-bundle",
-        ":wasm-bridge-code",
-        ":wasm-ts-code",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/esbuild",
-        "//crates/temporal:wasm",
-    ],
-    entry_point = "wasm-benchmark.ts",
-)
-
-js_test(
-    name = "wasm_test",
-    size = "small",
-    args = ["$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)"],
-    data = [
-        "wasm-inputs.ts",
-        ":generated_package_json",
-        ":reference-bundle",
-        ":wasm-bridge-code",
-        ":wasm-ts-code",
-        "//:node_modules/@bazel/runfiles",
-        "//conformance-tests/icu4j:temporal_duration_fixtures",
-        "//crates/temporal:wasm",
-    ],
-    entry_point = "wasm-test.ts",
-)
-
-sh_test(
-    name = "hermes_wasm_probe",
-    size = "small",
-    srcs = ["hermes-wasm-probe.sh"],
-    args = [
-        "$(rootpath //native/hermes:hermes_runner)",
-        "$(rootpath @hermes//:hermesc)",
-        "$(rootpath :hermes-wasm-probe.js)",
-    ],
-    data = [
-        "hermes-wasm-probe.js",
-        "//native/hermes:hermes_runner",
-        "@hermes//:hermesc",
-    ],
-)
 
 [
     js_binary(
         name = name,
         args = [
             "$(rlocationpath //packages/temporal:pkg)",
-            "$(rlocationpath //crates/temporal:wasm)",
         ] if name == "size_benchmark" else [],
         data = [":generated_package_json"] + bundles + [
             "//:node_modules/@bazel/runfiles",
@@ -268,9 +198,6 @@ sh_test(
                 ":reference-bundle",
                 ":reference-full-bundle",
                 "//packages/temporal:pkg",
-                "//crates/temporal:wasm",
-                ":wasm-ts-code",
-                ":wasm-bridge-code",
             ],
         ),
         (
@@ -332,32 +259,53 @@ sh_binary(
 )
 
 js_binary(
-    name = "wasm_facade_benchmark",
+    name = "ts_regression_guard",
+    data = [
+        "ts-regression-guard.mjs",
+        ":generated_package_json",
+        "//:node_modules/@babel/core",
+    ],
+    entry_point = "ts-regression-guard.mjs",
+)
+
+js_binary(
+    name = "native_ts_benchmark",
+    args = [
+        "$(rlocationpath //packages/temporal:pkg)",
+        "$(rlocationpath //benchmarks/temporal/rust:native_benchmark)",
+    ],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//benchmarks/temporal/rust:native_benchmark",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "native-ts-benchmark.ts",
+)
+
+js_binary(
+    name = "comparison_benchmark",
     args = ["$(rlocationpath //packages/temporal:pkg)"],
     data = [
         "zoned-inputs.ts",
         ":generated_package_json",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@js-temporal/polyfill",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
         "//packages/temporal:pkg",
     ],
-    entry_point = "wasm-facade-benchmark.ts",
+    entry_point = "comparison-benchmark.ts",
 )
 
 js_binary(
     name = "startup_benchmark",
-    args = [
-        "$(rlocationpath //packages/temporal:pkg)",
-        "$(rlocationpath startup-child.mjs)",
-    ],
+    args = ["$(rlocationpath //packages/temporal:pkg)"],
     data = [
-        "startup-child.mjs",
         ":generated_package_json",
-        ":reference-bundle.js",
-        ":reference-full-bundle.js",
         "//:node_modules/@bazel/runfiles",
-        "//:node_modules/esbuild",
+        "//:node_modules/@js-temporal/polyfill",
+        "//:node_modules/temporal-polyfill",
         "//packages/temporal:pkg",
     ],
     entry_point = "startup-benchmark.ts",

@@ -116,3 +116,57 @@ it('uses a primary system-zone ID while preserving explicit aliases', () => {
   expect(now.zonedDateTimeISO().timeZoneId).toBe('America/New_York')
   expect(now.zonedDateTimeISO('US/Eastern').timeZoneId).toBe('US/Eastern')
 })
+
+it('treats a missing or unknown system zone as UTC instead of throwing', () => {
+  for (const value of [undefined, null, 0, '', 'Etc/Unknown', '+05:30:15']) {
+    const now = createNow({
+      epochNanoseconds: () => 0n,
+      timeZoneId: () => value as string,
+    })
+    expect(now.timeZoneId(), String(value)).toBe('UTC')
+    expect(now.zonedDateTimeISO().toString(), String(value)).toBe(
+      '1970-01-01T00:00:00+00:00[UTC]'
+    )
+    expect(now.plainDateISO().toString(), String(value)).toBe('1970-01-01')
+  }
+  const now = createNow({
+    epochNanoseconds: () => 0n,
+    timeZoneId: () => 'asia/kolkata',
+  })
+  expect(now.timeZoneId()).toBe('Asia/Kolkata')
+})
+
+it('uses UTC when the host system-zone lookup throws', () => {
+  const now = createNow({
+    epochNanoseconds: () => 0n,
+    timeZoneId() {
+      throw new Error('Host system zone unavailable')
+    },
+  })
+  expect(now.timeZoneId()).toBe('UTC')
+  expect(now.zonedDateTimeISO().toString()).toBe(
+    '1970-01-01T00:00:00+00:00[UTC]'
+  )
+  expect(now.plainDateTimeISO().toString()).toBe('1970-01-01T00:00:00')
+  expect(now.plainDateISO().toString()).toBe('1970-01-01')
+  expect(now.plainTimeISO().toString()).toBe('00:00:00')
+  expect(now.zonedDateTimeISO('+01:00').timeZoneId).toBe('+01:00')
+  expect(() => now.zonedDateTimeISO('Invalid/Zone')).toThrow(RangeError)
+})
+
+it('uses the runtime wall clock when the configured clock throws', () => {
+  const now = createNow({
+    epochNanoseconds() {
+      throw new Error('Host wall clock unavailable')
+    },
+    timeZoneId: () => 'UTC',
+  })
+  const before = Date.now()
+  const instant = now.instant()
+  const zoned = now.zonedDateTimeISO()
+  const after = Date.now()
+  expect(instant.epochMilliseconds).toBeGreaterThanOrEqual(before)
+  expect(instant.epochMilliseconds).toBeLessThanOrEqual(after)
+  expect(zoned.epochMilliseconds).toBeGreaterThanOrEqual(before)
+  expect(zoned.epochMilliseconds).toBeLessThanOrEqual(after)
+})

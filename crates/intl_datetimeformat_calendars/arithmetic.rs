@@ -2,6 +2,7 @@ pub use crate::calendar::Calendar;
 use formatjs_intl_datetimeformat::{Error, calendar::CalendarFields, civil::CivilDateTime};
 
 impl Calendar {
+    // Proposal comparison §15.6.23 step 5.a: Project local milliseconds through an arithmetic calendar.
     pub fn date_from_time(self, milliseconds: i64) -> Result<CalendarFields, Error> {
         CivilDateTime::from_epoch_nanoseconds(i128::from(milliseconds) * 1_000_000)?;
         let epoch = milliseconds.div_euclid(86_400_000);
@@ -67,6 +68,7 @@ impl Calendar {
         Ok(result)
     }
 }
+// Proposal comparison §15.6.23 step 5.a: Package projected calendar fields for Intl rendering.
 pub(crate) fn fields(era: &str, year: i64, month: i64, day: i64) -> Result<CalendarFields, Error> {
     if !(1..=13).contains(&month) || !(1..=31).contains(&day) {
         return Err(Error::InvalidDate);
