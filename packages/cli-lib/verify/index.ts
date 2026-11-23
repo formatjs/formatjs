@@ -16,8 +16,6 @@ export interface VerifyOpts {
   extraKeys: boolean
   structuralEquality: boolean
   messageSyntax?: 'icu' | 'java-printf' | 'apple-printf' | 'android'
-  /** Reject plural categories the locale's CLDR rules never select (android only). */
-  pluralCategories?: boolean
   ignore?: string[]
   /**
    * Whether to follow symbolic links when traversing directories.
@@ -34,16 +32,10 @@ export async function verify(
     extraKeys = false,
     structuralEquality = false,
     messageSyntax = 'icu',
-    pluralCategories = false,
   }: VerifyOpts
 ): Promise<void> {
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
-
-  if (pluralCategories && messageSyntax !== 'android')
-    throw new Error(
-      '--plural-categories is only supported with --message-syntax android'
-    )
 
   if (messageSyntax === 'apple-printf' || messageSyntax === 'android') {
     const resources = await Promise.all(
@@ -52,23 +44,17 @@ export async function verify(
         content: await readFile(filename),
       }))
     )
-    const issues =
+    const verifyResources =
       messageSyntax === 'android'
-        ? verifyAndroidResourcesWithNative(
-            resources,
-            sourceLocale,
-            missingKeys,
-            extraKeys,
-            structuralEquality,
-            pluralCategories
-          )
-        : verifyAppleResourcesWithNative(
-            resources,
-            sourceLocale,
-            missingKeys,
-            extraKeys,
-            structuralEquality
-          )
+        ? verifyAndroidResourcesWithNative
+        : verifyAppleResourcesWithNative
+    const issues = verifyResources(
+      resources,
+      sourceLocale,
+      missingKeys,
+      extraKeys,
+      structuralEquality
+    )
     for (const issue of issues) {
       writeStderr(`${issue.locale}: ${issue.messageId}: ${issue.error}\n`)
     }

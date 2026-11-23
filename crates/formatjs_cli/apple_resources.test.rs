@@ -181,7 +181,6 @@ fn cli_dispatches_apple_verification_to_native_files() {
             true,
             false,
             MessageSyntax::ApplePrintf,
-            false,
         )
     };
     run().unwrap();

@@ -66,7 +66,7 @@ describe.each([
       )
       const target = join(directory, 'values-ja/strings.xml')
       await writeFile(target, resource(['one', 'other']))
-      const run = (pluralCategories: boolean) =>
+      const run = () =>
         execFile(binary!, [
           'verify',
           join(directory, '**/*.xml'),
@@ -74,14 +74,12 @@ describe.each([
           'android',
           '--source-locale',
           'en',
-          ...(pluralCategories ? ['--plural-categories'] : []),
         ])
-      await expect(run(false)).resolves.toBeTruthy()
-      await expect(run(true)).rejects.toThrow(
+      await expect(run()).rejects.toThrow(
         /plurals\/count\/one: Plural quantity one is not used by ja/
       )
       await writeFile(target, resource(['other']))
-      await expect(run(true)).resolves.toBeTruthy()
+      await expect(run()).resolves.toBeTruthy()
     } finally {
       await rm(directory, {recursive: true, force: true})
     }

@@ -11,7 +11,6 @@ pub struct VerificationOptions {
     pub missing_keys: bool,
     pub extra_keys: bool,
     pub structural_equality: bool,
-    pub plural_categories: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -536,11 +535,9 @@ pub fn verify_resources(
         }
     }
     let mut issues = Vec::new();
-    if options.plural_categories {
-        for (table, catalogs) in &tables {
-            for (language, catalog) in catalogs {
-                issues.extend(unused_plural_categories(table, language, catalog));
-            }
+    for (table, catalogs) in &tables {
+        for (language, catalog) in catalogs {
+            issues.extend(unused_plural_categories(table, language, catalog));
         }
     }
     for (table, catalogs) in tables {

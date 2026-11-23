@@ -114,8 +114,7 @@ export interface NativeBinding {
     sourceLocale: string | undefined,
     missingKeys: boolean,
     extraKeys: boolean,
-    structuralEquality: boolean,
-    pluralCategories?: boolean
+    structuralEquality: boolean
   ): string
   verifyXcstrings(
     catalogsJson: string,
@@ -299,8 +298,7 @@ export function verifyAndroidResourcesWithNative(
   sourceLocale: string | undefined,
   missingKeys: boolean,
   extraKeys: boolean,
-  structuralEquality: boolean,
-  pluralCategories = false
+  structuralEquality: boolean
 ): NativeVerificationIssue[] {
   const native = loadNative()
   if (typeof native.verifyAndroidResources !== 'function') {
@@ -314,8 +312,7 @@ export function verifyAndroidResourcesWithNative(
       sourceLocale,
       missingKeys,
       extraKeys,
-      structuralEquality,
-      pluralCategories
+      structuralEquality
     )
   )
 }

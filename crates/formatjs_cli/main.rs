@@ -266,10 +266,6 @@ enum Commands {
         #[arg(long, value_enum, default_value = "icu")]
         message_syntax: MessageSyntaxType,
 
-        /// Reject plural categories the locale's CLDR rules never select (android only).
-        #[arg(long)]
-        plural_categories: bool,
-
         /// Whether to follow symbolic links when traversing directories.
         /// Defaults to true for compatibility with fast-glob behavior (e.g., pnpm symlinked node_modules).
         /// Use --no-follow-links to disable.
@@ -363,7 +359,6 @@ fn main() -> Result<()> {
             extra_keys,
             structural_equality,
             message_syntax,
-            plural_categories,
             follow_links,
         } => {
             verify::verify_with_syntax(
@@ -375,7 +370,6 @@ fn main() -> Result<()> {
                 *structural_equality,
                 *follow_links,
                 (*message_syntax).into(),
-                *plural_categories,
             )?;
         }
     }
