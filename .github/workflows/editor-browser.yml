@@ -15,6 +15,11 @@ on:
       - '.github/workflows/editor-browser.yml'
       - '.github/scripts/actiond-vrt.sh'
   workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: Refresh VM screenshot baselines for this dependency update
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -54,8 +59,17 @@ jobs:
           bazelisk-cache: true
           repository-cache: true
           disk-cache: editor-browser-${{ matrix.mode }}
+      - name: Refresh VM screenshot baselines
+        if: matrix.mode == 'actiond' && github.event_name == 'workflow_dispatch' && inputs.update_baselines
+        run: |
+          work="$RUNNER_TEMP/formatjs-actiond"
+          mkdir -p "$work"
+          bazel run --script_path="$work/run-browser-tests" @rules_web_e2e//worker:runner
+          "$work/run-browser-tests" --log-dir="$work/logs" run //packages/editor/vrt:visual_test.update
+          "$work/run-browser-tests" --log-dir="$work/logs" run //packages/editor/vrt:e2e_visual_test.update
+          "$work/run-browser-tests" --log-dir="$work/logs" test //packages/editor/vrt:browser_tests --test_output=errors
       - name: Interaction tests and VRT in Linux VM
-        if: matrix.mode == 'actiond'
+        if: matrix.mode == 'actiond' && !(github.event_name == 'workflow_dispatch' && inputs.update_baselines)
         run: bash .github/scripts/actiond-vrt.sh
       - name: Fetch libcap from upstream
         if: matrix.mode == 'local'
