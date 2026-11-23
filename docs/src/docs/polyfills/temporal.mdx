@@ -1,12 +1,7 @@
 # Temporal
 
-`@formatjs/temporal` brings Temporal dates, times, calendars, and time zones to TypeScript, Node.js, and Hermes.
-
-Use all eight Temporal value types and all 16 calendars. TypeScript runs in
-JavaScript hosts; native Rust powers the Hermes SDK.
-
-The [Rust crate](/docs/rust/temporal) provides the same date/time primitives for
-native applications.
+`@formatjs/temporal` provides Temporal's eight value types, `Now`, and 16
+calendars in JavaScript.
 
 ## Installation
 
@@ -22,7 +17,6 @@ import {Temporal} from '@formatjs/temporal'
 const meeting = Temporal.ZonedDateTime.from(
   '2020-03-07T12:00-05:00[America/New_York]'
 )
-
 meeting.add({days: 1}).toString()
 // '2020-03-08T12:00:00-04:00[America/New_York]'
 
@@ -30,199 +24,41 @@ meeting.add({hours: 24}).toString()
 // '2020-03-08T13:00:00-04:00[America/New_York]'
 ```
 
-A calendar day can differ from 24 hours when the time-zone offset changes.
-
-To install `globalThis.Temporal` and `Date.prototype.toTemporalInstant`, import:
-
-```ts
-import '@formatjs/temporal/polyfill.js'
-```
-
-This preserves an existing Temporal implementation. Use
-`@formatjs/temporal/polyfill-force.js` to replace it unconditionally.
+A calendar day can differ from 24 hours when the offset changes.
 
 ## Choose an entry point
 
-| Entry                                  | Use it for                                                |
-| -------------------------------------- | --------------------------------------------------------- |
-| `@formatjs/temporal`                   | An isolated namespace using installed Intl data           |
-| `@formatjs/temporal/polyfill.js`       | Conditional global installation                           |
-| `@formatjs/temporal/polyfill-force.js` | Unconditional global installation                         |
-| `@formatjs/temporal/standalone.js`     | An isolated namespace with bundled calendar and IANA data |
+| Entry                                  | Use it for                                                              |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| `@formatjs/temporal`                   | Isolated namespace using installed Intl data                            |
+| `@formatjs/temporal/polyfill.js`       | Global installation when the host Temporal API is missing or incomplete |
+| `@formatjs/temporal/polyfill-force.js` | Unconditional global installation                                       |
+| `@formatjs/temporal/standalone.js`     | Isolated namespace with bundled calendar and time-zone data             |
 
-The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
-`PlainMonthDay`, `PlainTime`, `PlainYearMonth`, `ZonedDateTime`, and `Now`.
-Temporal uses a captured `Object.create` for its own internal allocations.
-Singular and plural unit names use exact private matching. Replacing
-`String.prototype.endsWith` or `slice` does not intercept that matching;
-public option getters and string coercion hooks still run normally.
-
-Difference options read `largestUnit`, `roundingIncrement`, `roundingMode`, then
-`smallestUnit`. An unrecognized largest-unit spelling throws before later option
-getters run. Recognized units are checked against the method's allowed units
-after those reads.
-
-PlainDateTime differences prepare private unit names without mutable array
-iteration. PlainYearMonth differences isolate private reference-date fields from
-inherited era getters; inherited fields on public input bags remain observable.
-
-Shared ISO string parsing also avoids mutable RegExp/String methods and legacy
-RegExp match-state changes. Clock fractions retain all nine digits. Calendar and
-timezone preparation outside the parser retains its separate validation.
-Calendar identifier preparation retains its original lowercase operation; zoned
-conversion classifies date-only input and offset precision without mutable
-String/RegExp methods.
-
-Duration strings parse without calling mutable RegExp or String methods or
-changing legacy RegExp match state. Fractions preserve all nine digits, including
-fractional hours and minutes.
-Duration totals and fixed-precision strings also avoid replaced BigInt string
-conversion and array search methods during private calculations.
-PlainDateTime and ZonedDateTime differences with hour or smaller largest units
-round the exact integer span before converting final Duration fields to Numbers.
-Calendar-relative difference rounding compares validated mode names directly,
-without calling a replaced `String.prototype.startsWith`.
-Zoned `relativeTo` preparation for Duration rounding/totals keeps omitted private
-fields isolated from inherited getters. ZonedDateTime rounding rejects invalid
-units/increments before computing local time. Clock rounding keeps timezone
-offsets as exact bigint values, avoiding private string formatting and reparsing.
-Private timezone caches retain their original Map constructor and access methods.
-Timezone name preparation retains original case/key methods. Default compact-zone
-transition preparation avoids replaced array methods and inherited row/metadata setters.
-Relative `Duration` options route strings without an extra RegExp test; full
-string validation still follows the existing parsers.
-
-Zoned date-largest differences validate the following local-day window when
-rounding requires it, including zero Duration rounding and exact subday results.
-Public until/since with equal epochs still return zero after option validation.
-Clock rounding carries across a shorter local-day window even when its time
-quantity stays unchanged. Nanosecond rounding
-with increment 1 retains its identity path. Duration totals and rounds use the
-original local clock when a timezone gap shifts an intermediate date.
-Duration rounding to weeks with a year/month largest unit also validates the
-following week endpoint for exact results. Nanosecond identity and plain-zero
-equality retain their shortcuts.
-Calendar-relative `since` and zoned intermediate additions keep private Duration
-field processing independent of a replaced `Object.keys`.
-PlainDate, PlainDateTime and PlainYearMonth add/subtract also keep private fields
-independent of replaced `Object.keys` and array iteration. YearMonth addition
-validates the added full date before constructing its YearMonth result.
-Calendar addition also avoids replaced array mapping/species and private
-month-code regex/string hooks. Private destination records ignore inherited
-`monthCode`; public field bags still read inherited month-code getters.
-Host calendar caches retain original Map/iterator operations. Compact and
-approximate year construction avoids replaced array methods and inherited
-indexed setters; private host Intl options ignore inherited formatting fields.
-
-`PlainDate` conversions keep private calendar fields separate from inherited
-properties and use internal time conversion even when `PlainTime.from` changes.
-Direct branded timezone inputs skip unused `plainTime` getters. ISO year padding
-remains independent of later changes to `String.prototype.padStart`.
-
-Non-ISO `PlainMonthDay` strings validate their original date range before
-selecting a reference year. Short-date parsing and `toPlainDate` keep private
-fields separate from inherited properties; Chinese/Dangi leap-code handling
-remains independent of replaced string methods.
-
-Plain relative Duration totals and rounds reject destinations outside
-PlainDateTime bounds before rounding. Exact adjacent values and zero-duration
-shortcuts remain supported. PlainDateTime time replacement and serialization
-remain independent of later changes to PlainTime.from and String.prototype.slice.
-
-Duration comparison validates required calendar and zoned additions even when
-date components match. Plain fixed-day/time comparisons do not require a final
-destination date within Temporal bounds. Complete equal durations retain their
-specified shortcut.
-
-PlainYearMonth.toPlainDate keeps inherited era properties out of private calendar
-fields while preserving inherited public day fields. Locale formatting reports
-invalid date/time styles before a conflicting calendar. DurationFormat parts
-always expose their own unit properties.
-
-Without Intl, default `Temporal.Now` timezone offsets remain independent of
-later replacements of `String` or `String.prototype.padStart`.
-If the host system timezone lookup fails or returns an unusable identifier,
-`Temporal.Now` uses UTC for calls that omit the timezone.
-If a configured clock fails, `Temporal.Now` uses the runtime wall clock.
-
-String shorthand such as `time.round('minute')` or `duration.total('hour')`
-creates private options directly, without reading a replaced `Object.assign`
-or inherited option getters/setters. Object-form options retain inherited
-property reads.
-Host timezone and owned DateTimeFormat adapters also create private copied
-records without consulting `Object.assign` or invoking inherited slot setters.
-Its constructor prototype reads and formatter option reads use ordinary property
-access without consulting a replaced `Reflect.get`.
-Temporal and shared date/calendar helpers retain a captured `Math.floor` for
-internal floor arithmetic. Other internal math operations, numeric predicates and
-Number/BigInt conversions also retain captured bindings.
-Temporal validation and shared helpers retain their original Error, TypeError and
-RangeError constructors after global bindings change.
-Temporal and shared formatter private-list predicates retain captured
-`Array.prototype.every` and `Array.prototype.some` operations and their invocation
-helper.
-
-When installation adapts native `Intl.DateTimeFormat` for Temporal inputs,
-private formatter state and projection caches retain captured WeakMap/Map
-operations. Replacing those methods, global `Map`, or `Reflect.apply` and
-`Reflect.construct` after import does not intercept these bridge operations.
-
-Shared primitive coercion retains intrinsic helper bindings while preserving user
-conversion hooks and their standard hints. Browser host objects such as
-`document.all` retain object semantics for field bags, options, constructor
-prototypes and primitive conversion.
-
-ZonedDateTime string conversion validates syntax and identifiers, then reads
-`disambiguation`, `offset` and `overflow` before checking representable range.
-This order also applies when native parsing is enabled.
+The installation entries also provide `Date.prototype.toTemporalInstant`.
 
 ## Calendars and time-zone data
 
-Date formatting normalizes nonpositive calendar display years to `1 - year`,
-including the native Intl bridge. For example, Buddhist calendar year 0 displays
-as year 1. Temporal's stored calendar year stays 0.
+Load any Intl polyfills and their data **before importing Temporal**. The
+default entry captures installed DateTimeFormat for named time zones and
+Umm al-Qura data. UTC and numeric offsets work without Intl.
 
-Month codes must match Temporal's grammar exactly. Malformed codes such as
-`M00` or codes with trailing whitespace throw before later field getters run.
-A syntactically valid code can still be invalid for the chosen calendar.
-`PlainDate.from`, `PlainDateTime.from`, `PlainYearMonth.from` and
-`PlainMonthDay.from` validate string syntax and calendar,
-then read `overflow`, then check representable bounds and normalize the date.
-Calendar strings passed to `withCalendar` or a field bag need valid ISO syntax;
-their date can lie outside Temporal’s representable range. Only the calendar
-annotation is used.
+Native Intl supplies offsets, so the default entry samples them to find
+transitions. Closely spaced changes can escape detection if the offsets at both
+ends of a sample interval match. Use standalone for bundled IANA history and
+recurring rules beyond 2100. Update the package when those rules change.
 
-Duration operations accept a `PlainDateTime` as `relativeTo`. They use its stored
-date and calendar, ignore its time, and do not read shadowed public field getters.
-Calendar-unit totals validate both interpolation endpoints. Near date limits,
-even an exact total or a zero zoned total can throw `RangeError`.
+Chinese and Dangi use compact ICU4X data for 1900–2102 and an arithmetic
+approximation outside that range. The default entry uses host Umm al-Qura data
+for AH 1300–1600, with civil arithmetic outside that range.
 
-The default entry captures the installed `Intl.DateTimeFormat` for named
-time-zone offsets and Umm al-Qura data. It works with native Intl or installed
-FormatJS polyfills. Load Intl polyfills and their data **before importing
-Temporal**. UTC and numeric offsets work without Intl.
+`Temporal.Now` uses the system time zone. Without DateTimeFormat it uses
+the current offset from `Date`. A failed lookup or unusable identifier falls
+back to UTC. If a configured clock throws, Now uses the runtime wall clock.
+Explicit invalid zone arguments still throw.
 
-For owned time-zone histories and recurring future rules, use:
-
-```ts
-import {Temporal} from '@formatjs/temporal/standalone.js'
-
-Temporal.ZonedDateTime.from('2150-07-01T12:00[America/New_York]')
-```
-
-Standalone includes calendar tables and IANA transitions with future rules;
-its time-zone data does not stop at 2100. Update the package when timezone laws
-change. Equivalent timezone aliases compare through bundled primary-zone
-data; private lookup ignores inherited object properties. The default entry instead follows the installed Intl data version.
-
-Default transition queries search host offsets. Intl has no transition
-enumeration API, so closely spaced changes can escape that search. Use standalone
-when transition histories must be determined by the bundled data.
-
-Chinese and Dangi use compact ICU4X data with an arithmetic approximation outside
-1900–2102 in the default entry. Default Umm al-Qura uses host data for AH 1300–1600,
-then a civil-calendar fallback. These data policies are distinct from
-independently verified calendar authority ranges.
+Calendar-unit Duration totals validate both interpolation endpoints. Near date
+limits, an exact result or a zero zoned total can still throw `RangeError`.
 
 ## Locale formatting
 
@@ -235,62 +71,25 @@ Temporal.PlainDate.from('2026-11-17').toLocaleString('en', {
 // 'November 17, 2026'
 ```
 
-Date/time locale methods use the installed DateTimeFormat; Duration uses
-DurationFormat. Without the corresponding formatter, locale methods return an
-ISO representation. Fractional Duration formatting retains exact decimal arithmetic,
-including nanoseconds and large integral seconds; precision regressions cover
-positive and negative values. See [DateTimeFormat](/docs/polyfills/intl-datetimeformat) and
-[DurationFormat](/docs/polyfills/intl-durationformat) for data loading.
+Date and time values use [DateTimeFormat](/docs/polyfills/intl-datetimeformat).
+Duration uses [DurationFormat](/docs/polyfills/intl-durationformat). If the
+formatter is unavailable, `toLocaleString()` returns an ISO representation.
 
-FormatJS formatters retain selected Intl methods for private formatting work.
-New DurationFormat instances and cold DateTimeFormat numeric profiles can adopt
-later installed NumberFormat providers; initialized instances/profiles retain
-their selected providers. Fractional Duration scaling uses exact bigint divisors.
-Cold Temporal kind selection also retains private matching and interval methods.
-Fresh Duration locale snapshots retain Set order and invalidation without
-observing replaced Set iteration methods. Prefix lookup and Unicode extension
-handling retain the original locale and option read order.
+Create formatters after global Temporal installation. To use an isolated
+namespace with FormatJS formatters, register it with
+`DateTimeFormat.__addTemporalNamespace(Temporal)` or
+`DurationFormat.__addTemporalNamespace(Temporal)` on the FormatJS class in use.
 
-Global installation registers Temporal with FormatJS formatters and adapts legacy
-host formatters. Create formatters after installation. For an isolated namespace,
-register explicitly with `DateTimeFormat.__addTemporalNamespace(Temporal)` when
-using the FormatJS DateTimeFormat class.
+## Hermes and Rust
 
-## Hermes
-
-The TypeScript implementation runs on Hermes as source and optimized bytecode.
-Install the required Intl APIs and data first, or use the standalone namespace
-for calendar and named-timezone operations without host Intl data.
-
-For Rust-backed Temporal, use the [native Hermes SDK](/docs/guides/hermes-intl#temporal).
-Native integration requires rebuilding your app. The tested Hermes runtime has
-no WebAssembly runtime, so use TypeScript or the native SDK there.
-
-## Rust
-
-The [Rust crate](https://crates.io/crates/formatjs_temporal) provides typed Temporal
-values, calendar providers, IANA timezone registries and optional compiled data.
-The native Hermes SDK binds that Rust engine. Temporal WASM entry points and
-assets have been removed; use TypeScript in JavaScript hosts or native Rust.
-
-Private defaults ignore inherited prototype fields. Public field bags still read
-inherited getters. PlainTime's private clock lists also ignore replaced array
-mapping, iteration and species hooks; public field getters retain their order.
-`ZonedDateTime` constructors check epoch range before validating timezone and
-calendar arguments.
-Rounding a ZonedDateTime to one nanosecond returns a fresh equivalent value,
-including minimum/maximum instants with outward timezone offsets.
-Rounding options are validated before that return.
-Calendar/unit array `includes`/`indexOf` lookups retain original intrinsics.
+Use TypeScript on Hermes or rebuild your app with the
+[native Hermes SDK](/docs/guides/hermes-intl#temporal) for Rust-backed Temporal.
+For native Rust applications, see [Temporal for Rust](/docs/rust/temporal).
 
 ## Conformance and verification
 
-The pinned Temporal-feature Test262 corpus passes on Node.js and Hermes
-source/bytecode, including Intl integration. Exclusions cover documented
-IANA/CLDR data-version differences; no implementation failures are excluded.
-Independent ICU controls verify calendar arithmetic, offsets, transitions,
-rounding, and locale output. These checks do not establish astronomical accuracy
-beyond the documented calendar authority ranges.
-
-See the [coverage and exclusion audit](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015a-temporal-completion-audit.md)
-for exact profiles, counts, data policies, and limitations.
+Test262 covers JavaScript behavior on Node.js and Hermes. Independent ICU
+fixtures cover calendar arithmetic, offsets, transitions, rounding, and
+formatting. Calendar fixtures verify specific authority ranges.
+The [implementation guide](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015-temporal.md)
+links to test profiles, documented data-version exclusions, and provider limits.
