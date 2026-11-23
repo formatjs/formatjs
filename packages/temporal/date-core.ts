@@ -14,11 +14,11 @@ import {
   mathTrunc,
   numberFrom,
   numberIsInteger,
-  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
+  getSharedCalendarSlot,
   nativeTemporal,
   type NativeTemporal,
   type NativeDateSnapshot,
@@ -131,7 +131,9 @@ export function overflowOption(options: unknown): Overflow {
 // https://tc39.es/ecma262/pr/3966/#sec-totemporalcalendaridentifier
 // https://tc39.es/ecma262/pr/3966/#sec-gettemporalcalendarslotvaluewithisodefault
 // TC39 confirmed the Temporal-only check: https://github.com/tc39/ecma262/pull/3966#discussion_r4284855527
-function calendarSlot(value: object): {calendar: string} | undefined {
+function calendarSlot(value: object): {readonly calendar: string} | undefined {
+  if (import.meta.formatjsTemporalNativeData !== true && !nativeTemporal())
+    return getSharedCalendarSlot(value)
   return (
     getZonedSlot(value) ??
     getDateSlot(value) ??
@@ -304,9 +306,12 @@ export function nativeDateSnapshot(
     return slot.properties
   const existing = getDateSnapshot(slot)
   if (existing?.owner === owner) return existing.value
+  const properties = HasOwnProperty(slot, 'properties')
+    ? slot.properties
+    : undefined
   const value =
-    slot.properties?.owner === owner
-      ? slot.properties
+    properties?.owner === owner
+      ? properties
       : owner.calendarProperties(
           baseCalendar(slot.calendar),
           slot.epochDay,
@@ -409,15 +414,17 @@ const orderedDateFields = [
   'timeZone',
   'year',
 ] as const
-// Temporal comparison §12.3.3 steps2–8: prepare fixed lexicographic field names
-// https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields
+// ECMA-262 preview §22.3.1.3 prepares calendar fields in lexicographic order.
+// https://tc39.es/ecma262/pr/3966/#sec-preparecalendarfields
 export function dateFieldNames(
   calendar: string,
   withTime: boolean,
   shape: DateFieldShape = 'date',
   extra: string[] = []
-): string[] {
-  const result: string[] = []
+): ArrayLike<string> {
+  // A null prototype lets indexed writes bypass inherited setters.
+  const result = createObject(null) as {length: number; [index: number]: string}
+  result.length = 0
   for (let index = 0; index < orderedDateFields.length; index++) {
     const key = orderedDateFields[index]
     let include: boolean
@@ -431,11 +438,11 @@ export function dateFieldNames(
     else if (key === 'offset' || key === 'timeZone')
       include = arrayIncludes(extra, key)
     else include = withTime
-    // Temporal comparison §12.3.3 step8: private List entries are own data.
-    if (include) setDataProperty(result, `${result.length}`, key)
+    if (include) result[result.length++] = key
   }
   return result
 }
+
 // Proposal comparison §12.3.3 steps 9.c.iii.1, 9.c.iv.1, 9.c.v.1 and 9.c.vii.1: Convert prepared date field values.
 export function dateFieldValue(key: string, value: unknown): string | number {
   if (key === 'era') return ToString(value)
@@ -614,15 +621,7 @@ export function mergeDateFields(
 // ECMA-262 preview §22.3.17 steps 1–8: check slots before calendar and timeZone.
 // https://tc39.es/ecma262/pr/3966/#sec-ispartialtemporalobject
 export function partialObject(item: unknown): Record<string, unknown> {
-  if (
-    !object(item) ||
-    getZonedSlot(item) ||
-    getDateSlot(item) ||
-    getDateTimeSlot(item) ||
-    getTimeSlot(item) !== undefined ||
-    getYearMonthSlot(item) ||
-    getMonthDaySlot(item)
-  )
+  if (!object(item) || calendarSlot(item) || getTimeSlot(item) !== undefined)
     throw new TypeErrorConstructor('Expected partial Temporal object')
   if (item.calendar !== undefined || item.timeZone !== undefined)
     throw new TypeErrorConstructor('Unexpected calendar or timeZone')
@@ -694,7 +693,7 @@ const twoDigitDateParts = [
 export function formatISODate(
   epochDay: number,
   kind: 'date' | 'year-month' | 'month-day' = 'date',
-  fields: Readonly<CalendarDate> = calendarFromEpochDayRaw('iso8601', epochDay)
+  fields: Readonly<CalendarDate> = cachedISODateFields(epochDay)
 ): string {
   const month = twoDigitDateParts[fields.month],
     day = twoDigitDateParts[fields.day]
@@ -709,11 +708,19 @@ export function formatISODate(
           zeroPadDecimal(mathAbs(fields.year), 6)
   return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
 }
-// Temporal comparison §12.3.15 steps1–4: omit or mark the canonical calendar annotation
-// https://tc39.es/proposal-temporal/#sec-temporal-formatcalendarannotation
-export function calendarAnnotation(calendar: string, value: unknown): string {
-  const option = calendarNameOption(value)
-  return option === 'never' || (option === 'auto' && calendar === 'iso8601')
+// ECMA-262 preview §22.5.1: omit or mark the canonical calendar annotation.
+// https://tc39.es/ecma262/pr/3966/#sec-formatcalendarannotation
+export function calendarAnnotation(
+  calendar: string,
+  option: ReturnType<typeof calendarNameOption>
+): string {
+  if (calendar === 'iso8601')
+    return option === 'critical'
+      ? '[!u-ca=iso8601]'
+      : option === 'always'
+        ? '[u-ca=iso8601]'
+        : ''
+  return option === 'never'
     ? ''
     : `[${option === 'critical' ? '!' : ''}u-ca=${calendar}]`
 }

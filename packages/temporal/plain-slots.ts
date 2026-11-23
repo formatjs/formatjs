@@ -37,34 +37,32 @@ interface DaySlots {
   allocate(prototype: object, slot: DateSlot): object
 }
 
-// Temporal comparison §§12.3.10–11 step 1. Keep per-kind slot reads and caches.
+// ECMA-262 preview §§22.11.4, 22.13.4 and 22.14.4: keep per-kind slot brands.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaindate-instances
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plainyearmonth-instances
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plainmonthday-instances
 function daySlots(kind: DaySlotKind): DaySlots {
   const slots = new WeakMap<object, DateSlot>()
   const getLocal = slots.get.bind(slots)
   const setLocal = slots.set.bind(slots)
 
   function get(value: object): DateSlot | undefined {
-    const local = getLocal(value)
-    if (import.meta.formatjsTemporalNativeData === true || local) return local
-    const shared = getSharedDaySlot(value, kind)
-    if (!shared) return undefined
-    // Cache ISO projections locally. The shared slot holds only immutable scalars.
-    const slot = {
-      __proto__: null,
-      epochDay: shared.epochDay,
-      calendar: shared.calendar,
+    if (import.meta.formatjsTemporalNativeData === true) return getLocal(value)
+    if (nativeTemporal()) {
+      const local = getLocal(value)
+      if (local) return local
     }
-    setLocal(value, slot)
-    return slot
+    return getSharedDaySlot(value, kind)
   }
 
   function allocate(prototype: object, slot: DateSlot): object {
-    const value =
-      import.meta.formatjsTemporalNativeData === true || nativeTemporal()
-        ? createObject(prototype)
-        : allocateSharedDay(prototype, kind, slot.epochDay, slot.calendar)
-    setLocal(value, slot)
-    return value
+    if (import.meta.formatjsTemporalNativeData === true || nativeTemporal()) {
+      const value = createObject(prototype)
+      setLocal(value, slot)
+      return value
+    }
+    // Share the prepared fields and their ISO projection across entry points.
+    return allocateSharedDay(prototype, kind, slot)
   }
   return {get, allocate}
 }
@@ -90,32 +88,30 @@ export const setNativeDateTimeSlot: (
     ? setLocalDateTime
     : undefined!
 
-// Temporal comparison §§12.3.10–11 step 1. Read initialized date-time slots.
+// ECMA-262 preview §22.10.4: read initialized date-time slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaindatetime-instances
 export function getDateTimeSlot(value: object): DateTimeSlot | undefined {
-  const local = getLocalDateTime(value)
-  if (import.meta.formatjsTemporalNativeData === true || local) return local
-  const shared = getSharedDateTimeSlot(value)
-  if (!shared) return undefined
-  const slot = {
-    __proto__: null,
-    epochNanoseconds: shared.epochNanoseconds,
-    calendar: shared.calendar,
+  if (import.meta.formatjsTemporalNativeData === true)
+    return getLocalDateTime(value)
+  if (nativeTemporal()) {
+    const local = getLocalDateTime(value)
+    if (local) return local
   }
-  setLocalDateTime(value, slot)
-  return slot
+  return getSharedDateTimeSlot(value)
 }
 
-// Temporal comparison §5.5.8 steps 3–5. Initialize the selected storage path.
+// ECMA-262 preview §22.10.5.1: initialize date-time slots.
+// https://tc39.es/ecma262/pr/3966/#sec-createtemporaldatetime
 export function allocateDateTime(
   prototype: object,
   slot: DateTimeSlot
 ): object {
-  const value =
-    import.meta.formatjsTemporalNativeData === true || nativeTemporal()
-      ? createObject(prototype)
-      : allocateSharedDateTime(prototype, slot.epochNanoseconds, slot.calendar)
-  setLocalDateTime(value, slot)
-  return value
+  if (import.meta.formatjsTemporalNativeData === true || nativeTemporal()) {
+    const value = createObject(prototype)
+    setLocalDateTime(value, slot)
+    return value
+  }
+  return allocateSharedDateTime(prototype, slot)
 }
 // Temporal comparison §4.3.3 step 3.
 // Decode native time storage for the clock projection.

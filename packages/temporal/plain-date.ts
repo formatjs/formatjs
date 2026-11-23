@@ -82,6 +82,8 @@ import {
   durationNanoseconds,
 } from '#packages/temporal/duration-core.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {ArithmeticCalendarToEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
+import {dayCheck} from '#packages/temporal/calendar.js'
 import {
   optionsObject,
   unitOption,
@@ -200,8 +202,13 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
     return result
   }
   const fields = prepareDateTimeString(item, options)
+  const {year, month, day} = fields
+  // ECMA-262 preview §22.3.9.5: the validated ISO date's noon bounds are day bounds.
+  // https://tc39.es/ecma262/pr/3966/#sec-isodatewithinlimits
   return {
-    epochDay: isoDay(fields.year, fields.month, fields.day),
+    epochDay: nativeTemporal()
+      ? isoDay(year, month, day)
+      : dayCheck(ArithmeticCalendarToEpochDay('iso8601', year, month, day)),
     calendar: fields.calendar,
   }
 }

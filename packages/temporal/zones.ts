@@ -20,9 +20,12 @@ import {
   parseOffsetNanoseconds,
 } from '#packages/temporal/instant-string.js'
 import {
+  checkLocalEpoch,
   createTimeZone,
   epochNanosecondsToISO,
   isoToEpochNanoseconds,
+  localEpoch,
+  memoizableOffset,
   type ISODateTime,
   type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
@@ -107,6 +110,9 @@ function withNativeZone(
       : fallbackKernel().possibleInstants(fields)
   }
   return {
+    get [memoizableOffset]() {
+      return fallbackKernel()[memoizableOffset] === true
+    },
     // Proposal comparison §11.1.9 steps 2–3: Forward the exact instant to the active offset provider.
     offsetNanoseconds: value => {
       const native = nativeTemporal()
@@ -132,6 +138,14 @@ function withNativeZone(
     // ECMA-262 preview §22.2.13 steps 1–2: resolve candidates using the requested disambiguation.
     // https://tc39.es/ecma262/pr/3966/#sec-getepochnanosecondsfor
     resolve: (fields, disambiguation = 'compatible') => {
+      if (typeof fields === 'bigint') {
+        if (import.meta.formatjsTemporalNativeData === true || nativeTemporal())
+          fields = epochNanosecondsToISO(fields)
+        else {
+          checkLocalEpoch(fields)
+          return fallbackKernel().resolve(fields, disambiguation)
+        }
+      }
       const native = nativeTemporal()
       return import.meta.formatjsTemporalNativeData === true || native
         ? native!.timeZoneResolve(identifier, fields, disambiguation)
@@ -258,6 +272,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       : [value]
   }
   const result: TimeZoneKernel = {
+    [memoizableOffset]: true,
     // Proposal comparison §6.3.46 steps 8 and 11: Return no transition for a constant-offset provider.
     // ECMA-262 preview §22.2.4: UTC has no offset changes.
     // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneprevioustransition
@@ -275,7 +290,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields)),
     possibleInstantsFromEpochNanoseconds,
     // Proposal comparison §11.1.11 steps 1–2: Resolve and range-check the sole fixed-offset result.
-    resolve: fields => check(isoToEpochNanoseconds(fields) - offset),
+    resolve: fields => check(localEpoch(fields) - offset),
   }
   // Proposal comparison §11.1.9 steps 2–3: Supply the prebuilt fixed or UTC fallback.
   const zone = withNativeZone(key, () => result)

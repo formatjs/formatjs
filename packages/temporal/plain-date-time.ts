@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -198,7 +199,9 @@ function dateSlot(slot: DateTimeSlot) {
     value = {
       epochDay: epochDayOf(slot.epochNanoseconds),
       calendar: slot.calendar,
-      properties: slot.properties,
+      properties: HasOwnProperty(slot, 'properties')
+        ? slot.properties
+        : undefined,
     }
     setCachedDateSlot(slot, value)
   }

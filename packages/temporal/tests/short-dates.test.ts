@@ -188,6 +188,11 @@ it('reads short-date overflow after parsing but before range checks', () => {
       throw failure
     },
   }
+  const warm = Temporal.PlainYearMonth.from('2024-02')
+  expect(Temporal.PlainYearMonth.from('2024-02')).not.toBe(warm)
+  expect(() => Temporal.PlainYearMonth.from('2024-02', options)).toThrow(
+    failure
+  )
   for (const text of ['+275760-10', '-271821-03', '+999999-01']) {
     expect(() => Temporal.PlainYearMonth.from(text, options), text).toThrow(
       failure

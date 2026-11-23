@@ -14,11 +14,14 @@ import {
 } from '@formatjs_generated/tz/temporal-names.js'
 import {
   hasLegacyTimeZoneProvider,
+  hasRegisteredLegacyTimeZoneProvider,
   timeZoneMetadata,
 } from '#packages/temporal/native.js'
 import {
   createTimeZone,
   isoToEpochNanoseconds,
+  localEpoch,
+  memoizableOffset,
   type ISODateTime,
   type Disambiguation,
   type TimeZoneKernel,
@@ -33,6 +36,23 @@ export type HostTimeZone = Pick<
 > &
   Partial<Pick<TimeZoneKernel, 'transition'>>
 const apply = Reflect.apply
+const OffsetMemo = WeakMap
+const getOffsetMemo = Function.prototype.call.bind(
+  OffsetMemo.prototype.get
+) as (map: WeakMap<object, number>, receiver: object) => number | undefined
+const setOffsetMemo = Function.prototype.call.bind(
+  OffsetMemo.prototype.set
+) as (map: WeakMap<object, number>, receiver: object, offset: number) => void
+let offsetsByReceiver: WeakMap<object, number> | undefined
+
+// Receiver hits expire with the host offset cache.
+export function memoizedHostOffset(receiver: object): number | undefined {
+  return offsetsByReceiver && getOffsetMemo(offsetsByReceiver, receiver)
+}
+
+export function memoizeHostOffset(receiver: object, offset: number): void {
+  setOffsetMemo((offsetsByReceiver ??= new OffsetMemo()), receiver, offset)
+}
 const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
 const arraySort = Array.prototype.sort
 const isArray = Array.isArray
@@ -178,6 +198,8 @@ function createHostTimeZoneProvider(
   beginOperation(): boolean
   legacyKernel?: () => TimeZoneKernel | undefined
   ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
+  hasOwnedOffset: boolean
+  singletonCache(): Map<bigint, bigint>
   nearestLocalAfter?: TimeZoneKernel['nearestLocalAfter']
   dataGeneration?: () => object
   ownedTransition?: (
@@ -204,6 +226,9 @@ function createHostTimeZoneProvider(
   // Proposal comparison §11.1.9 step3: named offset memoization stays private.
   // https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor
   const offsets = new MapConstructor<number, bigint>()
+  let singletons: Map<bigint, bigint> | undefined
+  const singletonCache = (): Map<bigint, bigint> =>
+    (singletons ??= new MapConstructor())
   const dataGeneration = hostTimeZoneCapability(
     parts,
     timeZoneDataGenerationKey
@@ -223,6 +248,7 @@ function createHostTimeZoneProvider(
     if (dataGeneration || !hasLegacyTimeZoneProvider(Constructor, parts))
       return false
     apply(mapClear, offsets, [])
+    singletons = undefined
     return true
   }
   let offsetGeneration: object | undefined
@@ -239,6 +265,7 @@ function createHostTimeZoneProvider(
       const generation = dataGeneration()
       if (generation !== offsetGeneration) {
         apply(mapClear, offsets, [])
+        singletons = undefined
         offsetGeneration = generation
       }
     }
@@ -291,6 +318,8 @@ function createHostTimeZoneProvider(
       throw new RangeErrorConstructor('Invalid host timezone offset')
     const offset = bigIntFrom(offsetSeconds) * second
     if (apply(mapSize, offsets, []) >= 64) {
+      offsetsByReceiver = undefined
+      singletons = undefined
       const oldest = apply(
         mapIteratorNext,
         apply(mapKeys, offsets, []),
@@ -303,6 +332,8 @@ function createHostTimeZoneProvider(
   }
   return {
     offsetNanoseconds,
+    hasOwnedOffset: queryTemporalTimeZone !== undefined,
+    singletonCache,
     legacyKernel:
       parts === hostParts
         ? legacyTimeZoneKernel(Constructor, formatter)
@@ -344,17 +375,28 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     beginOperation,
     legacyKernel,
     ownedCandidates,
+    hasOwnedOffset,
+    singletonCache,
     nearestLocalAfter,
     ownedTransition,
     dataGeneration,
   } = createHostTimeZoneProvider(timeZone)
+  const reuseOffsets = !hasOwnedOffset && !dataGeneration && !legacyKernel
 
   // ECMA-262 preview §22.2.15 steps 3.b and 4.a use sorted, bounded named-zone candidates.
   // https://tc39.es/ecma262/pr/3966/#sec-getpossibleepochnanoseconds
   const candidatesFor = (local: bigint): bigint[] => {
+    const memo =
+      reuseOffsets && !ownedCandidates && !hasRegisteredLegacyTimeZoneProvider()
+        ? singletonCache()
+        : undefined
+    if (memo) {
+      const cached = apply(mapGet, memo, [local]) as bigint | undefined
+      if (cached !== undefined) return [cached]
+    }
     const query = ownedCandidates?.(local)
     const owned = typeof query === 'bigint' ? undefined : query
-    const candidates = owned ?? []
+    let candidates = owned
     if (!owned) {
       // Host offsets are subday. These probes cover both offsets when adjacent
       // transitions are more than two days apart. At Instant limits, this also
@@ -375,10 +417,21 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
           instant <= limit &&
           instant + offsetNanoseconds(instant) === local
         ) {
-          // Proposal comparison §11.1.13 step 3.a: Append to the private candidate List.
-          setDataProperty(candidates, `${candidates.length}`, instant)
+          // Build the common one-element list with an own array entry.
+          if (candidates)
+            setDataProperty(candidates, candidates.length, instant)
+          else candidates = [instant]
         }
       }
+    }
+    if (!candidates) return []
+    if (!owned && candidates.length < 2) {
+      // All supporting offset probes must still be cached.
+      if (memo && memo === singletonCache()) {
+        if (apply(mapSize, memo, []) >= 32) apply(mapClear, memo, [])
+        apply(mapSet, memo, [local, candidates[0]])
+      }
+      return candidates
     }
     return apply(arraySort, candidates, [
       // Proposal comparison §11.1.13 step 3.a: sort collected candidates by epoch nanoseconds.
@@ -396,7 +449,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
   // Proposal comparison §11.1.12 steps 2, 3.a, 3.b, 3.d and 5: Select observed candidates by disambiguation.
   const resolve = (
-    fields: ISODateTime,
+    fields: ISODateTime | bigint,
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
     const legacy = legacyKernel?.()
@@ -409,7 +462,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     )
       throw new RangeErrorConstructor('Invalid disambiguation')
     beginOperation()
-    const local = isoToEpochNanoseconds(fields),
+    const local = localEpoch(fields),
       candidates = candidatesFor(local)
     if (candidates.length === 1) return candidates[0]
     if (disambiguation === 'reject')
@@ -561,6 +614,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     return value
   }
   return {
+    [memoizableOffset]: reuseOffsets,
     offsetNanoseconds: instant =>
       legacyKernel?.()?.offsetNanoseconds(instant) ?? offsetAt(instant),
     possibleInstants,

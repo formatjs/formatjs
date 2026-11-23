@@ -21,10 +21,15 @@ import {
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {
   allocateZonedDateTime,
+  hasRegisteredLegacyTimeZoneProvider,
   nativeTemporal,
   type NativeTemporal,
   type NativeDateSnapshot,
 } from '#packages/temporal/native.js'
+import {
+  memoizeHostOffset,
+  memoizedHostOffset,
+} from '#packages/temporal/host-timezone.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
@@ -66,8 +71,10 @@ import {
   zoneName,
 } from '#packages/temporal/instant-string.js'
 import {
+  checkLocalEpoch,
   epochNanosecondsToISO,
   isoToEpochNanoseconds,
+  memoizableOffset,
   startOfTimeZoneDay,
   type Disambiguation,
   type ISODateTime,
@@ -300,7 +307,7 @@ export function zonedFromLocal(
         {epochNanoseconds: 0n, timeZone: zone, calendar},
         epochDayOf(value)
       )
-    : zonedKernel(zone).resolve(epochNanosecondsToISO(value), ambiguous)
+    : zonedKernel(zone).resolve(value, ambiguous)
   return createZonedDateTime(epoch, zone, calendar)
 }
 // ECMA-262 preview §22.3.12.5 steps 1–5: read, default and validate disambiguation.
@@ -324,7 +331,10 @@ function resolve(
   matchMinute: boolean
 ): bigint {
   const kernel = zonedKernel(timeZone),
-    fields = epochNanosecondsToISO(localTime)
+    fields =
+      import.meta.formatjsTemporalNativeData === true || nativeTemporal()
+        ? epochNanosecondsToISO(localTime)
+        : checkLocalEpoch(localTime)
   if (offset === 'Z' || offset === 'z') return validateInstant(localTime)
   if (offset === undefined || behavior === 'ignore')
     return kernel.resolve(fields, ambiguous)
@@ -343,7 +353,7 @@ function resolveOffsetNanoseconds(
   localTime: bigint,
   provided: bigint,
   kernel: TimeZoneKernel,
-  fields: ISODateTime,
+  fields: ISODateTime | bigint,
   behavior: string,
   ambiguous: Disambiguation,
   matchMinute: boolean
@@ -358,15 +368,19 @@ function resolveOffsetNanoseconds(
   // https://tc39.es/ecma262/pr/3966/#sec-validateisodaysrange
   if (localTime < -instantLimit)
     throw new RangeErrorConstructor('Local date out of range')
-  const candidates = kernel.possibleInstants(fields)
+  const candidates =
+    typeof fields === 'bigint'
+      ? kernel.possibleInstantsFromEpochNanoseconds!(fields)
+      : kernel.possibleInstants(fields)
   for (let i = 0; i < candidates.length; i++) {
     const actual = localTime - candidates[i]
+    if (provided === actual) return candidates[i]
+    if (!matchMinute) continue
     const rounded =
       (actual < 0n ? -1n : 1n) *
       (((actual < 0n ? -actual : actual) + 30_000_000_000n) / 60_000_000_000n) *
       60_000_000_000n
-    if (provided === actual || (matchMinute && provided === rounded))
-      return candidates[i]
+    if (provided === rounded) return candidates[i]
   }
   // Proposal comparison §6.5.1 step 10.b: Probe the sole exact-offset match.
   // A full day of margin keeps every possible candidate in Instant range.
@@ -560,7 +574,7 @@ function add(
       )
     // Step 6 can throw near the epoch limit: https://github.com/tc39/ecma262/pull/3966#discussion_r4288358250
     value = zonedKernel(slot.timeZone).resolve(
-      epochNanosecondsToISO(bigIntFrom(day) * nsPerDay + timeOf(start))
+      bigIntFrom(day) * nsPerDay + timeOf(start)
     )
   }
   return createZonedDateTime(
@@ -608,9 +622,7 @@ export function unroundedZonedDifference(
   while (true) {
     // ECMA-262 preview §22.9.5.6 steps 11.a–c resolve the original wall clock on the probe date.
     // https://tc39.es/ecma262/pr/3966/#sec-differencezoneddatetime
-    anchor = zone.resolve(
-      epochNanosecondsToISO(bigIntFrom(day) * nsPerDay + originClock)
-    )
+    anchor = zone.resolve(bigIntFrom(day) * nsPerDay + originClock)
     if ((anchor - end) * direction <= 0n) break
     day -= sign
     // Step 12 can fail when a midnight fold makes every compatible probe overshoot.
@@ -724,9 +736,7 @@ export function differenceZonedDuration(
         // Proposal comparison §7.5.35 step 5: Resolve the zero-date clock anchor compatibly.
         // https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime
         compatibleOrigin: () =>
-          zonedKernel(start.timeZone).resolve(
-            epochNanosecondsToISO(local(start))
-          ),
+          zonedKernel(start.timeZone).resolve(local(start)),
       }
     )
   )
@@ -790,6 +800,22 @@ const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
   start: number,
   end?: number
 ) => string
+
+// ECMA-262 preview §22.9.3.31 step 17 reads partial ISO fields in sorted order.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.prototype.with
+const isoZonedWithFields = Object.freeze([
+  'day',
+  'hour',
+  'microsecond',
+  'millisecond',
+  'minute',
+  'month',
+  'monthCode',
+  'nanosecond',
+  'offset',
+  'second',
+  'year',
+])
 
 function offsetText(slot: ZonedSlot): string {
   const cached = zonedSnapshot(slot)
@@ -930,15 +956,25 @@ class ZonedDateTimeValue {
   // Proposal comparison §6.3.29 steps 1–3.
   // https://tc39.es/proposal-temporal/#sec-get-temporal.zoneddatetime.prototype.offsetnanoseconds
   get offsetNanoseconds(): number {
+    const memoize =
+      import.meta.formatjsTemporalHostTimeZones === true &&
+      !nativeTemporal() &&
+      !hasRegisteredLegacyTimeZoneProvider()
+    if (memoize) {
+      const offset = memoizedHostOffset(this)
+      if (offset !== undefined) return offset
+    }
     const slot = read(this),
       cached = zonedSnapshot(slot)
     if (cached) return cached.value.values.offsetNanoseconds as number
     // ECMA-262 §21.4.1.21: Query the active host offset at the stored instant.
     // https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds
-    if (import.meta.formatjsTemporalHostTimeZones === true)
-      return numberFrom(
-        zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
-      )
+    if (import.meta.formatjsTemporalHostTimeZones === true) {
+      const zone = zonedKernel(slot.timeZone)
+      const offset = numberFrom(zone.offsetNanoseconds(slot.epochNanoseconds))
+      if (memoize && zone[memoizableOffset]) memoizeHostOffset(this, offset)
+      return offset
+    }
     return numericOffset(slot)
   }
   // Proposal comparison §6.3.30 steps 1–4.
@@ -973,7 +1009,10 @@ class ZonedDateTimeValue {
     // §6.3.31 steps 7–8 and 16–17 capture the original offset and local time.
     const current = local(slot)
     const updates = createObject(null) as Record<string, unknown>
-    const names = dateFieldNames(slot.calendar, true, 'date', ['offset'])
+    const names =
+      slot.calendar === 'iso8601'
+        ? isoZonedWithFields
+        : dateFieldNames(slot.calendar, true, 'date', ['offset'])
     let any = false
     for (let i = 0; i < names.length; i++) {
       const key = names[i],
@@ -1091,7 +1130,7 @@ class ZonedDateTimeValue {
         rounded,
         offset,
         zonedKernel(slot.timeZone),
-        epochNanosecondsToISO(rounded),
+        checkLocalEpoch(rounded),
         'prefer',
         'compatible',
         false
@@ -1129,12 +1168,10 @@ class ZonedDateTimeValue {
       time === undefined
         ? startOfDay(slot)
         : zonedKernel(slot.timeZone).resolve(
-            epochNanosecondsToISO(
-              bigIntFrom(epochDayOf(local(slot))) * nsPerDay +
-                // Proposal comparison §6.3.32 step7.a: private ToTemporalTime.
-                // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withplaintime
-                toPlainTimeNanoseconds(time)
-            )
+            bigIntFrom(epochDayOf(local(slot))) * nsPerDay +
+              // Proposal comparison §6.3.32 step7.a: private ToTemporalTime.
+              // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.withplaintime
+              toPlainTimeNanoseconds(time)
           )
     return createZonedDateTime(value, slot.timeZone, slot.calendar)
   }

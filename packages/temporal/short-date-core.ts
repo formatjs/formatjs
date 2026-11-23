@@ -30,6 +30,12 @@ import {
 import {isoDateFields, type DateSlot} from '#packages/temporal/plain-slots.js'
 import {parseShortDateString} from '#packages/temporal/instant-string.js'
 
+const yearMonthStrings = new Map<string, DateSlot>()
+const getYearMonthString = yearMonthStrings.get.bind(yearMonthStrings)
+const setYearMonthString = yearMonthStrings.set.bind(yearMonthStrings)
+const clearYearMonthStrings = yearMonthStrings.clear.bind(yearMonthStrings)
+let yearMonthStringCount = 0
+
 export function shortCalendar(calendar: string): CalendarId {
   return calendar as CalendarId
 }
@@ -214,15 +220,27 @@ export function parseShortSlot(
   // Comparison §9.5.2 steps4–9 and §10.5.1 steps4–9.
   // https://tc39.es/proposal-temporal/#sec-temporal-totemporalmonthday
   // Both step4: parse syntax before touching options.
+  // ECMA-262 preview §22.13.5.2: reuse validated ISO fields with default options.
+  // https://tc39.es/ecma262/pr/3966/#sec-totemporalyearmonth
+  const remember =
+    !native &&
+    kind === 'year-month' &&
+    options === undefined &&
+    value.length <= 64
+  const cached = remember ? getYearMonthString(value) : undefined
+  if (cached) return cached
   const parsed = parseShortDateString(value, kind)
   // Both step5: retain the parsed calendar.
   const calendarLike = parsed.calendar
   // Both step6: default absent calendar to ISO.
   // Both step7: canonicalize before reading options.
-  const calendar = constructorCalendar(calendarLike)
+  const calendar =
+    calendarLike === 'iso8601'
+      ? calendarLike
+      : constructorCalendar(calendarLike)
   // Both step8: normalize options in overflowOption.
   // Both step9: read overflow before bounds and projection.
-  overflowOption(options)
+  if (options !== undefined) overflowOption(options)
   if (import.meta.formatjsTemporalNativeData === true || native)
     return kind === 'year-month'
       ? native!.parsePlainYearMonth(value)
@@ -242,12 +260,12 @@ export function parseShortSlot(
         parsed.month,
         parsed.day
       )
-    if (kind === 'year-month') checkYearMonth(epochDay)
+    if (kind === 'year-month' && parsed.day !== 1) checkYearMonth(epochDay)
     const referenceDay =
       kind === 'month-day'
         ? epochDay
         : checkYearMonth(epochDay - parsed.day + 1)
-    return {
+    const slot = {
       epochDay: referenceDay,
       calendar,
       [isoDateFields]: cachedISODateFields(
@@ -257,6 +275,15 @@ export function parseShortSlot(
         kind === 'month-day' ? parsed.day : 1
       ),
     }
+    if (remember) {
+      if (yearMonthStringCount === 32) {
+        clearYearMonthStrings()
+        yearMonthStringCount = 0
+      }
+      setYearMonthString(value, slot)
+      yearMonthStringCount++
+    }
+    return slot
   }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)
   // Temporal comparison §10.5.1 step12: validate the original non-ISO date.

@@ -56,12 +56,13 @@ type TimePrefix = {
   end: number
 }
 
-// Proposal comparison §13.35 step 7: copy bounded field spans from the source string.
-function stringPart(value: string, start: number, end = value.length): string {
-  let result = ''
-  for (let index = start; index < end; index++) result += value[index]
-  return result
-}
+// ECMA-262 preview §22.4.5: read bounded fields from the matched string.
+// https://tc39.es/ecma262/pr/3966/#sec-parseisodatetime
+const stringPart = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
 // Proposal comparison §13.35 step 4.a.i: split the lexical body from its bracket suffix.
 function bracketIndex(value: string): number {
   for (let index = 0; index < value.length; index++)

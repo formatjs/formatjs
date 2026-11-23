@@ -46,14 +46,30 @@ export interface ISODateTime {
   nanosecond?: number
 }
 export type Disambiguation = 'compatible' | 'earlier' | 'later' | 'reject'
+export const memoizableOffset: unique symbol = Symbol()
 export interface TimeZoneKernel {
+  readonly [memoizableOffset]?: boolean
   transition(instant: bigint, direction: 'next' | 'previous'): bigint | null
   offsetNanoseconds(instant: bigint): bigint
   possibleInstants(fields: ISODateTime): bigint[]
   // Internal callers validate local nanoseconds before using this shortcut.
   possibleInstantsFromEpochNanoseconds?(local: bigint): bigint[]
   nearestLocalAfter?(local: bigint): bigint | undefined
-  resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
+  resolve(local: ISODateTime | bigint, disambiguation?: Disambiguation): bigint
+}
+
+// ECMA-262 preview §22.3.10.4: local date-time bounds are exclusive.
+// https://tc39.es/ecma262/pr/3966/#sec-isodatetimewithinlimits
+export function checkLocalEpoch(value: bigint): bigint {
+  if (value <= -limit - day || value >= limit + day)
+    throw new RangeErrorConstructor('Local date out of range')
+  return value
+}
+
+export function localEpoch(value: ISODateTime | bigint): bigint {
+  return typeof value === 'bigint'
+    ? checkLocalEpoch(value)
+    : isoToEpochNanoseconds(value)
 }
 
 // ECMA-262 preview §22.2.16 steps 1–5: select midnight or the nearest later local time.
@@ -205,9 +221,7 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   // ECMA-262 preview §22.3.10.4 steps 3–4: keep both local endpoints exclusive.
   // https://tc39.es/ecma262/pr/3966/#sec-isodatetimewithinlimits
   // Preserve the intended minimum local date: https://github.com/tc39/ecma262/pull/3966#discussion_r4283470645
-  if (value <= -limit - day || value >= limit + day)
-    throw new RangeErrorConstructor('Local date out of range')
-  return value
+  return checkLocalEpoch(value)
 }
 
 // ECMA-262 preview §22.2.12 steps 3–15: project ISO fields from an offset-adjusted epoch.
@@ -219,8 +233,7 @@ export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.epochNanosecondsToISO(value)
   // Local projection also accepts values outside the Instant interval.
-  if (value <= -limit - day || value >= limit + day)
-    throw new RangeErrorConstructor('Local date out of range')
+  checkLocalEpoch(value)
   // Steps 3–4 use a whole-millisecond quotient and a submillisecond remainder.
   // Valid-Instant milliseconds fit exactly below 2**53; no rounding is needed here.
   const days = floorDivide(value, day)
@@ -339,7 +352,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   // ECMA-262 preview §22.2.14: choose a candidate or shift through the gap.
   // https://tc39.es/ecma262/pr/3966/#sec-disambiguatepossibleepochnanoseconds
   const resolve = (
-    fields: ISODateTime,
+    fields: ISODateTime | bigint,
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
     if (
@@ -349,7 +362,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       )
     )
       throw new RangeErrorConstructor('Invalid disambiguation')
-    const local = isoToEpochNanoseconds(fields)
+    const local = localEpoch(fields)
     const candidates = possibleInstantsFromEpochNanoseconds(local)
     if (candidates.length === 1) return candidates[0]
     if (disambiguation === 'reject')

@@ -46,6 +46,34 @@ const standalone = spawnSync(
   {encoding: 'utf8'}
 )
 assert.equal(standalone.status, 0, standalone.stderr)
+const reloadedOffsets = spawnSync(
+  process.execPath,
+  [
+    '--input-type=module',
+    '--eval',
+    `
+  import assert from 'node:assert/strict'
+  const hour = 3_600_000
+  const formatToParts = Intl.DateTimeFormat.prototype.formatToParts
+  let adjustment = 0
+  Intl.DateTimeFormat.prototype.formatToParts = function (milliseconds) {
+    return formatToParts.call(this, milliseconds + adjustment)
+  }
+  const {Temporal} = await import(${JSON.stringify(pathToFileURL(join(directory, 'index.js')).href)})
+  const zone = 'America/New_York'
+  const original = new Temporal.ZonedDateTime(0n, zone)
+  assert.equal(original.offsetNanoseconds, -5 * hour * 1e6)
+  assert.equal(original.startOfDay().epochNanoseconds, -19n * BigInt(hour) * 1_000_000n)
+  adjustment = hour
+  for (let second = 1n; second <= 128n; second++)
+    new Temporal.ZonedDateTime(second * 1_000_000_000n, zone).offsetNanoseconds
+  assert.equal(original.offsetNanoseconds, -4 * hour * 1e6)
+  assert.equal(original.startOfDay().epochNanoseconds, -20n * BigInt(hour) * 1_000_000n)
+`,
+  ],
+  {encoding: 'utf8'}
+)
+assert.equal(reloadedOffsets.status, 0, reloadedOffsets.stderr)
 const load = name => import(pathToFileURL(join(directory, name)).href)
 const nativeDateTimeFormat = Intl.DateTimeFormat
 const before = Object.getOwnPropertyDescriptor(globalThis, 'Temporal')

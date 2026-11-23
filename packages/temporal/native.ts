@@ -3,6 +3,7 @@ export {
   allocateInstant,
   allocateSharedDateTime,
   allocateSharedDay,
+  getSharedCalendarSlot,
   getSharedDateTimeSlot,
   getSharedDaySlot,
   allocateZonedDateTime,
@@ -116,6 +117,10 @@ const legacyProviderSet = LegacyProviderMap.prototype.set
 let legacyZoneProviders:
   | WeakMap<Intl.DateTimeFormatConstructor, WeakMap<DateTimeParts, true>>
   | undefined
+
+export function hasRegisteredLegacyTimeZoneProvider(): boolean {
+  return legacyZoneProviders !== undefined
+}
 
 // Proposal comparison §11.1.9 step 3: Keep installed legacy provider identities private.
 export function registerLegacyTimeZoneProvider(

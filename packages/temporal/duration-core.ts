@@ -98,8 +98,10 @@ export function durationNanoseconds(
   let value = 0n
   // ECMA-262 preview §22.3.7.4 steps 1–4: include days in the exact time span when requested.
   // https://tc39.es/ecma262/pr/3966/#sec-tointernaldurationrecordwith24hourdays
-  for (let i = includeDays ? 3 : 4; i < durationFieldNames.length; i++)
-    value += bigIntFrom(fields[durationFieldNames[i]]) * timeFactors[i - 3]
+  for (let i = includeDays ? 3 : 4; i < durationFieldNames.length; i++) {
+    const field = fields[durationFieldNames[i]]
+    if (field !== 0) value += bigIntFrom(field) * timeFactors[i - 3]
+  }
   return value
 }
 // Temporal comparison §7.5.16 steps1–9: reject mixed signs, excessive calendar counts or exact time total
