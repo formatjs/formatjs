@@ -14,6 +14,7 @@ API_URL = "https://formatjs.buildbuddy.io/api/v1/"
 ARCHIVE_NAME = "release-cross-build-smoke.tar.gz"
 SDK_ARCHIVE_NAME = "hermes-extension-smoke.tar.gz"
 APPLE_ARCHIVE_NAME = "apple-sdk-smoke.tar.gz"
+WASI_ARCHIVE_NAME = "cli-wasi-smoke.tar.gz"
 ARCHIVE_NAMES = (ARCHIVE_NAME, SDK_ARCHIVE_NAME, APPLE_ARCHIVE_NAME)
 MAX_ARCHIVE_BYTES = 1024 * 1024 * 1024
 MAX_EXTRACTED_BYTES = 2 * 1024 * 1024 * 1024
@@ -78,12 +79,14 @@ def artifact_uris(response, expected_sha):
     ):
         raise ValueError("Cross-build invocation does not match successful commit")
     uris = {}
-    for name in ARCHIVE_NAMES:
+    for name in (*ARCHIVE_NAMES, WASI_ARCHIVE_NAME):
         artifacts = [
             artifact
             for artifact in invocation.get("artifacts", [])
             if PurePosixPath(artifact.get("name", "")).name == name
         ]
+        if name == WASI_ARCHIVE_NAME and not artifacts:
+            continue  # Allow replays of cross-builds predating the BSD smoke tests.
         if len(artifacts) != 1:
             raise ValueError(f"Expected exactly one smoke artifact archive: {name}")
         uri = artifacts[0].get("uri", "")
@@ -184,7 +187,12 @@ def main():
             contents[name] = response.read(MAX_ARCHIVE_BYTES + 1)
         if sum(len(value) for value in contents.values()) > MAX_ARCHIVE_BYTES:
             raise ValueError("Smoke archives exceed size limit")
-    extract_archives(contents, Path("artifacts"))
+    destination = Path("artifacts")
+    wasi_bundle = contents.pop(WASI_ARCHIVE_NAME, None)
+    extract_archives(contents, destination)
+    if wasi_bundle is not None:
+        # Leave the bundle sealed until it reaches the disposable BSD guest.
+        (destination / WASI_ARCHIVE_NAME).write_bytes(wasi_bundle)
     print(f"Downloaded smoke artifacts for {sha} from {identifier}")
 
 

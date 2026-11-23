@@ -69,7 +69,7 @@ actions:
       - run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends binutils file
+          sudo apt-get install -y --no-install-recommends binutils file rsync
 
       # Cross-build release binaries and native packages.
       - run: |
@@ -205,6 +205,23 @@ actions:
           file "$sdk_smoke_dir/hermes-intl-darwin-arm64" | grep -E 'Mach-O 64-bit.*arm64'
           tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/hermes-extension-smoke.tar.gz" \
             -C "$sdk_smoke_dir" hermes-intl-darwin-arm64 hermes-intl-extension.hbc
+
+      # Package the portable WASI smoke runfiles for BSD guests.
+      - run: |
+          set -euo pipefail
+          target=//packages/cli-lib/integration-tests:wasi_package_test
+          bazel build --config=bb-cross-build --build_runfile_links "$target"
+          test_runner=$(bazel cquery --config=bb-cross-build --output=files "$target")
+          smoke_dir=$(mktemp -d)
+          trap 'rm -rf "$smoke_dir"' EXIT
+          (
+            cd "$test_runner.runfiles/_main"
+            # Preserve relative npm links and materialize links into the Linux execroot.
+            rsync -aR --copy-unsafe-links \
+              node_modules packages/cli/pkg packages/cli-lib/pkg \
+              packages/cli-lib/integration-tests/test_wasi_packages.mjs "$smoke_dir/"
+          )
+          tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/cli-wasi-smoke.tar.gz" -C "$smoke_dir" .
 
       # Preserve the existing CLI archive for the trusted main-branch downloader.
       - run: |

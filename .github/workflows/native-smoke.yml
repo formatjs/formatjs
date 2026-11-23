@@ -44,6 +44,8 @@ jobs:
 
   download:
     needs: record_status
+    outputs:
+      wasi-bundle: ${{ steps.wasi.outputs.present }}
     if: inputs.invocation_url != '' || github.event.state == 'success'
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +65,7 @@ jobs:
           name: release-cross-build-smoke
           path: |
             artifacts
+            !artifacts/cli-wasi-smoke.tar.gz
             !artifacts/formatjs-hermes-intl-apple.tar.gz
             !artifacts/apple-sdk-smoke/**
           retention-days: 7
@@ -75,6 +78,67 @@ jobs:
             artifacts/apple-sdk-smoke
           include-hidden-files: true
           retention-days: 7
+
+      - name: Check for WASI Smoke Bundle
+        id: wasi
+        run: |
+          if [[ -f artifacts/cli-wasi-smoke.tar.gz ]]; then
+            echo 'present=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload WASI Smoke Bundle
+        if: steps.wasi.outputs.present == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: cli-wasi-smoke
+          path: artifacts/cli-wasi-smoke.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  bsd_wasi_smoke:
+    name: WASI Smoke Tests (${{ matrix.os }})
+    needs: download
+    if: needs.download.outputs.wasi-bundle == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: {}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [NetBSD, OpenBSD]
+    env:
+      WASI_SMOKE_COMMAND: |
+        set -eu
+        smoke_dir=$(mktemp -d)
+        tar -xzf cli-wasi-smoke.tar.gz -C "$smoke_dir"
+        cd "$smoke_dir"
+        unset FORMATJS_FORCE_WASI
+        uname -sr
+        node --version
+        node packages/cli-lib/integration-tests/test_wasi_packages.mjs
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: cli-wasi-smoke
+
+      - name: Smoke Test on NetBSD
+        if: matrix.os == 'NetBSD'
+        uses: vmactions/netbsd-vm@5957cf330aef2e6ddc63c604364c99ce2e02b91d # v1
+        with:
+          release: '10.2'
+          copyback: false
+          prepare: |
+            PKG_PATH=https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/10.0/All/ /usr/sbin/pkg_add nodejs
+          run: ${{ env.WASI_SMOKE_COMMAND }}
+
+      - name: Smoke Test on OpenBSD
+        if: matrix.os == 'OpenBSD'
+        uses: vmactions/openbsd-vm@f1ca8bc8ecc5b6ef7218e5b914836e067e1546d3 # v1
+        with:
+          release: '8.0'
+          copyback: false
+          prepare: pkg_add -I node
+          run: ${{ env.WASI_SMOKE_COMMAND }}
 
   linux_musl_smoke:
     name: Linux musl Smoke Tests (${{ matrix.arch }})
@@ -270,7 +334,14 @@ jobs:
 
   publish_status:
     needs:
-      [record_status, download, macos_smoke, windows_smoke, linux_musl_smoke]
+      [
+        record_status,
+        download,
+        macos_smoke,
+        windows_smoke,
+        linux_musl_smoke,
+        bsd_wasi_smoke,
+      ]
     if: >-
       always() && !cancelled() &&
       (inputs.invocation_url != '' ||
@@ -287,7 +358,11 @@ jobs:
     steps:
       - name: Publish Native Smoke Result
         run: |
-          state=$(jq -r 'if all(.[]; .result == "success") then "success" else "failure" end' <<< "$RESULTS")
+          state=$(jq -r '
+            if all(to_entries[]; .value.result == "success" or
+              (.key == "bsd_wasi_smoke" and .value.result == "skipped"))
+            then "success" else "failure" end
+          ' <<< "$RESULTS")
           gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$BUILD_SHA" \
             -f state="$state" -f context='Native Smoke Tests' \
             -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \

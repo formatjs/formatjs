@@ -239,7 +239,10 @@ arm64/x64, and Linux arm64/x64 with GNU or musl libc. Both npm packages
 include the Bazel-built `wasm32-wasip1` binding for fallback. The synchronous
 loader uses emnapi with Node's WASI runtime. Keep the emnapi link archive
 and npm runtime versions in sync. Use `FORMATJS_FORCE_WASI=1` to exercise
-the fallback on a platform with a native binding.
+the fallback on a platform with a native binding. The BuildBuddy release
+cross-build uploads the Bazel WASI smoke runfiles. The GitHub Actions native
+smoke workflow runs those packaged files in NetBSD and OpenBSD guests with
+automatic fallback.
 
 - File-based `extract` and compile APIs support the CLI fast path.
 - Structured `extractSources` accepts in-memory virtual sources and returns

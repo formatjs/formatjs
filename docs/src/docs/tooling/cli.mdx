@@ -51,6 +51,7 @@ bundled WASI binding if it cannot load. WASI requires Node.js 20.19, 22.12, or
 later supported releases. Set `FORMATJS_FORCE_WASI=1` to test the fallback
 on a platform with a native binding. On Windows, WASI compilation reads
 files from the drive or UNC share where the binding is first loaded.
+CI smoke-tests automatic WASI fallback on NetBSD and OpenBSD.
 
 The npm packages currently ship native bindings for:
 
