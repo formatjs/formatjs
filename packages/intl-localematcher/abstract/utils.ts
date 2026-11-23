@@ -174,6 +174,20 @@ export function scriptlessRegionLocale(tag: string): string | undefined {
   if (script && region) return language + '-' + region
 }
 
+// Keep ordinary prefix matches when distance matching rejects the request.
+// ICU pseudolocales and unknown fields keep their isolation.
+// https://tc39.es/ecma402/#sec-lookupmatchinglocalebybestfit
+export function canUseBestFitPrefixFallback(tag: string): boolean {
+  const {language, script, region} = prefix(tag)
+  return (
+    language !== 'und' &&
+    script !== 'Zzzz' &&
+    region !== 'ZZ' &&
+    !pseudoRegion(region) &&
+    (stringIndexOf(tag, '-ps') === -1 || fields(tag).pseudo === undefined)
+  )
+}
+
 function fields(tag: string): LSR {
   const parsed = prefix(tag)
   const language = parsed.language

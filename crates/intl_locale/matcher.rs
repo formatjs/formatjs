@@ -189,7 +189,11 @@ pub fn filter(
             Some(matcher) => matcher,
             None => prepared.insert(shared_matcher(available)?),
         };
-        if match_requested(&matcher.distance, single)?.is_some() {
+        // Keep ordinary prefix matches and preserve ICU pseudolocale isolation.
+        if match_requested(&matcher.distance, single)?.is_some() || {
+            let base = without_unicode_extension(tag);
+            raw_key(&base).is_some() && find_available_prefix(available, &base).is_some()
+        } {
             subset.push(tag.clone());
         }
     }

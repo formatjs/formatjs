@@ -21,6 +21,16 @@ fn filtering_chooses_the_matcher_and_preserves_supported_requests() {
 }
 
 #[test]
+fn best_fit_filter_retains_a_supported_prefix_when_distance_is_too_high() {
+    let available = tags(&["en", "zh"]);
+    let requested = tags(&["zh-TW-u-nu-hanidec", "zz-ZZ", "en-XA"]);
+    assert_eq!(
+        filter(&available, &requested, false).unwrap(),
+        tags(&["zh-TW-u-nu-hanidec"])
+    );
+}
+
+#[test]
 fn shared_icu4j_locale_matching_fixtures() {
     #[derive(serde::Deserialize)]
     struct Fixture {

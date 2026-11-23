@@ -5,6 +5,7 @@ import {
 } from '#packages/intl-localematcher/abstract/ResolveLocale.js'
 import {setDataProperty} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {
+  canUseBestFitPrefixFallback,
   findBestMatch,
   splitUnicodeExtension,
 } from '#packages/intl-localematcher/abstract/utils.js'
@@ -35,13 +36,16 @@ export function FilterLocales(
     const availableLocale =
       matcher === 'lookup'
         ? BestAvailableLocale(available, noExtensionLocale)
-        : findBestMatch(
+        : (findBestMatch(
             [noExtensionLocale],
             available,
             undefined,
             undefined,
             false
-          ).matchedSupportedLocale
+          ).matchedSupportedLocale ??
+          (canUseBestFitPrefixFallback(noExtensionLocale)
+            ? BestAvailableLocale(available, noExtensionLocale)
+            : undefined))
     if (availableLocale) {
       setDataProperty(subset, subset.length, locale)
     }

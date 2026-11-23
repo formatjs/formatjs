@@ -273,6 +273,14 @@ test('prefix lookup removes chains of single-character subtags together', () => 
   expect(LookupSupportedLocales(['en-x-a'], ['en-x-a-b-long'])).toEqual([])
 })
 
+test('best fit retains a supported prefix when the script distance is too high', () => {
+  const available = ['en', 'zh']
+  const requested = ['zh-TW-u-nu-hanidec', 'zz-ZZ', 'en-XA']
+  expect(FilterLocales(available, requested, 'best fit')).toEqual([
+    'zh-TW-u-nu-hanidec',
+  ])
+})
+
 test('preserves legacy RegExp statics across matching paths', () => {
   for (const [requested, supported] of [
     [['en'], ['en', 'fr']],
