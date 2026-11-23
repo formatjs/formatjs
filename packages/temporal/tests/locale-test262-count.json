@@ -1,0 +1,12 @@
+{
+  "total": 306,
+  "failures": {},
+  "exclusions": [
+    {
+      "file": "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js",
+      "executions": 2,
+      "reason": "Pinned assertion requires pre-CLDR49 bare GMT at zero. CLDR49 and ICU79 render explicit numeric zero. Full Intl diagnostics retain the file; owned regression tests cover all its fixed-offset cases.",
+      "source": "https://www.unicode.org/reports/tr35/49/tr35-dates.html#Time_Zone_Names"
+    }
+  ]
+}

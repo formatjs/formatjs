@@ -2,6 +2,7 @@ import {expect, test} from 'vitest'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import hebrew from '#packages/intl-datetimeformat/calendars/implementations/hebrew.js'
 import chinese from '#packages/intl-datetimeformat/calendars/implementations/chinese.js'
+import buddhist from '#packages/intl-datetimeformat/calendars/implementations/buddhist.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import type {
   RawDateTimeLocaleData,
@@ -31,6 +32,40 @@ const formatter = (calendar: string) =>
     month: 'long',
     day: 'numeric',
   })
+
+test.each([
+  ['-000544-01-01T00:00:00Z', '2', '02'],
+  ['-000543-01-01T00:00:00Z', '1', '01'],
+  ['-000542-01-01T00:00:00Z', '1', '01'],
+])(
+  'normalizes nonpositive Buddhist display years for %s',
+  (iso, numeric, twoDigit) => {
+    DateTimeFormat.__addLocaleData(base)
+    DateTimeFormat.__addCalendarLocaleData(patch('buddhist'))
+    DateTimeFormat.__addCalendarData(buddhist)
+    const date = new Date(iso)
+    for (const [width, year] of [
+      ['numeric', numeric],
+      ['2-digit', twoDigit],
+    ] as const) {
+      const options = {
+        calendar: 'buddhist',
+        year: width,
+        timeZone: 'UTC',
+      } as const
+      const actual = new DateTimeFormat('en', options)
+      expect(actual.resolvedOptions().calendar).toBe('buddhist')
+      const native = new Intl.DateTimeFormat('en', options).formatToParts(date)
+      expect(
+        actual.formatToParts(date),
+        JSON.stringify({native})
+      ).toContainEqual({
+        type: 'year',
+        value: year,
+      })
+    }
+  }
+)
 
 test('calendar arithmetic and locale patterns load independently in either order', () => {
   DateTimeFormat.__addLocaleData(base)
@@ -120,6 +155,48 @@ test('a user-supplied calendar uses its registered conversion for dates and rang
   expect(formatter('hebrew').resolvedOptions().calendar).toBe('hebrew')
   DateTimeFormat.__addLocaleData(base)
   expect(formatter('custom').resolvedOptions().calendar).toBe('custom')
+})
+
+test('calendar ranges compare signed-zero month ordinals by numeric value', () => {
+  DateTimeFormat.__addCalendarLocaleData({
+    locale: 'en',
+    calendar: 'signzero',
+    formats: formats.gregory,
+    data: raw.data,
+  })
+  DateTimeFormat.__addCalendarData({
+    calendar: 'signzero',
+    dateFromTime(t) {
+      return {
+        era: 'AD',
+        year: 2024,
+        month: t === 0 ? -0 : t === 86400000 ? 0 : 1,
+        day: 1,
+      }
+    },
+  })
+  const format = new DateTimeFormat('en', {
+    calendar: 'signzero',
+    timeZone: 'UTC',
+    month: 'long',
+  })
+  expect(format.format(0)).toBe('January')
+  expect(format.format(86400000)).toBe('January')
+  expect(format.formatRange(0, 86400000)).toBe('January')
+  expect(format.formatRangeToParts(0, 86400000)).toEqual([
+    {type: 'month', value: 'January', source: 'shared'},
+  ])
+  const distinct = format.formatRangeToParts(0, 172800000)
+  expect(distinct).toContainEqual({
+    type: 'month',
+    value: 'January',
+    source: 'startRange',
+  })
+  expect(distinct).toContainEqual({
+    type: 'month',
+    value: 'February',
+    source: 'endRange',
+  })
 })
 
 test('warm formatters retain patterns but read replacement names and providers', () => {

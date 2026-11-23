@@ -1,0 +1,354 @@
+{
+  "baselineCommit": "474cc25e4502a487869d508a85b4b0ca54689457",
+  "method": "Exploratory shared-process filters differ and can alter JIT context. Close medians are not stable comparisons across filters. Final all-workload evidence in time-hillclimb-results.json; storage-layout ABBA in time-storage-experiments.json.",
+  "experiments": [
+    {
+      "name": "time-abi13-baseline",
+      "change": "ABI 13 before typed clock requests",
+      "decision": "baseline",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "timeParse": 1145.3581000000015,
+          "timeFormat": 799.5820000000009,
+          "timeAdd": 2430.525300000005,
+          "timeRoundFormat": 1300.6321999999955,
+          "timeUntil": 2606.873500000006
+        },
+        "nativeDataWasm": {
+          "timeParse": 2620.139500000005,
+          "timeFormat": 2823.114099999975,
+          "timeAdd": 6684.648900000002,
+          "timeRoundFormat": 6565.367699999933,
+          "timeUntil": 13841.496000000006
+        },
+        "reference": {
+          "timeParse": 3489.879099999962,
+          "timeFormat": 744.7591000000102,
+          "timeAdd": 1528.2457999999679,
+          "timeRoundFormat": 1879.602799999975,
+          "timeUntil": 24187.261600000056
+        },
+        "officialReference": {
+          "timeParse": 10979.607199999919,
+          "timeFormat": 598.2083000000785,
+          "timeAdd": 4051.535799999874,
+          "timeRoundFormat": 1899.4708000000176,
+          "timeUntil": 8414.450899999974
+        }
+      }
+    },
+    {
+      "name": "time-typed-snapshots",
+      "change": "Typed clocks and complete cached Rust fields",
+      "decision": "kept",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "timeParse": 1121.1371999999983,
+          "timeFormat": 779.418099999998,
+          "timeAdd": 2440.2619000000013,
+          "timeRoundFormat": 1253.9373000000069,
+          "timeUntil": 2590.9374999999955
+        },
+        "nativeDataWasm": {
+          "timeParse": 1153.9174000000003,
+          "timeFormat": 635.7264000000214,
+          "timeAdd": 1715.6793999999993,
+          "timeRoundFormat": 1678.1536999999844,
+          "timeUntil": 14295.483400000012
+        },
+        "reference": {
+          "timeParse": 3066.5067999999337,
+          "timeFormat": 753.7328000000343,
+          "timeAdd": 1537.213199999951,
+          "timeRoundFormat": 1864.9443999999676,
+          "timeUntil": 24393.11829999997
+        },
+        "officialReference": {
+          "timeParse": 11556.734200000028,
+          "timeFormat": 637.9918999999973,
+          "timeAdd": 4139.219400000002,
+          "timeRoundFormat": 1535.5940000001283,
+          "timeUntil": 8524.561999999969
+        }
+      }
+    },
+    {
+      "name": "time-ascii",
+      "change": "Shared bounded ASCII clock formatter",
+      "decision": "kept",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "timeParse": 1152.108099999998,
+          "timeFormat": 792.2960999999987,
+          "timeAdd": 2423.971999999998,
+          "timeRoundFormat": 1314.8935000000051,
+          "timeUntil": 2686.3291000000004
+        },
+        "nativeDataWasm": {
+          "timeParse": 1135.3698999999779,
+          "timeFormat": 560.2077000000008,
+          "timeAdd": 1714.6471999999903,
+          "timeRoundFormat": 1619.0903000000162,
+          "timeUntil": 14128.697899999997
+        },
+        "reference": {
+          "timeParse": 3100.600100000065,
+          "timeFormat": 776.7832999999882,
+          "timeAdd": 1565.1144999999815,
+          "timeRoundFormat": 1888.2416000000376,
+          "timeUntil": 24477.13130000002
+        },
+        "officialReference": {
+          "timeParse": 11452.740300000005,
+          "timeFormat": 579.924899999969,
+          "timeAdd": 4067.65949999999,
+          "timeRoundFormat": 1664.6066000000246,
+          "timeUntil": 8429.975000000013
+        }
+      }
+    },
+    {
+      "name": "time-native-width",
+      "change": "Native-width validated clock conversion and field arithmetic",
+      "decision": "kept",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "timeParse": 1140.884700000001,
+          "timeFormat": 786.6872000000001,
+          "timeAdd": 2440.508,
+          "timeRoundFormat": 1263.8882000000024,
+          "timeUntil": 2655.0941999999964
+        },
+        "nativeDataWasm": {
+          "timeParse": 1136.9089999999687,
+          "timeFormat": 490.48800000000483,
+          "timeAdd": 1553.0048999999963,
+          "timeRoundFormat": 1345.9649999999783,
+          "timeUntil": 13886.257099999968
+        },
+        "reference": {
+          "timeParse": 3046.7349999999897,
+          "timeFormat": 749.0979999999581,
+          "timeAdd": 1527.7259999999842,
+          "timeRoundFormat": 1826.6435999999885,
+          "timeUntil": 24196.09419999997
+        },
+        "officialReference": {
+          "timeParse": 11592.152500000066,
+          "timeFormat": 603.5533000000214,
+          "timeAdd": 4232.0920000000115,
+          "timeRoundFormat": 1558.5944000000381,
+          "timeUntil": 8602.606799999921
+        }
+      }
+    },
+    {
+      "name": "time-typed-difference",
+      "change": "Typed time differences, validated duration construction and formatting",
+      "decision": "kept",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "timeParse": 1138.2495000000006,
+          "timeFormat": 793.0141000000049,
+          "timeAdd": 2436.2408000000014,
+          "timeRoundFormat": 1265.8745000000067,
+          "timeUntil": 2605.9578999999985
+        },
+        "nativeDataWasm": {
+          "timeParse": 1288.1796000000122,
+          "timeFormat": 496.5431999999965,
+          "timeAdd": 1581.328399999984,
+          "timeRoundFormat": 1394.248400000015,
+          "timeUntil": 2381.7925000000287
+        },
+        "reference": {
+          "timeParse": 3057.161499999984,
+          "timeFormat": 761.9100999999773,
+          "timeAdd": 1516.8697000000066,
+          "timeRoundFormat": 1845.8982000000103,
+          "timeUntil": 24370.80209999999
+        },
+        "officialReference": {
+          "timeParse": 11608.523100000002,
+          "timeFormat": 579.9259999999776,
+          "timeAdd": 4213.150700000006,
+          "timeRoundFormat": 1855.1977999999508,
+          "timeUntil": 8234.043699999984
+        }
+      }
+    },
+    {
+      "name": "time-clock-cache",
+      "change": "Immutable data-independent clock caches; no stable timing gain claimed",
+      "decision": "simplified ownership",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "timeParse": 1146.328300000002,
+          "timeFormat": 788.149999999996,
+          "timeAdd": 2424.5341,
+          "timeRoundFormat": 1298.609399999998,
+          "timeUntil": 3319.241999999997
+        },
+        "nativeDataWasm": {
+          "timeParse": 1242.5095000000056,
+          "timeFormat": 480.29159999996403,
+          "timeAdd": 1620.5655999999635,
+          "timeRoundFormat": 1369.9542000000292,
+          "timeUntil": 2335.878599999978
+        },
+        "reference": {
+          "timeParse": 3064.872000000014,
+          "timeFormat": 753.1474999999773,
+          "timeAdd": 1548.6357000000226,
+          "timeRoundFormat": 1921.9176999999945,
+          "timeUntil": 24595.227000000024
+        },
+        "officialReference": {
+          "timeParse": 11148.937000000024,
+          "timeFormat": 587.901199999942,
+          "timeAdd": 4076.311799999985,
+          "timeRoundFormat": 1518.6161999999968,
+          "timeUntil": 8439.115400000082
+        }
+      }
+    },
+    {
+      "name": "time-narrow-rounding",
+      "change": "Narrow quotient/remainder operands, preserve wide outputs/fallback",
+      "decision": "kept with signed boundary controls",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "round": 498.9278999999982,
+          "timeParse": 1128.183899999999,
+          "timeFormat": 776.6410000000008,
+          "timeAdd": 2441.0229000000013,
+          "timeRoundFormat": 1368.178300000011,
+          "timeUntil": 2714.911099999995,
+          "dateTimeRoundFormat": 1490.7652999999982
+        },
+        "nativeDataWasm": {
+          "round": 581.8463000000065,
+          "timeParse": 915.3710999999931,
+          "timeFormat": 403.42000000000553,
+          "timeAdd": 1604.2120999999952,
+          "timeRoundFormat": 1403.0288999999811,
+          "timeUntil": 2677.0122999999785,
+          "dateTimeRoundFormat": 2990.3199999999742
+        },
+        "reference": {
+          "round": 570.5081999999948,
+          "timeParse": 2862.002799999982,
+          "timeFormat": 788.221700000031,
+          "timeAdd": 1514.4279000000097,
+          "timeRoundFormat": 1884.0626000000157,
+          "timeUntil": 24138.547899999958,
+          "dateTimeRoundFormat": 3603.9091999999987
+        },
+        "officialReference": {
+          "round": 4303.085100000044,
+          "timeParse": 11214.128699999947,
+          "timeFormat": 605.7781999999861,
+          "timeAdd": 4265.003399999932,
+          "timeRoundFormat": 1676.8408999999338,
+          "timeUntil": 8416.483300000073,
+          "dateTimeRoundFormat": 4276.656399999956
+        }
+      }
+    },
+    {
+      "name": "time-u64-storage",
+      "change": "Narrow private PlainTime storage and parent arithmetic",
+      "decision": "rejected after isolated ABBA",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "round": 494.45330000000064,
+          "timeParse": 1146.7758000000003,
+          "timeFormat": 783.3788000000027,
+          "timeAdd": 2424.2008,
+          "timeRoundFormat": 1312.0507999999973,
+          "timeUntil": 2639.899300000002,
+          "dateTimeRoundFormat": 1558.5757999999942
+        },
+        "nativeDataWasm": {
+          "round": 692.1307999999954,
+          "timeParse": 942.790500000001,
+          "timeFormat": 415.60890000000654,
+          "timeAdd": 1600.0548999999864,
+          "timeRoundFormat": 1683.5692000000108,
+          "timeUntil": 2815.0539999999637,
+          "dateTimeRoundFormat": 2715.9204000000045
+        },
+        "reference": {
+          "round": 727.5169000000005,
+          "timeParse": 3262.493799999993,
+          "timeFormat": 800.5017000000407,
+          "timeAdd": 1523.7411999999495,
+          "timeRoundFormat": 1707.6267000000373,
+          "timeUntil": 24078.005699999994,
+          "dateTimeRoundFormat": 3609.6048000000337
+        },
+        "officialReference": {
+          "round": 4074.7744999999663,
+          "timeParse": 11290.685300000041,
+          "timeFormat": 580.1784999999654,
+          "timeAdd": 4133.964699999979,
+          "timeRoundFormat": 1660.7248999999683,
+          "timeUntil": 8524.943100000019,
+          "dateTimeRoundFormat": 4235.648800000126
+        }
+      }
+    },
+    {
+      "name": "time-number-slots",
+      "change": "One native clock slot with exact Number values and lazy BigInt interop",
+      "decision": "kept",
+      "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+      "medianNanoseconds": {
+        "typescript": {
+          "round": 507.9768000000001,
+          "timeParse": 1102.5680999999993,
+          "timeFormat": 782.3157999999978,
+          "timeAdd": 2450.5770000000043,
+          "timeRoundFormat": 1322.6285000000075,
+          "timeUntil": 2648.979900000006,
+          "dateTimeRoundFormat": 1503.8793000000055
+        },
+        "nativeDataWasm": {
+          "round": 493.12620000000607,
+          "timeParse": 916.8098999999984,
+          "timeFormat": 392.895099999987,
+          "timeAdd": 1259.1028000000279,
+          "timeRoundFormat": 1163.256999999976,
+          "timeUntil": 2393.9941999999974,
+          "dateTimeRoundFormat": 2432.2093000000223
+        },
+        "reference": {
+          "round": 732.841499999995,
+          "timeParse": 2912.4237999999878,
+          "timeFormat": 793.9111000000139,
+          "timeAdd": 1510.9713999999713,
+          "timeRoundFormat": 1974.5952999999647,
+          "timeUntil": 24355.448400000023,
+          "dateTimeRoundFormat": 3696.022600000015
+        },
+        "officialReference": {
+          "round": 4274.31260000003,
+          "timeParse": 11441.145300000062,
+          "timeFormat": 578.1553000000713,
+          "timeAdd": 4151.979200000005,
+          "timeRoundFormat": 1659.969699999965,
+          "timeUntil": 8507.83539999993,
+          "dateTimeRoundFormat": 4257.43309999998
+        }
+      }
+    }
+  ]
+}

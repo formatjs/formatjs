@@ -16,7 +16,8 @@
       "ES2021.intl",
       "ES2021.String",
       "ES2022.Intl",
-      "ESNext.Intl"
+      "ESNext.Intl",
+      "ESNext.Temporal"
     ],
     "module": "esnext",
     "moduleResolution": "bundler",

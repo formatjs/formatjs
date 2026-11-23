@@ -1,0 +1,148 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Default TS uses compact ICU4X lunisolar arithmetic/data and host Intl Umm al-Qura; owned IANA 2026f timezone data remains included. Standalone retains full calendar packs. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl data; basic ISO/Gregorian implementation entry measured separately. Legacy formatting corrects stale lunar fields and supports extended non-Gregorian plain values using host labels plus compact CLDR Before Hijrah labels. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "referenceEntries": {
+    "reference-bundle.js": "temporal-polyfill/implementation (ISO/Gregorian)",
+    "reference-full-bundle.js": "temporal-polyfill/full/implementation (all calendars)"
+  },
+  "sizes": [
+    {
+      "file": "instant-code.js",
+      "raw": 497488,
+      "minified": 271038,
+      "minifiedGzip": 66865
+    },
+    {
+      "file": "polyfill-code.js",
+      "raw": 538448,
+      "minified": 292463,
+      "minifiedGzip": 72685
+    },
+    {
+      "file": "polyfill-force-code.js",
+      "raw": 538464,
+      "minified": 292465,
+      "minifiedGzip": 72687
+    },
+    {
+      "file": "should-polyfill-code.js",
+      "raw": 1283,
+      "minified": 696,
+      "minifiedGzip": 361
+    },
+    {
+      "file": "reference-bundle.js",
+      "raw": 172962,
+      "minified": 56696,
+      "minifiedGzip": 19393
+    },
+    {
+      "file": "reference-full-bundle.js",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
+    }
+  ],
+  "publishedModules": [
+    {
+      "file": "index.js",
+      "raw": 505465,
+      "minified": 274691,
+      "minifiedGzip": 67948
+    },
+    {
+      "file": "standalone.js",
+      "raw": 3356744,
+      "minified": 3012940,
+      "minifiedGzip": 336478
+    },
+    {
+      "file": "polyfill.js",
+      "raw": 98752,
+      "minified": 52890,
+      "minifiedGzip": 16068
+    },
+    {
+      "file": "polyfill-force.js",
+      "raw": 98768,
+      "minified": 52892,
+      "minifiedGzip": 16071
+    },
+    {
+      "file": "should-polyfill.js",
+      "raw": 1117,
+      "minified": 587,
+      "minifiedGzip": 302
+    },
+    {
+      "file": "native.js",
+      "raw": 12913,
+      "minified": 7377,
+      "minifiedGzip": 2070
+    },
+    {
+      "file": "wasm.js",
+      "raw": 3242,
+      "minified": 1732,
+      "minifiedGzip": 804
+    },
+    {
+      "file": "wasm-native.js",
+      "raw": 259344,
+      "minified": 135605,
+      "minifiedGzip": 38096
+    }
+  ],
+  "publishedGraphs": {
+    "scope": "Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting; all16 native calendar tables and IANA records included. Hybrid WASM retains compact TS calendar and owned timezone data; nativeDataWasm omits duplicate TS tables. JS orchestration remains in both. Source maps, declarations and notices are not runtime imports.",
+    "typescript": {
+      "files": ["index.js", "native.js"],
+      "minifiedGzip": 70018
+    },
+    "standalone": {
+      "files": ["standalone.js", "native.js"],
+      "minifiedGzip": 338548
+    },
+    "nativeDataWasm": {
+      "files": ["wasm-native.js"],
+      "minifiedGzip": 38096,
+      "binary": {
+        "raw": 3417392,
+        "gzip": 443178
+      },
+      "combinedGzip": 481274
+    },
+    "wasm": {
+      "files": ["index.js", "native.js", "wasm.js"],
+      "minifiedGzip": 70822,
+      "binary": {
+        "raw": 3417392,
+        "gzip": 443178
+      },
+      "combinedGzip": 514000
+    }
+  },
+  "primitiveProfile": {
+    "scope": "Matched data-free Instant/Duration primitives only, not full facades or calendars/timezones. Prior throughput measurements remain separate.",
+    "js": [
+      {
+        "file": "wasm-ts-code.js",
+        "raw": 17917,
+        "minified": 9578,
+        "minifiedGzip": 3783
+      },
+      {
+        "file": "wasm-bridge-code.js",
+        "raw": 1412,
+        "minified": 799,
+        "minifiedGzip": 463
+      }
+    ],
+    "wasm": {
+      "raw": 43366,
+      "gzip": 19470
+    }
+  }
+}

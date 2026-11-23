@@ -1,0 +1,352 @@
+{
+  "baselineCommit": "3eedcf3a022de514722319004fba1ae2368dc3db",
+  "method": "ABI 19 typed Duration parsing, addition/subtraction and negation/absolute value; complete ten-field results and trusted JS wrapping. Full isolated 48-workload checkpoint uses fresh TS/native processes, eight varying inputs and parity, 20000 warmup and 9x50000 calls; transitions 1000 warmup and 9x5000. Pinned reference throughput retained explicitly from earlier checkpoint. No new data/cache/dependency or Test262 exclusions.",
+  "diagnostic": {
+    "method": "Short shared-process diagnostic, not final throughput evidence.",
+    "environment": {
+      "node": "v24.14.0",
+      "v8": "13.6.233.17-node.41",
+      "icu": "78.2",
+      "cpu": "Intel(R) Xeon(R) Platinum 8488C"
+    },
+    "typescript": [
+      {
+        "operation": "timeUntil",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 2584.9602000000004,
+        "samplesNanoseconds": [
+          2511.3058000000024, 2567.7526999999995, 2578.353799999996,
+          2584.9602000000004, 2763.890499999999, 2889.784899999998, 3000.5033
+        ]
+      },
+      {
+        "operation": "durationParse",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 2261.6408000000033,
+        "samplesNanoseconds": [
+          2132.3769000000025, 2198.9735999999994, 2218.062600000002,
+          2261.6408000000033, 2367.2632999999964, 2470.789100000002,
+          2849.2745000000014
+        ]
+      },
+      {
+        "operation": "durationFormat",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 2305.7053999999994,
+        "samplesNanoseconds": [
+          2284.5369000000005, 2295.254, 2303.0939999999987, 2305.7053999999994,
+          2312.484100000006, 2597.319099999993, 2630.455900000004
+        ]
+      },
+      {
+        "operation": "durationAdd",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 4715.699200000006,
+        "samplesNanoseconds": [
+          4610.3476, 4653.7600999999995, 4682.458999999994, 4715.699200000006,
+          4722.028599999999, 4740.748200000007, 5446.042499999999
+        ]
+      }
+    ],
+    "nativeDataWasm": [
+      {
+        "operation": "timeUntil",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 2271.357100000023,
+        "samplesNanoseconds": [
+          2147.6676000000225, 2228.6998999999923, 2243.490699999984,
+          2271.357100000023, 2305.5551999999807, 2524.0220000000136,
+          3826.90590000002
+        ]
+      },
+      {
+        "operation": "durationParse",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 1223.1407999999647,
+        "samplesNanoseconds": [
+          1168.4375000000273, 1204.8937999999907, 1213.4118999999828,
+          1223.1407999999647, 1247.5422999999864, 1566.1514000000352,
+          1706.924800000024
+        ]
+      },
+      {
+        "operation": "durationFormat",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 1844.5017000000007,
+        "samplesNanoseconds": [
+          1831.2829999999847, 1840.0904000000082, 1842.1537000000171,
+          1844.5017000000007, 1853.9937000000007, 1855.3319000000101,
+          1956.387599999971
+        ]
+      },
+      {
+        "operation": "durationAdd",
+        "iterations": 10000,
+        "warmup": 3000,
+        "medianNanoseconds": 3650.1286000000164,
+        "samplesNanoseconds": [
+          3555.9727999999723, 3602.8332999999748, 3621.1661000000277,
+          3650.1286000000164, 3658.902399999988, 3659.756300000026,
+          5380.76329999999
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "status": "passed",
+    "count": 66,
+    "targets": [
+      "//packages/temporal:sdk_hermes_instant_source_test262",
+      "//packages/temporal:sdk_hermes_instant_bytecode_test262",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_yearmonth_source_test262",
+      "//packages/temporal:sdk_hermes_yearmonth_bytecode_test262",
+      "//packages/temporal:sdk_hermes_monthday_source_test262",
+      "//packages/temporal:sdk_hermes_monthday_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:sdk_hermes_calendars_source_test262",
+      "//packages/temporal:sdk_hermes_calendars_bytecode_test262",
+      "//packages/temporal:sdk_hermes_now_source_test262",
+      "//packages/temporal:sdk_hermes_now_bytecode_test262",
+      "//packages/temporal:sdk_hermes_installation_source_test262",
+      "//packages/temporal:sdk_hermes_installation_bytecode_test262",
+      "//packages/temporal:sdk_hermes_staging_source_test262",
+      "//packages/temporal:sdk_hermes_staging_bytecode_test262",
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:zoned_test262",
+      "//packages/temporal:calendars_test262",
+      "//packages/temporal:now_test262",
+      "//packages/temporal:installation_test262",
+      "//packages/temporal:wasm_instant_test262",
+      "//packages/temporal:wasm_date_test262",
+      "//packages/temporal:wasm_datetime_test262",
+      "//packages/temporal:wasm_time_test262",
+      "//packages/temporal:wasm_yearmonth_test262",
+      "//packages/temporal:wasm_monthday_test262",
+      "//packages/temporal:wasm_duration_test262",
+      "//packages/temporal:wasm_zoned_test262",
+      "//packages/temporal:wasm_calendars_test262",
+      "//packages/temporal:wasm_now_test262",
+      "//packages/temporal:wasm_installation_test262",
+      "//packages/temporal:wasm_staging_test262",
+      "//packages/temporal:wasm_package_test",
+      "//packages/temporal:wasm_native_package_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//benchmarks/temporal:temporal-esm_typecheck_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:ffi_test",
+      "//crates/temporal:binary_test",
+      "//packages/temporal:sdk_intl_compat_hermes_source_test262",
+      "//packages/temporal:sdk_intl_compat_hermes_bytecode_test262",
+      "//packages/temporal:wasm_host_intl_compat_test262",
+      "//packages/temporal:native_duration_hermes_oracle_test",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:native_iso_hermes_oracle_test",
+      "//packages/temporal:public_calendar_hermes_oracle_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/temporal:context_test",
+      "//crates/temporal:registry_test"
+    ],
+    "sourceHashes": {
+      "crates/temporal/binary.test.rs": "9ef18b1ab8bbe3aed2182c4df0ef048d76a2599f01ceee273b3c715103372257",
+      "crates/temporal/binary_typed.rs": "23d8016d5f3ccddcbd97a3ef701aa227191119b053c02843cb302956dda73923",
+      "crates/temporal/wasm_backend.rs": "3ca2b3d31d62741734cc22baddbb90f9df5f3e7b73f0c864545da6d60799b295",
+      "packages/temporal/duration.ts": "0f18364835c2000045c5be4c9b81dc5c8fc869d61eb3e4b0ef39ad5493d59403",
+      "packages/temporal/native.ts": "80d28e3725b95547cacbeeb109a88de4993313efd62eb3eca87defb919d22ff7",
+      "packages/temporal/tests/wasm.test.mjs": "337672a2f329c639b536438cb272350836c3e3c532caed7704fa9442811d6064",
+      "packages/temporal/wasm.ts": "42711c9681815521f1c7c900886992d4f0344b1d0c698736c0357eafdb7242b4"
+    },
+    "controls": [
+      "Raw binary framing/UTF-8/boolean/finite checks and recovery.",
+      "All ten Duration fields, unbalanced units, fractional parsing, positive zero and Number rounding.",
+      "Public object identity/prototype and memory growth ownership; existing clone performs no extra Rust request.",
+      "Numeric constructor and mixed-sign/calendar-unit errors.",
+      "Default TS executable AST equivalent to baseline; negative control retained."
+    ]
+  },
+  "remainingSlowerWorkloads": [
+    {
+      "operation": "round",
+      "typescriptNanoseconds": 457.8081800000018,
+      "nativeDataWasmNanoseconds": 600.7776000000013,
+      "ratio": 1.3122910997352621
+    },
+    {
+      "operation": "until",
+      "typescriptNanoseconds": 2431.7973800000073,
+      "nativeDataWasmNanoseconds": 9703.182820000005,
+      "ratio": 3.990128001536039
+    },
+    {
+      "operation": "dateTimeParse",
+      "typescriptNanoseconds": 2418.3985200000097,
+      "nativeDataWasmNanoseconds": 2901.3012000000163,
+      "ratio": 1.1996787030782687
+    },
+    {
+      "operation": "monthDayParse",
+      "typescriptNanoseconds": 1654.1641399999935,
+      "nativeDataWasmNanoseconds": 1773.7954600000012,
+      "ratio": 1.0723213114751768
+    },
+    {
+      "operation": "dateFromFields",
+      "typescriptNanoseconds": 1464.105520000012,
+      "nativeDataWasmNanoseconds": 1726.3568600000142,
+      "ratio": 1.179120518581202
+    },
+    {
+      "operation": "dateTimeWith",
+      "typescriptNanoseconds": 6256.183299999975,
+      "nativeDataWasmNanoseconds": 8427.488400000002,
+      "ratio": 1.3470654544281073
+    },
+    {
+      "operation": "zonedWith",
+      "typescriptNanoseconds": 9496.497000000018,
+      "nativeDataWasmNanoseconds": 18311.34806000002,
+      "ratio": 1.9282213283487568
+    },
+    {
+      "operation": "dateUntil",
+      "typescriptNanoseconds": 6265.238179999941,
+      "nativeDataWasmNanoseconds": 10679.155880000035,
+      "ratio": 1.7045091620124384
+    },
+    {
+      "operation": "dateTimeUntil",
+      "typescriptNanoseconds": 6295.598119999922,
+      "nativeDataWasmNanoseconds": 11870.87474,
+      "ratio": 1.8855833097555068
+    },
+    {
+      "operation": "dateTimeRoundFormat",
+      "typescriptNanoseconds": 1641.719679999951,
+      "nativeDataWasmNanoseconds": 2598.411139999953,
+      "ratio": 1.5827374013083833
+    },
+    {
+      "operation": "yearMonthFormat",
+      "typescriptNanoseconds": 448.0819799999881,
+      "nativeDataWasmNanoseconds": 636.0151999999653,
+      "ratio": 1.4194170450683647
+    },
+    {
+      "operation": "monthDayFormat",
+      "typescriptNanoseconds": 408.16778000007616,
+      "nativeDataWasmNanoseconds": 618.6495400000422,
+      "ratio": 1.5156746081229802
+    },
+    {
+      "operation": "zonedFormat",
+      "typescriptNanoseconds": 2127.1741199999815,
+      "nativeDataWasmNanoseconds": 5517.915880000072,
+      "ratio": 2.5940123227900687
+    },
+    {
+      "operation": "yearMonthUntil",
+      "typescriptNanoseconds": 5720.577659999981,
+      "nativeDataWasmNanoseconds": 10620.144579999906,
+      "ratio": 1.856481147744779
+    },
+    {
+      "operation": "yearMonthToDate",
+      "typescriptNanoseconds": 2412.2213199999533,
+      "nativeDataWasmNanoseconds": 5432.134659999865,
+      "ratio": 2.251922166080503
+    },
+    {
+      "operation": "monthDayToDate",
+      "typescriptNanoseconds": 2683.5029800000484,
+      "nativeDataWasmNanoseconds": 5956.787639999965,
+      "ratio": 2.2197805198635767
+    },
+    {
+      "operation": "yearMonthAdd",
+      "typescriptNanoseconds": 5460.229839999956,
+      "nativeDataWasmNanoseconds": 9772.432640000043,
+      "ratio": 1.7897474879922126
+    },
+    {
+      "operation": "zonedParse",
+      "typescriptNanoseconds": 3969.1218399998615,
+      "nativeDataWasmNanoseconds": 6357.847279999987,
+      "ratio": 1.6018271890590814
+    },
+    {
+      "operation": "zonedUntilDay",
+      "typescriptNanoseconds": 12725.85057999997,
+      "nativeDataWasmNanoseconds": 21689.33423999988,
+      "ratio": 1.7043524205829494
+    },
+    {
+      "operation": "zonedRound",
+      "typescriptNanoseconds": 2897.217000000092,
+      "nativeDataWasmNanoseconds": 3897.8097400002302,
+      "ratio": 1.3453634090922795
+    },
+    {
+      "operation": "zonedDayStart",
+      "typescriptNanoseconds": 2096.341340000072,
+      "nativeDataWasmNanoseconds": 3856.587559999898,
+      "ratio": 1.8396753841622786
+    },
+    {
+      "operation": "zonedTransition",
+      "typescriptNanoseconds": 424.7191999995266,
+      "nativeDataWasmNanoseconds": 1317.2114000015426,
+      "ratio": 3.101370034608774
+    },
+    {
+      "operation": "durationTotalRelative",
+      "typescriptNanoseconds": 5655.946820000245,
+      "nativeDataWasmNanoseconds": 7476.253539999889,
+      "ratio": 1.3218394334194898
+    }
+  ],
+  "finalEvidence": {
+    "throughput": "duration-hillclimb-results.json",
+    "startup": "duration-startup-results.json",
+    "profiles": "duration-profile-results.json",
+    "typescriptGuard": "ts-regression-guard.json",
+    "wins": {
+      "typescript": 25,
+      "reference": 26,
+      "officialReference": 37
+    },
+    "total": 48,
+    "note": "Median count is not stable-win proof. All-workload goal remains open."
+  },
+  "nextTargets": [
+    "YearMonth until: createDuration 19.54%, generic decode 6.42% and decodeResult 2.85% sampled self time. Typed differences plus trusted complete Duration results are next candidates.",
+    "Duration parse now wins; createNativeDuration remains 25.05% sampled self time, durationResult 10.46%. Prioritize remaining losers before further allocation work."
+  ],
+  "checkpointChanges": {
+    "newMedianWins": ["durationParse", "durationAdd"],
+    "newMedianLosses": ["monthDayParse"],
+    "note": "Close median wins vary between checkpoints; all 23 slower workloads remain explicit."
+  }
+}

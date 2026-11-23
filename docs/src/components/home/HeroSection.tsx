@@ -143,7 +143,7 @@ export default function HeroSection(): React.ReactNode {
     >
       <section
         aria-labelledby="hero-title"
-        className="grid min-h-svh px-[clamp(20px,2.2vw,32px)] pt-24 pb-14 sm:pt-28"
+        className="grid px-[clamp(20px,2.2vw,32px)] pt-16 pb-14 sm:pt-20"
       >
         <div className="mx-auto grid w-full min-w-0 max-w-[1320px] grid-cols-[minmax(0,1fr)] content-center justify-items-center gap-5 sm:gap-7">
           <div

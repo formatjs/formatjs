@@ -916,6 +916,27 @@
       "include-v-in-tag": false,
       "include-v-in-release-name": false,
       "tag-separator": "_v"
+    },
+    "packages/temporal": {
+      "component": "@formatjs/temporal",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/temporal",
+      "version-file": "BUILD.bazel",
+      "initial-version": "1.0.0"
+    },
+    "crates/temporal": {
+      "release-type": "rust",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v",
+      "initial-version": "1.0.0"
     }
   },
   "plugins": [

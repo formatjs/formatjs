@@ -441,6 +441,34 @@ async function loadDatesFields(
                 : undefined) || locationName
           }
 
+          const zone = (zoneLocations[tz]?.city ?? tz)
+            .split('/')
+            .reduce<unknown>(
+              (value, key) =>
+                (value as Record<string, unknown> | undefined)?.[key],
+              timeZoneNames.zone
+            ) as
+            | {
+                long?: {standard?: string; daylight?: string}
+                short?: {standard?: string; daylight?: string}
+              }
+            | undefined
+          if (zone) {
+            const names = (all[tz] ||= {})
+            if (zone.long?.standard) names.longStandard = zone.long.standard
+            if (zone.long?.daylight) names.longDaylight = zone.long.daylight
+            if (zone.short?.standard) names.shortStandard = zone.short.standard
+            if (zone.short?.daylight) names.shortDaylight = zone.short.daylight
+          }
+          // CLDR 49 moved these zone overrides into British/Irish metazones.
+          // Retain ICU's historical daylight names independently of that cutoff.
+          if (metazone === 'British' || metazone === 'Irish') {
+            const daylight =
+              metazoneInfo?.long && 'daylight' in metazoneInfo.long
+                ? metazoneInfo.long.daylight
+                : undefined
+            if (daylight) (all[tz] ||= {}).longDaylight ||= daylight
+          }
           return all
         }, {})
     const {long: utcLong, short: utcShort} = timeZoneNames.zone.Etc.UTC

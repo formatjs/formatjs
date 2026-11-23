@@ -38,6 +38,10 @@ pnpm add @formatjs/intl-getcanonicallocales
 
 ## Usage
 
+Array-like locale lists read and coerce `length` once. Non-Locale object entries use
+the string coercion hint, including `document.all`-style host objects. BigInt or
+Symbol lengths throw `TypeError`; NaN and negative lengths produce an empty list.
+
 ### Via polyfill-fastly.io
 
 You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to create a polyfill script tag for `Intl.GetCanonicalLocales`. For example:
@@ -88,7 +92,10 @@ The Bazel `:test262` target runs the upstream suite against a reviewed failure b
 `getCanonicalLocales` rejects `null`, coerces array-like lengths once with
 `ToLength`, and accepts string-coercible object entries. Native Locale values
 and values from the installed Locale polyfill use their intrinsic locale tag,
-ignoring overridden instance properties. Objects that merely expose `language`
+ignoring overridden instance properties. Brand readers are connected during
+package initialization, including across separately bundled FormatJS copies.
+Replacing `Intl.Locale` or its prototype methods afterward does not change
+these brand checks. Objects that merely expose `language`
 and `baseName` are treated as ordinary array-like inputs.
 
 Locale identifier casing is normalized before CLDR alias lookup, including

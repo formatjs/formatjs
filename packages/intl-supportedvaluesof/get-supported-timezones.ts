@@ -11,8 +11,8 @@ import {timezones} from '@formatjs_generated/cldr.supported-values/timezones.js'
 function isSupportedTimeZone(timeZone: Timezone): boolean {
   try {
     // Always use 'en' for testing
-    const formatter = createMemoizedDateTimeFormat('en', {timeZone})
-    return formatter.resolvedOptions().timeZone === timeZone
+    createMemoizedDateTimeFormat('en', {timeZone})
+    return true
   } catch {}
 
   return false

@@ -1,5 +1,8 @@
 import {basename} from 'path'
-import {verifyAppleResourcesWithNative} from '#packages/cli-lib/native.js'
+import {
+  verifyAndroidResourcesWithNative,
+  verifyAppleResourcesWithNative,
+} from '#packages/cli-lib/native.js'
 import {debug, writeStderr} from '#packages/cli-lib/console_utils.js'
 import {checkJavaPrintfStructure} from '#packages/cli-lib/verify/checkJavaPrintfStructure.js'
 import {checkMissingKeys} from '#packages/cli-lib/verify/checkMissingKeys.js'
@@ -12,7 +15,7 @@ export interface VerifyOpts {
   missingKeys: boolean
   extraKeys: boolean
   structuralEquality: boolean
-  messageSyntax?: 'icu' | 'java-printf' | 'apple-printf'
+  messageSyntax?: 'icu' | 'java-printf' | 'apple-printf' | 'android'
   ignore?: string[]
   /**
    * Whether to follow symbolic links when traversing directories.
@@ -34,14 +37,18 @@ export async function verify(
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
 
-  if (messageSyntax === 'apple-printf') {
+  if (messageSyntax === 'apple-printf' || messageSyntax === 'android') {
     const resources = await Promise.all(
       files.map(async filename => ({
         filename,
         content: await readFile(filename),
       }))
     )
-    const issues = verifyAppleResourcesWithNative(
+    const verifyResources =
+      messageSyntax === 'android'
+        ? verifyAndroidResourcesWithNative
+        : verifyAppleResourcesWithNative
+    const issues = verifyResources(
       resources,
       sourceLocale,
       missingKeys,

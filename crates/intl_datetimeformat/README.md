@@ -71,6 +71,8 @@ interval fallback selection, styles and 15,120 matcher option combinations.
 ## Calendar providers
 
 `calendar::CalendarRegistry` supplies Gregorian/ISO fields without optional data.
+Builtin Gregorian/ISO records retain signed astronomical years and separate
+BC/AD era labels. Pattern rendering converts nonpositive years to era numbering.
 Months use the TS calendar contract's zero-based indices. Local milliseconds may
 cross Date bounds after timezone adjustment. Other calendars require registered
 `CalendarProvider` callbacks; unloaded calendars return `MissingCalendar`.

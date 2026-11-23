@@ -1,0 +1,98 @@
+{
+  "runtimeCommit": "6d55edf0f473aac8b6fce314f7a7f7d345452972",
+  "method": "Same published namespace consumer, esbuild es2022 minification and gzip level 9 as startup benchmark. Baseline and full reference must exactly match recorded sizes. TypeScript AST rewrites disable selected functions before tree shaking; combined removal measured independently. Savings overlap and are not additive.",
+  "scope": "Diagnostic feature removals, not equivalent implementations or proposed API changes. Removing native dispatch disables backend installation; removing locale formatting breaks toLocaleString; removing corrections loses calendar field/host-boundary repairs; removing lunar/Umm al-Qura engines breaks those calendars; empty timezone metadata breaks named-zone validation, alias identity and transition sampling guarantees. No conformance claim for altered builds. No source maps, declarations or WASM payload included.",
+  "results": [
+    {
+      "name": "typescript",
+      "bytes": 137819,
+      "gzipBytes": 38639,
+      "rewrittenNodes": 0,
+      "savedGzipBytes": 0
+    },
+    {
+      "name": "referenceFull",
+      "bytes": 65196,
+      "gzipBytes": 23083,
+      "rewrittenNodes": 0,
+      "savedGzipBytes": 15556
+    },
+    {
+      "name": "withoutNativeDispatch",
+      "bytes": 136608,
+      "gzipBytes": 38315,
+      "rewrittenNodes": 66,
+      "savedGzipBytes": 324
+    },
+    {
+      "name": "withoutLocaleFormatting",
+      "bytes": 117485,
+      "gzipBytes": 32801,
+      "rewrittenNodes": 2,
+      "savedGzipBytes": 5838
+    },
+    {
+      "name": "withoutCalendarFormattingCorrections",
+      "bytes": 124167,
+      "gzipBytes": 34961,
+      "rewrittenNodes": 2,
+      "savedGzipBytes": 3678
+    },
+    {
+      "name": "withoutLunarAndUmmAlQuraEngines",
+      "bytes": 132258,
+      "gzipBytes": 36500,
+      "rewrittenNodes": 4,
+      "savedGzipBytes": 2139
+    },
+    {
+      "name": "withoutTimezoneMetadata",
+      "bytes": 110872,
+      "gzipBytes": 32322,
+      "rewrittenNodes": 4,
+      "savedGzipBytes": 6317
+    },
+    {
+      "name": "withoutMetadata:temporal_names_default",
+      "bytes": 129556,
+      "gzipBytes": 36880,
+      "rewrittenNodes": 1,
+      "savedGzipBytes": 1759
+    },
+    {
+      "name": "withoutMetadata:steps",
+      "bytes": 132344,
+      "gzipBytes": 37331,
+      "rewrittenNodes": 1,
+      "savedGzipBytes": 1308
+    },
+    {
+      "name": "withoutMetadata:links_default",
+      "bytes": 129298,
+      "gzipBytes": 37821,
+      "rewrittenNodes": 1,
+      "savedGzipBytes": 818
+    },
+    {
+      "name": "withoutMetadata:primary_default",
+      "bytes": 133131,
+      "gzipBytes": 38389,
+      "rewrittenNodes": 1,
+      "savedGzipBytes": 250
+    },
+    {
+      "name": "withoutThoseThreeFeatures",
+      "bytes": 110716,
+      "gzipBytes": 30315,
+      "rewrittenNodes": 72,
+      "savedGzipBytes": 8324
+    },
+    {
+      "name": "withoutThoseFourFeatures",
+      "bytes": 83769,
+      "gzipBytes": 24065,
+      "rewrittenNodes": 76,
+      "savedGzipBytes": 14574
+    }
+  ]
+}

@@ -30,6 +30,7 @@ pub enum PartKind {
     TimeZoneName,
     RelatedYear,
     YearName,
+    Unknown,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct Part {
@@ -150,6 +151,7 @@ impl RenderData {
             .provider
             .date_from_time(i64::try_from(milliseconds).map_err(|_| Error::InvalidDate)?)?;
         Ok(LocalTime {
+            epoch_nanoseconds,
             civil,
             fields,
             offset,
@@ -225,23 +227,36 @@ impl RenderData {
                 ),
                 Token::Field("timeZoneName") => {
                     let width = format.time_zone_name.unwrap_or(ZoneWidth::Short);
-                    let generic =
-                        self.locale.metadata.time_zone_name.get(zone).and_then(
-                            |names| match width {
-                                ZoneWidth::ShortGeneric => names.short_generic.as_ref(),
-                                ZoneWidth::LongGeneric => names.long_generic.as_ref(),
+                    let zone_names = if local.epoch_nanoseconds >= 0 || zone == "UTC" {
+                        self.locale.metadata.time_zone_name.get(zone)
+                    } else {
+                        None
+                    };
+                    let generic = zone_names.and_then(|names| match width {
+                        ZoneWidth::ShortGeneric => names.short_generic.as_ref(),
+                        ZoneWidth::LongGeneric => names.long_generic.as_ref(),
+                        _ => None,
+                    });
+                    let names = zone_names.and_then(|names| match width {
+                        ZoneWidth::Short => names.short.as_ref(),
+                        ZoneWidth::Long => names.long.as_ref(),
+                        _ => None,
+                    });
+                    let specific =
+                        self.locale
+                            .metadata
+                            .time_zone_name
+                            .get(zone)
+                            .and_then(|names| match (width, in_dst) {
+                                (ZoneWidth::Long, false) => names.long_standard.as_ref(),
+                                (ZoneWidth::Long, true) => names.long_daylight.as_ref(),
+                                (ZoneWidth::Short, false) => names.short_standard.as_ref(),
+                                (ZoneWidth::Short, true) => names.short_daylight.as_ref(),
                                 _ => None,
-                            },
-                        );
-                    let names =
-                        self.locale.metadata.time_zone_name.get(zone).and_then(
-                            |names| match width {
-                                ZoneWidth::Short => names.short.as_ref(),
-                                ZoneWidth::Long => names.long.as_ref(),
-                                _ => None,
-                            },
-                        );
-                    let value = if let Some(generic) = generic {
+                            });
+                    let value = if let Some(specific) = specific {
+                        specific.clone()
+                    } else if let Some(generic) = generic {
                         generic.clone()
                     } else {
                         match names {
@@ -290,7 +305,15 @@ impl RenderData {
                     let (field, kind, value) = match name {
                         "weekday" => (Field::Weekday, PartKind::Weekday, i32::from(civil.weekday)),
                         "era" => (Field::Era, PartKind::Era, 0),
-                        "year" => (Field::Year, PartKind::Year, fields.year),
+                        "year" => {
+                            // ECMA-402 §11.5.4 step 15.f.iv applies to every calendar.
+                            let year = if fields.year <= 0 {
+                                1_i32.checked_sub(fields.year).ok_or(Error::InvalidDate)?
+                            } else {
+                                fields.year
+                            };
+                            (Field::Year, PartKind::Year, year)
+                        }
                         "month" => (
                             Field::Month,
                             PartKind::Month,
@@ -314,7 +337,15 @@ impl RenderData {
                         }
                         "minute" => (Field::Minute, PartKind::Minute, i32::from(civil.minute)),
                         "second" => (Field::Second, PartKind::Second, i32::from(civil.second)),
-                        _ => continue,
+                        _ => {
+                            // ECMA-402 §11.5.4, step 15.j.
+                            result.push(Part {
+                                kind: PartKind::Unknown,
+                                value: format!("{name}:{}", local.epoch_nanoseconds),
+                                source: None,
+                            });
+                            continue;
+                        }
                     };
                     let width = format.get(field);
                     let mut text = match width {
@@ -399,10 +430,10 @@ impl RenderData {
     }
 
     fn offset_name(&self, seconds: i32, long: bool) -> Result<String, Error> {
-        let minutes = seconds.div_euclid(60);
-        let absolute = minutes.unsigned_abs();
-        let hours = absolute / 60;
-        let minute = absolute % 60;
+        let absolute = seconds.unsigned_abs();
+        let hours = absolute / 3600;
+        let minute = absolute / 60 % 60;
+        let second = absolute % 60;
         let (positive, negative) = self
             .locale
             .metadata
@@ -414,14 +445,29 @@ impl RenderData {
         } else {
             positive.to_owned()
         };
+        if second != 0 {
+            let start = pattern.find('m').ok_or(Error::InvalidLocaleData)?;
+            let hour_end = pattern[..start]
+                .rfind('H')
+                .ok_or(Error::InvalidLocaleData)?
+                + 1;
+            let separator = pattern[hour_end..start].to_owned();
+            let end = start
+                + pattern[start..]
+                    .bytes()
+                    .take_while(|value| *value == b'm')
+                    .count();
+            pattern.insert_str(end, &format!("{separator}ss"));
+        }
         let value = if long {
             pattern
                 .replacen("HH", &format!("{hours:02}"), 1)
                 .replacen('H', &hours.to_string(), 1)
                 .replacen("mm", &format!("{minute:02}"), 1)
                 .replacen('m', &minute.to_string(), 1)
+                .replacen("ss", &format!("{second:02}"), 1)
         } else {
-            if minute == 0 {
+            if minute == 0 && second == 0 {
                 if let Some(start) = pattern.find('m') {
                     let begin = pattern[..start]
                         .rfind('H')
@@ -436,9 +482,13 @@ impl RenderData {
                 }
             }
             replace_run(
-                &replace_run(&pattern, 'H', &hours.to_string()),
-                'm',
-                &format!("{minute:02}"),
+                &replace_run(
+                    &replace_run(&pattern, 'H', &hours.to_string()),
+                    'm',
+                    &format!("{minute:02}"),
+                ),
+                's',
+                &format!("{second:02}"),
             )
         };
         Ok(self
@@ -517,6 +567,7 @@ fn day_period(
 }
 
 pub struct LocalTime {
+    pub epoch_nanoseconds: i128,
     pub civil: CivilDateTime,
     pub fields: CalendarFields,
     pub offset: TimeZoneOffset,

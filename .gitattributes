@@ -14,3 +14,5 @@ website/* linguist-documentation
 MODULE.bazel.lock merge=bazel-lockfile-merge
 
 benchmarks/hermes-intl-extension/*-results.json linguist-generated
+benchmarks/temporal/*-results.json linguist-generated
+benchmarks/temporal/*-experiments.json linguist-generated

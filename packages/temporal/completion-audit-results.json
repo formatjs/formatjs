@@ -1,0 +1,1256 @@
+{
+  "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+  "deliveryScope": {
+    "active": ["pure TypeScript", "native Rust", "native Hermes"],
+    "retired": ["WASM"],
+    "records": "Historical verification; current checks and open work are in knowledge-base/015a-temporal-completion-audit.md."
+  },
+  "runtimeCommit": "c6bb171f5ce805d2eeec139bed32977323e426a8",
+  "method": "Parse every candidate Test262 YAML frontmatter with js-yaml; count default/strict scenarios from flags. Compare current specification property names and getter presence against the built default TS namespace.",
+  "featureAudit": {
+    "featureFiles": 6738,
+    "executions": 13476,
+    "outsideCore": {
+      "files": 74,
+      "executions": 148,
+      "groups": {
+        "staging/Temporal/v8": {
+          "files": 1,
+          "executions": 2,
+          "realmFiles": []
+        },
+        "staging/Temporal/removed-methods.js": {
+          "files": 1,
+          "executions": 2,
+          "realmFiles": []
+        },
+        "staging/sm/Date": {
+          "files": 1,
+          "executions": 2,
+          "realmFiles": []
+        },
+        "intl402/DurationFormat/prototype": {
+          "files": 6,
+          "executions": 12,
+          "realmFiles": []
+        },
+        "intl402/DateTimeFormat/prototype": {
+          "files": 65,
+          "executions": 130,
+          "realmFiles": []
+        }
+      }
+    },
+    "outsideFiles": [
+      {
+        "file": "staging/Temporal/v8/calendar-day-of-week.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "staging/Temporal/removed-methods.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "staging/sm/Date/to-temporal-instant.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DurationFormat/prototype/formatToParts/temporal-duration-string-arg.js",
+        "features": ["Temporal", "Intl.DurationFormat"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DurationFormat/prototype/formatToParts/temporal-duration-object-arg.js",
+        "features": ["Temporal", "Intl.DurationFormat"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DurationFormat/prototype/formatToParts/taint-temporal-duration-prototype.js",
+        "features": ["Temporal", "Intl.DurationFormat"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DurationFormat/prototype/format/temporal-duration-string-arg.js",
+        "features": ["Temporal", "Intl.DurationFormat"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DurationFormat/prototype/format/temporal-duration-object-arg.js",
+        "features": ["Temporal", "Intl.DurationFormat"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DurationFormat/prototype/format/taint-temporal-duration-prototype.js",
+        "features": ["Temporal", "Intl.DurationFormat"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-zoneddatetime-not-supported.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plainyearmonth-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plainyearmonth-formatting-datetime-style.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plaintime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plaintime-formatting-datetime-style.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plainmonthday-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plainmonthday-formatting-datetime-style.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plaindatetime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plaindatetime-formatting-datetime-style.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plaindate-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-plaindate-formatting-datetime-style.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-resolved-time-zone.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-not-overlapping-options.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-zoneddatetime-not-supported.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-no-time-clip.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-plainyearmonth-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-no-time-clip-weekday.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-plaintime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-no-time-clip-non-latin-numerals.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-plainmonthday-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-ignore-timezone.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-plaindatetime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-format-with-era.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-plaindate-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/format/temporal-objects-format-weekday-long.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-ignore-timezone.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-resolved-time-zone.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-format-with-era.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-not-overlapping-options.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-no-time-clip.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/temporal-objects-no-time-clip-weekday.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/dangi-calendar-dates.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal.js",
+        "features": ["Temporal", "Intl.Era-monthcode"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal-lunisolar.js",
+        "features": ["Temporal", "Intl.Era-monthcode"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/to-datetime-formattable-with-different-arg-kinds.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-zoneddatetime-not-supported.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plainyearmonth-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plaintime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plainmonthday-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plaindatetime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-plaindate-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-throws-with-different-calendars.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-throws-typeerror-with-dissimilar-types.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-resolved-time-zone.js",
+        "features": ["Temporal", "Intl.DateTimeFormat-formatRange"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-not-overlapping-options.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-no-time-clip.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-no-time-clip-weekday.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-ignore-timezone.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/temporal-objects-format-with-era.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRangeToParts/fails-on-distinct-temporal-types.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/to-datetime-formattable-with-different-arg-kinds.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-zoneddatetime-not-supported.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-plainyearmonth-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-plaintime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-plainmonthday-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-plaindatetime-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/fails-on-distinct-temporal-types.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-plaindate-formatting-timezonename.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-throws-with-different-calendars.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-resolved-time-zone.js",
+        "features": ["Temporal", "Intl.DateTimeFormat-formatRange"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-format-with-era.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-no-time-clip-weekday.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-not-overlapping-options.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-no-time-clip.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      },
+      {
+        "file": "intl402/DateTimeFormat/prototype/formatRange/temporal-objects-ignore-timezone.js",
+        "features": ["Temporal"],
+        "executions": 2,
+        "outsideCore": true,
+        "realm": false
+      }
+    ],
+    "metadataFreeCandidates": 0
+  },
+  "specification": {
+    "url": "https://tc39.es/proposal-temporal/",
+    "retrieved": "2026-11-16",
+    "sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+    "documentedProperties": 249,
+    "implicitConstructorNameAndLengthProperties": 16,
+    "owners": [
+      {
+        "owner": "Temporal.Now",
+        "properties": 7,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainDate",
+        "properties": 5,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainDate.prototype",
+        "properties": 33,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainTime",
+        "properties": 5,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainTime.prototype",
+        "properties": 19,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainDateTime",
+        "properties": 5,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainDateTime.prototype",
+        "properties": 40,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.ZonedDateTime",
+        "properties": 5,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.ZonedDateTime.prototype",
+        "properties": 50,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.Duration",
+        "properties": 5,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.Duration.prototype",
+        "properties": 25,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.Instant",
+        "properties": 7,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.Instant.prototype",
+        "properties": 15,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainYearMonth",
+        "properties": 5,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainYearMonth.prototype",
+        "properties": 23,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainMonthDay",
+        "properties": 4,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      },
+      {
+        "owner": "Temporal.PlainMonthDay.prototype",
+        "properties": 12,
+        "missing": [],
+        "extra": [],
+        "wrongKind": []
+      }
+    ]
+  },
+  "limits": [
+    "Property names and getter presence do not prove algorithm correctness.",
+    "Feature metadata audit identifies required scope; passing counts come from separate executed Test262 reports.",
+    "Calendar selections overlap class selections; sum of suite counts is not unique scenario coverage.",
+    "Rust uses typed APIs and composed operations; JavaScript owns coercion, brands and object lifecycle."
+  ],
+  "migrationAudit": {
+    "sourceFiles": 48,
+    "importAndExportStatements": 503,
+    "foreignTemporalOrBenchmarkImports": [],
+    "dynamicImports": [],
+    "baseSourceDirectoryTree": "1cfa48ee8ad76083accc77bb2c628f9968e5db4a",
+    "baseRustDirectoryTree": "d426ef6166e736418944c9b4b612ee7001a4cf47"
+  },
+  "distributionAudit": {
+    "target": "//native/hermes/package:sdk",
+    "consumer": "examples/hermes-intl //:smoke_test",
+    "consumerPassed": true,
+    "modes": ["source", "optimized bytecode"],
+    "rustToolchainRequiredByConsumer": false,
+    "platformsInArchive": ["linux-x86_64", "darwin-aarch64", "darwin-x86_64"],
+    "executedPlatform": "linux-x86_64",
+    "limits": [
+      "macOS archives cross-built on Linux; macOS execution is not claimed.",
+      "Desktop archive contains shared Intl implementations and data, not just Temporal."
+    ],
+    "archiveBytes": 264024976,
+    "archives": [
+      {
+        "path": "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a",
+        "bytes": 482024864
+      },
+      {
+        "path": "lib/x86_64-apple-darwin/libformatjs_intl_hermes.a",
+        "bytes": 482032280
+      },
+      {
+        "path": "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a",
+        "bytes": 497044640
+      }
+    ],
+    "archiveSha256": "9e0ff53c1e2b12e66f707517513083360dc1e6bbe6efaf1128f54b72d91cee5c"
+  },
+  "conformanceProfiles": {
+    "typescript": {
+      "suiteExecutions": 16454,
+      "uniqueExecutions": 13474,
+      "uniqueFiles": 6737,
+      "passing": 13474,
+      "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+      "reports": [
+        {
+          "target": "compact_calendar_instant_test262",
+          "executions": 934,
+          "sha256": "e8884497caf6dc0253391faf6bafc7b3b8fa45fa9dc45d314c77dde775363880"
+        },
+        {
+          "target": "compact_calendar_date_test262",
+          "executions": 1308,
+          "sha256": "772368b1930c8263f0357ea2e6ca33657163c41fedbe80524f9075027e2770f0"
+        },
+        {
+          "target": "compact_calendar_datetime_test262",
+          "executions": 1552,
+          "sha256": "08d54cde6f6177abc92782a1f04914073329aa201df461c525de8d41ff8aa5b8"
+        },
+        {
+          "target": "compact_calendar_time_test262",
+          "executions": 986,
+          "sha256": "e2a14da4b08ae6fcab42aae9def1282aac022ea69ee305cb9196181a1b0f7d6e"
+        },
+        {
+          "target": "compact_calendar_yearmonth_test262",
+          "executions": 1022,
+          "sha256": "f2b520fec39b97d5c278351791f2dd02a68943286a0c18858c4290bc1e20bab1"
+        },
+        {
+          "target": "compact_calendar_monthday_test262",
+          "executions": 398,
+          "sha256": "6c18a98e791e57d15fd697cc368130af29f31591586433683077d77ee04b6878"
+        },
+        {
+          "target": "compact_calendar_duration_test262",
+          "executions": 1086,
+          "sha256": "402df8a5f6f4a954a735f66a3db96cd34c3457fa2b9f7a43d63dc356964622c8"
+        },
+        {
+          "target": "compact_calendar_zoned_test262",
+          "executions": 1804,
+          "sha256": "6e83a9759b8fde03cf23132368a71ce822ffa468dfc3186d4febdb1701857f28"
+        },
+        {
+          "target": "compact_calendar_calendars_test262",
+          "executions": 2974,
+          "sha256": "4d007c772ab3563e0f365e05eeeb99c15ccf1bb00aff57c6aaa25872d54ff1e2"
+        },
+        {
+          "target": "compact_calendar_now_test262",
+          "executions": 138,
+          "sha256": "197c99250b72a9eee8f83b5880dfaf7d0df4f5f46a515d9bbffd38cf879d2387"
+        },
+        {
+          "target": "compact_calendar_installation_test262",
+          "executions": 26,
+          "sha256": "c1b2e3cb76bab5bb5c4d18abf74a5de795bd25e95e7f528bc3252ecd94f46419"
+        },
+        {
+          "target": "compact_calendar_staging_test262",
+          "executions": 6,
+          "sha256": "0397c5f0e9f77364311337a40b6d04f517463640b61c819c1e4331cd3108aab4"
+        },
+        {
+          "target": "host_intl_compat_test262",
+          "executions": 4078,
+          "sha256": "415fd813de1fb5b661611b0ec17f65953c0affda763d8c60ff29974ec4bbadff"
+        },
+        {
+          "target": "compact_calendar_datetimeformat_test262",
+          "executions": 130,
+          "sha256": "f5246b50f1e36131789ffd655451e06ca1118dcfdd1682161cba44925de556ac"
+        },
+        {
+          "target": "compact_calendar_durationformat_test262",
+          "executions": 12,
+          "sha256": "99d626a06fd3748b0b901c2050c6921a4bb073231105d99f75ce7c134e4769e3"
+        }
+      ]
+    },
+    "wasm": {
+      "suiteExecutions": 16454,
+      "uniqueExecutions": 13474,
+      "uniqueFiles": 6737,
+      "passing": 13474,
+      "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+      "reports": [
+        {
+          "target": "wasm_instant_test262",
+          "executions": 934,
+          "sha256": "c8422d48f74346668c1d762815f0604bd6378fa458590e773b00721ff538258c"
+        },
+        {
+          "target": "wasm_date_test262",
+          "executions": 1308,
+          "sha256": "e30682b310daeb0020bd39f3f282c6fb7079b4af4ad14115285de8c09d4e3c4b"
+        },
+        {
+          "target": "wasm_datetime_test262",
+          "executions": 1552,
+          "sha256": "48b4245f59220443c754798fbf7fdebd5798bd0e5e84be543a75ef62bb1aac40"
+        },
+        {
+          "target": "wasm_time_test262",
+          "executions": 986,
+          "sha256": "ac6edd8140b54faf45c4dd8dfc84c944be7f6d2c2fe7f38f7198c134e35932f6"
+        },
+        {
+          "target": "wasm_yearmonth_test262",
+          "executions": 1022,
+          "sha256": "faa80967273d2ddfaac1d7c9c363a134805c605ad10c8f8f17216cb7aa139181"
+        },
+        {
+          "target": "wasm_monthday_test262",
+          "executions": 398,
+          "sha256": "91b16b82e35efcdb37249fafb52c8c586b1b0cd6d4b1f635bb2f0dddf531cba3"
+        },
+        {
+          "target": "wasm_duration_test262",
+          "executions": 1086,
+          "sha256": "006e2ac53033a2b9244d13c2fcd7b7bea1ce9dc61c579ed1ceb34efbb8c73ec2"
+        },
+        {
+          "target": "wasm_zoned_test262",
+          "executions": 1804,
+          "sha256": "2f597ea98dbcf565559b26faa52093b340e71810d43ec5276f18a45b4b4471e5"
+        },
+        {
+          "target": "wasm_calendars_test262",
+          "executions": 2974,
+          "sha256": "7043cd49f32bc89064c6c27ebca80d1d9c571ff19d70fef9bbd3119d2ecf1e1c"
+        },
+        {
+          "target": "wasm_now_test262",
+          "executions": 138,
+          "sha256": "48bf42a7156b1dd794690b6a8cfa92c139b06ecf5f4cef498fa76f38696372b1"
+        },
+        {
+          "target": "wasm_installation_test262",
+          "executions": 26,
+          "sha256": "315f86931aef43eec975118eb2ed871b2909fbb9add791f710b4fe43636b610b"
+        },
+        {
+          "target": "wasm_staging_test262",
+          "executions": 6,
+          "sha256": "0397c5f0e9f77364311337a40b6d04f517463640b61c819c1e4331cd3108aab4"
+        },
+        {
+          "target": "wasm_host_intl_compat_test262",
+          "executions": 4078,
+          "sha256": "dc32eb31ea5454cc3bcb4aa2052fbc3052c5845492db68c54bcf8868d1265913"
+        },
+        {
+          "target": "wasm_legacy_datetimeformat_test262",
+          "executions": 130,
+          "sha256": "f49d392ad21d102c342e4a27867527b40e722d0f73b20defa702604fdbf51aab"
+        },
+        {
+          "target": "wasm_legacy_durationformat_test262",
+          "executions": 12,
+          "sha256": "8f284eaefe810e3e6c999f8edcaa94ae3d7e656bcbed31e132e28e3080f4810d"
+        }
+      ]
+    },
+    "hermes_ts_source": {
+      "suiteExecutions": 16452,
+      "uniqueExecutions": 13472,
+      "uniqueFiles": 6736,
+      "passing": 13472,
+      "missingFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "reports": [
+        {
+          "target": "ts_hermes_instant_source_test262",
+          "executions": 934,
+          "sha256": "e9d522451ddcdab6b814d13101d3679e64a1c24cda7aaf8279360eba1fcbf80b"
+        },
+        {
+          "target": "ts_hermes_date_source_test262",
+          "executions": 1308,
+          "sha256": "005457d2d436adae2d851c99b842f1e43ce0932da5dcb80ddeb00739f0e32c6e"
+        },
+        {
+          "target": "ts_hermes_datetime_source_test262",
+          "executions": 1552,
+          "sha256": "b4e5a617564a27eddd9e4f688b6159165ce569417d8a86f1a320d8cc806fa9da"
+        },
+        {
+          "target": "ts_hermes_time_source_test262",
+          "executions": 986,
+          "sha256": "c542519191b1274ded2a8724eeadccbc8c619697d84e6e803f956375c939ab39"
+        },
+        {
+          "target": "ts_hermes_yearmonth_source_test262",
+          "executions": 1022,
+          "sha256": "67c81d89c970c43324b6a7c4fa649323c9dd93c7c6468055246eea365629f6c4"
+        },
+        {
+          "target": "ts_hermes_monthday_source_test262",
+          "executions": 398,
+          "sha256": "eb00a0dff2a58a2d714227da7a2c7d627b57b3f3a32d14cd2e4837cf200622d3"
+        },
+        {
+          "target": "ts_hermes_duration_source_test262",
+          "executions": 1086,
+          "sha256": "9a36faf9200459460899a167fb12a48655c15d720d7974adb0fdbdec9c2b45f7"
+        },
+        {
+          "target": "ts_hermes_zoned_source_test262",
+          "executions": 1804,
+          "sha256": "1f62dec7ae516c8fe516a697bf1e79ff77580c3ab8df6416b2612fe11b278f30"
+        },
+        {
+          "target": "ts_hermes_calendars_source_test262",
+          "executions": 2974,
+          "sha256": "f1f5cf6a7327e3c6509ec3d8e657b829fa4f5c95c26c09cbf7a3f51ccb6642cd"
+        },
+        {
+          "target": "ts_hermes_now_source_test262",
+          "executions": 138,
+          "sha256": "2777fd23409e811b4ec118efb46a8933e621a0aab6626b8d19c0c366770ac339"
+        },
+        {
+          "target": "ts_hermes_installation_source_test262",
+          "executions": 26,
+          "sha256": "27ba59d35d791dfbeeb2f8eae2ec9fb812d34bab85ce862cec7390509da05bfe"
+        },
+        {
+          "target": "ts_hermes_staging_source_test262",
+          "executions": 6,
+          "sha256": "489df366d62e351bb8f929a79c9d445669fe6e907bdb4b4c2e07ea4127ce3df0"
+        },
+        {
+          "target": "ts_intl_compat_hermes_source_test262",
+          "executions": 4076,
+          "sha256": "d9ce2deb285ec631bbc04b9b6b6fef7b7e7df980a164c23c17ee4ed67b5404e6"
+        },
+        {
+          "target": "ts_datetimeformat_hermes_source_test262",
+          "executions": 130,
+          "sha256": "f1f5a59837cd27bb3b869337af3ba6b8cd3159142f298ef5c88a55e31f7495dd"
+        },
+        {
+          "target": "ts_durationformat_hermes_source_test262",
+          "executions": 12,
+          "sha256": "b5a629b809b6546628928a7bc4f6d277853c3c148c1cf5c34c34cc212fd24ff9"
+        }
+      ]
+    },
+    "hermes_ts_bytecode": {
+      "suiteExecutions": 16452,
+      "uniqueExecutions": 13472,
+      "uniqueFiles": 6736,
+      "passing": 13472,
+      "missingFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "reports": [
+        {
+          "target": "ts_hermes_instant_bytecode_test262",
+          "executions": 934,
+          "sha256": "24c73f113368b3a195ccf90528d36459e82dea4f04a71d27385abc5ac6ce4856"
+        },
+        {
+          "target": "ts_hermes_date_bytecode_test262",
+          "executions": 1308,
+          "sha256": "2063efb204b3004f3557ab00fcd3c23978c58df6c4ac614d4a28a3c9334edb61"
+        },
+        {
+          "target": "ts_hermes_datetime_bytecode_test262",
+          "executions": 1552,
+          "sha256": "6b91c52d79e943783c6497510360ce17b643a8ecf8b5467892a4e0de51dfdfc5"
+        },
+        {
+          "target": "ts_hermes_time_bytecode_test262",
+          "executions": 986,
+          "sha256": "565d621368ca0761433a15f9c62de364d02bddd1b878aaef630bb6df120ff7d2"
+        },
+        {
+          "target": "ts_hermes_yearmonth_bytecode_test262",
+          "executions": 1022,
+          "sha256": "9a50b63ece01cd40b0855c97ab5a4996c508de723d815ccbea9ba64e590e2c79"
+        },
+        {
+          "target": "ts_hermes_monthday_bytecode_test262",
+          "executions": 398,
+          "sha256": "817af85ecc76f108d00260f5a37bb188058b668a483c17ffb0f7887a020ec1a8"
+        },
+        {
+          "target": "ts_hermes_duration_bytecode_test262",
+          "executions": 1086,
+          "sha256": "c47545fcd4de6bc7c9cc96f38024396fed691da88b4a84bcfaaabddb01c68cac"
+        },
+        {
+          "target": "ts_hermes_zoned_bytecode_test262",
+          "executions": 1804,
+          "sha256": "6175104c516e6990677815265b757a9bfcffc4ffce03801395d5dd8b2e913b1e"
+        },
+        {
+          "target": "ts_hermes_calendars_bytecode_test262",
+          "executions": 2974,
+          "sha256": "22756cc98f753ce335ffb70ce6b06c62a34681332c052e83099fe9e666cbd5bf"
+        },
+        {
+          "target": "ts_hermes_now_bytecode_test262",
+          "executions": 138,
+          "sha256": "f96c9cf5f5e207c246562c5d5c9e5d237dc6bec61d2fb029773b9104d869a41e"
+        },
+        {
+          "target": "ts_hermes_installation_bytecode_test262",
+          "executions": 26,
+          "sha256": "b14275b85e98433ca1c3025dbbb53dd3e4119798c8368d348303cf1c6f2cdef1"
+        },
+        {
+          "target": "ts_hermes_staging_bytecode_test262",
+          "executions": 6,
+          "sha256": "b7783c10c5ceb72a57c8f4837a5fe07d7c1975b09b5db2ba115f6531d978df17"
+        },
+        {
+          "target": "ts_intl_compat_hermes_bytecode_test262",
+          "executions": 4076,
+          "sha256": "12c56819b019661e855941ebfb19c67750bb9d8b82d47659fe0c5f32171e30ca"
+        },
+        {
+          "target": "ts_datetimeformat_hermes_bytecode_test262",
+          "executions": 130,
+          "sha256": "41f8e2328f40c2f77a04be42323886f7d38f9ac078e5585a1faa5d5a87648121"
+        },
+        {
+          "target": "ts_durationformat_hermes_bytecode_test262",
+          "executions": 12,
+          "sha256": "c07d7609cec0248f3a6a4b56d1732a754d7209c679576e4cae13eee049a6a5ea"
+        }
+      ]
+    },
+    "hermes_sdk_source": {
+      "suiteExecutions": 16452,
+      "uniqueExecutions": 13472,
+      "uniqueFiles": 6736,
+      "passing": 13472,
+      "missingFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "reports": [
+        {
+          "target": "sdk_hermes_instant_source_test262",
+          "executions": 934,
+          "sha256": "d6bdabe0f3814558b7bd754363b8b067bd666968e7e6fed424a955d86281b8e1"
+        },
+        {
+          "target": "sdk_hermes_date_source_test262",
+          "executions": 1308,
+          "sha256": "34fb555a50206e493790e00bdb328c39edf5d4ad9f79301426c44f8f2a710edc"
+        },
+        {
+          "target": "sdk_hermes_datetime_source_test262",
+          "executions": 1552,
+          "sha256": "7ab8993e69350f3d55326beb6f30d0c3e18bee07e23181185880ecc72239882e"
+        },
+        {
+          "target": "sdk_hermes_time_source_test262",
+          "executions": 986,
+          "sha256": "ae81b3f2bdbbb60554752929f5f5c68a5ad8ece4a725d573210c705143bddaa0"
+        },
+        {
+          "target": "sdk_hermes_yearmonth_source_test262",
+          "executions": 1022,
+          "sha256": "d6f5a2445ea7afd43d6f48eb92bcbe827cbb907842b643543009514bfd139ceb"
+        },
+        {
+          "target": "sdk_hermes_monthday_source_test262",
+          "executions": 398,
+          "sha256": "a2606d31ff2df14ff9664ee8b857a255ce7eb5315965714effaae3499e1d710a"
+        },
+        {
+          "target": "sdk_hermes_duration_source_test262",
+          "executions": 1086,
+          "sha256": "95d6721ae0cc1e9d87d0ee59e1bd2464ac583dd12a91d6a9d1b9f06d61ad60bd"
+        },
+        {
+          "target": "sdk_hermes_zoned_source_test262",
+          "executions": 1804,
+          "sha256": "f7600b398e7a70267bf248a0830a61eb1cac704758c79833d61af9586a7d290b"
+        },
+        {
+          "target": "sdk_hermes_calendars_source_test262",
+          "executions": 2974,
+          "sha256": "2dcf284ad3865fd18805a59d7ef47e42fdfdf23cb3ee25656e162c41c9be2e0f"
+        },
+        {
+          "target": "sdk_hermes_now_source_test262",
+          "executions": 138,
+          "sha256": "b43b58f4adcab4ee96489531cd604a5e7dbd9822b9619409b7c2177274819e8c"
+        },
+        {
+          "target": "sdk_hermes_installation_source_test262",
+          "executions": 26,
+          "sha256": "def7ef44ee405edb239367c30acc4718da950dbcf3c0530a8e393fb46da4e8f0"
+        },
+        {
+          "target": "sdk_hermes_staging_source_test262",
+          "executions": 6,
+          "sha256": "0397c5f0e9f77364311337a40b6d04f517463640b61c819c1e4331cd3108aab4"
+        },
+        {
+          "target": "sdk_intl_compat_hermes_source_test262",
+          "executions": 4076,
+          "sha256": "f0a61ec4a05d9f4c5ba50ce145a0c66839f8ccec2a2d3f9889dc71114e42c46d"
+        },
+        {
+          "target": "sdk_datetimeformat_hermes_source_test262",
+          "executions": 130,
+          "sha256": "67e94754b95cd0425a6ca8c0071f95f2a41a47c7cbbd3179a75938a17d4f0d54"
+        },
+        {
+          "target": "sdk_durationformat_hermes_source_test262",
+          "executions": 12,
+          "sha256": "62141dbb2b408e8bf1d14c26b05d8dedb438bc359ea6923943b5216ba1af47cb"
+        }
+      ]
+    },
+    "hermes_sdk_bytecode": {
+      "suiteExecutions": 16452,
+      "uniqueExecutions": 13472,
+      "uniqueFiles": 6736,
+      "passing": 13472,
+      "missingFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "reports": [
+        {
+          "target": "sdk_hermes_instant_bytecode_test262",
+          "executions": 934,
+          "sha256": "689d1f8c4037cc2dbd59797319622cdff1e0403057a50084882537189315d56b"
+        },
+        {
+          "target": "sdk_hermes_date_bytecode_test262",
+          "executions": 1308,
+          "sha256": "b3a46f23691422b9e937a8118ee92bce44a491c7c20f753bbfc6b27fc0f62413"
+        },
+        {
+          "target": "sdk_hermes_datetime_bytecode_test262",
+          "executions": 1552,
+          "sha256": "6df1c607c5ba883b91024d47a9f052ce6824d5ec0999d1c394e7b85418e7e939"
+        },
+        {
+          "target": "sdk_hermes_time_bytecode_test262",
+          "executions": 986,
+          "sha256": "9bb7666fc69d802c4ef74d4214f8d3ea87c3f5cf9f1bdd44368e17bbf8f3ec7d"
+        },
+        {
+          "target": "sdk_hermes_yearmonth_bytecode_test262",
+          "executions": 1022,
+          "sha256": "2f3603685b3cdd2dd6c1847ae719f881315b565b54440736b09c6d2731de8070"
+        },
+        {
+          "target": "sdk_hermes_monthday_bytecode_test262",
+          "executions": 398,
+          "sha256": "1eb710363a58c4488fd2b8757106ff4c251df4e48feb712c3540f054616e6f29"
+        },
+        {
+          "target": "sdk_hermes_duration_bytecode_test262",
+          "executions": 1086,
+          "sha256": "bde70f102b23fdd40f6717c5537d8c091b42c7d1ca09c615abecfc830b9a5687"
+        },
+        {
+          "target": "sdk_hermes_zoned_bytecode_test262",
+          "executions": 1804,
+          "sha256": "ddd22592bc8079e01eab44d12be0a4d6f59d80323ce8a10ec7dd33372675cabb"
+        },
+        {
+          "target": "sdk_hermes_calendars_bytecode_test262",
+          "executions": 2974,
+          "sha256": "cf39b01630d04e94f28f2f60c2f0090421c439cb7ab0ca294903208a6998c209"
+        },
+        {
+          "target": "sdk_hermes_now_bytecode_test262",
+          "executions": 138,
+          "sha256": "1964315bb02df383b76387b485b1957822384143e08682de6a3f17d8f0dfcaaa"
+        },
+        {
+          "target": "sdk_hermes_installation_bytecode_test262",
+          "executions": 26,
+          "sha256": "283e512166bf3d35d10ea95c62ce9f7cd638a11e29241e5780d40ffa74e1e834"
+        },
+        {
+          "target": "sdk_hermes_staging_bytecode_test262",
+          "executions": 6,
+          "sha256": "b7783c10c5ceb72a57c8f4837a5fe07d7c1975b09b5db2ba115f6531d978df17"
+        },
+        {
+          "target": "sdk_intl_compat_hermes_bytecode_test262",
+          "executions": 4076,
+          "sha256": "8fa63267cbfd350b2c2e4921ed58a20179523048aaba8c559e02051ef5e748ce"
+        },
+        {
+          "target": "sdk_datetimeformat_hermes_bytecode_test262",
+          "executions": 130,
+          "sha256": "986e634317ecdc7486cf1a22459bbddfd8899902d6c893b407399718039969e0"
+        },
+        {
+          "target": "sdk_durationformat_hermes_bytecode_test262",
+          "executions": 12,
+          "sha256": "6ed6cf83868bb5418d6fd012ce05f564fddb5716c2e13fb8a0e674d06dab7a25"
+        }
+      ]
+    }
+  },
+  "conformanceMethod": "Deduplicate every passing file/scenario result across 12 namespace suites, full Intl compatibility, DateTimeFormat and DurationFormat for each coherent provider profile. Compare exact sets with every Temporal-feature file in the pinned Test262 source; reject extra files or exclusions beyond the recorded data-version manifests."
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Fully stripped Linux x86_64 GNU Hermes executables, both with all twelve Intl APIs and identical default compiled locale data. Optional Temporal adds table-free SDK JS facade and Rust ABI/data. Incremental app profile, not standalone JS or multi-architecture SDK download. Whole binaries compressed independently, gzip9, mtime0.",
+  "command": "bazel build --config=linux --stripopt=--strip-all --override_module=formatjs_intl_getcanonicallocales_hermes=<extracted SDK> //:intl_size.stripped //:temporal_size.stripped",
+  "validation": "readelf confirms no symbol/debug tables; extracted SDK smoke test passes source/HBC installation, minimum PlainDate, native Chinese fields and fixed-zero name",
+  "artifacts": {
+    "intl_size.stripped": {
+      "raw": 462461072,
+      "gzip": 84343002
+    },
+    "temporal_size.stripped": {
+      "raw": 466031712,
+      "gzip": 84835731
+    }
+  },
+  "incremental": {
+    "raw": 3570640,
+    "gzip": 492729
+  },
+  "hermesRevision": "338ff13ff1e996934ae615952d174f8c621844d9",
+  "bazel": "9.3.2"
+}

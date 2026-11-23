@@ -1,0 +1,167 @@
+{
+  "baselineCommit": "4c4e950a6ea5043ca76fe2865622762071fde34b",
+  "method": "Optimized named WASM, V8 100us sampling, 3000 warmup and seven samples of 50000 calls. Weighted self time includes warmup and GC; inspector bookkeeping/root/idle excluded. Profile timings do not establish throughput.",
+  "operations": {
+    "round": {
+      "sampledMilliseconds": 314.731,
+      "selfPercent": {
+        "harnessOther": 19.56,
+        "gc": 13.54,
+        "javascript": 55.93,
+        "rustWasm": 10.97
+      },
+      "top": [
+        {
+          "name": "createInstant",
+          "percent": 25.87,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 13.54,
+          "source": ""
+        },
+        {
+          "name": "run",
+          "percent": 6.97,
+          "source": "wasm-facade-benchmark.ts"
+        },
+        {
+          "name": "invoke.roundInstantUnit",
+          "percent": 6.16,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "roundInstantOptions",
+          "percent": 4.97,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::run",
+          "percent": 4.64,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "",
+          "percent": 3.85,
+          "source": "wasm-facade-benchmark.ts"
+        },
+        {
+          "name": "integer",
+          "percent": 3.04,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "measure",
+          "percent": 2.85,
+          "source": "wasm-facade-benchmark.ts"
+        },
+        {
+          "name": "begin",
+          "percent": 2.59,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "buffer",
+          "percent": 2.29,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "get buffer",
+          "percent": 2.2,
+          "source": ""
+        },
+        {
+          "name": "roundingMode",
+          "percent": 1.76,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "readInteger",
+          "percent": 1.66,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "exchange",
+          "percent": 1.6,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "timeUnit",
+          "percent": 1.24,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::Instant>::round",
+          "percent": 1.1,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "read$1",
+          "percent": 1.1,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "",
+          "percent": 0.99,
+          "source": "internal.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::rounding::round_instant",
+          "percent": 0.95,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "<std[5ccbcb928378ab90]::thread::local::LocalKey<core[7d5f0a2ba6a62c33]::cell::RefCell<formatjs_temporal[40b6354e2dba9ca5]::binary::Buffers>>>::with::<formatjs_temporal[40b6354e2dba9ca5]::binary::exchange::{closure#0}, *const u8>",
+          "percent": 0.86,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::run",
+          "percent": 0.8,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "__multi3",
+          "percent": 0.65,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "round",
+          "percent": 0.62,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "temporal_exchange",
+          "percent": 0.55,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "unitOption",
+          "percent": 0.55,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::exchange",
+          "percent": 0.53,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d915f6"
+        },
+        {
+          "name": "get epochNanoseconds",
+          "percent": 0.45,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "ToString",
+          "percent": 0.25,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "from",
+          "percent": 0.15,
+          "source": "classApi-basic.js"
+        }
+      ]
+    }
+  }
+}

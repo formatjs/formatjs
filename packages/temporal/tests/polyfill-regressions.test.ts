@@ -1,0 +1,64 @@
+import {readFileSync} from 'node:fs'
+import {runfiles} from '@bazel/runfiles'
+import {expect, it} from 'vitest'
+import {Temporal} from '#packages/temporal/index.js'
+
+const fixture = runfiles.resolve(
+  `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/temporal/polyfill-regressions.tsv`
+)
+const cases = readFileSync(fixture, 'utf8')
+  .trim()
+  .split('\n')
+  .filter(line => line && !line.startsWith('#'))
+
+it.each(cases)('%s', line => {
+  const [operation, input, second, ...options] = line.split('\t')
+  switch (operation) {
+    case 'duration-string': {
+      const [smallestUnit, roundingMode, expected] = options
+      expect(
+        Temporal.Duration.from({[input]: Number(second)}).toString({
+          smallestUnit,
+          roundingMode,
+        })
+      ).toBe(expected)
+      break
+    }
+    case 'zoned-until':
+    case 'zoned-since': {
+      const [smallestUnit, roundingMode, expected] = options
+      const start = Temporal.ZonedDateTime.from(input)
+      const end = Temporal.ZonedDateTime.from(second)
+      const settings = {largestUnit: 'day', smallestUnit, roundingMode}
+      const difference =
+        operation === 'zoned-until'
+          ? start.until(end, settings)
+          : start.since(end, settings)
+      expect(difference.toString()).toBe(expected)
+      break
+    }
+    case 'epoch-milliseconds':
+      expect(new Temporal.Instant(BigInt(input)).epochMilliseconds).toBe(
+        Number(second)
+      )
+      break
+    case 'instant-parse':
+      expect(Temporal.Instant.from(input).epochNanoseconds).toBe(BigInt(second))
+      break
+    case 'zoned-next-transition':
+      expect(
+        Temporal.ZonedDateTime.from(input).getTimeZoneTransition('next')
+          ?.epochNanoseconds
+      ).toBe(BigInt(second))
+      break
+    case 'zoned-from-local': {
+      const [expected] = options
+      expect(
+        Temporal.PlainDateTime.from(input).toZonedDateTime(second).toString()
+      ).toBe(expected)
+      break
+    }
+    default:
+      throw new Error(`Unknown Temporal fixture operation ${operation}`)
+  }
+})

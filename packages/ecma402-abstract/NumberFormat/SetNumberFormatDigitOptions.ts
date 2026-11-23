@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {DefaultNumberOption} from '#packages/ecma402-abstract/DefaultNumberOption.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
@@ -57,7 +61,7 @@ export function SetNumberFormatDigitOptions(
     VALID_ROUNDING_INCREMENTS.has(roundingIncrement),
     `Invalid rounding increment value: ${roundingIncrement}.
 Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
-    RangeError
+    RangeErrorConstructor
   )
 
   // 9. Let roundingMode be ? GetOption(opts, "roundingMode", "string", « "ceil", "floor", "expand", "trunc", "halfCeil", "halfFloor", "halfExpand", "halfTrunc", "halfEven" », "halfExpand").
@@ -188,7 +192,7 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
         mxfd = Math.max(mxfdDefault, mnfd)
       } else if (mnfd > mxfd) {
         // 22.a.v. Else if mnfd > mxfd, throw a RangeError exception.
-        throw new RangeError(`Invalid range, ${mnfd} > ${mxfd}`)
+        throw new RangeErrorConstructor(`Invalid range, ${mnfd} > ${mxfd}`)
       }
 
       // 22.a.vi. Set internalSlots.[[MinimumFractionDigits]] to mnfd.
@@ -261,7 +265,7 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
     invariant(
       internalSlots.roundingType === 'fractionDigits',
       'Invalid roundingType',
-      TypeError
+      TypeErrorConstructor
     )
 
     // 28.b. Assert: internalSlots.[[MaximumFractionDigits]] is equal to internalSlots.[[MinimumFractionDigits]].
@@ -269,7 +273,7 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
       internalSlots.maximumFractionDigits ===
         internalSlots.minimumFractionDigits,
       'With roundingIncrement > 1, maximumFractionDigits and minimumFractionDigits must be equal.',
-      RangeError
+      RangeErrorConstructor
     )
   }
 }

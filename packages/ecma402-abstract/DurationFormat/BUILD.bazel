@@ -8,6 +8,7 @@ formatjs_library(
         "IsValidDurationRecord.ts",
         "ToDurationRecord.ts",
         "ToIntegerIfIntegral.ts",
+        "ToTemporalDurationRecord.ts",
         "constants.ts",
     ],
     visibility = ["//visibility:public"],

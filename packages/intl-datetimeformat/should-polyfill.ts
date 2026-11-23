@@ -1,3 +1,4 @@
+import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
 import {match} from '@formatjs/intl-localematcher'
 import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-datetimeformat.js'
 
@@ -15,7 +16,8 @@ function supportsDateStyle() {
 
 function preservesTimeZoneIdentifiers() {
   try {
-    return ['Asia/Calcutta', 'Etc/UTC'].every(
+    return arrayEvery(
+      ['Asia/Calcutta', 'Etc/UTC'],
       timeZone =>
         new Intl.DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone ===
         timeZone

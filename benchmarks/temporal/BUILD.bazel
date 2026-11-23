@@ -1,0 +1,312 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+
+# gazelle:ignore
+
+generate_package_json(
+    package_name = "temporal-benchmark",
+    private = True,
+    type = "module",
+    version = "0.0.0",
+)
+
+formatjs_library(
+    name = "temporal",
+    srcs = [
+        "benchmark.ts",
+        "calendar-entry.ts",
+        "comparison-benchmark.ts",
+        "facade-benchmark.ts",
+        "hermes-instant.ts",
+        "host-data-size-benchmark.ts",
+        "instant-entry.ts",
+        "instant-primitives-entry.ts",
+        "kernel-entry.ts",
+        "legacy-date-benchmark.ts",
+        "locale-benchmark.ts",
+        "locale-entry.ts",
+        "native-ts-benchmark.ts",
+        "polyfill-entry.ts",
+        "polyfill-force-entry.ts",
+        "reference.ts",
+        "reference-full.ts",
+        "should-polyfill-entry.ts",
+        "size-audit.ts",
+        "size-benchmark.ts",
+        "startup-benchmark.ts",
+        "zoned-inputs.ts",
+        "zones-entry.ts",
+        "//crates/intl_datetimeformat:locale-data/en.json",
+        "//packages/intl-datetimeformat:locale-data-json/en.json",
+    ],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@js-temporal/polyfill",
+        "//:node_modules/@types/node",
+        "//:node_modules/esbuild",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/typescript",
+        "//packages/intl-datetimeformat:lib",
+        "//packages/intl-datetimeformat:types",
+        "//packages/intl-durationformat:lib",
+        "//packages/intl-durationformat:types",
+        "//packages/temporal:types",
+    ],
+)
+
+js_binary(
+    name = "legacy_date_benchmark",
+    args = ["$(rlocationpath //packages/temporal:pkg)"],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "legacy-date-benchmark.ts",
+)
+
+js_binary(
+    name = "size_audit",
+    args = [
+        "$(rlocationpath //packages/temporal:pkg)",
+        "$(rlocationpath :reference-full-bundle.js)",
+        "$(rlocationpath host-intl-default-startup-results.json)",
+    ],
+    data = [
+        "host-intl-default-startup-results.json",
+        ":generated_package_json",
+        ":reference-full-bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//:node_modules/typescript",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "size-audit.ts",
+)
+
+js_binary(
+    name = "host_data_size_benchmark",
+    args = [
+        "$(rlocationpath :standalone-code.js)",
+        "$(rlocationpath //packages/temporal:host-calendar-code.js)",
+        "$(rlocationpath :reference-full-bundle.js)",
+        "$(rlocationpath //packages/temporal:pkg)",
+    ],
+    data = [
+        ":generated_package_json",
+        ":reference-full-bundle.js",
+        ":standalone-code.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//packages/temporal:host-calendar-code.js",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "host-data-size-benchmark.ts",
+)
+
+rolldown_bundle(
+    name = "locale-code",
+    srcs = [
+        ":srcs",
+        "//packages/intl-datetimeformat:locale-data-json/en.json",
+    ],
+    entry_point = "locale-entry.ts",
+    platform = "node",
+    target = "es2022",
+    deps = [
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/intl-datetimeformat:lib",
+        "//packages/intl-durationformat:lib",
+        "//packages/temporal:lib",
+    ],
+)
+
+[
+    rolldown_bundle(
+        name = name,
+        srcs = [
+            entry,
+            ":srcs",
+            "//packages/temporal:runtime_sources",
+        ],
+        define = {
+            "import.meta.formatjsTemporalHostCalendar": "false" if name == "standalone-code" else "true",
+            "import.meta.formatjsTemporalHostTimeZones": "false" if name == "standalone-code" else "true",
+            "import.meta.formatjsTemporalCompactTimeZones": "true",
+        },
+        entry_point = entry,
+        platform = "node",
+        target = "es2022",
+        deps = [
+            "//:node_modules/temporal-polyfill",
+            "//packages/temporal:lib",
+        ],
+    )
+    for name, entry in [
+        ("kernel-code", "kernel-entry.ts"),
+        ("polyfill-code", "polyfill-entry.ts"),
+        ("polyfill-force-code", "polyfill-force-entry.ts"),
+        ("should-polyfill-code", "should-polyfill-entry.ts"),
+        ("calendar-code", "calendar-entry.ts"),
+        ("instant-code", "instant-entry.ts"),
+        ("standalone-code", "instant-entry.ts"),
+        ("instant-primitives-code", "instant-primitives-entry.ts"),
+        ("kernel-all-zones", "zones-entry.ts"),
+        ("reference-bundle", "reference.ts"),
+        ("reference-full-bundle", "reference-full.ts"),
+    ]
+]
+
+[
+    js_binary(
+        name = name,
+        args = [
+            "$(rlocationpath //packages/temporal:pkg)",
+        ] if name == "size_benchmark" else [],
+        data = [":generated_package_json"] + bundles + [
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/esbuild",
+        ],
+        entry_point = entry,
+    )
+    for name, entry, bundles in [
+        (
+            "locale_benchmark",
+            "locale-benchmark.ts",
+            [
+                ":locale-code",
+                ":instant-code",
+                ":reference-full-bundle",
+            ],
+        ),
+        (
+            "size_benchmark",
+            "size-benchmark.ts",
+            [
+                ":instant-code",
+                ":polyfill-code",
+                ":polyfill-force-code",
+                ":should-polyfill-code",
+                ":reference-bundle",
+                ":reference-full-bundle",
+                "//packages/temporal:pkg",
+            ],
+        ),
+        (
+            "benchmark",
+            "benchmark.ts",
+            [
+                ":kernel-all-zones",
+                ":kernel-code",
+                ":reference-bundle",
+                ":reference-full-bundle",
+            ],
+        ),
+        (
+            "facade_benchmark",
+            "facade-benchmark.ts",
+            [
+                ":instant-code",
+                ":instant-primitives-code",
+                ":calendar-code",
+                ":reference-bundle",
+                ":reference-full-bundle",
+            ],
+        ),
+    ]
+]
+
+rolldown_bundle(
+    name = "hermes-instant-bundle",
+    srcs = [
+        "hermes-instant.ts",
+        "zoned-inputs.ts",
+        "//crates/intl_datetimeformat:locale-data/en.json",
+        "//packages/temporal:runtime_sources",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "hermes-instant.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_binary(
+    name = "hermes_instant_benchmark",
+    srcs = ["hermes-instant.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :hermes-instant-bundle.js)",
+    ],
+    data = [
+        ":hermes-instant-bundle.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+js_binary(
+    name = "ts_regression_guard",
+    data = [
+        "ts-regression-guard.mjs",
+        ":generated_package_json",
+        "//:node_modules/@babel/core",
+    ],
+    entry_point = "ts-regression-guard.mjs",
+)
+
+js_binary(
+    name = "native_ts_benchmark",
+    args = [
+        "$(rlocationpath //packages/temporal:pkg)",
+        "$(rlocationpath //benchmarks/temporal/rust:native_benchmark)",
+    ],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//benchmarks/temporal/rust:native_benchmark",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "native-ts-benchmark.ts",
+)
+
+js_binary(
+    name = "comparison_benchmark",
+    args = ["$(rlocationpath //packages/temporal:pkg)"],
+    data = [
+        "zoned-inputs.ts",
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@js-temporal/polyfill",
+        "//:node_modules/esbuild",
+        "//:node_modules/temporal-polyfill",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "comparison-benchmark.ts",
+)
+
+js_binary(
+    name = "startup_benchmark",
+    args = ["$(rlocationpath //packages/temporal:pkg)"],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@js-temporal/polyfill",
+        "//:node_modules/temporal-polyfill",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "startup-benchmark.ts",
+)

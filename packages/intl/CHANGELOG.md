@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl@6.1.6...@formatjs/intl@6.2.0) (2026-11-18)
+
+
+### Features
+
+* **react-intl:** support Temporal formatting inputs ([ea82872](https://github.com/formatjs/formatjs/commit/ea8287271110d35123c3228af03d9b9d84caaf21))
+
+## [6.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl@6.1.5...@formatjs/intl@6.1.6) (2026-11-17)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * intl-messageformat bumped to 12.2.0
+
 ## [6.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl@6.1.4...@formatjs/intl@6.1.5) (2026-11-08)
 
 

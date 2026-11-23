@@ -1,0 +1,168 @@
+{
+  "baselineCommit": "474cc25e4502a487869d508a85b4b0ca54689457",
+  "state": "Captured after initial clock-only routes, before typed Time.until/duration formatting. These hot paths still used the generic codec and duration construction from the baseline.",
+  "method": "Optimized named WASM, V8 100us sampling, at least 50000 iterations per sample. Weighted self time includes setup/warmup and GC; inspector bookkeeping/root/idle excluded. Profiler timings are not throughput evidence.",
+  "results": {
+    "timeUntil": {
+      "sampledMilliseconds": 5148.638,
+      "selfPercent": {
+        "harnessOther": 4.49,
+        "javascript": 50.49,
+        "rustWasm": 43.52,
+        "gc": 1.5
+      },
+      "top": [
+        {
+          "name": "createDuration",
+          "percent": 15.48,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "write",
+          "percent": 8.77,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "decode",
+          "percent": 5.36,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::binary::Reader>::value",
+          "percent": 4.98,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "decodeResult",
+          "percent": 4.08,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<indexmap[5a5011685cf492e6]::map::IndexMap<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>::insert_full",
+          "percent": 3.43,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "<std[5ccbcb928378ab90]::hash::random::RandomState as core[7d5f0a2ba6a62c33]::hash::BuildHasher>::hash_one::<&alloc[46d95d5090e9754d]::string::String>",
+          "percent": 3.25,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "refresh",
+          "percent": 2.96,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "invoke",
+          "percent": 2.59,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<indexmap[5a5011685cf492e6]::inner::Core<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>::get_index_of::<str>",
+          "percent": 2.4,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "<indexmap[5a5011685cf492e6]::map::IndexMap<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>::get_index_of::<str>",
+          "percent": 1.97,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "core[7d5f0a2ba6a62c33]::ptr::drop_glue::<indexmap[5a5011685cf492e6]::Bucket<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>",
+          "percent": 1.89,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "<core[7d5f0a2ba6a62c33]::hash::sip::Hasher<core[7d5f0a2ba6a62c33]::hash::sip::Sip13Rounds> as core[7d5f0a2ba6a62c33]::hash::Hasher>::write",
+          "percent": 1.81,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "validateDuration",
+          "percent": 1.79,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "text",
+          "percent": 1.77,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<hashbrown[203687abfe79f9f3]::raw::RawTable<usize>>::reserve_rehash::<indexmap[5a5011685cf492e6]::inner::get_hash<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>::{closure#0}>",
+          "percent": 1.61,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "<dlmalloc[34d9e156da7ff0eb]::dlmalloc::Dlmalloc<dlmalloc[34d9e156da7ff0eb]::sys::System>>::free",
+          "percent": 1.6,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "get buffer",
+          "percent": 1.54,
+          "source": ""
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 1.5,
+          "source": ""
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::run",
+          "percent": 1.44,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "<dlmalloc[34d9e156da7ff0eb]::dlmalloc::Dlmalloc<dlmalloc[34d9e156da7ff0eb]::sys::System>>::malloc",
+          "percent": 1.39,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "difference$1",
+          "percent": 1.31,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::duration::Duration>::new",
+          "percent": 1.22,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "buffer",
+          "percent": 1.22,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<core[7d5f0a2ba6a62c33]::iter::adapters::map::Map<core[7d5f0a2ba6a62c33]::iter::adapters::enumerate::Enumerate<core[7d5f0a2ba6a62c33]::slice::iter::Iter<&str>>, formatjs_temporal[40b6354e2dba9ca5]::ffi::duration_record::{closure#0}> as core[7d5f0a2ba6a62c33]::iter::traits::iterator::Iterator>::fold::<(), core[7d5f0a2ba6a62c33]::iter::traits::iterator::Iterator::for_each::call<(alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value), <indexmap[5a5011685cf492e6]::map::IndexMap<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value> as core[7d5f0a2ba6a62c33]::iter::traits::collect::Extend<(alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value)>>::extend<core[7d5f0a2ba6a62c33]::iter::adapters::map::Map<core[7d5f0a2ba6a62c33]::iter::adapters::enumerate::Enumerate<core[7d5f0a2ba6a62c33]::slice::iter::Iter<&str>>, formatjs_temporal[40b6354e2dba9ca5]::ffi::duration_record::{closure#0}>>::{closure#0}>::{closure#0}>",
+          "percent": 1.16,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "short",
+          "percent": 1.16,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "__floattidf",
+          "percent": 1.11,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "durationNanoseconds",
+          "percent": 0.99,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<core[7d5f0a2ba6a62c33]::hash::sip::Hasher<core[7d5f0a2ba6a62c33]::hash::sip::Sip13Rounds> as core[7d5f0a2ba6a62c33]::hash::Hasher>::write",
+          "percent": 0.98,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::ffi::decimal",
+          "percent": 0.87,
+          "source": "formatjs_temporal_wasm_backend.wasm-00d90a46"
+        }
+      ]
+    }
+  }
+}

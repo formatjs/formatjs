@@ -1,3 +1,4 @@
+import {setDataProperty} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import type {LookupMatcherResult} from '#packages/intl-localematcher/abstract/types.js'
 import {
   splitUnicodeExtension,
@@ -5,7 +6,7 @@ import {
 } from '#packages/intl-localematcher/abstract/utils.js'
 
 /**
- * https://tc39.es/ecma402/#sec-bestfitmatcher
+ * https://tc39.es/ecma402/#sec-lookupmatchinglocalebybestfit
  * @param availableLocales
  * @param requestedLocales
  * @param getDefaultLocale
@@ -17,12 +18,18 @@ export function BestFitMatcher(
 ): LookupMatcherResult {
   let foundLocale: string | undefined
   let extension: string | undefined
-  const noExtensionLocaleMap: Record<string, string> = Object.create(null)
-  const noExtensionLocales = requestedLocales.map(l => {
-    const {locale: noExtensionLocale} = splitUnicodeExtension(l)
-    noExtensionLocaleMap[noExtensionLocale] ??= l
-    return noExtensionLocale
-  })
+  const noExtensionLocaleMap = {__proto__: null} as unknown as Record<
+    string,
+    string
+  >
+  // ECMA-402 §9.2.4: strip extensions from the private requested locale List.
+  const noExtensionLocales: string[] = []
+  for (let index = 0; index < requestedLocales.length; index++) {
+    const locale = requestedLocales[index]
+    const {locale: noExtensionLocale} = splitUnicodeExtension(locale)
+    noExtensionLocaleMap[noExtensionLocale] ??= locale
+    setDataProperty(noExtensionLocales, `${index}`, noExtensionLocale)
+  }
 
   const defaultLocale = getDefaultLocale()
   const result = findBestMatch(
@@ -40,7 +47,8 @@ export function BestFitMatcher(
   }
 
   if (!foundLocale) {
-    return {locale: defaultLocale}
+    // ECMA-402 §9.2.7 step 3: the default locale has an empty extension.
+    return {locale: defaultLocale, extension: undefined}
   }
 
   return {

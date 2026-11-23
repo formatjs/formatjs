@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_numberformat_v0.2.1...formatjs_intl_numberformat_v0.3.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** preserve style and signs in compact notation ([#7940](https://github.com/formatjs/formatjs/issues/7940)) ([a904e24](https://github.com/formatjs/formatjs/commit/a904e2404aa186db1a3ccabd1e69cfc675fb457a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_pluralrules bumped from 0.2.1 to 0.3.0
+
 ## [0.2.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_numberformat_v0.2.0...formatjs_intl_numberformat_v0.2.1) (2026-10-31)
 
 

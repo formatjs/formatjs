@@ -1,0 +1,12 @@
+{
+  "total": 4078,
+  "failures": {},
+  "exclusions": [
+    {
+      "file": "intl402/Temporal/ZonedDateTime/links.js",
+      "executions": 2,
+      "reason": "Pinned test treats CST6CDT as an America/Chicago link. IANA 2026d separated the POSIX-rule zones because their historical rules differ. Full diagnostics retain this file; independent ICU timezone identity controls cover current identifiers.",
+      "source": "https://data.iana.org/time-zones/tzdb-2026f/NEWS"
+    }
+  ]
+}

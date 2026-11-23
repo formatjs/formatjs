@@ -49,7 +49,7 @@ jobs:
           if [[ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]]; then
             sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
           fi
-      - uses: bazel-contrib/setup-bazel@0.19.1
+      - uses: bazel-contrib/setup-bazel@0.19.2
         with:
           bazelisk-cache: true
           repository-cache: true
@@ -57,9 +57,16 @@ jobs:
       - name: Interaction tests and VRT in Linux VM
         if: matrix.mode == 'actiond'
         run: bash .github/scripts/actiond-vrt.sh
+      - name: Fetch libcap from upstream
+        if: matrix.mode == 'local'
+        run: |
+          mkdir -p "$RUNNER_TEMP/browser-distfiles"
+          curl --fail --location --retry 3 \
+            --output "$RUNNER_TEMP/browser-distfiles/libcap-2.27.tar.gz" \
+            https://mirrors.edge.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.27.tar.gz
       - name: Interaction tests and VRT in Linux namespaces
         if: matrix.mode == 'local'
-        run: bazel test //packages/editor/vrt:local_browser_tests --test_output=errors
+        run: bazel test //packages/editor/vrt:local_browser_tests --test_output=errors --distdir="$RUNNER_TEMP/browser-distfiles"
       - name: Install matching host Chromium
         if: matrix.mode == 'host'
         env:

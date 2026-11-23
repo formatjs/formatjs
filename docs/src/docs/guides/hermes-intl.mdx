@@ -76,6 +76,36 @@ For bytecode-only startup, compile the SDK's `js/extensions.js` with the exact
 `hermesc` version used by your runtime. Evaluate that bytecode into a setup object,
 then call `formatjs::installIntl(runtime, extensions)`.
 
+## Temporal
+
+The SDK also supplies Rust-backed [Temporal](/docs/polyfills/temporal). Link its
+adapter alongside Intl, then install both before application scripts:
+
+```cmake
+formatjs_intl(appmodules)
+formatjs_temporal(appmodules)
+```
+
+```cpp
+#include <formatjs/hermes/intl.h>
+#include <formatjs/hermes/temporal.h>
+
+formatjs::installIntl(runtime);
+formatjs::installTemporal(runtime, {
+    [] { return "America/New_York"; },
+    {},
+});
+```
+
+Replace the fixed example with your platform's current IANA timezone identifier.
+The callback runs when an operation needs the default timezone. The optional
+second callback supplies decimal epoch nanoseconds; otherwise the SDK uses the
+system clock with millisecond precision. Run installation on the JavaScript
+thread. Intl-only applications do not need the Temporal adapter.
+
+The adapter installs `globalThis.Temporal` and `Date.prototype.toTemporalInstant`.
+It uses the SDK's Rust calendar/time-zone data; WebAssembly is not required.
+
 ## Locale data
 
 Default SDKs include locales selected by Chromium desktop's full-data UI language

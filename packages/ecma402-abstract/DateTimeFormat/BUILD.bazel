@@ -21,6 +21,7 @@ formatjs_library(
         "TimeZoneOffset.ts",
         "ToDateTimeOptions.ts",
         "ToLocalTime.ts",
+        "UnpackTimeZoneData.ts",
         "skeleton.ts",
         "utils.ts",
     ],

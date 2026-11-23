@@ -1,0 +1,295 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "icu": "78.2",
+  "platform": "linux x64",
+  "cpu": "Intel(R) Xeon(R) Platinum 8488C",
+  "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+  "iterations": 10000,
+  "samples": 7,
+  "warmup": 3000,
+  "baselineCommit": "b4967794b9b3085564ce36ca7e792919005435e0",
+  "scope": "Sequential local development experiments; compare medians within each run. Final 48-workload evidence is hillclimb-results.json. No cross-engine performance claim.",
+  "experiments": [
+    {
+      "name": "baseline",
+      "change": "ABI 10 baseline",
+      "decision": "control",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1648.992,
+          "format": 669.531,
+          "add": 2268.345,
+          "dateParse": 1547.021,
+          "zonedWith": 9154.303,
+          "dateAdd": 5780.149
+        },
+        "nativeDataWasm": {
+          "parse": 2699.888,
+          "format": 2967.159,
+          "add": 7330.168,
+          "dateParse": 9111.944,
+          "zonedWith": 26990.258,
+          "dateAdd": 16106.419
+        },
+        "reference": {
+          "parse": 3204.363,
+          "format": 1484.921,
+          "add": 1406.503,
+          "dateParse": 2412.888,
+          "zonedWith": 6259.406,
+          "dateAdd": 2132.016
+        },
+        "officialReference": {
+          "parse": 4673.192,
+          "format": 6453.308,
+          "add": 5816.434,
+          "dateParse": 1766.851,
+          "zonedWith": 41760.148,
+          "dateAdd": 5066.244
+        }
+      }
+    },
+    {
+      "name": "direct-rust",
+      "change": "Borrowed Instant decoding; unchanged generic JS wire",
+      "decision": "superseded",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1620.521,
+          "format": 696.737,
+          "add": 2258.919,
+          "dateParse": 1608.548,
+          "zonedWith": 9209.434,
+          "dateAdd": 5858.682
+        },
+        "nativeDataWasm": {
+          "parse": 2230.047,
+          "format": 1975.486,
+          "add": 5087.068,
+          "dateParse": 8960.909,
+          "zonedWith": 27293.142,
+          "dateAdd": 16214.001
+        },
+        "reference": {
+          "parse": 2510.639,
+          "format": 1414.789,
+          "add": 1437.645,
+          "dateParse": 2178.191,
+          "zonedWith": 6275.656,
+          "dateAdd": 2103.899
+        },
+        "officialReference": {
+          "parse": 4514.897,
+          "format": 6367.484,
+          "add": 5791.756,
+          "dateParse": 1732.73,
+          "zonedWith": 41622.18,
+          "dateAdd": 5009.721
+        }
+      }
+    },
+    {
+      "name": "typed-128",
+      "change": "Typed Instant requests and signed 128-bit nanoseconds",
+      "decision": "kept",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1637.594,
+          "format": 697.332,
+          "add": 2263.337,
+          "dateParse": 1627.053,
+          "zonedWith": 9340.274,
+          "dateAdd": 5869.024
+        },
+        "nativeDataWasm": {
+          "parse": 608.416,
+          "format": 763.244,
+          "add": 2834.47,
+          "dateParse": 8428.544,
+          "zonedWith": 28216.015,
+          "dateAdd": 16335.649
+        },
+        "reference": {
+          "parse": 2949.118,
+          "format": 1446.458,
+          "add": 1502.947,
+          "dateParse": 2242.048,
+          "zonedWith": 6317.184,
+          "dateAdd": 2102.242
+        },
+        "officialReference": {
+          "parse": 4547.725,
+          "format": 6451.354,
+          "add": 5827.383,
+          "dateParse": 1776.351,
+          "zonedWith": 41957.65,
+          "dateAdd": 4993.559
+        }
+      }
+    },
+    {
+      "name": "snapshot",
+      "change": "Fixed date-only Rust snapshots",
+      "decision": "superseded by complete snapshots",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1591.863,
+          "format": 695.756,
+          "add": 2275.435,
+          "dateParse": 1611.07,
+          "zonedWith": 9765.463,
+          "dateAdd": 6147.781
+        },
+        "nativeDataWasm": {
+          "parse": 616.9,
+          "format": 740.254,
+          "add": 2814.578,
+          "dateParse": 4958.241,
+          "zonedWith": 28026.072,
+          "dateAdd": 11838.448
+        },
+        "reference": {
+          "parse": 2854.509,
+          "format": 1462.748,
+          "add": 1385.097,
+          "dateParse": 2191.196,
+          "zonedWith": 6349.401,
+          "dateAdd": 2135.174
+        },
+        "officialReference": {
+          "parse": 4628.349,
+          "format": 6526.218,
+          "add": 5945.576,
+          "dateParse": 1833.226,
+          "zonedWith": 41968.867,
+          "dateAdd": 5132.039
+        }
+      }
+    },
+    {
+      "name": "bound-codec",
+      "change": "Bound generic JS DataView intrinsics",
+      "decision": "discarded: no useful gain",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1661.928,
+          "format": 667.35,
+          "add": 2269.273,
+          "dateParse": 1586.632,
+          "zonedWith": 9260.154,
+          "dateAdd": 5807.664
+        },
+        "nativeDataWasm": {
+          "parse": 613.577,
+          "format": 744.869,
+          "add": 2836.07,
+          "dateParse": 5071.906,
+          "zonedWith": 27619.981,
+          "dateAdd": 11696.187
+        },
+        "reference": {
+          "parse": 2857.417,
+          "format": 1405.61,
+          "add": 1543.273,
+          "dateParse": 2167.453,
+          "zonedWith": 6381.05,
+          "dateAdd": 2458.25
+        },
+        "officialReference": {
+          "parse": 4514.192,
+          "format": 6321.217,
+          "add": 5848.877,
+          "dateParse": 1702.213,
+          "zonedWith": 41684.413,
+          "dateAdd": 5071.099
+        }
+      }
+    },
+    {
+      "name": "typed-dates-full-snapshots",
+      "change": "Typed date requests and complete fixed Rust snapshots",
+      "decision": "kept",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1603.502,
+          "format": 696.452,
+          "add": 2231.636,
+          "dateParse": 1599.384,
+          "zonedWith": 9284.995,
+          "dateAdd": 5992.907
+        },
+        "nativeDataWasm": {
+          "parse": 783.063,
+          "format": 771.026,
+          "add": 2940.563,
+          "dateParse": 3430.225,
+          "zonedWith": 21272.428,
+          "dateAdd": 8890.441
+        },
+        "reference": {
+          "parse": 2655.671,
+          "format": 1479.119,
+          "add": 1494.759,
+          "dateParse": 2152.053,
+          "zonedWith": 6214.376,
+          "dateAdd": 2002.229
+        },
+        "officialReference": {
+          "parse": 4620.497,
+          "format": 6452.243,
+          "add": 5816.083,
+          "dateParse": 1691.964,
+          "zonedWith": 41879.828,
+          "dateAdd": 4974.47
+        }
+      }
+    },
+    {
+      "name": "fixed-decoder",
+      "change": "Fixed-shape JS snapshot objects",
+      "decision": "discarded: slower date parse/add",
+      "checksum": 47632544,
+      "medianNanoseconds": {
+        "typescript": {
+          "parse": 1650.055,
+          "format": 728.238,
+          "add": 2219.059,
+          "dateParse": 1653.652,
+          "zonedWith": 9504.926,
+          "dateAdd": 5934.376
+        },
+        "nativeDataWasm": {
+          "parse": 766.34,
+          "format": 752.852,
+          "add": 2962.543,
+          "dateParse": 4302.557,
+          "zonedWith": 21784.007,
+          "dateAdd": 9816.403
+        },
+        "reference": {
+          "parse": 3188.745,
+          "format": 1467.246,
+          "add": 1391.448,
+          "dateParse": 2549.998,
+          "zonedWith": 6182.694,
+          "dateAdd": 2006.747
+        },
+        "officialReference": {
+          "parse": 4748.175,
+          "format": 6492.879,
+          "add": 5899.499,
+          "dateParse": 1710.098,
+          "zonedWith": 41534.857,
+          "dateAdd": 5130.326
+        }
+      }
+    }
+  ]
+}

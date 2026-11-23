@@ -1,3 +1,7 @@
+import {
+  ErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import type {BigDecimal} from '@formatjs/bigdecimal'
 import {memoize, strategies} from '@formatjs/fast-memoize'
 
@@ -52,7 +56,9 @@ export function getMultiInternalSlots<
 ): Pick<Internal, Field> {
   const slots = map.get(pl)
   if (!slots) {
-    throw new TypeError(`${pl} InternalSlot has not been initialized`)
+    throw new TypeErrorConstructor(
+      `${pl} InternalSlot has not been initialized`
+    )
   }
   return fields.reduce(
     (all, f) => {
@@ -106,6 +112,7 @@ export function ensureIntl(): typeof Intl {
       value: {},
     })
   }
+  if (providerIntl === undefined) providerIntl = Intl
   return Intl
 }
 
@@ -131,7 +138,7 @@ export function createDataProperty<T extends object>(
 export function invariant(
   condition: boolean,
   message: string,
-  Err: any = Error
+  Err: any = ErrorConstructor
 ): asserts condition {
   if (!condition) {
     throw new Err(message)
@@ -179,3 +186,123 @@ export const createMemoizedListFormat: (
     strategy: strategies.variadic,
   }
 )
+
+const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+// Temporal comparison §15.11.1.1 step 3: private memoizer options.
+const formatterMemoizeOptions = {
+  __proto__: null,
+  strategy: strategies.variadic,
+}
+let providerIntl = globalThis.Intl
+function ownIntlProvider(name: 'NumberFormat' | 'ListFormat'): unknown {
+  const descriptor =
+    providerIntl && getOwnPropertyDescriptor(providerIntl, name)
+  const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
+  return value?.value
+}
+let numberFormatProvider = ownIntlProvider(
+  'NumberFormat'
+) as typeof Intl.NumberFormat
+let listFormatProvider = ownIntlProvider('ListFormat') as typeof Intl.ListFormat
+
+// Temporal comparison §§15.10.1–2 step4: retain supplied providers without accessor Gets.
+// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+export function getNumberFormatProvider(): typeof Intl.NumberFormat {
+  const candidate = ownIntlProvider('NumberFormat')
+  if (typeof candidate === 'function')
+    numberFormatProvider = candidate as typeof Intl.NumberFormat
+  return numberFormatProvider
+}
+export function getListFormatProvider(): typeof Intl.ListFormat {
+  const candidate = ownIntlProvider('ListFormat')
+  if (typeof candidate === 'function')
+    listFormatProvider = candidate as typeof Intl.ListFormat
+  return listFormatProvider
+}
+
+// Temporal comparison §§15.10.1–2 step4; §15.4.1: retain selected real parts methods.
+// https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+const getFormatterPrototype = Object.getPrototypeOf
+const formatterPartsMethods = new WeakMap<object, unknown>()
+const formatterPartsOwners = new WeakMap<object, unknown>()
+const getPartsMethod = formatterPartsMethods.get.bind(formatterPartsMethods)
+const setPartsMethod = formatterPartsMethods.set.bind(formatterPartsMethods)
+const getPartsOwner = formatterPartsOwners.get.bind(formatterPartsOwners)
+const setPartsOwner = formatterPartsOwners.set.bind(formatterPartsOwners)
+function findFormatterPartsMethod(Constructor: object): unknown {
+  const cached = getPartsMethod(Constructor)
+  if (cached) return cached
+  let prototype = getOwnPropertyDescriptor(Constructor, 'prototype')?.value
+  while (prototype != null) {
+    const inherited = getPartsOwner(prototype)
+    if (inherited) {
+      setPartsMethod(Constructor, inherited)
+      return inherited
+    }
+    const descriptor = getOwnPropertyDescriptor(prototype, 'formatToParts')
+    const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
+    if (value && typeof value.value === 'function') {
+      setPartsMethod(Constructor, value.value)
+      setPartsOwner(prototype, value.value)
+      return value.value
+    }
+    prototype = getFormatterPrototype(prototype)
+  }
+}
+export function getFormatterPartsMethod<T>(Constructor: object): T {
+  const method = findFormatterPartsMethod(Constructor)
+  if (!method)
+    throw new TypeErrorConstructor('Missing supplied formatter parts method')
+  return method as T
+}
+if (typeof numberFormatProvider === 'function')
+  findFormatterPartsMethod(numberFormatProvider)
+if (typeof listFormatProvider === 'function')
+  findFormatterPartsMethod(listFormatProvider)
+
+const numberFormatMemoizers = new WeakMap<
+  typeof Intl.NumberFormat,
+  typeof createMemoizedNumberFormat
+>()
+const getNumberFormatMemoizer = numberFormatMemoizers.get.bind(
+  numberFormatMemoizers
+)
+const setNumberFormatMemoizer = numberFormatMemoizers.set.bind(
+  numberFormatMemoizers
+)
+const listFormatMemoizers = new WeakMap<
+  typeof Intl.ListFormat,
+  typeof createMemoizedListFormat
+>()
+const getListFormatMemoizer = listFormatMemoizers.get.bind(listFormatMemoizers)
+const setListFormatMemoizer = listFormatMemoizers.set.bind(listFormatMemoizers)
+
+export function createMemoizedNumberFormatForConstructor(
+  Constructor: typeof Intl.NumberFormat
+): typeof createMemoizedNumberFormat {
+  let factory = getNumberFormatMemoizer(Constructor)
+  if (!factory) {
+    factory = memoize(
+      (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
+        new Constructor(args[0], args[1]) as NumberFormatLike,
+      formatterMemoizeOptions
+    )
+    setNumberFormatMemoizer(Constructor, factory)
+  }
+  return factory
+}
+
+export function createMemoizedListFormatForConstructor(
+  Constructor: typeof Intl.ListFormat
+): typeof createMemoizedListFormat {
+  let factory = getListFormatMemoizer(Constructor)
+  if (!factory) {
+    factory = memoize(
+      (...args: ConstructorParameters<typeof Intl.ListFormat>) =>
+        new Constructor(args[0], args[1]),
+      formatterMemoizeOptions
+    )
+    setListFormatMemoizer(Constructor, factory)
+  }
+  return factory
+}

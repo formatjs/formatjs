@@ -1,0 +1,132 @@
+{
+  "referenceEntryPoint": "temporal-polyfill/implementation (basic ISO/Gregorian entry; full-calendar comparison is recorded in table-calendar-results.json)",
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "icu": "78.2",
+  "tz": "2025c",
+  "platform": "linux",
+  "arch": "x64",
+  "cpu": "Intel(R) Xeon(R) Platinum 8488C",
+  "scope": "Numeric ISO/timezone kernel versus forced temporal-polyfill 1.0.7 classes; unequal API coverage. Kernel all-zones embeds IANA; reference uses host Intl. No full-polyfill speed/size claim.",
+  "sizes": [
+    {
+      "file": "kernel-code.js",
+      "bytes": 8718,
+      "gzip": 2781,
+      "minified": 4276,
+      "minifiedGzip": 1901
+    },
+    {
+      "file": "kernel-all-zones.js",
+      "bytes": 387498,
+      "gzip": 65587,
+      "minified": 361644,
+      "minifiedGzip": 64074
+    },
+    {
+      "file": "reference-bundle.js",
+      "bytes": 172962,
+      "gzip": 31387,
+      "minified": 56696,
+      "minifiedGzip": 19393
+    }
+  ],
+  "throughput": [
+    {
+      "name": "offset lookup",
+      "kernel": {
+        "medianNs": 214.88204999999996,
+        "minNs": 204.69930000000005,
+        "maxNs": 338.4352999999997
+      },
+      "temporalPolyfill": {
+        "medianNs": 5885.943750000001,
+        "minNs": 5774.302,
+        "maxNs": 7279.803150000003
+      }
+    },
+    {
+      "name": "resolve local (ordinary/gap/fold)",
+      "kernel": {
+        "medianNs": 1620.9078500000032,
+        "minNs": 1606.4234000000056,
+        "maxNs": 2012.3109499999941
+      },
+      "temporalPolyfill": {
+        "medianNs": 6685.286550000001,
+        "minNs": 6573.376600000006,
+        "maxNs": 7089.705900000002
+      }
+    },
+    {
+      "name": "ISO add day",
+      "kernel": {
+        "medianNs": 800.9757499999978,
+        "minNs": 791.1194499999965,
+        "maxNs": 1128.7391999999954
+      },
+      "temporalPolyfill": {
+        "medianNs": 2816.237849999993,
+        "minNs": 2098.6736000000064,
+        "maxNs": 3367.066849999992
+      }
+    }
+  ],
+  "coldImport": {
+    "kernelAllZones": [
+      {
+        "importMilliseconds": 5.728232000000002,
+        "firstOffsetMilliseconds": 0.5672919999999984,
+        "heapBytes": 1273824
+      },
+      {
+        "importMilliseconds": 5.522997999999998,
+        "firstOffsetMilliseconds": 0.5652469999999994,
+        "heapBytes": 1273824
+      },
+      {
+        "importMilliseconds": 5.757778000000002,
+        "firstOffsetMilliseconds": 0.5813169999999985,
+        "heapBytes": 1273824
+      },
+      {
+        "importMilliseconds": 5.664849999999998,
+        "firstOffsetMilliseconds": 0.5635469999999998,
+        "heapBytes": 1273824
+      },
+      {
+        "importMilliseconds": 5.689723000000001,
+        "firstOffsetMilliseconds": 0.5600519999999989,
+        "heapBytes": 1273824
+      }
+    ],
+    "temporalPolyfill": [
+      {
+        "importMilliseconds": 6.688359000000002,
+        "firstOffsetMilliseconds": 13.896653999999998,
+        "heapBytes": 948784
+      },
+      {
+        "importMilliseconds": 6.662655999999998,
+        "firstOffsetMilliseconds": 13.528886,
+        "heapBytes": 948784
+      },
+      {
+        "importMilliseconds": 6.769307000000001,
+        "firstOffsetMilliseconds": 13.789583999999998,
+        "heapBytes": 948856
+      },
+      {
+        "importMilliseconds": 6.8886579999999995,
+        "firstOffsetMilliseconds": 13.652851999999996,
+        "heapBytes": 948784
+      },
+      {
+        "importMilliseconds": 6.596595999999998,
+        "firstOffsetMilliseconds": 13.533170000000002,
+        "heapBytes": 948784
+      }
+    ]
+  },
+  "sink": "0"
+}

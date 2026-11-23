@@ -1,0 +1,13 @@
+{
+  "hermesOverlay": "338ff13ff1e996934ae615952d174f8c621844d9",
+  "hermesEngine": "393a539e6",
+  "target": "//benchmarks/temporal:hermes_wasm_probe",
+  "source": {
+    "webAssembly": "undefined",
+    "executable": false
+  },
+  "optimizedBytecode": {
+    "webAssembly": "undefined",
+    "executable": false
+  }
+}

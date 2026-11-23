@@ -1,0 +1,8 @@
+load("//tools:compile.bzl", "formatjs_library")
+
+formatjs_library(
+    name = "Calendar",
+    srcs = ["Arithmetic.ts"],
+    visibility = ["//visibility:public"],
+    deps = ["//packages/ecma262-abstract"],
+)

@@ -1,0 +1,39 @@
+{
+  "node": "v24.14.0",
+  "icu": "78.2",
+  "cldr": "48.0",
+  "scope": "Full namespaces. Default compact-calendar profile uses bounded ICU4X historical data and arithmetic for Chinese/Dangi, host Intl for Umm al-Qura, owned IANA timezone data and numeric arithmetic calendars. Standalone retains full-range calendar packs. Full reference uses host Intl for calendar and timezone data. Size only; full compliance and host timezone migration remain open.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "sizes": [
+    {
+      "profile": "standalone",
+      "raw": 3422001,
+      "minified": 3200834,
+      "minifiedGzip": 361121
+    },
+    {
+      "profile": "hostCalendars",
+      "raw": 570227,
+      "minified": 462347,
+      "minifiedGzip": 92044
+    },
+    {
+      "profile": "referenceFull",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
+    }
+  ],
+  "publishedConsumers": [
+    {
+      "file": "index.js",
+      "minified": 464746,
+      "minifiedGzip": 93005
+    },
+    {
+      "file": "standalone.js",
+      "minified": 3203016,
+      "minifiedGzip": 361912
+    }
+  ]
+}

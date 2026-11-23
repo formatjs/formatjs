@@ -21,6 +21,7 @@ cargo_release(
         "//crates/intl_relativetimeformat:cargo_sources",
         "//crates/intl_segmenter:cargo_sources",
         "//crates/intl_supportedvaluesof:cargo_sources",
+        "//crates/temporal:cargo_sources",
     ],
     calendars = "//crates/intl_datetimeformat_calendars:calendar_data",
     compiled = {
@@ -32,6 +33,8 @@ cargo_release(
         "//crates/intl_relativetimeformat:compiled_locale_data": "intl_relativetimeformat",
     },
     metadata = {
+        "//crates/temporal:calendar_data": "temporal:FORMATJS_TEMPORAL_CALENDARS",
+        "//crates/temporal:time_zones_data": "temporal:FORMATJS_TEMPORAL_TIME_ZONES",
         "//crates/intl_collator:data": "intl_collator:FORMATJS_COLLATION_DATA",
         "//crates/intl_numberformat:metadata": "intl_numberformat:FORMATJS_NUMBER_METADATA",
         "//crates/intl_durationformat:metadata": "intl_durationformat:FORMATJS_DURATION_METADATA",

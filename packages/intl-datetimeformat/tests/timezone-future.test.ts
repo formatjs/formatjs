@@ -1,7 +1,10 @@
 import {expect, it} from 'vitest'
 import data from '@formatjs_generated/tz/all-tz.js'
 import {unpack} from '#packages/intl-datetimeformat/unpack.js'
-import {TimeZoneOffset} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
+import {
+  TimeZoneOffset,
+  TimeZoneTransition,
+} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import type {
   TimeZoneFutureRule,
   UnpackedTimeZoneData,
@@ -81,6 +84,26 @@ it('handles transition times crossing year boundaries', () => {
     3600,
     true,
   ])
+})
+
+it('carries daylight time when both previous-year rules cross into January', () => {
+  // RFC 9636 §3.3.2 permits extended times in the TZif footer.
+  const zone = synthetic({
+    standardOffset: 0,
+    daylightOffset: 3600,
+    start: {kind: 'julian', day: 365, seconds: 144 * 3600},
+    end: {kind: 'julian', day: 364, seconds: 120 * 3600},
+  })
+  const january = Date.parse('2025-01-01T00:00:00Z')
+  const end = Date.parse('2025-01-03T23:00:00Z')
+  const start = Date.parse('2024-01-06T00:00:00Z')
+  const ns = (milliseconds: number) => BigInt(milliseconds) * 1_000_000n
+  expect(TimeZoneOffset(january - 1, zone)).toEqual([3600, true])
+  expect(TimeZoneOffset(january, zone)).toEqual([3600, true])
+  expect(TimeZoneOffset(end - 1, zone)).toEqual([3600, true])
+  expect(TimeZoneOffset(end, zone)).toEqual([0, false])
+  expect(TimeZoneTransition(ns(january) - 1n, 'next', zone)).toBe(ns(end))
+  expect(TimeZoneTransition(ns(january), 'previous', zone)).toBe(ns(start))
 })
 
 it('continues recurring DST near the maximum Date year', () => {

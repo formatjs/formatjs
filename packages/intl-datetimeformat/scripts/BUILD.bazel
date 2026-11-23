@@ -3,8 +3,10 @@ load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # gazelle:ignore
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
+load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 exports_files(["packer.ts"])
 
@@ -18,6 +20,25 @@ formatjs_test(
         "//:node_modules/@formatjs_generated/datetimeformat.calendars",
         "//:node_modules/vitest",
     ],
+)
+
+ts_binary(
+    name = "era-fallbacks",
+    data = [
+        "//:node_modules/cldr-cal-islamic-full",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "era-fallbacks.ts",
+    visibility = ["//packages/intl-datetimeformat/scripts/registry:__pkg__"],
+)
+
+js_test(
+    name = "era_fallbacks_test",
+    data = [
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
+        "//:node_modules/cldr-cal-islamic-full",
+    ],
+    entry_point = "era-fallbacks.test.mjs",
 )
 
 ts_binary(
@@ -56,6 +77,33 @@ ts_binary(
     ],
     entry_point = "process-zdump.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "temporal-timezones",
+    data = [
+        "//:node_modules/minimist",
+        "//:root_package_json",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+    entry_point = "temporal-timezones.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+formatjs_library(
+    name = "temporal_timezones_check",
+    srcs = ["temporal-timezones.ts"],
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(
@@ -106,8 +154,17 @@ copy_to_bin(
         "link.test.ts",
         "link.ts",
         "packer.ts",
+        "primary-zones.test.ts",
+        "primary-zones.ts",
         "process-zdump.test.ts",
         "process-zdump.ts",
     ],
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "primary-zones",
+    data = ["//:node_modules/cldr-bcp47"],
+    entry_point = "primary-zones.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )

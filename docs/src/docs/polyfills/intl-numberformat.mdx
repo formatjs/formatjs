@@ -8,7 +8,13 @@ A polyfill for ESNext [`Intl.NumberFormat`][numberformat] and [`Number.prototype
 
 ## ECMA-402 Spec Compliance
 
+Private slot access and standard number-pattern caches use WeakMap operations
+captured when modules load.
+
 This package implements `Intl.NumberFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
+
+Single-value `formatToParts` results contain fresh objects with own writable,
+enumerable and configurable `type` and `value` data properties.
 
 ### ✅ All Features Implemented
 

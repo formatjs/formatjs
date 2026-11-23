@@ -1,0 +1,69 @@
+import {configureLocaleFormatting} from '#packages/temporal/locale.js'
+import {
+  Temporal,
+  toTemporalInstant,
+  type TemporalNamespace,
+} from '#packages/temporal/index.js'
+import {createDateToTemporalInstant} from '#packages/temporal/date-bridge.js'
+import {needsTemporal} from '#packages/temporal/detect.js'
+import {installLegacyDateTimeFormat} from '#packages/temporal/legacy-intl.js'
+import {installLegacyDurationFormat} from '#packages/temporal/legacy-durationformat.js'
+
+export function installTemporal(force = false): void {
+  const target = globalThis as typeof globalThis & {
+      Temporal: TemporalNamespace
+    },
+    date = Date.prototype as Date & {toTemporalInstant?: () => unknown},
+    replace = force || needsTemporal()
+  if (replace)
+    // ECMA-262 §20.1.2.4 steps 2–4. Define the selected namespace property.
+    // ECMA-262 preview §22.6: initial global Temporal value.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-object
+    Object.defineProperty(target, 'Temporal', {
+      value: Temporal,
+      writable: true,
+      configurable: true,
+      enumerable: false,
+    })
+  if (replace || target.Temporal === Temporal) {
+    // Temporal amendment §15.4.1: capture original options at formatter creation.
+    // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+    // Existing host formatters and captured bound functions keep host behavior.
+    installLegacyDateTimeFormat(target.Temporal)
+    installLegacyDurationFormat(target.Temporal)
+  }
+  const Formatter = globalThis.Intl?.DateTimeFormat as
+    | (typeof Intl.DateTimeFormat & {
+        __addTemporalNamespace?: (namespace: TemporalNamespace) => void
+      })
+    | undefined
+  Formatter?.__addTemporalNamespace?.(target.Temporal)
+  const DurationFormatter = (
+    globalThis.Intl as
+      | (typeof Intl & {
+          DurationFormat?: {
+            __addTemporalNamespace?: (namespace: TemporalNamespace) => void
+          }
+        })
+      | undefined
+  )?.DurationFormat
+  DurationFormatter?.__addTemporalNamespace?.(target.Temporal)
+  configureLocaleFormatting()
+  if (replace || typeof date.toTemporalInstant !== 'function') {
+    const Constructor = target.Temporal.Instant
+    Object.defineProperty(date, 'toTemporalInstant', {
+      // Temporal comparison §14.9.1 step 5.
+      // Create the result through the installed Instant provider.
+      value:
+        target.Temporal === Temporal
+          ? toTemporalInstant
+          : createDateToTemporalInstant(
+              // Temporal comparison §14.9.1 step 5. Construct through the installed provider.
+              ns => new Constructor(ns)
+            ),
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    })
+  }
+}
