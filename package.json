@@ -168,7 +168,7 @@
     "rehype-slug": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
-    "rolldown": "1.3.0",
+    "rolldown": "1.3.1",
     "rolldown-plugin-dts": "^0.30.0",
     "rollup": "^4.40.0",
     "semver": "^7.8.1",
@@ -200,5 +200,5 @@
       "version": ">= 18.x"
     }
   },
-  "packageManager": "pnpm@12.19.0"
+  "packageManager": "pnpm@12.20.0"
 }
