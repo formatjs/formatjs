@@ -4,6 +4,35 @@
 
 ## Purpose
 
+Private formatter WeakMap methods are captured when modules load, including
+pattern, skeleton, calendar-preference and interval caches.
+
+Nonpositive calendar display years follow ECMA-402 §11.5.4 step 15.f.iv in TS/Rust:
+`1 - year` applies before numeric or two-digit rendering, for every calendar.
+
+Precision tests cover fractional offsets near both Date limits and catch
+nanoseconds rounded through Number before Decimal construction.
+
+The central date-pattern loop uses private indexed traversal and own List writes.
+Fractional seconds use captured floor; two-digit fields use private Unicode
+truncation without mutable array methods. TS and Rust preserve
+unknown pattern fields with matching exact-epoch fallback text.
+
+Shared Pattern String parsing follows ECMA-402 §9.2.15 through captured String
+operations and own private-list writes.
+
+FormatDateTimeToParts delegates result construction to shared CreatePartsArray.
+The builder traverses private records by index and defines own array properties;
+result projection cannot invoke mutable iterators, push or numeric setters.
+
+Private formatToParts result allocation follows ECMA-262 ArrayCreate through a
+captured realm constructor, preserving sparse-array semantics and avoiding
+Array.from hooks. Date-range SameValue comparisons use pure equality, including
+NaN and signed-zero rules.
+
+Constructor instance checks use the captured realm intrinsic rather than mutable
+Object.prototype.isPrototypeOf.
+
 Historical timezone names retain direct CLDR standard/daylight overrides, including
 London's British Summer Time before 1970. Only metazone-derived names use the
 1970 cutoff. Localized GMT fallback preserves offset seconds in TS and Rust.
@@ -14,7 +43,20 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 
 ## Dependencies
 
-- `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`, `@formatjs/bigdecimal`
+- `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
+
+Numeric timestamps stay primitive through TimeClip. The direct bigdecimal
+dependency is removed from BUILD metadata, generated manifest and lockfile;
+shared arithmetic dependencies remain transitive. The Temporal host adapter
+can use the owned formatter’s private candidate lookup. It enumerates decoded
+offsets in the candidate interval and validates exact instants without numeric
+TimeClip. For interior gaps it projects decoded transition boundaries into
+local time and re-queries the shifted instant candidates. A timezone data
+reload advances the cache generation for the Temporal host adapter. The
+owned formatter also exposes exact offset and transition queries from those
+rows and footer rules.
+Standalone DateTimeFormat
+composite typechecks and package_json_sync_test are required integration gates.
 
 ## CLDR Data Pipeline
 
@@ -321,6 +363,12 @@ installer registers its namespace automatically.
 `InitializeDateTimeFormat` retains the already-read component options and caches
 formats by Temporal type. Plain values format in `+00:00` without changing the
 formatter's resolved timezone. Instants use its configured timezone.
+Numeric formattable values remain primitive Numbers through TimeClip. Public
+conversion uses unary plus once; private Decimal objects no longer undergo a
+second observable ToPrimitive. TimeClip follows published ECMA-262 §21.4.1.31
+with captured finite/absolute/truncation operations and positive-zero
+normalization. Omitted format/formatToParts timestamps call captured Date.now.
+
 `HandleDateTimeValue` produces the proposal's value-format record: selected format,
 exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip.
 Partitioning and pattern formatting consume that record without a Temporal bypass
@@ -700,8 +748,7 @@ bazel run -c opt //crates/intl_datetimeformat:audit -- --benchmark --iterations=
 Integer rendering avoids Decimal for safe epoch-millisecond/offset addition and
 fractional-second truncation. Negative nanoseconds floor before Number conversion;
 fractional offsets retain Decimal addition before flooring. Numeric date fields
-also benefit from NumberFormat's exact-integer fixed-rounding path. See
-[arithmetic guards and measurements](audits/2026-10-31-datetimeformat-integer-rendering.md).
+also benefit from NumberFormat's exact-integer fixed-rounding path.
 
 ## Primary timezone identities
 

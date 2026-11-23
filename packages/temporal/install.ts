@@ -16,6 +16,9 @@ export function installTemporal(force = false): void {
     date = Date.prototype as Date & {toTemporalInstant?: () => unknown},
     replace = force || needsTemporal()
   if (replace)
+    // ECMA-262 §20.1.2.4 steps 2–4. Define the selected namespace property.
+    // ECMA-262 preview §22.6: initial global Temporal value.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-object
     Object.defineProperty(target, 'Temporal', {
       value: Temporal,
       writable: true,
@@ -23,6 +26,9 @@ export function installTemporal(force = false): void {
       enumerable: false,
     })
   if (replace || target.Temporal === Temporal) {
+    // Temporal amendment §15.4.1: capture original options at formatter creation.
+    // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+    // Existing host formatters and captured bound functions keep host behavior.
     installLegacyDateTimeFormat(target.Temporal)
     installLegacyDurationFormat(target.Temporal)
   }
@@ -46,10 +52,15 @@ export function installTemporal(force = false): void {
   if (replace || typeof date.toTemporalInstant !== 'function') {
     const Constructor = target.Temporal.Instant
     Object.defineProperty(date, 'toTemporalInstant', {
+      // Temporal comparison §14.9.1 step 5.
+      // Create the result through the installed Instant provider.
       value:
         target.Temporal === Temporal
           ? toTemporalInstant
-          : createDateToTemporalInstant(ns => new Constructor(ns)),
+          : createDateToTemporalInstant(
+              // Temporal comparison §14.9.1 step 5. Construct through the installed provider.
+              ns => new Constructor(ns)
+            ),
       enumerable: false,
       writable: true,
       configurable: true,

@@ -50,10 +50,10 @@ impl Default for CalendarRegistry {
 }
 fn gregorian(local_milliseconds: i64) -> Result<CalendarFields, Error> {
     let civil = CivilDateTime::from_epoch_nanoseconds(i128::from(local_milliseconds) * 1_000_000)?;
-    let (era, year) = civil.era_year();
+    let era = if civil.year < 1 { "BC" } else { "AD" };
     Ok(CalendarFields {
         era: era.into(),
-        year: year as i32,
+        year: civil.year,
         month: civil.month - 1,
         day: civil.day,
         month_name_index: None,

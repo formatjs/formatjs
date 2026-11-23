@@ -30,6 +30,7 @@ pub enum PartKind {
     TimeZoneName,
     RelatedYear,
     YearName,
+    Unknown,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct Part {
@@ -304,7 +305,15 @@ impl RenderData {
                     let (field, kind, value) = match name {
                         "weekday" => (Field::Weekday, PartKind::Weekday, i32::from(civil.weekday)),
                         "era" => (Field::Era, PartKind::Era, 0),
-                        "year" => (Field::Year, PartKind::Year, fields.year),
+                        "year" => {
+                            // ECMA-402 §11.5.4 step 15.f.iv applies to every calendar.
+                            let year = if fields.year <= 0 {
+                                1_i32.checked_sub(fields.year).ok_or(Error::InvalidDate)?
+                            } else {
+                                fields.year
+                            };
+                            (Field::Year, PartKind::Year, year)
+                        }
                         "month" => (
                             Field::Month,
                             PartKind::Month,
@@ -328,7 +337,15 @@ impl RenderData {
                         }
                         "minute" => (Field::Minute, PartKind::Minute, i32::from(civil.minute)),
                         "second" => (Field::Second, PartKind::Second, i32::from(civil.second)),
-                        _ => continue,
+                        _ => {
+                            // ECMA-402 §11.5.4, step 15.j.
+                            result.push(Part {
+                                kind: PartKind::Unknown,
+                                value: format!("{name}:{}", local.epoch_nanoseconds),
+                                source: None,
+                            });
+                            continue;
+                        }
                     };
                     let width = format.get(field);
                     let mut text = match width {

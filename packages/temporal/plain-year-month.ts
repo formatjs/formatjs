@@ -1,16 +1,28 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  bigIntFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  argumentAt,
+  constructorPrototype,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getYearMonthSlot,
-  setYearMonthSlot,
+  allocateYearMonth,
+  isoDateFields,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
   calendarFromObject,
   constructorCalendar,
   dateFields,
+  dateFieldsView,
   dateProperty,
   readDateFields,
   partialObject,
@@ -23,8 +35,9 @@ import {
   dayFromFields,
 } from '#packages/temporal/date-core.js'
 import {
-  addCalendarDateRaw,
+  addNormalizedCalendarDate,
   calendarToEpochDayRaw,
+  dayCheck,
 } from '#packages/temporal/calendar.js'
 import {
   createPlainDate,
@@ -33,9 +46,12 @@ import {
 } from '#packages/temporal/plain-date.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
+import {durationFieldNames} from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
   unitOption,
@@ -89,19 +105,26 @@ export interface PlainYearMonthConstructor {
   from(item: unknown, options?: unknown): PlainYearMonthObject
   compare(one: unknown, two: unknown): -1 | 0 | 1
 }
+// Temporal comparison §9.3.3 step 2.
+// Check the PlainYearMonth receiver before reading its calendar.
 function read(item: unknown): DateSlot {
   const slot = getYearMonthSlot(item as object)
-  if (!slot) throw new TypeError('Invalid PlainYearMonth receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid PlainYearMonth receiver')
   return slot
 }
+// ECMA-262 preview §22.13.5.1 steps 1–6: validate the ISO month and store it with its calendar.
+// https://tc39.es/ecma262/pr/3966/#sec-createtemporalyearmonth
+// ECMA-262 preview §22.13.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plainyearmonth-instances
 export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
   checkYearMonth(slot.epochDay)
-  const result = Object.create(
-    PlainYearMonthValue.prototype
+  return allocateYearMonth(
+    PlainYearMonthValue.prototype,
+    slot
   ) as PlainYearMonthObject
-  setYearMonthSlot(result, {...slot})
-  return result
 }
+// Temporal comparison §9.5.2 steps 3, 4, 8, 9.
+// Delegate year-month parsing with prepared options.
 export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
   const existing = getYearMonthSlot(item as object)
   if (existing) {
@@ -115,31 +138,28 @@ export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
     return yearMonthFields(calendar, fields, overflow)
   }
   if (typeof item !== 'string')
-    throw new TypeError('Expected year-month string or object')
-  const slot = parseShortSlot(item, 'year-month')
-  overflowOption(options)
-  return slot
+    throw new TypeErrorConstructor('Expected year-month string or object')
+  return parseShortSlot(item, 'year-month', options)
 }
+// Temporal comparison §9.5.8 steps 1, 2, 5, 7, 10, 12, 15.
+// Add the signed year and month fields from day one.
 function add(
   slot: DateSlot,
   duration: unknown,
   options: unknown,
   sign: number
 ): PlainYearMonthObject {
-  const fields = toDurationFields(duration),
+  const fields =
+      import.meta.formatjsTemporalNativeData === true
+        ? toNativeDurationFields(duration)
+        : toDurationFields(duration),
     native = nativeTemporal()
-  if (native)
-    return createPlainYearMonth({
-      epochDay: native.addPlainYearMonth(
-        slot,
-        fields,
-        sign < 0,
-        overflowOption(options)
-      ),
-      calendar: slot.calendar,
-    })
-  const keys = Object.keys(fields) as (keyof typeof fields)[]
-  for (let index = 0; index < keys.length; index++) fields[keys[index]] *= sign
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return createPlainYearMonth(
+      native!.addPlainYearMonth(slot, fields, sign < 0, overflowOption(options))
+    )
+  for (let index = 0; index < durationFieldNames.length; index++)
+    fields[durationFieldNames[index]] *= sign
   const overflow = overflowOption(options)
   if (
     fields.weeks ||
@@ -151,20 +171,24 @@ function add(
     fields.microseconds ||
     fields.nanoseconds
   )
-    throw new RangeError('Year-month arithmetic only accepts years and months')
+    throw new RangeErrorConstructor(
+      'Year-month arithmetic only accepts years and months'
+    )
   const cal = shortCalendar(slot.calendar),
-    start = {...dateFields(slot, true), day: 1}
+    start = {...dateFieldsView(slot, true), day: 1}
   const firstDay = calendarToEpochDayRaw(cal, start, 'constrain')
   if (firstDay < -100000001 || firstDay > 100000000)
-    throw new RangeError('Reference date out of range')
-  const result = addCalendarDateRaw(cal, start, fields, overflow)
+    throw new RangeErrorConstructor('Reference date out of range')
+  const result = addNormalizedCalendarDate(cal, start, fields, overflow)
+  dayCheck(result.epochDay)
   return createPlainYearMonth({
-    epochDay: checkYearMonth(
-      calendarToEpochDayRaw(cal, {...result, day: 1}, 'reject')
-    ),
+    epochDay: checkYearMonth(result.epochDay),
     calendar: slot.calendar,
+    [isoDateFields]: cal === 'iso8601' ? result.date : undefined,
   })
 }
+// Temporal comparison §9.5.7 steps 1, 3, 5, 8, 11, 17.
+// Compare YearMonth values through first-of-month dates.
 function difference(
   slot: DateSlot,
   other: unknown,
@@ -172,7 +196,8 @@ function difference(
   since: boolean
 ): DurationObject {
   const end = toYearMonthSlot(other)
-  if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  if (slot.calendar !== end.calendar)
+    throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options),
     rawLargest = resolved.largestUnit
   const text = rawLargest === undefined ? 'auto' : ToString(rawLargest),
@@ -185,11 +210,15 @@ function difference(
     (smallest !== 'year' && smallest !== 'month') ||
     (largest === 'month' && smallest === 'year')
   )
-    throw new RangeError('Invalid year-month units')
+    throw new RangeErrorConstructor('Invalid year-month units')
   const native = nativeTemporal()
-  if (native)
-    return createDuration(
-      native.differencePlainYearMonth(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
+      native!.differencePlainYearMonth(
         slot,
         end,
         largest,
@@ -214,17 +243,21 @@ function difference(
     })
   const a = yearMonthFields(
       slot.calendar,
-      {...dateFields(slot, true)},
+      {__proto__: null, ...dateFields(slot, true)},
       'constrain'
     ),
-    b = yearMonthFields(end.calendar, {...dateFields(end, true)}, 'constrain')
+    b = yearMonthFields(
+      end.calendar,
+      {__proto__: null, ...dateFields(end, true)},
+      'constrain'
+    )
   if (
     a.epochDay < -100000001 ||
     a.epochDay > 100000000 ||
     b.epochDay < -100000001 ||
     b.epochDay > 100000000
   )
-    throw new RangeError('Reference date out of range')
+    throw new RangeErrorConstructor('Reference date out of range')
   if (smallest === 'month' && increment === 1) {
     const fields = dateUntil(a, b.epochDay, largest)
     fields.days = 0
@@ -236,8 +269,8 @@ function difference(
   }
   return createDuration(
     roundedDateTimeDifference(
-      BigInt(a.epochDay) * nsPerDay,
-      BigInt(b.epochDay) * nsPerDay,
+      bigIntFrom(a.epochDay) * nsPerDay,
+      bigIntFrom(b.epochDay) * nsPerDay,
       slot.calendar,
       largest,
       smallest,
@@ -254,20 +287,26 @@ class PlainYearMonthValue {
     _calendar: unknown = undefined,
     _referenceISODay?: unknown
   ) {
-    throw new TypeError('Use exported PlainYearMonth constructor')
+    throw new TypeErrorConstructor('Use exported PlainYearMonth constructor')
   }
   static from(
     item: unknown,
     options: unknown = undefined
   ): PlainYearMonthObject {
+    // Temporal comparison §9.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.from
     return createPlainYearMonth(toYearMonthSlot(item, options))
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // Temporal comparison §9.2.3 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.compare
     const a = toYearMonthSlot(one).epochDay,
       b = toYearMonthSlot(two).epochDay
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainYearMonthObject {
+    // Temporal comparison §9.3.13 steps 1–11.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.with
     const slot = read(this),
       partial = readDateFields(
         partialObject(item),
@@ -276,6 +315,13 @@ class PlainYearMonthValue {
         'year-month',
         slot.calendar
       )
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(slot, true)
+      return createPlainYearMonth(
+        native!.withDate(slot, partial, overflowOption(options), 'year-month')
+      )
+    }
     return createPlainYearMonth(
       yearMonthFields(
         slot.calendar,
@@ -285,45 +331,60 @@ class PlainYearMonthValue {
     )
   }
   add(duration: unknown, options: unknown = undefined): PlainYearMonthObject {
+    // Temporal comparison §9.3.14 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.add
     return add(read(this), duration, options, 1)
   }
   subtract(
     duration: unknown,
     options: unknown = undefined
   ): PlainYearMonthObject {
+    // Temporal comparison §9.3.15 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.subtract
     return add(read(this), duration, options, -1)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §9.3.16 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.until
     return difference(read(this), other, options, false)
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §9.3.17 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.since
     return difference(read(this), other, options, true)
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §9.3.18 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.equals
     const a = read(this),
       b = toYearMonthSlot(other)
     return a.epochDay === b.epochDay && a.calendar === b.calendar
   }
   toPlainDate(item: unknown): PlainDateObject {
+    // Temporal comparison §9.3.23 steps 1–9.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.toplaindate
     const slot = read(this)
-    if (!object(item)) throw new TypeError('Expected date fields')
+    if (!object(item)) throw new TypeErrorConstructor('Expected date fields')
     const raw = item.day
-    if (raw === undefined) throw new TypeError('Day required')
+    if (raw === undefined) throw new TypeErrorConstructor('Day required')
     const day = integer(raw)
-    if (day <= 0) throw new RangeError('Day must be positive')
+    if (day <= 0) throw new RangeErrorConstructor('Day must be positive')
     const native = nativeTemporal()
-    if (native)
-      return createPlainDate(native.yearMonthToDate(slot, day), slot.calendar)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return createPlainDate(native!.yearMonthToDate(slot, day), slot.calendar)
     return createPlainDate(
       dayFromFields(
         slot.calendar,
-        {...dateFields(slot, true), day},
+        // Temporal comparison §9.3.23 steps 7–8: merge private field records.
+        {__proto__: null, ...dateFields(slot, true), day},
         'constrain'
       ),
       slot.calendar
     )
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §9.3.19 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tostring
     const slot = read(this)
     return formatShortDate(
       slot,
@@ -335,24 +396,33 @@ class PlainYearMonthValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal Intl §15.11.7.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plainyearmonth.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {
         kind: 'PlainYearMonth',
         epochNanoseconds:
-          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+          bigIntFrom(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
         calendar: slot.calendar,
       },
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {
+    // Temporal comparison §9.3.21 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tojson
     return formatShortDate(read(this), 'year-month')
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainYearMonth to primitive')
+    // Temporal comparison §9.3.22 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.valueof
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainYearMonth to primitive'
+    )
   }
 }
 const localeStringIntrinsic = PlainYearMonthValue.prototype.toString
@@ -361,28 +431,59 @@ Object.defineProperty(PlainYearMonthValue, 'name', {
   value: 'PlainYearMonth',
   configurable: true,
 })
-export const PlainYearMonth: PlainYearMonthConstructor = new Proxy(
+// Temporal comparison §9.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype
+// ECMA-262 preview §22.13.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plainyearmonth-constructor
+// ECMA-262 preview §22.13.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plainyearmonth-constructor
+export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
   PlainYearMonthValue,
   {
     construct(target, args, newTarget) {
-      const year = integer(args[0]),
-        month = integer(args[1]),
-        calendar = constructorCalendar(args[2]),
-        day = args[3] === undefined ? 1 : integer(args[3])
+      // Temporal comparison §9.1.1 steps 1–11.
+      // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth
+      const year = integer(argumentAt(args, 0)),
+        month = integer(argumentAt(args, 1)),
+        calendar = constructorCalendar(argumentAt(args, 2)),
+        day =
+          argumentAt(args, 3) === undefined ? 1 : integer(argumentAt(args, 3))
       const epochDay = checkYearMonth(isoReferenceDay(year, month, day)),
-        prototype = Reflect.get(newTarget, 'prototype')
-      const result = Object.create(
-        object(prototype) ? prototype : target.prototype
-      )
-      setYearMonthSlot(result, {epochDay, calendar})
-      return result
+        prototype = constructorPrototype(newTarget, target)
+      return allocateYearMonth(prototype, {epochDay, calendar})
     },
   }
 ) as unknown as PlainYearMonthConstructor
+// ECMA-262 preview §22.13.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plainyearmonth-prototype-object
 Object.defineProperties(PlainYearMonthValue.prototype, {
+  // Temporal comparison §9.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.constructor
   constructor: {value: PlainYearMonth, writable: true, configurable: true},
+  // Temporal comparison §9.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainYearMonth', configurable: true},
 })
+// Temporal comparison §9.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.calendarid
+// Temporal comparison §9.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.era
+// Temporal comparison §9.3.5 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.erayear
+// Temporal comparison §9.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.year
+// Temporal comparison §9.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.month
+// Temporal comparison §9.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.monthcode
+// Temporal comparison §9.3.9 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinyear
+// Temporal comparison §9.3.10 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinmonth
+// Temporal comparison §9.3.11 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.monthsinyear
+// Temporal comparison §9.3.12 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.inleapyear
 defineGetters(
   PlainYearMonthValue.prototype,
   [

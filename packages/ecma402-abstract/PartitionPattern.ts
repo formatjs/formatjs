@@ -1,38 +1,51 @@
+import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 
-/**
- * Partition a pattern into a list of literals and placeholders
- * https://tc39.es/ecma402/#sec-partitionpattern
- * @param pattern
- */
+const apply = Reflect.apply
+const stringIndexOf = String.prototype.indexOf
+const substring = String.prototype.substring
+
+/** ECMA-402 §9.2.15. Input is a private Pattern String (§6.10). */
 export function PartitionPattern<T extends string>(
   pattern: string
 ): Array<{type: T; value: string | undefined}> {
-  const result = []
-  let beginIndex = pattern.indexOf('{')
-  let endIndex = 0
-  let nextIndex = 0
-  const length = pattern.length
-  while (beginIndex < pattern.length && beginIndex > -1) {
-    endIndex = pattern.indexOf('}', beginIndex)
-    invariant(endIndex > beginIndex, `Invalid pattern ${pattern}`)
-    if (beginIndex > nextIndex) {
-      result.push({
+  const result: Array<{type: T; value: string | undefined}> = []
+  let placeholderEnd = -1
+  let placeholderStart = apply(stringIndexOf, pattern, ['{', 0]) as number
+  while (placeholderStart !== -1) {
+    const literal = apply(substring, pattern, [
+      placeholderEnd + 1,
+      placeholderStart,
+    ]) as string
+    if (literal !== '') {
+      setDataProperty(result, `${result.length}`, {
         type: 'literal' as T,
-        value: pattern.substring(nextIndex, beginIndex),
+        value: literal,
       })
     }
-    result.push({
-      type: pattern.substring(beginIndex + 1, endIndex) as T,
+    placeholderEnd = apply(stringIndexOf, pattern, [
+      '}',
+      placeholderStart,
+    ]) as number
+    invariant(placeholderEnd > placeholderStart, `Invalid pattern ${pattern}`)
+    const placeholderName = apply(substring, pattern, [
+      placeholderStart + 1,
+      placeholderEnd,
+    ]) as T
+    setDataProperty(result, `${result.length}`, {
+      type: placeholderName,
       value: undefined,
     })
-    nextIndex = endIndex + 1
-    beginIndex = pattern.indexOf('{', nextIndex)
+    placeholderStart = apply(stringIndexOf, pattern, [
+      '{',
+      placeholderEnd,
+    ]) as number
   }
-  if (nextIndex < length) {
-    result.push({
+  const tail = apply(substring, pattern, [placeholderEnd + 1]) as string
+  if (tail !== '') {
+    setDataProperty(result, `${result.length}`, {
       type: 'literal' as T,
-      value: pattern.substring(nextIndex, length),
+      value: tail,
     })
   }
   return result

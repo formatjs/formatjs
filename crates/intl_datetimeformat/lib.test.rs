@@ -13,6 +13,8 @@ fn time_clip_checks_bounds_before_truncation_and_rejects_nonfinite() {
         f64::NAN,
         f64::INFINITY,
         f64::NEG_INFINITY,
+        f64::MAX,
+        -f64::MAX,
         (TIME_CLIP_BOUND + 1) as f64,
         -(TIME_CLIP_BOUND + 1) as f64,
     ] {
@@ -22,7 +24,9 @@ fn time_clip_checks_bounds_before_truncation_and_rejects_nonfinite() {
     assert_eq!(time_clip(-(TIME_CLIP_BOUND as f64)), Ok(-TIME_CLIP_BOUND));
     assert_eq!(time_clip(-1.9), Ok(-1));
     assert_eq!(time_clip(1.9), Ok(1));
-    assert_eq!(time_clip(-0.0), Ok(0));
+    for value in [-0.9, -f64::MIN_POSITIVE, -0.0, 0.0, f64::MIN_POSITIVE, 0.9] {
+        assert_eq!(time_clip(value), Ok(0));
+    }
 }
 
 #[test]

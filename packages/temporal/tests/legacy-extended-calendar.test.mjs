@@ -6,23 +6,8 @@ import {runfiles} from '@bazel/runfiles'
 
 const Native = Intl.DateTimeFormat
 const directory = runfiles.resolve(process.argv[2])
-let {Temporal} = await import(pathToFileURL(join(directory, 'index.js')))
-if (process.env.FORMATJS_TEMPORAL_EXTENDED_WASM) {
-  const instance = new WebAssembly.Instance(
-    new WebAssembly.Module(
-      readFileSync(join(directory, 'temporal-backend.wasm'))
-    ),
-    {}
-  )
-  if (process.env.FORMATJS_TEMPORAL_EXTENDED_WASM === 'native')
-    Temporal = (
-      await import(pathToFileURL(join(directory, 'wasm-native.js')))
-    ).configureTemporalWasm(instance)
-  else
-    (
-      await import(pathToFileURL(join(directory, 'wasm.js')))
-    ).configureWasmBackend(instance)
-}
+const {Temporal} = await import(pathToFileURL(join(directory, 'index.js')))
+
 const calendars = [
   'buddhist',
   'japanese',
@@ -120,6 +105,55 @@ const before = profiles.map(profile =>
 )
 await import(pathToFileURL(join(directory, 'polyfill-force.js')))
 Intl.DateTimeFormat.__addTemporalNamespace(Temporal)
+{
+  const hooks = [
+    [Map.prototype, 'get'],
+    [Map.prototype, 'set'],
+    [Map.prototype, 'has'],
+    [WeakMap.prototype, 'get'],
+    [WeakMap.prototype, 'set'],
+    [Array.prototype, 'find'],
+    [Array.prototype, 'map'],
+    [Array, 'from'],
+  ].map(([target, key]) => [
+    target,
+    key,
+    Object.getOwnPropertyDescriptor(target, key),
+  ])
+  for (const calendar of ['roc', 'islamic-civil']) {
+    const row = rows.find(
+      row =>
+        row.calendar === calendar &&
+        row.kind === 'datetime' &&
+        row.milliseconds < 0
+    )
+    assert(row, `Missing extended ${calendar} range fixture`)
+    const start = value(row)
+    const end = start.add({days: 1})
+    const fields = {...options, calendar, year: '2-digit'}
+    const reference = new Intl.DateTimeFormat('en-u-nu-mathsans', fields)
+    for (const method of ['formatRange', 'formatRangeToParts']) {
+      const expected = reference[method](start, end)
+      const formatter = new Intl.DateTimeFormat('en-u-nu-mathsans', fields)
+      let actual
+      try {
+        for (const [target, key, descriptor] of hooks) {
+          Object.defineProperty(target, key, {
+            ...descriptor,
+            value() {
+              throw new Error(`Unexpected extended calendar hook ${key}`)
+            },
+          })
+        }
+        actual = formatter[method](start, end)
+      } finally {
+        for (const [target, key, descriptor] of hooks)
+          Object.defineProperty(target, key, descriptor)
+      }
+      assert.deepEqual(actual, expected, `${calendar} ${method}`)
+    }
+  }
+}
 let checked = 0
 for (const [index, profile] of profiles.entries()) {
   for (const [position, row] of rows.entries()) {
@@ -130,7 +164,11 @@ for (const [index, profile] of profiles.entries()) {
       }),
       parts = formatter.formatToParts(input),
       actual = Object.fromEntries(parts.map(part => [part.type, part.value]))
-    assert.equal(actual.year, profile.number(row.eraYear), JSON.stringify(row))
+    assert.equal(
+      actual.year,
+      profile.number(row.eraYear <= 0 ? 1 - row.eraYear : row.eraYear),
+      JSON.stringify(row)
+    )
     if (row.era === 'bh' && profile.locale === 'en')
       assert.equal(actual.era, 'BH')
     assert(
@@ -182,7 +220,9 @@ for (const [index, profile] of profiles.entries()) {
     })
     assert.equal(
       short.formatToParts(input).find(part => part.type === 'year').value,
-      Array.from(profile.two(row.eraYear)).slice(-2).join('')
+      Array.from(profile.two(row.eraYear <= 0 ? 1 - row.eraYear : row.eraYear))
+        .slice(-2)
+        .join('')
     )
     checked += 2
   }
@@ -208,7 +248,13 @@ for (const calendar of calendars) {
             ? 'relatedYear'
             : 'year'
         ],
-        String(value.eraYear ?? value.year)
+        String(
+          calendar === 'chinese' || calendar === 'dangi'
+            ? value.year
+            : (value.eraYear ?? value.year) <= 0
+              ? 1 - (value.eraYear ?? value.year)
+              : (value.eraYear ?? value.year)
+        )
       )
       assert.equal(actual.day, String(value.day))
       if (calendar !== 'hebrew')

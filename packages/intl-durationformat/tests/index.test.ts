@@ -475,3 +475,36 @@ test('duration strings use Temporal when the runtime provides it', () => {
     expect(() => formatter.format('PT1H')).toThrow(RangeError)
   }
 })
+
+test('does not observe private numeric hooks between duration field Gets', () => {
+  const formatter = new DurationFormat('en')
+  const failure = Object.freeze({message: 'next field'})
+  const original = Number.isNaN
+  const events: string[] = []
+  const input = {
+    get days() {
+      events.push('days')
+      return 1
+    },
+    get hours(): number {
+      events.push('hours')
+      throw failure
+    },
+  }
+  for (const method of ['format', 'formatToParts'] as const) {
+    let error: unknown
+    events.length = 0
+    try {
+      Number.isNaN = () => {
+        throw new Error('Private Number wrapper reached')
+      }
+      formatter[method](input)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Number.isNaN = original
+    }
+    expect(error).toBe(failure)
+    expect(events).toEqual(['days', 'hours'])
+  }
+})

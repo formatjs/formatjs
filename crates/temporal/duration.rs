@@ -33,9 +33,11 @@ pub struct DurationFields {
 }
 
 impl Duration {
+    // Proposal comparison §7.5.12 steps 3, 5–15: fill typed fields over zero defaults.
     pub fn from_fields(fields: DurationFields) -> Result<Self, Error> {
         Self([0; 10]).with_fields(fields)
     }
+    // Proposal comparison §7.3.15 steps 4–24: replace supplied typed duration fields.
     pub fn with_fields(self, fields: DurationFields) -> Result<Self, Error> {
         let updates = [
             fields.years,
@@ -60,6 +62,7 @@ impl Duration {
         }
         Self::new(result)
     }
+    // Proposal comparison §7.5.16 steps 1–9: validate signs and normalized duration bounds.
     pub fn new(mut fields: [i128; 10]) -> Result<Self, Error> {
         let mut sign = 0;
         for value in &mut fields {
@@ -81,6 +84,7 @@ impl Duration {
         result.time_nanoseconds(true)?;
         Ok(result)
     }
+    // Proposal comparison §7.3.22 steps 11.a, 14–18: prepare duration text at requested precision.
     pub fn format(
         self,
         precision: Precision,
@@ -111,9 +115,11 @@ impl Duration {
             precision,
         })
     }
+    // Proposal comparison §7.5.5 step 1: expose the existing typed duration field record.
     pub const fn fields(self) -> [i128; 10] {
         self.0
     }
+    // Proposal comparison §7.5.13 steps 1–2: return the first nonzero field sign.
     pub fn sign(self) -> i8 {
         self.0
             .into_iter()
@@ -121,14 +127,22 @@ impl Duration {
             .unwrap_or(0)
             .signum() as i8
     }
+    // ECMA-262 preview §22.15.5.2 step 1: negate every stored duration field.
+    // https://tc39.es/ecma262/pr/3966/#sec-createnegatedtemporalduration
     pub fn negated(self) -> Self {
         Self(self.0.map(|value| -value))
     }
+    // Proposal comparison §7.3.17 step 3: take the magnitude of each duration field.
     pub fn abs(self) -> Self {
         Self(self.0.map(i128::abs))
     }
+    // ECMA-262 preview §22.3.14.6 steps 1–5: fold hours through nanoseconds
+    // using exact integer factors for the successive unit conversions.
+    // https://tc39.es/ecma262/pr/3966/#sec-timedurationfromcomponents
     pub fn time_nanoseconds(self, include_days: bool) -> Result<i128, Error> {
         let mut sum = 0i128;
+        // ECMA-262 preview §22.3.14.1 steps 1–3: fold optional 24-hour days into the checked span.
+        // https://tc39.es/ecma262/pr/3966/#sec-add24hourdaystonormalizedtimeduration
         for index in (if include_days { 3 } else { 4 })..10 {
             sum = sum
                 .checked_add(
@@ -138,11 +152,13 @@ impl Duration {
                 )
                 .ok_or(Error::InvalidDuration)?;
         }
+        // §22.3.14.6 steps 6–7: check the range before returning the sum.
         if sum <= -MAX_DURATION_NANOSECONDS || sum >= MAX_DURATION_NANOSECONDS {
             return Err(Error::InvalidDuration);
         }
         Ok(sum)
     }
+    // Proposal comparison §7.5.8 steps 5–12: split typed nanoseconds into clock fields.
     pub fn from_time_nanoseconds(mut value: i128, largest: TimeUnit) -> Result<Self, Error> {
         let index = time_index(largest);
         if value <= -MAX_DURATION_NANOSECONDS || value >= MAX_DURATION_NANOSECONDS {
@@ -155,6 +171,7 @@ impl Duration {
         }
         Self::new(fields)
     }
+    // Proposal comparison §7.2.3 steps 5.a, 15–17: compare fixed duration spans.
     pub fn compare_time(self, other: Self) -> Result<core::cmp::Ordering, Error> {
         if self == other {
             return Ok(core::cmp::Ordering::Equal);
@@ -170,6 +187,7 @@ impl Duration {
             .time_nanoseconds(true)?
             .cmp(&other.time_nanoseconds(true)?))
     }
+    // Proposal comparison §7.3.21 step 14.d: total a fixed span in the selected clock unit.
     pub fn total(self, unit: TimeUnit) -> Result<f64, Error> {
         if self.0[..3].iter().any(|value| *value != 0) {
             return Err(Error::InvalidDuration);
@@ -179,12 +197,14 @@ impl Duration {
             unit.nanoseconds(),
         ))
     }
+    // Proposal comparison §7.3.21 step 14.d: divide the exact fixed span by one day.
     pub fn total_days(self) -> Result<f64, Error> {
         if self.0[..3].iter().any(|value| *value != 0) {
             return Err(Error::InvalidDuration);
         }
         Ok(rational_to_f64(self.time_nanoseconds(true)?, FACTORS[0]))
     }
+    // Proposal comparison §7.3.20 steps 29–34: round and rebalance a fixed duration.
     pub fn round(
         self,
         largest: crate::DateTimeUnit,
@@ -206,6 +226,7 @@ impl Duration {
         }
         Self::new(fields)
     }
+    // Proposal comparison §7.5.41 steps 3–11: add exact fixed spans and rebalance.
     pub fn checked_add(self, other: Self) -> Result<Self, Error> {
         if self.0[..3]
             .iter()
@@ -220,6 +241,8 @@ impl Duration {
             .zip(other.0)
             .position(|(a, b)| *a != 0 || b != 0)
             .unwrap_or(9);
+        // ECMA-262 preview §22.3.14.2 steps 1–3: add spans and check the time-duration bounds.
+        // https://tc39.es/ecma262/pr/3966/#sec-addtimeduration
         let mut sum = self.time_nanoseconds(true)? + other.time_nanoseconds(true)?;
         if sum <= -MAX_DURATION_NANOSECONDS || sum >= MAX_DURATION_NANOSECONDS {
             return Err(Error::InvalidDuration);
@@ -231,10 +254,12 @@ impl Duration {
         }
         Self::new(fields)
     }
+    // Proposal comparison §7.5.41 step 2: negate the second duration before addition.
     pub fn checked_subtract(self, other: Self) -> Result<Self, Error> {
         self.checked_add(other.negated())
     }
 }
+// Proposal comparison §7.5.8 steps 5–10: select the typed decomposition start index.
 fn time_index(unit: TimeUnit) -> usize {
     match unit {
         TimeUnit::Hour => 4,
@@ -246,6 +271,7 @@ fn time_index(unit: TimeUnit) -> usize {
     }
 }
 // Round the exact ratio once, before any float conversion.
+// Proposal comparison §7.3.21 step 15: round the exact total ratio to Number once.
 pub(crate) fn rational_to_f64(value: i128, divisor: i128) -> f64 {
     if value == 0 {
         return 0.0;
@@ -283,15 +309,22 @@ pub(crate) fn rational_to_f64(value: i128, divisor: i128) -> f64 {
     )
 }
 impl Instant {
+    // Proposal comparison §8.5.10 steps 4–7: add clock nanoseconds to the Instant.
     pub fn checked_add(self, duration: Duration) -> Result<Self, Error> {
         if duration.0[..4].iter().any(|value| *value != 0) {
             return Err(Error::InvalidDuration);
         }
+        // ECMA-262 preview §22.3.6.1 steps 1–3: add nanoseconds and check bounds.
+        // https://tc39.es/ecma262/pr/3966/#sec-addepochnanoseconds
+        // §22.3.14.3 step 1 adds the time span to the epoch.
+        // https://tc39.es/ecma262/pr/3966/#sec-addtimedurationtoepochnanoseconds
         Self::from_epoch_nanoseconds(self.epoch_nanoseconds() + duration.time_nanoseconds(false)?)
     }
+    // Proposal comparison §8.5.10 step 2: negate the typed duration for Instant subtraction.
     pub fn checked_subtract(self, duration: Duration) -> Result<Self, Error> {
         self.checked_add(duration.negated())
     }
+    // Proposal comparison §8.5.9 steps 4–5: round the exact Instant difference.
     pub fn until(
         self,
         other: Self,
@@ -312,6 +345,8 @@ impl Instant {
         {
             return Err(Error::InvalidRoundingOptions);
         }
+        // ECMA-262 preview §22.3.6.3 steps 1–3: subtract exact epochs and round the span.
+        // https://tc39.es/ecma262/pr/3966/#sec-differenceepochnanoseconds
         let rounded = round_duration(
             other.epoch_nanoseconds() - self.epoch_nanoseconds(),
             i128::from(increment) * smallest.nanoseconds(),
@@ -319,6 +354,7 @@ impl Instant {
         );
         Duration::from_time_nanoseconds(rounded, largest)
     }
+    // Proposal comparison §8.5.9 step 6: reverse the typed Instant difference for since.
     pub fn since(
         self,
         other: Self,
@@ -332,6 +368,7 @@ impl Instant {
 }
 impl FromStr for Duration {
     type Err = Error;
+    // Proposal comparison §13.37 steps 1–3, 23–44: scan and decode duration text.
     fn from_str(input: &str) -> Result<Self, Error> {
         let bytes = input.as_bytes();
         let mut position = 0;
@@ -437,6 +474,7 @@ impl FromStr for Duration {
         Self::new(fields)
     }
 }
+// Proposal comparison §7.5.40 steps 1–17: write duration sign, fields and fraction.
 fn write_duration(
     value: Duration,
     precision: Precision,
@@ -469,6 +507,9 @@ fn write_duration(
         }
         if second_ns != 0 || fields[..6].iter().all(|v| *v == 0) || precision != Precision::Auto {
             write!(f, "{}", second_ns / 1_000_000_000)?;
+            // ECMA-262 preview §22.5.3 steps 1–3: strip trailing zeroes in auto
+            // mode and truncate to the requested width in fixed mode.
+            // https://tc39.es/ecma262/pr/3966/#sec-formatfractionalseconds
             let (fraction, digits) = if let Precision::Digits(d) = precision {
                 (
                     second_ns % 1_000_000_000 / 10i128.pow(u32::from(9 - d)),
@@ -496,16 +537,20 @@ pub struct FormattedDuration {
     precision: Precision,
 }
 impl fmt::Display for Duration {
+    // Proposal comparison §7.3.23 step 3: supply auto precision for typed duration display.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write_duration(*self, Precision::Auto, f)
     }
 }
 impl fmt::Display for FormattedDuration {
+    // Proposal comparison §7.3.22 steps 11.a, 18: write the prepared duration and precision.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write_duration(self.duration, self.precision, f)
     }
 }
 
+// ECMA-262 preview §22.3.14.5 steps 1–3: round exact nanoseconds and check the result bound.
+// https://tc39.es/ecma262/pr/3966/#sec-roundtimedurationtoincrement
 pub fn round_duration_nanoseconds(
     value: i128,
     quantum: i128,

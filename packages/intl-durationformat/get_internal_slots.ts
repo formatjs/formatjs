@@ -10,13 +10,19 @@ const internalSlotMap = new WeakMap<
   IntlDurationFormatInternal
 >()
 
+// Temporal comparison §§15.10.1–2 steps2,4: access private slots with captured intrinsics.
+// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+const getSlots = internalSlotMap.get.bind(internalSlotMap)
+const setSlots = internalSlotMap.set.bind(internalSlotMap)
+const createSlots = Object.create
+
 export function getInternalSlots(
   x: DurationFormat
 ): IntlDurationFormatInternal {
-  let internalSlots = internalSlotMap.get(x)
+  let internalSlots = getSlots(x)
   if (!internalSlots) {
-    internalSlots = Object.create(null) as IntlDurationFormatInternal
-    internalSlotMap.set(x, internalSlots)
+    internalSlots = createSlots(null) as IntlDurationFormatInternal
+    setSlots(x, internalSlots)
   }
   return internalSlots
 }

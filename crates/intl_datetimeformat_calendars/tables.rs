@@ -13,6 +13,7 @@ pub(crate) struct UmmAlQura {
     data: UmmRaw,
 }
 impl UmmAlQura {
+    // Proposal comparison §15.6.23 step 5.a: Validate packed Umm al-Qura year starts and month lengths.
     pub fn new(data: UmmRaw) -> Result<Self, Error> {
         if data.month_lengths.is_empty()
             || data.start_days.len() != data.month_lengths.len() + 1
@@ -31,6 +32,7 @@ impl UmmAlQura {
         }
         Ok(Self { data })
     }
+    // Proposal comparison §15.6.23 step 5.a: Project local milliseconds into Umm al-Qura date fields.
     pub fn date_from_time(&self, milliseconds: i64) -> Result<CalendarFields, Error> {
         let epoch_day = milliseconds.div_euclid(86_400_000);
         let data = &self.data;
@@ -74,9 +76,11 @@ pub(crate) struct Lunisolar {
     dictionary: Vec<u32>,
     years: Vec<u16>,
 }
+// Proposal comparison §15.6.23 step 5.a: Sum month lengths for lunisolar year selection.
 fn year_length(packed: u32) -> i64 {
     (if packed >> 13 == 0 { 12 } else { 13 }) * 29 + i64::from((packed & 8191).count_ones())
 }
+// Proposal comparison §15.6.23 step 5.a: Decode packed lunisolar dictionary digits.
 fn digit(byte: u8) -> Result<u16, Error> {
     Ok(match byte {
         b'A'..=b'Z' => u16::from(byte - b'A'),
@@ -88,6 +92,7 @@ fn digit(byte: u8) -> Result<u16, Error> {
     })
 }
 impl Lunisolar {
+    // Proposal comparison §15.6.23 step 5.a: Validate lunisolar dictionaries and year checkpoints.
     pub fn new(data: LunisolarRaw) -> Result<Self, Error> {
         if data.years.is_empty()
             || data.years.len() % 2 != 0
@@ -156,6 +161,7 @@ impl Lunisolar {
             years,
         })
     }
+    // Proposal comparison §15.6.23 step 5.a: Project an in-range lunisolar epoch day to calendar fields.
     pub fn date_from_time(&self, milliseconds: i64) -> Result<CalendarFields, Error> {
         let epoch_day = milliseconds.div_euclid(86_400_000);
         if epoch_day < self.checkpoints[0] || epoch_day >= self.end_day {

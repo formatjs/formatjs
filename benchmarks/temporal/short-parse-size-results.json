@@ -1,0 +1,97 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Default TS uses compact ICU4X lunisolar arithmetic/data and host Intl Umm al-Qura; named timezones use captured installed Intl. Standalone retains full calendar packs and owned IANA histories. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl data; basic ISO/Gregorian implementation entry measured separately. Legacy formatting restores plain and numeric non-Gregorian fields using host labels and compact CLDR Before Hijrah labels; Gregorian era probes handle BCE and locale fallback. Size only; historical benchmark snapshots remain separate. Bundles are alternatives, not additive.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "referenceEntries": {
+    "reference-bundle.js": "temporal-polyfill/implementation (ISO/Gregorian)",
+    "reference-full-bundle.js": "temporal-polyfill/full/implementation (all calendars)"
+  },
+  "sizes": [
+    {
+      "file": "instant-code.js",
+      "raw": 269597,
+      "minified": 152687,
+      "minifiedGzip": 41555
+    },
+    {
+      "file": "polyfill-code.js",
+      "raw": 310541,
+      "minified": 174052,
+      "minifiedGzip": 47337
+    },
+    {
+      "file": "polyfill-force-code.js",
+      "raw": 310557,
+      "minified": 174054,
+      "minifiedGzip": 47338
+    },
+    {
+      "file": "should-polyfill-code.js",
+      "raw": 1283,
+      "minified": 696,
+      "minifiedGzip": 361
+    },
+    {
+      "file": "reference-bundle.js",
+      "raw": 172962,
+      "minified": 56696,
+      "minifiedGzip": 19393
+    },
+    {
+      "file": "reference-full-bundle.js",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
+    }
+  ],
+  "publishedModules": [
+    {
+      "file": "index.js",
+      "raw": 260176,
+      "minified": 145254,
+      "minifiedGzip": 40766
+    },
+    {
+      "file": "standalone.js",
+      "raw": 3378321,
+      "minified": 3023094,
+      "minifiedGzip": 341266
+    },
+    {
+      "file": "polyfill.js",
+      "raw": 111411,
+      "minified": 58579,
+      "minifiedGzip": 17879
+    },
+    {
+      "file": "polyfill-force.js",
+      "raw": 111427,
+      "minified": 58581,
+      "minifiedGzip": 17882
+    },
+    {
+      "file": "should-polyfill.js",
+      "raw": 1117,
+      "minified": 587,
+      "minifiedGzip": 302
+    },
+    {
+      "file": "native.js",
+      "raw": 21134,
+      "minified": 11974,
+      "minifiedGzip": 3152
+    }
+  ],
+  "publishedGraphs": {
+    "scope": "Required ESM files compressed separately. Consumer bundling can remove unused code. Source maps and declarations are not runtime imports.",
+    "typescript": {
+      "files": ["index.js", "native.js"],
+      "minifiedGzip": 43918
+    },
+    "standalone": {
+      "files": ["standalone.js", "native.js"],
+      "minifiedGzip": 344418
+    }
+  }
+}

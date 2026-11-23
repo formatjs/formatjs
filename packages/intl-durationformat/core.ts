@@ -5,14 +5,25 @@ import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicod
 
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
+import {
+  setDataProperty,
+  TypeErrorConstructor,
+  RangeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {
+  getNumberFormatProvider,
+  invariant,
+} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/GetDurationUnitOptions.js'
-import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
+import {
+  PartitionDurationFormatPattern,
+  initializeDurationFormatProviders,
+} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
 import {
   ToTemporalDurationRecord,
   registerTemporalDurationNamespace,
@@ -35,24 +46,92 @@ const numberingSystemsByConstructor = new WeakMap<
   typeof Intl.NumberFormat,
   string[]
 >()
+const getNumberingSystems = numberingSystemsByConstructor.get.bind(
+  numberingSystemsByConstructor
+)
+const setNumberingSystems = numberingSystemsByConstructor.set.bind(
+  numberingSystemsByConstructor
+)
+const createObject = Object.create
+const providerApply = Reflect.apply
+const providerDescriptor = Object.getOwnPropertyDescriptor
+const providerPrototype = Object.getPrototypeOf
+const resolvedMethods = new WeakMap<
+  object,
+  typeof Intl.NumberFormat.prototype.resolvedOptions
+>()
+const getResolvedMethod = resolvedMethods.get.bind(resolvedMethods)
+const setResolvedMethod = resolvedMethods.set.bind(resolvedMethods)
+function numberFormatResolvedOptions(Constructor: typeof Intl.NumberFormat) {
+  let prototype = Constructor.prototype
+  while (prototype !== null) {
+    const cached = getResolvedMethod(prototype)
+    if (cached) return cached
+    const descriptor = providerDescriptor(prototype, 'resolvedOptions')
+    const value = descriptor && providerDescriptor(descriptor, 'value')
+    if (typeof value?.value === 'function') {
+      const method =
+        value.value as typeof Intl.NumberFormat.prototype.resolvedOptions
+      setResolvedMethod(prototype, method)
+      return method
+    }
+    prototype = providerPrototype(prototype)
+  }
+  return undefined
+}
+const initialNumberFormat = getNumberFormatProvider()
+if (typeof initialNumberFormat === 'function')
+  numberFormatResolvedOptions(initialNumberFormat)
+
+const NumberingSet = Set
+const numberingAdd = Set.prototype.add
+const numberingValues = Set.prototype.values
+const numberingNext = providerPrototype(new NumberingSet().values()).next
+function numberingUnion(
+  first: readonly string[],
+  second: readonly string[]
+): string[] {
+  const unique = new NumberingSet<string>()
+  for (let index = 0; index < first.length; index++)
+    providerApply(numberingAdd, unique, [first[index]])
+  for (let index = 0; index < second.length; index++)
+    providerApply(numberingAdd, unique, [second[index]])
+  const iterator = providerApply(numberingValues, unique, [])
+  const result: string[] = []
+  for (;;) {
+    const next = providerApply(
+      numberingNext,
+      iterator,
+      []
+    ) as IteratorResult<string>
+    if (next.done) return result
+    setDataProperty(result, `${result.length}`, next.value)
+  }
+}
+
 function supportedNumberingSystems(): string[] {
-  const NumberFormat = Intl.NumberFormat
-  let systems = numberingSystemsByConstructor.get(NumberFormat)
+  const NumberFormat = getNumberFormatProvider()
+  let systems = getNumberingSystems(NumberFormat)
   if (!systems) {
-    systems = numberingSystemNames.filter(numberingSystem => {
-      const options = Object.create(null)
+    systems = []
+    const resolvedOptions = numberFormatResolvedOptions(NumberFormat)
+    for (let index = 0; index < numberingSystemNames.length; index++) {
+      const numberingSystem = numberingSystemNames[index]
+      const options = createObject(null)
       options.numberingSystem = numberingSystem
       try {
-        return (
-          new NumberFormat('en', options).resolvedOptions().numberingSystem ===
-          numberingSystem
+        if (
+          resolvedOptions &&
+          providerApply(resolvedOptions, new NumberFormat('en', options), [])
+            .numberingSystem === numberingSystem
         )
+          setDataProperty(systems, `${systems.length}`, numberingSystem)
       } catch {
-        return false
+        // Missing provider locale data remains retryable on the next call.
       }
-    })
+    }
     // Missing NumberFormat locale data may be loaded before the next call.
-    if (systems.length) numberingSystemsByConstructor.set(NumberFormat, systems)
+    if (systems.length) setNumberingSystems(NumberFormat, systems)
   }
   return systems
 }
@@ -173,18 +252,16 @@ export class DurationFormat implements DurationFormatType {
     registerTemporalDurationNamespace(namespace)
   }
   constructor(locales?: string | string[], options?: DurationFormatOptions) {
-    // Ensure constructor is called with 'new' keyword
-    // test262/test/intl402/ListFormat/constructor/constructor/newtarget-undefined.js
-    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-    const newTarget =
-      this && this instanceof DurationFormat ? this.constructor : void 0
-    if (!newTarget) {
-      throw new TypeError("Intl.DurationFormat must be called with 'new'")
+    // ECMA-402 §13.1.1 steps1–2: retain runtime new.target; no public constructor Get.
+    if (!new.target) {
+      throw new TypeErrorConstructor(
+        "Intl.DurationFormat must be called with 'new'"
+      )
     }
     // Canonicalize the requested locales into a standard format
     const requestedLocales = CanonicalizeLocaleList(locales)
-    const opt: any = Object.create(null)
-    const opts = options === undefined ? Object.create(null) : ToObject(options)
+    const opt: any = createObject(null)
+    const opts = options === undefined ? createObject(null) : ToObject(options)
 
     // Get locale matching algorithm preference ('best fit' or 'lookup')
     const matcher = GetOption(
@@ -211,7 +288,9 @@ export class DurationFormat implements DurationFormatType {
       // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
       // https://tc39.es/ecma402/#sec-resolveoptions
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
-      throw RangeError(`Invalid numberingSystems: ${numberingSystem}`)
+      throw RangeErrorConstructor(
+        `Invalid numberingSystems: ${numberingSystem}`
+      )
     }
     opt.nu = numberingSystem
     opt.localeMatcher = matcher
@@ -247,7 +326,9 @@ export class DurationFormat implements DurationFormatType {
     // Process each duration unit (years through nanoseconds) to determine
     // its display style and when to show it (always/auto/never)
     let prevStyle = ''
-    TABLE_3.forEach(row => {
+    // ECMA-402 §13.1.1: Table3 is a private List.
+    for (let index = 0; index < TABLE_3.length; index++) {
+      const row = TABLE_3[index]
       const {
         styleSlot,
         displaySlot,
@@ -278,7 +359,7 @@ export class DurationFormat implements DurationFormatType {
       ) {
         prevStyle = unitOptions.style
       }
-    })
+    }
 
     // Get the number of fractional digits for sub-second precision (0-9)
     internalSlots.fractionalDigits = GetNumberOption(
@@ -288,6 +369,7 @@ export class DurationFormat implements DurationFormatType {
       9,
       undefined
     )
+    initializeDurationFormatProviders(this)
   }
   resolvedOptions(): ResolvedDurationFormatOptions {
     if (
@@ -324,13 +406,16 @@ export class DurationFormat implements DurationFormatType {
     }
     const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
-    const result = []
-    for (const {type, unit, value} of parts) {
+    const result: DurationFormatPart[] = []
+    // Proposal comparison §15.10.2 steps 7.d–e: CreateDataProperty, not Set.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.formatToParts
+    for (let index = 0; index < parts.length; index++) {
+      const {type, unit, value} = parts[index]
       const obj: DurationFormatPart = {type, value}
       if (unit) {
-        obj.unit = unit
+        setDataProperty(obj, 'unit', unit)
       }
-      result.push(obj)
+      setDataProperty(result, `${result.length}`, obj)
     }
     return result
   }
@@ -342,8 +427,10 @@ export class DurationFormat implements DurationFormatType {
     const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     let result = ''
-    for (const {value} of parts) {
-      result += value
+    // Temporal comparison §15.10.1 steps6–6.a: concatenate the private part List.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+    for (let index = 0; index < parts.length; index++) {
+      result += parts[index].value
     }
     return result
   }
@@ -378,7 +465,7 @@ export class DurationFormat implements DurationFormatType {
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L162-L169
         get nu() {
           const defaults = TIME_SEPARATORS.localeData[locale].nu
-          return [...new Set([...defaults, ...supportedNumberingSystems()])]
+          return numberingUnion(defaults, supportedNumberingSystems())
         },
         digitalFormat: {
           default: TIME_SEPARATORS.default,

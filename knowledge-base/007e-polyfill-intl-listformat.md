@@ -4,6 +4,9 @@
 
 ## Purpose
 
+Shared locale-pattern parsing follows ECMA-402 §9.2.15 with captured String
+operations and own private-list appends. The caller's interpolation loops retain their separate audit status.
+
 Polyfill for `Intl.ListFormat` — formats lists with locale-specific conjunctions, disjunctions, and unit separators across 700+ locales.
 
 ## Dependencies

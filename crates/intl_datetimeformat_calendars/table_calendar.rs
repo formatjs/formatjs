@@ -36,6 +36,7 @@ pub struct TableCalendar<'a> {
     id: TableCalendarId,
     data: Data<'a>,
 }
+// Proposal comparison §12.3.26 step 2: decode one digit of a packed lunisolar year index.
 fn digit(value: u8) -> Result<usize, Error> {
     Ok(match value {
         b'A'..=b'Z' => usize::from(value - b'A'),
@@ -46,6 +47,7 @@ fn digit(value: u8) -> Result<usize, Error> {
         _ => return Err(Error::InvalidDate),
     })
 }
+// Proposal comparison §12.3.26 step 2: read the encoded year pattern from the table.
 fn pattern(data: LunisolarData<'_>, index: usize) -> Result<u32, Error> {
     let bytes = data
         .years
@@ -60,10 +62,12 @@ fn pattern(data: LunisolarData<'_>, index: usize) -> Result<u32, Error> {
         .copied()
         .ok_or(Error::InvalidDate)
 }
+// Proposal comparison §3.3.16 step 3: count 29-day months and their extra days.
 fn year_length(packed: u32) -> i64 {
     (if packed >> 13 == 0 { 12 } else { 13 }) * 29 + i64::from((packed & 8191).count_ones())
 }
 impl<'a> TableCalendar<'a> {
+    // Proposal comparison §12.3.26 step 2: validate lunisolar year and month checkpoints.
     pub fn lunisolar(id: TableCalendarId, data: LunisolarData<'a>) -> Result<Self, Error> {
         if !matches!(id, TableCalendarId::Chinese | TableCalendarId::Dangi)
             || data.years.is_empty()
@@ -114,6 +118,7 @@ impl<'a> TableCalendar<'a> {
             data: Data::Lunisolar(data),
         })
     }
+    // Proposal comparison §12.3.26 step 2: validate the supplied Umm al-Qura table shape.
     pub fn umm_al_qura(data: UmmAlQuraData<'a>) -> Result<Self, Error> {
         if data.month_lengths.is_empty() || data.start_days.len() != data.month_lengths.len() + 1 {
             return Err(Error::InvalidDate);
@@ -136,10 +141,12 @@ impl<'a> TableCalendar<'a> {
             data: Data::UmmAlQura(data),
         })
     }
+    // Proposal comparison §3.3.4 and §3.3.5 step 3: check the day before reading era fields.
     pub fn era(self, epoch: i64) -> Result<Option<Era>, Error> {
         check_day(epoch)?;
         self.era_extended(epoch)
     }
+    // Proposal comparison §12.3.26 step 2: project era fields for the selected table.
     pub fn era_extended(self, epoch: i64) -> Result<Option<Era>, Error> {
         let date = self.from_epoch_day_extended(epoch)?;
         if self.id != TableCalendarId::IslamicUmmAlQura {
@@ -154,15 +161,18 @@ impl<'a> TableCalendar<'a> {
             },
         }))
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve an Umm al-Qura era year.
     pub fn year_from_era(self, era: &str, year: i32) -> Result<i32, Error> {
         if self.id != TableCalendarId::IslamicUmmAlQura {
             return Err(Error::InvalidEra);
         }
         Calendar::IslamicCivil.year_from_era(era, year)
     }
+    // Proposal comparison §3.3.3 step 3: expose the selected table calendar identity.
     pub fn id(self) -> TableCalendarId {
         self.id
     }
+    // Proposal comparison §12.3.26 step 2: check the year lies in the lunisolar dictionary span.
     fn index(self, year: i32) -> Result<usize, Error> {
         let Data::Lunisolar(data) = self.data else {
             return Err(Error::InvalidDate);
@@ -174,12 +184,14 @@ impl<'a> TableCalendar<'a> {
         }
         Ok(index)
     }
+    // Proposal comparison §12.3.26 step 2: fetch the validated lunisolar pattern for a year.
     fn packed(self, year: i32) -> Result<u32, Error> {
         let Data::Lunisolar(data) = self.data else {
             return Err(Error::InvalidDate);
         };
         pattern(data, self.index(year)?)
     }
+    // Proposal comparison §3.3.11 step 3: find the year start used for day-of-year.
     pub fn start_of_year(self, year: i32) -> Result<i64, Error> {
         check_year(i64::from(year))?;
         match self.data {
@@ -206,6 +218,7 @@ impl<'a> TableCalendar<'a> {
             }
         }
     }
+    // Proposal comparison §3.3.17 step 3: read the month count of a calendar year.
     pub fn months_in_year(self, year: i32) -> Result<u8, Error> {
         check_year(i64::from(year))?;
         Ok(match self.data {
@@ -219,6 +232,7 @@ impl<'a> TableCalendar<'a> {
             Data::UmmAlQura(_) => 12,
         })
     }
+    // Proposal comparison §3.3.15 step 3: read the table month length.
     pub fn days_in_month(self, year: i32, month: u8) -> Result<u8, Error> {
         if month == 0 || month > self.months_in_year(year)? {
             return Err(Error::InvalidDate);
@@ -235,6 +249,7 @@ impl<'a> TableCalendar<'a> {
         };
         Ok(29 + ((packed >> (month - 1)) & 1) as u8)
     }
+    // Proposal comparison §3.3.8 step 3: derive the month code from its ordinal and leap position.
     pub fn month_code(self, year: i32, month: u8) -> Result<MonthCode, Error> {
         if month == 0 || month > self.months_in_year(year)? {
             return Err(Error::InvalidDate);
@@ -248,6 +263,7 @@ impl<'a> TableCalendar<'a> {
             leap: leap > 0 && month == leap + 1,
         })
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve a calendar month code to its ordinal.
     pub fn month_from_code(
         self,
         year: i32,
@@ -278,6 +294,7 @@ impl<'a> TableCalendar<'a> {
             }
         }
     }
+    // Proposal comparison §12.3.12 steps 2–3: convert date fields and check the epoch-day limit.
     pub fn to_epoch_day(
         self,
         year: i32,
@@ -287,6 +304,7 @@ impl<'a> TableCalendar<'a> {
     ) -> Result<i64, Error> {
         check_day(self.to_epoch_day_raw(year, month, day, overflow)?)
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve the month code before converting the date.
     pub fn to_epoch_day_code(
         self,
         year: i32,
@@ -301,9 +319,11 @@ impl<'a> TableCalendar<'a> {
             overflow,
         )
     }
+    // Proposal comparison §12.3.26 step 2: project a checked epoch day through the table.
     pub fn from_epoch_day(self, epoch: i64) -> Result<Date, Error> {
         self.from_epoch_day_raw(check_day(epoch)?)
     }
+    // Proposal comparison §12.3.7 step 2.a: get the serial month at the start of the year.
     pub fn months_before_year(self, year: i32) -> Result<i64, Error> {
         match self.data {
             Data::UmmAlQura(_) => {
@@ -321,14 +341,17 @@ impl<'a> TableCalendar<'a> {
             }
         }
     }
+    // Proposal comparison §12.3.7 steps 2.a, 3: apply table calendar addition and check the result.
     pub fn add(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
         check_day(epoch)?;
         check_day(NumericCalendar::add_raw(self, epoch, duration, overflow)?)
     }
     /// Internal reference dates and rounding coordinates within ±110000000 epoch days.
+    // Proposal comparison §12.3.26 step 2: project an extended reference day.
     pub fn from_epoch_day_extended(self, epoch: i64) -> Result<Date, Error> {
         self.from_epoch_day_raw(epoch)
     }
+    // Proposal comparison §12.3.13 step 3: convert a reference date in the extended range.
     pub fn to_epoch_day_extended(
         self,
         year: i32,
@@ -338,6 +361,7 @@ impl<'a> TableCalendar<'a> {
     ) -> Result<i64, Error> {
         check_extended_day(self.to_epoch_day_raw(year, month, day, overflow)?)
     }
+    // Proposal comparison §9.5.8 step 12: add a duration to the prepared reference day.
     pub fn add_extended(
         self,
         epoch: i64,
@@ -346,16 +370,19 @@ impl<'a> TableCalendar<'a> {
     ) -> Result<i64, Error> {
         check_extended_day(NumericCalendar::add_raw(self, epoch, duration, overflow)?)
     }
+    // Proposal comparison §12.3.9 step 4: check input days before non-ISO difference.
     pub fn until(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         check_day(one)?;
         check_day(two)?;
         self.until_raw(one, two, largest)
     }
+    // Proposal comparison §12.3.9 step 4: route date difference to shared calendar arithmetic.
     pub fn until_raw(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         NumericCalendar::until_raw(self, one, two, largest)
     }
 }
 impl NumericCalendar for TableCalendar<'_> {
+    // Proposal comparison §12.3.26 step 2: recover year, month, day and month code.
     fn from_epoch_day_raw(self, epoch: i64) -> Result<Date, Error> {
         if !(-110_000_000..=110_000_000).contains(&epoch) {
             return Err(Error::OutOfRange);
@@ -370,13 +397,23 @@ impl NumericCalendar for TableCalendar<'_> {
             }
             Data::UmmAlQura(_) => Calendar::IslamicCivil.from_epoch_day_raw(epoch)?.year,
         };
-        while self.start_of_year(year)? > epoch {
-            year -= 1
+        let mut start = self.start_of_year(year)?;
+        while start > epoch {
+            year -= 1;
+            start = self.start_of_year(year)?;
         }
-        while self.start_of_year(year + 1)? <= epoch {
-            year += 1
+        loop {
+            let next = match self.data {
+                Data::Lunisolar(_) => start + year_length(self.packed(year)?),
+                Data::UmmAlQura(_) => self.start_of_year(year + 1)?,
+            };
+            if next > epoch {
+                break;
+            }
+            year += 1;
+            start = next;
         }
-        let mut remaining = epoch - self.start_of_year(year)?;
+        let mut remaining = epoch - start;
         let mut month = 1;
         while remaining >= i64::from(self.days_in_month(year, month)?) {
             remaining -= i64::from(self.days_in_month(year, month)?);
@@ -389,6 +426,7 @@ impl NumericCalendar for TableCalendar<'_> {
             month_code: self.month_code(year, month)?,
         })
     }
+    // Proposal comparison §12.3.22 step 2: regulate calendar fields and accumulate epoch days.
     fn to_epoch_day_raw(
         self,
         year: i32,
@@ -409,12 +447,15 @@ impl NumericCalendar for TableCalendar<'_> {
         }
         Ok(epoch)
     }
+    // Proposal comparison §12.3.31 step 2.a: share the table month-code mapping with arithmetic.
     fn month_from_code(self, year: i32, code: MonthCode, overflow: Overflow) -> Result<u8, Error> {
         TableCalendar::month_from_code(self, year, code, overflow)
     }
+    // Proposal comparison §12.3.7 step 2.a: supply the table month prefix to shared arithmetic.
     fn months_before_year(self, year: i32) -> Result<i64, Error> {
         TableCalendar::months_before_year(self, year)
     }
+    // Proposal comparison §12.3.7 step 2.a: convert a serial month back to year and ordinal.
     fn year_month(self, serial: i64) -> Result<(i32, u8), Error> {
         match self.data {
             Data::UmmAlQura(_) => Ok((

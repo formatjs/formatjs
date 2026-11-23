@@ -6,6 +6,7 @@ import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {
   createTimeZone,
+  epochNanosecondsToISO,
   isoToEpochNanoseconds,
 } from '#packages/temporal/kernel.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
@@ -80,6 +81,102 @@ it('skips abbreviation-only changes and resolves multiple nearby gaps', () => {
   ).toBe(9000_000_000_000n)
 })
 
+it('resolves gaps from the nearest reachable local boundaries', () => {
+  const minute = 60_000_000_000n
+  const second = 1_000_000_000n
+  const limit = 8_640_000_000_000
+  for (const [data, local, earlier, later, origins] of [
+    [
+      [
+        [-Infinity, '', 0, false],
+        [0, '', 14_400, false],
+        [3600, '', 7200, false],
+      ],
+      90n,
+      -30n,
+      90n,
+      [0, -limit + 3600, limit - 7200],
+    ],
+    [
+      [
+        [-Infinity, '', -7200, false],
+        [-3600, '', -14_400, false],
+        [0, '', 0, false],
+      ],
+      -90n,
+      -90n,
+      30n,
+      [0],
+    ],
+    [
+      [
+        [-Infinity, '', 0, false],
+        [0, '', 14_400, false],
+        [21_600, '', 0, false],
+      ],
+      180n,
+      -60n,
+      420n,
+      [0],
+    ],
+  ] satisfies [UnpackedTimeZoneData, bigint, bigint, bigint, number[]][]) {
+    for (const origin of origins) {
+      const zone = createTimeZone(
+        data.map(([at, name, offset, dst]) => [origin + at, name, offset, dst])
+      )
+      const originNs = BigInt(origin) * second
+      const fields = epochNanosecondsToISO(originNs + local * minute)
+      const label = `at ${local} minutes from ${origin}`
+      expect(() => zone.resolve(fields, 'reject')).toThrow(RangeError)
+      expect(zone.resolve(fields, 'earlier'), `earlier ${label}`).toBe(
+        originNs + earlier * minute
+      )
+      expect(zone.resolve(fields, 'later'), `later ${label}`).toBe(
+        originNs + later * minute
+      )
+      expect(zone.resolve(fields), `compatible ${label}`).toBe(
+        originNs + later * minute
+      )
+    }
+  }
+})
+
+it('validates matching compact zone candidates at both Instant limits', () => {
+  const limitSeconds = 8_640_000_000_000
+  const second = 1_000_000_000n
+  const upper: UnpackedTimeZoneData = [
+    [-Infinity, '', 7200, false],
+    [limitSeconds, '', 7200, false],
+  ]
+  upper.future = {standardOffset: 0}
+  const unrelated: UnpackedTimeZoneData = [
+    [-Infinity, '', 0, false],
+    [0, '', 7200, false],
+  ]
+  for (const [data, localSeconds, validSeconds] of [
+    [
+      [
+        [-Infinity, '', 7200, false],
+        [-limitSeconds, '', 0, false],
+      ],
+      -limitSeconds + 1800,
+      -limitSeconds + 1800,
+    ],
+    [upper, limitSeconds + 1800, limitSeconds - 5400],
+  ] satisfies [UnpackedTimeZoneData, number, number][]) {
+    const fields = epochNanosecondsToISO(BigInt(localSeconds) * second)
+    const mixed = createTimeZone(data)
+    expect(() => mixed.possibleInstants(fields)).toThrow(RangeError)
+    const control = createTimeZone(unrelated)
+    const valid = BigInt(validSeconds) * second
+    expect(control.possibleInstants(fields)).toEqual([valid])
+    for (const mode of ['earlier', 'later', 'compatible', 'reject'] as const) {
+      expect(() => mixed.resolve(fields, mode)).toThrow(RangeError)
+      expect(control.resolve(fields, mode)).toBe(valid)
+    }
+  }
+})
+
 it('finds leap-only recurring changes across a non-leap century', () => {
   const data: UnpackedTimeZoneData = [[-Infinity, '', 3600, true]]
   data.future = {
@@ -120,4 +217,46 @@ it('keeps timezone operations independent of user array iteration', () => {
     Array.prototype[Symbol.iterator] = original
   }
   expect(result).toBe('P115DT10H')
+})
+
+it('keeps cold offset collection and fold candidates private', () => {
+  const fields = {year: 1970, month: 1, day: 1, minute: 30}
+  const data: UnpackedTimeZoneData = [
+    [-Infinity, '', 3600, false],
+    [1000, '', 0, false],
+  ]
+  const profiles: [object, PropertyKey][] = [
+    [Set.prototype, 'add'],
+    [Set.prototype, Symbol.iterator],
+    [Array.prototype, 'push'],
+    [Array.prototype, 'sort'],
+    [Array.prototype, Symbol.iterator],
+  ]
+  for (let index = 0; index < profiles.length; index++) {
+    const [target, key] = profiles[index]
+    const original = Object.getOwnPropertyDescriptor(target, key)!
+    let calls = 0
+    let actual: bigint[] | undefined
+    let error: unknown
+    try {
+      Object.defineProperty(target, key, {
+        configurable: true,
+        writable: true,
+        value() {
+          calls++
+          throw new Error('Observable kernel collection')
+        },
+      })
+      try {
+        actual = createTimeZone(data).possibleInstants(fields)
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      Object.defineProperty(target, key, original)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(actual).toEqual([-1_800_000_000_000n, 1_800_000_000_000n])
+  }
 })

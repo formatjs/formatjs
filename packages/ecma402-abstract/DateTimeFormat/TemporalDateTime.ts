@@ -1,10 +1,10 @@
-import type Decimal from '@formatjs/bigdecimal'
-import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
 import {
   DayFromYear,
   DaysInYear,
 } from '#packages/ecma262-abstract/DateOperations.js'
 
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {bigIntFrom, numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import type {TemporalDateTimeKind} from '#packages/ecma402-abstract/types/date-time.js'
 
 export interface TemporalDateTimeValue {
@@ -60,86 +60,106 @@ const temporal = (
   globalThis as typeof globalThis & {Temporal?: TemporalDateTimeNamespace}
 ).Temporal
 if (temporal) registerTemporalDateTimeNamespace(temporal)
-const stringOptions = Object.assign(Object.create(null), {
-  calendarName: 'always',
-})
+const stringOptions = {__proto__: null, calendarName: 'always'}
 const dateGetTime = Date.prototype.getTime
+const apply = Reflect.apply
+const stringIndexOf = Function.prototype.call.bind(
+  String.prototype.indexOf
+) as (value: string, search: string) => number
+const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 
-// Temporal §15.6.11 preserves Temporal brands; other inputs use ToNumber.
+// Temporal comparison §15.6.11 steps1–2: retain brands; other inputs use ToNumber.
+// Numeric conversion delegates to unary + (ECMA-262 §7.1.4 and §13.5.4.1).
 // Normalizing branded values to records here is an internal implementation choice.
 // https://tc39.es/proposal-temporal/#sec-todatetimeformattable
 export function ToDateTimeFormattable(
   value: unknown
-): Decimal | TemporalDateTimeValue {
+): number | TemporalDateTimeValue {
   if (value !== null && typeof value === 'object' && readers.length) {
     let isDate = false
     try {
-      dateGetTime.call(value)
+      apply(dateGetTime, value, [])
       isDate = true
     } catch {
       // A non-Date may still carry a Temporal brand.
     }
-    if (isDate) return ToNumber(value)
-    for (const {kind, read} of readers) {
+    if (isDate) return +(value as unknown as number)
+    // Temporal comparison §15.6.11 step1: private brand probes add no iterator Get.
+    // https://tc39.es/proposal-temporal/#sec-todatetimeformattable
+    for (let index = 0; index < readers.length; index++) {
+      const {kind, read} = readers[index]
       let result: string | bigint
       try {
-        result = read.call(value, stringOptions)
+        result = apply(read, value, [stringOptions])
       } catch {
         continue
       }
+      // Comparison §15.6.20 step2: preserve the exact Instant slot value.
       if (kind === 'Instant' || kind === 'ZonedDateTime') {
         return {
           kind,
-          epochNanoseconds: BigInt(result),
+          epochNanoseconds: bigIntFrom(result),
         }
       }
-      // Internal slot bridge: scan captured intrinsic output without touching RegExp statics.
-      // calendarName=always preserves reference dates (Temporal §9.5.6 / §10.5.3, step 4).
+      // Comparison §15.6.11 step1: private brand serialization adds no user hooks.
+      // Comparison §§9.5.6/10.5.3 step4: always preserves ISO reference dates.
       // https://tc39.es/proposal-temporal/#sec-temporal-temporalyearmonthtostring
       // https://tc39.es/proposal-temporal/#sec-temporal-temporalmonthdaytostring
-      const text = String(result)
-      const calendarStart = text.indexOf('[u-ca=')
+      const text = ToString(result)
+      const calendarStart = stringIndexOf(text, '[u-ca=')
       const calendar =
-        calendarStart < 0 ? undefined : text.slice(calendarStart + 6, -1)
+        calendarStart < 0 ? undefined : stringSlice(text, calendarStart + 6, -1)
       const yearEnd = text[0] === '+' || text[0] === '-' ? 7 : 4
-      // Temporal §15.6.18, step 1 anchors PlainTime to 1970-01-01.
+      // Comparison §15.6.18 step1: anchor PlainTime to 1970-01-01.
       // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaltime
-      let epochNanoseconds = BigInt(0)
+      let epochNanoseconds = bigIntFrom(0)
+      // Comparison §14.6.1 steps1–5: exact ISO day and clock composition.
+      // https://tc39.es/proposal-temporal/#sec-getutcepochnanoseconds
       if (kind !== 'PlainTime') {
-        const year = Number(text.slice(0, yearEnd))
-        const month = Number(text.slice(yearEnd + 1, yearEnd + 3))
-        const day = Number(text.slice(yearEnd + 4, yearEnd + 6))
+        const year = numberFrom(stringSlice(text, 0, yearEnd))
+        const month = numberFrom(stringSlice(text, yearEnd + 1, yearEnd + 3))
+        const day = numberFrom(stringSlice(text, yearEnd + 4, yearEnd + 6))
         const days =
           DayFromYear(year) +
           monthStarts[month - 1] +
           day -
           1 +
           (month > 2 && DaysInYear(year) === 366 ? 1 : 0)
-        epochNanoseconds = BigInt(days) * BigInt(86400000000000)
+        epochNanoseconds = bigIntFrom(days) * bigIntFrom(86_400_000_000_000)
       }
       if (kind === 'PlainTime' || kind === 'PlainDateTime') {
         const timeStart = kind === 'PlainTime' ? 0 : yearEnd + 7
-        const hour = Number(text.slice(timeStart, timeStart + 2))
-        const minute = Number(text.slice(timeStart + 3, timeStart + 5))
-        const second = Number(text.slice(timeStart + 6, timeStart + 8))
+        const hour = numberFrom(stringSlice(text, timeStart, timeStart + 2))
+        const minute = numberFrom(
+          stringSlice(text, timeStart + 3, timeStart + 5)
+        )
+        const second = numberFrom(
+          stringSlice(text, timeStart + 6, timeStart + 8)
+        )
         const fraction =
           text[timeStart + 8] === '.'
-            ? text.slice(
+            ? stringSlice(
+                text,
                 timeStart + 9,
                 calendarStart < 0 ? undefined : calendarStart
               )
             : ''
         epochNanoseconds +=
-          BigInt(hour * 3600 + minute * 60 + second) * BigInt(1000000000) +
-          BigInt((fraction + '000000000').slice(0, 9))
+          bigIntFrom(hour * 3600 + minute * 60 + second) *
+            bigIntFrom(1_000_000_000) +
+          bigIntFrom(stringSlice(fraction + '000000000', 0, 9))
       } else {
-        // Temporal §15.6.15–17, step 2 combines date-only values with noon.
+        // Comparison §§15.6.15–15.6.17 step2: combine date-only values with noon.
         // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaldate
-        epochNanoseconds += BigInt(43200000000000)
+        epochNanoseconds += bigIntFrom(43_200_000_000_000)
       }
       return {kind, calendar, epochNanoseconds}
     }
   }
-  return ToNumber(value)
+  return +(value as number)
 }

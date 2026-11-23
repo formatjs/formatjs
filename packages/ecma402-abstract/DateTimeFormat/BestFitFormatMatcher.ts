@@ -1,4 +1,9 @@
 import {
+  arrayIndexOf,
+  mathMin,
+  mathMax,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {
   type Formats,
   type TABLE_6,
 } from '#packages/ecma402-abstract/types/date-time.js'
@@ -20,6 +25,9 @@ function isNumericType(
 ): boolean {
   return t === 'numeric' || t === '2-digit'
 }
+
+const formatListIsArray = Array.isArray
+const formatRecordKeys = Object.keys
 
 /**
  * Credit: https://github.com/andyearnshaw/Intl.js/blob/0958dc1ad8153f1056653ea22b8208f0df289a4e/src/12.datetimeformat.js#L611
@@ -43,7 +51,8 @@ export function bestFitFormatMatcherScore(
       score -= additionPenalty
     }
   }
-  for (const prop of DATE_TIME_PROPS) {
+  for (let propIndex = 0; propIndex < DATE_TIME_PROPS.length; propIndex++) {
+    const prop = DATE_TIME_PROPS[propIndex]
     const optionsProp = options[prop as TABLE_6]
     const formatProp = format[prop as TABLE_6]
     if (optionsProp === undefined && formatProp !== undefined) {
@@ -59,11 +68,11 @@ export function bestFitFormatMatcherScore(
         score -= differentNumericTypePenalty
       } else {
         const values = ['2-digit', 'numeric', 'narrow', 'short', 'long']
-        const optionsPropIndex = values.indexOf(optionsProp as string)
-        const formatPropIndex = values.indexOf(formatProp as string)
-        const delta = Math.max(
+        const optionsPropIndex = arrayIndexOf(values, optionsProp as string)
+        const formatPropIndex = arrayIndexOf(values, formatProp as string)
+        const delta = mathMax(
           -2,
-          Math.min(formatPropIndex - optionsPropIndex, 2)
+          mathMin(formatPropIndex - optionsPropIndex, 2)
         )
         if (delta === 2) {
           score -= longMorePenalty
@@ -91,10 +100,13 @@ export function BestFitFormatMatcher(
   options: Intl.DateTimeFormatOptions,
   formats: Formats[]
 ): Formats {
+  // ECMA-402 §11.5.3: preserve the implementation-defined matching score/adjustment.
+  // https://tc39.es/ecma402/#sec-bestfitformatmatcher
   let bestScore = -Infinity
   let bestFormat = formats[0]
-  invariant(Array.isArray(formats), 'formats should be a list of things')
-  for (const format of formats) {
+  invariant(formatListIsArray(formats), 'formats should be a list of things')
+  for (let formatIndex = 0; formatIndex < formats.length; formatIndex++) {
+    const format = formats[formatIndex]
     const score = bestFitFormatMatcherScore(options, format)
     if (
       score > bestScore ||
@@ -113,13 +125,17 @@ export function BestFitFormatMatcher(
   // Reuse registered pattern fields so matching preserves RegExp statics.
   // https://tc39.es/ecma402/#sec-bestfitformatmatcher
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1310-L1315
-  const patternFormat = Object.create(null) as Formats
-  patternFormat.rawPattern = bestFormat.rawPattern
-  Object.assign(patternFormat, getDateTimePatternFields(bestFormat))
+  const patternFormat = {
+    __proto__: null,
+    rawPattern: bestFormat.rawPattern,
+    ...getDateTimePatternFields(bestFormat),
+  } as Partial<Formats>
 
   // Kinda following https://github.com/unicode-org/icu/blob/dd50e38f459d84e9bf1b0c618be8483d318458ad/icu4j/main/classes/core/src/com/ibm/icu/text/DateTimePatternGenerator.java
   // Method adjustFieldTypes
-  for (const prop in skeletonFormat) {
+  const props = formatRecordKeys(skeletonFormat)
+  for (let propIndex = 0; propIndex < props.length; propIndex++) {
+    const prop = props[propIndex]
     const skeletonValue = skeletonFormat[prop as TABLE_6]
     const patternValue = patternFormat[prop as TABLE_6]
     const requestedValue = options[prop as TABLE_6]
@@ -163,5 +179,5 @@ export function BestFitFormatMatcher(
   patternFormat.skeleton = skeletonFormat.skeleton
   patternFormat.rangePatterns = skeletonFormat.rangePatterns
   patternFormat.rangePatterns12 = skeletonFormat.rangePatterns12
-  return patternFormat
+  return patternFormat as Formats
 }

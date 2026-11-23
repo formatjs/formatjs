@@ -1,0 +1,53 @@
+# Shared TS/Rust regressions. Sources and licenses in README.md.
+# duration-string: field, value, smallest unit, rounding mode, expected string
+duration-string	nanoseconds	1152921504606846976	microsecond	ceil	PT1152921504.606847S
+duration-string	nanoseconds	-1152921504606846976	microsecond	floor	-PT1152921504.606847S
+duration-string	milliseconds	1152921504606846976	second	ceil	PT1152921504606847S
+duration-string	microseconds	1152921504606846976	millisecond	ceil	PT1152921504606.847S
+# zoned-until / zoned-since: start, end, smallest unit, rounding mode, expected duration
+zoned-until	2024-12-01T01:30[America/New_York]	2024-11-03T01:30-05:00[America/New_York]	nanosecond	trunc	-P27DT24H
+zoned-since	2024-12-01T01:30[America/New_York]	2024-11-03T01:30-05:00[America/New_York]	nanosecond	trunc	P27DT24H
+zoned-until	2024-11-03T01:30-05:00[America/New_York]	2024-11-04T00:36[America/New_York]	minute	trunc	PT24H6M
+zoned-until	2024-11-02T01:30[America/New_York]	2024-11-03T01:12-05:00[America/New_York]	minute	trunc	P1DT42M
+zoned-until	2024-10-26T01:46+02:00[Antarctica/Troll]	2024-10-27T01:45+00:00[Antarctica/Troll]	hour	floor	P1DT1H
+# epoch-milliseconds: epoch nanoseconds, expected epoch milliseconds (floor)
+epoch-milliseconds	999999999999999999	999999999999
+epoch-milliseconds	1000000000000000001	1000000000000
+epoch-milliseconds	-1000000000000000001	-1000000000001
+epoch-milliseconds	-999999999999999999	-1000000000000
+# instant-parse: RFC 9557 string, expected epoch nanoseconds
+instant-parse	19700101t000000+010203,456789123[America/New_York][example-tag=alpha-beta]	-3723456789123
+instant-parse	1970-01-01T00:00:00,000000001-00:00:00.000000001[!UTC][u-ca=iso8601]	2
+# zoned-next-transition: start, expected next transition epoch nanoseconds
+zoned-next-transition	2023-03-25T23:00:00-02:00[America/Godthab]	1711846800000000000
+zoned-next-transition	2015-03-08T03:00:00-04:00[America/Grand_Turk]	1541311200000000000
+zoned-next-transition	2006-04-02T03:00:00-05:00[America/Resolute]	1194159600000000000
+zoned-next-transition	2023-10-29T00:00:00-01:00[America/Scoresbysund]	1729990800000000000
+zoned-next-transition	1996-01-01T02:00:00+01:00[Europe/Lisbon]	846378000000000000
+zoned-next-transition	2011-03-13T01:01:00-03:00[America/Goose_Bay]	1320555600000000000
+zoned-next-transition	2011-03-13T02:59:59-03:00[America/Goose_Bay]	1320555600000000000
+zoned-next-transition	2011-03-13T01:01:00-02:30[America/St_Johns]	1320553800000000000
+zoned-next-transition	2007-03-11T03:00:00-05:00[America/Indiana/Petersburg]	1205046000000000000
+zoned-next-transition	2007-11-04T00:59:59-05:00[America/Indiana/Petersburg]	1205046000000000000
+zoned-next-transition	2007-03-11T03:00:00-05:00[America/Indiana/Vincennes]	1205046000000000000
+zoned-next-transition	2010-03-14T03:00:00-06:00[America/North_Dakota/Beulah]	1300003200000000000
+zoned-next-transition	2022-03-13T03:00:00-06:00[America/Ojinaga]	1678608000000000000
+zoned-next-transition	2009-10-04T03:00:00+11:00[Antarctica/Macquarie]	1301760000000000000
+zoned-next-transition	1998-03-29T01:00:00+03:00[Asia/Nicosia]	909277200000000000
+zoned-next-transition	1996-10-26T23:00:00+02:00[Europe/Bucharest]	859683600000000000
+zoned-next-transition	1996-10-26T23:00:00+02:00[Europe/Chisinau]	859680000000000000
+zoned-next-transition	1996-03-31T03:00:00+03:00[Europe/Kiev]	846378000000000000
+zoned-next-transition	1996-10-26T23:00:00+02:00[Europe/Sofia]	859683600000000000
+zoned-next-transition	1999-03-28T03:00:00+02:00[Europe/Vilnius]	1048986000000000000
+zoned-next-transition	2015-10-04T01:30:00+11:00[Pacific/Norfolk]	1570287600000000000
+# zoned-from-local: local date-time, time zone, expected zoned string
+zoned-from-local	2026-03-07T12:00	America/New_York	2026-03-07T12:00:00-05:00[America/New_York]
+zoned-from-local	2025-10-28T12:00	America/New_York	2025-10-28T12:00:00-04:00[America/New_York]
+zoned-from-local	2026-03-22T12:00	Europe/London	2026-03-22T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-23T12:00	Europe/London	2026-03-23T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-24T12:00	Europe/London	2026-03-24T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-25T12:00	Europe/London	2026-03-25T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-26T12:00	Europe/London	2026-03-26T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-27T12:00	Europe/London	2026-03-27T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-28T12:00	Europe/London	2026-03-28T12:00:00+00:00[Europe/London]
+zoned-from-local	2026-03-29T12:00	Europe/London	2026-03-29T12:00:00+01:00[Europe/London]

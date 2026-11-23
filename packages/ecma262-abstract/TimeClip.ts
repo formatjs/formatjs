@@ -1,38 +1,16 @@
-import {Decimal} from '@formatjs/bigdecimal'
-const ZERO = new Decimal(0)
-import {ToNumber} from '#packages/ecma262-abstract/ToNumber.js'
+import {
+  mathAbs,
+  mathTrunc,
+  numberIsFinite,
+} from '#packages/ecma262-abstract/intrinsics.js'
 
-function ToInteger(n: any): Decimal {
-  const number = ToNumber(n)
-  if (number.isNaN() || number.isZero()) {
-    return ZERO
-  }
-  if (!number.isFinite()) {
-    return number
-  }
-  let integer = number.abs().floor()
-  if (number.isNegative()) {
-    integer = integer.negated()
-  }
-  return integer.isZero() ? ZERO : integer
-}
-
-/**
- * https://tc39.es/ecma262/#sec-timeclip
- */
-export function TimeClip(time: Decimal): Decimal {
-  if (!time.isFinite()) {
-    return new Decimal(NaN)
-  }
-  // ECMA-262 §21.4.1.31, step 2: the bound is exactly 8.64 × 10^15.
-  // Multiplying the binary Number 8.64 by 1e15 rounds one millisecond too high.
-  // https://tc39.es/ecma262/#sec-timeclip
-  // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34739
-  if (time.abs().greaterThan(8_640_000_000_000_000)) {
-    return new Decimal(NaN)
-  }
-  // ECMA-262 §21.4.1.31, step 3: truncate finite timestamps toward zero.
-  // https://tc39.es/ecma262/#sec-timeclip
-  // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34738-L34740
-  return ToInteger(time)
+// ECMA-262 §21.4.1.31 TimeClip: input is already a Number.
+// https://tc39.es/ecma262/#sec-timeclip
+export function TimeClip(time: number): number {
+  // Step 1: non-finite inputs represent no instant.
+  if (!numberIsFinite(time)) return NaN
+  // Step 2: exact inclusive bound; 8.64 * 1e15 rounds one millisecond too high.
+  if (mathAbs(time) > 8_640_000_000_000_000) return NaN
+  // Step 3: ToIntegerOrInfinity truncates and maps both zero signs to +0.
+  return mathTrunc(time) || 0
 }

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/temporal",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "private": false,
   "description": "Temporal implementation",
   "homepage": "https://github.com/formatjs/formatjs#readme",
@@ -19,9 +19,6 @@
     "./polyfill-force.js": "./polyfill-force.js",
     "./polyfill.js": "./polyfill.js",
     "./should-polyfill.js": "./should-polyfill.js",
-    "./standalone.js": "./standalone.js",
-    "./temporal-backend.wasm": "./temporal-backend.wasm",
-    "./wasm-native.js": "./wasm-native.js",
-    "./wasm.js": "./wasm.js"
+    "./standalone.js": "./standalone.js"
   }
 }

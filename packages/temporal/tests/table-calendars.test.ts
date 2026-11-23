@@ -6,7 +6,10 @@ import {
   calendarFromEpochDayRaw,
   calendarDateUntilRaw,
 } from '#packages/temporal/calendar.js'
-import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
+import {
+  checkPublicCalendarOracle,
+  checkUmmAlQuraJoins,
+} from '#packages/temporal/tests/public-calendar-oracle.js'
 
 it('matches independent ICU, HKO and KASI fields, arithmetic and relative totals', () => {
   const file = runfiles.resolve(
@@ -114,4 +117,10 @@ it('retains full public ranges and internal rounding coordinates for table calen
       calendarDateUntilRaw(calendar, -110000000, 110000000, 'year').years
     ).toBeGreaterThan(600000)
   }
+})
+
+it('preserves both shipped Umm al-Qura table and civil fallback joins', () => {
+  checkUmmAlQuraJoins(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
 })

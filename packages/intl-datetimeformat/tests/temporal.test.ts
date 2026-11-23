@@ -1,3 +1,4 @@
+import {ToDateTimeFormattable} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import {runInNewContext} from 'node:vm'
@@ -10,6 +11,54 @@ DateTimeFormat.__addLocaleData(en as any)
 function formatter(options: Intl.DateTimeFormatOptions = {}) {
   return new DateTimeFormat('en', {timeZone: 'UTC', ...options}) as any
 }
+
+test.each([
+  ['get', 'best fit'],
+  ['get', 'lookup'],
+  ['set', 'best fit'],
+  ['set', 'lookup'],
+] as const)(
+  'formats branded Temporal inputs without WeakMap.prototype.%s (%s)',
+  (method, localeMatcher) => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      localeMatcher,
+    } as const
+    for (const warm of [false, true]) {
+      const dtf = formatter(options)
+      if (warm) dtf.formatToParts(value)
+      const original = WeakMap.prototype[method]
+      let actual: string[] | undefined, error: unknown
+      try {
+        WeakMap.prototype[method] = () => {
+          throw new Error(`Mutable WeakMap.${method}`)
+        }
+        actual = [
+          dtf.format(value),
+          dtf
+            .formatToParts(value)
+            .map((part: any) => part.value)
+            .join(''),
+          dtf.formatRange(value, value),
+          dtf
+            .formatRangeToParts(value, value)
+            .map((part: any) => part.value)
+            .join(''),
+          formatter(options).format(value),
+        ]
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(WeakMap.prototype, method, {value: original})
+      }
+      expect(error, `warm=${warm}: ${(error as Error)?.stack}`).toBeUndefined()
+      expect(actual).toEqual(Array(5).fill('01/02/2024'))
+    }
+  }
+)
 
 test('plain values ignore timezone while instants use it', () => {
   const dtf = formatter({
@@ -206,6 +255,40 @@ test('nanosecond endpoints retain the preceding millisecond at Date limits', () 
   expect(dtf.format(new Temporal.Instant(-1n))).not.toBe(dtf.format(-0.9))
 })
 
+test.each(['Number', 'isSafeInteger'] as const)(
+  'formats Temporal instants without mutable %s hooks',
+  hook => {
+    const value = new Temporal.Instant(-1n)
+    const dtf = formatter({second: '2-digit', fractionalSecondDigits: 3})
+    const render = () => [
+      dtf.format(value),
+      dtf.formatToParts(value),
+      dtf.formatRange(value, value),
+      dtf.formatRangeToParts(value, value),
+    ]
+    const expected = render()
+    const owner = hook === 'Number' ? globalThis : Number
+    const descriptor = Object.getOwnPropertyDescriptor(owner, hook)!
+    const define = Object.defineProperty
+    let actual: unknown, error: unknown
+    try {
+      define(owner, hook, {
+        ...descriptor,
+        value: () => {
+          throw new Error(`Mutable ${hook}`)
+        },
+      })
+      actual = render()
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, hook, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toEqual(expected)
+  }
+)
+
 test.each([1, 2, 3] as const)(
   'fractional seconds truncate at width %i across the epoch',
   digits => {
@@ -311,3 +394,282 @@ test('intrinsic ISO parsing retains signed years and fractional seconds', () => 
       )?.value
   ).toBe('123')
 })
+
+test.each(['String', 'BigInt', 'Number', 'indexOf', 'slice'] as const)(
+  'formats captured Temporal serialization without mutable %s',
+  hook => {
+    const values = [
+      new Temporal.PlainDate(1, 2, 3),
+      new Temporal.PlainYearMonth(2020, 2, 'gregory'),
+      new Temporal.PlainMonthDay(2, 3, 'gregory'),
+      new Temporal.PlainTime(12, 34, 56, 123, 456, 789),
+      new Temporal.PlainDateTime(-1, 2, 3, 12, 34, 56, 123, 456, 789),
+      new Temporal.Instant(-1n),
+    ]
+    const dtf = formatter({hourCycle: 'h23'})
+    const render = () => values.map(value => dtf.formatToParts(value))
+    // Warm renderer dependencies before exercising the captured brand bridge.
+    const expected = render()
+    const owner =
+      hook === 'indexOf' || hook === 'slice' ? String.prototype : globalThis
+    const descriptor = Object.getOwnPropertyDescriptor(owner, hook)!
+    const define = Object.defineProperty
+    let actual: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(owner, hook, {
+        ...descriptor,
+        value: () => {
+          calls++
+          throw new Error('Mutable Temporal serialization')
+        },
+      })
+      actual = render()
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, hook, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(calls).toBe(0)
+    expect(actual).toEqual(expected)
+  }
+)
+
+test.each(['iterator', 'call'] as const)(
+  'reads six native Temporal brands without private %s lookup',
+  hook => {
+    const values = [
+      new Temporal.PlainDate(1970, 1, 1),
+      new Temporal.PlainYearMonth(1970, 1, 'gregory'),
+      new Temporal.PlainMonthDay(1, 1, 'gregory'),
+      new Temporal.PlainTime(12, 34, 56, 123, 456, 789),
+      new Temporal.PlainDateTime(1970, 1, 1, 12, 34, 56, 123, 456, 789),
+      new Temporal.Instant(-1n),
+    ]
+    const expected = [
+      {
+        kind: 'PlainDate',
+        calendar: 'iso8601',
+        epochNanoseconds: 43_200_000_000_000n,
+      },
+      {
+        kind: 'PlainYearMonth',
+        calendar: 'gregory',
+        epochNanoseconds: 43_200_000_000_000n,
+      },
+      {
+        kind: 'PlainMonthDay',
+        calendar: 'gregory',
+        epochNanoseconds: 63_115_200_000_000_000n,
+      },
+      {
+        kind: 'PlainTime',
+        calendar: undefined,
+        epochNanoseconds: 45_296_123_456_789n,
+      },
+      {
+        kind: 'PlainDateTime',
+        calendar: 'iso8601',
+        epochNanoseconds: 45_296_123_456_789n,
+      },
+      {kind: 'Instant', epochNanoseconds: -1n},
+    ]
+    expect(values.map(value => ToDateTimeFormattable(value))).toEqual(expected)
+    const owner = hook === 'call' ? Function.prototype : Array.prototype
+    const key = hook === 'call' ? 'call' : Symbol.iterator
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    const actual: unknown[] = []
+    let error: unknown,
+      calls = 0
+    try {
+      define(owner, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('Mutable private brand iterator')
+        },
+      })
+      for (let index = 0; index < values.length; index++)
+        actual[index] = ToDateTimeFormattable(values[index])
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(calls).toBe(0)
+    expect(actual).toEqual(expected)
+  }
+)
+
+test.each(['get', 'set'] as const)(
+  'Temporal selected-kind profiles retain private Map.%s',
+  method => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    for (const warm of [false, true]) {
+      let reads = 0
+      const dtf = formatter({
+        get year() {
+          reads++
+          return 'numeric'
+        },
+        month: '2-digit',
+        day: '2-digit',
+      })
+      if (warm) dtf.formatToParts(value)
+      const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, method)!
+      const original = descriptor.value
+      const apply = Reflect.apply
+      let actual: unknown,
+        error: unknown,
+        hooks = 0
+      try {
+        Object.defineProperty(Map.prototype, method, {
+          ...descriptor,
+          value(this: Map<unknown, unknown>, ...args: unknown[]) {
+            if (args[0] === 'PlainDate') {
+              hooks++
+              throw new Error('Mutable Temporal kind cache')
+            }
+            return apply(original, this, args)
+          },
+        })
+        actual = dtf.formatToParts(value)
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(Map.prototype, method, descriptor)
+      }
+      expect(error, `warm=${warm}`).toBeUndefined()
+      expect(hooks).toBe(0)
+      expect(reads).toBe(1)
+      expect(actual).toEqual([
+        {type: 'month', value: '01'},
+        {type: 'literal', value: '/'},
+        {type: 'day', value: '02'},
+        {type: 'literal', value: '/'},
+        {type: 'year', value: '2024'},
+      ])
+    }
+  }
+)
+
+test.each(['format', 'formatRange'] as const)(
+  'Temporal %s concatenates private rendered Lists without iteration',
+  method => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const dtf = formatter({year: 'numeric', month: '2-digit', day: '2-digit'})
+    // Warm the real producer, not the fresh result List created by each call.
+    dtf.formatToParts(value)
+    dtf.formatRangeToParts(value, value)
+    const descriptor = Object.getOwnPropertyDescriptor(
+      Array.prototype,
+      Symbol.iterator
+    )!
+    const original = descriptor.value
+    const apply = Reflect.apply
+    let actual: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      Object.defineProperty(Array.prototype, Symbol.iterator, {
+        ...descriptor,
+        value(this: any[]) {
+          // Pattern tokens have undefined field values; rendered range Lists
+          // acquire source only after endpoint production/annotation completes.
+          const first = this[0]
+          if (
+            first?.type === 'month' &&
+            first.value === '01' &&
+            (method === 'format' || typeof first.source === 'string')
+          ) {
+            hooks++
+            throw new Error('Mutable rendered-part iterator')
+          }
+          return apply(original, this, [])
+        },
+      })
+      actual =
+        method === 'format' ? dtf.format(value) : dtf.formatRange(value, value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(Array.prototype, Symbol.iterator, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(hooks).toBe(0)
+    expect(actual).toBe('01/02/2024')
+  }
+)
+
+test.each(['push', 'index'] as const)(
+  'Temporal range parts project own records without inherited %s',
+  hook => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const dtf = formatter({year: 'numeric', month: '2-digit', day: '2-digit'})
+    dtf.formatRangeToParts(value, value)
+    const key = hook === 'push' ? 'push' : '0'
+    const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, key)
+    const define = Object.defineProperty
+    let actual: any[] | undefined,
+      error: unknown,
+      hooks = 0
+    try {
+      define(
+        Array.prototype,
+        key,
+        hook === 'push'
+          ? {
+              configurable: true,
+              writable: true,
+              value() {
+                hooks++
+                throw new Error('Mutable range parts push')
+              },
+            }
+          : {
+              configurable: true,
+              set() {
+                hooks++
+                throw new Error('Inherited range parts index')
+              },
+            }
+      )
+      actual = dtf.formatRangeToParts(value, value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      if (descriptor) define(Array.prototype, key, descriptor)
+      else delete (Array.prototype as any)[key]
+    }
+    expect(error).toBeUndefined()
+    expect(hooks).toBe(0)
+    expect(actual).toEqual([
+      {type: 'month', value: '01', source: 'shared'},
+      {type: 'literal', value: '/', source: 'shared'},
+      {type: 'day', value: '02', source: 'shared'},
+      {type: 'literal', value: '/', source: 'shared'},
+      {type: 'year', value: '2024', source: 'shared'},
+    ])
+    for (let index = 0; index < actual!.length; index++) {
+      expect(Object.getOwnPropertyDescriptor(actual!, `${index}`)).toEqual({
+        value: actual![index],
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+      expect(Object.getPrototypeOf(actual![index])).toBe(Object.prototype)
+      expect(Object.keys(actual![index])).toEqual(['type', 'value', 'source'])
+      for (const field of ['type', 'value', 'source'])
+        expect(Object.getOwnPropertyDescriptor(actual![index], field)).toEqual({
+          value: actual![index][field],
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        })
+    }
+  }
+)

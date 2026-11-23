@@ -1,6 +1,244 @@
 # Temporal implementation
 
-Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
+Current delivery scope: pure TypeScript, native Rust and native Hermes bindings.
+Temporal WASM runtime entries, assets, build targets and test variants are removed.
+WASM measurements and ABI notes below are historical. New native Rust/TS comparison:
+`bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
+outputs and reports per-workload samples; native timings exclude binding costs.
+
+## Native performance direction
+
+Goal: native Rust faster than TS; pure TS faster than both references across
+matched public workloads, preserving spec behavior and preventing regressions.
+
+Matched workload target reached: native Rust wins all 37 cases in six fresh
+runs, preserving the original 25 plus 7/3/2 named-zone groups. TS wins all 48
+medians and means against `@js-temporal/polyfill` 0.5.1. Against `temporal-polyfill`
+1.0.7 basic, original full-48 results win 47 medians and all 48 means;
+`dateFromFields` retains a 1.90% slower median and 5.35% faster mean. Six longer
+controls retain its original predecessor order and shared callsite: TS wins by
+15.2% median and 14.7% mean. This supplements the original slower point.
+
+Six original full-48 before/after controls pass 47 rows at the 3% median/mean
+regression screen. DateTime parsing retains +3.31% median and -0.25% mean;
+six longer causal-prefix controls give +0.46% median and +0.55% mean, within the
+screen. Parser algorithms are AST-identical. This supports the practical screen;
+it does not claim exactly zero cost or replace the original full-suite result.
+
+Clean committed source passes all 71 Rust/Node/Test262/ICU/Hermes gates, with no
+new exclusions. Consumer: 146,826 minified / 41,604 gzip bytes (+486 gzip versus
+regression baseline; basic 19,367, official 47,066). Nine fresh processes/profile
+measure import plus first operation at 21.8 ms TS, 39.6 ms basic and 29.4 ms
+official, excluding launch. TS first operation alone remains slower than official.
+
+Raw full-suite comparison retains three TS, three basic and two official
+processes, all 48 cases/eight inputs with parity and consumed outputs. Worst TS
+process beats best official process on every median and mean. Host restart lost
+the third official process and temporary controls; it is not counted. Regenerated
+native/prefix controls and clean validation stay separate from earlier full-suite
+and startup data. These are hot matched-workload results on Node/V8 and native
+Rust, excluding binding costs; no universal API, engine or platform speed claim.
+See [day-start evidence](../benchmarks/temporal/day-start-experiments.json) for samples, profiles, sources and recovery notes.
+
+Rust Gregorian inverse conversion now uses 4,568 readonly bytes for 128-day
+blocks. Six fresh comparisons win all 37 Rust/TS medians and means, including
+three long-offset controls; original 25/7/3/2 groups stay separate. All 71
+Rust/Node/Test262/ICU/Hermes gates pass. Scattered 8,192-date controls improve
+~12%; first call adds ~60 ns, probe process time unchanged within noise. No new
+locale/timezone data, allocation, per-value cache or TS change. TS regression and
+reference controls are reported above. See the benchmark README and
+[rule experiments](../benchmarks/temporal/rule-classification-experiments.json).
+
+Earlier combined TS candidate wins all 48 medians and means against both pinned
+references across three fresh processes each. Longer controls support four close
+cases. Consumer is 41,503 gzip bytes (+385); import plus first operation is
+~22.0 ms TS, ~39.7 ms basic and ~29.5 ms official, excluding process launch.
+Original TS before/after regression audit remains open.
+See [day-start experiments](../benchmarks/temporal/day-start-experiments.json).
+
+Rust classifies safe ordinary months directly and keeps event evaluation near
+possible shifted boundaries. Cold helpers handle remaining paths. Twelve prebuilt
+controls improve ordinary offset lookup ~54%; all 37 cases pass the regression
+screen. All 71 Rust/Node/Test262/ICU/Hermes checks pass. Fresh Rust/TS runs win
+36/37, 37/37 and 36/37; original raw offset remains near tie/slower. Separate
+25/7/3/2 counts retain original scope and add last-week/ordinary-month coverage.
+Goal remains open. Benchmark README documents long controls and CPU profiles.
+See [rule experiments](../benchmarks/temporal/rule-classification-experiments.json).
+
+Previous TS calendar/field checkpoint shares bounded Gregorian conversion and
+prepared ISO fields. Six full-48 controls improve field construction ~20%, date
+updates ~34%, zoned formatting ~21% and hours-in-day ~24%. All 71 focused checks
+pass. Consumer is 41,118 gzip bytes (+466); mixed cold use improves with unchanged
+retained memory. Rust wins all 25 original plus 7 named cases in three fresh runs.
+
+Scoped basic-reference losses remain: offset lookup 2.83x, day start 1.08x.
+Final fresh all-48 references and startup remain pending. Original-baseline and
+mixed-case rounding variability stay recorded; no blanket no-regression claim.
+See [calendar/field experiments](../benchmarks/temporal/calendar-fields-experiments.json).
+
+Earlier arithmetic/writer checkpoint: Rust wins 25/25 original plus 7/7 named-zone
+workloads in each of three isolated optimized runs against accepted TS. Six
+before/after Rust controls improve date formatting ~43% (106 ns to 60 ns) and
+named offset lookup ~69% (59 ns to 18 ns). Largest median increase across 32
+workloads is ~1.2%. All 66 focused Rust/Node/ICU/package/Hermes targets pass.
+See [arithmetic/writer experiments](../benchmarks/temporal/recurring-arithmetic-experiments.json) for raw samples and limits.
+
+Retained changes reuse guarded monthly-rule arithmetic, exact narrow/limb
+nanosecond division, unsigned Gregorian era-day math and checked ASCII date
+formatting. No new cache, data, dependency, public API or runtime struct layout.
+Optimized benchmark executable grows 12,920 bytes (~0.30%); this includes
+reference/data/harness and is not a shipped crate/SDK size claim.
+
+TS at that checkpoint stayed byte-identical at 40,652 gzip bytes. Fresh repeated references
+show 40/48 basic and 48/48 official median wins; resampling explains count changes.
+Numeric offset caches improve hot reads but regress cold/full workloads; discarded.
+Parser splitting enables V8 inlining without a reliable throughput gain; discarded.
+CPU profiles, heap audits and all timing controls remain recorded. TS startup
+was not remeasured because accepted source and bundle are unchanged. Eight basic
+reference losses and the earlier baseline audit keep the goal open.
+
+Preceding recurring-rule checkpoint: native Rust still wins 25/25 original and
+7/7 additional named-zone workloads against current TS, reported separately.
+Six optimized controls improve named offset lookup ~45% (106 ns to 59 ns),
+day start ~38%, hours-in-day ~37%, day addition ~19% and time replacement ~31%.
+Full signed outputs match. All 56 focused Rust/Node/ICU/package/Hermes targets pass.
+See [monthly-rule experiments](../benchmarks/temporal/monthly-rules-experiments.json).
+
+Separated monthly rules in February through November use one UTC year's event
+pair. Validated offsets are below one day and rule times below seven days, so
+events shift less than eight days. Interior months keep events inside their UTC
+year; an intervening month preserves order. Edge/adjacent months and Day/Julian
+rules retain the original three-year search. Public cases cover year rollover,
+negative epochs, nanosecond boundaries, Instant limits, leap February and extreme
+allowed offsets/rule times. New vectors pass both old and optimized algorithms;
+independent ICU offsets/transitions pass too. No new data format or lookup cache.
+
+TS fast-return experiments were discarded: focused field gains did not hold in
+the full matrix. TS source and measured bundle are byte-identical to the preceding
+checkpoint, still 40,652 gzip bytes. Latest resampling wins 38/48 basic and
+48/48 official against retained references; prior identical TS scored 41/48
+basic. These count changes reflect resampling variability, not evidence of TS
+improvements or code regressions. Remaining losses, final fresh repeated references and earlier
+baseline verification keep the goal open.
+
+Per-input native diagnostics are separate timings, not CPU stack samples.
+Optimized benchmark executable grows 224 bytes; it includes reference/data/harness
+and is not a shipped crate/SDK size claim. Rejected TS V8 profiles and all raw
+controls remain recorded.
+
+Preceding ISO field checkpoint: TS wins 41/48 basic and
+48/48 official medians using the preceding checkpoint's reference samples.
+Rust wins 25/25 original and 7/7 additional named-zone cases against current TS,
+reported separately. All 56 focused Rust/Node/ICU/package/Hermes targets pass.
+Consumer is 40,652 gzip bytes (+109 this checkpoint). Final fresh repeated
+references, remaining slower cases and earlier baseline audit keep the goal open.
+See [immutable-slot experiments](../benchmarks/temporal/immutable-slots-experiments.json).
+
+Short-date factories retain owned slots. Parsed ISO strings and year-month
+addition retain validated ISO fields; formatting reuses those fields. Explicit
+`dateFieldsView` returns a readonly ISO view after backend/range guards. General
+pure-TS `dateFields` keeps fresh records. Arithmetic inputs are readonly.
+
+Six full profiles compare three processes per state against `6588cdf` before
+the provisional parser change. Combined medians improve YearMonth parsing ~17%,
+MonthDay parsing ~38%, YearMonth addition ~12% and date addition ~4%.
+Largest paired median increase is ~1.6%; Instant and PlainTime rounding medians improve slightly.
+All initial outliers remain recorded. Smaller variations and earlier baselines
+still need final verification. A broad readonly reader was replaced with the
+explicit view after MonthDay conversion regressed.
+
+Eager ISO fields cost ~88 extra retained bytes per unread parsed value in a
+200,000-value Node diagnostic. After a getter read, candidate retains ~32 fewer
+bytes/value. Arrays/WeakMap capacity are included; one process per state/kind/read
+mode gives approximate heap evidence, not universal bounds. No native/Hermes heap
+claim. CPU profiles and raw controls remain available.
+
+Preceding short-date checkpoint: TS wins 38/48 basic and
+48/48 official medians in a fresh comparison. Two TS processes,
+one process per reference; final repeated references still required. Rust wins
+25/25 original and 7/7 additional named-zone cases, reported separately.
+All 54 focused Rust/Node/ICU/package/Hermes targets pass. Consumer is 40,543 gzip bytes.
+See [validated-short experiments](../benchmarks/temporal/validated-short-experiments.json).
+
+ISO short-date parsing uses already validated fields for shared Gregorian
+conversion. Native dispatch, parsed reference-year handling and year-month bounds
+remain. Full controls improve short-date parsing ~8–10%; scoped controls ~11–16%.
+Parsed-field caching and three rounding variants showed no useful extra gain and
+were discarded. Chronological benchmark samples now accompany sorted samples.
+
+Goal remains open: reference losses, fresh repeated-reference verification and
+regression audit. Unchanged rounding spans 456–566 ns in full controls
+(aggregate +8.6%); longer scoped controls show +4.5% medians/~3% means.
+Attribution remains unresolved. Original rounding code stays.
+Raw runs and separate baseline/candidate V8 profiles remain available.
+
+Preceding normalized-addition checkpoint used retained reference samples:
+TS 36/48 basic, 48/48 official; consumer 40,529 gzip bytes.
+
+`addNormalizedCalendarDate` returns epoch day plus validated target fields from
+already normalized calendar fields. Date and YearMonth callers avoid repeated
+conversions; raw APIs retain normalization. Target calendar availability and public
+range checks still run before returning values. Independent ICU arithmetic, table,
+relative-duration and zoned-difference oracles cover these paths.
+
+DateTime clock getters now check for a native backend before creating private date
+records. SDK's compile-time native path stays direct. Sparse field preparation uses
+a frozen empty prototype with null parent: no Object.prototype inheritance or
+omitted-key changes, with fast V8 property storage. Full-matrix checks rejected
+numeric clock experiments that slowed rounding; original BigInt clock stays.
+Precision checks one nanosecond inside Instant limits remain as regression guards.
+All 54 focused Rust/Node/ICU/package/Hermes targets pass. Consumer size is 40,529
+gzip bytes. Four full comparison profiles remove the confirmed rounding slowdown;
+small remaining paired differences need final fresh repeated measurements.
+
+Preceding shared-calendar/transition checkpoint:
+
+`ArithmeticCalendarToEpochDay` owns numeric calendar conversion after callers
+validate month/day. Gregorian calendars reuse the shared month-prefix table;
+other arithmetic calendars sum lengths without repeated outer checks. Lunisolar
+and Umm al-Qura paths stay with their providers. Rust transition lookup rejects
+candidates that cannot improve the best result before evaluating recurring rules.
+Alternating controls show faster date/year-month addition and roughly 2x faster
+native transition lookup. No new caches or timezone data. That checkpoint passes 49 focused Rust/Node/ICU/package/Hermes targets and ships
+40,470 gzip bytes.
+
+The seven new native named-zone workloads retain exact signed outputs and use
+compiled IANA data versus TS host Intl. They cover New York gap/fold, Lord Howe
+half-hour changes and year2400. Original25 and temporal_rs comparisons stay intact;
+the UTC-only temporal_rs benchmark provider is excluded from new cases. Select
+`FORMATJS_TEMPORAL_NATIVE_PROFILE=named` for isolated named-only comparisons;
+`FORMATJS_TEMPORAL_NATIVE_DIAGNOSTICS=1` adds separate per-input native timings.
+
+Preceding direct-path optimizations reuse fixed ISO field-name lists, format
+PlainTime with exact numeric clock arithmetic, validate Gregorian month lengths
+directly and skip redundant parsed short-date roundtrips. That checkpoint passes
+44 focused targets, wins 34/48 basic and 46/48 official raw medians against fresh
+isolated references, and ships 40,399 gzip bytes.
+
+Preceding record preparation preserves owned field shapes instead of deleting keys,
+uses one ISO merge record, and avoids redundant caller copies/calendar reads.
+Duration conversion reuses the complete JS reader and skips duplicate validation
+of already validated owned fields. One static property-read order serves both
+duration readers; `Duration.with` no longer observes `Array.prototype.sort`.
+Public prototype/array-observation regressions and 42 focused Node/ICU/package/
+Hermes targets pass. Native Rust is retimed against this candidate, not older TS.
+
+Shared Gregorian conversion computes the civil year once. Date getters reuse
+private immutable ISO fields under a unique symbol; native backend checks and normal/extended bounds
+precede reuse. Returned calendar records remain uncached to avoid aliasing.
+ISO derived fields use Gregorian arithmetic directly. Date-only serialization
+avoids constructing an Instant and clock string. No formatted-output cache.
+Each accessed ISO date slot retains one field record for its lifetime.
+Alternating controls confirm roughly 7x faster date getters and 5x faster date
+formatting. Current export-all consumer is 40,219 gzip bytes (+470 over the
+no-WASM baseline, +144 over the ISO checkpoint); performance goal is open.
+
+The shared borrowed calendar provider now advances year starts once within each
+64-year checkpoint block. No cache or data format change. Independent ICU/HKO
+controls and checkpoint/leap/final-year boundary tests guard conversions.
+
+Earlier implementation goal (WASM measurements are historical): complete Temporal
+in TypeScript and Rust, support Hermes, validate against
 Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
 versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
 
@@ -54,6 +292,9 @@ al-Qura and named timezone operations. Default ships generated IANA identifiers
 and conservative transition-search intervals, without offset histories. Installed
 Intl may be native or a FormatJS polyfill; load it before Temporal captures its
 intrinsics. No formatter package import or circular dependency is introduced.
+When an installed legacy FormatJS DateTimeFormat exposes compatible explicit
+transition rows, Temporal resolves that zone with its existing exact kernel.
+Replacing the zone data refreshes the kernel on the next query.
 The explicit `standalone.js` entry retains full calendar packs and owned IANA
 histories/future rules. Both Rust WASM profiles and the Hermes SDK retain owned
 timezone data. Earlier measurements below describe their historical data policy.
@@ -67,8 +308,14 @@ and locale methods share this path. Host formatters supply labels in the request
 locale and numbering system; original weekday, clock and timezone fields survive.
 Safe host month examples supply localized month/day labels. Related years and
 sexagenary names are restored separately. Captured intrinsics avoid recursion
-after installation. Ranges whose corrected fields invalidate native collapsing
-use complete endpoint patterns with a captured host range separator.
+after installation. Validated numeric Year ranges reuse the native layout,
+including verified numeric widths, weekday labels and Buddhist textual months.
+Verified UTC Chinese and Dangi Year, Month, and Day intervals retain native
+source tags while restoring corrected days. Regular and leap months retain
+both endpoint labels when shown. Verified leap ranges reuse the native Month
+layout, including month labels, related years, clock widths and tagged weekdays.
+Other corrected ranges use complete endpoint patterns and a captured host
+separator.
 
 All 130 Temporal DateTimeFormat executions pass on Node TS/WASM and Hermes
 source/bytecode through the legacy adapter, with zero tracked failures. This
@@ -434,9 +681,11 @@ That is a new primitive measurement scope; full facade/data size remains separat
 ## Now and host clock
 
 TS implements all six Now methods through an internal SystemClock boundary.
-Default TS clock captures Date.now (millisecond precision). Host Intl supplies
+Default TS clock captures Date.now (millisecond precision) and uses it if a
+configured clock fails. Host Intl supplies
 named system-zone discovery; hosts without DateTimeFormat use Date's current
-system offset, never an inferred IANA location. Explicit zones continue to use
+system offset, never an inferred IANA location. A failing lookup or unusable
+host identifier falls back to UTC. Explicit zones continue to use
 owned IANA data. Each call validates the zone before reading the clock; supplied
 zones skip system-zone discovery. Captured constructors preserve intrinsic
 results after public Now methods are replaced.
@@ -449,7 +698,7 @@ Clock-bound controls include negative epochs, Instant limits and detached method
 
 All 138 upstream Now built-ins/intl402 executions pass on Node, Hermes source and optimized
 bytecode. Separate real Hermes host tests exercise UTC, New York and Kathmandu.
-No Realm or implementation exclusions added. See [Temporal.Now semantics](https://tc39.es/proposal-temporal/#sec-temporal.now)
+No Realm or implementation exclusions added. See [Temporal.Now semantics](https://tc39.es/proposal-temporal/#sec-temporal-now-object)
 and [SystemTimeZoneIdentifier](https://tc39.es/ecma262/#sec-systemtimezoneidentifier).
 
 The pinned intl402/Temporal tree contains 2,040 files. This layer adds its three
@@ -1694,3 +1943,589 @@ full reference 23,083. Native-data WASM totals 479,583, hybrid 484,339, includin
 443,098 binary bytes. Ready medians: TS 20.84 ms versus full reference 22.58;
 previous owned-data TS 12.11. Payload shrinks; startup work increases in this
 sample. Earlier throughput snapshots are historical, not remeasured claims.
+
+## WASM bridge cost diagnosis (before binary records, 2026-11-17)
+
+`//benchmarks/temporal:wasm_cost_benchmark` isolates matched public ISO calls,
+counts normalized requests, replays exact recorded Rust responses, and compares
+production JSON transfer with preallocated storage and a benchmark-only numeric
+calendar ABI. Forward/reverse snapshots and methodology live in
+`benchmarks/temporal/README.md` under "WASM bridge cost diagnosis".
+
+Eight PlainDate getters cost TS 2.64 microseconds versus WASM 47.05. They send
+13 logical queries (eight identical date conversions), each requiring six
+exported-function crossings plus JSON/UTF-8 and allocation work. Replay still
+costs 12.81 microseconds because JS normalization/serialization remains. Instant
+formatting sends separate round/format requests; addition sends ten duration
+fields twice for validation then addition.
+
+One calendar conversion costs 2.83 microseconds through the string bridge,
+1.91 with preallocated input/descriptor and no text transfer, 0.36 through a
+numeric ABI including equivalent JSON reconstruction in JS, or 0.074 for the
+numeric call and field reads. Numeric control uses the production ISO calendar
+provider but omits textual dispatch/general ABI validation; it is not a full
+polyfill alternative. Reverse timing order preserves the conclusion. The actual
+wasm32 Rust core is already built at opt-level 3; the final export shim uses z.
+
+The measured pre-change slowdown comes from fine-grained normalized JSON calls and repeated
+work around small calculations. Prioritize fewer queries, typed records/reused
+buffers and fused backend operations, preserving observable coercion/error
+ordering. Existing claims cover Node/V8 ISO workloads, not all calendars or
+engines. TS stays default; the diagnostic snapshots predate the binary-record implementation below.
+
+## Whole WASM operations and binary results (2026-11-17)
+
+ABI 10 adds module-owned reusable input/output buffers. Each normal request
+uses one exchange export; buffer growth reserves separately. Operation/key IDs,
+packed calendar snapshots and numeric duration fields avoid JSON text transfer.
+Rust still uses dynamic normalized records internally. JSON controls remain for
+the native SDK and independent diagnostics.
+
+Rust returns immutable calendar/clock/zone snapshots with parsed or computed
+date-like values. Getters reuse those snapshots; backend replacement invalidates
+cached owners. Optional derived-field failures remain lazy getter errors.
+Instant rounding/offset/formatting and date-like partial updates execute whole
+Rust operations. JS retains observable field reads, coercion, options, brands,
+object creation and cheap boundary checks. Native-data builds prune TS fallback
+arithmetic; default/hybrid retain it. Backend metadata continues to report
+`completeTemporalBackend: false`.
+
+Package regressions assert one exchange per date add/partial update, zero
+additional getter exchanges, shared-instance buffer growth recovery, matching
+operation dictionaries and TypeError precedence for incomplete era fields.
+Rust tests cover malformed/truncated requests, invalid operations, range errors
+and recovery. Existing ICU oracle corpora and Test262 exclusions remain unchanged.
+The facade/startup harnesses also compare pinned `@js-temporal/polyfill` 0.5.1
+(dev-only), alongside `temporal-polyfill` 1.0.7.
+
+Full-result benchmarks also exposed repeated timezone candidates: each historical
+transition retried its offset, even when centuries reused the same two values.
+`TransitionZone::visit_offsets` now remembers sixteen offsets on the stack;
+additional values still reach the visitor. No heap cache or new data is needed.
+Rust regression controls cover 400 repeated transitions and forty distinct
+offsets. Existing ICU gap/fold and day-boundary controls verify behavior.
+
+Final evidence: `benchmarks/temporal/binary-operation-results.json` (48 workloads)
+and `binary-operation-startup-results.json` (nine fresh processes per profile).
+All 55 focused targets pass. WASM and SDK Hermes source/bytecode each execute
+12,234 Test262 scenarios; exclusion manifests are unchanged. WASM wins 4/48
+against TS, 18/48 against official reference. Node namespace gzip: TS 39,693;
+native-data WASM 487,770 (29,560 JS, 458,210 binary); official 44,522. Shared
+ISO/timezone readiness medians: 19.50/24.23/26.75 ms respectively. Eager snapshots
+move work into constructors/arithmetic; warm getters are not an end-to-end win.
+Official 0.5.1 Chinese month addition throws `Unexpected leap month suffix: Mo1`
+on pinned ICU 78.2; its optional calendar startup sample is explicitly disabled.
+
+## Typed WASM hillclimb (2026-11-17)
+
+ABI 11 keeps the same 69 operations and adds fixed requests for Instant
+parse/add/format, the three date-only parsers, and PlainDate addition. Instant
+nanoseconds cross as signed 128-bit little-endian integers; duration components
+remain validated numeric fields. Instant formatting writes directly into the
+reused output buffer. JS retains observable coercion, option and brand checks.
+Runtimes without DataView BigInt methods retain the generic Instant adapter.
+The JSON SDK/control protocol keeps its prior result shapes.
+
+Calendar, clock and zone snapshots now use a fixed Rust array plus error mask.
+The SDK serializes that shared calculation when explicitly requested; WASM
+encodes the fields directly. Constructors/arithmetic still return complete
+snapshots, including individual deferred getter errors. No calendar or timezone
+data changes. ABI 10 binaries must be replaced with the matching ABI 11 binary.
+
+The hillclimb first bypassed Rust's dynamic Instant request maps, then removed
+JS request objects and decimal BigInt transfers. Fixed snapshots removed the
+next allocation bottleneck; typed date requests followed. Bound generic JS
+intrinsics showed no useful gain. A fixed-shape JS snapshot decoder regressed
+parse/add and was discarded. These are local Node/V8 observations; Hermes
+source/bytecode conformance remains a separate correctness requirement.
+
+Wider PR CI caught two regressions outside the initial 55 focused gates:
+cached `.offset` strings incorrectly reused the minute-rounded formatter, and
+non-ISO MonthDay `.with({month})` returned RangeError instead of TypeError.
+Snapshots now preserve offset seconds/fractions; string serialization still
+uses its required minute rounding. The JS adapter checks missing monthCode/year
+before the Rust request. Public package regressions and the unchanged Intl
+Test262 selections cover both. Three historical oracle fault-injection checks
+now target fused snapshot routes instead of removed redundant getter/validation
+calls. No exclusions were added.
+
+Final hillclimb evidence: `benchmarks/temporal/hillclimb-results.json` (48 matched
+workloads), `hillclimb-startup-results.json` (nine fresh processes/profile), and
+`hillclimb-experiments.json` (kept/discarded iterations). All 62 final targets
+pass, including every failed PR CI target. WASM wins 5/48 against TS,
+20/48 against official reference. Native-data namespace consumer:
+493,058 gzip bytes; shared ISO/timezone readiness 24.44 ms.
+
+## CPU-profiled WASM follow-up (2026-11-17)
+
+V8 CPU profiles identify JS duration coercion/validation, recursive result decoding,
+Rust dynamic maps and generic formatting as separate costs. The optimized profiling
+build retains WASM names with `--define=temporal_wasm_profile=true`; production
+still strips names. `benchmarks/temporal/profile-results.json` records weighted
+self samples from the ABI 11 baseline. Inspector bookkeeping is excluded; setup,
+warmup, runtime helpers and GC remain explicit. Profile-mode timings are not
+throughput claims.
+
+ABI 12 has typed variants for fifteen existing operations. ISO field construction
+and date/short-date updates call the typed public Rust methods directly; non-ISO
+paths remain supported. Complete ISO date records use a fixed layout. Getters
+reuse their owner-stamped snapshots without a redundant WeakMap entry. JS retains
+coercion/read order; non-Instant duration paths still validate before options
+getters. Rust remains the arithmetic authority. Instant formatting writes ASCII
+to a bounded stack buffer before one output write.
+
+Extra spec controls caught a Rust generic-adapter failure absent from the pinned
+Test262 selection: finite month/day fields above Number.MAX_SAFE_INTEGER were
+rejected before [overflow correction](https://tc39.es/proposal-temporal/#sec-temporal-regulateisodate). TS already handled them. Shared Rust numeric
+conversion now clamps before narrowing and still rejects non-finite or fractional
+numbers. The controls run alongside public ICU oracles on TS, both WASM profiles
+and Hermes; they do not inflate independent ICU row counts. A separate poisoned
+Array iterator regression prevents new observable iteration during duration reads.
+No new Test262 exclusions.
+
+Pure TS executable code remains equivalent to the baseline after local identifier
+renaming. `benchmarks/temporal/ts-regression-guard.json` records consumer hashes and
+scope-normalized AST hashes, including all 2,560 lexical bindings. No TS math or
+data changes were used to improve the WASM comparison.
+
+The ongoing hillclimb uses isolated warmed processes for TS, native-data WASM and
+both pinned references. `profile-hillclimb-results.json` retains all 48 public
+workloads; `profile-startup-results.json` retains nine fresh startup processes per
+profile. TS/references are unchanged from the preceding isolated run; WASM was
+retimed after the numeric fix. Hybrid throughput is omitted in this snapshot;
+shipping-size/startup controls still include it. Median wins do not establish
+stable wins for close workloads. WASM remains slower overall; this goal is open.
+
+ISO calendar resolution bypasses the compiled table registry. First non-ISO use
+still initializes and validates table data. The fresh-process startup experiment
+in `benchmarks/temporal/lazy-calendar-startup-results.json` reduces native-data
+WASM ISO/timezone readiness from 25.0 ms to 16.3 ms (TS: 19.5 ms). Full calendar
+readiness remains about 27 ms; table work is deferred, not removed.
+
+### Direct DateTime bindings
+
+ABI 13 adds typed PlainDateTime parse, add/subtract, round and format requests.
+Complete ISO results use 48 bytes: signed i128 nanoseconds, the complete date
+record, and six clock fields. Non-ISO snapshots retain the general representation
+and deferred getter errors. JS still owns observable coercion and options order;
+Rust public methods validate all arithmetic and formatting. SDK JSON shapes stay
+unchanged. Instant and PlainDateTime reuse one bounded ASCII formatter.
+
+`benchmarks/temporal/date-time-hillclimb-results.json` retimes all 48 WASM workloads
+with the prior isolated warmup/sample counts. TS and pinned references come from
+the earlier unchanged controls; these are explicitly identified in the report.
+
+Final decoder controls reproduce and prevent inherited clock setters and absent
+ISO era getters. Compact snapshots initialize own fields directly. Eleven focused
+Rust/type/WASM/Test262/Hermes targets passed, then both WASM package/ICU suites and
+DateTime Test262 passed after the decoder fixes. The pure TS AST still matches the
+872fdaee baseline after local identifier renaming. Current medians win 16/48 against
+TS, 20/48 against temporal-polyfill and 31/48 against @js-temporal/polyfill. The goal
+remains open; DateTime parsing is nearly tied and round+format remains slower.
+
+### Typed clocks and native slot representation
+
+ABI 14 has typed variants for 26 existing operations. Complete clock records use
+18 bytes, including exact Number nanoseconds and six Rust-computed fields. Native
+clock slots use one WeakMap; getTimeSlot converts lazily to BigInt for existing
+DateTime/Zoned/Intl callers. Pure TS retains direct BigInt slots. Clock fields have
+no calendar/timezone data dependency. A u64 Rust storage trial was discarded after
+isolated ABBA measurements; i128 APIs/storage remain. Bounded clock conversions
+and quotient/remainder operands narrow safely; rounding results and fallback stay
+wide. Signed-boundary controls cover ties and results crossing i64 limits.
+
+Rust Duration::new rounds fields to Number-representable integers before sign,
+calendar-unit and magnitude validation. Returned duration fields can therefore be
+wrapped directly. Current trusted construction is used for native Time.until;
+user-input construction keeps its validation. Typed duration formatting also
+avoids generic maps. SDK JSON responses remain stable unless clockSnapshot is
+requested. The adapter supports older SDK responses, including balancing the
+legacy 24-hour rounding carry. Public regression controls cover captured WeakMap
+lookups and results surviving WASM memory growth. No new exclusions.
+
+The current isolated run refreshes TS/WASM and retains explicitly unchanged
+pinned references. See benchmarks/temporal/time-*.json for throughput, startup,
+size, profiles and retained/rejected experiments. All five clock workloads beat
+TS; overall performance remains incomplete. The checked-in Bazel AST audit
+normalizes local bindings and strips parser metadata while retaining executable
+structure/global/property/literal semantics. It catches an unintended retained
+intrinsic capture; existing captures retain their timing. The final TS audit
+matches the 872fdaee baseline.
+
+### Compact Instant transport
+
+ABI 15 keeps the 69 normalized operations and adds compact signed integer results:
+tag 15 plus i64 (9 bytes), or tag 10 plus i128 (17 bytes). Typed parse/add/round
+use this representation. An optional scalar i64 rounding export returns BigInt
+without refreshing WASM memory or decoding response records. i64::MIN requests
+the checked buffer route for errors, wide results and the reserved value itself.
+Capability probing supports engines without JS/WASM i64 interop. Rust validates
+and rounds through its public Instant API; all public timestamp/result limits
+remain wide. Failed scalar attempts do not increment successful-call statistics.
+
+Native-only Instant construction wraps validated Rust outputs or existing private
+branded values without duplicate range checks. Numeric user inputs retain checks;
+JS coercion and option access ordering remain unchanged. The default TS executable
+AST must still match the independent baseline. No new Test262 exclusions.
+
+`benchmarks/temporal/instant-profile-results.json` records the prior rounding
+profile. JS construction, GC and transport dominate Rust arithmetic. Alternating
+pointer/direct/direct/pointer measurements support direct scalar results;
+`instant-experiments.json` records intermediate trials and rejected native-width
+increment validation. Short shared-process wins do not establish isolated wins.
+
+The final isolated 48-workload snapshot records WASM wins in 24/48 against TS,
+25/48 against the basic reference and 36/48 against the official reference. Rounding wins this snapshot but
+loses longer isolated controls; it is not a stable win. Native namespace gzip is
+500,581 bytes (+488); TS is unchanged at 39,690. Nine-process ISO/timezone readiness
+is 16.85 ms versus TS 19.39 ms, with full native calendars at 27.47 ms. See
+instant-hillclimb-results.json and instant-startup-results.json. The unchanged
+executable TS AST passes the Bazel guard and its intrinsic-capture negative control.
+
+All 63 focused Rust/TS/WASM/ICU/Hermes targets pass after the Instant changes,
+including public types, scalar fallback and signed/full-range controls. Full
+owned-Intl WASM conformance remains a CI gate. No new exclusions.
+
+### Typed timezone transitions
+
+ABI 16 keeps the 69 normalized operations and adds the 27th typed route. A request
+carries signed i128 nanoseconds, direction and UTF-8 identifier; results are null
+or compact/wide signed integers. The adapter avoids maps and decimal conversion.
+SDK JSON fallback stays available. Public JS option/coercion order is unchanged.
+
+FutureRule transition validation computes before/after states from one set of
+recurring events. January 1 retains distinct rule-year windows. The first footer
+second still compares with the explicit offset before it. Core remains no_std;
+no cache, dependency or generated-data change. Public controls cover those joins,
+strict nanosecond boundaries, both directions, UTC/fixed zones, full timestamp
+limits, nulls and recovery after malformed requests.
+
+See benchmarks/temporal/zoned-*.json for baseline profiles, diagnostic trials,
+isolated full-workload timings and nine-process startup/size. Transition median
+falls from 4.535 to 1.515 microseconds; TS is 0.459. Overall sampled WASM wins:
+23/48 against TS, 25/48 basic reference, 35/48 official reference. Close medians
+vary; the goal remains open. Default TS executable AST matches baseline. Node
+namespace gzip rises 5,451 bytes to 506,032; ISO/timezone readiness is 16.61 ms,
+full calendar readiness 27.29 ms. No new exclusions.
+
+All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass for ABI 16;
+validation targets are recorded in zoned-experiments.json. Broader conformance
+remains a CI gate. No new exclusions.
+
+### Typed zoned parsing and resolution
+
+ABI 17 specializes two more existing operations, for 29 typed routes among the
+unchanged 69 normalized operations. Parsed fields include Rust-computed local
+nanoseconds and successful timezone identity metadata. Invalid calendar/zone
+validation still precedes JS option getters. Invalid zone metadata is omitted,
+so the original JS validation/error ordering remains authoritative. Calendar
+annotations stay raw until JS validates them. Alias spellings remain preserved.
+
+Typed resolution passes the already-created Rust ZonedDateTime into the shared
+snapshot builder. ISO results carry signed instant/local nanoseconds, complete
+calendar/clock fields, exact offset text/nanoseconds and hoursInDay. Non-ISO or
+partially invalid snapshots retain their general encoding and deferred errors.
+SDK JSON responses keep their existing shape; the shared offset formatter is
+unchanged. No operation-result cache or data-policy change.
+
+Boundary controls exercise full-range signed values, fractional/historical
+offsets, optional versus supplied-empty offsets, invalid modes/UTF8/trailing
+bytes and recovery. Public controls check complete ISO/Gregorian getters without
+extra calls, alias spelling, poisoned Array iteration and option getter order.
+Twelve focused Rust/WASM Test262/ICU/Hermes/type targets pass; no new exclusions.
+
+`benchmarks/temporal/zoned-parse-*.json` retain incremental trials, all 48 isolated
+TS/WASM timings, nine-process startup/size and the fresh named-WASM profile.
+Parsing falls from 27.256 to 9.907 microseconds; TS is 3.969. Complete Rust results
+stay eager while the public parse workload consumes only epochNanoseconds.
+WASM wins 24/48 medians; slower operations are explicitly listed in the experiment
+record. Pure TS executable AST still matches the baseline. Native namespace is
+509,609 gzip bytes (+3,577), versus TS 39,692 using host Intl. ISO/timezone startup
+is 17.01 versus 19.39 ms. Rust profile self time now concentrates on recurring
+rule events and historical-offset scans; these are next targets. Goal open.
+
+### Bounded timezone offset candidates
+
+The Rust TimeZone provider adds default `visit_offsets_at(local, visitor)`;
+custom providers retain full-history visitation. TransitionZone validates every
+offset strictly within one day. Every valid candidate instant or transition producing a containing gap/fold
+therefore lies within local plus/minus one day.
+Two binary searches select that explicit-history window, including its entering
+offset. Recurring standard/daylight offsets are included when the window reaches
+the footer; timestamp bounds and the explicit/footer join remain covered.
+NamedTimeZone/ResolvedTimeZone forward the method. `visit_offsets` is unchanged.
+Both possible-instant enumeration and gap resolution use the optional local
+visitor. Deduplication remains bounded stack storage with lossless overflow.
+
+Monthly future events use Gregorian month lengths instead of converting the next
+month. Day/Julian events still compute Jan 1. Future offsets extract only the year
+from floor-divided signed seconds; all valid Instant seconds fit i64. Adjacent-year
+windows and event/tie order remain unchanged. ABI 17, 69 normalized operations,
+29 typed routes and complete Rust snapshots stay unchanged. No new data/cache,
+dependency or TS source change.
+
+A public-resolution differential control compares bounded lookup with a provider
+using the full-history default across dense transitions, near-day offsets, gaps,
+folds, footer joins, signed nanoseconds and timestamp bounds. Literal February
+last-weekday controls distinguish common and leap years. Independent ICU and
+Test262 remain conformance authorities.
+
+All 63 focused targets pass against byte-identical final formatted Rust sources.
+`benchmarks/temporal/bounded-zone-*.json` retain trials, separate profiles, all 48
+isolated workloads, longer Instant rounding controls and nine-process startup.
+Parsing falls from 9.907 to 7.235 microseconds; TS is 3.905. Current medians win
+23/48 against TS, with all 25 slower cases inventoried. Longer Instant rounding
+still loses (0.653 versus TS 0.601). Pure TS/native JS bundles are byte-identical
+to the prior checkpoint. Native namespace is 507,887 gzip bytes, down 1,722;
+raw WASM grows 318 bytes. ISO/timezone startup is 16.96 versus TS 19.48 ms.
+Zoned rounding's generic decoder/writer remains a measured next target.
+All-workload goal stays open.
+
+### Direct zoned operations and complete ISO records
+
+ABI 18 adds typed addZonedDateTime, roundZonedDateTime and startOfZonedDay requests:
+32 typed routes, unchanged 69 normalized operations. Each resolves its input once,
+calls the public Rust method and encodes its complete result. ISO records are
+built directly on the stack, preserving date/week/clock fields, local/instant
+nanoseconds, exact offset text/nanoseconds and day length. Non-ISO and deferred
+getter errors retain general snapshots. Existing exact offset formatting is shared;
+SDK JSON shapes and all data/dependencies remain unchanged.
+
+Local resolution now accepts validated nanoseconds privately. Public field APIs
+still call the same field/range validator; day boundaries use the same local range
+check. PlainDateTime constructors replace an unused full ISO conversion with its
+identical range check, keeping calendar validation. Offset-hint matching uses the
+bounded local visitor, including the full-history custom-provider default.
+Native-only zoned construction wraps Rust-result/private branded slots directly;
+numeric user constructors stay checked, with the standard prototype and brands.
+
+Alternating controls in zoned-operations-experiments.json support the raw-resolution
+refactor and modest private construction gains. Rust prevalidation before options
+added a boundary without a consistent gain and slowed DateTime addition; discarded.
+Copied lazy snapshots and a separate flat JS decoder also lacked a consistent
+matched gain; discarded. All complete Rust/JS result fields remain eager.
+New controls compare every public ISO field with generic FFI snapshots at week/
+year/BCE/range boundaries, retain results across memory growth, and verify prototype,
+constructor/range checks, malformed request recovery, offset-hint policies and
+poisoned Array iteration. No new conformance exclusions.
+
+All 66 focused targets pass against recorded final source hashes; pure TS executable
+AST still matches the independent baseline. `benchmarks/temporal/zoned-operations-*.json`
+retain trials, three alternating controls, all 48 isolated workloads, nine-process
+startup/size and fresh profiles. Zoned rounding falls from 11.415 to 3.870
+microseconds; addition 15.134 to 5.834; day start 10.416 to 3.818. TS is 2.869,
+6.243 and 2.075 respectively. Parsing is 6.339 versus TS 3.999. DateTime parsing
+remains slower at 2.901 versus TS 2.470 and rose from its prior WASM measurement.
+Current medians win 24/48; all 24 slower cases are inventoried. Goal open.
+Native namespace grows 5,315 gzip bytes to 513,202, with unchanged data/dependencies;
+ISO/timezone startup is 16.70 versus TS 19.40 ms. Duration parsing profile self time
+is dominated by JS createDuration and generic decoding, making typed duration
+transport/private Rust-result construction the next candidates.
+
+## ABI 19 typed Duration transport
+
+ABI 19 adds direct parsing, addition/subtraction and negation/absolute value: 35 typed routes, unchanged 69 normalized operations. Rust calls its existing public Duration APIs and returns all ten validated, Number-rounded fields in an 81-byte record. Native JS wraps private results without repeated duration validation or generic record decoding. Numeric constructors and user coercion retain their checks; cloning preserves fresh object identity and standard prototypes. SDK JSON shapes stay compatible.
+
+Current ABI 19 isolated checkpoint: Duration parsing 1.19 µs versus TS 2.36; addition 3.77 versus 4.88. WASM wins 25/48 medians; 23 workloads still lose. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline. Native Node namespace is 513,908 gzip bytes (+706); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.38 ms, TS 19.54 ms. Full native calendar readiness 27.99 ms.
+
+Fresh sequential processes, eight varying inputs/parity, 20,000 warmup and nine samples of 50,000 calls per workload; transitions use 1,000 warmup and nine samples of 5,000. `duration-hillclimb-results.json` records all 48 current TS/native workloads. Pinned comparison timings are retained explicitly from the earlier Instant checkpoint, through zoned-operations-hillclimb-results.json. Median wins are not stable-win proof.
+
+`duration-experiments.json` retains short diagnostics, exact validated source hashes, all 66 targets and every slower workload/ratio. Binary controls cover framing, UTF-8, invalid booleans, nonfinite fields and recovery. Public controls cover all fields, wide Number rounding, unbalanced units, positive zero, memory growth and clone/getter reuse. No data, dependency, cache or exclusion changes.
+
+`duration-startup-results.json` uses nine fresh processes/profile with persistent compile cache disabled. Node namespace payload above differs from the browser export-all consumer in throughput JSON. Production WASM is stripped. `duration-profile-results.json` keeps named-WASM profiling separate from production size/timing claims. Default TS executable AST remains equivalent; intrinsic-capture negative control still rejected.
+
+Fresh profiles leave YearMonth differences as a target: createDuration uses 19.54%
+of sampled self time, generic decode 6.42% and decodeResult 2.85%. Typed difference
+transport with trusted complete Duration wrapping can remove the same overhead.
+Duration parse now wins; allocation still accounts for 25.05%, result decoding
+10.46%. Duration addition includes its public formatting work. These samples do
+not replace production timings. MonthDay parsing flips a marginal prior win back
+to a loss; all 23 slower workloads stay explicit. Raw WASM grows 1,918 bytes;
+TS browser gzip changes one byte from binding names, with identical executable AST.
+
+## Typed differences
+
+ABI 20 adds direct Instant, PlainDate, PlainDateTime and PlainYearMonth differences:
+39 typed routes, unchanged 69 normalized operations. Requests carry signed 128-bit
+nanoseconds or integral epoch days, both YearMonth calendars and rounding options.
+Existing public Rust methods produce all ten validated Duration fields. Native JS
+wraps results without generic decoding or repeated duration validation. Numeric
+constructors, observable coercion/option order and SDK JSON shapes stay intact.
+
+Current ABI 20 isolated checkpoint: YearMonth difference 3.29 µs versus TS 5.53; Date difference 3.54 versus 6.15; DateTime difference 4.10 versus 6.39; Instant difference 2.54 versus 2.50. Full matrix records 27/48 median wins; rounding win fails longer controls. All 21 raw slower workloads plus rounding remain unresolved. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 516,007 gzip bytes (+2,099); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.57 ms, TS 19.53 ms. Full native calendar readiness 28.21 ms. Raw WASM grows 9,249 bytes.
+
+`differences-hillclimb-results.json` records all 48 current TS/native workloads in
+fresh sequential processes, eight varying inputs/parity, 20,000 warmup and nine
+samples of 50,000 calls; transitions use 1,000 warmup and nine samples of 5,000.
+Pinned comparison throughput remains explicitly retained from the earlier Instant
+checkpoint, through duration-hillclimb-results.json. Close median wins vary;
+all slower workload ratios are listed in differences-experiments.json.
+
+Raw controls compare public Rust methods across nine rounding modes, both signs,
+until/since and date/time unit choices. They cover complete field records,
+fractional/nonfinite days, signed nanosecond bounds, invalid calendars/UTF-8,
+boolean/unit/mode framing, semantic errors and recovery. Public controls verify
+one Rust request, every field, positive zero, standard prototype/constructor and
+ownership after memory growth. No new data, cache, dependency or exclusions.
+
+`differences-startup-results.json` uses nine fresh processes/profile with persistent
+compile cache disabled. Node namespace payload above differs from browser
+export-all consumer sizes in throughput JSON. Production WASM is stripped;
+`differences-profile-results.json` keeps named-WASM profiles separate. Default TS
+executable AST remains equivalent; intrinsic-capture negative control rejected.
+
+Longer fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. Instant rounding is still slower: native 0.624/0.647 µs versus
+TS 0.594/0.575. Its full-matrix median win is noisy and unproven. Instant difference
+wins those controls at 2.474/2.486 versus TS 2.646/2.535, but loses the full matrix
+at 2.538 versus TS 2.501. Keep it unresolved. The 27/48 raw median count is not a
+stable-win claim: all 21 raw slower cases plus rounding remain explicit.
+
+Fresh named-WASM profiles identify remaining overhead: zoned formatting spends
+10.08% in generic write, 5.85% in Rust Reader.value and 4.45% in JS decodeResult.
+DateTime round/format spends 10.02% in createPlainDateTime and 9.55% in
+dateTimeResult. Instant difference retains allocation/formatting costs:
+createNativeDuration 8.59%, formatDuration wrapper 8.67%, result decoding 5.45%.
+Profiles guide the next changes; their timings/sizes are not production claims.
+
+## Typed zoned formatting
+
+ABI 21 adds direct zoned formatting: 40 typed routes, unchanged 69 operations.
+Rust calls its public formatter and returns the complete string, preserving all
+precision/rounding/annotation policies and offsets after rounding across DST.
+Four plain date format requests reuse the existing interned calendar IDs with
+strict UTF-8 fallback. No new strings, data or cache. Native DateTime construction
+wraps private validated slots directly; complete snapshots stay eager. Bindings retain
+the ISO epoch day already returned by Rust, removing JS BigInt division, a weak-map
+lookup and a second private date-slot allocation. Numeric
+constructors and observable JS option/coercion order remain checked. SDK JSON
+stays compatible; pair WASM binary and JS adapter.
+
+Current ABI 21 isolated checkpoint: zoned format 1.93 µs versus TS 2.10; DateTime parse 2.00 versus 2.40; DateTime round/format 2.50 versus 1.64. Full matrix records 31/48 median wins; 17 workloads remain slower. Close rounding/difference controls stay explicit; median count is not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 516,755 gzip bytes (+748); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.39 ms, TS 19.60 ms. Full native calendar readiness 28.05 ms. Raw WASM grows 3,679 bytes.
+
+`format-experiments.json` retains four shared-process diagnostic stages and four
+alternating implementation controls. The private DateTime factory has modest rounding gains;
+parsing overlaps in isolated controls, so its earlier shared-process win was not
+stable proof. Longer trusted/checked/checked/trusted runs measure rounding
+2.412/2.361 versus 2.509/2.493 µs. Calendar-ID controls keep the same trusted factory
+and compare UTF-8/interned/interned/UTF-8: YearMonth format 0.606/0.581 versus
+0.657/0.663 µs; MonthDay 0.582/0.560 versus 0.629/0.638. Neither short format is
+assumed faster than TS from these controls.
+
+Epoch-day reuse has separate derived/Rust/Rust/derived controls: DateTime parsing
+1.844/1.848 versus 2.879/2.883 µs. Zoned formatting stays 1.788–1.801 across
+variants. An intermediate parsing profile spent 17.12% in dateSlot and 14.43% in
+GC; the old bindings discarded the Rust epoch day and rebuilt a second slot.
+All complete Rust fields stay retained. Earlier factory-only parsing results
+remain mixed; this control isolates the additional epoch-day change.
+
+`format-hillclimb-results.json` records all 48 fresh sequential TS/native workloads,
+eight varying inputs/parity, 20,000 warmup and nine samples of 50,000 calls;
+transitions use 1,000 warmup and nine samples of 5,000. Pinned comparison throughput
+remains explicitly retained from the earlier Instant checkpoint, through
+differences-hillclimb-results.json. All slower workload ratios stay explicit.
+
+Raw controls compare the public Rust zoned formatter across precisions, nine
+rounding modes, annotation policies, DST gap/fold boundaries, historical/fixed
+offsets, Hebrew and instant bounds. All compiled calendars compare compact and
+UTF-8 plain format packets against public formatting. Invalid codes, UTF-8,
+precision, identifiers, range and framing recover. Public controls cover exact
+DST outputs, complete DateTime fields after memory growth, clones, prototypes and
+numeric constructor bounds. No new conformance exclusions.
+
+`format-startup-results.json` uses nine fresh processes/profile with persistent
+compile cache disabled. Namespace sizes above differ from browser export-all
+consumer sizes in throughput JSON. Production WASM is stripped; named-WASM
+profiles in `format-profile-results.json` are separate from production claims.
+Default TS executable AST remains equivalent; negative control stays rejected.
+
+Current fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. DateTime parsing wins: native 1.821/1.833 µs versus TS 2.569/2.625.
+Instant rounding remains slower: native 0.624/0.648 versus TS 0.597/0.581. Its
+full-matrix median win is unproven. Instant difference remains mixed: native
+2.507/2.572 versus TS 2.611/2.517, while full matrix loses at 2.521 versus TS
+2.429. All 17 raw slower workloads plus rounding stay explicit. Raw 31/48 median
+wins do not establish all-workload completion.
+
+Final profiles retain named-WASM attribution separately from production timings.
+DateTime parsing now spends 15.46% in NativePlainDateTime, 10.80% in dateTimeResult
+and 10.34% in GC. The old dateSlot recomputation motivated epoch-day reuse; its
+causal A/B controls are retained. DateTime round/format still spends 10.49% in
+construction and 10.16% in result decoding. YearMonth format spends 9.55% in
+Text.write_str, 6.20% in std fmt.write and 6.08% in each UTF-8 decoder frame.
+These remaining allocation/formatting costs guide the next changes.
+
+## Typed short-date operations
+
+ABI 22 adds direct YearMonth addition/subtraction and YearMonth/MonthDay projection
+to PlainDate: 43 typed routes, unchanged 69 normalized operations. Existing public
+Rust methods do the math; the complete result includes all date/derived fields.
+ISO results use a shared stack record instead of intermediate dynamic snapshots.
+ISO field creation/updates and DateTime records share the date writer. Other
+calendars and deferred getter errors retain existing representations. JS field/
+option order, numeric checks, prototypes and SDK JSON remain intact.
+
+Current ABI 22 isolated checkpoint: YearMonth add 2.99 µs versus TS 5.62; YearMonth projection 1.42 versus 2.39; MonthDay projection 2.21 versus 2.73; date field construction 1.50 versus 1.45. Full matrix records 34/48 median wins; 14 workloads remain slower. Close-workload controls stay explicit; median counts are not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 517,885 gzip bytes (+1,130); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.62 ms, TS 19.50 ms. Full native calendar readiness 28.31 ms. Raw WASM changes +4,391 bytes.
+
+`short-date-experiments.json` retains baseline profiles, both diagnostic stages,
+full alternating controls and final source hashes. Generic/direct/direct/generic
+ISO-record controls show YearMonth add 2.942/2.948 versus 3.146/3.175 µs;
+YearMonth projection 1.610/1.610 versus 1.870/1.810; MonthDay projection
+2.172/2.147 versus 2.355/2.370; date fields 1.443/1.308 versus 1.585/1.592.
+An inline(always) experiment had no consistent benefit and was discarded.
+Unrelated DateTime parse variation in these controls is not claimed as a gain.
+
+`short-date-hillclimb-results.json` records all 48 fresh sequential TS/native
+workloads, eight varying inputs/parity, 20,000 warmup and nine samples of 50,000;
+transitions use 1,000 warmup and nine samples of 5,000. Pinned reference throughput
+remains explicitly retained from the earlier Instant checkpoint, through
+format-hillclimb-results.json. Every slower workload/ratio stays recorded.
+
+All compiled calendars compare add/subtract and both projections with public Rust
+methods; complete non-ISO records match the existing generic bridge. ISO fields
+match public date properties; extended reference dates, BCE, bounds and week/year
+boundaries match the generic oracle. Malformed flags, codes, UTF-8, numeric fields
+and framing recover. Public tests verify exact outputs, one operation request,
+standard prototypes and all getters across memory growth. No new exclusions.
+
+`short-date-startup-results.json` uses nine fresh processes/profile, persistent
+compile cache disabled. Namespace payload above differs from browser export-all
+consumer sizes in throughput JSON. Production WASM is stripped; named-WASM
+profiles in short-date-profile-results.json are separate from production claims.
+Default TS executable AST remains equivalent; negative control still rejected.
+
+Fresh TS/native/native/TS controls use 100,000 warmup and nine samples of 300,000
+calls. MonthDay projection wins at 2.268/2.168 µs versus TS 2.692/2.593. Date field
+construction nearly ties at 1.376/1.391 versus TS 1.392/1.421 but loses the full
+matrix at 1.500 versus TS 1.450; unresolved. Instant difference also overlaps in
+longer controls and loses the full matrix. Instant rounding remains slower:
+0.622/0.619 versus TS 0.585/0.586, rejecting its raw median win. All 14 raw slower
+workloads plus rounding remain explicit. Raw 34/48 medians are not stable-win proof.
+
+Fresh profiles leave date field construction dominated by JS (63.50% self time),
+with Rust 13.28% and GC 10.11%. createPlainDate is 19.46%, decodeISODate 10.46%.
+A private trusted date factory looked faster in shared-process diagnostics but
+had small/mixed isolated gains; discarded. Original checked PlainDate construction
+stays intact. YearMonth add now spends 10.65% in construction and 8.28% in duration
+preparation. Zoned updates retain generic decode/write costs (9.67%/4.75%), making
+typed field updates a candidate. Profile timings/sizes are not production claims.
+
+## Native Instant storage
+
+Native-only Instant slots use private fields instead of WeakMap entries. Rust still
+returns complete epoch nanoseconds. Public constructor coercion precedes exactly
+one newTarget prototype lookup; subclass/clone/brand behavior stays intact. ABI 22,
+43 typed routes, 69 operations and SDK JSON unchanged. No new exclusions.
+
+Current native Instant storage checkpoint (ABI 22 unchanged): round 0.139 µs versus TS 0.475; parse 0.475 versus 1.578; add 0.787 versus 2.244. Full matrix records 36/48 raw median wins; 12 workloads remain slower. Close controls remain explicit; all-workload goal open. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable bundle unchanged.
+
+Native Node namespace is 518,004 gzip bytes (+119); TS 39,692, using host Intl. Rust binary unchanged. ISO/timezone readiness: native 17.64 ms, TS 19.53 ms. Full native calendar readiness 28.32 ms.
+
+Evidence: `benchmarks/temporal/instant-storage-*.json`; benchmark README covers
+profiles, alternating storage controls, close margins and fresh reference scope.

@@ -1,4 +1,10 @@
 import {
+  RangeErrorConstructor,
+  floor,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {
   fallbackLunisolar,
   fallbackUmmAlQura,
 } from '#packages/temporal/fallback-data.js'
@@ -20,22 +26,28 @@ export const hostCalendarData: boolean =
 export type TableCalendarId = 'chinese' | 'dangi' | 'islamic-umalqura'
 const alphabet =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
+const apply = Reflect.apply
+const stringIndexOf = String.prototype.indexOf
+// Proposal comparison §12.3.25: provider dispatch predicate; availability stays with callers.
 export function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {
   return calendar === 'chinese' || calendar === 'dangi'
 }
+// Proposal comparison §12.3.25: supplied-table access; pattern decodes each year.
 function data(calendar: 'chinese' | 'dangi') {
   return fallbackLunisolar(calendar)
 }
+// Proposal comparison §12.3.25: packed-year decoder dependency; supplied data stays trusted.
 function pattern(calendar: 'chinese' | 'dangi', year: number): number {
   const table = data(calendar),
     index = year - table.firstYear
-  if (!Number.isInteger(index) || index < 0 || index * 2 >= table.years.length)
-    throw new RangeError('Calendar year out of range')
+  if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)
+    throw new RangeErrorConstructor('Calendar year out of range')
   return table.dictionary[
-    alphabet.indexOf(table.years[index * 2]) * 64 +
-      alphabet.indexOf(table.years[index * 2 + 1])
+    apply(stringIndexOf, alphabet, [table.years[index * 2]]) * 64 +
+      apply(stringIndexOf, alphabet, [table.years[index * 2 + 1]])
   ]
 }
+// Proposal comparison §12.3.25: year-length dependency: 12/13 months of 29 days plus length bits.
 function length(packed: number): number {
   let days = (packed >>> 13 ? 13 : 12) * 29,
     bits = packed & 8191
@@ -45,6 +57,7 @@ function length(packed: number): number {
   }
   return days
 }
+// Proposal comparison §12.3.25: leap-position dependency for month-code/count callers.
 export function tableLeapMonth(
   calendar: 'chinese' | 'dangi',
   year: number
@@ -52,6 +65,7 @@ export function tableLeapMonth(
   if (hostCalendarData) return hostCalendarYear(calendar, year).leap
   return pattern(calendar, year) >>> 13
 }
+// Proposal comparison §12.3.21: year-boundary dependency; callers select civil fallback on undefined.
 export function tableYearStart(
   calendar: TableCalendarId,
   year: number
@@ -72,12 +86,13 @@ export function tableYearStart(
     index = year - table.firstYear
   if (index === table.years.length / 2) return table.endDay
   pattern(calendar, year)
-  const block = Math.floor(index / 64)
+  const block = floor(index / 64)
   let start = table.checkpoints[block]
   for (let i = block * 64; i < index; i++)
     start += length(pattern(calendar, table.firstYear + i))
   return start
 }
+// Proposal comparison §12.3.21: month-length dependency; callers validate month and civil fallback.
 export function tableMonthLength(
   calendar: TableCalendarId,
   year: number,
@@ -98,6 +113,7 @@ export function tableMonthLength(
   }
   return 29 + ((pattern(calendar, year) >>> (month - 1)) & 1)
 }
+// Proposal comparison §12.3.8: month-coordinate dependency; callers choose duration fields.
 export function tableMonthSerial(
   calendar: 'chinese' | 'dangi',
   year: number,
@@ -108,12 +124,13 @@ export function tableMonthSerial(
   const table = data(calendar),
     index = year - table.firstYear
   pattern(calendar, year)
-  const block = Math.floor(index / 64)
+  const block = floor(index / 64)
   let serial = table.monthCheckpoints[block]
   for (let i = block * 64; i < index; i++)
     serial += tableLeapMonth(calendar, table.firstYear + i) ? 13 : 12
   return serial + month - 1
 }
+// Proposal comparison §12.3.6: month-coordinate inverse; callers retain day/overflow policy.
 export function tableYearMonth(
   calendar: 'chinese' | 'dangi',
   serial: number
@@ -121,12 +138,12 @@ export function tableYearMonth(
   if (hostCalendarData) return hostCalendarAddMonths(calendar, 1970, 1, serial)
   const table = data(calendar),
     checkpoints = table.monthCheckpoints
-  if (!Number.isSafeInteger(serial) || serial < 0)
-    throw new RangeError('Calendar month out of range')
+  if (!numberIsSafeInteger(serial) || serial < 0)
+    throw new RangeErrorConstructor('Calendar month out of range')
   let low = 0,
     high = checkpoints.length
   while (low + 1 < high) {
-    const mid = Math.floor((low + high) / 2)
+    const mid = floor((low + high) / 2)
     if (checkpoints[mid] <= serial) low = mid
     else high = mid
   }
@@ -139,6 +156,7 @@ export function tableYearMonth(
     year++
   }
 }
+// Proposal comparison §12.3.25: date-coordinate dependency; callers build the complete record.
 export function tableDate(
   calendar: 'chinese' | 'dangi',
   epoch: number
@@ -147,11 +165,11 @@ export function tableDate(
   const table = data(calendar),
     checkpoints = table.checkpoints
   if (epoch < checkpoints[0] || epoch >= table.endDay)
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   let low = 0,
     high = checkpoints.length
   while (low + 1 < high) {
-    const mid = Math.floor((low + high) / 2)
+    const mid = floor((low + high) / 2)
     if (checkpoints[mid] <= epoch) low = mid
     else high = mid
   }
@@ -165,6 +183,7 @@ export function tableDate(
   return {year, month, day: remaining + 1}
 }
 
+// Proposal comparison §12.3.6: month-movement dependency; day/overflow remain with callers.
 export function tableAddMonths(
   calendar: 'chinese' | 'dangi',
   year: number,
@@ -176,6 +195,7 @@ export function tableAddMonths(
     : tableYearMonth(calendar, tableMonthSerial(calendar, year, month) + months)
 }
 
+// Proposal comparison §12.3.8: month-distance dependency; callers compose other duration fields.
 export function tableMonthDifference(
   calendar: 'chinese' | 'dangi',
   oneYear: number,

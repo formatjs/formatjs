@@ -1,0 +1,357 @@
+{
+  "baselineCommit": "3af99109944aee38ecd7b2d5a6b1582e5fb92806",
+  "phase": "Bounded local offset candidates and recurring-rule conversion reduction, ABI 17 unchanged",
+  "method": "Separate V8 Inspector profiles per workload with named WASM enabled only by --define=temporal_wasm_profile=true. Self samples weighted by timeDeltas; inspector/root/idle/program bookkeeping excluded. Setup, warmup, runtime helpers and GC remain explicit. Profile timings/sizes are not production claims; use bounded-zone-hillclimb-results.json.",
+  "environment": {
+    "node": "v24.14.0",
+    "v8": "13.6.233.17-node.41",
+    "icu": "78.2",
+    "cpu": "Intel(R) Xeon(R) Platinum 8488C"
+  },
+  "workloads": {
+    "zonedParse": [
+      {
+        "operation": "zonedParse",
+        "iterations": 50000,
+        "warmup": 3000,
+        "medianNanoseconds": 8165.354579999999,
+        "samplesNanoseconds": [8123.088799999998, 8165.354579999999, 8541.01382]
+      }
+    ],
+    "zonedRound": [
+      {
+        "operation": "zonedRound",
+        "iterations": 50000,
+        "warmup": 3000,
+        "medianNanoseconds": 12455.56384,
+        "samplesNanoseconds": [
+          11737.761719999997, 12455.56384, 12738.239239999997
+        ]
+      }
+    ]
+  },
+  "attribution": {
+    "zonedParse": {
+      "sampledMilliseconds": 1303.25,
+      "selfPercent": {
+        "harnessOther": 12.77,
+        "gc": 5.33,
+        "javascript": 27.57,
+        "rustWasm": 54.34
+      },
+      "top": [
+        {
+          "name": "invoke.parseZonedFields",
+          "percent": 8.91,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionRule>::event",
+          "percent": 7.93,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 5.33,
+          "source": ""
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::timezone_identity::named_time_zone_identifier",
+          "percent": 4.77,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "createZonedDateTime",
+          "percent": 4.52,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "zonedResult",
+          "percent": 3.56,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_intl_datetimeformat_calendars[8a28f11efdf5849e]::calendar::iso_fields",
+          "percent": 3.27,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "decodeUTF8",
+          "percent": 2.9,
+          "source": ""
+        },
+        {
+          "name": "decode",
+          "percent": 2.87,
+          "source": "encoding"
+        },
+        {
+          "name": "invoke.resolveZonedDateTime",
+          "percent": 2.86,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::TimeZoneRegistry>::resolve",
+          "percent": 2.8,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionZone as formatjs_temporal[40b6354e2dba9ca5]::zoned::TimeZone>::visit_offsets_at",
+          "percent": 2.52,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::typed::run",
+          "percent": 2.45,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::FutureRule>::offset",
+          "percent": 2.14,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "__multi3",
+          "percent": 2.1,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "compiler_builtins[ce512ac70534e1d]::int::specialized_div_rem::u128_div_rem",
+          "percent": 1.97,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::ffi::zoned_value_snapshot",
+          "percent": 1.91,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "encodeInto",
+          "percent": 1.9,
+          "source": ""
+        },
+        {
+          "name": "toZonedDateTimeSlot",
+          "percent": 1.89,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionZone as formatjs_temporal[40b6354e2dba9ca5]::zoned::TimeZone>::transition",
+          "percent": 1.77,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "dateTimeResult",
+          "percent": 1.77,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::zoned::visit_possible_instants::<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::ResolvedTimeZone>::{closure#0}",
+          "percent": 1.43,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "__divti3",
+          "percent": 1.34,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "encodeInto",
+          "percent": 1.31,
+          "source": "encoding"
+        },
+        {
+          "name": "run",
+          "percent": 1.09,
+          "source": "wasm-facade-benchmark.ts"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::iso::IsoDateTime>::to_epoch_nanoseconds",
+          "percent": 0.96,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::zoned::resolve_local::<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::ResolvedTimeZone>",
+          "percent": 0.94,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::timezone::visit_distinct_offsets::{closure#0}",
+          "percent": 0.93,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "core[7d5f0a2ba6a62c33]::ptr::drop_glue::<serde_json[25a24d283d9a1626]::value::Value>",
+          "percent": 0.89,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "core[7d5f0a2ba6a62c33]::slice::memchr::memchr_aligned",
+          "percent": 0.87,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        }
+      ]
+    },
+    "zonedRound": {
+      "sampledMilliseconds": 1932.524,
+      "selfPercent": {
+        "harnessOther": 8.43,
+        "javascript": 34.76,
+        "rustWasm": 52.79,
+        "gc": 4.03
+      },
+      "top": [
+        {
+          "name": "decode",
+          "percent": 12.18,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "write",
+          "percent": 4.96,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionRule>::event",
+          "percent": 4.25,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 4.03,
+          "source": ""
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::timezone_identity::named_time_zone_identifier",
+          "percent": 3.06,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "createZonedDateTime",
+          "percent": 2.97,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "decodeResult",
+          "percent": 2.65,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::binary::Reader>::value",
+          "percent": 2.57,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "__multi3",
+          "percent": 2.2,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "refresh",
+          "percent": 2.15,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone_registry::TimeZoneRegistry>::resolve",
+          "percent": 1.99,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "<indexmap[5a5011685cf492e6]::map::IndexMap<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>::insert_full",
+          "percent": 1.97,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "<indexmap[5a5011685cf492e6]::inner::Core<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>::get_index_of::<str>",
+          "percent": 1.89,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "decode",
+          "percent": 1.8,
+          "source": "encoding"
+        },
+        {
+          "name": "text",
+          "percent": 1.72,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_intl_datetimeformat_calendars[8a28f11efdf5849e]::calendar::iso_fields",
+          "percent": 1.71,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::encode",
+          "percent": 1.65,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "invoke",
+          "percent": 1.64,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "readText",
+          "percent": 1.53,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<std[5ccbcb928378ab90]::hash::random::RandomState as core[7d5f0a2ba6a62c33]::hash::BuildHasher>::hash_one::<&alloc[46d95d5090e9754d]::string::String>",
+          "percent": 1.51,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "get buffer",
+          "percent": 1.46,
+          "source": ""
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::FutureRule>::offset",
+          "percent": 1.43,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "decodeUTF8",
+          "percent": 1.41,
+          "source": ""
+        },
+        {
+          "name": "<indexmap[5a5011685cf492e6]::map::IndexMap<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>::get_index_of::<str>",
+          "percent": 1.4,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "formatjs_temporal[40b6354e2dba9ca5]::binary::run",
+          "percent": 1.36,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "core[7d5f0a2ba6a62c33]::ptr::drop_glue::<serde_json[25a24d283d9a1626]::value::Value>",
+          "percent": 1.29,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "<dlmalloc[34d9e156da7ff0eb]::dlmalloc::Dlmalloc<dlmalloc[34d9e156da7ff0eb]::sys::System>>::free",
+          "percent": 1.23,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "core[7d5f0a2ba6a62c33]::ptr::drop_glue::<indexmap[5a5011685cf492e6]::Bucket<alloc[46d95d5090e9754d]::string::String, serde_json[25a24d283d9a1626]::value::Value>>",
+          "percent": 1.21,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "compiler_builtins[ce512ac70534e1d]::int::specialized_div_rem::u128_div_rem",
+          "percent": 1.17,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        },
+        {
+          "name": "<formatjs_temporal[40b6354e2dba9ca5]::timezone::TransitionZone as formatjs_temporal[40b6354e2dba9ca5]::zoned::TimeZone>::visit_offsets_at",
+          "percent": 1.16,
+          "source": "formatjs_temporal_wasm_backend.wasm-00da2e82"
+        }
+      ]
+    }
+  }
+}

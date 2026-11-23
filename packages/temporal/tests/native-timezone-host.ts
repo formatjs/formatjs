@@ -55,7 +55,7 @@ const actions = [
     operation: 'timeZoneOffset',
     run: () => zone.offsetNanoseconds(0n),
   })),
-  {operation: 'timeZoneOffset', run: () => existing.offsetNanoseconds},
+  {operation: 'zonedProperties', run: () => existing.offsetNanoseconds},
   {
     operation: 'timeZoneIdentity',
     run: () => timeZoneIdentifier('america/new_york'),

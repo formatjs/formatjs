@@ -1,3 +1,9 @@
+import {UTCOffsetNanoseconds} from '#packages/ecma262-abstract/UTCOffsetNanoseconds.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  numberFrom,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   HourFromTime,
   MinFromTime,
@@ -17,52 +23,6 @@ const NANOSECONDS_PER_MILLISECOND = BigInt(1000000)
 const ZERO = BigInt(0)
 const ONE = BigInt(1)
 
-// Internal prefix dispatch; DateTimeFormat validates timezone grammar first.
-function IsTimeZoneOffsetString(offsetString: string): boolean {
-  return offsetString[0] === '+' || offsetString[0] === '-'
-}
-
-// Internal scanner for validated offsets, returning milliseconds.
-// Arithmetic follows Temporal §14.6.11 ParseDateTimeUTCOffset, steps 5–18.
-// https://tc39.es/proposal-temporal/#sec-parsedatetimeutcoffset
-function ParseTimeZoneOffsetString(offsetString: string): number {
-  const sign = offsetString[0] === '+' ? 1 : -1
-  let position = 1
-  const components: number[] = []
-  for (let index = 0; index < 3; index++) {
-    if (
-      index &&
-      (position === offsetString.length || offsetString[position] === '.')
-    )
-      break
-    if (index && offsetString[position] === ':') position++
-    const first = offsetString.charCodeAt(position) - 48
-    const second = offsetString.charCodeAt(position + 1) - 48
-    if (!(first >= 0 && first <= 9 && second >= 0 && second <= 9)) return 0
-    components.push(first * 10 + second)
-    position += 2
-  }
-  let fractional = 0
-  if (offsetString[position] === '.') {
-    const fractionStart = ++position
-    while (position < offsetString.length) {
-      const digit = offsetString.charCodeAt(position) - 48
-      if (digit < 0 || digit > 9) return 0
-      position++
-    }
-    const length = position - fractionStart
-    if (length < 1 || length > 9) return 0
-    fractional =
-      Number((offsetString.slice(fractionStart) + '000000000').slice(0, 9)) /
-      1000000
-  }
-  if (position !== offsetString.length) return 0
-  const [hours, minutes = 0, seconds = 0] = components
-  return (
-    sign * (hours * 3600000 + minutes * 60000 + seconds * 1000 + fractional)
-  )
-}
-
 /**
  * GetNamedTimeZoneOffsetNanoseconds ( timeZone, t )
  * Similar to abstract operation in ECMA-262, adapted for IANA timezone data.
@@ -81,13 +41,9 @@ function getApplicableZoneData(
   timeZone: string,
   tzData: Record<string, UnpackedTimeZoneData>
 ): [number, boolean] {
-  // 1. If IsTimeZoneOffsetString(timeZone) is true, then
-  //    a. Let offsetNs be ParseTimeZoneOffsetString(timeZone)
-  //    b. Return offsetNs (no DST for offset timezones)
-  if (IsTimeZoneOffsetString(timeZone)) {
-    const offsetMs = ParseTimeZoneOffsetString(timeZone)
-    return [offsetMs, false] // UTC offset timezones never observe DST
-  }
+  // ECMA-402 §11.5.11 step 1: recognize and parse the complete UTCOffset.
+  const offsetNs = UTCOffsetNanoseconds(timeZone)
+  if (offsetNs !== undefined) return [offsetNs / 1_000_000, false]
 
   // 2. Let timeZoneData be the IANA Time Zone Database entry for timeZone
   const zoneData = tzData[timeZone]
@@ -98,10 +54,10 @@ function getApplicableZoneData(
   }
 
   // 4. Find the applicable transition for time t
-  const [offset, dst] = TimeZoneOffset(t, zoneData)
+  const zone = TimeZoneOffset(t, zoneData)
 
   // 5. Return offset in milliseconds and DST flag
-  return [offset * 1e3, dst]
+  return [zone[0] * 1e3, zone[1]]
 }
 
 export interface ToLocalTimeImplDetails {
@@ -109,8 +65,10 @@ export interface ToLocalTimeImplDetails {
   tzData: Record<string, UnpackedTimeZoneData>
 }
 
-// Temporal §15.6.23, steps 1–3: add the offset before computing calendar fields.
-// Millisecond arithmetic below is an internal representation of epoch nanoseconds.
+// ECMA-402 §11.5.11 steps 1–3: add the offset before computing calendar fields.
+// Table 17 in §11.5.12 projects integer milliseconds from epoch nanoseconds.
+// https://tc39.es/ecma402/#sec-tolocaltime
+// Temporal amendment §15.6.23: project exact epoch nanoseconds into calendar fields.
 // https://tc39.es/proposal-temporal/#sec-tolocaltime
 export function ToLocalTime(
   epochNanoseconds: bigint,
@@ -143,21 +101,19 @@ export function ToLocalTime(
   ) {
     epochMilliseconds -= ONE
   }
-  const milliseconds = Number(epochMilliseconds)
-  const [timeZoneOffset, inDST] = getApplicableZoneData(
-    milliseconds,
-    timeZone,
-    tzData
-  )
+  const milliseconds = numberFrom(epochMilliseconds)
+  const zone = getApplicableZoneData(milliseconds, timeZone, tzData)
+  const timeZoneOffset = zone[0]
+  const inDST = zone[1]
 
   // Integer offsets commute with flooring; fractional offsets must be added first.
   const localMilliseconds = milliseconds + timeZoneOffset
   const tz =
-    Number.isSafeInteger(milliseconds) &&
-    Number.isSafeInteger(timeZoneOffset) &&
-    Number.isSafeInteger(localMilliseconds)
+    numberIsSafeInteger(milliseconds) &&
+    numberIsSafeInteger(timeZoneOffset) &&
+    numberIsSafeInteger(localMilliseconds)
       ? localMilliseconds
-      : new Decimal(String(epochNanoseconds))
+      : new Decimal(ToString(epochNanoseconds))
           .div(1000000)
           .plus(timeZoneOffset)
           .floor()

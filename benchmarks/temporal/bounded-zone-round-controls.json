@@ -1,0 +1,36 @@
+{
+  "method": "Fresh sequential TS/native-data WASM processes. Unchanged matched public Instant.round workload and eight varying inputs/parity; 100000 warmup, nine samples of 500000 calls. Production stripped WASM. Longer control supplements, never replaces, full 48-workload checkpoint.",
+  "baselineCommit": "3af99109944aee38ecd7b2d5a6b1582e5fb92806",
+  "typescript": [
+    {
+      "operation": "round",
+      "iterations": 500000,
+      "warmup": 100000,
+      "medianNanoseconds": 600.5586819999999,
+      "samplesNanoseconds": [
+        495.7855639999999, 509.281934, 566.4167300000004, 590.5509179999999,
+        600.5586819999999, 673.3917620000002, 675.5329259999999,
+        690.4032399999996, 731.6245479999998
+      ]
+    }
+  ],
+  "environment": {
+    "node": "v24.14.0",
+    "v8": "13.6.233.17-node.41",
+    "icu": "78.2",
+    "cpu": "Intel(R) Xeon(R) Platinum 8488C"
+  },
+  "nativeDataWasm": [
+    {
+      "operation": "round",
+      "iterations": 500000,
+      "warmup": 100000,
+      "medianNanoseconds": 653.4378820000002,
+      "samplesNanoseconds": [
+        582.425508, 606.0808460000001, 620.556998, 642.3323959999998,
+        653.4378820000002, 653.9637979999998, 792.7152079999998,
+        801.5495979999996, 1012.3729319999998
+      ]
+    }
+  ]
+}

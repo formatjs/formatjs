@@ -7,6 +7,8 @@ import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeForma
  * @param dtf DateTimeFormat
  * @param x
  */
+// Temporal amendment §15.6.6: format the prepared value.
+// https://tc39.es/proposal-temporal/#sec-formatdatetime
 export function FormatDateTime(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
   x: DateTimeFormattable,
@@ -14,8 +16,9 @@ export function FormatDateTime(
 ): string {
   const parts = PartitionDateTimePattern(dtf, x, implDetails)
   let result = ''
-  for (const part of parts) {
-    result += part.value
+  // Temporal comparison §15.6.6 steps3–3.a: concatenate a private List.
+  for (let index = 0; index < parts.length; index++) {
+    result += parts[index].value
   }
   return result
 }

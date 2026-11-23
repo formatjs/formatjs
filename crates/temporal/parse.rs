@@ -5,15 +5,18 @@ struct Cursor<'a> {
     position: usize,
 }
 impl<'a> Cursor<'a> {
+    // Proposal comparison §13.35 step 4.a.i: start an ASCII grammar scan over the input.
     fn new(value: &'a str) -> Self {
         Self {
             bytes: value.as_bytes(),
             position: 0,
         }
     }
+    // Proposal comparison §13.35 step 4.a.i: inspect the next byte within the input.
     fn peek(&self) -> Option<u8> {
         self.bytes.get(self.position).copied()
     }
+    // Proposal comparison §13.35 step 4.a.i: consume a matching grammar byte.
     fn take(&mut self, byte: u8) -> bool {
         if self.peek() != Some(byte) {
             return false;
@@ -21,6 +24,7 @@ impl<'a> Cursor<'a> {
         self.position += 1;
         true
     }
+    // Proposal comparison §13.35 steps 7–8: read a bounded numeric field as an integer.
     fn number(&mut self, digits: usize) -> Result<u32, Error> {
         let mut result = 0;
         for _ in 0..digits {
@@ -33,6 +37,7 @@ impl<'a> Cursor<'a> {
         }
         Ok(result)
     }
+    // Proposal comparison §13.35 steps 13–20: read clock fields and scale fractional seconds.
     fn time(&mut self, offset: bool, sub_minute: bool) -> Result<(u8, u8, u8, u32), Error> {
         let hour = self.number(2)?;
         let (mut minute, mut second, mut fraction) = (0, 0, 0);
@@ -70,6 +75,9 @@ impl<'a> Cursor<'a> {
         }
         Ok((hour as u8, minute as u8, second.min(59) as u8, fraction))
     }
+    // ECMA-262 §21.4.1.33.2 steps 3–17; time() enforces UTCOffset components.
+    // https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
+    // Proposal comparison §8.5.3 step 5: convert the parsed numeric offset to signed nanoseconds.
     fn offset(&mut self, sub_minute: bool) -> Result<i128, Error> {
         let negative = self.take(b'-');
         if !negative && !self.take(b'+') {
@@ -82,7 +90,10 @@ impl<'a> Cursor<'a> {
     }
 }
 
+// ECMA-262 §21.4.1.33.1 steps 1–3: reject any unconsumed code units.
+// https://tc39.es/ecma262/#sec-istimezoneoffsetstring
 #[cfg(feature = "ffi")]
+// Proposal comparison §6.5.2 step 10.a: consume the full prepared numeric offset.
 pub(crate) fn offset_nanoseconds(value: &str) -> Result<i128, Error> {
     let mut input = Cursor::new(value);
     let offset = input.offset(true)?;
@@ -92,6 +103,7 @@ pub(crate) fn offset_nanoseconds(value: &str) -> Result<i128, Error> {
     Ok(offset)
 }
 
+// Proposal comparison §8.5.3 steps 3–10: parse ISO instant fields and their offset.
 pub fn instant(value: &str) -> Result<Instant, Error> {
     let mut input = Cursor::new(value);
     let negative = input.take(b'-');
@@ -129,6 +141,8 @@ pub fn instant(value: &str) -> Result<Instant, Error> {
         offset,
     )
 }
+// ECMA-262 preview §22.12.5.2 steps 3.b–3.c and 4: parse clock text and build the typed time.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltime
 pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
     let body = &value[..index];
@@ -208,6 +222,7 @@ pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
     PlainTime::new(hour, minute, second, fraction)
 }
 
+// Proposal comparison §13.35 steps 4.a.i, 7: extract the plain ISO date and clock.
 pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
     annotations(&value[index..])?;
@@ -255,6 +270,7 @@ pub(crate) struct ZonedFields<'a> {
     pub offset: crate::OffsetInput,
     pub date_only: bool,
 }
+// Proposal comparison §6.5.2 steps 5.b–5.f, 5.l: read zoned fields and offset precision.
 pub(crate) fn zoned_fields(value: &str) -> Result<ZonedFields<'_>, Error> {
     let index = value.find('[').ok_or(Error::InvalidSyntax)?;
     annotations(&value[index..])?;
@@ -318,6 +334,7 @@ pub(crate) fn zoned_fields(value: &str) -> Result<ZonedFields<'_>, Error> {
     })
 }
 
+// Proposal comparison §13.35 step 4.a.ii.2.c.i.1: read the first calendar annotation.
 pub(crate) fn calendar_annotation(value: &str) -> Option<&str> {
     value.split('[').skip(1).find_map(|part| {
         part.trim_end_matches(']')
@@ -325,6 +342,7 @@ pub(crate) fn calendar_annotation(value: &str) -> Option<&str> {
             .strip_prefix("u-ca=")
     })
 }
+// Proposal comparison §12.3.10 step 4: resolve the typed arithmetic calendar provider.
 pub(crate) fn arithmetic_calendar(value: &str) -> Result<crate::calendar::Calendar, Error> {
     match crate::CalendarRegistry::arithmetic().for_string(value)? {
         crate::CalendarRef::Arithmetic(calendar) => Ok(calendar),
@@ -332,6 +350,7 @@ pub(crate) fn arithmetic_calendar(value: &str) -> Result<crate::calendar::Calend
     }
 }
 
+// Proposal comparison §12.3.16 step 1: compare a typed calendar assertion to its provider.
 pub(crate) fn check_calendar(value: &str, expected: &str) -> Result<(), Error> {
     if calendar_annotation(value).is_some_and(|name| !name.eq_ignore_ascii_case(expected))
         && arithmetic_calendar(value).map_or(true, |calendar| calendar.name() != expected)
@@ -341,6 +360,7 @@ pub(crate) fn check_calendar(value: &str, expected: &str) -> Result<(), Error> {
     Ok(())
 }
 
+// Proposal comparison §13.35 steps 4.a.ii.3.a, 4.a.ii.4.a: require ISO on short forms.
 fn iso_annotations(value: &str) -> Result<(), Error> {
     annotations(value)?;
     let mut calendar_seen = false;
@@ -358,6 +378,7 @@ fn iso_annotations(value: &str) -> Result<(), Error> {
     }
     Ok(())
 }
+// Proposal comparison §13.35 steps 4.a.ii.3–4, 7: read short or full date fields.
 pub(crate) fn short_date_fields(value: &str, year_month: bool) -> Result<IsoDateTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
     annotations(&value[index..])?;
@@ -412,6 +433,7 @@ pub(crate) fn short_date_fields(value: &str, year_month: bool) -> Result<IsoDate
     Ok(fields)
 }
 
+// Proposal comparison §13.35 step 4.a.ii.2: validate brackets and critical annotations.
 fn annotations(mut value: &str) -> Result<(), Error> {
     let (mut calendar_seen, mut critical_calendar, mut annotation_seen, mut zone_seen) =
         (false, false, false, false);

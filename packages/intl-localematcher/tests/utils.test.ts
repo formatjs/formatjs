@@ -797,3 +797,19 @@ test('frozen caller arrays still invalidate matching state when getters change',
   expect(result.matchedSupportedLocale).toBe('de')
   expect(result.distances.de?.de).toBe(0)
 })
+
+test('checks cached locale lists without a mutable array predicate', () => {
+  const supported = ['en', 'fr']
+  findBestMatch(['fr'], supported)
+  const original = Array.prototype.some
+  let actual: unknown
+  try {
+    Array.prototype.some = () => {
+      throw new Error('Mutable locale cache predicate reached')
+    }
+    actual = findBestMatch(['fr'], supported).matchedSupportedLocale
+  } finally {
+    Array.prototype.some = original
+  }
+  expect(actual).toBe('fr')
+})

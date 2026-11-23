@@ -1,3 +1,18 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+export {
+  allocateInstant,
+  allocateSharedDateTime,
+  allocateSharedDay,
+  getSharedCalendarSlot,
+  getSharedDateTimeSlot,
+  getSharedDaySlot,
+  allocateZonedDateTime,
+  getSharedInstantSlot,
+  getSharedZonedSlot,
+  timeZoneMetadata,
+  validateInstant,
+  type DaySlotKind,
+} from '#packages/temporal/epoch-slots.js'
 import type {
   DateSlot,
   DateTimeSlot,
@@ -19,6 +34,67 @@ import type {
 } from '#packages/temporal/rounding.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
 
+export interface NativeTimeResult {
+  // Clock values are below 2**47; Number is exact.
+  nanoseconds: number
+  fields: number[]
+  bigintNanoseconds?: bigint
+}
+export interface NativeCall {
+  (operation: string, properties: Record<string, unknown>): any
+  parseDate?(
+    value: string,
+    operation: 'parsePlainDate' | 'parsePlainYearMonth' | 'parsePlainMonthDay'
+  ): DateSlot
+  withISODate?(
+    operation: 'withPlainDate' | 'withPlainYearMonth' | 'withPlainMonthDay',
+    slot: DateSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow
+  ): DateSlot
+  formatDate?(
+    operation:
+      | 'formatPlainDate'
+      | 'formatPlainYearMonth'
+      | 'formatPlainMonthDay',
+    slot: DateSlot,
+    calendarName: string
+  ): string
+  addPlainDateTime?: NativeTemporal['addPlainDateTime']
+  roundPlainDateTime?: NativeTemporal['roundPlainDateTime']
+  parsePlainTimeResult?: NativeTemporal['parsePlainTimeResult']
+  regulatePlainTimeResult?: NativeTemporal['regulatePlainTimeResult']
+  addPlainTimeResult?: NativeTemporal['addPlainTimeResult']
+  roundPlainTimeResult?: NativeTemporal['roundPlainTimeResult']
+  formatPlainTime?: NativeTemporal['formatPlainTime']
+  differencePlainTime?: NativeTemporal['differencePlainTime']
+  formatDuration?: NativeTemporal['formatDuration']
+  parsePlainDateTime?: NativeTemporal['parsePlainDateTime']
+  formatPlainDateTime?: NativeTemporal['formatPlainDateTime']
+  formatZonedDateTime?: NativeTemporal['formatZonedDateTime']
+  addPlainYearMonth?: NativeTemporal['addPlainYearMonth']
+  yearMonthToDate?: NativeTemporal['yearMonthToDate']
+  monthDayToDate?: NativeTemporal['monthDayToDate']
+  createISODate?: NativeTemporal['createISODate']
+  parseInstant?: NativeTemporal['parseInstant']
+  formatInstant?: NativeTemporal['formatInstant']
+  addInstant?: NativeTemporal['addInstant']
+  addPlainDate?: NativeTemporal['addPlainDate']
+  roundInstantUnit?: NativeTemporal['roundInstantUnit']
+  timeZoneTransition?: NativeTemporal['timeZoneTransition']
+  resolveZonedDateTime?: NativeTemporal['resolveZonedDateTime']
+  parseZonedFields?: NativeTemporal['parseZonedFields']
+  roundZonedDateTime?: NativeTemporal['roundZonedDateTime']
+  addZonedDateTime?: NativeTemporal['addZonedDateTime']
+  startOfZonedDay?: NativeTemporal['startOfZonedDay']
+  differencePlainYearMonth?: NativeTemporal['differencePlainYearMonth']
+  differencePlainDate?: NativeTemporal['differencePlainDate']
+  differencePlainDateTime?: NativeTemporal['differencePlainDateTime']
+  differenceInstant?: NativeTemporal['differenceInstant']
+  parseDuration?: NativeTemporal['parseDuration']
+  addDuration?: NativeTemporal['addDuration']
+  transformDuration?: NativeTemporal['transformDuration']
+}
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
 const stringify = JSON.stringify
@@ -28,14 +104,110 @@ const indexOf = String.prototype.indexOf
 const apply = Reflect.apply
 const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
+const ToNumber = Number
+// Temporal comparison §4.5.18 step 4.
+// Capture the numeric clock operand serializer.
+const numberText = /* @__PURE__ */ (() => Number.prototype.toString)()
 const BadRange = RangeError
+const BadType = TypeError
+type DateTimeParts = Intl.DateTimeFormat['formatToParts']
+const LegacyProviderMap = WeakMap
+const legacyProviderGet = LegacyProviderMap.prototype.get
+const legacyProviderSet = LegacyProviderMap.prototype.set
+let legacyZoneProviders:
+  | WeakMap<Intl.DateTimeFormatConstructor, WeakMap<DateTimeParts, true>>
+  | undefined
+
+export function hasRegisteredLegacyTimeZoneProvider(): boolean {
+  return legacyZoneProviders !== undefined
+}
+
+// Proposal comparison §11.1.9 step 3: Keep installed legacy provider identities private.
+export function registerLegacyTimeZoneProvider(
+  constructor: Intl.DateTimeFormatConstructor,
+  parts: DateTimeParts
+): void {
+  const providers = (legacyZoneProviders ??= new LegacyProviderMap())
+  let methods = apply(legacyProviderGet, providers, [constructor]) as
+    | WeakMap<DateTimeParts, true>
+    | undefined
+  if (!methods) {
+    methods = new LegacyProviderMap()
+    apply(legacyProviderSet, providers, [constructor, methods])
+  }
+  apply(legacyProviderSet, methods, [parts, true])
+}
+
+// Proposal comparison §11.1.9 step 3: Identify the captured legacy offset reader.
+export function hasLegacyTimeZoneProvider(
+  constructor: Intl.DateTimeFormatConstructor,
+  parts: DateTimeParts
+): boolean {
+  if (!legacyZoneProviders) return false
+  const methods = apply(legacyProviderGet, legacyZoneProviders, [
+    constructor,
+  ]) as WeakMap<DateTimeParts, true> | undefined
+  return (
+    methods !== undefined && apply(legacyProviderGet, methods, [parts]) === true
+  )
+}
+
+export interface NativeDateSnapshot {
+  date: CalendarDate | null
+  values: Record<string, string | number | boolean | bigint | undefined>
+  errors: string[]
+  owner?: NativeTemporal
+}
 export interface NativeTemporal {
+  parsePlainTimeResult(value: string): NativeTimeResult
+  regulatePlainTimeResult(
+    values: number[],
+    constrain: boolean
+  ): NativeTimeResult
+  addPlainTimeResult(
+    value: bigint | number,
+    fields: DurationFields,
+    subtract: boolean
+  ): NativeTimeResult
+  roundPlainTimeResult(
+    value: bigint | number,
+    unit: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): NativeTimeResult
+
+  createISODate(fields: Record<string, unknown>, overflow: Overflow): DateSlot
+  withDate(
+    slot: DateSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow,
+    shape?: 'date' | 'year-month' | 'month-day'
+  ): DateSlot
+  withDateTime(
+    slot: DateTimeSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow
+  ): DateTimeSlot
+  withZoned(
+    slot: ZonedSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow,
+    disambiguation: Disambiguation,
+    behavior: string
+  ): ZonedSlot
+  calendarProperties(
+    calendar: string,
+    epoch: number,
+    extended: boolean,
+    nanoseconds?: bigint
+  ): NativeDateSnapshot
+  zonedProperties(slot: ZonedSlot): NativeDateSnapshot
   addPlainYearMonth(
     slot: DateSlot,
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): number
+  ): DateSlot
   differencePlainYearMonth(
     start: DateSlot,
     end: DateSlot,
@@ -45,8 +217,8 @@ export interface NativeTemporal {
     mode: RoundingMode,
     since: boolean
   ): DurationFields
-  yearMonthToDate(slot: DateSlot, day: number): number
-  monthDayToDate(slot: DateSlot, year: number): number
+  yearMonthToDate(slot: DateSlot, day: number): DateSlot
+  monthDayToDate(slot: DateSlot, year: number): DateSlot
   formatPlainDate(slot: DateSlot, calendarName: string): string
   formatPlainDateTime(
     value: bigint,
@@ -69,10 +241,13 @@ export interface NativeTemporal {
   parsePlainDateTime(value: string): DateTimeSlot
   parsePlainYearMonth(value: string): DateSlot
   parsePlainMonthDay(value: string): DateSlot
+  // Validate syntax/fields only; callers read options before representability.
   parseZonedFields(value: string): {
     fields: Required<ISODateTime> & {calendar: string}
     timeZone: string
     offset: string | undefined
+    localNanoseconds?: bigint
+    validatedTimeZone?: string
   }
   resolveZonedDateTime(
     value: bigint,
@@ -83,13 +258,13 @@ export interface NativeTemporal {
     disambiguation: Disambiguation,
     matchMinute: boolean,
     dateOnly: boolean
-  ): bigint
+  ): ZonedSlot
   addZonedDateTime(
     slot: ZonedSlot,
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): bigint
+  ): ZonedSlot
   differenceZonedDateTime(
     start: ZonedSlot,
     end: ZonedSlot,
@@ -104,8 +279,8 @@ export interface NativeTemporal {
     unit: string,
     increment: number,
     mode: RoundingMode
-  ): bigint
-  startOfZonedDay(slot: ZonedSlot, day?: number): bigint
+  ): ZonedSlot
+  startOfZonedDay(slot: ZonedSlot, day?: number): ZonedSlot
   hoursInZonedDay(slot: ZonedSlot): number
   addPlainDate(
     epochDay: number,
@@ -113,14 +288,14 @@ export interface NativeTemporal {
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): number
+  ): DateSlot
   addPlainDateTime(
     value: bigint,
     calendar: string,
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): bigint
+  ): DateTimeSlot
   differencePlainDate(
     start: number,
     end: number,
@@ -147,7 +322,7 @@ export interface NativeTemporal {
     unit: string,
     increment: number,
     mode: RoundingMode
-  ): bigint
+  ): DateTimeSlot
   transformDuration(fields: DurationFields, absolute: boolean): DurationFields
   parseDuration(value: string): DurationFields
   validateDuration(fields: DurationFields): void
@@ -225,7 +400,7 @@ export interface NativeTemporal {
   parsePlainTime(value: string): bigint
   regulatePlainTime(values: number[], constrain: boolean): bigint
   formatPlainTime(
-    value: bigint,
+    value: bigint | number,
     precision: Precision,
     mode: RoundingMode
   ): string
@@ -241,16 +416,28 @@ export interface NativeTemporal {
     mode: RoundingMode
   ): bigint
   differencePlainTime(
-    value: bigint,
-    other: bigint,
+    value: bigint | number,
+    other: bigint | number,
     largest: TimeUnit,
     smallest: TimeUnit,
     increment: number,
     mode: RoundingMode
   ): DurationFields
   parseInstant(value: string): bigint
-  formatInstant(value: bigint, precision: Precision, offset?: bigint): string
+  formatInstant(
+    value: bigint,
+    precision: Precision,
+    offset?: bigint,
+    mode?: RoundingMode,
+    identifier?: string
+  ): string
   addInstant(value: bigint, duration: DurationFields, subtract: boolean): bigint
+  roundInstantUnit(
+    value: bigint,
+    unit: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
   roundInstant(value: bigint, quantum: bigint, mode: RoundingMode): bigint
   differenceInstant(
     value: bigint,
@@ -262,13 +449,36 @@ export interface NativeTemporal {
   ): DurationFields
 }
 let native: NativeTemporal | undefined
+// Temporal comparison §8.5.8 step 5.
+// Select the supplied backend for Instant string formatting.
 export function nativeTemporal(): NativeTemporal | undefined {
   return native
 }
+// Temporal comparison §8.5.10 step 6.
+// Configure the native adapter, including prepared Instant addition.
 /** @internal Experimental Hermes backend installation. */
-export function configureNativeTemporal(query: NativeQuery): void {
+export function configureNativeTemporal(
+  query: NativeQuery,
+  invoke?: NativeCall
+): void {
+  const formatDate = invoke?.formatDate
+  const addPlainDate = invoke?.addPlainDate
+  const parseDate = invoke?.parseDate
+  const parseDateTime = invoke?.parsePlainDateTime
+  const addDateTime = invoke?.addPlainDateTime
+  const roundDateTime = invoke?.roundPlainDateTime
+  const formatDateTime = invoke?.formatPlainDateTime
+  // Temporal comparison §8.5.5 step 1.
+  // Encode a prepared BigInt operand for native addition.
   const text = (value: bigint) => apply(bigintText, value, [])
+  // Temporal comparison §4.5.18 step 4.
+  // Encode prepared bounded numeric or BigInt clock operands.
+  const clockText = (value: bigint | number) =>
+    typeof value === 'number' ? apply(numberText, value, []) : text(value)
+  // Temporal comparison §3.5.4 step 4.
+  // Guard legacy JSON parse input against escaped code units.
   function call(op: string, properties: Record<string, unknown>): any {
+    if (invoke) return invoke(op, properties)
     const input = create(null)
     input.op = op
     const names = keys(properties)
@@ -286,19 +496,54 @@ export function configureNativeTemporal(query: NativeQuery): void {
       throw new BadRange('Invalid Temporal value or range')
     return parse(result)
   }
+  // Temporal comparison §12.3.31 step 2.a, §12.3.30 field requirements.
+  // Check prepared non-ISO era pairs and month-day year information.
+  function withFields(
+    calendar: string,
+    fields: Record<string, unknown>,
+    shape?: string
+  ): Record<string, unknown> {
+    if (
+      calendar !== 'iso8601' &&
+      calendar !== 'chinese' &&
+      calendar !== 'dangi' &&
+      (fields.era === undefined) !== (fields.eraYear === undefined)
+    )
+      throw new BadType('era and eraYear required together')
+    if (
+      shape === 'month-day' &&
+      calendar !== 'iso8601' &&
+      fields.month !== undefined &&
+      fields.monthCode === undefined &&
+      fields.year === undefined &&
+      fields.eraYear === undefined
+    )
+      throw new BadType('monthCode or year required')
+    return fields
+  }
+  // Temporal comparison §11.1.11 step 1.
+  // Marshal prepared ISO fields for possible epoch lookup.
   function isoFields(fields: ISODateTime): Record<string, number> {
     const copy = create(null)
     copy.year = fields.year
     copy.month = fields.month
     copy.day = fields.day
-    copy.hour = fields.hour ?? 0
-    copy.minute = fields.minute ?? 0
-    copy.second = fields.second ?? 0
-    copy.millisecond = fields.millisecond ?? 0
-    copy.microsecond = fields.microsecond ?? 0
-    copy.nanosecond = fields.nanosecond ?? 0
+    copy.hour = HasOwnProperty(fields, 'hour') ? (fields.hour ?? 0) : 0
+    copy.minute = HasOwnProperty(fields, 'minute') ? (fields.minute ?? 0) : 0
+    copy.second = HasOwnProperty(fields, 'second') ? (fields.second ?? 0) : 0
+    copy.millisecond = HasOwnProperty(fields, 'millisecond')
+      ? (fields.millisecond ?? 0)
+      : 0
+    copy.microsecond = HasOwnProperty(fields, 'microsecond')
+      ? (fields.microsecond ?? 0)
+      : 0
+    copy.nanosecond = HasOwnProperty(fields, 'nanosecond')
+      ? (fields.nanosecond ?? 0)
+      : 0
     return copy
   }
+  // Temporal comparison §11.1.10 step 2.
+  // Transport the exact epoch to the ISO field projection.
   function request(
     op: string,
     fields?: ISODateTime,
@@ -306,7 +551,6 @@ export function configureNativeTemporal(query: NativeQuery): void {
     days?: number
   ): any {
     const record = create(null)
-    record.op = op
     if (fields) {
       record.fields = isoFields(fields)
     }
@@ -314,6 +558,8 @@ export function configureNativeTemporal(query: NativeQuery): void {
     if (days !== undefined) record.days = days
     return call(op, record)
   }
+  // Temporal comparison §8.5.5 step 1, §4.5.18 step 4.
+  // Transport prepared epoch or clock addition operands.
   function addition(
     op: string,
     value: bigint,
@@ -328,7 +574,39 @@ export function configureNativeTemporal(query: NativeQuery): void {
       })
     )
   }
-  function durationFields(fields: DurationFields): Record<string, string> {
+  // Temporal comparison §4.5.2 step 3.
+  // Decode native clock fields into a prepared time result.
+  function clockResult(value: any): NativeTimeResult {
+    if (typeof value === 'string') {
+      const nanoseconds =
+        ((ToBigInt(value) % 86400000000000n) + 86400000000000n) %
+        86400000000000n
+      const fields = request('epochNanosecondsToISO', undefined, nanoseconds)
+      return {
+        nanoseconds: ToNumber(nanoseconds),
+        fields: [
+          fields.hour,
+          fields.minute,
+          fields.second,
+          fields.millisecond,
+          fields.microsecond,
+          fields.nanosecond,
+        ],
+        bigintNanoseconds: nanoseconds,
+      }
+    }
+    return {
+      nanoseconds: ToNumber(value.nanoseconds),
+      fields: value.fields,
+      bigintNanoseconds: undefined,
+    }
+  }
+  // Temporal comparison §8.5.10 step 6.
+  // Marshal prepared duration fields for native instant addition.
+  function durationFields(
+    fields: DurationFields
+  ): DurationFields | Record<string, string> {
+    if (invoke) return fields
     const duration = create(null)
     const names = keys(fields)
     for (let index = 0; index < names.length; index++)
@@ -337,6 +615,8 @@ export function configureNativeTemporal(query: NativeQuery): void {
       )
     return duration
   }
+  // Temporal comparison §12.3.12 step 2.
+  // Marshal prepared calendar-date conversion fields.
   function dateFields(value: CalendarFields): Record<string, unknown> {
     const fields = create(null)
     fields.year = value.year
@@ -345,12 +625,16 @@ export function configureNativeTemporal(query: NativeQuery): void {
     fields.day = value.day
     return fields
   }
+  // Temporal comparison §3.5.11 steps 1, 4, §9.5.6 steps 1, 5, §10.5.3 steps 1, 5.
+  // Marshal the private date and calendar for short formatting.
   function shortFields(slot: DateSlot): Record<string, unknown> {
     const result = create(null)
     result.epochDay = slot.epochDay
     result.calendar = slot.calendar
     return result
   }
+  // Temporal comparison §6.5.4 steps 4, 6, 14.
+  // Marshal the private zoned epoch, identifier and calendar.
   function zonedFields(slot: ZonedSlot): Record<string, unknown> {
     const result = create(null)
     result.nanoseconds = text(slot.epochNanoseconds)
@@ -358,6 +642,8 @@ export function configureNativeTemporal(query: NativeQuery): void {
     result.identifier = slot.timeZone
     return result
   }
+  // Temporal comparison §7.3.20 steps 27.b, 27.c, 27.d, 28.c, 28.e.
+  // Marshal the prepared zoned or plain duration anchor.
   function relativeFields(
     relative?: RelativeTo
   ): Record<string, unknown> | undefined {
@@ -373,14 +659,107 @@ export function configureNativeTemporal(query: NativeQuery): void {
     result.calendar = relative.date.calendar
     return result
   }
+  // Temporal comparison §3.5.3 steps 4, 5.
+  // Decode prepared date and calendar values for slot creation.
+  function dateResult(value: any, calendar?: string): DateSlot {
+    if (typeof value === 'number') return {epochDay: value, calendar: calendar!}
+    if (value.properties) value.properties.owner = native
+    return value
+  }
+  // Temporal comparison §5.5.8 steps 4, 5, §6.5.3 steps 4, 5, 6.
+  // Decode the exact epoch and metadata for slot creation.
+  function timeResult(value: any, calendar?: string, timeZone?: string): any {
+    if (typeof value === 'string')
+      return {epochNanoseconds: ToBigInt(value), calendar, timeZone}
+    value.epochNanoseconds = ToBigInt(value.epochNanoseconds)
+    if (value.properties) value.properties.owner = native
+    return value
+  }
   native = {
-    addPlainYearMonth: (slot, fields, subtract, overflow) =>
-      call('addPlainYearMonth', {
-        value: shortFields(slot),
-        duration: durationFields(fields),
-        subtract,
-        overflow,
+    // Temporal comparison §3.3.23 steps 7, 10, §9.3.13 steps 7, 10, §10.3.6 steps 7, 10.
+    // Forward date or short-date field merge and conversion.
+    withDate: (slot, fields, overflow, shape = 'date') =>
+      dateResult(
+        slot.calendar === 'iso8601' && invoke?.withISODate
+          ? invoke.withISODate(
+              shape === 'date'
+                ? 'withPlainDate'
+                : shape === 'year-month'
+                  ? 'withPlainYearMonth'
+                  : 'withPlainMonthDay',
+              slot,
+              fields,
+              overflow
+            )
+          : call(
+              shape === 'date'
+                ? 'withPlainDate'
+                : shape === 'year-month'
+                  ? 'withPlainYearMonth'
+                  : 'withPlainMonthDay',
+              {
+                value: shortFields(slot),
+                fields: withFields(slot.calendar, fields, shape),
+                overflow,
+              }
+            ),
+        slot.calendar
+      ),
+    // Temporal comparison §5.3.25 steps 13, 16.
+    // Forward date-time field merge and conversion.
+    withDateTime: (slot, fields, overflow) =>
+      timeResult(
+        call('withPlainDateTime', {
+          nanoseconds: text(slot.epochNanoseconds),
+          calendar: slot.calendar,
+          fields: withFields(slot.calendar, fields),
+          overflow,
+        }),
+        slot.calendar
+      ),
+    // Temporal comparison §6.3.31 steps 18, 23, 25.
+    // Forward zoned field merge and offset interpretation.
+    withZoned: (slot, fields, overflow, disambiguation, behavior) =>
+      timeResult(
+        call('withZonedDateTime', {
+          value: zonedFields(slot),
+          fields: withFields(slot.calendar, fields),
+          overflow,
+          disambiguation,
+          behavior,
+        }),
+        slot.calendar,
+        slot.timeZone
+      ),
+    // Temporal comparison §12.3.26 steps 1.b, 2.
+    // Forward the date slot for calendar field projection.
+    calendarProperties: (calendar, epoch, extended, nanoseconds) =>
+      call('calendarProperties', {
+        calendar,
+        epoch,
+        extended,
+        nanoseconds: nanoseconds === undefined ? undefined : text(nanoseconds),
       }),
+    // Temporal comparison §6.3.8 steps 3, 4.
+    // Forward the zoned slot for local and calendar projection.
+    zonedProperties: slot =>
+      call('zonedProperties', {value: zonedFields(slot)}),
+    // Temporal comparison §9.5.8 steps 11, 12, 14.
+    // Forward year-month calendar addition and projection.
+    addPlainYearMonth: (slot, fields, subtract, overflow) =>
+      dateResult(
+        invoke?.addPlainYearMonth
+          ? invoke.addPlainYearMonth(slot, fields, subtract, overflow)
+          : call('addPlainYearMonth', {
+              value: shortFields(slot),
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
+        slot.calendar
+      ),
+    // Temporal comparison §9.5.7 steps 13, 16.e, 18.
+    // Forward year-month difference, rounding and direction.
     differencePlainYearMonth: (
       start,
       end,
@@ -390,33 +769,78 @@ export function configureNativeTemporal(query: NativeQuery): void {
       mode,
       since
     ) =>
-      call('differencePlainYearMonth', {
-        value: shortFields(start),
-        other: shortFields(end),
-        largest,
-        smallest,
-        increment,
-        mode,
-        since,
-      }),
+      invoke?.differencePlainYearMonth
+        ? invoke.differencePlainYearMonth(
+            start,
+            end,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since
+          )
+        : call('differencePlainYearMonth', {
+            value: shortFields(start),
+            other: shortFields(end),
+            largest,
+            smallest,
+            increment,
+            mode,
+            since,
+          }),
+    // Temporal comparison §9.3.23 steps 7, 8.
+    // Forward the reference month and prepared day.
     yearMonthToDate: (slot, day) =>
-      call('yearMonthToDate', {value: shortFields(slot), day}),
+      dateResult(
+        invoke?.yearMonthToDate
+          ? invoke.yearMonthToDate(slot, day)
+          : call('yearMonthToDate', {value: shortFields(slot), day}),
+        slot.calendar
+      ),
+    // Temporal comparison §10.3.12 steps 7, 8.
+    // Forward the reference month-day and prepared year.
     monthDayToDate: (slot, year) =>
-      call('monthDayToDate', {value: shortFields(slot), year}),
+      dateResult(
+        invoke?.monthDayToDate
+          ? invoke.monthDayToDate(slot, year)
+          : call('monthDayToDate', {value: shortFields(slot), year}),
+        slot.calendar
+      ),
+    // Temporal comparison §3.5.11 steps 1, 2, 3, 4, 5.
+    // Forward date and calendar display to native formatting.
     formatPlainDate: (slot, calendarName) =>
-      call('formatPlainDate', {value: shortFields(slot), calendarName}),
+      formatDate
+        ? formatDate('formatPlainDate', slot, calendarName)
+        : call('formatPlainDate', {value: shortFields(slot), calendarName}),
+    // Temporal comparison §5.5.9 steps 4, 5, 6, 7.
+    // Forward date-time precision and calendar display.
     formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
-      call('formatPlainDateTime', {
-        nanoseconds: text(value),
-        calendar,
-        precision,
-        mode,
-        calendarName,
-      }),
+      formatDateTime
+        ? formatDateTime(value, calendar, precision, mode, calendarName)
+        : call('formatPlainDateTime', {
+            nanoseconds: text(value),
+            calendar,
+            precision,
+            mode,
+            calendarName,
+          }),
+    // Temporal comparison §9.5.6 steps 4.a, 5, 7.
+    // Forward the reference day and calendar display.
     formatPlainYearMonth: (slot, calendarName) =>
-      call('formatPlainYearMonth', {value: shortFields(slot), calendarName}),
+      formatDate
+        ? formatDate('formatPlainYearMonth', slot, calendarName)
+        : call('formatPlainYearMonth', {
+            value: shortFields(slot),
+            calendarName,
+          }),
+    // Temporal comparison §10.5.3 steps 4.a, 5, 7.
+    // Forward the reference year and calendar display.
     formatPlainMonthDay: (slot, calendarName) =>
-      call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
+      formatDate
+        ? formatDate('formatPlainMonthDay', slot, calendarName)
+        : call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
+    // Temporal comparison §6.5.4 steps 5, 9, 11.a, 13.b, 14, 15.
+    // Forward zoned precision and annotation display.
     formatZonedDateTime: (
       slot,
       precision,
@@ -425,32 +849,90 @@ export function configureNativeTemporal(query: NativeQuery): void {
       offset,
       timeZoneName
     ) =>
-      call('formatZonedDateTime', {
-        value: zonedFields(slot),
-        precision,
-        mode,
-        calendarName,
-        offset,
-        timeZoneName,
-      }),
-    parsePlainDate: value => call('parsePlainDate', {text: value}),
-    parsePlainDateTime: value => {
-      const result = call('parsePlainDateTime', {text: value})
-      return {
-        epochNanoseconds: ToBigInt(result.epochNanoseconds),
-        calendar: result.calendar,
-      }
+      invoke?.formatZonedDateTime
+        ? invoke.formatZonedDateTime(
+            slot,
+            precision,
+            mode,
+            calendarName,
+            offset,
+            timeZoneName
+          )
+        : call('formatZonedDateTime', {
+            value: zonedFields(slot),
+            precision,
+            mode,
+            calendarName,
+            offset,
+            timeZoneName,
+          }),
+    // Temporal comparison §12.3.31 steps 1.e, 1.f, 1.g, §12.3.12 step 2.
+    // Check required ISO fields before native date conversion.
+    createISODate: (fields, overflow) => {
+      if (fields.year === undefined) throw new BadType('Year required')
+      if (fields.day === undefined) throw new BadType('Day required')
+      if (fields.month === undefined && fields.monthCode === undefined)
+        throw new BadType('Month or monthCode required')
+      return dateResult(
+        invoke?.createISODate
+          ? invoke.createISODate(fields, overflow)
+          : {
+              epochDay: call('calendarToEpochDay', {
+                calendar: 'iso8601',
+                fields,
+                overflow,
+              }),
+              calendar: 'iso8601',
+            }
+      )
     },
-    parsePlainYearMonth: value => call('parsePlainYearMonth', {text: value}),
-    parsePlainMonthDay: value => call('parsePlainMonthDay', {text: value}),
+    // Temporal comparison §3.5.4 steps 4, 5.
+    // Forward the plain date string to native parsing.
+    parsePlainDate: value =>
+      dateResult(
+        parseDate
+          ? parseDate(value, 'parsePlainDate')
+          : call('parsePlainDate', {text: value})
+      ),
+    // Temporal comparison §5.5.6 steps 4, 5.
+    // Forward the plain date-time string to native parsing.
+    parsePlainDateTime: value =>
+      timeResult(
+        parseDateTime
+          ? parseDateTime(value)
+          : call('parsePlainDateTime', {text: value})
+      ),
+    // Temporal comparison §9.5.2 steps 4, 14.
+    // Forward the year-month string to native parsing and projection.
+    parsePlainYearMonth: value =>
+      dateResult(
+        parseDate
+          ? parseDate(value, 'parsePlainYearMonth')
+          : call('parsePlainYearMonth', {text: value})
+      ),
+    // Temporal comparison §10.5.1 steps 4, 10.b, 15.
+    // Forward the month-day string to native parsing and projection.
+    parsePlainMonthDay: value =>
+      dateResult(
+        parseDate
+          ? parseDate(value, 'parsePlainMonthDay')
+          : call('parsePlainMonthDay', {text: value})
+      ),
+    // Temporal comparison §6.5.2 steps 5.b, 5.c, 5.f.
+    // Forward zoned string parsing and unpack its fields.
     parseZonedFields: value => {
+      if (invoke?.parseZonedFields) return invoke.parseZonedFields(value)
       const result = call('parseZonedFields', {text: value})
       return {
         fields: result.fields,
         timeZone: result.timeZone,
         offset: result.offset ?? undefined,
+        localNanoseconds: undefined,
+        validatedTimeZone: undefined,
       }
     },
+    // Temporal comparison §6.5.2 step 11.
+    // Forward prepared offset matching and disambiguation.
     resolveZonedDateTime: (
       value,
       identifier,
@@ -461,27 +943,48 @@ export function configureNativeTemporal(query: NativeQuery): void {
       matchMinute,
       dateOnly
     ) =>
-      ToBigInt(
-        call('resolveZonedDateTime', {
-          nanoseconds: text(value),
-          identifier,
-          calendar,
-          offset,
-          behavior,
-          disambiguation,
-          matchMinute,
-          dateOnly,
-        })
+      timeResult(
+        invoke?.resolveZonedDateTime
+          ? invoke.resolveZonedDateTime(
+              value,
+              identifier,
+              calendar,
+              offset,
+              behavior,
+              disambiguation,
+              matchMinute,
+              dateOnly
+            )
+          : call('resolveZonedDateTime', {
+              nanoseconds: text(value),
+              identifier,
+              calendar,
+              offset,
+              behavior,
+              disambiguation,
+              matchMinute,
+              dateOnly,
+            }),
+        calendar,
+        identifier
       ),
+    // Temporal comparison §6.5.10 step 8.
+    // Forward zoned duration addition with overflow and sign.
     addZonedDateTime: (slot, fields, subtract, overflow) =>
-      ToBigInt(
-        call('addZonedDateTime', {
-          value: zonedFields(slot),
-          duration: durationFields(fields),
-          subtract,
-          overflow,
-        })
+      timeResult(
+        invoke?.addZonedDateTime
+          ? invoke.addZonedDateTime(slot, fields, subtract, overflow)
+          : call('addZonedDateTime', {
+              value: zonedFields(slot),
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
+        slot.calendar,
+        slot.timeZone
       ),
+    // Temporal comparison §6.5.9 steps 5.a, 9.
+    // Forward both zoned endpoints and difference settings.
     differenceZonedDateTime: (
       start,
       end,
@@ -500,37 +1003,67 @@ export function configureNativeTemporal(query: NativeQuery): void {
         mode,
         since,
       }),
+    // Temporal comparison §6.3.39 steps 19.i, 20.a, 20.c.
+    // Forward zoned day or clock rounding.
     roundZonedDateTime: (slot, unit, increment, mode) =>
-      ToBigInt(
-        call('roundZonedDateTime', {
-          value: zonedFields(slot),
-          unit,
-          increment,
-          mode,
-        })
+      timeResult(
+        invoke?.roundZonedDateTime
+          ? invoke.roundZonedDateTime(slot, unit, increment, mode)
+          : call('roundZonedDateTime', {
+              value: zonedFields(slot),
+              unit,
+              increment,
+              mode,
+            }),
+        slot.calendar,
+        slot.timeZone
       ),
+    // Temporal comparison §6.3.45 step 6, §6.5.1 step 1.c.
+    // Forward the zoned start-of-day calculation.
     startOfZonedDay: (slot, day) =>
-      ToBigInt(call('startOfZonedDay', {value: zonedFields(slot), day})),
+      timeResult(
+        invoke?.startOfZonedDay
+          ? invoke.startOfZonedDay(slot, day)
+          : call('startOfZonedDay', {value: zonedFields(slot), day}),
+        slot.calendar,
+        slot.timeZone
+      ),
+    // Temporal comparison §6.3.23 steps 7, 8, 9, 10.
+    // Forward the zoned day-length calculation.
     hoursInZonedDay: slot =>
       call('hoursInZonedDay', {value: zonedFields(slot)}),
+    // Temporal comparison §3.5.15 step 7.
+    // Forward prepared calendar-date addition.
     addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
-      call('addPlainDate', {
-        epochDay,
-        calendar,
-        duration: durationFields(fields),
-        subtract,
-        overflow,
-      }),
-    addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
-      ToBigInt(
-        call('addPlainDateTime', {
-          nanoseconds: text(value),
-          calendar,
-          duration: durationFields(fields),
-          subtract,
-          overflow,
-        })
+      dateResult(
+        addPlainDate
+          ? addPlainDate(epochDay, calendar, fields, subtract, overflow)
+          : call('addPlainDate', {
+              epochDay,
+              calendar,
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
+        calendar
       ),
+    // Temporal comparison §5.5.16 steps 6, 8, 9.
+    // Forward date-time addition and calendar balancing.
+    addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
+      timeResult(
+        addDateTime
+          ? addDateTime(value, calendar, fields, subtract, overflow)
+          : call('addPlainDateTime', {
+              nanoseconds: text(value),
+              calendar,
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
+        calendar
+      ),
+    // Temporal comparison §3.5.14 steps 6, 8.e, 10.
+    // Forward date difference, optional rounding and direction.
     differencePlainDate: (
       start,
       end,
@@ -541,16 +1074,29 @@ export function configureNativeTemporal(query: NativeQuery): void {
       mode,
       since
     ) =>
-      call('differencePlainDate', {
-        epochDay: start,
-        other: end,
-        calendar,
-        largest,
-        smallest,
-        increment,
-        mode,
-        since,
-      }),
+      invoke?.differencePlainDate
+        ? invoke.differencePlainDate(
+            start,
+            end,
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since
+          )
+        : call('differencePlainDate', {
+            epochDay: start,
+            other: end,
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since,
+          }),
+    // Temporal comparison §5.5.15 steps 6, 8.
+    // Forward date-time difference, rounding and direction.
     differencePlainDateTime: (
       start,
       end,
@@ -561,57 +1107,93 @@ export function configureNativeTemporal(query: NativeQuery): void {
       mode,
       since
     ) =>
-      call('differencePlainDateTime', {
-        nanoseconds: text(start),
-        other: text(end),
-        calendar,
-        largest,
-        smallest,
-        increment,
-        mode,
-        since,
-      }),
+      invoke?.differencePlainDateTime
+        ? invoke.differencePlainDateTime(
+            start,
+            end,
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since
+          )
+        : call('differencePlainDateTime', {
+            nanoseconds: text(start),
+            other: text(end),
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since,
+          }),
+    // Temporal comparison §5.5.11 steps 2, 3, 4.
+    // Forward local clock rounding and day carry.
     roundPlainDateTime: (value, calendar, unit, increment, mode) =>
-      ToBigInt(
-        call('roundPlainDateTime', {
-          nanoseconds: text(value),
-          calendar,
-          unit,
-          increment,
-          mode,
-        })
+      timeResult(
+        roundDateTime
+          ? roundDateTime(value, calendar, unit, increment, mode)
+          : call('roundPlainDateTime', {
+              nanoseconds: text(value),
+              calendar,
+              unit,
+              increment,
+              mode,
+            }),
+        calendar
       ),
     transformDuration: (fields, absolute) =>
-      call('transformDuration', {duration: durationFields(fields), absolute}),
-    parseDuration: value => call('parseDuration', {text: value}),
+      // Proposal comparison §§7.3.16–7.3.17 step3: transport to Duration::negated/abs.
+      invoke?.transformDuration
+        ? invoke.transformDuration(fields, absolute)
+        : call('transformDuration', {
+            duration: durationFields(fields),
+            absolute,
+          }),
+    parseDuration: value =>
+      // Proposal comparison §13.37: parser dependency; Rust Duration::from_str owns syntax.
+      invoke?.parseDuration
+        ? invoke.parseDuration(value)
+        : call('parseDuration', {text: value}),
     validateDuration: fields => {
+      // Proposal comparison §7.5.16 steps1–9: transport to Duration::new validation.
       call('validateDuration', {duration: durationFields(fields)})
     },
     formatDuration: (fields, precision, mode) =>
-      call('formatDuration', {
-        duration: durationFields(fields),
-        precision,
-        mode,
-      }),
+      // Proposal comparison §7.5.40: formatting dependency; Duration::format owns output.
+      invoke?.formatDuration
+        ? invoke.formatDuration(fields, precision, mode)
+        : call('formatDuration', {
+            duration: durationFields(fields),
+            precision,
+            mode,
+          }),
     addDuration: (one, two, subtract) =>
-      call('addDuration', {
-        duration: durationFields(one),
-        other: durationFields(two),
-        subtract,
-      }),
+      // Proposal comparison §7.5.41 steps2–11: transport to checked_add/checked_subtract.
+      invoke?.addDuration
+        ? invoke.addDuration(one, two, subtract)
+        : call('addDuration', {
+            duration: durationFields(one),
+            other: durationFields(two),
+            subtract,
+          }),
     compareDuration: (one, two, relative) =>
+      // Proposal comparison §7.2.3 steps12–17: DurationAnchor::compare/compare_time dependency.
       call('compareDuration', {
         duration: durationFields(one),
         other: durationFields(two),
         relative: relativeFields(relative),
       }),
     totalDuration: (fields, unit, relative) =>
+      // Proposal comparison §7.3.21 steps12–15: DurationAnchor::total/Duration::total dependency.
       call('totalDuration', {
         duration: durationFields(fields),
         unit,
         relative: relativeFields(relative),
       }),
     roundDuration: (fields, largest, smallest, increment, mode, relative) =>
+      // Proposal comparison §7.3.20 steps27–34: DurationAnchor::round/Duration::round dependency.
       call('roundDuration', {
         duration: durationFields(fields),
         largest,
@@ -620,7 +1202,11 @@ export function configureNativeTemporal(query: NativeQuery): void {
         mode,
         relative: relativeFields(relative),
       }),
+    // Temporal comparison §11.1.8 steps 5, 7, 8, 9, §11.1.15 step 2.e.
+    // Forward zone identity for canonical and primary identifiers.
     timeZoneIdentity: identifier => call('timeZoneIdentity', {identifier}),
+    // Temporal comparison §11.1.9 steps 2, 3.
+    // Forward the zone and exact epoch for offset lookup.
     timeZoneOffset: (identifier, value) =>
       ToBigInt(call('timeZoneOffset', {identifier, nanoseconds: text(value)})),
     timeZonePossibleInstants: (identifier, fields) => {
@@ -628,11 +1214,15 @@ export function configureNativeTemporal(query: NativeQuery): void {
         identifier,
         fields: isoFields(fields),
       })
+      // Proposal comparison §11.1.13 step5: transport private candidate List.
+      // https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds
       const result: bigint[] = []
       for (let index = 0; index < values.length; index++)
-        result.push(ToBigInt(values[index]))
+        result[index] = ToBigInt(values[index])
       return result
     },
+    // Temporal comparison §11.1.11 steps 1, 2.
+    // Forward ISO fields and candidate disambiguation.
     timeZoneResolve: (identifier, fields, disambiguation) =>
       ToBigInt(
         call('timeZoneResolve', {
@@ -641,28 +1231,44 @@ export function configureNativeTemporal(query: NativeQuery): void {
           disambiguation,
         })
       ),
-    timeZoneTransition: (identifier, value, direction) => {
-      const result = call('timeZoneTransition', {
-        identifier,
-        nanoseconds: text(value),
-        direction,
-      })
-      return result === null ? null : ToBigInt(result)
-    },
+    timeZoneTransition:
+      invoke?.timeZoneTransition ??
+      // Temporal comparison §6.3.46 steps 9.a, 10.b, 11.
+      // Forward the transition direction and restore its exact epoch.
+      ((identifier, value, direction) => {
+        const result = call('timeZoneTransition', {
+          identifier,
+          nanoseconds: text(value),
+          direction,
+        })
+        return result === null ? null : ToBigInt(result)
+      }),
+    // Temporal comparison §3.3.11 step 3, §3.3.16 step 3.
+    // Forward calendar year-start lookup for day and year lengths.
     calendarStartOfYear: (calendar, year) =>
       call('calendarStartOfYear', {calendar, year}),
+    // Temporal comparison §3.3.17 step 3.
+    // Forward the calendar and year for month-count projection.
     calendarMonthsInYear: (calendar, year) =>
       call('calendarMonthsInYear', {calendar, year}),
+    // Temporal comparison §3.3.15 step 3.
+    // Forward calendar month length for the projected month.
     calendarDaysInMonth: (calendar, year, month) =>
       call('calendarDaysInMonth', {calendar, year, month}),
+    // Temporal comparison §12.3.22 steps 1.b, 2.
+    // Forward prepared date fields and overflow for ISO conversion.
     calendarToEpochDay: (calendar, fields, overflow) =>
       call('calendarToEpochDay', {
         calendar,
         fields: dateFields(fields),
         overflow,
       }),
+    // Temporal comparison §12.3.26 steps 1.b, 2.
+    // Forward a prepared ISO day for calendar field projection.
     calendarFromEpochDay: (calendar, epoch) =>
       call('calendarFromEpochDay', {calendar, epoch}),
+    // Temporal comparison §12.3.7 steps 1.a, 1.b, 1.c, 1.d, 2.a.
+    // Forward prepared date arithmetic and overflow.
     calendarAdd: (calendar, fields, values, overflow) => {
       const duration = create(null)
       duration.years = values.years ?? 0
@@ -676,21 +1282,90 @@ export function configureNativeTemporal(query: NativeQuery): void {
         overflow,
       })
     },
+    // Temporal comparison §12.3.9 steps 3.k, 4.
+    // Forward date endpoints and largest unit for calendar difference.
     calendarUntil: (calendar, one, two, largest) =>
       call('calendarUntil', {calendar, one, two, largest}),
+    // Temporal comparison §12.3.9 step 4, §12.3.8 prose.
+    // Forward calendar month indexing for difference arithmetic.
     calendarMonthSerial: (calendar, year, month) =>
       call('calendarMonthSerial', {calendar, year, month}),
+    // Temporal comparison §3.3.4 step 3, §3.3.5 step 3.
+    // Forward calendar era projection and decode absence.
     calendarEra: (calendar, epoch) =>
       call('calendarEra', {calendar, epoch}) ?? undefined,
+    // Temporal comparison §12.3.31 step 2.a, §12.3.30 prose.
+    // Forward era and era year for calendar year resolution.
     calendarYearFromEra: (calendar, era, year) =>
       call('calendarYearFromEra', {calendar, era, year}),
+    // Temporal comparison §5.5.4 step 2.
+    // Forward ISO fields for exact local epoch computation.
     isoToEpochNanoseconds: fields =>
       ToBigInt(request('isoToEpochNanoseconds', fields)),
+    // Temporal comparison §11.1.10 step 2.
+    // Forward the exact epoch for ISO field projection.
     epochNanosecondsToISO: value =>
       request('epochNanosecondsToISO', undefined, value),
+    // Temporal comparison §3.5.9 steps 1, 2, 3.
+    // Forward the date and day count for ISO date addition.
     addISODays: (fields, days) =>
       request('addISODays', fields, undefined, days),
+    // Temporal comparison §4.5.6 steps 3.b, 3.d.
+    // Forward PlainTime string parsing and decode its clock snapshot.
+    parsePlainTimeResult: value =>
+      invoke?.parsePlainTimeResult
+        ? invoke.parsePlainTimeResult(value)
+        : clockResult(
+            call('parsePlainTime', {text: value, clockSnapshot: true})
+          ),
+    // Temporal comparison §4.5.6 step 2.g.
+    // Forward prepared clock regulation and decode its snapshot.
+    regulatePlainTimeResult: (values, constrain) => {
+      if (invoke?.regulatePlainTimeResult)
+        return invoke.regulatePlainTimeResult(values, constrain)
+      const fields = create(null)
+      fields.hour = values[0]
+      fields.minute = values[1]
+      fields.second = values[2]
+      fields.millisecond = values[3]
+      fields.microsecond = values[4]
+      fields.nanosecond = values[5]
+      return clockResult(
+        call('regulatePlainTime', {fields, constrain, clockSnapshot: true})
+      )
+    },
+    // Temporal comparison §4.5.18 step 4.
+    // Forward clock addition and decode its snapshot.
+    addPlainTimeResult: (value, fields, subtract) =>
+      invoke?.addPlainTimeResult
+        ? invoke.addPlainTimeResult(value, fields, subtract)
+        : clockResult(
+            call('addPlainTime', {
+              nanoseconds: clockText(value),
+              duration: durationFields(fields),
+              subtract,
+              clockSnapshot: true,
+            })
+          ),
+    // Temporal comparison §4.3.14 step 14.
+    // Forward clock rounding and decode its snapshot.
+    roundPlainTimeResult: (value, unit, increment, mode) =>
+      invoke?.roundPlainTimeResult
+        ? invoke.roundPlainTimeResult(value, unit, increment, mode)
+        : clockResult(
+            call('roundPlainTime', {
+              nanoseconds: clockText(value),
+              unit,
+              increment,
+              mode,
+              clockSnapshot: true,
+            })
+          ),
+    // Temporal comparison §4.5.6 steps 3.b, 3.d.
+    // Forward PlainTime string parsing and restore the exact clock.
     parsePlainTime: value => ToBigInt(call('parsePlainTime', {text: value})),
+    // Temporal comparison §4.5.6 step 2.g.
+    // Forward prepared clock components for regulation.
     regulatePlainTime: (values, constrain) => {
       const fields = create(null)
       fields.hour = values[0]
@@ -701,10 +1376,22 @@ export function configureNativeTemporal(query: NativeQuery): void {
       fields.nanosecond = values[5]
       return ToBigInt(call('regulatePlainTime', {fields, constrain}))
     },
+    // Temporal comparison §4.5.13 steps 1, 2.
+    // Forward the exact clock and prepared precision for formatting.
     formatPlainTime: (value, precision, mode) =>
-      call('formatPlainTime', {nanoseconds: text(value), precision, mode}),
+      invoke?.formatPlainTime
+        ? invoke.formatPlainTime(value, precision, mode)
+        : call('formatPlainTime', {
+            nanoseconds: clockText(value),
+            precision,
+            mode,
+          }),
+    // Temporal comparison §4.5.18 step 4.
+    // Forward exact clock addition through the scalar return path.
     addPlainTime: (value, fields, subtract) =>
       addition('addPlainTime', value, fields, subtract),
+    // Temporal comparison §4.3.14 step 14.
+    // Forward prepared PlainTime rounding and restore the exact result.
     roundPlainTime: (value, unit, increment, mode) =>
       ToBigInt(
         call('roundPlainTime', {
@@ -714,24 +1401,64 @@ export function configureNativeTemporal(query: NativeQuery): void {
           mode,
         })
       ),
+    // Temporal comparison §4.5.17 steps 4, 5, 7.
+    // Forward both clock values and prepared difference settings.
     differencePlainTime: (value, other, largest, smallest, increment, mode) =>
-      call('differencePlainTime', {
-        nanoseconds: text(value),
-        other: text(other),
-        largest,
-        smallest,
-        increment,
-        mode,
-      }),
-    parseInstant: value => ToBigInt(call('parseInstant', {text: value})),
-    formatInstant: (value, precision, offset) =>
-      call('formatInstant', {
-        nanoseconds: text(value),
-        precision,
-        offset: offset === undefined ? undefined : text(offset),
-      }),
-    addInstant: (value, fields, subtract) =>
-      addition('addInstant', value, fields, subtract),
+      invoke?.differencePlainTime
+        ? invoke.differencePlainTime(
+            value,
+            other,
+            largest,
+            smallest,
+            increment,
+            mode
+          )
+        : call('differencePlainTime', {
+            nanoseconds: clockText(value),
+            other: clockText(other),
+            largest,
+            smallest,
+            increment,
+            mode,
+          }),
+    parseInstant:
+      invoke?.parseInstant ??
+      // Temporal comparison §8.5.3 steps 3, 8, 10.
+      // Forward Instant string parsing and restore the exact epoch.
+      (value => ToBigInt(call('parseInstant', {text: value}))),
+    formatInstant:
+      invoke?.formatInstant ??
+      // Temporal comparison §8.5.8 steps 4, 5, 7.b, 8.
+      // Forward Instant epoch, offset and precision for formatting.
+      ((value, precision, offset, mode, identifier) =>
+        call('formatInstant', {
+          nanoseconds: text(value),
+          precision,
+          offset: offset === undefined ? undefined : text(offset),
+          mode,
+          identifier,
+        })),
+    addInstant:
+      invoke?.addInstant ??
+      // Temporal comparison §8.5.10 step 6.
+      // Forward prepared Instant addition through the scalar return path.
+      ((value, fields, subtract) =>
+        addition('addInstant', value, fields, subtract)),
+    roundInstantUnit:
+      invoke?.roundInstantUnit ??
+      // Temporal comparison §8.5.7 steps 2, 3.
+      // Forward Instant unit rounding and restore the exact epoch.
+      ((value, unit, increment, mode) =>
+        ToBigInt(
+          call('roundInstant', {
+            nanoseconds: text(value),
+            unit,
+            increment,
+            mode,
+          })
+        )),
+    // Temporal comparison §8.5.7 step 3.
+    // Forward Instant rounding with the already-computed quantum.
     roundInstant: (value, quantum, mode) =>
       ToBigInt(
         call('roundInstant', {
@@ -740,14 +1467,25 @@ export function configureNativeTemporal(query: NativeQuery): void {
           mode,
         })
       ),
+    // Temporal comparison §8.5.6 steps 1, 2, §8.5.9 step 5.
+    // Forward exact Instant endpoints and prepared difference settings.
     differenceInstant: (value, other, largest, smallest, increment, mode) =>
-      call('differenceInstant', {
-        nanoseconds: text(value),
-        other: text(other),
-        largest,
-        smallest,
-        increment,
-        mode,
-      }),
+      invoke?.differenceInstant
+        ? invoke.differenceInstant(
+            value,
+            other,
+            largest,
+            smallest,
+            increment,
+            mode
+          )
+        : call('differenceInstant', {
+            nanoseconds: text(value),
+            other: text(other),
+            largest,
+            smallest,
+            increment,
+            mode,
+          }),
   }
 }

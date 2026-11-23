@@ -1,10 +1,8 @@
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
-load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
-load(":wasm.bzl", "temporal_wasm")
 
 filegroup(
     name = "cargo_sources",
@@ -16,57 +14,14 @@ filegroup(
         ],
         exclude = [
             "*.test.rs",
-            "wasm*.rs",
         ],
     ),
     visibility = ["//crates:__pkg__"],
 )
 
 # gazelle:ignore
-rust_shared_library(
-    name = "wasm_backend_core",
-    srcs = ["wasm_backend.rs"],
-    crate_name = "formatjs_temporal_wasm_backend",
-    crate_root = "wasm_backend.rs",
-    edition = "2024",
-    rustc_flags = [
-        "-Copt-level=z",
-        "-Cstrip=symbols",
-        "-Cpanic=abort",
-    ],
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    deps = [":with_ffi"],
-)
-
-temporal_wasm(
-    name = "wasm_backend",
-    src = ":wasm_backend_core",
-    out = "temporal-backend.wasm",
-    visibility = ["//visibility:public"],
-)
 
 # gazelle:ignore
-rust_shared_library(
-    name = "wasm_core",
-    srcs = ["wasm.rs"],
-    crate_name = "formatjs_temporal_wasm",
-    crate_root = "wasm.rs",
-    edition = "2024",
-    rustc_flags = [
-        "-Copt-level=z",
-        "-Cstrip=symbols",
-        "-Cpanic=abort",
-    ],
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    deps = [":temporal"],
-)
-
-temporal_wasm(
-    name = "wasm",
-    src = ":wasm_core",
-    out = "temporal-core.wasm",
-    visibility = ["//visibility:public"],
-)
 
 rust_library(
     name = "temporal",
@@ -142,6 +97,7 @@ formatjs_rust_test(
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
         "//conformance-tests/icu4j:temporal_iso_fixtures",
+        "//conformance-tests/temporal:polyfill_regressions",
     ],
     edition = "2024",
     rustc_env = {
@@ -160,6 +116,7 @@ formatjs_rust_test(
         "FORMATJS_TEMPORAL_STRINGS": "$(execpath //packages/temporal:instant_string_fixtures)",
         "FORMATJS_TEMPORAL_DURATION": "$(execpath //conformance-tests/icu4j:temporal_duration_fixtures)",
         "FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)",
+        "FORMATJS_TEMPORAL_POLYFILL_REGRESSIONS": "$(execpath //conformance-tests/temporal:polyfill_regressions)",
     },
     deps = [
         ":with_time_zones",

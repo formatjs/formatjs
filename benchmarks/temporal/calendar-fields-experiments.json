@@ -1,0 +1,1584 @@
+{
+  "baseCommit": "d0527dbe4954cbd3fa9fa90f5d1433b7eac0e6a6",
+  "status": "Gregorian/field/kernel changes retained. Goal open: scoped offset/dayStart losses,finalfreshall48 references,startup and close-case verification remain.",
+  "changes": [
+    "Bounded March-based Gregorian inverse shared with epochNanosecondsToISO; noninteger/nonfinite/outside-bound fallback retained.",
+    "Static ISO field reads preserve coercion/get order; prepared ISO conversion preserves native dispatch/range checks; strict M01..M12 parser removes generic regex/copy work.",
+    "Host gap/fold candidate solver uses one array and identical queries/order/checks. No per-value cache,record-layout,data,dependency or public API change."
+  ],
+  "sourceHashes": {
+    "packages/ecma402-abstract/Calendar/Arithmetic.ts": "4d2daa97d090de855c1938de13dfa0bff8af752e71f884bdf6fd63de40cb651b",
+    "packages/temporal/calendar.ts": "e66fe34ad9e9a9cffb54c4883f6381e6f6bf299cb53b617590699c020f43f698",
+    "packages/temporal/date-core.ts": "c5299fcf4a997e03a3c28590d7f46f24110f2637cf49596cbd0d83ae73b55af8",
+    "packages/temporal/host-timezone.ts": "5ca8427394c8638db3e05d86013bddbc8991440bb4d239685c105be980552956",
+    "packages/temporal/kernel.ts": "1ac62c9a5ce32ac86dfa5587189ac574877b4e47762cbafbba790224fb040fcf"
+  },
+  "combined": {
+    "method": "Six isolated full48 processes A B B A A B CPU10,threeeach. Sameall48/eightinputs/fullparity.100kwarm9x200k;transition10kwarm9x20k. Allthroughputwindows4xprevious after normal50kfull6 showedalternatingGC-phase/noise,andindependentGCtraceconfirmed3-9msScavengepausesper19-31mssample. NoGCforced/excluded,normalBazelNode24.14runtimeflags. Fixedcountsdeclaredbeforefirstlongrun;do not discard/restartslow runs. Combined boundedGregorianinverse/staticISOfields/preparedISOconversion/strictmonthCode/onearrayHostsolver/sharedkernelGregorianprimitive;no pervaluecache/layout changes;baselineconsumera378 verified. Priorfull48 six and focused/mixed/kernelallretained. No concurrenttests/build/profile/measurements. Legacy9samplemediansandallchronologicalsamplesretained;aggregatewindowmeanswillbereportedalongside to exposeGCphasebias. Finalfreshreferencesstillrequired.",
+    "results": [
+      {
+        "operation": "parse",
+        "medians": {
+          "parent": 1382.3768049999992,
+          "candidate": 1388.004524999999
+        },
+        "medianProcessMeans": {
+          "parent": 1394.0914500000003,
+          "candidate": 1403.8359099999998
+        },
+        "candidateOverParent": 1.0040710463164924,
+        "meanCandidateOverParent": 1.0069898283932517
+      },
+      {
+        "operation": "format",
+        "medians": {
+          "parent": 645.2470949999997,
+          "candidate": 442.6457899999991
+        },
+        "medianProcessMeans": {
+          "parent": 651.1994016666664,
+          "candidate": 450.23831333333317
+        },
+        "candidateOverParent": 0.6860097370914926,
+        "meanCandidateOverParent": 0.6913985365788151
+      },
+      {
+        "operation": "add",
+        "medians": {
+          "parent": 1333.382389999997,
+          "candidate": 1332.900380000001
+        },
+        "medianProcessMeans": {
+          "parent": 1359.0175605555553,
+          "candidate": 1355.4867438888887
+        },
+        "candidateOverParent": 0.9996385058002782,
+        "meanCandidateOverParent": 0.9974019344788869
+      },
+      {
+        "operation": "round",
+        "medians": {
+          "parent": 694.8071900000014,
+          "candidate": 689.9254849999988
+        },
+        "medianProcessMeans": {
+          "parent": 646.0735955555558,
+          "candidate": 650.9484372222222
+        },
+        "candidateOverParent": 0.9929740148486338,
+        "meanCandidateOverParent": 1.0075453349280967
+      },
+      {
+        "operation": "until",
+        "medians": {
+          "parent": 2521.6933250000056,
+          "candidate": 2539.8040149999997
+        },
+        "medianProcessMeans": {
+          "parent": 2553.7330577777793,
+          "candidate": 2546.4666611111106
+        },
+        "candidateOverParent": 1.00718195579948,
+        "meanCandidateOverParent": 0.9971545981892909
+      },
+      {
+        "operation": "timeParse",
+        "medians": {
+          "parent": 1240.1095499999974,
+          "candidate": 1250.965454999996
+        },
+        "medianProcessMeans": {
+          "parent": 1241.0424194444447,
+          "candidate": 1267.5827311111123
+        },
+        "candidateOverParent": 1.0087539887101091,
+        "meanCandidateOverParent": 1.021385499198769
+      },
+      {
+        "operation": "timeFormat",
+        "medians": {
+          "parent": 173.6512550000043,
+          "candidate": 172.14778999999908
+        },
+        "medianProcessMeans": {
+          "parent": 175.7575477777795,
+          "candidate": 172.8991183333336
+        },
+        "candidateOverParent": 0.9913420435688461,
+        "meanCandidateOverParent": 0.9837365195373573
+      },
+      {
+        "operation": "timeAdd",
+        "medians": {
+          "parent": 1477.930515000007,
+          "candidate": 1474.7744650000002
+        },
+        "medianProcessMeans": {
+          "parent": 1514.4074005555537,
+          "candidate": 1472.1962249999988
+        },
+        "candidateOverParent": 0.9978645477794964,
+        "meanCandidateOverParent": 0.9721269352354789
+      },
+      {
+        "operation": "timeRoundFormat",
+        "medians": {
+          "parent": 836.3182799999959,
+          "candidate": 846.5684549999969
+        },
+        "medianProcessMeans": {
+          "parent": 827.7349638888902,
+          "candidate": 850.797170555553
+        },
+        "candidateOverParent": 1.0122563086866894,
+        "meanCandidateOverParent": 1.0278618249473372
+      },
+      {
+        "operation": "timeUntil",
+        "medians": {
+          "parent": 2748.319659999998,
+          "candidate": 2742.3896550000068
+        },
+        "medianProcessMeans": {
+          "parent": 2779.4558505555547,
+          "candidate": 2753.8749344444395
+        },
+        "candidateOverParent": 0.9978423161299981,
+        "meanCandidateOverParent": 0.990796430133617
+      },
+      {
+        "operation": "dateParse",
+        "medians": {
+          "parent": 1436.8254349999916,
+          "candidate": 1475.3758950000156
+        },
+        "medianProcessMeans": {
+          "parent": 1449.5321861111106,
+          "candidate": 1466.7767283333383
+        },
+        "candidateOverParent": 1.0268303017617615,
+        "meanCandidateOverParent": 1.0118966259510886
+      },
+      {
+        "operation": "dateTimeParse",
+        "medians": {
+          "parent": 1451.8204650000007,
+          "candidate": 1431.917190000004
+        },
+        "medianProcessMeans": {
+          "parent": 1474.7003438888896,
+          "candidate": 1434.469815555555
+        },
+        "candidateOverParent": 0.9862908152352042,
+        "meanCandidateOverParent": 0.9727195233255023
+      },
+      {
+        "operation": "yearMonthParse",
+        "medians": {
+          "parent": 827.9677300000003,
+          "candidate": 814.6665199999915
+        },
+        "medianProcessMeans": {
+          "parent": 840.0694516666712,
+          "candidate": 827.1135661111091
+        },
+        "candidateOverParent": 0.9839351106111239,
+        "meanCandidateOverParent": 0.9845776018520159
+      },
+      {
+        "operation": "monthDayParse",
+        "medians": {
+          "parent": 815.709760000027,
+          "candidate": 791.8859750000046
+        },
+        "medianProcessMeans": {
+          "parent": 867.0978572222339,
+          "candidate": 848.7567477777702
+        },
+        "candidateOverParent": 0.9707937968033855,
+        "meanCandidateOverParent": 0.9788477052599117
+      },
+      {
+        "operation": "dateFromFields",
+        "medians": {
+          "parent": 1177.938424999993,
+          "candidate": 936.7159399999946
+        },
+        "medianProcessMeans": {
+          "parent": 1179.1535699999965,
+          "candidate": 989.6861050000007
+        },
+        "candidateOverParent": 0.7952163883269197,
+        "meanCandidateOverParent": 0.839319093101676
+      },
+      {
+        "operation": "dateFields",
+        "medians": {
+          "parent": 356.57125999998243,
+          "candidate": 358.45259499998065
+        },
+        "medianProcessMeans": {
+          "parent": 359.7060916666669,
+          "candidate": 367.6641277777849
+        },
+        "candidateOverParent": 1.0052761823821648,
+        "meanCandidateOverParent": 1.0221237179338418
+      },
+      {
+        "operation": "dateWith",
+        "medians": {
+          "parent": 1034.1944700000022,
+          "candidate": 684.805950000009
+        },
+        "medianProcessMeans": {
+          "parent": 1053.8550144444444,
+          "candidate": 698.5031000000041
+        },
+        "candidateOverParent": 0.6621636160943769,
+        "meanCandidateOverParent": 0.6628075877859068
+      },
+      {
+        "operation": "dateTimeWith",
+        "medians": {
+          "parent": 3049.2935450000004,
+          "candidate": 2407.920359999989
+        },
+        "medianProcessMeans": {
+          "parent": 3059.977208888886,
+          "candidate": 2410.1736638888906
+        },
+        "candidateOverParent": 0.7896649910758227,
+        "meanCandidateOverParent": 0.7876443186856458
+      },
+      {
+        "operation": "yearMonthWith",
+        "medians": {
+          "parent": 1155.5227999999988,
+          "candidate": 851.2978999999905
+        },
+        "medianProcessMeans": {
+          "parent": 1149.7139055555535,
+          "candidate": 844.143242222223
+        },
+        "candidateOverParent": 0.7367209889757185,
+        "meanCandidateOverParent": 0.734220259616956
+      },
+      {
+        "operation": "monthDayWith",
+        "medians": {
+          "parent": 1482.8914000000077,
+          "candidate": 1087.916809999988
+        },
+        "medianProcessMeans": {
+          "parent": 1509.5810861111183,
+          "candidate": 1086.0608777777654
+        },
+        "candidateOverParent": 0.7336456398627588,
+        "meanCandidateOverParent": 0.719445207528138
+      },
+      {
+        "operation": "zonedWith",
+        "medians": {
+          "parent": 6602.570185000003,
+          "candidate": 5401.812925000013
+        },
+        "medianProcessMeans": {
+          "parent": 6578.096724444444,
+          "candidate": 5471.93234611111
+        },
+        "candidateOverParent": 0.8181379029142437,
+        "meanCandidateOverParent": 0.8318412719255424
+      },
+      {
+        "operation": "dateAdd",
+        "medians": {
+          "parent": 2229.079440000023,
+          "candidate": 1984.238409999998
+        },
+        "medianProcessMeans": {
+          "parent": 2272.748996666661,
+          "candidate": 1983.3912900000037
+        },
+        "candidateOverParent": 0.890160473598903,
+        "meanCandidateOverParent": 0.8726838260225633
+      },
+      {
+        "operation": "dateUntil",
+        "medians": {
+          "parent": 5778.184695000018,
+          "candidate": 5274.302720000014
+        },
+        "medianProcessMeans": {
+          "parent": 5794.418008333313,
+          "candidate": 5278.101391666686
+        },
+        "candidateOverParent": 0.912795799788812,
+        "meanCandidateOverParent": 0.9108941370946867
+      },
+      {
+        "operation": "dateTimeAdd",
+        "medians": {
+          "parent": 3405.329370000036,
+          "candidate": 2894.140874999939
+        },
+        "medianProcessMeans": {
+          "parent": 3408.465396666676,
+          "candidate": 2900.5099844444585
+        },
+        "candidateOverParent": 0.8498857410083386,
+        "meanCandidateOverParent": 0.8509724016212766
+      },
+      {
+        "operation": "dateTimeUntil",
+        "medians": {
+          "parent": 5718.133670000025,
+          "candidate": 5219.403105000019
+        },
+        "medianProcessMeans": {
+          "parent": 5748.027871666677,
+          "candidate": 5252.0764677777815
+        },
+        "candidateOverParent": 0.9127808838018991,
+        "meanCandidateOverParent": 0.9137179890282802
+      },
+      {
+        "operation": "dateTimeRoundFormat",
+        "medians": {
+          "parent": 1674.5966650000628,
+          "candidate": 1420.701140000019
+        },
+        "medianProcessMeans": {
+          "parent": 1659.0144777777703,
+          "candidate": 1430.759815555567
+        },
+        "candidateOverParent": 0.8483840734269978,
+        "meanCandidateOverParent": 0.8624155091594212
+      },
+      {
+        "operation": "dateFormat",
+        "medians": {
+          "parent": 220.2196499999991,
+          "candidate": 146.8021299999964
+        },
+        "medianProcessMeans": {
+          "parent": 229.17672944445965,
+          "candidate": 147.18860999997963
+        },
+        "candidateOverParent": 0.6666168527649418,
+        "meanCandidateOverParent": 0.6422493695445217
+      },
+      {
+        "operation": "dateTimeFormat",
+        "medians": {
+          "parent": 1112.9136749999452,
+          "candidate": 905.3964000000269
+        },
+        "medianProcessMeans": {
+          "parent": 1112.5825255555537,
+          "candidate": 910.4204349999943
+        },
+        "candidateOverParent": 0.8135369528998477,
+        "meanCandidateOverParent": 0.8182947458620093
+      },
+      {
+        "operation": "yearMonthFormat",
+        "medians": {
+          "parent": 104.59342000001926,
+          "candidate": 105.75338000002375
+        },
+        "medianProcessMeans": {
+          "parent": 104.55113166665897,
+          "candidate": 105.530603888886
+        },
+        "candidateOverParent": 1.0110901813900366,
+        "meanCandidateOverParent": 1.0093683560054605
+      },
+      {
+        "operation": "monthDayFormat",
+        "medians": {
+          "parent": 217.42526000001817,
+          "candidate": 140.01550999993924
+        },
+        "medianProcessMeans": {
+          "parent": 214.84200777778622,
+          "candidate": 140.26442111109242
+        },
+        "candidateOverParent": 0.6439707603427842,
+        "meanCandidateOverParent": 0.6528724180243636
+      },
+      {
+        "operation": "zonedFormat",
+        "medians": {
+          "parent": 2093.5150499999872,
+          "candidate": 1657.014624999938
+        },
+        "medianProcessMeans": {
+          "parent": 2100.655719999987,
+          "candidate": 1660.2730744444448
+        },
+        "candidateOverParent": 0.7914987881266715,
+        "meanCandidateOverParent": 0.7903594380732007
+      },
+      {
+        "operation": "yearMonthUntil",
+        "medians": {
+          "parent": 4170.203954999961,
+          "candidate": 3474.2352399999795
+        },
+        "medianProcessMeans": {
+          "parent": 4176.579614999993,
+          "candidate": 3522.265876666675
+        },
+        "candidateOverParent": 0.8331091902194535,
+        "meanCandidateOverParent": 0.8433374199348719
+      },
+      {
+        "operation": "yearMonthToDate",
+        "medians": {
+          "parent": 1030.216550000041,
+          "candidate": 632.2032799999579
+        },
+        "medianProcessMeans": {
+          "parent": 1049.3723605555633,
+          "candidate": 639.3952283333298
+        },
+        "candidateOverParent": 0.6136605745655442,
+        "meanCandidateOverParent": 0.6093120539165129
+      },
+      {
+        "operation": "monthDayToDate",
+        "medians": {
+          "parent": 1226.1234949999925,
+          "candidate": 811.8986500000028
+        },
+        "medianProcessMeans": {
+          "parent": 1227.8002777777874,
+          "candidate": 823.4461049999825
+        },
+        "candidateOverParent": 0.6621671090317112,
+        "meanCandidateOverParent": 0.6706677950019273
+      },
+      {
+        "operation": "yearMonthAdd",
+        "medians": {
+          "parent": 2024.677034999986,
+          "candidate": 2054.8843399999896
+        },
+        "medianProcessMeans": {
+          "parent": 2023.61719555557,
+          "candidate": 2053.1425755555633
+        },
+        "candidateOverParent": 1.0149195671595117,
+        "meanCandidateOverParent": 1.014590397860247
+      },
+      {
+        "operation": "zonedParse",
+        "medians": {
+          "parent": 3552.106774999993,
+          "candidate": 3291.0740950000036
+        },
+        "medianProcessMeans": {
+          "parent": 3568.5938266666685,
+          "candidate": 3315.2787416666733
+        },
+        "candidateOverParent": 0.9265132788695548,
+        "meanCandidateOverParent": 0.929015433724322
+      },
+      {
+        "operation": "zonedOffset",
+        "medians": {
+          "parent": 120.2435549999791,
+          "candidate": 115.85510500000964
+        },
+        "medianProcessMeans": {
+          "parent": 122.26278166666614,
+          "candidate": 116.26529277778495
+        },
+        "candidateOverParent": 0.9635036572232897,
+        "meanCandidateOverParent": 0.950945914961819
+      },
+      {
+        "operation": "zonedAddDay",
+        "medians": {
+          "parent": 3466.944599999988,
+          "candidate": 2874.8831649999925
+        },
+        "medianProcessMeans": {
+          "parent": 3484.540310555539,
+          "candidate": 2921.422254444454
+        },
+        "candidateOverParent": 0.829226739013944,
+        "meanCandidateOverParent": 0.8383953101632201
+      },
+      {
+        "operation": "zonedUntilDay",
+        "medians": {
+          "parent": 7956.349840000039,
+          "candidate": 7192.477339999897
+        },
+        "medianProcessMeans": {
+          "parent": 7973.455010555562,
+          "candidate": 7181.52109722222
+        },
+        "candidateOverParent": 0.9039920924341684,
+        "meanCandidateOverParent": 0.900678700477403
+      },
+      {
+        "operation": "zonedRound",
+        "medians": {
+          "parent": 2645.3431000000273,
+          "candidate": 2348.3281950000674
+        },
+        "medianProcessMeans": {
+          "parent": 2645.4452155555514,
+          "candidate": 2356.10111833335
+        },
+        "candidateOverParent": 0.8877215946014878,
+        "meanCandidateOverParent": 0.8906255568927219
+      },
+      {
+        "operation": "zonedDayStart",
+        "medians": {
+          "parent": 1886.4214250000077,
+          "candidate": 1678.8391449999472
+        },
+        "medianProcessMeans": {
+          "parent": 1881.8622788888752,
+          "candidate": 1695.740029999967
+        },
+        "candidateOverParent": 0.8899597527630605,
+        "meanCandidateOverParent": 0.9010967747338015
+      },
+      {
+        "operation": "zonedHoursInDay",
+        "medians": {
+          "parent": 2299.4677650000085,
+          "candidate": 1748.4527199999138
+        },
+        "medianProcessMeans": {
+          "parent": 2298.2176622222405,
+          "candidate": 1753.1766888888603
+        },
+        "candidateOverParent": 0.7603727900051286,
+        "meanCandidateOverParent": 0.7628418829544814
+      },
+      {
+        "operation": "zonedTransition",
+        "medians": {
+          "parent": 415.4144500003895,
+          "candidate": 429.67570000037085
+        },
+        "medianProcessMeans": {
+          "parent": 810.7831444445765,
+          "candidate": 767.1549333332223
+        },
+        "candidateOverParent": 1.034330173155912,
+        "meanCandidateOverParent": 0.9461900368670818
+      },
+      {
+        "operation": "durationParse",
+        "medians": {
+          "parent": 1793.5379850000027,
+          "candidate": 1815.4891149999457
+        },
+        "medianProcessMeans": {
+          "parent": 1801.7319866666933,
+          "candidate": 1832.9510977777602
+        },
+        "candidateOverParent": 1.0122390103714156,
+        "meanCandidateOverParent": 1.0173272780536156
+      },
+      {
+        "operation": "durationFormat",
+        "medians": {
+          "parent": 2411.2433550000424,
+          "candidate": 2429.2020449999836
+        },
+        "medianProcessMeans": {
+          "parent": 2480.792520555535,
+          "candidate": 2426.719875000013
+        },
+        "candidateOverParent": 1.00744789610833,
+        "meanCandidateOverParent": 0.9782034792883796
+      },
+      {
+        "operation": "durationAdd",
+        "medians": {
+          "parent": 3889.1336849999793,
+          "candidate": 3887.7312249998795
+        },
+        "medianProcessMeans": {
+          "parent": 3898.5149622222525,
+          "candidate": 3890.2425766666584
+        },
+        "candidateOverParent": 0.9996393901280615,
+        "meanCandidateOverParent": 0.9978780675114098
+      },
+      {
+        "operation": "durationRoundRelative",
+        "medians": {
+          "parent": 14385.95960999999,
+          "candidate": 12651.196395000006
+        },
+        "medianProcessMeans": {
+          "parent": 14387.76551999999,
+          "candidate": 12681.999908333317
+        },
+        "candidateOverParent": 0.8794127564633148,
+        "meanCandidateOverParent": 0.8814433270200616
+      },
+      {
+        "operation": "durationTotalRelative",
+        "medians": {
+          "parent": 2695.809694999916,
+          "candidate": 2334.755664999975
+        },
+        "medianProcessMeans": {
+          "parent": 2718.720607777779,
+          "candidate": 2354.4625744444297
+        },
+        "candidateOverParent": 0.8660684280980183,
+        "meanCandidateOverParent": 0.8660185852524634
+      }
+    ],
+    "size": {
+      "parent": {
+        "minified": 143955,
+        "gzip": 40652,
+        "sha256": "a378317aa107f0bf05ef3cd6d7294a7c1a1dd2087bcaa41ae878eda865862581"
+      },
+      "candidate": {
+        "minified": 145503,
+        "gzip": 41118,
+        "sha256": "bd455d5225f512911f86a0283295d62653fdf4f6c71e1fb004012f6f9e0dc1e3"
+      }
+    }
+  },
+  "originalBaseline": {
+    "commit": "3b089dc11a35096f1c342cd1c584055c30c04c6a",
+    "method": "Six isolated ABBAAB originalbaseline/currentcandidate processes,CPU10. OriginalpreoptimizationTS3b089dc vsall14 runtime differences(includingcurrentfive);samecurrentharness/all48/eightinputs/fullparity,20kwarm9x50k;transition1kwarm9x5k. Baselineconsumer1697 checkedexact,sourceandHEADguarded,finallyrestorecandidate,allchronologicalsamples/means+medians retained. No concurrent builds/tests/profiles/throughput. Closesearlierbaselineauditonlywhenallresultsproveit;notuniversalperformanceclaim.",
+    "results": [
+      {
+        "operation": "parse",
+        "medians": {
+          "parent": 1545.7604999999987,
+          "candidate": 1364.9587799999995
+        },
+        "means": {
+          "parent": 1616.17858,
+          "candidate": 1429.0879355555555
+        },
+        "candidateOverParent": 0.8830338076306132,
+        "meanCandidateOverParent": 0.8842388788221383
+      },
+      {
+        "operation": "format",
+        "medians": {
+          "parent": 640.1791800000001,
+          "candidate": 421.20257999999916
+        },
+        "means": {
+          "parent": 664.89342,
+          "candidate": 445.2894488888882
+        },
+        "candidateOverParent": 0.6579448272591419,
+        "meanCandidateOverParent": 0.6697155295789936
+      },
+      {
+        "operation": "add",
+        "medians": {
+          "parent": 2221.528599999997,
+          "candidate": 1223.8846599999988
+        },
+        "means": {
+          "parent": 2224.144166666666,
+          "candidate": 1240.7758644444443
+        },
+        "candidateOverParent": 0.5509200556769787,
+        "meanCandidateOverParent": 0.5578666540775548
+      },
+      {
+        "operation": "round",
+        "medians": {
+          "parent": 544.636759999994,
+          "candidate": 560.3742999999986
+        },
+        "means": {
+          "parent": 620.6766155555548,
+          "candidate": 600.5681288888885
+        },
+        "candidateOverParent": 1.0288954788876257,
+        "meanCandidateOverParent": 0.9676023130842981
+      },
+      {
+        "operation": "until",
+        "medians": {
+          "parent": 2494.605279999996,
+          "candidate": 2513.0822999999964
+        },
+        "means": {
+          "parent": 2573.87935111111,
+          "candidate": 2564.624773333334
+        },
+        "candidateOverParent": 1.0074067910254725,
+        "meanCandidateOverParent": 0.9964044244056036
+      },
+      {
+        "operation": "timeParse",
+        "medians": {
+          "parent": 1283.3769200000097,
+          "candidate": 1276.3012000000072
+        },
+        "means": {
+          "parent": 1345.9486111111114,
+          "candidate": 1316.0371977777777
+        },
+        "candidateOverParent": 0.9944866392018313,
+        "meanCandidateOverParent": 0.9777767047817367
+      },
+      {
+        "operation": "timeFormat",
+        "medians": {
+          "parent": 754.5132999999987,
+          "candidate": 176.2751599999956
+        },
+        "means": {
+          "parent": 756.069708888887,
+          "candidate": 190.3336822222233
+        },
+        "candidateOverParent": 0.2336276378428265,
+        "meanCandidateOverParent": 0.2517409175166347
+      },
+      {
+        "operation": "timeAdd",
+        "medians": {
+          "parent": 2729.5869800000037,
+          "candidate": 1489.0272000000007
+        },
+        "means": {
+          "parent": 2732.5665822222254,
+          "candidate": 1490.3214222222223
+        },
+        "candidateOverParent": 0.5455137392251185,
+        "meanCandidateOverParent": 0.5453925375206181
+      },
+      {
+        "operation": "timeRoundFormat",
+        "medians": {
+          "parent": 1362.7757400000155,
+          "candidate": 874.6026199999869
+        },
+        "means": {
+          "parent": 1385.567195555557,
+          "candidate": 862.1645555555531
+        },
+        "candidateOverParent": 0.6417802976152018,
+        "meanCandidateOverParent": 0.6222466570521393
+      },
+      {
+        "operation": "timeUntil",
+        "medians": {
+          "parent": 2783.0938400000014,
+          "candidate": 2749.875460000003
+        },
+        "means": {
+          "parent": 2754.400937777777,
+          "candidate": 2731.5222844444443
+        },
+        "candidateOverParent": 0.9880642256748344,
+        "meanCandidateOverParent": 0.9916937824775099
+      },
+      {
+        "operation": "dateParse",
+        "medians": {
+          "parent": 1636.5036999999938,
+          "candidate": 1490.443200000009
+        },
+        "means": {
+          "parent": 1701.4211933333436,
+          "candidate": 1535.7570711111111
+        },
+        "candidateOverParent": 0.9107484449928311,
+        "meanCandidateOverParent": 0.9026319156765227
+      },
+      {
+        "operation": "dateTimeParse",
+        "medians": {
+          "parent": 2607.835300000006,
+          "candidate": 1448.4471999999914
+        },
+        "means": {
+          "parent": 2816.3886933333315,
+          "candidate": 1495.7921666666678
+        },
+        "candidateOverParent": 0.5554212721946007,
+        "meanCandidateOverParent": 0.5311028872567748
+      },
+      {
+        "operation": "yearMonthParse",
+        "medians": {
+          "parent": 2039.3302399999811,
+          "candidate": 985.4725999999937
+        },
+        "means": {
+          "parent": 2033.0938133333257,
+          "candidate": 949.986802222221
+        },
+        "candidateOverParent": 0.483233456097823,
+        "meanCandidateOverParent": 0.46726166593595875
+      },
+      {
+        "operation": "monthDayParse",
+        "medians": {
+          "parent": 1651.5287799999714,
+          "candidate": 1028.3597400000144
+        },
+        "means": {
+          "parent": 1612.5381511111118,
+          "candidate": 981.1679533333275
+        },
+        "candidateOverParent": 0.6226714014635774,
+        "meanCandidateOverParent": 0.6084618541628044
+      },
+      {
+        "operation": "dateFromFields",
+        "medians": {
+          "parent": 1398.8245599999937,
+          "candidate": 992.0287800000006
+        },
+        "means": {
+          "parent": 1375.6656866666688,
+          "candidate": 939.6604511111137
+        },
+        "candidateOverParent": 0.7091874194716777,
+        "meanCandidateOverParent": 0.6830587258361984
+      },
+      {
+        "operation": "dateFields",
+        "medians": {
+          "parent": 2427.0349799999894,
+          "candidate": 360.98263999996556
+        },
+        "means": {
+          "parent": 2437.556491111112,
+          "candidate": 395.432779999998
+        },
+        "candidateOverParent": 0.14873400794576397,
+        "meanCandidateOverParent": 0.16222507311809942
+      },
+      {
+        "operation": "dateWith",
+        "medians": {
+          "parent": 3853.464400000012,
+          "candidate": 638.8564000000042
+        },
+        "means": {
+          "parent": 3845.2497955555573,
+          "candidate": 668.4934244444391
+        },
+        "candidateOverParent": 0.16578754431985987,
+        "meanCandidateOverParent": 0.1738491541478272
+      },
+      {
+        "operation": "dateTimeWith",
+        "medians": {
+          "parent": 6398.092939999988,
+          "candidate": 2441.029180000005
+        },
+        "means": {
+          "parent": 6503.212731111122,
+          "candidate": 2608.4441911111126
+        },
+        "candidateOverParent": 0.38152449532876115,
+        "meanCandidateOverParent": 0.4011008556789808
+      },
+      {
+        "operation": "yearMonthWith",
+        "medians": {
+          "parent": 3516.82802000003,
+          "candidate": 881.6643000000113
+        },
+        "means": {
+          "parent": 3516.0900599999877,
+          "candidate": 858.3947444444412
+        },
+        "candidateOverParent": 0.2506987248128226,
+        "meanCandidateOverParent": 0.24413332133035417
+      },
+      {
+        "operation": "monthDayWith",
+        "medians": {
+          "parent": 4112.2394599999825,
+          "candidate": 1172.2390599999926
+        },
+        "means": {
+          "parent": 4174.377637777781,
+          "candidate": 1163.6274799999997
+        },
+        "candidateOverParent": 0.28506099204641105,
+        "meanCandidateOverParent": 0.27875472249306454
+      },
+      {
+        "operation": "zonedWith",
+        "medians": {
+          "parent": 9604.338859999989,
+          "candidate": 5547.593919999998
+        },
+        "means": {
+          "parent": 9671.274731111123,
+          "candidate": 5606.129331111103
+        },
+        "candidateOverParent": 0.577613305909534,
+        "meanCandidateOverParent": 0.5796680879178189
+      },
+      {
+        "operation": "dateAdd",
+        "medians": {
+          "parent": 5879.197459999995,
+          "candidate": 1892.7641199999925
+        },
+        "means": {
+          "parent": 5889.316542222198,
+          "candidate": 1916.4786666666664
+        },
+        "candidateOverParent": 0.32194260064876173,
+        "meanCandidateOverParent": 0.3254161417418951
+      },
+      {
+        "operation": "dateUntil",
+        "medians": {
+          "parent": 6238.789919999981,
+          "candidate": 5271.015280000029
+        },
+        "means": {
+          "parent": 6436.036813333331,
+          "candidate": 5252.595755555574
+        },
+        "candidateOverParent": 0.8448778284876187,
+        "meanCandidateOverParent": 0.816122702199891
+      },
+      {
+        "operation": "dateTimeAdd",
+        "medians": {
+          "parent": 6012.21755999999,
+          "candidate": 2944.4589400000405
+        },
+        "means": {
+          "parent": 6010.587966666661,
+          "candidate": 2932.240302222223
+        },
+        "candidateOverParent": 0.48974590666676493,
+        "meanCandidateOverParent": 0.48784583446474017
+      },
+      {
+        "operation": "dateTimeUntil",
+        "medians": {
+          "parent": 6226.87883999999,
+          "candidate": 5201.4812600000005
+        },
+        "means": {
+          "parent": 6259.7672133333335,
+          "candidate": 5216.4483733333245
+        },
+        "candidateOverParent": 0.8353271990113121,
+        "meanCandidateOverParent": 0.833329450689838
+      },
+      {
+        "operation": "dateTimeRoundFormat",
+        "medians": {
+          "parent": 1673.0133999999089,
+          "candidate": 1489.2886799999542
+        },
+        "means": {
+          "parent": 1698.7220666666528,
+          "candidate": 1499.3536933333316
+        },
+        "candidateOverParent": 0.8901833541799697,
+        "meanCandidateOverParent": 0.882636260960255
+      },
+      {
+        "operation": "dateFormat",
+        "medians": {
+          "parent": 1026.0821399999259,
+          "candidate": 146.1281400000007
+        },
+        "means": {
+          "parent": 1032.217315555576,
+          "candidate": 148.46312444444467
+        },
+        "candidateOverParent": 0.1424136862961198,
+        "meanCandidateOverParent": 0.143829329548242
+      },
+      {
+        "operation": "dateTimeFormat",
+        "medians": {
+          "parent": 1113.426679999975,
+          "candidate": 906.2905799999863
+        },
+        "means": {
+          "parent": 1126.0179422222104,
+          "candidate": 905.5428511111191
+        },
+        "candidateOverParent": 0.8139652087374147,
+        "meanCandidateOverParent": 0.8041993090483257
+      },
+      {
+        "operation": "yearMonthFormat",
+        "medians": {
+          "parent": 407.4592600000323,
+          "candidate": 104.38007999997353
+        },
+        "means": {
+          "parent": 409.7142133333384,
+          "candidate": 109.89426666666178
+        },
+        "candidateOverParent": 0.25617304660094176,
+        "meanCandidateOverParent": 0.2682217582167528
+      },
+      {
+        "operation": "monthDayFormat",
+        "medians": {
+          "parent": 371.28991999998107,
+          "candidate": 134.68300000000454
+        },
+        "means": {
+          "parent": 372.1515555555622,
+          "candidate": 135.63752000001034
+        },
+        "candidateOverParent": 0.3627434862762,
+        "meanCandidateOverParent": 0.3644685020798191
+      },
+      {
+        "operation": "zonedFormat",
+        "medians": {
+          "parent": 2047.8118200000608,
+          "candidate": 1650.1986200000101
+        },
+        "means": {
+          "parent": 2048.4063600000163,
+          "candidate": 1654.998002222225
+        },
+        "candidateOverParent": 0.8058350888901311,
+        "meanCandidateOverParent": 0.8079441826289838
+      },
+      {
+        "operation": "yearMonthUntil",
+        "medians": {
+          "parent": 5583.693599999969,
+          "candidate": 3469.9414400000387
+        },
+        "means": {
+          "parent": 5564.606579999995,
+          "candidate": 3470.4224866666805
+        },
+        "candidateOverParent": 0.6214419501815175,
+        "meanCandidateOverParent": 0.6236599904726209
+      },
+      {
+        "operation": "yearMonthToDate",
+        "medians": {
+          "parent": 2321.3556999999855,
+          "candidate": 702.7618000000075
+        },
+        "means": {
+          "parent": 2349.3161155555736,
+          "candidate": 797.6218022222424
+        },
+        "candidateOverParent": 0.3027376631681271,
+        "meanCandidateOverParent": 0.3395123359265845
+      },
+      {
+        "operation": "monthDayToDate",
+        "medians": {
+          "parent": 2679.376540000085,
+          "candidate": 895.5726600000344
+        },
+        "means": {
+          "parent": 2687.059004444438,
+          "candidate": 861.7343600000054
+        },
+        "candidateOverParent": 0.33424666023238603,
+        "meanCandidateOverParent": 0.32069796702442455
+      },
+      {
+        "operation": "yearMonthAdd",
+        "medians": {
+          "parent": 5458.604380000033,
+          "candidate": 1991.1376000000018
+        },
+        "means": {
+          "parent": 5460.713466666639,
+          "candidate": 2097.0508622222083
+        },
+        "candidateOverParent": 0.36477045438489714,
+        "meanCandidateOverParent": 0.38402506834007216
+      },
+      {
+        "operation": "zonedParse",
+        "medians": {
+          "parent": 3979.6837600000435,
+          "candidate": 3308.618720000013
+        },
+        "means": {
+          "parent": 4039.413562222229,
+          "candidate": 3331.4210177777727
+        },
+        "candidateOverParent": 0.8313772951647739,
+        "meanCandidateOverParent": 0.8247288787001636
+      },
+      {
+        "operation": "zonedOffset",
+        "medians": {
+          "parent": 115.58007999992697,
+          "candidate": 117.42235999998229
+        },
+        "means": {
+          "parent": 122.13782444442687,
+          "candidate": 126.14844666666208
+        },
+        "candidateOverParent": 1.0159394248563982,
+        "meanCandidateOverParent": 1.0328368565633004
+      },
+      {
+        "operation": "zonedAddDay",
+        "medians": {
+          "parent": 6255.732300000091,
+          "candidate": 2870.0533200000064
+        },
+        "means": {
+          "parent": 6255.575326666666,
+          "candidate": 2889.9232844444405
+        },
+        "candidateOverParent": 0.45878774576079046,
+        "meanCandidateOverParent": 0.4619756191129361
+      },
+      {
+        "operation": "zonedUntilDay",
+        "medians": {
+          "parent": 12914.164639999944,
+          "candidate": 7058.145280000026
+        },
+        "means": {
+          "parent": 12962.365746666635,
+          "candidate": 7122.915457777773
+        },
+        "candidateOverParent": 0.546542922190905,
+        "meanCandidateOverParent": 0.5495073659381569
+      },
+      {
+        "operation": "zonedRound",
+        "medians": {
+          "parent": 2912.5222799999756,
+          "candidate": 2398.819899999944
+        },
+        "means": {
+          "parent": 2906.213413333333,
+          "candidate": 2384.29066888891
+        },
+        "candidateOverParent": 0.823622849676523,
+        "meanCandidateOverParent": 0.8204114184973793
+      },
+      {
+        "operation": "zonedDayStart",
+        "medians": {
+          "parent": 2127.13539999997,
+          "candidate": 1684.1204400001154
+        },
+        "means": {
+          "parent": 2154.897002222246,
+          "candidate": 1695.0032466666662
+        },
+        "candidateOverParent": 0.7917316593951372,
+        "meanCandidateOverParent": 0.7865820245323499
+      },
+      {
+        "operation": "zonedHoursInDay",
+        "medians": {
+          "parent": 2716.8827800000145,
+          "candidate": 1751.0565199999837
+        },
+        "means": {
+          "parent": 2717.1953288888876,
+          "candidate": 1762.739366666679
+        },
+        "candidateOverParent": 0.6445094108918362,
+        "meanCandidateOverParent": 0.6487348730234629
+      },
+      {
+        "operation": "zonedTransition",
+        "medians": {
+          "parent": 427.0564000005834,
+          "candidate": 412.50900000013644
+        },
+        "means": {
+          "parent": 711.6633333332073,
+          "candidate": 661.8041333331753
+        },
+        "candidateOverParent": 0.9659356469065279,
+        "meanCandidateOverParent": 0.929939906041657
+      },
+      {
+        "operation": "durationParse",
+        "medians": {
+          "parent": 2346.1620800000674,
+          "candidate": 1858.1554999999935
+        },
+        "means": {
+          "parent": 2352.3903933333513,
+          "candidate": 1834.8929222222391
+        },
+        "candidateOverParent": 0.7919979253947963,
+        "meanCandidateOverParent": 0.7800120793820217
+      },
+      {
+        "operation": "durationFormat",
+        "medians": {
+          "parent": 2421.385799999989,
+          "candidate": 2425.7040000001143
+        },
+        "means": {
+          "parent": 2421.016771111075,
+          "candidate": 2424.9791155555836
+        },
+        "candidateOverParent": 1.0017833589344272,
+        "meanCandidateOverParent": 1.0016366447732992
+      },
+      {
+        "operation": "durationAdd",
+        "medians": {
+          "parent": 4985.153060000157,
+          "candidate": 3854.0242000001303
+        },
+        "means": {
+          "parent": 4978.423126666684,
+          "candidate": 3875.223366666663
+        },
+        "candidateOverParent": 0.7731004752740749,
+        "meanCandidateOverParent": 0.7784037772742167
+      },
+      {
+        "operation": "durationRoundRelative",
+        "medians": {
+          "parent": 24353.103880000122,
+          "candidate": 12253.237300000039
+        },
+        "means": {
+          "parent": 24410.775897777832,
+          "candidate": 12289.516508888919
+        },
+        "candidateOverParent": 0.503148894710828,
+        "meanCandidateOverParent": 0.5034463697652339
+      },
+      {
+        "operation": "durationTotalRelative",
+        "medians": {
+          "parent": 5633.156460000027,
+          "candidate": 2303.5772400000133
+        },
+        "means": {
+          "parent": 5633.590988888852,
+          "candidate": 2330.8152355555567
+        },
+        "candidateOverParent": 0.40893187617941684,
+        "meanCandidateOverParent": 0.41373526053855003
+      }
+    ]
+  },
+  "cold": {
+    "method": "Six isolated A B B A A B processes per mode CPU10. AllfivecombinedGregorian/fields/ISOconversion/hostsolver/kernel sources vsd0527. No pervaluecache/layout change. Three mixed originalfromfield workloads unreadcalendarId/day/format,8frozenbags(numericmonth/code/both,overflow,leap,year0,negative,rangeedges),20kwarm9x50k,fulloutputs andfrozeninputparity. Separateheap200kretainedvalues3GCbefore/after,20kwarm,array/WeakMapinclusive,3processes/state/readmode,Node-onlyapproximation. No extra retention/cache intended. Not replacing full48;no concurrent tests/build/profile/measurement.",
+    "throughput": [
+      {
+        "operation": "unread",
+        "processMedians": {
+          "parent": [815.4070000000002, 810.1156800000001, 805.01824],
+          "candidate": [654.3489599999998, 660.7336200000003, 703.356]
+        },
+        "candidateOverParent": 0.8156040381788441
+      },
+      {
+        "operation": "day",
+        "processMedians": {
+          "parent": [1236.9705799999997, 1251.057679999999, 1202.4557400000003],
+          "candidate": [
+            1022.9054400000018, 1054.8560999999995, 1008.0825800000003
+          ]
+        },
+        "candidateOverParent": 0.8269440328968876
+      },
+      {
+        "operation": "format",
+        "processMedians": {
+          "parent": [
+            1406.7083000000002, 1397.8771800000004, 1326.9734400000016
+          ],
+          "candidate": [
+            1121.6363000000001, 1158.816179999999, 1092.3206600000003
+          ]
+        },
+        "candidateOverParent": 0.8023854427611443
+      }
+    ],
+    "retainedBytesPerValue": {
+      "heap-unread": {
+        "parent": [145.2884, 145.27412, 145.27456],
+        "candidate": [145.30028, 145.11256, 145.2948]
+      },
+      "heap-read": {
+        "parent": [265.28672, 265.24868, 265.29744],
+        "candidate": [265.3118, 265.31732, 265.32196]
+      }
+    }
+  },
+  "native": {
+    "method": "Three isolated fresh optimized native+TS comparison processes,CPU10. Original25 and named7 retained/reportseparate. Rust256warm9x16384;JS20kwarm9x50k,transition1kwarm9x5k. Node and Rust child inherit same CPU pin. Full outputs/parity. TS candidate combines boundedGregorianinverse/preparedISOfields/conversion/hostsolver/kernelprimitive;source hashes recorded. All25original and7named rows required; no universal native claim beyond matched cases.",
+    "processes": [
+      {
+        "originalWins": 25,
+        "originalWorkloads": 25,
+        "namedWins": 7,
+        "namedWorkloads": 7
+      },
+      {
+        "originalWins": 25,
+        "originalWorkloads": 25,
+        "namedWins": 7,
+        "namedWorkloads": 7
+      },
+      {
+        "originalWins": 25,
+        "originalWorkloads": 25,
+        "namedWins": 7,
+        "namedWorkloads": 7
+      }
+    ]
+  },
+  "scopedReference": {
+    "method": "Six isolated scoped TS/basic processes T B B T T B,CPU10,originalzonedOffset/dayStart/eightzonedinputs/fullparity,100kwarm9x200k. Threeeach,allchronologicalsamples. Triageonly;NOTreplacementforall48/finalofficialreference comparisons. No source mutation or concurrent measurement/test/profile.",
+    "results": [
+      {
+        "operation": "zonedOffset",
+        "medians": {
+          "typescript": 125.0870999999998,
+          "reference": 44.213200000000086
+        },
+        "medianProcessMeans": {
+          "typescript": 140.40558888888893,
+          "reference": 58.66860055555558
+        },
+        "typescriptOverBasic": 2.8291799734015983,
+        "meanTypescriptOverBasic": 2.3931981939118083
+      },
+      {
+        "operation": "zonedDayStart",
+        "medians": {
+          "typescript": 1689.9935600000003,
+          "reference": 1559.4134349999997
+        },
+        "medianProcessMeans": {
+          "typescript": 1667.2980172222224,
+          "reference": 1580.445358333333
+        },
+        "typescriptOverBasic": 1.0837366935985135,
+        "meanTypescriptOverBasic": 1.0549545471034065
+      }
+    ]
+  },
+  "validation": {
+    "exitCode": 0,
+    "targets": [
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:instant_hermes_test262_full",
+      "//packages/temporal:instant_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_hermes_test262_full",
+      "//packages/temporal:plain_date_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_date_time_hermes_test262_full",
+      "//packages/temporal:plain_date_time_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:plain_time_hermes_test262_full",
+      "//packages/temporal:plain_time_hermes_bytecode_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:year_month_hermes_test262_full",
+      "//packages/temporal:year_month_hermes_bytecode_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:month_day_hermes_test262_full",
+      "//packages/temporal:month_day_hermes_bytecode_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:duration_hermes_test262_full",
+      "//packages/temporal:duration_hermes_bytecode_test262_full",
+      "//packages/temporal:zoned_test262_full",
+      "//packages/temporal:zoned_hermes_test262_full",
+      "//packages/temporal:zoned_hermes_bytecode_test262_full",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:public_calendar_test",
+      "//packages/temporal:short_date_test",
+      "//packages/temporal:instant_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//packages/temporal:no_internal_imports_test",
+      "//packages/temporal:package_json_test",
+      "//packages/temporal:package_exports_test",
+      "//packages/temporal:kernel_test",
+      "//packages/temporal:plain_time_test",
+      "//packages/temporal:arithmetic_calendar_test",
+      "//packages/temporal:calendar_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:registry_test",
+      "//crates/temporal:zoned_string_test",
+      "//packages/temporal:plain_date_time_test",
+      "//packages/temporal:table_calendar_test",
+      "//packages/temporal:duration_oracle_test",
+      "//packages/temporal:zoned_difference_test",
+      "//packages/temporal:relative_duration_test",
+      "//packages/temporal:native_date_output_hermes_oracle_test",
+      "//packages/temporal:native_plain_hermes_oracle_test",
+      "//packages/temporal:host_timezone_test",
+      "//packages/temporal:host_timezone_reference_test",
+      "//packages/temporal:zoned_test",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:legacy_timezone_hermes_test",
+      "//crates/intl_datetimeformat_calendars:calendar_core_test",
+      "//crates/intl_datetimeformat_calendars:table_calendar_test",
+      "//crates/intl_datetimeformat_calendars:intl_datetimeformat_calendars_test",
+      "//crates/intl_datetimeformat_calendars:compiled_calendars_test",
+      "//packages/intl-datetimeformat:calendar_test",
+      "//packages/intl-datetimeformat:temporal_test",
+      "//packages/intl-datetimeformat:temporal_polyfill_test",
+      "//packages/temporal:host_timezone_reference_node26_test",
+      "//packages/temporal:native_string_hermes_oracle_test"
+    ],
+    "sourceHashes": {
+      "crates/temporal/format.rs": "df342603b6a66f185d92d43b3bd754c2ce23857446f57bff38ecbbddec45ca5f",
+      "crates/temporal/date.rs": "f7a90065fe1b314e205bd6e2e570ef4f88cdcad5ae09e33298c93c5b8e02b467",
+      "crates/temporal/timezone.rs": "10d6c797ef55cdf48d162d8d0b408ecd19b6d1f979962b6ead09d18428a56a28",
+      "crates/temporal/lib.test.rs": "d74ac87b3fa1f50485ad572f28a441ebda8c96d865b58850685ae5e9342d3c0f",
+      "crates/intl_datetimeformat_calendars/core.rs": "08319016e28f0cead4dafc401cb72bedca36b60dee7a64e5a1fbbeb030c8b7f4",
+      "crates/intl_datetimeformat_calendars/core.test.rs": "c81dd6da7a80a31f9fa25d27a650a5c11d42287efe1c8243438891bdd16e5c92",
+      "packages/temporal/zones.ts": "89f05c668f8026ff3835ceffbea5fbc138234f1f2aafdca4875815f805726dd4",
+      "packages/temporal/host-timezone.ts": "5ca8427394c8638db3e05d86013bddbc8991440bb4d239685c105be980552956",
+      "packages/temporal/zoned-date-time.ts": "93d96bfa0c43e4b1bbef92fdbcd7b5ae1e67e3fac10205ac18bda5b44b4e9bf3",
+      "packages/ecma402-abstract/Calendar/Arithmetic.ts": "4d2daa97d090de855c1938de13dfa0bff8af752e71f884bdf6fd63de40cb651b",
+      "packages/temporal/date-core.ts": "c5299fcf4a997e03a3c28590d7f46f24110f2637cf49596cbd0d83ae73b55af8",
+      "packages/temporal/plain-date.ts": "26a5822ee22735abce575f563b7da1fff8b34aa6bc2d1c81a79d2a91129bc6be",
+      "packages/temporal/calendar.ts": "e66fe34ad9e9a9cffb54c4883f6381e6f6bf299cb53b617590699c020f43f698",
+      "packages/temporal/kernel.ts": "1ac62c9a5ce32ac86dfa5587189ac574877b4e47762cbafbba790224fb040fcf"
+    }
+  },
+  "typeOnlyCorrection": {
+    "method": "One-iteration Bazel smoke only; timing discarded. Exported helper gains explicit return type for isolated declarations; exact public namespace minified+gzip+SHA match all timed candidate controls.",
+    "beforeSourceHash": "bd5fc00c3cbdbcf876052acffbd0920a6e989e337ddbf863d80179471c2fc1d7",
+    "afterSourceHash": "4d2daa97d090de855c1938de13dfa0bff8af752e71f884bdf6fd63de40cb651b",
+    "beforeConsumer": {
+      "minified": 145503,
+      "gzip": 41118,
+      "sha256": "bd455d5225f512911f86a0283295d62653fdf4f6c71e1fb004012f6f9e0dc1e3"
+    },
+    "afterConsumer": {
+      "minified": 145503,
+      "gzip": 41118,
+      "sha256": "bd455d5225f512911f86a0283295d62653fdf4f6c71e1fb004012f6f9e0dc1e3"
+    }
+  },
+  "roundingAudit": {
+    "fourCaseLong": "Instant.round median process mean ~7% above original;other three cases improve.",
+    "narrow": {
+      "candidateOverOriginalMean": 0.9908631671608941,
+      "processMeans": {
+        "parent": [598.9843632222221, 656.2008503333334, 572.2618634444445],
+        "candidate": [579.0254715555556, 648.2290353333333, 593.5115432222224]
+      },
+      "threshold": 1.03,
+      "regressionReproduced": false,
+      "sourceHashes": {
+        "parent": {
+          "packages/ecma402-abstract/Calendar/Arithmetic.ts": "c34a14c83c490e1e26aec2e37eff66d976ba9d2e5015304e1cbdfc3ad25c44f4",
+          "packages/temporal/calendar.ts": "01b20e0b002c07ad98d4c07ce592ee0d984644fdeb34ebdc4413793217afd2af",
+          "packages/temporal/date-core.ts": "6ac874526b8b998c17c2bc271356fc1b83ededae66be10060b385fcb0da11b26",
+          "packages/temporal/duration-core.ts": "126bec04f0ae0e71b8a8bbaa41399f71d9f0e078efac40ec89ceadb92f1677f2",
+          "packages/temporal/duration.ts": "0f18364835c2000045c5be4c9b81dc5c8fc869d61eb3e4b0ef39ad5493d59403",
+          "packages/temporal/kernel.ts": "94ea45feb9ebf659917724fc2a3ef62fcb38d6d2f68974c4138920bdde639b3b",
+          "packages/temporal/plain-date-time.ts": "e7968bad6a309fd76bc2934e147ee75b1af451f62e645b3779b0d3e2f5034c92",
+          "packages/temporal/plain-date.ts": "75ab4d504302ea4472b6dd2ca2b7538082de5036e60859184d04d2447916b60c",
+          "packages/temporal/plain-month-day.ts": "f6180e18b2f8a0b03ad4605a3d1eaa9c549febd9eb44346ab352a28ca4e9765e",
+          "packages/temporal/plain-slots.ts": "165a1e4d4738011c7de7e043269e77f7a441adc8cbb452f513ae1df94fd4d13a",
+          "packages/temporal/plain-time.ts": "70daa4d6fe751699a824c9c2fc04c82fad22253b3da1b8d0d13753daf60f55b0",
+          "packages/temporal/plain-year-month.ts": "3995423d4648695ebdd199ebf08878fe91df84566ea786da77fed67f4fdc16cb",
+          "packages/temporal/short-date-core.ts": "20dcbe5c14d8a161ce1812aee5ef99b1b805386206b002568cc31b4ebaa7c412",
+          "packages/temporal/host-timezone.ts": "817795a6d50c627d84328f55299392f3fbcf45ed19a05d1cba8354d4fc9cbdb0"
+        },
+        "candidate": {
+          "packages/ecma402-abstract/Calendar/Arithmetic.ts": "4d2daa97d090de855c1938de13dfa0bff8af752e71f884bdf6fd63de40cb651b",
+          "packages/temporal/calendar.ts": "e66fe34ad9e9a9cffb54c4883f6381e6f6bf299cb53b617590699c020f43f698",
+          "packages/temporal/date-core.ts": "c5299fcf4a997e03a3c28590d7f46f24110f2637cf49596cbd0d83ae73b55af8",
+          "packages/temporal/duration-core.ts": "ff520da2bcce723433fd8c8cc5230e11a863169eb3cb6042ee68cd1ff627c0d5",
+          "packages/temporal/duration.ts": "55d92b5ad77f6c61228e7c90a0f99dbf91bef0bd320ba20eae3c3270d4c82f68",
+          "packages/temporal/kernel.ts": "1ac62c9a5ce32ac86dfa5587189ac574877b4e47762cbafbba790224fb040fcf",
+          "packages/temporal/plain-date-time.ts": "454e0bb55aee3958e3d89fd2571bf72fa2185a9d5a7bfcaeaa79b3fa7abedc84",
+          "packages/temporal/plain-date.ts": "26a5822ee22735abce575f563b7da1fff8b34aa6bc2d1c81a79d2a91129bc6be",
+          "packages/temporal/plain-month-day.ts": "cc9c415f639bbf3c62a658f6b4042bab23cd5c2fa71776fb1d24621ca8d8e985",
+          "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+          "packages/temporal/plain-time.ts": "3397145dfaf5fa34f843a61b4aa20157d24e09641d4e2c707b9f8a4cb4a0c549",
+          "packages/temporal/plain-year-month.ts": "4a9e18ca75301bd0db8784d53f63af6d4004193380d7f96aa26353f011a7518c",
+          "packages/temporal/short-date-core.ts": "22f8ccce8851691507fd936a101c8c9b04bc1fb8b6375f039a28ca5fcfe09b65",
+          "packages/temporal/host-timezone.ts": "5ca8427394c8638db3e05d86013bddbc8991440bb4d239685c105be980552956"
+        }
+      }
+    },
+    "interpretation": "No general Instant.round slowdown established:full48 mean improves~3%,round-only improves~1%;four-case mixture remains variable. Relevant Instant bytecode sizes/inlining decisions match. Mixed diagnostic CPU adds~1.5% Instant.round mean with greater total GC;this is not throughput proof or sole-cause attribution. No speculative rounding change.",
+    "diagnostics": "Raw four-case CPU profiles,inline logs,bytecode function summaries and assembled modules in controls archive. All diagnostic timings excluded."
+  },
+  "rejected": [
+    "Eager owned-field retention improves focused reads but cold unread construction slows~23%,+79 retainedB/value.",
+    "Undefined overflow default shortcut regresses dateFromFields/YearMonth;reverted."
+  ],
+  "profiles": {
+    "temporal-era-format-profile-parent": {
+      "archiveMember": "profiles.temporal-era-format-profile-parent",
+      "sha256": "cbb31743e4a30b14728c1fcac36e38ac3343ad2b88d9b128e8007b5ce397ad73"
+    },
+    "temporal-era-format-profile-candidate": {
+      "archiveMember": "profiles.temporal-era-format-profile-candidate",
+      "sha256": "bcdb9f3b9fe48a6f72f4133fa376ba0da611080f741b8f5eb907798ff0c7b7b4"
+    },
+    "temporal-round-regression-parent": {
+      "archiveMember": "profiles.temporal-round-regression-parent",
+      "sha256": "f32af66a820d662d54a2e4c826a3ba299629051c08960a2120b18cf3375417af"
+    },
+    "temporal-round-regression-candidate": {
+      "archiveMember": "profiles.temporal-round-regression-candidate",
+      "sha256": "8f5d97d0bbc2a05bacd7630786a6d4410dfa9d30e3208dafc81929b3c40e4999"
+    },
+    "temporal-combined-calendar-zonedOffset": {
+      "archiveMember": "profiles.temporal-combined-calendar-zonedOffset",
+      "sha256": "341d6daedbefba27972ce3fb8d270c1f55cb151f85a516690150bd1c70442dc4"
+    },
+    "temporal-combined-calendar-zonedDayStart": {
+      "archiveMember": "profiles.temporal-combined-calendar-zonedDayStart",
+      "sha256": "067c27c6e3170811d4522417fb65b0d9db6dc15df6c225d9736c0b7597f647fd"
+    }
+  },
+  "raw": {
+    "file": "calendar-fields-controls.json.gz",
+    "bytes": 1277708,
+    "sha256": "88a557947d694240b0974018d4d4d8f596747c87c76f1324c32bdbf1cd4b85f9"
+  },
+  "limits": [
+    "Node x64 measurements;Hermes correctness only,native Rust excludes bindings/startup.",
+    "Three processes/state expose substantial median/mean/GC variance;all samples retained. Combined largest median increase is transition~3.4%,mean~5.4%faster. Smaller nominal increases remain recorded.",
+    "Original baseline wins44/48medians46/48means;largest mean increase offset~3.3%. Narrow/fullround results differ from mixedcase;not blanket no-regression proof.",
+    "Manual strict Node24 host/ICU target has same290tzdb2025c-vs2026e differences in original and candidate;no exclusions relaxed. Normal hostreference/Node26/native ICU controls pass.",
+    "Freshfull48 basic/official and startup stillpending. Scoped two-case reference checks identify gaps only;no new overall win count.",
+    "Initial71gates70pass1declarationbuildfailure fixed with explicit type;all71pass. Runtime consumer SHA matches all timed candidate runs."
+  ]
+}

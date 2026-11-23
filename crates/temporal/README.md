@@ -14,10 +14,29 @@ IANA timezones; `compiled_calendars` and `compiled_time_zones` enable each separ
 Published crates contain generated data and a Cargo build script; Bazel is only
 needed when building this repository.
 
-Rust owns typed values and normalized math/parsing/formatting operations. JS owns
-ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-ABI 9 exposes 62 Rust operations to WASM and native Hermes. The standalone SDK
-consumer installs Temporal and native Intl without a Rust toolchain.
+Rust owns normalized Temporal operations. JS handles ECMAScript coercion, brands
+and object allocation; Intl supplies locale rendering. Native Hermes calls the
+Rust JSON FFI dispatcher and caches date-like result snapshots. The standalone
+SDK installs Temporal and native Intl without a Rust toolchain.
+Timezone candidate enumeration deduplicates offsets in a bounded stack buffer;
+histories with more offsets still visit every distinct value.
+`TimeZone::visit_offsets_at(local_nanoseconds, visitor)` defaults to full-history
+visitation, preserving existing custom providers. TransitionZone narrows candidates
+to the local timestamp plus/minus one day, including boundary state and recurring
+rule offsets. NamedTimeZone and ResolvedTimeZone forward this optional optimization.
+Validated offsets are strictly smaller than one day, so this window includes all
+candidate instants and both sides of any containing gap/fold. No data or cache is
+added. `visit_offsets` retains full-history behavior.
+`TimeZone::has_out_of_range_candidate(local_nanoseconds)` lets providers check
+whether a local time round-trips to an instant outside the supported range.
+The default retains bounded enumeration. Borrowed and registered transition
+providers use their exact rules near the limits.
+`TimeZone::nearest_local_after(local_nanoseconds)` provides the first reachable
+local time after a gap when the provider covers raw epochs outside Instant.
+Borrowed and registered transition zones supply it for a day-start search
+clipped at an Instant limit. The default retains the bounded fallback.
+`TimeZone::nearest_gap_boundaries(local_nanoseconds)` lets those providers
+include raw neighboring local times in lower-clipped gap disambiguation.
 See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 for current verification. Later sections retain historical implementation stages;
 their pending-work statements describe those stages.
@@ -57,24 +76,21 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Hermes/WASM bindings delegate normalized operations to this core. Native SDK installation and Intl integration are available.
+checked. Native Hermes bindings delegate normalized operations to this core. Native SDK installation and Intl integration are available.
+Calendar-unit totals validate both interpolation endpoints even for exact results.
+Zero zoned calendar totals use the positive window; plain zero totals return zero.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test
-bazel build -c opt //crates/temporal:wasm
-bazel test -c opt //benchmarks/temporal:wasm_test
-bazel run -c opt //benchmarks/temporal:wasm_benchmark
+bazel run -c opt //benchmarks/temporal:native_ts_benchmark
 ```
 
-The WASM targets use the public `rules_rs` `rust_shared_library` rule. A
-package-local `with_cfg(copy_file)` transition selects
-`@rules_rs//rs/platforms:wasm32-unknown-unknown` and `compilation_mode = opt`,
-then stages `temporal-core.wasm` or `temporal-backend.wasm` with Bazel's
-hermetic copy action. These modules expose the raw Temporal ABI; they do not
-need wasm-bindgen or generated JavaScript glue.
+Supported delivery paths are native Rust, TypeScript and native Hermes bindings.
+Temporal WASM targets and npm assets have been removed. Native Rust benchmarks
+exclude JavaScript binding costs; Hermes has separate end-to-end benchmarks.
 
-Independent ICU4J controls cover 25,269 Gregorian conversions, 2,349 Instant
-rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock rounds,
+Independent ICU4J controls cover 25,269 Gregorian conversions, 3,987 Instant
+rounding cases, 7,130 signed Duration rounding/totals, 7,740 clock rounds,
 840 date-arithmetic cases and 2,028 ISO short-date cases. Tests use the production
 IANA registry for 17,640 offset/local samples, 1,900 future gap/fold controls and
 14,058 strict transition query instants. Zoned difference and
@@ -82,18 +98,14 @@ relative Duration tests share 19,440 calendar-span rounds, including 6,480 exact
 relative totals. Relative comparisons reuse the same future-transition controls.
 Separate cases cover range edges, adjacent gaps and recurring leap-only rules.
 
-Initial WASM primitive measurements cover matched Instant/Duration kernels, excluding
-calendar/timezone data and the public object model. Later partial-facade profiles
-include all16 native calendar packs, IANA data and retained TS fallback packs. Pinned Hermes exposes no
-`WebAssembly` in either source or bytecode mode. See
-[benchmark scope and results](../../benchmarks/temporal/README.md#wasm-baseline)
-and [completion plan](../../knowledge-base/015-temporal.md).
-
 `Now<SystemClock>` accepts host epoch nanoseconds, clamps Instant bounds and
 converts through an explicit TimeZone provider. It supplies instant, zoned ISO,
 plain date/time, date and time views. Injected clock tests reuse all 17,640
 independent ICU timezone samples, including sub-millisecond nanoseconds. This
 host boundary does not install a system clock or discover a system zone itself.
+Pass the host's zone name to `TimeZoneRegistry::system`; like
+SystemTimeZoneIdentifier it never fails and returns UTC when the host name is
+missing or unresolvable.
 
 `named_time_zone_identifier` looks up 597 case-insensitive IANA names without
 allocation. `NamedTimeZone<Z>` attaches validated spelling/primary identity to a
@@ -230,9 +242,8 @@ and invalid data have distinct errors; missing data never substitutes UTC.
 `TimeZoneRegistry::compiled()`. Bazel generates immutable Rust records from the
 pinned TS timezone pack; generated records stay in Bazel outputs. Checked const
 constructors validate transition bounds/order and future rules at compilation.
-The default core and existing primitive WASM build include no timezone pack.
-Like other compiled-data variants here, this feature uses Bazel's generated-file
-environment rather than Cargo build scripts.
+The default core includes no timezone pack. Bazel builds supply generated-file
+environments; published crates include generated data for Cargo.
 
 ```rust
 use formatjs_temporal::{Instant, TimeZoneRegistry, ZonedDateTime};
@@ -250,8 +261,8 @@ future offset/local samples, 1,900 gap/fold controls and 14,058 transition query
 instants (both directions plus nanosecond boundaries). ICU-only legacy names,
 such as ACT, are checked as invalid identifiers; every recognized IANA name must
 resolve successfully. Existing zoned/relative/day-rounding controls use the same
-registry. Native Hermes installation and full WASM facade/data benchmarks remain
-pending.
+registry. Native Hermes uses the same production data; native benchmarks report
+Rust timings separately from binding costs.
 
 ## Zoned strings
 
@@ -291,10 +302,10 @@ options. Native Test262-derived cases cover folds/gaps, offset policies, date-on
 midnight gaps, syntax-dependent historical matching and asymmetric local bounds.
 These typed numerical/string checks do not install a native Hermes backend.
 
-The [size refresh](../../benchmarks/temporal/zoned-string-size-results.json) keeps
-the existing data-free primitive scope: TS 3,757 gzip bytes, WASM 19,531 plus
-463 bridge bytes. The full TS namespace remains 360,277 gzip bytes. These numbers
-do not measure the native zoned facade or compiled calendar/timezone data.
+The historical [size refresh](../../benchmarks/temporal/zoned-string-size-results.json)
+measured data-free primitives: TS 3,757 gzip bytes, WASM 19,531 plus 463 bridge
+bytes. The full TS namespace then measured 360,277 gzip bytes. These retired
+measurements exclude the native zoned facade and compiled calendar/timezone data.
 
 ## Calendar registry and native context
 
@@ -335,8 +346,13 @@ registry, replacing the test-only JSON loader. All 50,298 field rows additionall
 parse through `TemporalContext`; existing arithmetic/difference/relative/short-date
 controls retain their full scope. Native context tests cover all date classes,
 aliases, retained data lifetimes, leap-month policies and public date limits.
-The context supplies data and typed values; native Hermes installation and full
-WASM facade/data benchmarks remain required.
+The context supplies data and typed values to native Hermes. See the completion
+audit for current coverage.
+
+## Historical backend measurements
+
+WASM references below describe retired experiments. They are retained to explain
+past measurements and ABI changes; WASM is no longer a supported delivery path.
 
 ## Experimental Hermes Rust ISO bridge
 
@@ -387,45 +403,6 @@ startup, full WASM or full backend size. Backend selection remains open.
 Invalid UTF-16 Instant strings retain `RangeError`: escaped code units are
 rejected before JSON-to-UTF-8 decoding. Source/bytecode regressions cover lone
 surrogates, captured intrinsics and mandatory native calls for every new operation.
-
-## Optional WASM backend
-
-`@formatjs/temporal/wasm.js` exposes `configureWasmBackend(instance)`. Load the
-packaged `temporal-backend.wasm` with the application's asset loader, instantiate
-it, then select it for the existing namespace:
-
-```ts
-import {Temporal} from '@formatjs/temporal'
-import {configureWasmBackend} from '@formatjs/temporal/wasm.js'
-
-const {instance} = await WebAssembly.instantiate(bytes, {})
-configureWasmBackend(instance)
-Temporal.Instant.from('2020-02-29T12:00Z').round('hour')
-```
-
-`bytes` contains the packaged WASM asset. Configuration preserves constructors
-and existing values; it does not install globals. The optional module can be
-imported on Hermes, but activation fails explicitly there because WebAssembly
-is unavailable. TS remains the default. Rust JSI uses the separate Hermes profile.
-
-This backend delegates ISO conversion and Instant parsing, formatting, arithmetic,
-rounding and differences to Rust. Other algorithms and owned calendar/timezone
-data remain TS. It is a partial backend, not complete native Temporal. No selected
-Rust operation falls back to TS after an error.
-
-The WASM profile passes 8,570 pinned Test262 executions, including the full 934
-Instant cases. Published-package controls verify 25,265 ICU Gregorian rows,
-2,349 BigDecimal rounds and 3,168 signed differences. Tests also exercise actual
-shared backend state, memory growth, repeated errors/freeing, malformed UTF-16,
-ABI rejection and captured codecs/views. Hermes source and optimized bytecode
-verify optional import and explicit unavailability without breaking TS.
-
-On the recorded Node/V8 host, this JSON bridge is slower than TS across all five
-measured Instant operations. The consumer bundle is 420,004 gzip bytes including
-WASM versus 360,183 TS bytes. The binary itself is 132,990 raw / 58,527 gzip bytes.
-Both profiles include owned TS calendar/IANA data; they retain TS fallback code.
-This does not establish full native/WASM backend costs or a default-backend choice.
-See `benchmarks/temporal/wasm-facade-results.json` for raw samples and delivery modes.
 
 ## Rust PlainTime backend
 
@@ -734,9 +711,95 @@ See SDK-host snapshots and `benchmarks/temporal/README.md` for methods and limit
 
 The Hermes SDK and npm `wasm-native.js` entry now use Rust's calendar/timezone
 records without duplicate TS tables. The default TS namespace and existing
-index/wasm pair retain their own data. Rust ABI9 and its binary are unchanged;
+index/wasm pair retain their own data. That earlier ownership change kept ABI9;
 JS still supplies observable ECMAScript semantics and shared orchestration.
 Published native-data WASM passes the same independent calendar/timezone/Duration
 oracles as the retained-data profile. See the native-data benchmark snapshots:
 consumer gzip falls from 806,221 to 469,793 bytes, versus TS 360,710. Both WASM
 profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
+
+## Typed WASM operations
+
+ABI 16 provides typed variants for twenty-seven hot operations, signed 128-bit Instant
+transfers, compact complete ISO date snapshots and streamed formatting. Rust ISO
+formatting writes one bounded stack buffer. Non-ISO records and deferred getter
+errors retain their general representation. SDK JSON responses keep their shapes.
+Finite month/day fields constrain before narrowing to Rust integer widths;
+non-finite values and `reject` still fail. Shared public controls cover TS, WASM
+and Hermes in addition to independent ICU rows.
+
+JS keeps observable coercions and required-field error types. Matching WASM
+binary/adapter versions are required. See the [profile measurements](../../benchmarks/temporal/README.md#cpu-profile-follow-up-2026-11-17)
+for latency, startup, size and remaining work.
+
+ISO calendar resolution bypasses the compiled table registry. First non-ISO use
+still initializes and validates table data. The fresh-process startup experiment
+in `benchmarks/temporal/lazy-calendar-startup-results.json` reduces native-data
+WASM ISO/timezone readiness from 25.0 ms to 16.3 ms (TS: 19.5 ms). Full calendar
+readiness remains about 27 ms; table work is deferred, not removed.
+
+PlainDateTime parsing, arithmetic and rounding return complete snapshots through
+typed WASM routes. ISO DateTime records contain 48 bytes, including signed i128
+nanoseconds, complete date properties and six clock fields. Other calendars retain
+their deferred getter errors. Instant and PlainDateTime share the bounded ASCII
+formatter; rounding still uses their public Rust methods.
+
+ABI 14 clock records use 18 bytes for exact nanoseconds and six fields. Clock
+storage stays i128; a measured u64 storage experiment had no stable overall gain
+and was discarded. Validated clock transport/field calculations use native-width
+integers. Shared rounding narrows only quotient/remainder operands when safe;
+results remain i128 and larger operands keep their original path. Boundary tests
+cover signed ties and results crossing i64 limits. Duration fields are rounded to
+Number-representable integers and validated in Rust before binding construction.
+
+ABI 15 returns Instant integers in 9 bytes when signed 64-bit values fit, otherwise
+17 bytes for the full signed 128-bit value. Checked scalar rounding can return a
+BigInt directly. Its reserved sentinel requests the full-width buffer path for
+errors, wide results and the sentinel value itself. Engines without scalar i64
+interop use buffers throughout. Both routes call the public Rust rounding method.
+Native Instant factories wrap validated Rust results directly; numeric user
+constructors retain range checks. JS option/coercion order stays unchanged.
+
+ABI 16 adds typed timezone-transition requests/results. Rust checks recurring
+transition candidates using one set of yearly events for before/after offsets.
+January 1 retains separate rule-year windows; the first second after explicit
+history retains its join check. No cache, new dependency or data-policy change.
+Signed/full-range values, null transitions and malformed requests stay covered.
+
+WASM ABI 18 adds direct zoned addition/subtraction, rounding and day-start
+requests, for 32 typed routes among the same 69 normalized operations. Complete
+ISO zoned records are written directly, including calendar/clock fields, exact
+offset text/nanoseconds and day length. Non-ISO and deferred-error snapshots retain
+the general path. Native SDK JSON shapes remain unchanged.
+Private resolution works directly on validated local nanoseconds; public field
+constructors still validate every field before timezone queries. Day boundaries
+retain the same local range check. PlainDateTime constructors that only store
+nanoseconds use that same range check without calculating unused ISO fields;
+calendar validation still runs. Offset-hint resolution now uses bounded visitation.
+
+WASM ABI 19 adds typed Duration parsing, addition/subtraction and negation/absolute
+value: 35 typed routes among the same 69 operations. Each calls the existing
+public Rust Duration API and returns all ten validated, Number-rounded fields.
+The shared duration record also serves PlainTime differences. Numeric input
+validation, unbalanced fields and positive zero remain intact. Malformed requests
+retain strict framing and recovery. SDK JSON shapes stay unchanged.
+
+WASM ABI 20 adds typed Instant, PlainDate, PlainDateTime and PlainYearMonth
+differences: 39 typed routes, unchanged 69 operations. Requests preserve signed
+128-bit nanoseconds or integral epoch days, both calendars for YearMonth and all
+rounding options. Existing public Rust methods produce complete ten-field Duration
+records. SDK JSON shapes and observable JS option/coercion order stay unchanged.
+
+WASM ABI 21 adds typed zoned formatting: 40 typed routes, unchanged 69 operations.
+It calls the public Rust formatter, preserving precision, rounding, annotation
+policies and offset recalculation across transitions. Four plain date format
+routes reuse existing interned calendar IDs, retaining strict UTF-8 fallback.
+Native bindings retain the ISO epoch day already present in complete DateTime
+records. Native SDK JSON stays compatible; keep WASM binary and JS adapter paired.
+
+WASM ABI 22 adds typed YearMonth addition/subtraction and both short-date
+projections: 43 typed routes, unchanged 69 operations. Each calls the public Rust
+method and returns complete date metadata. ISO results use a shared stack record
+also used by DateTime records and ISO field creation/updates. Other calendars and
+deferred getter errors retain existing snapshots. SDK JSON remains compatible;
+keep WASM binary and JS adapter paired.

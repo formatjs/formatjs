@@ -10,9 +10,38 @@ import {
 import {timeZone} from '#packages/temporal/zones.js'
 
 const instant = (text: string) => Temporal.Instant.from(text).epochNanoseconds
+it('accepts native Gregorian month ends and rejects the following day', () => {
+  for (const year of [-400, -100, -1, 0, 100, 400, 1900, 2000, 2100]) {
+    for (let month = 1; month <= 12; month++) {
+      const last = new Date(0)
+      last.setUTCFullYear(year, month, 0)
+      const day = last.getUTCDate()
+      expect(isoToEpochNanoseconds({year, month, day})).toBe(
+        BigInt(+last) * 1_000_000n
+      )
+      expect(() => isoToEpochNanoseconds({year, month, day: day + 1})).toThrow(
+        RangeError
+      )
+    }
+  }
+})
+
 it('keeps nanoseconds across negative epochs, leap days and instant bounds', () => {
   const limit = 8_640_000_000_000_000_000_000n
-  for (const value of [-limit, -1_000_001n, -1n, 0n, 1n, 1_000_001n, limit]) {
+  for (const value of [
+    -limit,
+    -limit + 1n,
+    -3_600_000_000_001n,
+    -1_000_001n,
+    -1n,
+    0n,
+    1n,
+    1_000_001n,
+    3_599_999_999_999n,
+    3_600_000_000_001n,
+    limit - 1n,
+    limit,
+  ]) {
     const fields = epochNanosecondsToISO(value)
     expect(isoToEpochNanoseconds(fields)).toBe(value)
     const reference = new Temporal.Instant(value).toZonedDateTimeISO('UTC')
@@ -103,4 +132,54 @@ it('preserves exact transition nanoseconds and distinguishes date arithmetic fro
   expect(() => zone.offsetNanoseconds(8_640_000_000_000_000_000_001n)).toThrow(
     RangeError
   )
+})
+
+it('matches builtin UTC dates in both directions over two complete Gregorian eras', () => {
+  let count = 0
+  for (let epochDay = -865565; epochDay <= -573372; epochDay++) {
+    const fields = epochNanosecondsToISO(BigInt(epochDay) * 86_400_000_000_000n)
+    const reference = new Date(epochDay * 86_400_000)
+    if (
+      fields.year !== reference.getUTCFullYear() ||
+      fields.month !== reference.getUTCMonth() + 1 ||
+      fields.day !== reference.getUTCDate()
+    )
+      throw new Error('Gregorian era mismatch at epoch day ' + epochDay)
+    const forward = isoToEpochNanoseconds({
+      year: reference.getUTCFullYear(),
+      month: reference.getUTCMonth() + 1,
+      day: reference.getUTCDate(),
+      hour: 13,
+      minute: 14,
+      second: 15,
+      millisecond: 987,
+      microsecond: 654,
+      nanosecond: 321,
+    })
+    if (
+      forward !==
+      BigInt(epochDay) * 86_400_000_000_000n + 47_655_987_654_321n
+    )
+      throw new Error('Gregorian forward mismatch at epoch day ' + epochDay)
+    count++
+  }
+  expect(count).toBe(292194)
+})
+
+it('defaults an omitted private hour without reading Object.prototype', () => {
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'hour')
+  let result: bigint
+  try {
+    Object.defineProperty(Object.prototype, 'hour', {
+      configurable: true,
+      get() {
+        throw new Error('Inherited private hour reached')
+      },
+    })
+    result = isoToEpochNanoseconds({year: 1970, month: 1, day: 1})
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'hour', original)
+    else Reflect.deleteProperty(Object.prototype, 'hour')
+  }
+  expect(result!).toBe(0n)
 })

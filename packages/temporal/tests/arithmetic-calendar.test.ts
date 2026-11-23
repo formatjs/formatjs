@@ -3,12 +3,50 @@ import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import {checkArithmeticCalendarOracle} from '#packages/temporal/tests/arithmetic-calendar-oracle.js'
 import {
+  ArithmeticCalendarToEpochDay,
+  ArithmeticGregorianFromEpochDay,
+} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
+import {
   arithmeticCalendars,
   calendarFromEpochDay,
   calendarToEpochDay,
   addCalendarDate,
   calendarDateUntilRaw,
 } from '#packages/temporal/calendar.js'
+
+it('keeps extended Gregorian endpoints exact without epoch milliseconds', () => {
+  for (const [epoch, year, month, monthCode, day] of [
+    [-110_000_000, -299200, 3, 'M03', 25],
+    [110_000_000, 303139, 10, 'M10', 10],
+  ] as const) {
+    expect(ArithmeticGregorianFromEpochDay('iso8601', epoch)).toEqual({
+      year,
+      month,
+      monthCode,
+      day,
+    })
+    expect(ArithmeticCalendarToEpochDay('iso8601', year, month, day)).toBe(
+      epoch
+    )
+  }
+})
+
+it('matches native Gregorian fields across positive and negative 400-year cycles', () => {
+  for (const firstYear of [-200, 2000]) {
+    const first = Date.UTC(firstYear, 0, 1) / 86400000
+    const end = Date.UTC(firstYear + 400, 0, 1) / 86400000
+    for (let epoch = first; epoch < end; epoch++) {
+      const reference = new Date(epoch * 86400000)
+      const month = reference.getUTCMonth() + 1
+      expect(calendarFromEpochDay('iso8601', epoch)).toEqual({
+        year: reference.getUTCFullYear(),
+        month,
+        monthCode: 'M' + String(month).padStart(2, '0'),
+        day: reference.getUTCDate(),
+      })
+    }
+  }
+}, 30_000)
 
 it('matches independent ICU arithmetic calendars in both directions', () => {
   const file = runfiles.resolve(

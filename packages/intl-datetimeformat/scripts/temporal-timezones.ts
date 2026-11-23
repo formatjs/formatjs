@@ -55,9 +55,14 @@ async function main(args: Args) {
     const unpacked = UnpackTimeZoneData(source)
     const names = Object.keys(unpacked).sort()
     const steps: Record<string, number> = {}
+    let lastExplicitTransition = 0
     for (const name of names) {
       const data = unpacked[name],
         events: number[] = []
+      lastExplicitTransition = Math.max(
+        lastExplicitTransition,
+        data[data.length - 1][0]
+      )
       for (let index = 1; index < data.length; index++)
         if (data[index][2] !== data[index - 1][2]) events.push(data[index][0])
       const future = data.future
@@ -89,7 +94,7 @@ async function main(args: Args) {
     }
     await writeFile(
       args.out,
-      `// Generated IANA identifiers and conservative offset-transition sampling intervals.\nexport default ${JSON.stringify(names)} as const\nexport const steps: Readonly<Record<string, number>> = ${JSON.stringify(steps)}\n`
+      `// Generated IANA identifiers, sampling intervals and last explicit transition in seconds.\nexport default ${JSON.stringify(names)} as const\nexport const steps: Readonly<Record<string, number>> = ${JSON.stringify(steps)}\nexport const lastExplicitTransition = ${lastExplicitTransition}\n`
     )
     return
   }

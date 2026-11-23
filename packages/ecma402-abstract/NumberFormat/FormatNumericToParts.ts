@@ -1,12 +1,13 @@
 import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
-import {ArrayCreate} from '#packages/ecma262-abstract/ArrayCreate.js'
+import {CreatePartsArray} from '#packages/ecma402-abstract/CreatePartsArray.js'
 import {
   type NumberFormatInternal,
   type NumberFormatPart,
 } from '#packages/ecma402-abstract/types/number.js'
 import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.js'
 
+/** ECMA-402 §16.5.6. */
 export function FormatNumericToParts(
   nf: Intl.NumberFormat,
   x: Decimal | IntlMathematicalValue,
@@ -15,13 +16,5 @@ export function FormatNumericToParts(
   }
 ): NumberFormatPart[] {
   const parts = PartitionNumberPattern(implDetails.getInternalSlots(nf), x)
-  const result = ArrayCreate(0) as NumberFormatPart[]
-
-  for (const part of parts) {
-    result.push({
-      type: part.type,
-      value: part.value,
-    })
-  }
-  return result
+  return CreatePartsArray(parts)
 }

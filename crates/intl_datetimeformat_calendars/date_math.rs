@@ -14,6 +14,7 @@ pub(crate) trait NumericCalendar: Copy {
     fn month_from_code(self, year: i32, code: MonthCode, overflow: Overflow) -> Result<u8, Error>;
     fn months_before_year(self, year: i32) -> Result<i64, Error>;
     fn year_month(self, serial: i64) -> Result<(i32, u8), Error>;
+    // Proposal comparison §12.3.7 step 2.a. Advance the provider year and retain its month code before applying the month delta.
     fn add_year_month(
         self,
         original: Date,
@@ -34,6 +35,7 @@ pub(crate) trait NumericCalendar: Copy {
             .ok_or(Error::OutOfRange)?;
         self.year_month(serial)
     }
+    // Proposal comparison §12.3.7 step 2.a. Apply the signed year, month, week and day fields in the provider.
     fn add_raw(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
         let values = [
             duration.years,
@@ -47,8 +49,10 @@ pub(crate) trait NumericCalendar: Copy {
         let original = self.from_epoch_day_raw(epoch)?;
         let (year, month) =
             self.add_year_month(original, duration.years, duration.months, overflow)?;
+        // Proposal comparison §3.5.6 step 10. Shared ISO day regulation in constrain mode.
         self.to_epoch_day_raw(year, i32::from(month), i32::from(original.day), overflow)?
             .checked_add(
+                // Proposal comparison §3.5.6 step 11. An ISO week has seven days.
                 duration
                     .weeks
                     .checked_mul(7)
@@ -57,6 +61,7 @@ pub(crate) trait NumericCalendar: Copy {
             )
             .ok_or(Error::OutOfRange)
     }
+    // Proposal comparison §12.3.9 step 4. Decompose the signed provider date difference into the requested units.
     fn until_raw(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         let first = self.from_epoch_day_raw(one)?;
         let last = self.from_epoch_day_raw(two)?;
@@ -66,6 +71,8 @@ pub(crate) trait NumericCalendar: Copy {
             return Ok(result);
         }
         let surpasses = |duration: DateDuration| -> Result<bool, Error> {
+            // ECMA-262 preview §22.3.8.1 steps 1–5: compare the first differing field in the travel direction.
+            // https://tc39.es/ecma262/pr/3966/#sec-comparesurpasses
             let first_order = (i64::from(first.year) + duration.years)
                 .cmp(&i64::from(last.year))
                 .then_with(|| first.month_code.number.cmp(&last.month_code.number))
@@ -83,6 +90,7 @@ pub(crate) trait NumericCalendar: Copy {
             }
             let (year, month) =
                 self.add_year_month(first, duration.years, duration.months, Overflow::Constrain)?;
+            // §22.3.8.1 step 3 compares the balanced month's ordinal.
             Ok(exceeds(
                 year.cmp(&last.year)
                     .then_with(|| month.cmp(&last.month))
@@ -106,6 +114,12 @@ pub(crate) trait NumericCalendar: Copy {
             }
             anchor = self.add_raw(one, result, Overflow::Constrain)?;
         }
+        // ECMA-262 preview §22.3.3.3 steps 3.g and 3.j count whole weeks and days
+        // up to the target. Subtract epoch days to compute that residual directly.
+        // https://tc39.es/ecma262/pr/3966/#sec-calendardateuntil
+        // §22.3.8.2 step 5 corrects the zero-month guard for these searches.
+        // https://tc39.es/ecma262/pr/3966/#sec-isodatesurpasses
+        // https://github.com/tc39/proposal-temporal/issues/3340
         result.days = two - anchor;
         if largest == DateUnit::Week {
             result.weeks = result.days / 7;
@@ -115,9 +129,11 @@ pub(crate) trait NumericCalendar: Copy {
     }
 }
 impl NumericCalendar for Calendar {
+    // Proposal comparison §12.3.26 steps 1.b, 2. Delegate ISO day projection to the arithmetic calendar.
     fn from_epoch_day_raw(self, epoch: i64) -> Result<Date, Error> {
         Calendar::from_epoch_day_raw(self, epoch)
     }
+    // Proposal comparison §12.3.22 steps 1.b, 2. Delegate typed date regulation and epoch-day composition.
     fn to_epoch_day_raw(
         self,
         year: i32,
@@ -127,12 +143,15 @@ impl NumericCalendar for Calendar {
     ) -> Result<i64, Error> {
         Calendar::to_epoch_day_raw(self, year, month, day, overflow)
     }
+    // Proposal comparison §12.3.31 step 2.a. Delegate calendar month-code resolution.
     fn month_from_code(self, year: i32, code: MonthCode, overflow: Overflow) -> Result<u8, Error> {
         Calendar::month_from_code(self, year, code, overflow)
     }
+    // Proposal comparison §12.3.7 step 2.a. Read the provider's serial month prefix for addition.
     fn months_before_year(self, year: i32) -> Result<i64, Error> {
         Calendar::months_before_year(self, year)
     }
+    // Proposal comparison §12.3.7 step 2.a. Convert the prepared serial month back to the provider year and ordinal.
     fn year_month(self, serial: i64) -> Result<(i32, u8), Error> {
         Calendar::year_month(self, serial)
     }

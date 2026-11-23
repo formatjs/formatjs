@@ -1,0 +1,217 @@
+{
+  "baselineCommit": "f7cde5d3d4765bf63ed3d74076587422a35bc2e1",
+  "method": "Short shared-process diagnostic trials. Same eight varying inputs/parity, production stripped WASM. Final isolated timings live in zoned-hillclimb-results.json. No operation-result cache or new dependency.",
+  "trials": [
+    {
+      "name": "zoned-typed-transition",
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 9264.198999999997,
+          "samplesNanoseconds": [
+            9120.541700000002, 9129.484000000008, 9136.388799999997,
+            9264.198999999997, 9496.1681, 9759.603400000004, 12260.7222
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3995.2422999999953,
+          "samplesNanoseconds": [
+            3893.5895000000073, 3910.759699999994, 3917.784000000006,
+            3995.2422999999953, 4013.0252000000046, 4044.795999999996,
+            4763.75999999999
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2798.607199999992,
+          "samplesNanoseconds": [
+            2735.625300000015, 2738.369499999999, 2743.671500000005,
+            2798.607199999992, 2818.2213000000047, 2911.5977000000157,
+            3926.3095999999905
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 403.4921875000208,
+          "samplesNanoseconds": [
+            348.0507812501088, 365.10156250013637, 380.1757812498252,
+            403.4921875000208, 501.1621093751195, 553.3222656248781,
+            995.4121093747049
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 20971.573499999977,
+          "samplesNanoseconds": [
+            20577.551800000037, 20598.138000000017, 20600.364100000024,
+            20971.573499999977, 21020.519299999978, 21053.472800000054,
+            21413.572000000022
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 27364.275399999864,
+          "samplesNanoseconds": [
+            27125.635300000067, 27284.858600000007, 27354.307000000153,
+            27364.275399999864, 27372.83899999984, 27396.695900000126,
+            28120.64249999994
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 12935.812400000032,
+          "samplesNanoseconds": [
+            12899.617899999976, 12918.397100000038, 12930.495400000109,
+            12935.812400000032, 12961.297999999988, 12986.002999999982,
+            14011.338199999955
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 2203.5214843754147,
+          "samplesNanoseconds": [
+            2053.927734376515, 2103.226562500282, 2151.640625001505,
+            2203.5214843754147, 2211.1699218747563, 2242.2851562495794,
+            2781.8046875012215
+          ]
+        }
+      ]
+    },
+    {
+      "name": "zoned-paired-offset",
+      "typescript": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 9923.077399999995,
+          "samplesNanoseconds": [
+            9830.80859999999, 9839.241400000003, 9894.657499999994,
+            9923.077399999995, 10338.873000000001, 10435.161799999996,
+            11373.502199999999
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 3899.9080999999933,
+          "samplesNanoseconds": [
+            3847.7047000000084, 3854.3331999999964, 3860.49730000002,
+            3899.9080999999933, 3942.5416000000046, 4103.626800000006,
+            4293.1464000000005
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 2734.0981000000056,
+          "samplesNanoseconds": [
+            2710.9631000000036, 2723.356600000011, 2733.6918999999853,
+            2734.0981000000056, 2767.9387000000133, 2781.5029000000095,
+            3534.8858999999948
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 389.6601562498603,
+          "samplesNanoseconds": [
+            341.6894531249603, 342.0917968748327, 344.5078125001721,
+            389.6601562498603, 394.25195312503547, 531.3535156252769,
+            782.3730468752287
+          ]
+        }
+      ],
+      "nativeDataWasm": [
+        {
+          "operation": "zonedWith",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 21079.834500000015,
+          "samplesNanoseconds": [
+            20790.091699999994, 20798.873600000024, 20820.35759999999,
+            21079.834500000015, 21193.43690000005, 21213.90389999997,
+            22793.905799999993
+          ]
+        },
+        {
+          "operation": "zonedParse",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 27449.141499999856,
+          "samplesNanoseconds": [
+            27082.83040000006, 27221.98609999996, 27428.409499999903,
+            27449.141499999856, 27451.02550000011, 27454.94800000015,
+            28569.968500000046
+          ]
+        },
+        {
+          "operation": "zonedRound",
+          "iterations": 10000,
+          "warmup": 3000,
+          "medianNanoseconds": 13222.139699999934,
+          "samplesNanoseconds": [
+            13083.832500000062, 13159.527800000069, 13179.149799999868,
+            13222.139699999934, 13223.740899999939, 13281.524200000058,
+            17760.458000000108
+          ]
+        },
+        {
+          "operation": "zonedTransition",
+          "iterations": 512,
+          "warmup": 128,
+          "medianNanoseconds": 1833.3164062482865,
+          "samplesNanoseconds": [
+            1698.5624999996674, 1744.203124999899, 1747.8105468740068,
+            1833.3164062482865, 1852.3203125013765, 1975.400390623605,
+            2450.039062498632
+          ]
+        }
+      ]
+    }
+  ],
+  "changes": [
+    "Typed timeZoneTransition request/result bypasses dynamic maps and decimal BigInt transfers.",
+    "Recurring transition checks calculate before/after states from one set of yearly events. January 1 retains separate windows; the first second after explicit history retains its join check."
+  ],
+  "limitations": "Transitions remain slower than TS. Other workloads remain slower; all-workload goal stays open. Default TS executable AST remains unchanged.",
+  "validation": {
+    "targets": [
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:ffi_test",
+      "//crates/temporal:binary_test",
+      "//packages/temporal:wasm_zoned_test262",
+      "//packages/temporal:wasm_package_test",
+      "//packages/temporal:wasm_native_package_test",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:types_typecheck_test",
+      "//benchmarks/temporal:temporal-esm_typecheck_test"
+    ],
+    "result": "12 targets pass; core ICU, raw codec, public WASM, Hermes SDK source/bytecode and type controls. Default TS AST guard and negative control pass. Broader conformance remains a CI gate."
+  }
+}

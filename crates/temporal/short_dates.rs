@@ -17,6 +17,7 @@ pub enum YearMonthUnit {
     Month,
 }
 impl From<YearMonthUnit> for DateTimeUnit {
+    // Proposal comparison §9.5.7 step 16.e: Forward year or month to typed relative rounding.
     fn from(value: YearMonthUnit) -> Self {
         match value {
             YearMonthUnit::Year => Self::Year,
@@ -31,6 +32,7 @@ pub struct PlainYearMonth<C = Calendar> {
     calendar: C,
 }
 impl PlainYearMonth {
+    // Proposal comparison §9.1.1 steps 9–11: Validate the typed ISO reference date and build the year-month.
     pub fn new(year: i32, month: u8, reference_day: u8) -> Result<Self, Error> {
         if !(1..=12).contains(&month)
             || reference_day == 0
@@ -45,6 +47,7 @@ impl PlainYearMonth {
     }
 }
 impl<C: CalendarProvider> PlainYearMonth<C> {
+    // Proposal comparison §9.3.13 steps 7, 10–11: merge typed year-month updates.
     pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
         Self::from_calendar_fields(
             self.calendar,
@@ -57,6 +60,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             overflow,
         )
     }
+    // Proposal comparison §9.5.5 steps 1, 4 and 5: Check the reference month and store its calendar.
     pub fn from_epoch_day_in(epoch_day: i64, calendar: C) -> Result<Self, Error> {
         check_year_month(epoch_day)?;
         calendar.date_extended(epoch_day).map_err(error)?;
@@ -65,6 +69,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             calendar,
         })
     }
+    // Proposal comparison §12.3.13 steps 1–4: Resolve typed year-month fields with day one.
     pub fn from_calendar_fields(
         calendar: C,
         fields: DateFields<'_>,
@@ -85,6 +90,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             calendar,
         )
     }
+    // Proposal comparison §9.5.2 steps 4, 11–12 and 14–15: Parse and normalize a typed year-month.
     pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
         let fields = crate::parse::short_date_fields(value, true)?;
         crate::parse::check_calendar(value, calendar.id())?;
@@ -95,21 +101,26 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         let date = reference.calendar_fields()?;
         Self::from_calendar_fields(calendar, date_fields(date), Overflow::Constrain)
     }
+    // Proposal comparison §9.2.3 step 3: Read the exact ISO reference day used for comparison.
     pub const fn epoch_day(self) -> i64 {
         self.epoch_day
     }
+    // Proposal comparison §9.5.7 step 2: Read the stored calendar provider.
     pub const fn calendar(self) -> C {
         self.calendar
     }
+    // Proposal comparison §9.3.19 step 5: Capture typed year-month formatting inputs.
     pub fn format(self, calendar_name: CalendarName) -> FormattedYearMonth<C> {
         FormattedYearMonth {
             value: self,
             calendar_name,
         }
     }
+    // Proposal comparison §9.3.3 step 3: Return the stored calendar provider ID.
     pub fn calendar_id(self) -> &'static str {
         self.calendar.id()
     }
+    // Proposal comparison §9.5.5 steps 1, 4 and 5: Reuse typed construction for a replacement calendar.
     pub fn with_calendar<D: CalendarProvider>(
         self,
         calendar: D,
@@ -117,31 +128,38 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         PlainYearMonth::from_epoch_day_in(self.epoch_day, calendar)
     }
     /// ISO reference fields; calendar fields are available separately.
+    // Proposal comparison §9.5.6 steps 1, 2 and 4.a: Supply the ISO reference fields for formatting.
     pub fn fields(self) -> (i32, u8, u8) {
         iso_fields(self.epoch_day)
     }
+    // Proposal comparison §13.42 step 2: Project the reference day through the stored calendar.
     pub fn calendar_fields(self) -> Result<Date, Error> {
         self.calendar.date_extended(self.epoch_day).map_err(error)
     }
+    // Proposal comparison §9.3.4 step 3: Read the calendar era at the reference day.
     pub fn era(self) -> Result<Option<crate::calendar::Era>, Error> {
         self.calendar.era_extended(self.epoch_day).map_err(error)
     }
+    // Proposal comparison §9.3.10 step 3: Look up month length in the projected year and month.
     pub fn days_in_month(self) -> Result<u8, Error> {
         let fields = self.calendar_fields()?;
         self.calendar
             .days_in_month(fields.year, fields.month)
             .map_err(error)
     }
+    // Proposal comparison §9.3.11 step 3: Look up month count in the projected year.
     pub fn months_in_year(self) -> Result<u8, Error> {
         self.calendar
             .months_in_year(self.calendar_fields()?.year)
             .map_err(error)
     }
+    // Proposal comparison §9.3.9 step 3: Get year length from consecutive calendar year starts.
     pub fn days_in_year(self) -> Result<u16, Error> {
         let year = self.calendar_fields()?.year;
         Ok((self.calendar.start_of_year(year + 1).map_err(error)?
             - self.calendar.start_of_year(year).map_err(error)?) as u16)
     }
+    // Proposal comparison §9.3.12 step 3: Derive leap status from provider month or day count.
     pub fn in_leap_year(self) -> Result<bool, Error> {
         Ok(match self.calendar_id() {
             "hebrew" | "chinese" | "dangi" => self.months_in_year()? == 13,
@@ -149,12 +167,15 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             _ => self.days_in_year()? == 366,
         })
     }
+    // Proposal comparison §9.3.18 steps 4–5: compare the reference day and calendar identity.
     pub fn equals<D: CalendarProvider>(self, other: PlainYearMonth<D>) -> bool {
         self.epoch_day == other.epoch_day && self.calendar_id() == other.calendar_id()
     }
+    // Proposal comparison §9.2.3 step 3: Compare typed year-month ISO reference dates.
     pub fn compare<D: CalendarProvider>(self, other: PlainYearMonth<D>) -> Ordering {
         self.epoch_day.cmp(&other.epoch_day)
     }
+    // Proposal comparison §9.3.23 steps 7–9: add the supplied day to the year-month fields.
     pub fn to_plain_date(self, day: u8, overflow: Overflow) -> Result<PlainDate<C>, Error> {
         PlainDate::from_calendar_fields(
             self.calendar,
@@ -165,15 +186,20 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             overflow,
         )
     }
+    // Proposal comparison §9.5.7 steps 7–12: Derive calendar day one from the reference date.
     fn first_day(self) -> Result<i64, Error> {
         Ok(self.epoch_day - i64::from(self.calendar_fields()?.day) + 1)
     }
+    // ECMA-262 preview §22.13.5.4 steps 7–15: add years and months from calendar day one.
+    // https://tc39.es/ecma262/pr/3966/#sec-adddurationtoyearmonth
     pub fn checked_add(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         if fields[2..].iter().any(|value| *value != 0) {
             return Err(Error::InvalidDuration);
         }
         let first = self.first_day()?;
+        // §22.3.3.16 step 3 bounds the input to CalendarDateAdd.
+        // https://tc39.es/ecma262/pr/3966/#sec-calendardatefromfields
         PlainDate::from_epoch_day(first)?;
         let duration = DateDuration {
             years: fields[0].try_into().map_err(|_| Error::OutOfRange)?,
@@ -184,11 +210,16 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             .calendar
             .add_extended(first, duration, calendar_overflow(overflow))
             .map_err(error)?;
+        // §22.3.3.1 step 3 bounds the result before building a PlainYearMonth.
+        // https://tc39.es/ecma262/pr/3966/#sec-calendardateadd
+        PlainDate::from_epoch_day(epoch)?;
         Self::from_epoch_day_in(epoch, self.calendar)
     }
+    // Proposal comparison §9.5.8 step 2: negate the years and months before addition.
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
+    // Proposal comparison §9.3.16 step 3: route the typed year-month until difference.
     pub fn until(
         self,
         other: Self,
@@ -199,6 +230,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     ) -> Result<Duration, Error> {
         self.difference(other, largest, smallest, increment, mode, false)
     }
+    // Proposal comparison §9.3.17 step 3: route the typed year-month since difference.
     pub fn since(
         self,
         other: Self,
@@ -209,6 +241,8 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     ) -> Result<Duration, Error> {
         self.difference(other, largest, smallest, increment, mode, true)
     }
+    // ECMA-262 preview §22.13.5.5: compare and round calendar months.
+    // https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplainyearmonth
     fn difference(
         self,
         other: Self,
@@ -218,6 +252,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         mode: RoundingMode,
         since: bool,
     ) -> Result<Duration, Error> {
+        // Steps 2–3 compare calendar identifiers before validating settings in step 5.
         if self.calendar_id() != other.calendar_id() {
             return Err(Error::InvalidDateTime);
         }
@@ -227,11 +262,14 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         {
             return Err(Error::InvalidRoundingOptions);
         }
+        // Step 6 tests exact reference dates before constructing day-one projections.
         if self.equals(other) {
             return Duration::new([0; 10]);
         }
+        // Steps 7–12: both calendar day-one projections must be valid dates.
         let start = PlainDate::from_epoch_day_in(self.first_day()?, self.calendar)?;
         let end = PlainDate::from_epoch_day_in(other.first_day()?, other.calendar)?;
+        // Steps 13–17: keep years and months. Unit month at increment one needs no rounding.
         if smallest == YearMonthUnit::Month && increment == 1 {
             let unit = match largest {
                 YearMonthUnit::Year => crate::calendar::DateUnit::Year,
@@ -245,6 +283,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             values[0] = i128::from(fields.years);
             values[1] = i128::from(fields.months);
             let result = Duration::new(values)?;
+            // Step 18: negate the result for since.
             return Ok(if since { result.negated() } else { result });
         }
         if since {
@@ -256,11 +295,13 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
 }
 impl FromStr for PlainYearMonth {
     type Err = Error;
+    // Proposal comparison §9.5.2 steps 4 and 14–15: Route Rust string parsing to typed year-month normalization.
     fn from_str(value: &str) -> Result<Self, Error> {
         Self::parse_in(value, crate::parse::arithmetic_calendar(value)?)
     }
 }
 impl<C: CalendarProvider> PartialEq for PlainYearMonth<C> {
+    // Proposal comparison §9.3.18 steps 4–5: Delegate Rust equality to typed year-month equality.
     fn eq(&self, other: &Self) -> bool {
         self.equals(*other)
     }
@@ -272,12 +313,14 @@ impl<C: CalendarProvider> PartialOrd for PlainYearMonth<C> {
     }
 }
 impl<C: CalendarProvider> Ord for PlainYearMonth<C> {
+    // Proposal comparison §9.2.3 step 3: Use ISO reference date as the primary Rust sort key.
     fn cmp(&self, other: &Self) -> Ordering {
         self.compare(*other)
             .then_with(|| self.calendar_id().cmp(other.calendar_id()))
     }
 }
 impl<C: CalendarProvider> fmt::Display for PlainYearMonth<C> {
+    // Proposal comparison §9.3.19 step 5: Format typed year-month with automatic calendar display.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(CalendarName::Auto).fmt(f)
     }
@@ -287,6 +330,7 @@ pub struct FormattedYearMonth<C = Calendar> {
     calendar_name: CalendarName,
 }
 impl<C: CalendarProvider> fmt::Display for FormattedYearMonth<C> {
+    // Proposal comparison §9.5.6 steps 1–7: Format ISO year-month and conditional reference day.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let (year, month, day) = self.value.fields();
         write_year(f, year)?;
@@ -309,6 +353,7 @@ pub struct PlainMonthDay<C = Calendar> {
     calendar: C,
 }
 impl PlainMonthDay {
+    // Proposal comparison §10.1.1 steps 9–11: Validate the typed ISO reference date and build the month-day.
     pub fn new(month: u8, day: u8, reference_year: i32) -> Result<Self, Error> {
         Self::from_epoch_day_in(
             PlainDate::new(reference_year, month, day)?.epoch_day(),
@@ -317,6 +362,7 @@ impl PlainMonthDay {
     }
 }
 impl<C: CalendarProvider> PlainMonthDay<C> {
+    // Proposal comparison §10.3.6 steps 7, 10–11: merge typed month-day fields.
     pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
         Self::from_calendar_fields(
             self.calendar,
@@ -329,6 +375,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
             overflow,
         )
     }
+    // Proposal comparison §10.5.2 steps 1, 4 and 5: Check and store the typed month-day reference date.
     pub fn from_epoch_day_in(epoch_day: i64, calendar: C) -> Result<Self, Error> {
         PlainDate::from_epoch_day_in(epoch_day, calendar)?;
         Ok(Self {
@@ -336,6 +383,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
             calendar,
         })
     }
+    // Proposal comparison §12.3.24 steps 1.b–1.e: Regulate typed ISO month-day fields and store a 1972 reference.
     pub fn from_calendar_fields(
         calendar: C,
         fields: DateFields<'_>,
@@ -453,9 +501,12 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
         }
         Err(Error::InvalidDateTime)
     }
+    // ECMA-262 preview §22.14.5.2 steps 4–7 and 10–16: parse and normalize the reference day.
+    // https://tc39.es/ecma262/pr/3966/#sec-totemporalmonthday
     pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
         let fields = crate::parse::short_date_fields(value, false)?;
         crate::parse::check_calendar(value, calendar.id())?;
+        // Step 10: ISO month-days store a 1972 reference year.
         if calendar.id() == "iso8601" {
             return Self::from_calendar_fields(
                 calendar,
@@ -472,41 +523,52 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
             return Err(Error::OutOfRange);
         }
         let epoch = epoch_day_from_iso(fields.year, fields.month, fields.day);
+        // Steps 12–15: check the original date before canonical calendar normalization.
+        PlainDate::from_epoch_day(epoch)?;
         let date = calendar.date_extended(epoch).map_err(error)?;
         Self::from_calendar_fields(calendar, date_fields(date), Overflow::Constrain)
     }
+    // Proposal comparison §10.5.2 step 4: Read the stored ISO reference epoch day.
     pub const fn epoch_day(self) -> i64 {
         self.epoch_day
     }
+    // Proposal comparison §10.3.12 step 4: Read the stored month-day calendar provider.
     pub const fn calendar(self) -> C {
         self.calendar
     }
+    // Proposal comparison §10.3.8 step 5: Capture typed month-day formatting inputs.
     pub fn format(self, calendar_name: CalendarName) -> FormattedMonthDay<C> {
         FormattedMonthDay {
             value: self,
             calendar_name,
         }
     }
+    // Proposal comparison §10.3.3 step 3: Return the stored calendar provider ID.
     pub fn calendar_id(self) -> &'static str {
         self.calendar.id()
     }
+    // Proposal comparison §10.5.2 steps 1, 4 and 5: Reuse typed construction for a replacement calendar.
     pub fn with_calendar<D: CalendarProvider>(
         self,
         calendar: D,
     ) -> Result<PlainMonthDay<D>, Error> {
         PlainMonthDay::from_epoch_day_in(self.epoch_day, calendar)
     }
+    // Proposal comparison §10.3.7 steps 4–5: compare the reference date and calendar identity.
     pub fn equals<D: CalendarProvider>(self, other: PlainMonthDay<D>) -> bool {
         self.epoch_day == other.epoch_day && self.calendar_id() == other.calendar_id()
     }
     /// ISO reference month, day, year.
+    // Proposal comparison §10.5.3 steps 1, 2 and 4.a: Supply ISO month-day reference fields for formatting.
     pub fn fields(self) -> (u8, u8, i32) {
         let (year, month, day) = iso_fields(self.epoch_day);
         (month, day, year)
     }
+    // Proposal comparison §13.42 step 2: Project the reference date in the stored calendar.
     pub fn calendar_fields(self) -> Result<Date, Error> {
         self.calendar.date(self.epoch_day).map_err(error)
     }
+    // Proposal comparison §10.3.12 steps 7–9: supply the typed year for date construction.
     pub fn to_plain_date(self, year: i32, overflow: Overflow) -> Result<PlainDate<C>, Error> {
         self.to_plain_date_fields(
             DateFields {
@@ -516,6 +578,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
             overflow,
         )
     }
+    // Proposal comparison §10.3.12 steps 5 and 7–9: Combine reference month-day with typed year fields.
     pub fn to_plain_date_fields(
         self,
         fields: DateFields<'_>,
@@ -538,17 +601,20 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
 }
 impl FromStr for PlainMonthDay {
     type Err = Error;
+    // Proposal comparison §10.5.1 steps 4 and 15–16: Route Rust string parsing to typed month-day normalization.
     fn from_str(value: &str) -> Result<Self, Error> {
         Self::parse_in(value, crate::parse::arithmetic_calendar(value)?)
     }
 }
 impl<C: CalendarProvider> PartialEq for PlainMonthDay<C> {
+    // Proposal comparison §10.3.7 steps 4–5: Delegate Rust equality to typed month-day equality.
     fn eq(&self, other: &Self) -> bool {
         self.equals(*other)
     }
 }
 impl<C: CalendarProvider> Eq for PlainMonthDay<C> {}
 impl<C: CalendarProvider> fmt::Display for PlainMonthDay<C> {
+    // Proposal comparison §10.3.8 step 5: Format typed month-day with automatic calendar display.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(CalendarName::Auto).fmt(f)
     }
@@ -558,6 +624,7 @@ pub struct FormattedMonthDay<C = Calendar> {
     calendar_name: CalendarName,
 }
 impl<C: CalendarProvider> fmt::Display for FormattedMonthDay<C> {
+    // Proposal comparison §10.5.3 steps 1–7: Format ISO month-day with conditional reference year.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let (month, day, year) = self.value.fields();
         if self.value.calendar_id() != "iso8601"
@@ -574,6 +641,7 @@ impl<C: CalendarProvider> fmt::Display for FormattedMonthDay<C> {
     }
 }
 
+// Proposal comparison §9.5.3 steps 1–4: Check the ISO year-month boundary months.
 fn check_year_month(epoch: i64) -> Result<(), Error> {
     if !(-110_000_000..=110_000_000).contains(&epoch) {
         return Err(Error::OutOfRange);
@@ -587,6 +655,7 @@ fn check_year_month(epoch: i64) -> Result<(), Error> {
     }
     Ok(())
 }
+// Proposal comparison §13.42 steps 3, 4.a and 5.a: Carry projected month code, day and year into typed fields.
 fn date_fields(date: Date) -> DateFields<'static> {
     DateFields {
         year: Some(date.year),
@@ -595,10 +664,12 @@ fn date_fields(date: Date) -> DateFields<'static> {
         ..DateFields::default()
     }
 }
+// Proposal comparison §11.1.2 steps 4–6: Recover ISO reference date fields from an epoch day.
 fn iso_fields(epoch: i64) -> (i32, u8, u8) {
     let fields = iso_from_epoch_nanoseconds_raw(i128::from(epoch) * NANOSECONDS_PER_DAY);
     (fields.year, fields.month, fields.day)
 }
+// Proposal comparison §3.5.10 steps 1–4: Pad ISO years and sign extended years.
 fn write_year(f: &mut fmt::Formatter<'_>, year: i32) -> fmt::Result {
     if (0..=9999).contains(&year) {
         write!(f, "{year:04}")

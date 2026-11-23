@@ -5,6 +5,7 @@ use formatjs_temporal::{
     TemporalContext, TimeUnit, TimeZoneRegistry, TransitionDirection, TransitionZone,
     YearMonthUnit, ZonedDateTime,
     calendar::{Calendar, MonthCode},
+    table_calendar::{LunisolarData, TableCalendar, TableCalendarId},
 };
 
 fn month_code(text: &str) -> MonthCode {
@@ -16,6 +17,381 @@ fn month_code(text: &str) -> MonthCode {
 fn zero_zone() -> FixedOffset {
     FixedOffset::new(0).unwrap()
 }
+
+fn one_year_lunisolar_calendar(checkpoints: &'static [i64; 1]) -> TableCalendar<'static> {
+    TableCalendar::lunisolar(
+        TableCalendarId::Chinese,
+        LunisolarData {
+            first_year: 2020,
+            end_day: checkpoints[0] + 348,
+            checkpoints,
+            month_checkpoints: &[0],
+            dictionary: &[0],
+            years: "AA",
+        },
+    )
+    .unwrap()
+}
+
+#[test]
+fn zoned_difference_queries_calendar_for_selected_gap_date() {
+    let transitions = [OffsetTransition {
+        epoch_seconds: 1_615_705_200,
+        offset_seconds: -14_400,
+    }];
+    let zone = TransitionZone::new(-18_000, &transitions, None).unwrap();
+    // One table ends before March 14. The other begins on March 14.
+    for checkpoints in [&[18_352], &[18_700]] {
+        let calendar = one_year_lunisolar_calendar(checkpoints);
+        let zoned = |seconds: i128| {
+            ZonedDateTime::new_in_calendar(
+                Instant::from_epoch_nanoseconds(seconds * 1_000_000_000).unwrap(),
+                zone,
+                calendar,
+            )
+        };
+        let origin = zoned(1_615_620_600); // March 13 at 02:30.
+        let difference = |target| {
+            origin.until(
+                &zoned(target),
+                DateTimeUnit::Day,
+                DateTimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+        };
+        assert_eq!(
+            difference(1_615_705_800), // 03:10, before compatible 03:30.
+            Ok("PT23H40M".parse::<Duration>().unwrap()),
+            "{checkpoints:?}"
+        );
+        assert_eq!(
+            difference(1_615_707_000), // 03:30 requires a difference between dates.
+            Err(formatjs_temporal::Error::OutOfRange),
+            "{checkpoints:?}"
+        );
+    }
+}
+
+#[test]
+fn zoned_difference_on_same_day_needs_no_calendar_coverage() {
+    let calendar = one_year_lunisolar_calendar(&[18_352]);
+    let transitions = [
+        OffsetTransition {
+            epoch_seconds: 1_615_705_200,
+            offset_seconds: -14_400,
+        },
+        OffsetTransition {
+            epoch_seconds: 1_636_264_800,
+            offset_seconds: -18_000,
+        },
+    ];
+    let zone = TransitionZone::new(-18_000, &transitions, None).unwrap();
+    let zoned = |seconds: i128| {
+        ZonedDateTime::new_in_calendar(
+            Instant::from_epoch_nanoseconds(seconds * 1_000_000_000).unwrap(),
+            zone,
+            calendar,
+        )
+    };
+    let difference = |first, second| {
+        zoned(first).until(
+            &zoned(second),
+            DateTimeUnit::Day,
+            DateTimeUnit::Nanosecond,
+            1,
+            RoundingMode::Trunc,
+        )
+    };
+    for (first, second, expected) in [
+        (1_615_705_800, 1_615_707_000, "PT20M"),
+        (1_615_707_000, 1_615_705_800, "-PT20M"),
+        // Both instants show November 7 at 01:30, on opposite sides of the fold.
+        (1_636_263_000, 1_636_266_600, "PT1H"),
+        (1_636_266_600, 1_636_263_000, "-PT1H"),
+        (1_636_266_600, 1_636_266_600, "PT0S"),
+    ] {
+        assert_eq!(
+            difference(first, second),
+            Ok(expected.parse::<Duration>().unwrap())
+        );
+    }
+}
+
+#[test]
+fn zoned_total_checks_initial_week_endpoint_before_retreating() {
+    use formatjs_temporal::{Error, MAX_EPOCH_NANOSECONDS};
+
+    let hour = 3_600_000_000_000;
+    let limit = MAX_EPOCH_NANOSECONDS;
+    let transitions = [OffsetTransition {
+        epoch_seconds: ((limit - 33 * hour) / 1_000_000_000) as i64,
+        offset_seconds: 21 * 3_600,
+    }];
+    let zone = TransitionZone::new(-5 * 3_600, &transitions, None).unwrap();
+    let origin = ZonedDateTime::new_in_calendar(
+        Instant::from_epoch_nanoseconds(limit - 190 * hour).unwrap(),
+        zone,
+        Calendar::Gregory,
+    );
+    let duration = "PT167H".parse::<Duration>().unwrap();
+    let target = origin.checked_add(duration, Overflow::Constrain).unwrap();
+    assert_eq!(target.instant().epoch_nanoseconds(), limit - 23 * hour);
+    assert_eq!(
+        origin
+            .until(
+                &target,
+                DateTimeUnit::Week,
+                DateTimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+            .unwrap()
+            .to_string(),
+        "P1W1DT1H"
+    );
+    assert_eq!(
+        origin
+            .checked_add("P1W".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        limit - 22 * hour
+    );
+    assert_eq!(
+        origin.total_duration(duration, DateTimeUnit::Week),
+        Err(Error::OutOfRange)
+    );
+}
+
+#[test]
+fn zoned_week_rounding_validates_rebased_endpoint() {
+    use formatjs_temporal::{Disambiguation, Error, MAX_EPOCH_NANOSECONDS};
+
+    let hour = 3_600_000_000_000;
+    let limit = MAX_EPOCH_NANOSECONDS;
+    let transitions = [OffsetTransition {
+        epoch_seconds: ((limit - 50 * hour) / 1_000_000_000) as i64,
+        offset_seconds: -20 * 3_600,
+    }];
+    let zone = TransitionZone::new(16 * 3_600, &transitions, None).unwrap();
+    let origin = ZonedDateTime::new_in_calendar(
+        Instant::from_epoch_nanoseconds(limit - 1_131 * hour).unwrap(),
+        zone,
+        Calendar::Gregory,
+    );
+    let duration = "PT1082H".parse::<Duration>().unwrap();
+    let target = origin.checked_add(duration, Overflow::Constrain).unwrap();
+    assert_eq!(target.instant().epoch_nanoseconds(), limit - 49 * hour);
+    assert_eq!(
+        origin
+            .until(
+                &target,
+                DateTimeUnit::Month,
+                DateTimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+            .unwrap()
+            .to_string(),
+        "P1M12DT50H"
+    );
+    let upper = origin
+        .checked_add("P1M2W".parse().unwrap(), Overflow::Constrain)
+        .unwrap();
+    assert_eq!(upper.instant().epoch_nanoseconds(), limit - 51 * hour);
+    let later = ZonedDateTime::from_local_in_calendar(
+        upper.local().unwrap().fields(),
+        zone,
+        Disambiguation::Later,
+        Calendar::Gregory,
+    )
+    .unwrap();
+    assert_eq!(later.instant().epoch_nanoseconds(), limit - 15 * hour);
+    assert_eq!(
+        origin
+            .checked_add("P1M3W".parse().unwrap(), Overflow::Constrain)
+            .unwrap_err(),
+        Error::OutOfRange
+    );
+    assert_eq!(
+        origin.round_duration(
+            duration,
+            DateTimeUnit::Month,
+            DateTimeUnit::Week,
+            1,
+            RoundingMode::Ceil,
+        ),
+        Err(Error::OutOfRange)
+    );
+}
+
+#[test]
+fn zoned_rounding_rebases_a_retained_prefix_when_the_first_bound_overshoots() {
+    let hour = 3_600_000_000_000;
+    let forward = [OffsetTransition {
+        epoch_seconds: 159 * 3_600,
+        offset_seconds: 21 * 3_600,
+    }];
+    let backward = [
+        OffsetTransition {
+            epoch_seconds: -234 * 3_600,
+            offset_seconds: -18 * 3_600,
+        },
+        OffsetTransition {
+            epoch_seconds: 46 * 3_600,
+            offset_seconds: 21 * 3_600,
+        },
+        OffsetTransition {
+            epoch_seconds: 62 * 3_600,
+            offset_seconds: -21 * 3_600,
+        },
+        OffsetTransition {
+            epoch_seconds: 111 * 3_600,
+            offset_seconds: 12 * 3_600,
+        },
+    ];
+    for (initial, transitions, first, second, toward, away, toward_three, floor, ceil) in [
+        (
+            -5,
+            forward.as_slice(),
+            -574,
+            169,
+            "P4W",
+            "P1M",
+            "P3W",
+            "P4W",
+            "P1M",
+        ),
+        (
+            2,
+            backward.as_slice(),
+            812,
+            63,
+            "-P4W",
+            "-P1M",
+            "-P3W",
+            "-P1M",
+            "-P4W",
+        ),
+    ] {
+        let zone = TransitionZone::new(initial * 3_600, transitions, None).unwrap();
+        let zoned = |value: i128| {
+            ZonedDateTime::new_in_calendar(
+                Instant::from_epoch_nanoseconds(value * hour).unwrap(),
+                zone,
+                Calendar::Gregory,
+            )
+        };
+        let origin = zoned(first);
+        let target = zoned(second);
+        let duration =
+            Duration::from_time_nanoseconds((second - first) * hour, TimeUnit::Hour).unwrap();
+        for (mode, expected) in [
+            (RoundingMode::Trunc, toward),
+            (RoundingMode::Expand, away),
+            (RoundingMode::Floor, floor),
+            (RoundingMode::Ceil, ceil),
+            (RoundingMode::HalfEven, away),
+        ] {
+            let expected = expected.parse::<Duration>().unwrap();
+            assert_eq!(
+                origin
+                    .until(&target, DateTimeUnit::Month, DateTimeUnit::Week, 1, mode)
+                    .unwrap(),
+                expected
+            );
+            assert_eq!(
+                origin
+                    .round_duration(duration, DateTimeUnit::Month, DateTimeUnit::Week, 1, mode)
+                    .unwrap(),
+                expected
+            );
+        }
+        assert_eq!(
+            origin
+                .until(
+                    &target,
+                    DateTimeUnit::Month,
+                    DateTimeUnit::Week,
+                    3,
+                    RoundingMode::Trunc,
+                )
+                .unwrap(),
+            toward_three.parse::<Duration>().unwrap()
+        );
+        let (one_day, two_days) = if first < second {
+            ("P1M1D", "P32D")
+        } else {
+            ("-P1M1D", "-P32D")
+        };
+        for (increment, mode, expected) in [
+            (1, RoundingMode::Trunc, one_day),
+            (2, RoundingMode::Trunc, two_days),
+            (2, RoundingMode::Expand, away),
+            (2, RoundingMode::HalfEven, away),
+        ] {
+            assert_eq!(
+                origin
+                    .until(
+                        &target,
+                        DateTimeUnit::Month,
+                        DateTimeUnit::Day,
+                        increment,
+                        mode
+                    )
+                    .unwrap(),
+                expected.parse::<Duration>().unwrap()
+            );
+        }
+        let (year_first, months, year, months_three) = if first < second {
+            (-8_590, "P11M", "P1Y", "P9M")
+        } else {
+            (8_828, "-P11M", "-P1Y", "-P9M")
+        };
+        let year_origin = zoned(year_first);
+        let year_duration =
+            Duration::from_time_nanoseconds((second - year_first) * hour, TimeUnit::Hour).unwrap();
+        for (mode, expected) in [
+            (RoundingMode::Trunc, months),
+            (RoundingMode::Expand, year),
+            (RoundingMode::HalfEven, year),
+        ] {
+            let expected = expected.parse::<Duration>().unwrap();
+            assert_eq!(
+                year_origin
+                    .until(&target, DateTimeUnit::Year, DateTimeUnit::Month, 1, mode)
+                    .unwrap(),
+                expected
+            );
+            assert_eq!(
+                year_origin
+                    .round_duration(
+                        year_duration,
+                        DateTimeUnit::Year,
+                        DateTimeUnit::Month,
+                        1,
+                        mode
+                    )
+                    .unwrap(),
+                expected
+            );
+        }
+        assert_eq!(
+            year_origin
+                .until(
+                    &target,
+                    DateTimeUnit::Year,
+                    DateTimeUnit::Month,
+                    3,
+                    RoundingMode::Trunc
+                )
+                .unwrap(),
+            months_three.parse::<Duration>().unwrap()
+        );
+    }
+}
+
 fn unit(text: &str) -> DateTimeUnit {
     text.parse().unwrap()
 }

@@ -25,6 +25,7 @@ pub struct ZonedParseOptions {
     pub offset: OffsetOption,
 }
 impl Default for ZonedParseOptions {
+    // Proposal comparison §6.5.2 steps 5.n, 5.o: supply typed compatible and reject defaults.
     fn default() -> Self {
         Self {
             disambiguation: Disambiguation::Compatible,
@@ -54,6 +55,7 @@ pub struct ZonedFormatOptions {
     pub calendar_name: CalendarName,
 }
 impl Default for ZonedFormatOptions {
+    // Proposal comparison §6.3.43 step 3: prepare default zoned rendering options.
     fn default() -> Self {
         Self {
             precision: Precision::Auto,
@@ -67,6 +69,7 @@ impl Default for ZonedFormatOptions {
 
 impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     /// ISO local fields and an offset hint, resolved through the selected zone.
+    // Proposal comparison §6.5.1 step 2: compose validated local fields before offset interpretation.
     pub fn from_local_with_offset(
         fields: IsoDateTime,
         zone: Z,
@@ -74,7 +77,23 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
         offset: OffsetInput,
         options: ZonedParseOptions,
     ) -> Result<Self, Error> {
-        let local = fields.to_epoch_nanoseconds()?;
+        Self::from_local_nanoseconds_with_offset(
+            fields.to_epoch_nanoseconds()?,
+            zone,
+            calendar,
+            offset,
+            options,
+        )
+    }
+    // Proposal comparison §6.5.1 steps 3.a, 4.a, 10.b–12: interpret the typed offset hint.
+    pub(crate) fn from_local_nanoseconds_with_offset(
+        local: i128,
+        zone: Z,
+        calendar: C,
+        offset: OffsetInput,
+        options: ZonedParseOptions,
+    ) -> Result<Self, Error> {
+        crate::iso::check_local(local)?;
         if matches!(offset, OffsetInput::Utc) {
             return Ok(Self::new_in_calendar(
                 Instant::from_epoch_nanoseconds(local)?,
@@ -92,26 +111,22 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
             _ => None,
         };
         let instant = if provided.is_none() || options.offset == OffsetOption::Ignore {
-            crate::zoned::resolve_local(fields, &zone, options.disambiguation)?
+            crate::zoned::resolve_local_nanoseconds(local, &zone, options.disambiguation)?
         } else {
             let provided = provided.unwrap();
             if options.offset == OffsetOption::Use {
                 Instant::from_epoch_nanoseconds(local - provided)?
             } else {
+                // ECMA-262 preview §22.3.5.1 steps 1–2 bound the local day before matching an offset.
+                // The prepared date-time already bounds the upper day.
+                // https://tc39.es/ecma262/pr/3966/#sec-validateisodaysrange
                 if local < -crate::MAX_EPOCH_NANOSECONDS {
                     return Err(Error::OutOfRange);
                 }
                 let mut candidate: Option<Instant> = None;
-                zone.visit_offsets(&mut |actual| {
-                    if actual <= -NANOSECONDS_PER_DAY || actual >= NANOSECONDS_PER_DAY {
-                        return;
-                    }
-                    let Ok(instant) = Instant::from_epoch_nanoseconds(local - actual) else {
-                        return;
-                    };
-                    if zone.offset_nanoseconds(instant) != actual {
-                        return;
-                    }
+                // Proposal comparison §6.5.1 steps 8–10: Validate candidates before matching offsets.
+                crate::zoned::visit_possible_nanoseconds(local, &zone, &mut |instant| {
+                    let actual = local - instant.epoch_nanoseconds();
                     let rounded = crate::format::offset_minutes(actual) * 60_000_000_000;
                     if (provided == actual
                         || matches!(offset, OffsetInput::Minute(_)) && provided == rounded)
@@ -119,13 +134,17 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
                     {
                         candidate = Some(instant);
                     }
-                });
+                })?;
                 match candidate {
                     Some(instant) => instant,
                     None if options.offset == OffsetOption::Reject => {
                         return Err(Error::InvalidDateTime);
                     }
-                    None => crate::zoned::resolve_local(fields, &zone, options.disambiguation)?,
+                    None => crate::zoned::resolve_local_nanoseconds(
+                        local,
+                        &zone,
+                        options.disambiguation,
+                    )?,
                 }
             }
         };
@@ -133,6 +152,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
 }
 impl<'a> ZonedDateTime<ResolvedTimeZone<'a>> {
+    // Proposal comparison §6.5.2 steps 5.h–5.j: select the arithmetic provider before typed parsing.
     pub fn parse(
         value: &str,
         registry: TimeZoneRegistry<'a>,
@@ -147,6 +167,7 @@ impl<'a> ZonedDateTime<ResolvedTimeZone<'a>> {
     }
 }
 impl<'a, C: CalendarProvider> ZonedDateTime<ResolvedTimeZone<'a>, C> {
+    // Proposal comparison §6.5.2 steps 5.b, 5.e, 11–12: parse and resolve a typed zoned string.
     pub fn parse_in(
         value: &str,
         registry: TimeZoneRegistry<'a>,
@@ -169,6 +190,7 @@ impl<'a, C: CalendarProvider> ZonedDateTime<ResolvedTimeZone<'a>, C> {
         }
         Self::from_local_with_offset(parsed.fields, zone, calendar, parsed.offset, options)
     }
+    // Proposal comparison §6.5.4 steps 5, 7–8: round before querying offset and local fields.
     pub fn format(&self, options: ZonedFormatOptions) -> Result<FormattedZonedDateTime<'_>, Error> {
         let quantum = match options.precision {
             Precision::Auto => 1,
@@ -195,6 +217,7 @@ impl<'a, C: CalendarProvider> ZonedDateTime<ResolvedTimeZone<'a>, C> {
 #[cfg(feature = "compiled_time_zones")]
 impl core::str::FromStr for ZonedDateTime<ResolvedTimeZone<'static>> {
     type Err = Error;
+    // Proposal comparison §6.5.2 step 5.b: route a typed string through the compiled registry.
     fn from_str(value: &str) -> Result<Self, Error> {
         Self::parse(
             value,
@@ -204,6 +227,7 @@ impl core::str::FromStr for ZonedDateTime<ResolvedTimeZone<'static>> {
     }
 }
 impl<C: CalendarProvider> fmt::Display for ZonedDateTime<ResolvedTimeZone<'_>, C> {
+    // Proposal comparison §6.3.43 step 3: delegate default zoned rendering.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(ZonedFormatOptions::default())
             .map_err(|_| fmt::Error)?
@@ -218,6 +242,7 @@ pub struct FormattedZonedDateTime<'a> {
     options: ZonedFormatOptions,
 }
 impl fmt::Display for FormattedZonedDateTime<'_> {
+    // Proposal comparison §6.5.4 steps 9–15: write zoned date-time text and selected annotations.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let fields = self.fields;
         crate::date::write_date(f, (fields.year, fields.month, fields.day))?;

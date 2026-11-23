@@ -1,3 +1,5 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {ErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CompiledNumberPatterns,
   NumberPatternPlan,
@@ -9,6 +11,26 @@ const values = <T>(data: Record<string, T>): T[] =>
 
 const NUMBER = /[#0](?:[.,][#0]+)*/g
 const TOKENS = /({c:[^}]+}|\{approximatelySign\}|\{0\}|[¤%\-+])/g
+const WeakMapConstructor = WeakMap
+const apply = Reflect.apply
+const weakMapGet = WeakMap.prototype.get
+const weakMapSet = WeakMap.prototype.set
+
+// Capture methods for lazily created private pattern maps.
+function readPlanCache<K extends object, V>(
+  map: WeakMap<K, V>,
+  key: K
+): V | undefined {
+  return apply(weakMapGet, map, [key])
+}
+function writePlanCache<K extends object, V>(
+  map: WeakMap<K, V>,
+  key: K,
+  value: V
+): void {
+  apply(weakMapSet, map, [key, value])
+}
+
 const cache = new WeakMap<RawNumberData, Map<string, NumberPatternPlan[]>>()
 const prepared = new WeakMap<CompiledNumberPatterns, NumberPatternPlan[]>()
 const composed = new WeakMap<
@@ -53,7 +75,7 @@ function compile(pattern: string, compact: boolean): NumberPatternPlan[] {
     NUMBER.lastIndex = 0
     const number = NUMBER.exec(value)?.[0]
     if (!number && !compact)
-      throw new Error(`Missing number pattern: ${pattern}`)
+      throw new ErrorConstructor(`Missing number pattern: ${pattern}`)
     const groups = (number || '0').split('.')[0].split(',')
     const primary = groups.length > 1 ? groups[groups.length - 1].length : 3
     const secondary =
@@ -110,7 +132,7 @@ export function compileNumberPatterns(
   const tokens = new Map<string, number>()
   const add = (pattern: string, compact = false) => {
     const table = compact ? result.compact : result.standard
-    if (Object.prototype.hasOwnProperty.call(table, pattern)) return
+    if (HasOwnProperty(table, pattern)) return
     table[pattern] = compile(pattern, compact).map(plan => {
       const key = JSON.stringify(plan)
       let id = ids.get(key)
@@ -166,10 +188,10 @@ export function getNumberPattern(
   if (generated?.version === 1) {
     const ids = (compact ? generated.compact : generated.standard)[pattern]
     if (ids) {
-      let plans = prepared.get(generated)
+      let plans = readPlanCache(prepared, generated)
       if (!plans) {
         plans = []
-        prepared.set(generated, plans)
+        writePlanCache(prepared, generated, plans)
       }
       const id = ids[index]
       if (!plans[id]) {
@@ -182,10 +204,10 @@ export function getNumberPattern(
       return plans[id]
     }
   }
-  let patterns = cache.get(data)
+  let patterns = readPlanCache(cache, data)
   if (!patterns) {
     patterns = new Map()
-    cache.set(data, patterns)
+    writePlanCache(cache, data, patterns)
   }
   const key = `${compact ? 'compact' : 'standard'}:${pattern}`
   let plans = patterns.get(key)
@@ -201,12 +223,12 @@ export function composeNumberPattern(
   style: NumberPatternPlan,
   notation: NumberPatternPlan
 ): NumberPatternPlan {
-  let patterns = composed.get(style)
+  let patterns = readPlanCache(composed, style)
   if (!patterns) {
-    patterns = new WeakMap()
-    composed.set(style, patterns)
+    patterns = new WeakMapConstructor()
+    writePlanCache(composed, style, patterns)
   }
-  let result = patterns.get(notation)
+  let result = readPlanCache(patterns, notation)
   if (!result) {
     result = {
       grouping: style.grouping,
@@ -214,7 +236,7 @@ export function composeNumberPattern(
     }
     for (const part of style.parts)
       result.parts.push(...(part[0] === 'number' ? notation.parts : [part]))
-    patterns.set(notation, result)
+    writePlanCache(patterns, notation, result)
   }
   return result
 }
