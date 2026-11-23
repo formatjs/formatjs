@@ -618,7 +618,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.13.0"
+version = "1.13.1"
 dependencies = [
  "anyhow",
  "base64",

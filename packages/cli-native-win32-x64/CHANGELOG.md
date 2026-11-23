@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.40](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-win32-x64@1.1.39...@formatjs/cli-native-win32-x64@1.1.40) (2026-11-23)
+
 ## [1.1.39](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-win32-x64@1.1.38...@formatjs/cli-native-win32-x64@1.1.39) (2026-11-23)
 
 ## [1.1.38](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-win32-x64@1.1.37...@formatjs/cli-native-win32-x64@1.1.38) (2026-11-17)

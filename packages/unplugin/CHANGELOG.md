@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.23...@formatjs/unplugin@1.3.0) (2026-11-23)
+
+
+### Features
+
+* **@formatjs/cli-lib:** ship a FreeBSD x64 native binding ([#8150](https://github.com/formatjs/formatjs/issues/8150)) ([8f4c01a](https://github.com/formatjs/formatjs/commit/8f4c01a398ca636d8f2d74698d043abb73d0503b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/cli-lib bumped to 10.5.0
+
 ## [1.2.23](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.22...@formatjs/unplugin@1.2.23) (2026-11-23)
 
 
