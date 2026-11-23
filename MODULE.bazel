@@ -563,9 +563,9 @@ use_repo(browsers, "web_browser_node")
 http_archive(
     name = "editor_chromium",
     build_file_content = 'filegroup(name = "files", srcs = glob(["**"]), visibility = ["//visibility:public"])',
-    sha256 = "c3e50596aef52c58f8fda3c6b3411c33d34c88b177b3ed1c2243359fd3b8ba20",
+    sha256 = "18352d22cb0cdf520cbff2ad8c41391f0e02a72886cb53b0fde4bdfc4bd075d6",
     strip_prefix = "chrome-headless-shell-linux64",
-    urls = ["https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip"],
+    urls = ["https://storage.googleapis.com/chrome-for-testing-public/158.0.8127.18/linux64/chrome-headless-shell-linux64.zip"],
 )
 
 # Header generation runs as a host Rust tool; published SDKs contain its output.

@@ -19,7 +19,7 @@ pinned static Bash plus declared, checksum-pinned utilities. VRT comparison and
 capture remain artifact-producing build actions.
 
 Upgrades align Playwright npm packages, the `:playwright` version, and the Chromium
-archive in `MODULE.bazel`. Playwright 1.64.0 uses Chromium 156.0.8078.4; the runner
+archive in `MODULE.bazel`. Playwright 1.65.0 uses Chromium 158.0.8127.18; the runner
 checks the actual browser version. Re-run CI and review intentional screenshot changes.
 
 ```sh
