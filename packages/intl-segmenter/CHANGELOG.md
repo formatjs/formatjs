@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.3.2...@formatjs/intl-segmenter@12.3.3) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-segmenter:** only suppress sentence breaks after whole-word abbreviations ([#8147](https://github.com/formatjs/formatjs/issues/8147)) ([04977c4](https://github.com/formatjs/formatjs/commit/04977c431cac3d930e095f2f8bf06ceea7df4e06))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [12.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.3.1...@formatjs/intl-segmenter@12.3.2) (2026-11-08)
 
 

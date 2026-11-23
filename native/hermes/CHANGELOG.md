@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.0.1](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v2.0.0...formatjs-hermes-intl_v2.0.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** capture private cache operations ([#8107](https://github.com/formatjs/formatjs/issues/8107)) ([0d4ede7](https://github.com/formatjs/formatjs/commit/0d4ede7e982af51cf1875700202b5e7194f64bc9))
+* **@formatjs/intl-datetimeformat:** keep timestamp clipping on Numbers ([#8096](https://github.com/formatjs/formatjs/issues/8096)) ([8f68859](https://github.com/formatjs/formatjs/commit/8f688596db2aa01c22c03a0932639a85307f7bf7))
+* **@formatjs/intl-durationformat:** keep field conversion primitive ([#8100](https://github.com/formatjs/formatjs/issues/8100)) ([75c9128](https://github.com/formatjs/formatjs/commit/75c9128d18ea6a3f72ac106eaaab3f587345a1da))
+* **@formatjs/intl-segmenter:** only suppress sentence breaks after whole-word abbreviations ([#8147](https://github.com/formatjs/formatjs/issues/8147)) ([04977c4](https://github.com/formatjs/formatjs/commit/04977c431cac3d930e095f2f8bf06ceea7df4e06))
+* **@formatjs/temporal:** capture floor for date and calendar arithmetic ([#8073](https://github.com/formatjs/formatjs/issues/8073)) ([6c1006e](https://github.com/formatjs/formatjs/commit/6c1006e52b5c234afab6ed1d4e08e537f179044f))
+* **@formatjs/temporal:** capture intrinsic object allocation ([#8067](https://github.com/formatjs/formatjs/issues/8067)) ([0c865cc](https://github.com/formatjs/formatjs/commit/0c865cc7c48ff4f2fe707f32b47cbf89f900cc32))
+* **@formatjs/temporal:** defer zoned string range checks until after options ([#8077](https://github.com/formatjs/formatjs/issues/8077)) ([4f11936](https://github.com/formatjs/formatjs/commit/4f11936c7ad16bd53b0cc70525bfc367f6d127ad))
+* **@formatjs/temporal:** fall back when host clock lookups fail ([a6099a3](https://github.com/formatjs/formatjs/commit/a6099a3f28a8db4008eda56a87ef762e30edd752))
+* **@formatjs/temporal:** fix array allocation and value comparison ([#8101](https://github.com/formatjs/formatjs/issues/8101)) ([2dcd6d9](https://github.com/formatjs/formatjs/commit/2dcd6d94993b81e4127d0f9289449fce040e3c03))
+* **@formatjs/temporal:** isolate private clock field lists ([#8082](https://github.com/formatjs/formatjs/issues/8082)) ([ee972cb](https://github.com/formatjs/formatjs/commit/ee972cbef290ed34134cc6f2e3b8eb832fe77c1c))
+* **@formatjs/temporal:** isolate private defaults from prototypes ([#8080](https://github.com/formatjs/formatjs/issues/8080)) ([0104ced](https://github.com/formatjs/formatjs/commit/0104ced29bff188e5be3b37ef431e6eb0c595390))
+* **@formatjs/temporal:** isolate string unit options ([#8087](https://github.com/formatjs/formatjs/issues/8087)) ([9cfca22](https://github.com/formatjs/formatjs/commit/9cfca2258e7e5160831fdd30850a8dc855e6316e))
+* **@formatjs/temporal:** keep fractional formatting intrinsic ([#8092](https://github.com/formatjs/formatjs/issues/8092)) ([3161aff](https://github.com/formatjs/formatjs/commit/3161affe85a90ced091f5d0f21630e38efbbfdf5))
+* **@formatjs/temporal:** keep parsed fraction padding private ([#8093](https://github.com/formatjs/formatjs/issues/8093)) ([0274332](https://github.com/formatjs/formatjs/commit/02743321b2711923a9cb53dd13b45c1be6c1872a))
+* **@formatjs/temporal:** match unit names without string hooks ([#8090](https://github.com/formatjs/formatjs/issues/8090)) ([f07d31a](https://github.com/formatjs/formatjs/commit/f07d31a05be0a344134ec026f80841a32887e94e))
+* **@formatjs/temporal:** never throw from Temporal.Now.timeZoneId() ([#8050](https://github.com/formatjs/formatjs/issues/8050)) ([d52bef4](https://github.com/formatjs/formatjs/commit/d52bef495ad4d76b722f47b41680e053694f9631))
+* **@formatjs/temporal:** parse calendar strings without date bounds ([#8066](https://github.com/formatjs/formatjs/issues/8066)) ([f6cc871](https://github.com/formatjs/formatjs/commit/f6cc8719f11b9ffcb4062cbe91e94e923937d06e))
+* **@formatjs/temporal:** parse UTC offsets without mutable hooks ([#8094](https://github.com/formatjs/formatjs/issues/8094)) ([65a04ca](https://github.com/formatjs/formatjs/commit/65a04cad69c7bd7222f2e1f2c909a2e276f920a1))
+* **@formatjs/temporal:** preserve intrinsic primitive coercion ([#8069](https://github.com/formatjs/formatjs/issues/8069)) ([4f43003](https://github.com/formatjs/formatjs/commit/4f43003eff18088d08c6b40143d55ef42dce616b))
+* **@formatjs/temporal:** read date string options before range checks ([#8065](https://github.com/formatjs/formatjs/issues/8065)) ([7df2163](https://github.com/formatjs/formatjs/commit/7df21634cf780fa6f7ad712fcf033cd9e3d9a1e0))
+* **@formatjs/temporal:** read short-date options before range checks ([#8064](https://github.com/formatjs/formatjs/issues/8064)) ([f1f3f0c](https://github.com/formatjs/formatjs/commit/f1f3f0c835b27750558b84cbcefc1aa9da4c54f8))
+* **@formatjs/temporal:** retain intrinsic array predicates ([#8076](https://github.com/formatjs/formatjs/issues/8076)) ([0274516](https://github.com/formatjs/formatjs/commit/02745160c469d642d24600188ca7d1cc8e644157))
+* **@formatjs/temporal:** retain numeric intrinsics during arithmetic ([#8074](https://github.com/formatjs/formatjs/issues/8074)) ([0c6c76e](https://github.com/formatjs/formatjs/commit/0c6c76ed6e61150bf9773cdea46cafdb7ce15d62))
+* **@formatjs/temporal:** retain private list search intrinsics ([#8083](https://github.com/formatjs/formatjs/issues/8083)) ([8e1640b](https://github.com/formatjs/formatjs/commit/8e1640bff229a5eef33f797c3a4318fb471cddd8))
+* **@formatjs/temporal:** use direct internal property reads ([#8068](https://github.com/formatjs/formatjs/issues/8068)) ([5474af0](https://github.com/formatjs/formatjs/commit/5474af056b895d241f3599ee45514766d27cb3b8))
+* **@formatjs/temporal:** use internal date-time slots for relativeTo ([#8061](https://github.com/formatjs/formatjs/issues/8061)) ([b6464cc](https://github.com/formatjs/formatjs/commit/b6464cca51869baf272d0133d693d32773e223a4))
+* **@formatjs/temporal:** use intrinsic constructor instance checks ([#8098](https://github.com/formatjs/formatjs/issues/8098)) ([f40473d](https://github.com/formatjs/formatjs/commit/f40473d9acb6f83a0ff7996f1bd87eefccb61f48))
+* **@formatjs/temporal:** validate calendar total window bounds ([#8063](https://github.com/formatjs/formatjs/issues/8063)) ([41f5d27](https://github.com/formatjs/formatjs/commit/41f5d278805e59acb56501abfd43065a09408b4d))
+
 ## [2.0.0](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v1.1.0...formatjs-hermes-intl_v2.0.0) (2026-11-19)
 
 

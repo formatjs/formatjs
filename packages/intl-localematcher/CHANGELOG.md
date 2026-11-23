@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.10.1...@formatjs/intl-localematcher@0.10.2) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** capture private cache operations ([#8107](https://github.com/formatjs/formatjs/issues/8107)) ([0d4ede7](https://github.com/formatjs/formatjs/commit/0d4ede7e982af51cf1875700202b5e7194f64bc9))
+* **@formatjs/temporal:** align fold probes and keep spec links inline ([d50198b](https://github.com/formatjs/formatjs/commit/d50198b52a506d527955b8f60dde0f0431217d8b))
+* **@formatjs/temporal:** isolate fresh locale lists and extension records ([247d1a5](https://github.com/formatjs/formatjs/commit/247d1a5999af51d6012b9e0210ee38cbf0502a26))
+* **@formatjs/temporal:** isolate locale provider and distance operations ([e542907](https://github.com/formatjs/formatjs/commit/e5429077ebe384c7b193741da69a44627833c74a))
+* **@formatjs/temporal:** isolate private defaults from prototypes ([#8080](https://github.com/formatjs/formatjs/issues/8080)) ([0104ced](https://github.com/formatjs/formatjs/commit/0104ced29bff188e5be3b37ef431e6eb0c595390))
+* **@formatjs/temporal:** keep best-fit locale caches and results private ([733a978](https://github.com/formatjs/formatjs/commit/733a97897b9a93a586a9e68cc30673089f890c68))
+* **@formatjs/temporal:** preserve private locale and interval operations ([63a94b0](https://github.com/formatjs/formatjs/commit/63a94b021ce97afe8b414f7e4301777ff59e9ac5))
+* **@formatjs/temporal:** reject revoked newTarget proxies and preserve locale lookup ([ea5c4cb](https://github.com/formatjs/formatjs/commit/ea5c4cbe0d8546a5e443b18fadbaadb7cc2a98f0))
+* **@formatjs/temporal:** retain intrinsic array predicates ([#8076](https://github.com/formatjs/formatjs/issues/8076)) ([0274516](https://github.com/formatjs/formatjs/commit/02745160c469d642d24600188ca7d1cc8e644157))
+* **@formatjs/temporal:** retain private Intl invocation operations ([b8c46f7](https://github.com/formatjs/formatjs/commit/b8c46f7054bb7278b4db67404177ba5c9006f7cf))
+* **@formatjs/temporal:** retain private list search intrinsics ([#8083](https://github.com/formatjs/formatjs/issues/8083)) ([8e1640b](https://github.com/formatjs/formatjs/commit/8e1640bff229a5eef33f797c3a4318fb471cddd8))
+* **@formatjs/temporal:** validate bound revocation and isolate best-fit operations ([de7c671](https://github.com/formatjs/formatjs/commit/de7c671b38dc0025264f4f540cf7a8e71caf46b4))
+* **@formatjs/temporal:** verify fresh duration locale construction ([87d5bc9](https://github.com/formatjs/formatjs/commit/87d5bc9eeffaba96f2c1ef61d8142a3e06df3242))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/fast-memoize bumped to 3.1.8
+
 ## [0.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.10.0...@formatjs/intl-localematcher@0.10.1) (2026-10-31)
 
 

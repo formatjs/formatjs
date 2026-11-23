@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.21.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.20.0...@formatjs/cli@6.21.0) (2026-11-23)
+
+
+### Features
+
+* **formatjs_cli:** reject unused Android plural quantities ([#8139](https://github.com/formatjs/formatjs/issues/8139)) ([d30bfd2](https://github.com/formatjs/formatjs/commit/d30bfd2b7648ea687fc7e76d8eaad449c9de6f03))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.38
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.6
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.38
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.36
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.38
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.36
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.6
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.39
+
 ## [6.20.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.19.1...@formatjs/cli@6.20.0) (2026-11-17)
 
 

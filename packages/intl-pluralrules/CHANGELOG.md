@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@7.1.0...@formatjs/intl-pluralrules@7.1.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** capture private cache operations ([#8107](https://github.com/formatjs/formatjs/issues/8107)) ([0d4ede7](https://github.com/formatjs/formatjs/commit/0d4ede7e982af51cf1875700202b5e7194f64bc9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.11
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [7.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@7.0.4...@formatjs/intl-pluralrules@7.1.0) (2026-11-17)
 
 

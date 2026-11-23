@@ -1,6 +1,6 @@
 {
   "name": "vue-intl",
-  "version": "8.1.7",
+  "version": "8.1.8",
   "description": "formatjs intl binding for vue",
   "keywords": [
     "formatjs",

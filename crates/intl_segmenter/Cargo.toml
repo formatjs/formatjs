@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_segmenter"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ECMA-402 Segmenter using ICU4X and UTF-16 boundaries"

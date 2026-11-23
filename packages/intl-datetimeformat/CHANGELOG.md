@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.2.0...@formatjs/intl-datetimeformat@8.2.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** capture private cache operations ([#8107](https://github.com/formatjs/formatjs/issues/8107)) ([0d4ede7](https://github.com/formatjs/formatjs/commit/0d4ede7e982af51cf1875700202b5e7194f64bc9))
+* **@formatjs/intl-datetimeformat:** correct Temporal gap bounds and range records ([8c97864](https://github.com/formatjs/formatjs/commit/8c978647f34c270b0f0890f849c94b8705be5e85))
+* **@formatjs/intl-datetimeformat:** isolate private Temporal range traversal ([9bff74e](https://github.com/formatjs/formatjs/commit/9bff74e7e3fd1f0219eff6f105c075c6d12ce2e4))
+* **@formatjs/intl-datetimeformat:** keep alternate style records private ([ffa4be5](https://github.com/formatjs/formatjs/commit/ffa4be5aeffc482a2739cbc4518f3e2929f3aa89))
+* **@formatjs/intl-datetimeformat:** keep combined style construction private ([8a165b4](https://github.com/formatjs/formatjs/commit/8a165b48e296f5a0dc5a2af6525df5dc881567ac))
+* **@formatjs/intl-datetimeformat:** keep owned bound formatter state private ([f3daf56](https://github.com/formatjs/formatjs/commit/f3daf56f1030160fd796d1e34e013ef3febc98bd))
+* **@formatjs/intl-datetimeformat:** keep range precision lookup private ([d36aef0](https://github.com/formatjs/formatjs/commit/d36aef0519b901d5be6590e5d33ce2fb8399a775))
+* **@formatjs/intl-datetimeformat:** keep timestamp clipping on Numbers ([#8096](https://github.com/formatjs/formatjs/issues/8096)) ([8f68859](https://github.com/formatjs/formatjs/commit/8f688596db2aa01c22c03a0932639a85307f7bf7))
+* **@formatjs/intl-datetimeformat:** keep timezone lookup private ([cea6701](https://github.com/formatjs/formatjs/commit/cea6701a698f3411f3231c25a573f651a690a77e))
+* **@formatjs/intl-datetimeformat:** normalize nonpositive display years ([#8106](https://github.com/formatjs/formatjs/issues/8106)) ([fe9fe72](https://github.com/formatjs/formatjs/commit/fe9fe722948a67ab1a4e0eecf719efed02c53241))
+* **@formatjs/intl-datetimeformat:** preserve date pattern records ([#8104](https://github.com/formatjs/formatjs/issues/8104)) ([b14a361](https://github.com/formatjs/formatjs/commit/b14a3612991269d167984fee01025a4c9780e42a))
+* **@formatjs/intl-datetimeformat:** preserve signed local-time years ([#8110](https://github.com/formatjs/formatjs/issues/8110)) ([0030a91](https://github.com/formatjs/formatjs/commit/0030a91feca676990ef7a826dcffd0427493afd1))
+* **@formatjs/intl-datetimeformat:** protect Temporal local-time conversions ([#8112](https://github.com/formatjs/formatjs/issues/8112)) ([ffdc7b7](https://github.com/formatjs/formatjs/commit/ffdc7b77b009a3ca2a5d715cfcca145fcdebde84))
+* **@formatjs/intl-datetimeformat:** share UTC offset scanner with Temporal ([#8111](https://github.com/formatjs/formatjs/issues/8111)) ([0f3ce0a](https://github.com/formatjs/formatjs/commit/0f3ce0a4fb57788223c3e18f8949dff3c1b77c36))
+* **@formatjs/intl-datetimeformat:** throw intrinsic errors for missing range endpoints ([c1451d1](https://github.com/formatjs/formatjs/commit/c1451d161abf931e4e4bdc1a7472e94f10301891))
+* **@formatjs/intl-datetimeformat:** use canonical rows for Temporal aliases ([fd2887b](https://github.com/formatjs/formatjs/commit/fd2887b1e7b633fdea0495aba561de5572127737))
+* **@formatjs/intl-datetimeformat:** use intrinsic receiver errors ([ebc26bb](https://github.com/formatjs/formatjs/commit/ebc26bb4f0db5a0b048f03c56b4232824f383d7b))
+* **@formatjs/intl-datetimeformat:** use intrinsics for Temporal formatter setup ([c6144f0](https://github.com/formatjs/formatjs/commit/c6144f0a173fb85648149271d969291417ea0047))
+* **@formatjs/temporal:** align fold probes and keep spec links inline ([d50198b](https://github.com/formatjs/formatjs/commit/d50198b52a506d527955b8f60dde0f0431217d8b))
+* **@formatjs/temporal:** correct borrowed date windows and range equality ([0023097](https://github.com/formatjs/formatjs/commit/0023097ebb6ef33e793ba10a2ac6708cc06b62f9))
+* **@formatjs/temporal:** enumerate exact owned Intl timezone candidates ([65e1aea](https://github.com/formatjs/formatjs/commit/65e1aea0642133fceb195259c0152ee940214da8))
+* **@formatjs/temporal:** fix array allocation and value comparison ([#8101](https://github.com/formatjs/formatjs/issues/8101)) ([2dcd6d9](https://github.com/formatjs/formatjs/commit/2dcd6d94993b81e4127d0f9289449fce040e3c03))
+* **@formatjs/temporal:** guard date probes and formatter records ([828dab6](https://github.com/formatjs/formatjs/commit/828dab6a7d6d92261e460816792c0b765daa39a8))
+* **@formatjs/temporal:** isolate private defaults from prototypes ([#8080](https://github.com/formatjs/formatjs/issues/8080)) ([0104ced](https://github.com/formatjs/formatjs/commit/0104ced29bff188e5be3b37ef431e6eb0c595390))
+* **@formatjs/temporal:** isolate timezone and Intl internal operations ([43f4e2c](https://github.com/formatjs/formatjs/commit/43f4e2c08d5cbd10e9d38410b98ebb332ab7e4d6))
+* **@formatjs/temporal:** preserve private locale and interval operations ([63a94b0](https://github.com/formatjs/formatjs/commit/63a94b021ce97afe8b414f7e4301777ff59e9ac5))
+* **@formatjs/temporal:** preserve private reader and calendar operations ([24fd91a](https://github.com/formatjs/formatjs/commit/24fd91a558f8e44f8cf1b726c7f4e964cf6a2647))
+* **@formatjs/temporal:** protect private formatter record copies ([#8088](https://github.com/formatjs/formatjs/issues/8088)) ([e889cf1](https://github.com/formatjs/formatjs/commit/e889cf185143814df2fdcce8c6a68ecfc34cf204))
+* **@formatjs/temporal:** read exact owned timezone transitions ([f8ac7b5](https://github.com/formatjs/formatjs/commit/f8ac7b5f7d3eb14dca8dd3c6a90c6ce647f2792f))
+* **@formatjs/temporal:** refresh host caches after timezone reload ([756082c](https://github.com/formatjs/formatjs/commit/756082c302fa74cd50e5fa93cdc23add40d95168))
+* **@formatjs/temporal:** resolve clipped gaps and extended footer offsets ([61de01b](https://github.com/formatjs/formatjs/commit/61de01b8de753f803058395f6e78910eb5e8f40a))
+* **@formatjs/temporal:** resolve day starts across the minimum Instant ([01a22c5](https://github.com/formatjs/formatjs/commit/01a22c56f0946b30b335b2e26a13135edee83885))
+* **@formatjs/temporal:** resolve overlapping timezone boundaries ([2780423](https://github.com/formatjs/formatjs/commit/2780423b2c9bbe296d1ce7c79176eb49a2d6f184))
+* **@formatjs/temporal:** resolve owned Intl gaps from exact boundaries ([07ae87c](https://github.com/formatjs/formatjs/commit/07ae87c16ec39cc1af21cecd26f203b381891e93))
+* **@formatjs/temporal:** retain finite future timezone transitions ([0469dcc](https://github.com/formatjs/formatjs/commit/0469dcc1cb32350ba8dadf5ea297b3a40aa0c43f))
+* **@formatjs/temporal:** retain intrinsic array predicates ([#8076](https://github.com/formatjs/formatjs/issues/8076)) ([0274516](https://github.com/formatjs/formatjs/commit/02745160c469d642d24600188ca7d1cc8e644157))
+* **@formatjs/temporal:** retain private Intl invocation operations ([b8c46f7](https://github.com/formatjs/formatjs/commit/b8c46f7054bb7278b4db67404177ba5c9006f7cf))
+* **@formatjs/temporal:** retain private list search intrinsics ([#8083](https://github.com/formatjs/formatjs/issues/8083)) ([8e1640b](https://github.com/formatjs/formatjs/commit/8e1640bff229a5eef33f797c3a4318fb471cddd8))
+* **@formatjs/temporal:** use intrinsic constructor instance checks ([#8098](https://github.com/formatjs/formatjs/issues/8098)) ([f40473d](https://github.com/formatjs/formatjs/commit/f40473d9acb6f83a0ff7996f1bd87eefccb61f48))
+* **@formatjs/temporal:** validate owned Intl candidates at Instant limits ([555ea7b](https://github.com/formatjs/formatjs/commit/555ea7b26cca0633d8c1c3633ed1766ea462b224))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [8.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.1.0...@formatjs/intl-datetimeformat@8.2.0) (2026-11-18)
 
 

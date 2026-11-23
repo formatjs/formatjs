@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.13](https://github.com/formatjs/formatjs/compare/@formatjs/utils@2.2.12...@formatjs/utils@2.2.13) (2026-11-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/fast-memoize bumped to 3.1.8
+
 ## 2.2.12 (2026-08-30)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

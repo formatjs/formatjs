@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-collator@0.3.2...@formatjs/intl-collator@0.3.3) (2026-11-23)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [0.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-collator@0.3.1...@formatjs/intl-collator@0.3.2) (2026-11-08)
 
 

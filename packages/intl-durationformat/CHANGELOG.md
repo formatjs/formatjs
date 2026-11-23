@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.13.0...@formatjs/intl-durationformat@0.13.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** keep field conversion primitive ([#8100](https://github.com/formatjs/formatjs/issues/8100)) ([75c9128](https://github.com/formatjs/formatjs/commit/75c9128d18ea6a3f72ac106eaaab3f587345a1da))
+* **@formatjs/temporal:** isolate timezone and Intl internal operations ([43f4e2c](https://github.com/formatjs/formatjs/commit/43f4e2c08d5cbd10e9d38410b98ebb332ab7e4d6))
+* **@formatjs/temporal:** preserve private reader and calendar operations ([24fd91a](https://github.com/formatjs/formatjs/commit/24fd91a558f8e44f8cf1b726c7f4e964cf6a2647))
+* **@formatjs/temporal:** retain formatter providers and private field entries ([91b5d75](https://github.com/formatjs/formatjs/commit/91b5d75d7539995a2fd7f652bbf6c9fc77b3e3b1))
+* **@formatjs/temporal:** retain intrinsic array predicates ([#8076](https://github.com/formatjs/formatjs/issues/8076)) ([0274516](https://github.com/formatjs/formatjs/commit/02745160c469d642d24600188ca7d1cc8e644157))
+* **@formatjs/temporal:** retain private Intl invocation operations ([b8c46f7](https://github.com/formatjs/formatjs/commit/b8c46f7054bb7278b4db67404177ba5c9006f7cf))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.11
+    * @formatjs/intl-localematcher bumped to 0.10.2
+
 ## [0.13.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.12.4...@formatjs/intl-durationformat@0.13.0) (2026-11-17)
 
 
