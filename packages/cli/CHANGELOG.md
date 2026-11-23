@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.22.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.21.0...@formatjs/cli@6.22.0) (2026-11-23)
+
+
+### Features
+
+* **@formatjs/cli-lib:** ship a FreeBSD x64 native binding ([#8150](https://github.com/formatjs/formatjs/issues/8150)) ([8f4c01a](https://github.com/formatjs/formatjs/commit/8f4c01a398ca636d8f2d74698d043abb73d0503b))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.39
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.7
+    * @formatjs/cli-native-freebsd-x64 bumped to 1.1.0
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.39
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.37
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.39
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.37
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.7
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.40
+
 ## [6.21.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.20.0...@formatjs/cli@6.21.0) (2026-11-23)
 
 
