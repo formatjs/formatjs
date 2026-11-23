@@ -1,3 +1,4 @@
+import {arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
 import type {
   DurationInput,
@@ -32,7 +33,7 @@ export function registerTemporalDurationNamespace(
   const constructor = namespace?.Duration
   if (
     !constructor ||
-    readers.some(reader => reader.constructor === constructor)
+    arraySome(readers, reader => reader.constructor === constructor)
   )
     return
   const from = constructor.from,
@@ -46,7 +47,7 @@ export function registerTemporalDurationNamespace(
   const getters = fields.map(
     field => Object.getOwnPropertyDescriptor(prototype, field)?.get
   )
-  if (getters.some(getter => typeof getter !== 'function')) return
+  if (arraySome(getters, getter => typeof getter !== 'function')) return
   readers.push({
     constructor,
     from,
@@ -70,14 +71,19 @@ export function ToTemporalDurationRecord(
     input !== null &&
     (typeof input === 'object' || typeof input === 'function')
   ) {
-    for (const reader of readers) {
+    // Temporal comparison §15.10.1 / §15.10.2 step3: brand probes use a private List.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+    for (let index = 0; index < readers.length; index++) {
+      const reader = readers[index]
       let years: number
       try {
         years = apply(reader.getters[0], input, [])
       } catch {
         continue
       }
-      const record = Object.create(null) as DurationRecord
+      // Proposal comparison §15.10.1 step 3 / §15.10.2 step 3: read slots into a Record.
+      // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+      const record = {__proto__: null} as unknown as DurationRecord
       record.years = years
       for (let index = 1; index < fields.length; index++)
         record[fields[index]] = apply(reader.getters[index], input, [])

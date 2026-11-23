@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
@@ -54,7 +55,9 @@ export function InitializeRelativeTimeFormat(
   )
   if (numberingSystem !== undefined) {
     if (!IsUnicodeLocaleIdentifierType(numberingSystem)) {
-      throw new RangeError(`Invalid numbering system ${numberingSystem}`)
+      throw new RangeErrorConstructor(
+        `Invalid numbering system ${numberingSystem}`
+      )
     }
   }
   opt.nu = numberingSystem

@@ -379,12 +379,12 @@ http_archive(
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-TEST262_COMMIT = "2e58f87d8350ad51224617a041c6e041d52f8444"
+TEST262_COMMIT = "2a1ade303f72d3de80565c921d685222405c32ce"
 
 http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
-    sha256 = "68e7365434e401ae2ce91be9cfc3406c8b0ef367538e2e57f085a2bef1d218ee",
+    sha256 = "da64b21401dca859095ad61c3a5f37721f92c7e3251523aa35b19dbcc3ecff82",
     strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
     type = "tar.gz",
     urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
@@ -563,9 +563,9 @@ use_repo(browsers, "web_browser_node")
 http_archive(
     name = "editor_chromium",
     build_file_content = 'filegroup(name = "files", srcs = glob(["**"]), visibility = ["//visibility:public"])',
-    sha256 = "c3e50596aef52c58f8fda3c6b3411c33d34c88b177b3ed1c2243359fd3b8ba20",
+    sha256 = "18352d22cb0cdf520cbff2ad8c41391f0e02a72886cb53b0fde4bdfc4bd075d6",
     strip_prefix = "chrome-headless-shell-linux64",
-    urls = ["https://storage.googleapis.com/chrome-for-testing-public/156.0.8078.4/linux64/chrome-headless-shell-linux64.zip"],
+    urls = ["https://storage.googleapis.com/chrome-for-testing-public/158.0.8127.18/linux64/chrome-headless-shell-linux64.zip"],
 )
 
 # Header generation runs as a host Rust tool; published SDKs contain its output.

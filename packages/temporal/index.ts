@@ -71,6 +71,8 @@ export type {
   DurationConstructor,
   DurationObject,
 } from '#packages/temporal/duration.js'
+// ECMA-262 preview §22.6: ordinary namespace object.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-object
 export const Temporal: {
   Now: NowObject
   ZonedDateTime: ZonedDateTimeConstructor
@@ -84,15 +86,35 @@ export const Temporal: {
 } = Object.defineProperties(
   {},
   {
+    // ECMA-262 preview §22.6.3.1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now
     Now: {value: Now, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.8.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-zoneddatetime
     ZonedDateTime: {value: ZonedDateTime, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.2.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-instant
     Instant: {value: Instant, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-duration
     Duration: {value: Duration, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.6.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plaintime
     PlainTime: {value: PlainTime, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.4.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindatetime
     PlainDateTime: {value: PlainDateTime, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.3.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindate
     PlainDate: {value: PlainDate, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.7.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plainyearmonth
     PlainYearMonth: {value: PlainYearMonth, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.2.5.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plainmonthday
     PlainMonthDay: {value: PlainMonthDay, writable: true, configurable: true},
+    // ECMA-262 preview §22.6.1.1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-%symbol.tostringtag%
     [Symbol.toStringTag]: {value: 'Temporal', configurable: true},
   }
 ) as {

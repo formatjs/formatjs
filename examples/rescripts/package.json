@@ -24,7 +24,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "babel-plugin-react-require": "4.0.3",
-    "eslint": "10.14.0",
+    "eslint": "10.15.0",
     "typescript": "7.0.2"
   },
   "browserslist": [
@@ -33,5 +33,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "packageManager": "pnpm@12.19.0"
+  "packageManager": "pnpm@12.21.0"
 }

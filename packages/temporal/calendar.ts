@@ -1,3 +1,19 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  arrayIncludes,
+  arrayIndexOf,
+  arraySome,
+  floor,
+  mathAbs,
+  mathMax,
+  mathMin,
+  mathSign,
+  mathTrunc,
+  numberFrom,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   isLunisolar,
@@ -11,7 +27,6 @@ import {
 } from '#packages/temporal/calendar-table.js'
 
 import {
-  arithmeticCalendars,
   ArithmeticCalendarStartOfYear,
   ArithmeticCalendarMonthsInYear,
   ArithmeticCalendarDaysInMonth,
@@ -26,13 +41,8 @@ import {
 } from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 export {arithmeticCalendars} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 
-export const calendarIds: readonly (
-  | (typeof arithmeticCalendars)[number]
-  | 'chinese'
-  | 'dangi'
-  | 'islamic-umalqura'
-)[] = [...arithmeticCalendars, 'chinese', 'dangi', 'islamic-umalqura']
-export type CalendarId = (typeof calendarIds)[number]
+import {calendarIds, type CalendarId} from '#packages/temporal/calendar-ids.js'
+export {calendarIds, type CalendarId} from '#packages/temporal/calendar-ids.js'
 export type Overflow = 'constrain' | 'reject'
 export interface CalendarFields {
   year: number
@@ -63,6 +73,8 @@ export function cachedISODateFields(
   month: number,
   day: number
 ): Readonly<CalendarDate>
+// Temporal comparison §12.3.26 step 1.b.
+// Reuse the prepared ISO year, month, month code and day.
 export function cachedISODateFields(
   epochDay: number,
   year?: number,
@@ -94,48 +106,61 @@ export function cachedISODateFields(
   return fields
 }
 
+// ECMA-262 preview §22.3.4: store date units, with omitted magnitudes treated as zero.
+// https://tc39.es/ecma262/pr/3966/#sec-date-duration-records
 export interface DateDuration {
   years?: number
   months?: number
   weeks?: number
   days?: number
 }
+// Temporal comparison §9.5.4 step 2.
+// Compute a nonnegative month residue for ISO year-month balancing.
 const mod = (value: number, divisor: number): number =>
-  value - Math.floor(value / divisor) * divisor
+  value - floor(value / divisor) * divisor
 function integer(value: number): number {
-  if (!Number.isSafeInteger(value))
-    throw new RangeError('Expected safe integer')
+  // ECMA-262 §21.1.2.5 steps 1.a–2: Check prepared Numbers before calendar arithmetic.
+  if (!numberIsSafeInteger(value))
+    throw new RangeErrorConstructor('Expected safe integer')
   return value
 }
 function yearCheck(year: number): number {
-  if (Math.abs(integer(year)) > 400000)
-    throw new RangeError('Calendar year out of range')
+  if (mathAbs(integer(year)) > 400000)
+    throw new RangeErrorConstructor('Calendar year out of range')
   return year
 }
+// Temporal comparison §3.5.12 steps 1, 2, §5.5.4 steps 3, 4.
+// Check the inclusive epoch-day interval for a date at noon.
 export function dayCheck(day: number): number {
   if (integer(day) < -100000001 || day > 100000000)
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   return day
 }
 function calendarCheck(calendar: CalendarId): void {
-  if (!calendarIds.includes(calendar))
-    throw new RangeError('Unsupported calendar')
+  if (!arrayIncludes(calendarIds, calendar))
+    throw new RangeErrorConstructor('Unsupported calendar')
 }
 function overflowCheck(overflow: Overflow): void {
   if (overflow !== 'constrain' && overflow !== 'reject')
-    throw new RangeError('Invalid overflow')
+    throw new RangeErrorConstructor('Invalid overflow')
 }
+// ECMA-262 preview §22.3.9.7 steps 1–3.
+// https://tc39.es/ecma262/pr/3966/#sec-regulateisodate
+// Clamp or reject a prepared month or day.
 function regulate(
   value: number,
   min: number,
   max: number,
   overflow: Overflow
 ): number {
-  if (!Number.isInteger(value)) throw new RangeError('Expected finite integer')
+  if (!numberIsInteger(value))
+    throw new RangeErrorConstructor('Expected finite integer')
   if (overflow === 'reject' && (value < min || value > max))
-    throw new RangeError('Calendar field out of range')
-  return Math.min(Math.max(value, min), max)
+    throw new RangeErrorConstructor('Calendar field out of range')
+  return mathMin(mathMax(value, min), max)
 }
+// Temporal comparison §3.3.11 step 3, §3.3.16 step 3.
+// Look up the first epoch day of the calendar year.
 function start(calendar: CalendarId, year: number): number {
   if (isLunisolar(calendar)) return tableYearStart(calendar, year)!
   if (calendar === 'islamic-umalqura')
@@ -145,6 +170,8 @@ function start(calendar: CalendarId, year: number): number {
     )
   return ArithmeticCalendarStartOfYear(calendar, year)
 }
+// Temporal comparison §3.3.11 step 3, §3.3.16 step 3.
+// Select the provider for the calendar year start.
 export function calendarStartOfYear(
   calendar: CalendarId,
   year: number
@@ -156,6 +183,8 @@ export function calendarStartOfYear(
     return native!.calendarStartOfYear(calendar, year)
   return start(calendar, year)
 }
+// Temporal comparison §3.3.17 step 3.
+// Read the selected calendar's month count for a year.
 export function monthsInYear(calendar: CalendarId, year: number): number {
   calendarCheck(calendar)
   yearCheck(year)
@@ -167,6 +196,8 @@ export function monthsInYear(calendar: CalendarId, year: number): number {
     ? 12
     : ArithmeticCalendarMonthsInYear(calendar, year)
 }
+// Temporal comparison §3.3.15 step 3, §3.5.7 step 1.b.
+// Read the prepared calendar month length.
 export function daysInMonth(
   calendar: CalendarId,
   year: number,
@@ -177,7 +208,7 @@ export function daysInMonth(
     return native!.calendarDaysInMonth(calendar, year, month)
   const count = monthsInYear(calendar, year)
   if (integer(month) < 1 || month > count)
-    throw new RangeError('Invalid calendar month')
+    throw new RangeErrorConstructor('Invalid calendar month')
   if (isLunisolar(calendar)) return tableMonthLength(calendar, year, month)!
   if (calendar === 'islamic-umalqura')
     return (
@@ -186,12 +217,17 @@ export function daysInMonth(
     )
   return ArithmeticCalendarDaysInMonth(calendar, year, month)
 }
+// ECMA-262 preview §22.3.11.1 steps 2–4.
+// https://tc39.es/ecma262/pr/3966/#sec-createmonthcode
+// Encode the month code after projecting its calendar index.
 function monthCode(calendar: CalendarId, year: number, month: number): string {
   if (isLunisolar(calendar)) {
-    const leap = tableLeapMonth(calendar, year)
+    const leap = tableLeapMonth(calendar, year),
+      code = month - numberFrom(leap > 0 && month > leap)
     return (
       'M' +
-      String(month - Number(leap > 0 && month > leap)).padStart(2, '0') +
+      (code < 10 ? '0' : '') +
+      code +
       (leap > 0 && month === leap + 1 ? 'L' : '')
     )
   }
@@ -201,6 +237,8 @@ function monthCode(calendar: CalendarId, year: number, month: number): string {
     month
   )
 }
+// Temporal comparison §12.3.22 step 2, §12.3.21 prose.
+// Resolve a prepared non-ISO month code for the selected year.
 function monthFromCode(
   calendar: CalendarId,
   year: number,
@@ -208,35 +246,36 @@ function monthFromCode(
   overflow: Overflow
 ): number {
   if (isLunisolar(calendar)) {
-    if (!/^M(0[1-9]|1[0-2])L?$/.test(code))
-      throw new RangeError('Invalid month code')
-    const number = Number(code.slice(1, 3)),
+    const leapCode = code.length === 4 && code[3] === 'L'
+    if (code.length !== 3 && !leapCode)
+      throw new RangeErrorConstructor('Invalid month code')
+    const number = isoMonthFromCode(code[0] + code[1] + code[2]),
       leap = tableLeapMonth(calendar, year)
-    if (code.endsWith('L') && leap !== number && overflow === 'reject')
-      throw new RangeError('Leap month absent')
+    if (leapCode && leap !== number && overflow === 'reject')
+      throw new RangeErrorConstructor('Leap month absent')
     return (
       number +
-      Number(
-        leap > 0 && (number > leap || (number === leap && code.endsWith('L')))
-      )
+      numberFrom(leap > 0 && (number > leap || (number === leap && leapCode)))
     )
   }
   if (calendar === 'hebrew' && code === 'M05L') {
     if (!hebrewLeap(year) && overflow === 'reject')
-      throw new RangeError('Leap month absent')
+      throw new RangeErrorConstructor('Leap month absent')
     return 6
   }
-  if (
-    !/^M(0[1-9]|1[0-3])$/.test(code) ||
-    (code === 'M13' && !['coptic', 'ethiopic', 'ethioaa'].includes(calendar))
+  const month =
+    code === 'M13' && arrayIncludes(['coptic', 'ethiopic', 'ethioaa'], calendar)
+      ? 13
+      : isoMonthFromCode(code)
+  return (
+    month + numberFrom(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
   )
-    throw new RangeError('Invalid month code')
-  const month = Number(code.slice(1))
-  return month + Number(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
 }
+// Temporal comparison §12.3.31 steps 1.h.i, 1.h.ii, 1.h.iii, 1.h.iv.
+// Read a prepared ISO month code and reject out-of-range forms.
 function isoMonthFromCode(code: string): number {
   if (code.length !== 3 || code[0] !== 'M')
-    throw new RangeError('Invalid month code')
+    throw new RangeErrorConstructor('Invalid month code')
   const tens = code[1],
     units = code[2],
     month = (tens === '1' ? 10 : 0) + +units
@@ -247,11 +286,13 @@ function isoMonthFromCode(code: string): number {
     month < 1 ||
     month > 12
   )
-    throw new RangeError('Invalid month code')
+    throw new RangeErrorConstructor('Invalid month code')
   return month
 }
 
 // ISO fields are already prepared; keep native dispatch and range checks.
+// Temporal comparison §12.3.12 steps 2, 3, §12.3.31 steps 1.g, 1.h.v.
+// Convert prepared ISO fields and check the resulting day bounds.
 export function isoDayFromPreparedFields(
   year: number,
   fields: Readonly<Omit<CalendarFields, 'year'>>,
@@ -265,7 +306,7 @@ export function isoDayFromPreparedFields(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native) {
     if (sourceMonth === undefined && code === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     return dayCheck(
       native!.calendarToEpochDay(
         'iso8601',
@@ -278,10 +319,10 @@ export function isoDayFromPreparedFields(
   if (code !== undefined) {
     month = isoMonthFromCode(code)
     if (sourceMonth !== undefined && integer(sourceMonth) !== month)
-      throw new RangeError('Month and monthCode disagree')
+      throw new RangeErrorConstructor('Month and monthCode disagree')
   } else {
     if (sourceMonth === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     month = regulate(sourceMonth, 1, 12, overflow)
   }
   const day = regulate(
@@ -293,6 +334,11 @@ export function isoDayFromPreparedFields(
   return dayCheck(ArithmeticCalendarToEpochDay('iso8601', year, month, day))
 }
 
+// ECMA-262 preview §22.3.3.5 steps 1–2.
+// https://tc39.es/ecma262/pr/3966/#sec-calendardatetoiso
+// Convert prepared calendar fields to an epoch day.
+// ECMA-262 preview §22.3.3.6 applies the selected non-ISO calendar and overflow policy.
+// https://tc39.es/ecma262/pr/3966/#sec-nonisocalendardatetoiso
 export function calendarToEpochDayRaw(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -304,7 +350,7 @@ export function calendarToEpochDayRaw(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native) {
     if (fields.month === undefined && fields.monthCode === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     return native!.calendarToEpochDay(calendar, fields, overflow)
   }
   let month: number
@@ -314,10 +360,10 @@ export function calendarToEpochDayRaw(
         ? isoMonthFromCode(fields.monthCode)
         : monthFromCode(calendar, year, fields.monthCode, overflow)
     if (fields.month !== undefined && integer(fields.month) !== month)
-      throw new RangeError('Month and monthCode disagree')
+      throw new RangeErrorConstructor('Month and monthCode disagree')
   } else {
     if (fields.month === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     month = regulate(
       fields.month,
       1,
@@ -339,6 +385,8 @@ export function calendarToEpochDayRaw(
   for (let m = 1; m < month; m++) epoch += daysInMonth(calendar, year, m)
   return integer(epoch)
 }
+// Temporal comparison §12.3.12 steps 2, 3.
+// Apply the normal date bounds after calendar conversion.
 export function calendarToEpochDay(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -346,19 +394,23 @@ export function calendarToEpochDay(
 ): number {
   return dayCheck(calendarToEpochDayRaw(calendar, fields, overflow))
 }
+// Temporal comparison §12.3.26 steps 1.b, 2.
+// Project a bounded epoch day into calendar date fields.
 export function calendarFromEpochDay(
   calendar: CalendarId,
   epoch: number
 ): CalendarDate {
   return calendarFromEpochDayRaw(calendar, dayCheck(epoch))
 }
+// Temporal comparison §12.3.26 steps 1.b, 2, §12.3.25 prose.
+// Project an epoch day using native, arithmetic or table chronology.
 export function calendarFromEpochDayRaw(
   calendar: CalendarId,
   epoch: number
 ): CalendarDate {
   calendarCheck(calendar)
-  if (Math.abs(integer(epoch)) > 110000000)
-    throw new RangeError('Calendar date out of range')
+  if (mathAbs(integer(epoch)) > 110000000)
+    throw new RangeErrorConstructor('Calendar date out of range')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.calendarFromEpochDay(calendar, epoch)
@@ -369,7 +421,7 @@ export function calendarFromEpochDayRaw(
   if (calendar !== 'islamic-umalqura')
     return ArithmeticCalendarFromEpochDay(calendar, epoch)
   const jd = epoch + 2440588
-  let year = Math.floor((30 * (jd - 1948440) + 10646) / 10631)
+  let year = floor((30 * (jd - 1948440) + 10646) / 10631)
   while (start(calendar, year) > epoch) year--
   while (start(calendar, year + 1) <= epoch) year++
   let month = 1,
@@ -383,6 +435,10 @@ export function calendarFromEpochDayRaw(
     day: remaining + 1,
   }
 }
+// Temporal comparison §9.5.4 steps 1, 2, §12.3.7 step 2.a.
+// Balance the prepared ISO or non-ISO year and month.
+// ECMA-262 preview §22.13.5.6: balance a year-month pair separately from the ISO day.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-year-month-records
 function addYearMonth(
   calendar: CalendarId,
   original: Readonly<CalendarDate>,
@@ -399,18 +455,22 @@ function addYearMonth(
   if (calendar !== 'hebrew') {
     const count = monthsInYear(calendar, year)
     const serial = year * count + original.month - 1 + months
-    year = yearCheck(Math.floor(serial / count))
+    // ECMA-262 preview §22.13.5.7 steps 1–3: ISO uses twelve months per year.
+    // https://tc39.es/ecma262/pr/3966/#sec-balanceisoyearmonth
+    year = yearCheck(floor(serial / count))
     month = mod(serial, count) + 1
   } else {
     month = monthFromCode(calendar, year, original.monthCode, overflow)
     const serial = integer(elapsedMonths(year) + month - 1 + months)
-    year = yearCheck(Math.floor((19 * serial + 234) / 235))
+    year = yearCheck(floor((19 * serial + 234) / 235))
     while (elapsedMonths(year) > serial) year--
     while (elapsedMonths(year + 1) <= serial) year++
     month = serial - elapsedMonths(year) + 1
   }
   return {year, month}
 }
+// Temporal comparison §12.3.7 steps 1.a, 1.b, 1.d, 2.a.
+// Add a date duration through native or fallback chronology.
 export function addCalendarDateRaw(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -430,6 +490,8 @@ export function addCalendarDateRaw(
     addCalendarEpochDay(calendar, original, duration, overflow)
   )
 }
+// Temporal comparison §12.3.7 steps 1.a, 1.b, 1.c, 1.d, 2.a.
+// Balance year and month, regulate the day and add weeks and days.
 function addCalendarEpochDay(
   calendar: CalendarId,
   original: Readonly<CalendarDate>,
@@ -441,9 +503,23 @@ function addCalendarEpochDay(
     duration.months ?? 0,
     duration.weeks ?? 0,
     duration.days ?? 0,
-  ].map(integer)
-  if (values.some(x => x < 0) && values.some(x => x > 0))
-    throw new RangeError('Mixed duration signs')
+  ]
+  for (let index = 0; index < values.length; index++)
+    values[index] = integer(values[index])
+  // Temporal comparison §7.5.9 step 1. Reject mixed signs.
+  if (
+    arraySome(
+      values,
+      // Temporal comparison §7.5.16 step 2.b. Find a negative field.
+      x => x < 0
+    ) &&
+    arraySome(
+      values,
+      // Temporal comparison §7.5.16 step 2.c. Find a positive field.
+      x => x > 0
+    )
+  )
+    throw new RangeErrorConstructor('Mixed duration signs')
   const {year, month} = addYearMonth(
     calendar,
     original,
@@ -451,14 +527,22 @@ function addCalendarEpochDay(
     values[1],
     overflow
   )
+  // Temporal comparison §3.5.6 step 10. Shared ISO day regulation in constrain mode.
   const epoch = calendarToEpochDayRaw(
     calendar,
-    {year, month, day: original.day},
+    {year, month, monthCode: undefined, day: original.day},
     overflow
   )
+  // Temporal comparison §3.5.6 step 11. An ISO week has seven days.
+  // ECMA-262 preview §22.3.9.1 steps 1–3: keep the adjusted date in epoch-day form.
+  // https://tc39.es/ecma262/pr/3966/#sec-adddaystoisodate
   return epoch + integer(7 * values[2] + values[3])
 }
 // Fields must come from this calendar's epoch-day conversion.
+// Temporal comparison §12.3.7 steps 1.a, 1.b, 1.d, 2.a.
+// Carry normalized calendar arithmetic back as an epoch day and fields.
+// ECMA-262 preview §22.3.3.2 delegates non-ISO date addition to the calendar.
+// https://tc39.es/ecma262/pr/3966/#sec-nonisodateadd
 export function addNormalizedCalendarDate(
   calendar: CalendarId,
   original: Readonly<CalendarDate>,
@@ -474,6 +558,8 @@ export function addNormalizedCalendarDate(
   const epochDay = addCalendarEpochDay(calendar, original, duration, overflow)
   return {epochDay, date: calendarFromEpochDayRaw(calendar, epochDay)}
 }
+// Temporal comparison §12.3.7 steps 3, 4.
+// Bound the calendar addition result before returning its fields.
 export function addCalendarDate(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -495,6 +581,8 @@ export function calendarDaysUntil(
   )
 }
 
+// Temporal comparison §12.3.9 steps 3.e.ii, 4, §12.3.8 prose.
+// Provide serial month indices for calendar difference.
 export function calendarMonthSerial(
   calendar: CalendarId,
   year: number,
@@ -509,6 +597,10 @@ export function calendarMonthSerial(
     ? elapsedMonths(year) + month - 1
     : year * monthsInYear(calendar, year) + month - 1
 }
+// Temporal comparison §12.3.9 steps 2, 3.k, 4.
+// Compute the date duration for the prepared endpoints and largest unit.
+// ECMA-262 preview §22.3.3.4 limits the resulting date fields to the requested unit.
+// https://tc39.es/ecma262/pr/3966/#sec-nonisodateuntil
 export function calendarDateUntilRaw(
   calendar: CalendarId,
   one: number,
@@ -521,9 +613,11 @@ export function calendarDateUntilRaw(
   const first = calendarFromEpochDayRaw(calendar, one),
     last = calendarFromEpochDayRaw(calendar, two)
   const result = {years: 0, months: 0, weeks: 0, days: 0},
-    sign = Math.sign(two - one)
+    sign = mathSign(two - one)
   if (!sign) return result
   // Difference prefixes compare unregulated days and month codes, not clamped dates.
+  // Temporal comparison §3.5.6 steps 4, 7, 8, §12.3.9 steps 3.c.ii, 3.e.ii.
+  // Compare the candidate prefix with the endpoint before day clamping.
   const surpasses = (): boolean => {
     const year = first.year + result.years
     const codeOrder =
@@ -532,6 +626,8 @@ export function calendarDateUntilRaw(
         : first.monthCode > last.monthCode
           ? 1
           : -1
+    // ECMA-262 preview §22.3.8.1 steps 1–5: compare the first unequal field in the travel direction.
+    // https://tc39.es/ecma262/pr/3966/#sec-comparesurpasses
     if (sign * (year - last.year || codeOrder || first.day - last.day) > 0)
       return true
     const candidate = addYearMonth(
@@ -541,6 +637,7 @@ export function calendarDateUntilRaw(
       result.months,
       'constrain'
     )
+    // §22.3.8.1 step 3 compares the balanced month's ordinal.
     return (
       sign *
         (candidate.year - last.year ||
@@ -573,13 +670,21 @@ export function calendarDateUntilRaw(
       'reject'
     )
   }
+  // ECMA-262 preview §22.3.3.3 steps 3.g and 3.j count whole weeks and days
+  // up to the target. Subtract epoch days to compute that residual directly.
+  // https://tc39.es/ecma262/pr/3966/#sec-calendardateuntil
+  // §22.3.8.2 step 5 corrects the zero-month guard for these searches.
+  // https://tc39.es/ecma262/pr/3966/#sec-isodatesurpasses
+  // https://github.com/tc39/proposal-temporal/issues/3340
   result.days = two - anchor
   if (largest === 'week') {
-    result.weeks = Math.trunc(result.days / 7) || 0
+    result.weeks = mathTrunc(result.days / 7) || 0
     result.days = result.days % 7 || 0
   }
   return result
 }
+// Temporal comparison §3.3.4 step 3, §3.3.5 step 3.
+// Project era and era year from the private calendar date.
 export function calendarEra(
   calendar: CalendarId,
   epoch: number,
@@ -611,9 +716,13 @@ export function calendarYearFromEra(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.calendarYearFromEra(calendar, era, eraYear)
+  // Temporal comparison §12.3.31 step2.a / §12.3.30: normalize private era data.
+  // https://tc39.es/proposal-temporal/#sec-temporal-nonisoresolvefields
   if (calendar === 'japanese')
-    for (const [, name, offset] of japaneseEras)
-      if (era === name) return yearCheck(eraYear + offset)
+    for (let index = 0; index < japaneseEras.length; index++) {
+      const entry = japaneseEras[index]
+      if (era === entry[1]) return yearCheck(eraYear + entry[2])
+    }
   if (calendar === 'ethiopic' && era === 'aa') return yearCheck(eraYear - 5500)
   const names: Partial<Record<CalendarId, readonly string[]>> = {
     gregory: ['ce', 'bce'],
@@ -635,7 +744,8 @@ export function calendarYearFromEra(
     (era === 'ad' || era === 'bc')
   )
     era = era === 'ad' ? 'ce' : 'bce'
-  const index = names[calendar]?.indexOf(era) ?? -1
-  if (index < 0) throw new RangeError('Invalid era')
+  const eras = names[calendar],
+    index = eras ? arrayIndexOf(eras, era) : -1
+  if (index < 0) throw new RangeErrorConstructor('Invalid era')
   return yearCheck(index === 1 ? 1 - eraYear : eraYear)
 }

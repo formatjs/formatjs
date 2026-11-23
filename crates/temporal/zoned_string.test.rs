@@ -571,3 +571,161 @@ fn pinned_test262_zoned_parse_bounds() {
         reference.instant()
     );
 }
+
+#[test]
+fn minute_offset_matching_rounds_signed_half_minutes_away_from_zero() {
+    use formatjs_temporal::{FixedOffset, IsoDateTime, OffsetInput};
+
+    let fields = IsoDateTime {
+        year: 1970,
+        month: 1,
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        nanosecond: 0,
+    };
+    for (actual, minute, expected) in [
+        (0, 0, 0),
+        (1, 0, -1),
+        (-1, 0, 1),
+        (29_999_999_999, 0, -29_999_999_999),
+        (30_000_000_000, 60_000_000_000, -30_000_000_000),
+        (30_000_000_001, 60_000_000_000, -30_000_000_001),
+        (-29_999_999_999, 0, 29_999_999_999),
+        (-30_000_000_000, -60_000_000_000, 30_000_000_000),
+        (-30_000_000_001, -60_000_000_000, 30_000_000_001),
+    ] {
+        let zone = FixedOffset::new(actual).unwrap();
+        let construct = |offset| {
+            ZonedDateTime::from_local_with_offset(
+                fields,
+                zone,
+                Calendar::Iso8601,
+                offset,
+                ZonedParseOptions::default(),
+            )
+        };
+        for offset in [OffsetInput::Minute(minute), OffsetInput::Exact(actual)] {
+            assert_eq!(
+                construct(offset).unwrap().instant().epoch_nanoseconds(),
+                expected,
+                "actual {actual}, hint {offset:?}"
+            );
+        }
+        if actual != minute {
+            assert!(construct(OffsetInput::Exact(minute)).is_err());
+        }
+    }
+}
+
+#[test]
+fn rounded_offset_match_selects_earliest_fold_candidate_in_either_visit_order() {
+    use formatjs_temporal::{
+        IsoDateTime, OffsetInput, OffsetTransition, TransitionDirection, TransitionZone,
+    };
+
+    struct OrderedZone<'a> {
+        zone: TransitionZone<'a>,
+        reverse: bool,
+    }
+    impl TimeZone for OrderedZone<'_> {
+        fn offset_nanoseconds(&self, instant: Instant) -> i128 {
+            self.zone.offset_nanoseconds(instant)
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            let mut offsets = Vec::new();
+            self.zone.visit_offsets(&mut |offset| offsets.push(offset));
+            if self.reverse {
+                offsets.reverse();
+            }
+            for offset in offsets {
+                visitor(offset);
+            }
+        }
+        fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
+            self.zone.transition(instant, direction)
+        }
+    }
+
+    let transitions = [OffsetTransition {
+        epoch_seconds: 0,
+        offset_seconds: 0,
+    }];
+    let fields = IsoDateTime {
+        year: 1970,
+        month: 1,
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 10,
+        nanosecond: 0,
+    };
+    // Local 00:00:10 occurs at -10 seconds with +20, then at +10 seconds with zero.
+    for reverse in [false, true] {
+        for disambiguation in [Disambiguation::Later, Disambiguation::Reject] {
+            for (offset, expected) in [
+                (OffsetInput::Minute(0), -10_000_000_000),
+                (OffsetInput::Exact(0), 10_000_000_000),
+            ] {
+                let value = ZonedDateTime::from_local_with_offset(
+                    fields,
+                    OrderedZone {
+                        zone: TransitionZone::new(20, &transitions, None).unwrap(),
+                        reverse,
+                    },
+                    Calendar::Iso8601,
+                    offset,
+                    options(OffsetOption::Reject, disambiguation),
+                )
+                .unwrap();
+                assert_eq!(
+                    value.instant().epoch_nanoseconds(),
+                    expected,
+                    "reverse {reverse}, hint {offset:?}, disambiguation {disambiguation:?}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn offset_matching_keeps_exclusive_day_bounds_after_minute_rounding() {
+    use formatjs_temporal::{FixedOffset, IsoDateTime, NANOSECONDS_PER_DAY, OffsetInput};
+
+    let fields = IsoDateTime {
+        year: 1970,
+        month: 1,
+        day: 1,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        nanosecond: 0,
+    };
+    for (actual, minute, expected) in [
+        (86_399_999_999_999, 86_340_000_000_000, -86_399_999_999_999),
+        (-86_399_999_999_999, -86_340_000_000_000, 86_399_999_999_999),
+    ] {
+        let construct = |offset| {
+            ZonedDateTime::from_local_with_offset(
+                fields,
+                FixedOffset::new(actual).unwrap(),
+                Calendar::Iso8601,
+                offset,
+                ZonedParseOptions::default(),
+            )
+        };
+        assert_eq!(
+            construct(OffsetInput::Exact(actual))
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            expected
+        );
+        assert!(construct(OffsetInput::Minute(minute)).is_err());
+        for boundary in [-NANOSECONDS_PER_DAY, NANOSECONDS_PER_DAY] {
+            assert!(FixedOffset::new(boundary).is_err());
+            assert!(construct(OffsetInput::Minute(boundary)).is_err());
+        }
+    }
+}

@@ -1,0 +1,7 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+copy_to_bin(
+    name = "polyfill_regressions",
+    srcs = ["polyfill-regressions.tsv"],
+    visibility = ["//visibility:public"],
+)

@@ -1,19 +1,36 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {
+  RangeErrorConstructor,
+  arrayEvery,
+  arrayIncludes,
+  arraySome,
+  bigIntFrom,
+  mathAbs,
+  numberFrom,
+  numberIsInteger,
+  numberIsSafeInteger,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 // Experimental numeric kernel. No Temporal object/coercion/branding semantics.
 import {
   DayFromYear,
   DaysInYear,
-  YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
+  NearestTimeZoneLocalAfter,
   TimeZoneOffset,
-  TimeZoneRuleTransition,
+  TimeZoneTransition,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {ArithmeticGregorianFromEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 
+const arraySort = Array.prototype.sort
+const apply = Reflect.apply
 const second = 1_000_000_000n
 const day = 86400n * second
+// ECMA-262 preview §22.3.6: bound exact epoch nanoseconds at both ends.
+// https://tc39.es/ecma262/pr/3966/#sec-epoch-nanoseconds
 const limit = 100_000_000n * day
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 
@@ -29,51 +46,155 @@ export interface ISODateTime {
   nanosecond?: number
 }
 export type Disambiguation = 'compatible' | 'earlier' | 'later' | 'reject'
+export const memoizableOffset: unique symbol = Symbol()
 export interface TimeZoneKernel {
+  readonly [memoizableOffset]?: boolean
   transition(instant: bigint, direction: 'next' | 'previous'): bigint | null
   offsetNanoseconds(instant: bigint): bigint
   possibleInstants(fields: ISODateTime): bigint[]
   // Internal callers validate local nanoseconds before using this shortcut.
   possibleInstantsFromEpochNanoseconds?(local: bigint): bigint[]
-  resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
+  nearestLocalAfter?(local: bigint): bigint | undefined
+  resolve(local: ISODateTime | bigint, disambiguation?: Disambiguation): bigint
 }
 
+// ECMA-262 preview §22.3.10.4: local date-time bounds are exclusive.
+// https://tc39.es/ecma262/pr/3966/#sec-isodatetimewithinlimits
+export function checkLocalEpoch(value: bigint): bigint {
+  if (value <= -limit - day || value >= limit + day)
+    throw new RangeErrorConstructor('Local date out of range')
+  return value
+}
+
+export function localEpoch(value: ISODateTime | bigint): bigint {
+  return typeof value === 'bigint'
+    ? checkLocalEpoch(value)
+    : isoToEpochNanoseconds(value)
+}
+
+// ECMA-262 preview §22.2.16 steps 1–5: select midnight or the nearest later local time.
+// https://tc39.es/ecma262/pr/3966/#sec-getstartofday
+export function startOfTimeZoneDay(
+  midnight: bigint,
+  zone: TimeZoneKernel
+): bigint {
+  if (midnight <= -limit - day || midnight >= limit + day)
+    throw new RangeErrorConstructor('Local date out of range')
+  const possible = (local: bigint): bigint[] =>
+    zone.possibleInstantsFromEpochNanoseconds?.(local) ??
+    zone.possibleInstants(epochNanosecondsToISO(local))
+  const candidates = possible(midnight)
+  if (candidates.length) return candidates[0]
+
+  const lower = midnight - day
+  let upper = midnight + 3n * day
+  const clipped = upper > limit
+  if (clipped) upper = limit
+  if (lower >= -limit && midnight + day < limit) {
+    let cursor = lower
+    let nearest: bigint | undefined
+    // Proposal comparison §11.1.14 step 5. At midnight plus one day,
+    // the offset projects to a local time within two days of midnight.
+    while (true) {
+      const event = zone.transition(cursor, 'next')
+      if (event === null || event <= cursor || event >= upper) break
+      cursor = event
+      const projected = event + zone.offsetNanoseconds(event)
+      if (
+        projected > midnight &&
+        (nearest === undefined || projected < nearest)
+      ) {
+        nearest = projected
+        if (nearest + day < upper) upper = nearest + day
+      }
+    }
+    // Proposal comparison §11.1.14 step 5: Exclude earlier local times beyond the scan.
+    if (nearest !== undefined && (!clipped || nearest + day <= limit)) {
+      const after = possible(nearest)
+      if (after.length === 1) return after[0]
+    }
+  }
+
+  if (lower < -limit || clipped) {
+    // Proposal comparison §11.1.14 steps 5–7: Resolve the first reachable raw wall time.
+    const nearest = zone.nearestLocalAfter?.(midnight)
+    if (
+      nearest !== undefined &&
+      nearest > midnight &&
+      nearest < midnight + 2n * day
+    ) {
+      // Every supported offset is shorter than one day.
+      if (nearest >= limit + day)
+        throw new RangeErrorConstructor('Instant out of range')
+      const after = possible(nearest)
+      if (after.length === 1) return after[0]
+    }
+  }
+
+  // Preserve fallback behavior when the bounded search cannot confirm the nearest local time.
+  let event: bigint | null = zone.resolve(epochNanosecondsToISO(midnight))
+  while (event !== null && event >= lower) {
+    if (event > -limit) {
+      const before = zone.offsetNanoseconds(event - 1n),
+        after = zone.offsetNanoseconds(event)
+      if (
+        after > before &&
+        midnight >= event + before &&
+        midnight < event + after
+      )
+        return event
+    }
+    event = zone.transition(event, 'previous')
+  }
+  throw new RangeErrorConstructor('No day boundary in instant range')
+}
+
+// Temporal comparison §11.1.2 steps 2, 3.
+// Floor the epoch quotient so negative instants keep the correct remainder.
 function floorDivide(value: bigint, divisor: bigint): bigint {
   const quotient = value / divisor
   return value < 0n && value % divisor !== 0n ? quotient - 1n : quotient
 }
 
+// Temporal comparison §8.5.1 step 1.
+// Check inclusive Instant epoch bounds before the zone operation.
 function checkInstant(value: bigint): bigint {
+  // ECMA-262 preview §22.3.6.4 step 1: require inclusive epoch bounds.
+  // https://tc39.es/ecma262/pr/3966/#sec-iswithinepochnanosecondsinterval
   if (value < -limit || value > limit)
-    throw new RangeError('Instant out of range')
+    throw new RangeErrorConstructor('Instant out of range')
   return value
 }
 
+// Temporal comparison §5.5.4 steps 2–4 and amendment §14.6.1 steps 1–5.
+// Compose exact local epoch nanoseconds and enforce the strict bounds.
 export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.isoToEpochNanoseconds(fields)
   const {year, month, day: date} = fields
   const time = [
-    fields.hour ?? 0,
-    fields.minute ?? 0,
-    fields.second ?? 0,
-    fields.millisecond ?? 0,
-    fields.microsecond ?? 0,
-    fields.nanosecond ?? 0,
+    HasOwnProperty(fields, 'hour') ? (fields.hour ?? 0) : 0,
+    HasOwnProperty(fields, 'minute') ? (fields.minute ?? 0) : 0,
+    HasOwnProperty(fields, 'second') ? (fields.second ?? 0) : 0,
+    HasOwnProperty(fields, 'millisecond') ? (fields.millisecond ?? 0) : 0,
+    HasOwnProperty(fields, 'microsecond') ? (fields.microsecond ?? 0) : 0,
+    HasOwnProperty(fields, 'nanosecond') ? (fields.nanosecond ?? 0) : 0,
   ]
   const bounds = [23, 59, 59, 999, 999, 999]
   if (
-    ![year, month, date].every(Number.isInteger) ||
-    !time.every(Number.isInteger) ||
-    Math.abs(year) > 275761 ||
+    !arrayEvery([year, month, date], numberIsInteger) ||
+    !arrayEvery(time, numberIsInteger) ||
+    mathAbs(year) > 275761 ||
     month < 1 ||
     month > 12 ||
     date < 1 ||
     date > 31 ||
-    time.some((value, i) => value < 0 || value > bounds[i])
+    // Temporal comparison §4.5.9 steps 1–6.
+    // Check each prepared clock component against its unit bound.
+    arraySome(time, (value, i) => value < 0 || value > bounds[i])
   ) {
-    throw new RangeError('Invalid ISO fields')
+    throw new RangeErrorConstructor('Invalid ISO fields')
   }
   const leap = DaysInYear(year) === 366
   const maximum =
@@ -84,52 +205,73 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
       : month === 4 || month === 6 || month === 9 || month === 11
         ? 30
         : 31
-  if (date > maximum) throw new RangeError('Invalid ISO date')
+  if (date > maximum) throw new RangeErrorConstructor('Invalid ISO date')
   const epochDay =
     DayFromYear(year) +
     monthStarts[month - 1] +
-    Number(month > 2 && leap) +
+    numberFrom(month > 2 && leap) +
     date -
     1
+  // ECMA-262 preview §22.1.1.17: compose day and clock nanoseconds exactly.
+  // https://tc39.es/ecma262/pr/3966/#sec-getutcepochnanoseconds
   const value =
-    BigInt(epochDay) * day +
-    BigInt(time[0] * 3600 + time[1] * 60 + time[2]) * second +
-    BigInt(time[3] * 1_000_000 + time[4] * 1000 + time[5])
-  // Local fields may lie one offset beyond the instant range.
-  if (value <= -limit - day || value >= limit + day)
-    throw new RangeError('Local date out of range')
-  return value
+    bigIntFrom(epochDay) * day +
+    bigIntFrom(time[0] * 3600 + time[1] * 60 + time[2]) * second +
+    bigIntFrom(time[3] * 1_000_000 + time[4] * 1000 + time[5])
+  // ECMA-262 preview §22.3.10.4 steps 3–4: keep both local endpoints exclusive.
+  // https://tc39.es/ecma262/pr/3966/#sec-isodatetimewithinlimits
+  // Preserve the intended minimum local date: https://github.com/tc39/ecma262/pull/3966#discussion_r4283470645
+  return checkLocalEpoch(value)
 }
 
+// ECMA-262 preview §22.2.12 steps 3–15: project ISO fields from an offset-adjusted epoch.
+// https://tc39.es/ecma262/pr/3966/#sec-getisodatetimefor
+// ECMA-262 preview §22.3.10: return the ISO date and time in a flat record.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-date-time-records
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.epochNanosecondsToISO(value)
-  if (value <= -limit - day || value >= limit + day)
-    throw new RangeError('Local date out of range')
+  // Local projection also accepts values outside the Instant interval.
+  checkLocalEpoch(value)
+  // Steps 3–4 use a whole-millisecond quotient and a submillisecond remainder.
+  // Valid-Instant milliseconds fit exactly below 2**53; no rounding is needed here.
   const days = floorDivide(value, day)
-  const epochDay = Number(days)
+  const epochDay = numberFrom(days)
+  // Day and clock units are multiples of one millisecond.
   let time = value - days * day
-  const hour = Number(time / (3600n * second))
+  // Step 8 reads the hour from the nonnegative remainder.
+  const hour = numberFrom(time / (3600n * second))
   time %= 3600n * second
-  const minute = Number(time / (60n * second))
+  // Step 9 reads the minute after removing complete hours.
+  const minute = numberFrom(time / (60n * second))
   time %= 60n * second
-  const seconds = Number(time / second)
+  // Step 10 reads the second after removing complete minutes.
+  const seconds = numberFrom(time / second)
   time %= second
+  // Steps 5–7 invert the Gregorian epoch day.
   const date = ArithmeticGregorianFromEpochDay('iso8601', epochDay)
+  // Step 15 combines the date and clock into one result.
   return {
+    // Preserve the three ISO date fields.
     year: date.year,
     month: date.month,
     day: date.day,
+    // Preserve the six clock fields.
     hour,
     minute,
     second: seconds,
-    millisecond: Number(time / 1_000_000n),
-    microsecond: Number((time / 1000n) % 1000n),
-    nanosecond: Number(time % 1000n),
+    // Step 11 reads complete milliseconds within the current second.
+    millisecond: numberFrom(time / 1_000_000n),
+    // Steps 12–13 select the microsecond within the millisecond.
+    microsecond: numberFrom((time / 1000n) % 1000n),
+    // Step 14 reads the remaining nanoseconds.
+    nanosecond: numberFrom(time % 1000n),
   }
 }
 
+// Temporal comparison §3.5.9 steps 1–3.
+// Add an exact day count while preserving the prepared clock.
 export function addISODays(
   fields: ISODateTime,
   days: number
@@ -137,161 +279,151 @@ export function addISODays(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.addISODays(fields, days)
-  if (!Number.isSafeInteger(days)) throw new RangeError('Invalid day count')
+  if (!numberIsSafeInteger(days))
+    throw new RangeErrorConstructor('Invalid day count')
   return epochNanosecondsToISO(
-    isoToEpochNanoseconds(fields) + BigInt(days) * day
+    isoToEpochNanoseconds(fields) + bigIntFrom(days) * day
   )
 }
 
+// Temporal comparison §6.3.46 steps 9.a and 10.b.
+// ECMA-262 preview §22.2.3: find the first offset transition strictly after the instant.
+// https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezonenexttransition
+// ECMA-262 preview §22.2.4: previous means strictly before the instant and within bounds.
+// https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneprevioustransition
 function zoneTransition(
   data: UnpackedTimeZoneData,
   instant: bigint,
   direction: 'next' | 'previous'
 ): bigint | null {
-  const next = direction === 'next'
-  let best: bigint | null = null
-  const consider = (seconds: number): void => {
-    if (!Number.isFinite(seconds)) return
-    const candidate = BigInt(seconds) * second
-    if (
-      candidate < -limit ||
-      candidate > limit ||
-      (next ? candidate <= instant : candidate >= instant)
-    )
-      return
-    if (best !== null && (next ? candidate >= best : candidate <= best)) return
-    if (
-      TimeZoneOffset(seconds * 1000 - 1, data)[0] ===
-      TimeZoneOffset(seconds * 1000, data)[0]
-    )
-      return
-    best = candidate
-  }
-  let low = 0,
-    high = data.length
-  while (low < high) {
-    const middle = (low + high) >>> 1,
-      candidate = data[middle][0]
-    if (candidate <= Number(floorDivide(instant, second))) low = middle + 1
-    else high = middle
-  }
-  // Compare exact nanoseconds after finding the neighboring second.
-  let index = Math.max(0, Math.min(data.length - 1, low - 1))
-  if (next) {
-    for (; index < data.length; index++) {
-      consider(data[index][0])
-      if (best !== null) break
-    }
-  } else {
-    for (; index > 0; index--) {
-      consider(data[index][0])
-      if (best !== null) break
-    }
-  }
-  const future = data.future,
-    cutoff = data[data.length - 1][0]
-  if (
-    !future?.start ||
-    !future.end ||
-    future.daylightOffset === undefined ||
-    future.daylightOffset === future.standardOffset ||
-    (!next && Number(instant / second) < cutoff)
-  )
-    return best
-  if (next && best !== null && best <= BigInt(cutoff) * second) return best
-  const base = YearFromTime(Number(floorDivide(instant, 1_000_000n)))
-  const edgeYear = Number.isFinite(cutoff) ? YearFromTime(cutoff * 1000) : base
-  const year = next ? Math.max(base, edgeYear) : base
-  // Gregorian POSIX rules repeat every 400 years. Include adjacent years for extended times.
-  let recurringFound = false
-  for (let distance = -1; distance <= 401; distance++) {
-    const y = year + (next ? distance : -distance)
-    const begin =
-      TimeZoneRuleTransition(y, future.start) - future.standardOffset
-    const end = TimeZoneRuleTransition(y, future.end) - future.daylightOffset
-    const previous: bigint | null = best
-    if (begin > cutoff) consider(begin)
-    if (end > cutoff) consider(end)
-    recurringFound ||= previous !== best
-    if (distance >= 1 && recurringFound) break
-    if (!next && Number.isFinite(cutoff) && y < edgeYear - 1) break
-  }
-  return best
+  return TimeZoneTransition(instant, direction, data) ?? null
 }
 
+// Temporal comparison §11.1.9 step 3 and §11.1.13 step 3.a.
+// Build the offset, candidate and disambiguation operations for prepared data.
 /** Caller supplies canonical zone data; offsets are seconds in the shared pack. */
 export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
-  const offsets = new Set<number>()
-  for (let i = 0; i < data.length; i++) offsets.add(data[i][2])
+  // Proposal comparison §11.1.13 steps3.a,5: private candidate collection.
+  // https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds
+  const offsets: number[] = []
+  const addOffset = (value: number): void => {
+    if (!arrayIncludes(offsets, value))
+      setDataProperty(offsets, `${offsets.length}`, value)
+  }
+  for (let i = 0; i < data.length; i++) addOffset(data[i][2])
   if (data.future) {
-    offsets.add(data.future.standardOffset)
+    addOffset(data.future.standardOffset)
     if (data.future.daylightOffset !== undefined)
-      offsets.add(data.future.daylightOffset)
+      addOffset(data.future.daylightOffset)
   }
-  const offsetNanoseconds = (instant: bigint): bigint => {
-    checkInstant(instant)
-    return (
-      BigInt(
-        TimeZoneOffset(Number(floorDivide(instant, 1_000_000n)), data)[0]
-      ) * second
-    )
-  }
+  // Temporal comparison §11.1.9 step 3. The packed table also covers the
+  // candidate window just outside either Instant limit.
+  const offsetAt = (instant: bigint): bigint =>
+    bigIntFrom(
+      TimeZoneOffset(numberFrom(floorDivide(instant, 1_000_000n)), data)[0]
+    ) * second
+  const offsetNanoseconds = (instant: bigint): bigint =>
+    offsetAt(checkInstant(instant))
+  // Temporal comparison §11.1.13 steps 3.a, 4.a and 5, §14.6.3 prose.
+  // ECMA-262 preview §22.2.1: collect all matching named-zone epochs in ascending order.
+  // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneepochnanoseconds
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
-    for (const offset of offsets) {
-      const instant = local - BigInt(offset) * second
-      if (instant < -limit || instant > limit) continue
-      if (instant + offsetNanoseconds(instant) === local)
-        candidates.push(instant)
+    for (let index = 0; index < offsets.length; index++) {
+      const offset = bigIntFrom(offsets[index]) * second
+      const instant = local - offset
+      if (offsetAt(instant) === offset)
+        setDataProperty(
+          candidates,
+          `${candidates.length}`,
+          checkInstant(instant)
+        )
     }
-    return candidates.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+    return apply(arraySort, candidates, [
+      // Temporal comparison §11.1.13 step 5, §14.6.3 prose.
+      // Compare the two exact candidate epochs for ascending order.
+      (a: bigint, b: bigint) => (a < b ? -1 : a > b ? 1 : 0),
+    ])
   }
+  // Temporal comparison §11.1.13 step 3.a.
+  // Project prepared ISO fields before named-zone candidate lookup.
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
+  // ECMA-262 preview §22.2.14: choose a candidate or shift through the gap.
+  // https://tc39.es/ecma262/pr/3966/#sec-disambiguatepossibleepochnanoseconds
   const resolve = (
-    fields: ISODateTime,
+    fields: ISODateTime | bigint,
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
-    if (!['compatible', 'earlier', 'later', 'reject'].includes(disambiguation))
-      throw new RangeError('Invalid disambiguation')
-    const candidates = possibleInstants(fields)
+    if (
+      !arrayIncludes(
+        ['compatible', 'earlier', 'later', 'reject'],
+        disambiguation
+      )
+    )
+      throw new RangeErrorConstructor('Invalid disambiguation')
+    const local = localEpoch(fields)
+    const candidates = possibleInstantsFromEpochNanoseconds(local)
     if (candidates.length === 1) return candidates[0]
     if (disambiguation === 'reject')
-      throw new RangeError('Ambiguous or nonexistent local time')
+      throw new RangeErrorConstructor('Ambiguous or nonexistent local time')
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
-    const local = isoToEpochNanoseconds(fields)
-    let minimum = Infinity,
-      maximum = -Infinity
-    for (const offset of offsets) {
-      minimum = Math.min(minimum, offset)
-      maximum = Math.max(maximum, offset)
-    }
-    const lower = local - BigInt(maximum) * second,
-      upper = local - BigInt(minimum) * second
+    const earlier = disambiguation === 'earlier'
+    const lower = local - 3n * day,
+      upper = local + 3n * day
+    let before: bigint | undefined
+    let after: bigint | undefined
+    let fallback: bigint | undefined
     let event = zoneTransition(
       data,
-      lower < -limit ? -limit : lower - 1n,
+      (lower < -limit ? -limit : lower) - 1n,
       'next'
     )
+    // Temporal comparison §11.1.12 steps 6–7.
+    // Project nearby segment boundaries to find both nearest local times.
     while (event !== null && event <= upper) {
-      if (event > -limit) {
-        const before = offsetNanoseconds(event - 1n),
-          after = offsetNanoseconds(event)
-        if (after > before && local >= event + before && local < event + after)
-          return checkInstant(
-            local - (disambiguation === 'earlier' ? after : before)
-          )
-      }
+      // Projection can read the raw predecessor of the minimum Instant.
+      const oldOffset = offsetAt(event - 1n),
+        newOffset = offsetNanoseconds(event)
+      const end = event - 1n + oldOffset,
+        start = event + newOffset
+      if (end < local && (before === undefined || end > before)) before = end
+      if (start > local && (after === undefined || start < after)) after = start
+      if (fallback === undefined && local > end && local < start)
+        fallback = local - (earlier ? newOffset : oldOffset)
       event = zoneTransition(data, event, 'next')
     }
-    throw new RangeError('No matching instant')
+    // Temporal comparison §11.1.12 steps 8–15.
+    // Derive the shift from the actual singleton boundary candidates.
+    if (before !== undefined && after !== undefined) {
+      const left = possibleInstantsFromEpochNanoseconds(before)
+      const right = possibleInstantsFromEpochNanoseconds(after)
+      if (left.length === 1 && right.length === 1) {
+        const shift = after - right[0] - (before - left[0])
+        if (shift && shift >= -day && shift <= day) {
+          // Temporal comparison §11.1.12 steps 16.e–16.g and 22–25.
+          // Select the requested end of the shifted candidate list.
+          const candidates = possibleInstantsFromEpochNanoseconds(
+            local + (earlier ? -shift : shift)
+          )
+          if (candidates.length)
+            return candidates[earlier ? 0 : candidates.length - 1]
+        }
+      }
+    }
+    // Preserve the existing gap behavior when the boundary assumptions fail.
+    if (fallback !== undefined) return checkInstant(fallback)
+    throw new RangeErrorConstructor('No matching instant')
   }
   return {
     offsetNanoseconds,
     possibleInstants,
     possibleInstantsFromEpochNanoseconds,
+    nearestLocalAfter: local => NearestTimeZoneLocalAfter(local, data),
     resolve,
+    // Temporal comparison §6.3.46 steps 9.a, 10.b, 11.
+    // Dispatch the direction to the bounded named-zone transition search.
     transition: (instant, direction) => {
       checkInstant(instant)
       return zoneTransition(data, instant, direction)

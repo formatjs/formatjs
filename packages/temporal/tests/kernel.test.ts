@@ -133,3 +133,53 @@ it('preserves exact transition nanoseconds and distinguishes date arithmetic fro
     RangeError
   )
 })
+
+it('matches builtin UTC dates in both directions over two complete Gregorian eras', () => {
+  let count = 0
+  for (let epochDay = -865565; epochDay <= -573372; epochDay++) {
+    const fields = epochNanosecondsToISO(BigInt(epochDay) * 86_400_000_000_000n)
+    const reference = new Date(epochDay * 86_400_000)
+    if (
+      fields.year !== reference.getUTCFullYear() ||
+      fields.month !== reference.getUTCMonth() + 1 ||
+      fields.day !== reference.getUTCDate()
+    )
+      throw new Error('Gregorian era mismatch at epoch day ' + epochDay)
+    const forward = isoToEpochNanoseconds({
+      year: reference.getUTCFullYear(),
+      month: reference.getUTCMonth() + 1,
+      day: reference.getUTCDate(),
+      hour: 13,
+      minute: 14,
+      second: 15,
+      millisecond: 987,
+      microsecond: 654,
+      nanosecond: 321,
+    })
+    if (
+      forward !==
+      BigInt(epochDay) * 86_400_000_000_000n + 47_655_987_654_321n
+    )
+      throw new Error('Gregorian forward mismatch at epoch day ' + epochDay)
+    count++
+  }
+  expect(count).toBe(292194)
+})
+
+it('defaults an omitted private hour without reading Object.prototype', () => {
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'hour')
+  let result: bigint
+  try {
+    Object.defineProperty(Object.prototype, 'hour', {
+      configurable: true,
+      get() {
+        throw new Error('Inherited private hour reached')
+      },
+    })
+    result = isoToEpochNanoseconds({year: 1970, month: 1, day: 1})
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'hour', original)
+    else Reflect.deleteProperty(Object.prototype, 'hour')
+  }
+  expect(result!).toBe(0n)
+})

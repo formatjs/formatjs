@@ -1,14 +1,13 @@
-import names from '@formatjs_generated/tz/temporal-names.js'
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {chinese} from '@formatjs_generated/icu.calendar/chinese.js'
 import {dangi} from '@formatjs_generated/icu.calendar/dangi.js'
 import {ummAlQura} from '@formatjs_generated/icu.calendar/umm-al-qura.js'
-import primary from '@formatjs_generated/tz/primary.js'
-import links from '@formatjs_generated/tz/links.js'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {
   compactTimeZoneNames,
   unpackCompactTimeZone,
 } from '#packages/temporal/compact-timezone.js'
+import {timeZoneMetadata} from '#packages/temporal/native.js'
 import {UnpackTimeZoneData} from '#packages/ecma402-abstract/DateTimeFormat/UnpackTimeZoneData.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 
@@ -23,10 +22,12 @@ const hostTimeZones = import.meta.formatjsTemporalHostTimeZones === true
 const nativeDataOnly = import.meta.formatjsTemporalNativeData === true
 const compactTimeZones = import.meta.formatjsTemporalCompactTimeZones !== false
 function unavailable(): never {
-  throw new RangeError(
+  throw new RangeErrorConstructor(
     'Temporal native build requires Rust calendar and timezone data'
   )
 }
+// Temporal comparison §12.3.26 step 2, §12.3.25 prose.
+// Select the generated Chinese or Dangi chronology table.
 export function fallbackLunisolar(
   calendar: 'chinese' | 'dangi'
 ): typeof chinese {
@@ -36,33 +37,37 @@ export function fallbackLunisolar(
       ? chinese
       : dangi
 }
+// Temporal comparison §12.3.22 step 2, §12.3.26 step 2.
+// Select generated Umm al-Qura data for calendar conversions.
 export function fallbackUmmAlQura(): typeof ummAlQura {
   return nativeDataOnly ? unavailable() : ummAlQura
 }
-export function fallbackTimeZoneIdentifiers(): {
-  primary: typeof primary
-  links: typeof links
-  names: readonly string[]
-} {
-  return nativeDataOnly
-    ? unavailable()
-    : {
-        primary,
-        links,
-        names: hostTimeZones
-          ? names
-          : compactTimeZones
-            ? compactTimeZoneNames()
-            : packed.zones.map(entry => entry.slice(0, entry.indexOf('|'))),
-      }
+// Temporal comparison §11.1.1 step 1. Supply the generated zone identifiers and aliases.
+export function fallbackTimeZoneIdentifiers(): ReturnType<
+  typeof timeZoneMetadata
+> {
+  if (nativeDataOnly) return unavailable()
+  const metadata = timeZoneMetadata()
+  return !hostTimeZones && compactTimeZones
+    ? {...metadata, names: compactTimeZoneNames()}
+    : metadata
 }
-export function fallbackTimeZonePrimary(): typeof primary {
-  return nativeDataOnly ? unavailable() : primary
+// Temporal comparison §11.1.15 step 2.e.
+// Supply primary named-zone metadata to time zone equality.
+export function fallbackTimeZonePrimary(): ReturnType<
+  typeof timeZoneMetadata
+>['primary'] {
+  return fallbackTimeZoneIdentifiers().primary
 }
+// Temporal comparison §11.1.9 step 3, §11.1.13 step 3.a.
+// Load named-zone transition and offset data for the fallback kernel.
 export function fallbackTimeZoneData(name: string): UnpackedTimeZoneData {
   if (nativeDataOnly) return unavailable()
   if (compactTimeZones) return unpackCompactTimeZone(name)
-  const entry = packed.zones.find(value => value.startsWith(name + '|'))
-  if (!entry) throw new RangeError('Unknown canonical zone')
+  const entry = packed.zones.find(
+    // Temporal comparison §11.1.9 step 3: select the canonical zone's packed data.
+    value => value.startsWith(name + '|')
+  )
+  if (!entry) throw new RangeErrorConstructor('Unknown canonical zone')
   return UnpackTimeZoneData({...packed, zones: [entry]})[name]
 }

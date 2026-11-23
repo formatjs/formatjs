@@ -5,6 +5,8 @@ import {
 } from '#packages/ecma402-abstract/DurationFormat/ToTemporalDurationRecord.js'
 import type {DurationInput} from '#packages/ecma402-abstract/types/duration.js'
 
+// Temporal amendment comparison §15.10.1 step 3, §15.10.2 step 3.
+// Install the Temporal duration adapter for legacy host formatters.
 export function installLegacyDurationFormat(
   namespace: TemporalDurationNamespace
 ): void {
@@ -33,6 +35,8 @@ export function installLegacyDurationFormat(
     const original = prototype[method],
       descriptor = Object.getOwnPropertyDescriptor(prototype, method)!
     const wrapper = {
+      // Temporal amendment comparison §15.10.1 and §15.10.2 steps 2–3.
+      // Check the host receiver before converting duration input.
       [method](this: unknown, duration: DurationInput | string): unknown {
         apply(resolved, this, [])
         return apply(original, this, [ToTemporalDurationRecord(duration)])

@@ -1,4 +1,24 @@
+import {zeroPadDecimal} from '#packages/temporal/format-digits.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  arrayIncludes,
+  arrayIndexOf,
+  bigIntFrom,
+  floor,
+  mathAbs,
+  mathMax,
+  mathMin,
+  mathSign,
+  mathTrunc,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  getSharedCalendarSlot,
   nativeTemporal,
   type NativeTemporal,
   type NativeDateSnapshot,
@@ -54,7 +74,15 @@ import {
   type TimeUnit,
   type RoundingMode,
 } from '#packages/temporal/rounding.js'
-import {parseCalendarString} from '#packages/temporal/instant-string.js'
+import {
+  parseCalendarString,
+  parseISODateParts,
+  type ParsedDateFields,
+} from '#packages/temporal/instant-string.js'
+
+const stringToLowerCase = Function.prototype.call.bind(
+  String.prototype.toLowerCase
+) as (value: string) => string
 
 export const nsPerDay = 86_400_000_000_000n
 export const clockNames = [
@@ -75,23 +103,37 @@ export const clockFactors: readonly bigint[] = [
   1n,
 ]
 export function object(value: unknown): value is Record<string, unknown> {
-  return (
-    value !== null && (typeof value === 'object' || typeof value === 'function')
-  )
+  // Temporal comparison §3.5.4 step 2: test the Object branch, including callables.
+  return IsObject(value)
 }
 export function integer(value: unknown): number {
-  const result = Math.trunc(+(value as number))
-  if (!Number.isInteger(result)) throw new RangeError('Expected finite number')
+  // Temporal comparison §13.40 steps1–3.
+  // https://tc39.es/proposal-temporal/#sec-tointegerwithtruncation
+  // §13.40 step1: unary + performs ToNumber, preserving user coercion and throws.
+  // §13.40 step3: captured truncation is unobservable; finite inputs become integers.
+  const result = mathTrunc(+(value as number))
+  // §13.40 step2: truncation leaves NaN/infinities nonintegral; reject with intrinsic RangeError.
+  if (!numberIsInteger(result))
+    throw new RangeErrorConstructor('Expected finite number')
+  // §13.40 step3: mathematical zero has no negative sign.
   return result || 0
 }
+// Temporal comparison §13.6 steps1–3: read overflow once, then default and validate
+// https://tc39.es/proposal-temporal/#sec-temporal-gettemporaloverflowoption
 export function overflowOption(options: unknown): Overflow {
   const raw = optionsObject(options).overflow
   const value = raw === undefined ? 'constrain' : ToString(raw)
   if (value !== 'constrain' && value !== 'reject')
-    throw new RangeError('Invalid overflow')
+    throw new RangeErrorConstructor('Invalid overflow')
   return value
 }
-function calendarSlot(value: object): {calendar: string} | undefined {
+// ECMA-262 preview §§22.3.2.3–4 step 1 reads the five Temporal calendar slots.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporalcalendaridentifier
+// https://tc39.es/ecma262/pr/3966/#sec-gettemporalcalendarslotvaluewithisodefault
+// TC39 confirmed the Temporal-only check: https://github.com/tc39/ecma262/pull/3966#discussion_r4284855527
+function calendarSlot(value: object): {readonly calendar: string} | undefined {
+  if (import.meta.formatjsTemporalNativeData !== true && !nativeTemporal())
+    return getSharedCalendarSlot(value)
   return (
     getZonedSlot(value) ??
     getDateSlot(value) ??
@@ -101,25 +143,67 @@ function calendarSlot(value: object): {calendar: string} | undefined {
   )
 }
 export function calendarFromObject(item: Record<string, unknown>): string {
+  // Temporal comparison §12.3.11 steps1–4: slots precede the single calendar Get.
+  // https://tc39.es/proposal-temporal/#sec-temporal-gettemporalcalendarslotvaluewithisodefault
+  // Step3: undefined defaults to ISO in calendarId.
   return calendarSlot(item)?.calendar ?? calendarId(item.calendar)
 }
+// Proposal comparison §13.36 steps 1 and 3–5: Choose the bare calendar identifier fast path.
+function bareCalendarIdentifier(value: string): boolean {
+  if (value.length === 0) return false
+  if (
+    (value[0] === 'T' || value[0] === 't') &&
+    value.length > 1 &&
+    value[1] >= '0' &&
+    value[1] <= '9'
+  )
+    return false
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index]
+    if (
+      (character >= 'A' && character <= 'Z') ||
+      (character >= 'a' && character <= 'z') ||
+      (index > 0 &&
+        ((character >= '0' && character <= '9') || character === '-'))
+    )
+      continue
+    return false
+  }
+  return true
+}
 export function calendarId(value: unknown = 'iso8601'): string {
+  // Temporal comparison §12.3.10 step1: use the five calendar-bearing slots.
+  // https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier
   const slot = calendarSlot(value as object)
   if (slot) return slot.calendar
+  // Step2: withCalendar rejects undefined before this shared defaulting path.
   if (typeof value !== 'string')
-    throw new TypeError('Calendar must be a string')
-  const id = (
-    /^[A-Za-z][A-Za-z0-9-]*$/.test(value) && !/^[Tt]\d/.test(value)
-      ? value
-      : parseCalendarString(value)
-  ).toLowerCase()
+    throw new TypeErrorConstructor('Calendar must be a string')
+  // Steps3–4: parse the identifier, then canonicalize it.
+  const id = stringToLowerCase(
+    bareCalendarIdentifier(value) ? value : parseCalendarString(value)
+  )
   return supportedCalendar(id)
 }
+// Temporal comparison §12.1.1 steps1–3: canonicalize the supplied primitive calendar name
+// https://tc39.es/proposal-temporal/#sec-temporal-canonicalizecalendar
 export function constructorCalendar(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
-    throw new TypeError('Calendar must be a string')
-  return supportedCalendar(value.toLowerCase())
+    throw new TypeErrorConstructor('Calendar must be a string')
+  return supportedCalendar(stringToLowerCase(value))
 }
+// Proposal comparison §3.5.4 steps 4 and 7–9 and §5.5.6 steps 4 and 8–10: Parse and canonicalize before reading overflow.
+export function prepareDateTimeString(
+  value: string,
+  options: unknown
+): ParsedDateFields {
+  // ToTemporalDate 683–688; ToTemporalDateTime 824–830: syntax, calendar, options, then bounds.
+  const fields = parseISODateParts(value)
+  fields.calendar = constructorCalendar(fields.calendar)
+  overflowOption(options)
+  return fields
+}
+// Proposal comparison §12.1.1 steps 2–3: Check supported calendar IDs and resolve known aliases.
 function supportedCalendar(value: string): CalendarId {
   const id =
     value === 'islamicc'
@@ -127,20 +211,22 @@ function supportedCalendar(value: string): CalendarId {
       : value === 'ethiopic-amete-alem'
         ? 'ethioaa'
         : value
-  if (!calendarIds.includes(id as CalendarId))
-    throw new RangeError('Unsupported calendar')
+  if (!arrayIncludes(calendarIds, id as CalendarId))
+    throw new RangeErrorConstructor('Unsupported calendar')
   return id as CalendarId
 }
 function baseCalendar(calendar: string): CalendarId {
   return calendar as CalendarId
 }
+// Temporal comparison §12.3.31 steps1.a–1.g/2.a: resolve required date fields and non-ISO eras
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields
 export function resolveCalendarYear(
   calendar: string,
   fields: Record<string, unknown>,
   shape: 'date' | 'year-month' | 'month-day' = 'date'
 ): number | undefined {
   let year = fields.year as number | undefined
-  const supportsEra = !['iso8601', 'chinese', 'dangi'].includes(calendar)
+  const supportsEra = !arrayIncludes(['iso8601', 'chinese', 'dangi'], calendar)
   const needsYear =
     shape !== 'month-day' ||
     (calendar !== 'iso8601' &&
@@ -150,16 +236,16 @@ export function resolveCalendarYear(
     year === undefined &&
     !(supportsEra && fields.era !== undefined && fields.eraYear !== undefined)
   )
-    throw new TypeError('Year required')
+    throw new TypeErrorConstructor('Year required')
   if (
     supportsEra &&
     (fields.era === undefined) !== (fields.eraYear === undefined)
   )
-    throw new TypeError('era and eraYear required together')
+    throw new TypeErrorConstructor('era and eraYear required together')
   if (shape !== 'year-month' && fields.day === undefined)
-    throw new TypeError('Day required')
+    throw new TypeErrorConstructor('Day required')
   if (fields.month === undefined && fields.monthCode === undefined)
-    throw new TypeError('Month or monthCode required')
+    throw new TypeErrorConstructor('Month or monthCode required')
   if (supportsEra && fields.era !== undefined) {
     const resolved = calendarYearFromEra(
       baseCalendar(calendar),
@@ -167,26 +253,40 @@ export function resolveCalendarYear(
       fields.eraYear as number
     )
     if (year !== undefined && year !== resolved)
-      throw new RangeError('Year and era disagree')
+      throw new RangeErrorConstructor('Year and era disagree')
     year = resolved
   }
   return year
 }
 export function epochDayOf(value: bigint): number {
+  // ECMA-262 §21.4.1.3 step 1: Floor the epoch-day quotient, including negative
+  // nanoseconds.
   let days = value / nsPerDay
   if (value < 0n && value % nsPerDay !== 0n) days--
-  return Number(days)
+  return numberFrom(days)
 }
+// Proposal comparison §7.5.33 steps 8.b and 10: Extract the anchor clock for relative endpoints.
 export function timeOf(value: bigint): bigint {
   return ((value % nsPerDay) + nsPerDay) % nsPerDay
 }
+// ECMA-262 preview §22.3.9: encode a valid ISO date as its epoch day.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-date-records
 export function isoDay(year: number, month: number, day: number): number {
+  // Temporal comparison §4.5.4 step1: NoonTimeRecord.
+  // https://tc39.es/proposal-temporal/#sec-temporal-noontimerecord
+  // §4.5.4 step1: hour 12 plus own-only zero defaults form noon, with zero day carry.
+  // Temporal comparison §3.5.12 steps1–2.
+  // https://tc39.es/proposal-temporal/#sec-temporal-isodatewithinlimits
+  // §3.5.12 step1: combine the ISO date with that noon clock before checking local limits.
   return epochDayOf(isoToEpochNanoseconds({year, month, day, hour: 12}))
 }
 const dateSnapshots = new WeakMap<
   DateSlot,
   {owner: NativeTemporal; value: NativeDateSnapshot}
 >()
+const getDateSnapshot = dateSnapshots.get.bind(dateSnapshots)
+const setDateSnapshot = dateSnapshots.set.bind(dateSnapshots)
+// Proposal comparison §12.3.26 steps 1.b and 2: Reuse or request native calendar projection for a date slot.
 export function nativeDateSnapshot(
   slot: DateSlot,
   extended = false,
@@ -195,33 +295,39 @@ export function nativeDateSnapshot(
   const owner = nativeTemporal()
   if (!owner) return undefined
   if (
-    Math.abs(slot.epochDay) > 110000000 ||
+    mathAbs(slot.epochDay) > 110000000 ||
     (!extended && (slot.epochDay < -100000001 || slot.epochDay > 100000000))
   )
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   if (
     import.meta.formatjsTemporalNativeData === true &&
     slot.properties?.owner === owner
   )
     return slot.properties
-  const existing = dateSnapshots.get(slot)
+  const existing = getDateSnapshot(slot)
   if (existing?.owner === owner) return existing.value
+  const properties = HasOwnProperty(slot, 'properties')
+    ? slot.properties
+    : undefined
   const value =
-    slot.properties?.owner === owner
-      ? slot.properties
+    properties?.owner === owner
+      ? properties
       : owner.calendarProperties(
           baseCalendar(slot.calendar),
           slot.epochDay,
           extended,
           nanoseconds
         )
-  dateSnapshots.set(slot, {owner, value})
+  setDateSnapshot(slot, {owner, value})
   return value
 }
 export function dateFields(slot: DateSlot, extended = false): CalendarDate {
+  // Proposal comparison §12.3.26 steps 1–2: Project the stored ISO day through
+  // the selected calendar provider.
   const value = nativeDateSnapshot(slot, extended)
   if (import.meta.formatjsTemporalNativeData === true || value) {
-    if (!value!.date) throw new RangeError('Calendar date out of range')
+    if (!value!.date)
+      throw new RangeErrorConstructor('Calendar date out of range')
     return value!.date
   }
   return (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
@@ -233,6 +339,8 @@ export function dateFieldsView(
   slot: DateSlot,
   extended = false
 ): Readonly<CalendarDate> {
+  // Temporal comparison §12.3.26 steps 1–2: reuse private ISO fields or project
+  // through the calendar provider. Unread record fields may be elided.
   if (
     import.meta.formatjsTemporalNativeData !== true &&
     !nativeTemporal() &&
@@ -244,13 +352,15 @@ export function dateFieldsView(
   }
   return dateFields(slot, extended)
 }
+// Temporal comparison §12.3.12 steps1–4: resolve, convert and guard the full date
+// https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields
 export function dayFromFields(
   calendar: string,
   fields: Record<string, unknown>,
   overflow: Overflow
 ): number {
   const year = resolveCalendarYear(calendar, fields)!
-  if (fields.day === undefined) throw new TypeError('Day required')
+  if (fields.day === undefined) throw new TypeErrorConstructor('Day required')
   if (calendar === 'iso8601')
     return isoDayFromPreparedFields(
       year,
@@ -268,6 +378,10 @@ export function dayFromFields(
     overflow
   )
 }
+// Temporal comparison §4.5.8 steps1–3: regulate prepared time fields before exact composition
+// https://tc39.es/proposal-temporal/#sec-temporal-regulatetime
+// ECMA-262 preview §22.3.15: pack the six clock fields into nanoseconds.
+// https://tc39.es/ecma262/pr/3966/#sec-time-records
 export function clockNanoseconds(
   fields: Record<string, unknown>,
   overflow: Overflow
@@ -276,10 +390,10 @@ export function clockNanoseconds(
   for (let index = 0; index < 6; index++) {
     let field = (fields[clockNames[index]] ?? 0) as number
     if (overflow === 'constrain')
-      field = Math.max(0, Math.min(clockBounds[index], field))
+      field = mathMax(0, mathMin(clockBounds[index], field))
     if (field < 0 || field > clockBounds[index])
-      throw new RangeError('Time out of range')
-    value += BigInt(field) * clockFactors[index]
+      throw new RangeErrorConstructor('Time out of range')
+    value += bigIntFrom(field) * clockFactors[index]
   }
   return value
 }
@@ -300,45 +414,73 @@ const orderedDateFields = [
   'timeZone',
   'year',
 ] as const
+// ECMA-262 preview §22.3.1.3 prepares calendar fields in lexicographic order.
+// https://tc39.es/ecma262/pr/3966/#sec-preparecalendarfields
 export function dateFieldNames(
   calendar: string,
   withTime: boolean,
   shape: DateFieldShape = 'date',
   extra: string[] = []
-): string[] {
-  const result: string[] = []
+): ArrayLike<string> {
+  // A null prototype lets indexed writes bypass inherited setters.
+  const result = createObject(null) as {length: number; [index: number]: string}
+  result.length = 0
   for (let index = 0; index < orderedDateFields.length; index++) {
     const key = orderedDateFields[index]
     let include: boolean
     if (key === 'day') include = shape === 'date'
+    // ECMA-262 preview §22.3.3.11 steps 1–2: include era fields for calendars that use them.
+    // https://tc39.es/ecma262/pr/3966/#sec-calendarextrafields
     else if (key === 'era' || key === 'eraYear')
-      include = !['iso8601', 'chinese', 'dangi'].includes(calendar)
+      include = !arrayIncludes(['iso8601', 'chinese', 'dangi'], calendar)
     else if (key === 'month' || key === 'monthCode') include = shape !== 'year'
     else if (key === 'year') include = true
     else if (key === 'offset' || key === 'timeZone')
-      include = extra.includes(key)
+      include = arrayIncludes(extra, key)
     else include = withTime
-    if (include) result[result.length] = key
+    if (include) result[result.length++] = key
   }
   return result
 }
+
+// Proposal comparison §12.3.3 steps 9.c.iii.1, 9.c.iv.1, 9.c.v.1 and 9.c.vii.1: Convert prepared date field values.
 export function dateFieldValue(key: string, value: unknown): string | number {
   if (key === 'era') return ToString(value)
   if (key === 'monthCode') {
+    // ECMA-262 preview §22.3.11: validate the month-code grammar.
+    // https://tc39.es/ecma262/pr/3966/#sec-month-codes
+    // Temporal comparison §12.2.1 steps1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal-parsemonthcode
+    // §12.2.1 step1: use the string hint without coercing a primitive to String.
     const primitive = object(value) ? ToPrimitive(value, 'string') : value
+    // §12.2.1 step2: reject non-string primitives.
     if (typeof primitive !== 'string')
-      throw new TypeError('monthCode must be a string')
-    if (!/^M\d{2}L?$/.test(primitive))
-      throw new RangeError('Invalid monthCode syntax')
+      throw new TypeErrorConstructor('monthCode must be a string')
+    // §12.2.1 step3: consume the whole MonthCode grammar; zero requires the leap suffix.
+    const leap = primitive.length === 4 && primitive[3] === 'L'
+    if (
+      (primitive.length !== 3 && !leap) ||
+      primitive[0] !== 'M' ||
+      primitive[1] < '0' ||
+      primitive[1] > '9' ||
+      primitive[2] < '0' ||
+      primitive[2] > '9' ||
+      (primitive[1] === '0' && primitive[2] === '0' && !leap)
+    )
+      throw new RangeErrorConstructor('Invalid monthCode syntax')
     return primitive
   }
+  // Temporal comparison §13.39 steps1–3: positive month/day conversion.
+  // https://tc39.es/proposal-temporal/#sec-topositiveintegerwithtruncation
+  // §13.39 step1: propagate ToIntegerWithTruncation's coercion and exceptions.
   const result = integer(value)
+  // §13.39 step2: reject nonpositive values after truncation, including signed zero.
   if ((key === 'month' || key === 'day') && result <= 0)
-    throw new RangeError('Month and day must be positive')
+    throw new RangeErrorConstructor('Month and day must be positive')
+  // §13.39 step3: return the positive mathematical integer for month/day.
   return result
 }
 const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
-const createObject = Object.create
 const fieldRecordPrototype = Object.freeze(createObject(null))
 const isoYearMonthFieldNames = ['month', 'monthCode', 'year']
 const isoDateTimeFieldNames = [
@@ -358,6 +500,8 @@ function readISODateFields(
   partial: boolean,
   withDay: boolean
 ): Record<string, unknown> {
+  // Proposal comparison §12.3.3 steps 6–11: Prepare ISO date fields in day,
+  // month, monthCode, year order.
   const result = createObject(fieldRecordPrototype) as Record<string, unknown>
   let any = false
   if (withDay) {
@@ -382,10 +526,15 @@ function readISODateFields(
     result.year = dateFieldValue('year', year)
     any = true
   }
-  if (partial && !any) throw new TypeError('At least one field required')
+  if (partial && !any)
+    throw new TypeErrorConstructor('At least one field required')
   return result
 }
 
+// Temporal comparison §12.3.3 steps6–9.c/10–11: ordered Gets and immediate conversion
+// https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields
+// ECMA-262 preview §22.3.1.2: collect present fields into a private sparse record.
+// https://tc39.es/ecma262/pr/3966/#sec-calendar-fields-records
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
@@ -413,15 +562,20 @@ export function readDateFields(
       any = true
     }
   }
-  if (partial && !any) throw new TypeError('At least one field required')
+  if (partial && !any)
+    throw new TypeErrorConstructor('At least one field required')
   return result
 }
+// Temporal comparison §12.3.5 steps1–6: merge prepared fields with calendar-specific invalidation
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarmergefields
 export function mergeDateFields(
   calendar: string,
   fields: Readonly<CalendarDate> | Record<string, unknown>,
   updates: Record<string, unknown>
 ): Record<string, unknown> {
   if (calendar === 'iso8601') {
+    // ECMA-262 preview §22.3.3.12 step 1.e: a new month or month code discards both old fields.
+    // https://tc39.es/ecma262/pr/3966/#sec-calendarfieldkeystoignore
     const monthCode = fields.monthCode
     return {
       ...fields,
@@ -451,6 +605,8 @@ export function mergeDateFields(
     base.era = undefined
     base.eraYear = undefined
   }
+  // ECMA-262 preview §22.3.3.13 note: Japanese era boundaries can fall mid-month.
+  // https://tc39.es/ecma262/pr/3966/#sec-nonisofieldkeystoignore
   if (
     calendar === 'japanese' &&
     (updates.day !== undefined ||
@@ -462,21 +618,17 @@ export function mergeDateFields(
   }
   return {...base, ...updates}
 }
+// ECMA-262 preview §22.3.17 steps 1–8: check slots before calendar and timeZone.
+// https://tc39.es/ecma262/pr/3966/#sec-ispartialtemporalobject
 export function partialObject(item: unknown): Record<string, unknown> {
-  if (
-    !object(item) ||
-    getZonedSlot(item) ||
-    getDateSlot(item) ||
-    getDateTimeSlot(item) ||
-    getTimeSlot(item) !== undefined ||
-    getYearMonthSlot(item) ||
-    getMonthDaySlot(item)
-  )
-    throw new TypeError('Expected partial Temporal object')
+  if (!object(item) || calendarSlot(item) || getTimeSlot(item) !== undefined)
+    throw new TypeErrorConstructor('Expected partial Temporal object')
   if (item.calendar !== undefined || item.timeZone !== undefined)
-    throw new TypeError('Unexpected calendar or timeZone')
+    throw new TypeErrorConstructor('Unexpected calendar or timeZone')
   return item
 }
+// Temporal comparison §12.3.7 steps1–4: calendar addition followed by the full-date bound
+// https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd
 export function addDate(
   slot: DateSlot,
   duration: DurationFields,
@@ -492,12 +644,14 @@ export function addDate(
     ).epochDay
   )
 }
+// Temporal comparison §13.10 steps1–5: convert calendarName and preserve its default
+// https://tc39.es/proposal-temporal/#sec-temporal-gettemporalshowcalendarnameoption
 export function calendarNameOption(
   value: unknown
 ): 'auto' | 'always' | 'never' | 'critical' {
   const option = value === undefined ? 'auto' : ToString(value)
-  if (!['auto', 'always', 'never', 'critical'].includes(option))
-    throw new RangeError('Invalid calendarName')
+  if (!arrayIncludes(['auto', 'always', 'never', 'critical'], option))
+    throw new RangeErrorConstructor('Invalid calendarName')
   return option as 'auto' | 'always' | 'never' | 'critical'
 }
 const twoDigitDateParts = [
@@ -534,26 +688,39 @@ const twoDigitDateParts = [
   '30',
   '31',
 ]
+// Temporal comparison §5.5.9 steps1–3: format the prepared ISO date portion
+// https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring
 export function formatISODate(
   epochDay: number,
   kind: 'date' | 'year-month' | 'month-day' = 'date',
-  fields: Readonly<CalendarDate> = calendarFromEpochDayRaw('iso8601', epochDay)
+  fields: Readonly<CalendarDate> = cachedISODateFields(epochDay)
 ): string {
   const month = twoDigitDateParts[fields.month],
     day = twoDigitDateParts[fields.day]
   if (kind === 'month-day') return month + '-' + day
+  // Temporal comparison §3.5.10 steps1–4: decimal padding observes no public hooks.
   const year =
     fields.year >= 1000 && fields.year <= 9999
-      ? String(fields.year)
+      ? ToString(fields.year)
       : fields.year >= 0 && fields.year < 1000
-        ? String(fields.year).padStart(4, '0')
+        ? zeroPadDecimal(fields.year, 4)
         : (fields.year < 0 ? '-' : '+') +
-          String(Math.abs(fields.year)).padStart(6, '0')
+          zeroPadDecimal(mathAbs(fields.year), 6)
   return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
 }
-export function calendarAnnotation(calendar: string, value: unknown): string {
-  const option = calendarNameOption(value)
-  return option === 'never' || (option === 'auto' && calendar === 'iso8601')
+// ECMA-262 preview §22.5.1: omit or mark the canonical calendar annotation.
+// https://tc39.es/ecma262/pr/3966/#sec-formatcalendarannotation
+export function calendarAnnotation(
+  calendar: string,
+  option: ReturnType<typeof calendarNameOption>
+): string {
+  if (calendar === 'iso8601')
+    return option === 'critical'
+      ? '[!u-ca=iso8601]'
+      : option === 'always'
+        ? '[u-ca=iso8601]'
+        : ''
+  return option === 'never'
     ? ''
     : `[${option === 'critical' ? '!' : ''}u-ca=${calendar}]`
 }
@@ -575,6 +742,10 @@ export const datePropertyNames = [
   'monthsInYear',
   'inLeapYear',
 ] as const
+// Temporal comparison §12.3.26 steps1–2: project calendar fields lazily; providers own their data
+// https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate
+// ECMA-262 preview §22.3.1.1: project the requested field from private calendar metadata.
+// https://tc39.es/ecma262/pr/3966/#sec-calendar-date-records
 export function dateProperty(
   slot: DateSlot,
   key: string,
@@ -583,15 +754,16 @@ export function dateProperty(
   if (key === 'calendarId') return slot.calendar
   const value = nativeDateSnapshot(slot, extended)
   if (import.meta.formatjsTemporalNativeData === true || value) {
-    if (value!.errors.includes(key))
-      throw new RangeError('Calendar field out of range')
+    if (arrayIncludes(value!.errors, key))
+      throw new RangeErrorConstructor('Calendar field out of range')
     if (
       key === 'year' ||
       key === 'month' ||
       key === 'monthCode' ||
       key === 'day'
     ) {
-      if (!value!.date) throw new RangeError('Calendar date out of range')
+      if (!value!.date)
+        throw new RangeErrorConstructor('Calendar date out of range')
       return value!.date[key]
     }
     if (
@@ -622,8 +794,12 @@ export function dateProperty(
     case 'day':
       return fields.day
     case 'dayOfWeek':
+      // ECMA-262 preview §22.3.8.7 steps 1–4: offset epoch Thursday and wrap Sunday to 7.
+      // https://tc39.es/ecma262/pr/3966/#sec-isodayofweek
       return ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
     case 'dayOfYear':
+      // ECMA-262 preview §22.3.8.6 steps 1–2: the ISO branch counts from January 1.
+      // https://tc39.es/ecma262/pr/3966/#sec-isodayofyear
       return (
         slot.epochDay -
         (cal === 'iso8601'
@@ -654,7 +830,7 @@ export function dateProperty(
       )
     case 'inLeapYear':
       if (cal === 'iso8601') return DaysInYear(fields.year) === 366
-      return ['hebrew', 'chinese', 'dangi'].includes(cal)
+      return arrayIncludes(['hebrew', 'chinese', 'dangi'], cal)
         ? monthsInYear(cal, fields.year) === 13
         : calendarStartOfYear(cal, fields.year + 1) -
             calendarStartOfYear(cal, fields.year) ===
@@ -663,26 +839,40 @@ export function dateProperty(
             cal === 'islamic-umalqura'
               ? 355
               : 366)
+    // ECMA-262 preview §22.3.8.4: derive the week number and ISO week-year together.
+    // https://tc39.es/ecma262/pr/3966/#sec-year-week-record
     case 'weekOfYear':
     case 'yearOfWeek': {
       if (slot.calendar !== 'iso8601') return undefined
+      // ECMA-262 preview §22.3.8.5 steps 8–13: use the week's Thursday to select its year and number.
+      // https://tc39.es/ecma262/pr/3966/#sec-isoweekofyear
       const weekday = ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
       const thursday = slot.epochDay + 4 - weekday
+      // ECMA-262 preview §22.3.5.2 step 1: convert the epoch day at midnight to milliseconds.
+      // https://tc39.es/ecma262/pr/3966/#sec-epochdaystoepochmilliseconds
       const year = YearFromTime(thursday * 86400000)
       return key === 'yearOfWeek'
         ? year
-        : Math.floor((thursday - DayFromYear(year)) / 7) + 1
+        : floor((thursday - DayFromYear(year)) / 7) + 1
     }
   }
   return undefined
 }
 export function checkDateTime(value: bigint): bigint {
+  // Temporal comparison §5.5.4 steps1–5.
+  // https://tc39.es/proposal-temporal/#sec-temporal-isodatetimewithinlimits
+  // §5.5.4 step1: prepared day/clock values outside the early day bound fail this interval.
   const bound = 8640000086400000000000n
+  // §5.5.4 step3: equality at the lower local boundary is rejected.
+  // §5.5.4 step4: equality at the upper local boundary is rejected.
   if (value <= -bound || value >= bound)
-    throw new RangeError('Local date out of range')
+    throw new RangeErrorConstructor('Local date out of range')
+  // §5.5.4 step5: successful return represents the predicate's true result.
   return value
 }
 
+// Temporal comparison §12.3.9 steps1–4: adapt the calendar date-duration result
+// https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil
 export function dateUntil(
   start: DateSlot,
   end: number,
@@ -698,24 +888,32 @@ export function dateUntil(
     ),
   }
 }
-function unroundedDifference(
+export function unroundedDifference(
   start: bigint,
   end: bigint,
   calendar: string,
   largest: string
 ): DurationFields {
-  if (Object.hasOwn(timeUnitNanoseconds, largest))
+  // ECMA-262 preview §22.3.10.3 steps 3–11: subtract clocks and borrow across the date if needed.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceisodatetime
+  // Proposal comparison §5.5.12 steps 8–11: combine clock and whole-day
+  // nanoseconds before balancing a time-largest result.
+  if (HasOwnProperty(timeUnitNanoseconds, largest))
     return balanceDurationTime(
       end - start,
-      clockNames.indexOf(largest as TimeUnit) + 4
+      arrayIndexOf(clockNames, largest as TimeUnit) + 4
     )
+  // Proposal comparison §5.5.12 steps 3–9: Borrow one day when the clock
+  // remainder opposes the date direction.
   const sign = end < start ? -1 : end > start ? 1 : 0
   let lastDay = epochDayOf(end),
     time = timeOf(end) - timeOf(start)
-  if (BigInt(sign) * time < 0n) {
+  if (bigIntFrom(sign) * time < 0n) {
     lastDay -= sign
-    time += BigInt(sign) * nsPerDay
+    time += bigIntFrom(sign) * nsPerDay
   }
+  // Proposal comparison §5.5.12 step 9: pass both ISO dates, the calendar
+  // and the date-largest unit after clock borrow.
   const result = dateUntil(
     {epochDay: epochDayOf(start), calendar},
     lastDay,
@@ -746,6 +944,10 @@ export function roundedDateTimeDifference(
   mode: RoundingMode,
   since: boolean
 ): DurationFields {
+  // ECMA-262 preview §22.10.5.5: difference and round against the original date and clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceplaindatetimewithrounding
+  // Proposal comparison §5.5.13 step 7: Round against the supplied UTC scalars
+  // and plain date anchor.
   return roundRelativeDifference(
     start,
     end,
@@ -756,9 +958,11 @@ export function roundedDateTimeDifference(
     since,
     {
       zoned: false,
+      // Proposal comparison §5.5.13 step 3: Supply unrounded ISO date-time differences for relative rounding.
       unrounded: value => unroundedDifference(start, value, calendar, largest),
+      // Proposal comparison §7.5.33 steps 8.a–8.c.i and 9–11.a: Add constrained date fields and preserve the anchor clock.
       endpoint: fields =>
-        BigInt(
+        bigIntFrom(
           addDate({epochDay: epochDayOf(start), calendar}, fields, 'constrain')
         ) *
           nsPerDay +
@@ -766,11 +970,18 @@ export function roundedDateTimeDifference(
     }
   )
 }
-interface DifferenceAnchor {
-  zoned: boolean
+type DifferenceAnchor = {
   unrounded(end: bigint): DurationFields
   endpoint(fields: DurationFields): bigint
-}
+} & (
+  | {zoned: false}
+  | {
+      zoned: true
+      calendar: string
+      nominalDay(fields: DurationFields): number
+      compatibleOrigin(): bigint
+    }
+)
 const differenceUnits = [
   'year',
   'month',
@@ -793,49 +1004,213 @@ export function roundRelativeDifference(
   since: boolean,
   anchor: DifferenceAnchor
 ): DurationFields {
-  const largeIndex = differenceUnits.indexOf(
+  const largeIndex = arrayIndexOf(
+      differenceUnits,
       largest as (typeof differenceUnits)[number]
     ),
-    smallIndex = differenceUnits.indexOf(
+    smallIndex = arrayIndexOf(
+      differenceUnits,
       smallest as (typeof differenceUnits)[number]
     ),
     sinceSign = since ? -1n : 1n
+  // Proposal comparison §13.14 steps 2–4: bound the exclusive fixed-unit
+  // increment and check divisibility.
   if (smallIndex >= 4) {
     const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
     if (increment >= maximum || maximum % increment)
-      throw new RangeError('Invalid rounding increment')
+      throw new RangeErrorConstructor('Invalid rounding increment')
   }
-  if (start === end) return zeroDuration()
+  const exactZonedNanosecond =
+    anchor.zoned && smallIndex === 9 && increment === 1
+  // Proposal comparison §5.5.13 step 1: take the supported equal-endpoint
+  // shortcuts.
+  if (
+    start === end &&
+    (!anchor.zoned || largeIndex >= 4 || exactZonedNanosecond)
+  )
+    return zeroDuration()
+  if (largeIndex >= 4) {
+    // Round the exact epoch difference before converting Duration fields to Numbers.
+    const quantum =
+      bigIntFrom(increment) * timeUnitNanoseconds[smallest as TimeUnit]
+    return balanceDurationTime(
+      roundDuration((end - start) * sinceSign, quantum, mode),
+      largeIndex
+    )
+  }
   const sign = end < start ? -1 : 1,
-    physicalSign = BigInt(sign)
+    physicalSign = bigIntFrom(sign)
+  // ECMA-262 preview §22.15.5.11: carry the nudge duration, endpoint and expansion flag in locals.
+  // https://tc39.es/ecma262/pr/3966/#sec-duration-nudge-result-records
   let result = anchor.unrounded(end),
     rounded = end,
     expanded = false
+  if (exactZonedNanosecond) {
+    if (since) {
+      for (let index = 0; index < differenceUnits.length; index++) {
+        const key = `${differenceUnits[index]}s` as keyof DurationFields
+        result[key] = -result[key] || 0
+      }
+    }
+    return result
+  }
+  // Proposal comparison §6.5.7 step 5 enters rounding with the unrounded fields.
+  // Proposal comparison §7.5.38 steps 1–7: Select calendar, zoned-clock, or
+  // fixed-day rounding.
   const irregular = smallIndex < 3 || (anchor.zoned && smallIndex === 3)
   if (irregular) {
+    // Proposal comparison §7.5.33 steps 1–4: retain the larger fields and form
+    // adjacent unit counts.
     const prefix = zeroDuration()
     for (let index = largeIndex; index < smallIndex; index++) {
       const key = `${differenceUnits[index]}s` as keyof DurationFields
       prefix[key] = result[key]
     }
-    const key = `${smallest}s` as keyof DurationFields,
-      count =
-        smallest === 'week'
-          ? result.weeks + Math.trunc(result.days / 7)
-          : result[key]
-    let truncated = Math.trunc(count / increment) * increment
+    const key = `${smallest}s` as keyof DurationFields
+    // ECMA-262 preview §22.15.5.12 steps 3.c–3.e: the signed day delta
+    // contributes one whole week per seven days before increment rounding.
+    // https://tc39.es/ecma262/pr/3966/#sec-computenudgewindow
+    const count =
+      smallest === 'week'
+        ? result.weeks + mathTrunc(result.days / 7)
+        : result[key]
+    let truncated = mathTrunc(count / increment) * increment
+    const stride = sign * increment
     prefix[key] = truncated
+    // Proposal comparison §7.5.33 step 8.d.i: Resolve compatibly when zoned and the rounded unit is nonzero.
     let a = anchor.endpoint(prefix)
-    prefix[key] = truncated + sign * increment
+    prefix[key] = truncated + stride
+    // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
     let b = anchor.endpoint(prefix)
-    if ((end - a) * physicalSign < 0n || (b - end) * physicalSign < 0n) {
-      truncated += sign * increment
+    let rebasedUpper: DurationFields | undefined
+    // Proposal comparison §7.5.34 steps 5.a and 6.a require a bracket.
+    // Shift inward if the first endpoint overshoots.
+    if ((end - a) * physicalSign < 0n) {
+      const adjacent = b
+      b = a
+      if (
+        anchor.zoned &&
+        truncated === 0 &&
+        (smallest === 'month' ||
+          smallest === 'week' ||
+          (smallest === 'day' && increment > 1))
+      ) {
+        prefix[key] = 0
+        rebasedUpper = {...prefix}
+        // Zero fields keep the origin, so an overshoot requires a calendar prefix.
+        // Borrow from the last nonzero calendar unit to keep one sign.
+        const unit =
+          prefix.weeks !== 0
+            ? 'weeks'
+            : prefix.months !== 0
+              ? 'months'
+              : 'years'
+        prefix[unit] -= sign
+        const upperDay = anchor.nominalDay(rebasedUpper)
+        const lowerDay = anchor.nominalDay(prefix)
+        if (smallest !== 'week') {
+          let probedLower: bigint | undefined
+          if (smallest === 'day') {
+            // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii.
+            // Gap resolution moves an endpoint by less than two days. A day
+            // four nominal days beyond the retained upper bound cannot fit.
+            const retainedDays = upperDay - lowerDay
+            const checkedDays =
+              retainedDays % increment === 0 &&
+              (end - adjacent) * physicalSign >= 0n
+                ? stride
+                : result.days || sign
+            truncated =
+              mathTrunc(((retainedDays + checkedDays) * sign) / increment) *
+              stride
+            if (truncated === retainedDays) truncated -= stride
+            const outer =
+              mathTrunc((retainedDays * sign + 3) / increment) * stride
+            if (outer !== retainedDays && (outer - truncated) * sign > 0) {
+              prefix[key] = outer
+              try {
+                const candidate = anchor.endpoint(prefix)
+                if ((end - candidate) * physicalSign >= 0n) {
+                  truncated = outer
+                  probedLower = candidate
+                }
+              } catch (error) {
+                // An extra probe can fall outside the civil or Instant range.
+                if (!(error instanceof RangeErrorConstructor)) throw error
+              }
+            }
+          } else {
+            const lastDay = upperDay + sign
+            const calendar = baseCalendar(anchor.calendar)
+            const monthStart = (day: number): number =>
+              day - calendarFromEpochDayRaw(calendar, day).day + 1
+            // Starting each date at day one counts months without day clamping.
+            const months =
+              calendarDateUntilRaw(
+                calendar,
+                monthStart(lowerDay),
+                monthStart(lastDay),
+                'month'
+              ).months ?? 0
+            truncated = mathTrunc(months / increment) * increment
+            prefix[key] = truncated
+            const candidateDay = anchor.nominalDay(prefix)
+            if (
+              candidateDay === upperDay ||
+              (candidateDay - lastDay) * sign > 0
+            )
+              truncated -= stride
+          }
+          prefix[key] = truncated
+          a = probedLower ?? anchor.endpoint(prefix)
+          // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii: check the
+          // lower bound after gap resolution. Retreat by whole increments.
+          while (truncated * sign > 0 && (end - a) * physicalSign < 0n) {
+            truncated -= stride
+            prefix[key] = truncated
+            a = anchor.endpoint(prefix)
+          }
+        } else {
+          a = anchor.endpoint(prefix)
+          // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii.
+          // Each compatible gap endpoint can move by up to two days.
+          // A nominal week four days past the retained upper bound cannot fit.
+          let nextCount = truncated + stride
+          while (
+            a !== end &&
+            (lowerDay + 7 * nextCount - upperDay) * sign < 4
+          ) {
+            prefix[key] = nextCount
+            const next = anchor.endpoint(prefix)
+            if ((end - next) * physicalSign < 0n) break
+            truncated = nextCount
+            a = next
+            nextCount += stride
+          }
+        }
+      } else {
+        truncated -= stride
+        prefix[key] = truncated
+        a = anchor.endpoint(prefix)
+      }
+    }
+    // §7.5.34 step 5.a retries with the same day bounds across this fold.
+    // Advance the bounds until they bracket the target.
+    // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
+    // https://github.com/tc39/proposal-temporal/issues/3336
+    while (a !== end && (b - end) * physicalSign < 0n) {
+      truncated += stride
       a = b
-      prefix[key] = truncated + sign * increment
+      prefix[key] = truncated + stride
       b = anchor.endpoint(prefix)
       expanded = true
     }
     let expand = false
+    // §7.5.34 step 13 can divide by zero across a skipped day.
+    // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
+    // https://github.com/tc39/proposal-temporal/issues/3310
+    // ECMA-262 preview §22.15.5.13 steps 14–21: keep the exact inner bound.
+    // https://tc39.es/ecma262/pr/3966/#sec-nudgetocalendarunit
     if (a !== end) {
       const positive = physicalSign * sinceSign > 0n
       expand =
@@ -843,7 +1218,15 @@ export function roundRelativeDifference(
         mode === 'expand' ||
         (mode === 'ceil' && positive) ||
         (mode === 'floor' && !positive)
-      if (mode.startsWith('half')) {
+      if (
+        mode === 'halfCeil' ||
+        mode === 'halfFloor' ||
+        mode === 'halfExpand' ||
+        mode === 'halfTrunc' ||
+        mode === 'halfEven'
+      ) {
+        // Proposal comparison §7.5.34 steps 14–16 and 19–21: compare exact
+        // distances without dividing.
         const distance = (end - a) * physicalSign,
           span = (b - a) * physicalSign
         expand =
@@ -853,56 +1236,72 @@ export function roundRelativeDifference(
               (mode === 'halfCeil' && positive) ||
               (mode === 'halfFloor' && !positive) ||
               (mode === 'halfEven' &&
-                Math.abs(truncated / increment) % 2 === 1)))
+                (rebasedUpper !== undefined ||
+                  mathAbs(truncated / increment) % 2 === 1))))
       }
     }
-    prefix[key] = (expand ? truncated + sign * increment : truncated) || 0
-    result = prefix
+    // Proposal comparison §7.5.34 steps 22–24: keep the selected endpoint and
+    // duration.
+    prefix[key] = (expand ? truncated + stride : truncated) || 0
+    result = expand && rebasedUpper ? rebasedUpper : prefix
     rounded = expand ? b : a
     expanded ||= expand
   } else if (anchor.zoned && largeIndex < 4) {
+    // Proposal comparison §7.5.35 steps 1–7 and 9–16: measure the zoned day
+    // span and carry the rounded clock.
     const time = durationNanoseconds(result, false),
-      quantum = BigInt(increment) * timeUnitNanoseconds[smallest as TimeUnit]
+      quantum =
+        bigIntFrom(increment) * timeUnitNanoseconds[smallest as TimeUnit]
     let value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
-    if (value !== time) {
-      const date = {...result}
-      for (let index = 4; index < differenceUnits.length; index++)
-        date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
-      const origin = anchor.endpoint(date),
-        next = {...date, days: date.days + sign},
-        span = anchor.endpoint(next) - origin
-      expanded = (value - span) * physicalSign >= 0n
-      if (expanded) {
-        date.days += sign
-        value =
-          sinceSign * roundDuration((value - span) * sinceSign, quantum, mode)
-        rounded = origin + span + value
-      } else rounded = origin + value
-      result = {
-        ...date,
-        ...balanceDurationTime(value, 4),
-        years: date.years,
-        months: date.months,
-        weeks: date.weeks,
-        days: date.days,
-      }
+    const date = {...result}
+    for (let index = 4; index < differenceUnits.length; index++)
+      date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
+    // ECMA-262 preview §22.15.5.14 step 5 resolves the origin wall clock even for zero date fields.
+    // https://tc39.es/ecma262/pr/3966/#sec-nudgetozonedtime
+    const origin =
+        date.years || date.months || date.weeks || date.days
+          ? anchor.endpoint(date)
+          : anchor.compatibleOrigin(),
+      next = {...date, days: date.days + sign},
+      // Steps 6–7 measure the span to the next signed day.
+      span = anchor.endpoint(next) - origin
+    expanded = (value - span) * physicalSign >= 0n
+    if (expanded) {
+      date.days += sign
+      value =
+        sinceSign * roundDuration((value - span) * sinceSign, quantum, mode)
+      rounded = origin + span + value
+    } else rounded = origin + value
+    result = {
+      ...date,
+      ...balanceDurationTime(value, 4),
+      years: date.years,
+      months: date.months,
+      weeks: date.weeks,
+      days: date.days,
     }
   } else {
+    // ECMA-262 preview §22.15.5.15 steps 1–15: round fixed-length time.
+    // https://tc39.es/ecma262/pr/3966/#sec-nudgetodayortime
     const time = durationNanoseconds(result),
       quantum =
-        BigInt(increment) *
+        bigIntFrom(increment) *
         (smallest === 'day'
           ? nsPerDay
           : timeUnitNanoseconds[smallest as TimeUnit])
     const value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
-    const days = largeIndex < 4 ? Number(value / nsPerDay) : 0
-    expanded = Math.sign(days - result.days) === sign
+    const roundedDays = value / nsPerDay
+    const days = largeIndex < 4 ? numberFrom(roundedDays) : 0
+    // Steps 4–8 compare against the original time sign, including zero.
+    expanded =
+      mathSign(numberFrom(roundedDays - time / nsPerDay)) ===
+      (time < 0n ? -1 : time > 0n ? 1 : 0)
     rounded = end + value - time
     result = {
       ...result,
       ...balanceDurationTime(
         largeIndex < 4 ? value % nsPerDay : value,
-        Math.max(4, largeIndex)
+        mathMax(4, largeIndex)
       ),
       years: result.years,
       months: result.months,
@@ -910,13 +1309,10 @@ export function roundRelativeDifference(
       days,
     }
   }
-  // Keep the chosen rounding quantum; only bubble when a larger boundary was crossed.
+  // ECMA-262 preview §22.15.5.17 step 9 checks larger calendar boundaries.
+  // https://tc39.es/ecma262/pr/3966/#sec-roundrelativeduration
   if (expanded && smallest !== 'week') {
-    for (
-      let index = Math.min(smallIndex, 3) - 1;
-      index >= largeIndex;
-      index--
-    ) {
+    for (let index = mathMin(smallIndex, 3) - 1; index >= largeIndex; index--) {
       if (index === 2 && largest !== 'week') continue
       const next = zeroDuration()
       for (let keep = 0; keep < index; keep++) {
@@ -931,9 +1327,10 @@ export function roundRelativeDifference(
     }
   }
   if (since) {
-    const keys = Object.keys(result) as (keyof DurationFields)[]
-    for (let index = 0; index < keys.length; index++)
-      result[keys[index]] = -result[keys[index]] || 0
+    for (let index = 0; index < differenceUnits.length; index++) {
+      const key = `${differenceUnits[index]}s` as keyof DurationFields
+      result[key] = -result[key] || 0
+    }
   }
   return result
 }

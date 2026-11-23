@@ -88,4 +88,48 @@ for (const calendar of ['chinese', 'dangi']) {
       roundTrip(Host.PlainDate.from(joinDate.add({days: delta}).toString()))
   }
 }
+// Host Umm range is1300..1600; pinned ICU starts match civil fallback at both joins.
+const ummCalendar = 'islamic-umalqura'
+for (const [iso, year, month, monthCode, day] of [
+  ['1882-11-11', 1299, 12, 'M12', 29],
+  ['1882-11-12', 1300, 1, 'M01', 1],
+  ['1882-11-13', 1300, 1, 'M01', 2],
+  ['2174-11-25', 1600, 12, 'M12', 30],
+  ['2174-11-26', 1601, 1, 'M01', 1],
+  ['2174-11-27', 1601, 1, 'M01', 2],
+]) {
+  const value = Host.PlainDate.from(iso).withCalendar(ummCalendar)
+  assert.deepEqual(
+    [value.year, value.month, value.monthCode, value.day],
+    [year, month, monthCode, day],
+    `Host Umm join ${iso}`
+  )
+  assert.equal(
+    Host.PlainDate.from(
+      {calendar: ummCalendar, year, month, monthCode, day},
+      {overflow: 'reject'}
+    ).toString(),
+    `${iso}[u-ca=islamic-umalqura]`
+  )
+  checked++
+}
+for (const [before, after] of [
+  ['1882-11-11', '1882-11-12'],
+  ['2174-11-25', '2174-11-26'],
+]) {
+  assert.equal(
+    Host.PlainDate.from(before)
+      .withCalendar(ummCalendar)
+      .add({days: 1})
+      .toString(),
+    `${after}[u-ca=islamic-umalqura]`
+  )
+  assert.equal(
+    Host.PlainDate.from(after)
+      .withCalendar(ummCalendar)
+      .subtract({days: 1})
+      .toString(),
+    `${before}[u-ca=islamic-umalqura]`
+  )
+}
 console.log(`Host calendar boundary and join cases: ${checked}`)

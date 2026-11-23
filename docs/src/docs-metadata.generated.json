@@ -157,7 +157,7 @@
   },
   "polyfills/temporal": {
     "title": "Temporal",
-    "description": "@formatjs/temporal brings Temporal dates, times, calendars, and time zones to TypeScript, Node.js, and Hermes."
+    "description": "@formatjs/temporal provides Temporal's eight value types, Now, and 16"
   },
   "python": {
     "title": "Python",
@@ -229,7 +229,7 @@
   },
   "rust/temporal": {
     "title": "Temporal",
-    "description": "An allocation-free no_std Temporal core for Rust, with calendar arithmetic and IANA time zones."
+    "description": "formatjstemporal is an allocation-free nostd Temporal core. It provides"
   },
   "skills": {
     "title": "Skills",

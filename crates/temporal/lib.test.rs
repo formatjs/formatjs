@@ -1,6 +1,115 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn day_rounding_checks_the_next_week_after_an_exact_week_count() {
+    use formatjs_temporal::{DateTimeUnit as U, Error, PlainDate, RoundingMode as R};
+    for (first, last) in [(99_999_993, 100_000_000), (-99_999_994, -100_000_001)] {
+        let first = PlainDate::from_epoch_day(first).unwrap();
+        let last = PlainDate::from_epoch_day(last).unwrap();
+        assert_eq!(
+            first.until(last, U::Week, U::Day, 2, R::Trunc),
+            Err(Error::OutOfRange)
+        );
+        assert_eq!(
+            first.since(last, U::Week, U::Day, 2, R::Trunc),
+            Err(Error::OutOfRange)
+        );
+    }
+}
+
+#[test]
+fn relative_fold_probes_use_compatible_time_without_changing_addition() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let events = [
+        OffsetTransition {
+            epoch_seconds: -1800,
+            offset_seconds: 0,
+        },
+        OffsetTransition {
+            epoch_seconds: 22 * 3600,
+            offset_seconds: 1800,
+        },
+    ];
+    let zone = TransitionZone::new(3600, &events, None).unwrap();
+    let zoned = |value| ZonedDateTime::new(Instant::from_epoch_nanoseconds(value).unwrap(), zone);
+    let origin = zoned(0);
+    let target = zoned(93 * hour / 4);
+    let difference = |target, smallest, mode| {
+        origin
+            .until(&target, DateTimeUnit::Day, smallest, 1, mode)
+            .unwrap()
+    };
+    assert_eq!(
+        difference(target, DateTimeUnit::Nanosecond, RoundingMode::Trunc).to_string(),
+        "PT23H15M"
+    );
+    let rounded = difference(zoned(93 * hour / 4), DateTimeUnit::Hour, RoundingMode::Ceil);
+    assert_eq!(rounded.to_string(), "PT24H");
+    assert_eq!(
+        origin
+            .checked_add(rounded, Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        24 * hour
+    );
+    for smallest in [DateTimeUnit::Minute, DateTimeUnit::Nanosecond] {
+        assert_eq!(
+            difference(zoned(-49 * hour / 2), smallest, RoundingMode::Trunc).to_string(),
+            "-PT23H30M"
+        );
+    }
+    assert_eq!(
+        difference(
+            zoned(-hour / 4),
+            DateTimeUnit::Nanosecond,
+            RoundingMode::Trunc
+        )
+        .to_string(),
+        "-PT15M"
+    );
+    assert_eq!(
+        origin
+            .checked_add("PT0S".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant(),
+        origin.instant()
+    );
+}
+
+#[test]
+fn relative_difference_rejects_mixed_range_nonzero_fold_probe() {
+    use formatjs_temporal::{
+        DateTimeUnit, Error, OffsetTransition, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let events = [OffsetTransition {
+        epoch_seconds: (-MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64,
+        offset_seconds: 0,
+    }];
+    let zone = TransitionZone::new(7200, &events, None).unwrap();
+    let zoned = |delta| {
+        ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS + delta).unwrap(),
+            zone,
+        )
+    };
+    assert_eq!(
+        zoned(25 * hour).until(
+            &zoned(hour / 2),
+            DateTimeUnit::Day,
+            DateTimeUnit::Nanosecond,
+            1,
+            RoundingMode::Trunc
+        ),
+        Err(Error::OutOfRange)
+    );
+}
+
+#[test]
 fn date_zoned_conversion_distinguishes_day_start_from_explicit_midnight() {
     use formatjs_temporal::{
         OffsetTransition, PlainDate, PlainTime, TimeZone, TransitionDirection, TransitionZone,
@@ -38,6 +147,198 @@ fn date_zoned_conversion_distinguishes_day_start_from_explicit_midnight() {
     assert_eq!(midnight.instant().epoch_nanoseconds(), 1_800_000_000_000);
     assert_eq!(midnight.calendar_id(), "hebrew");
     assert_eq!(midnight.local().unwrap().date().fields(), (1970, 1, 2));
+}
+
+#[test]
+fn day_start_uses_nearest_local_after_overlapping_transitions() {
+    use formatjs_temporal::{
+        OffsetTransition, PlainDate, PlainTime, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let max_day = (MAX_EPOCH_NANOSECONDS / NANOSECONDS_PER_DAY) as i64;
+    for day in [0, max_day - 2, max_day - 1, max_day] {
+        let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
+        let seconds = (midnight / 1_000_000_000) as i64;
+        let events = [
+            OffsetTransition {
+                epoch_seconds: seconds - 18_000,
+                offset_seconds: -18_000,
+            },
+            OffsetTransition {
+                epoch_seconds: seconds - 10_800,
+                offset_seconds: 14_400,
+            },
+        ];
+        let zone = TransitionZone::new(18_000, &events, None).unwrap();
+        let date = PlainDate::from_epoch_day(day).unwrap();
+        let explicit_midnight = date
+            .to_zoned_date_time(zone, Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+            .unwrap();
+        assert_eq!(
+            explicit_midnight.instant().epoch_nanoseconds(),
+            midnight - 6 * hour
+        );
+        let date_start = date.to_zoned_date_time(zone, None).unwrap();
+        assert_eq!(
+            date_start.instant().epoch_nanoseconds(),
+            midnight - 3 * hour
+        );
+        let instant = Instant::from_epoch_nanoseconds(midnight - 2 * hour).unwrap();
+        let zoned = ZonedDateTime::new(instant, zone);
+        assert_eq!(
+            zoned.start_of_day().unwrap().instant(),
+            date_start.instant()
+        );
+    }
+}
+
+#[test]
+fn minimum_day_start_uses_the_first_reachable_local_time() {
+    use formatjs_temporal::{
+        NamedTimeZone, OffsetTransition, PlainDate, TimeZoneRecord, TimeZoneRegistry,
+        TransitionZone, ZonedDateTime, ZonedParseOptions,
+    };
+    let midnight = -MAX_EPOCH_NANOSECONDS;
+    let seconds = (midnight / 1_000_000_000) as i64;
+    let hour = 3_600_000_000_000;
+    let jump = [OffsetTransition {
+        epoch_seconds: seconds,
+        offset_seconds: 3600,
+    }];
+    let overlap = [
+        OffsetTransition {
+            epoch_seconds: seconds + 3600,
+            offset_seconds: -39_600,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds + 10_800,
+            offset_seconds: -7200,
+        },
+    ];
+    let date = PlainDate::new(-271821, 4, 20).unwrap();
+    let name = "America/Denver";
+    for (initial, events, expected) in [
+        (0, &jump[..], midnight),
+        (-3600, &overlap[..], midnight + 3 * hour),
+    ] {
+        let zone = TransitionZone::new(initial, events, None).unwrap();
+        let start = date.to_zoned_date_time(zone, None).unwrap().instant();
+        assert_eq!(start.epoch_nanoseconds(), expected);
+        let later = Instant::from_epoch_nanoseconds(expected + hour).unwrap();
+        let named = NamedTimeZone::new(name, zone).unwrap();
+        assert_eq!(
+            ZonedDateTime::new(later, named)
+                .start_of_day()
+                .unwrap()
+                .instant(),
+            start
+        );
+        let records = [TimeZoneRecord::new(name, zone).unwrap()];
+        let registry = TimeZoneRegistry::new(&records).unwrap();
+        let date_only = ZonedDateTime::parse(
+            "-271821-04-20[America/Denver]",
+            registry,
+            ZonedParseOptions::default(),
+        )
+        .unwrap();
+        assert_eq!(date_only.instant(), start);
+    }
+}
+
+#[test]
+fn minimum_day_start_rejects_an_earlier_raw_footer_candidate() {
+    use formatjs_temporal::{
+        Disambiguation, Error, FutureRule, PlainDate, TransitionRule, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let future = FutureRule::new(
+        0,
+        Some((
+            18_000,
+            // April 19 at 20:00 UTC in the minimum year, four hours before the limit.
+            TransitionRule::Day {
+                day: 108,
+                seconds: 72_000,
+            },
+            TransitionRule::Day {
+                day: 111,
+                seconds: 18_000,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(future)).unwrap();
+    let first_wall = IsoDateTime::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS + hour).unwrap();
+    assert_eq!(
+        ZonedDateTime::from_local(first_wall, zone, Disambiguation::Reject).unwrap_err(),
+        Error::OutOfRange,
+    );
+    let limit = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap();
+    let valid_later = ZonedDateTime::new(limit, zone);
+    assert_eq!(valid_later.local().unwrap().time().fields(), (5, 0, 0, 0));
+    let date = PlainDate::new(-271821, 4, 20).unwrap();
+    assert_eq!(
+        date.to_zoned_date_time(zone, None).unwrap_err(),
+        Error::OutOfRange
+    );
+    assert_eq!(valid_later.start_of_day().unwrap_err(), Error::OutOfRange);
+}
+
+#[test]
+fn maximum_day_start_checks_the_first_raw_candidate() {
+    use formatjs_temporal::{
+        Disambiguation, Error, FutureRule, OffsetTransition, PlainDate, PlainTime, TransitionZone,
+        ZonedDateTime,
+    };
+    let midnight = MAX_EPOCH_NANOSECONDS;
+    let seconds = (midnight / 1_000_000_000) as i64;
+    let hour = 3_600_000_000_000;
+    let date = PlainDate::new(275760, 9, 13).unwrap();
+    let jump = [OffsetTransition {
+        epoch_seconds: seconds,
+        offset_seconds: 3600,
+    }];
+    let zone = TransitionZone::new(-3600, &jump, None).unwrap();
+    assert_eq!(
+        date.to_zoned_date_time(zone, Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+            .unwrap_err(),
+        Error::OutOfRange,
+    );
+    let start = date.to_zoned_date_time(zone, None).unwrap().instant();
+    assert_eq!(start.epoch_nanoseconds(), midnight);
+    let zoned = ZonedDateTime::new(Instant::from_epoch_nanoseconds(midnight).unwrap(), zone);
+    assert_eq!(zoned.start_of_day().unwrap().instant(), start);
+
+    let overlap = [
+        OffsetTransition {
+            epoch_seconds: seconds - 18_000,
+            offset_seconds: -18_000,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds - 10_800,
+            offset_seconds: 14_400,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds,
+            offset_seconds: 14_400,
+        },
+    ];
+    let footer = FutureRule::new(0, None).unwrap();
+    let zone = TransitionZone::new(18_000, &overlap, Some(footer)).unwrap();
+    // The footer starts at MAX+1s and projects before the in-range 01:00 clock.
+    let first_wall = IsoDateTime::from_epoch_nanoseconds(midnight + 1_000_000_000).unwrap();
+    assert_eq!(
+        ZonedDateTime::from_local(first_wall, zone, Disambiguation::Reject).unwrap_err(),
+        Error::OutOfRange,
+    );
+    let later = Instant::from_epoch_nanoseconds(midnight - 3 * hour).unwrap();
+    let zoned = ZonedDateTime::new(later, zone);
+    assert_eq!(zoned.local().unwrap().time().fields(), (1, 0, 0, 0));
+    assert_eq!(
+        date.to_zoned_date_time(zone, None).unwrap_err(),
+        Error::OutOfRange
+    );
+    assert_eq!(zoned.start_of_day().unwrap_err(), Error::OutOfRange);
 }
 
 #[test]
@@ -661,6 +962,12 @@ fn independent_icu_short_dates() {
 #[test]
 fn short_date_reference_fields_and_parser_limits() {
     use formatjs_temporal::{Overflow, PlainMonthDay, PlainYearMonth};
+    for text in ["+275760-09-14[u-ca=gregory]", "-271821-04-18[u-ca=gregory]"] {
+        assert!(text.parse::<PlainMonthDay>().is_err(), "{text}");
+    }
+    for text in ["+275760-09-13[u-ca=gregory]", "-271821-04-19[u-ca=gregory]"] {
+        assert!(text.parse::<PlainMonthDay>().is_ok(), "{text}");
+    }
     assert!(PlainYearMonth::new(-271821, 4, 1).is_ok());
     assert!(PlainYearMonth::new(-271821, 3, 31).is_err());
     assert!(PlainYearMonth::new(275760, 9, 30).is_ok());
@@ -1532,6 +1839,261 @@ fn owned_iana_transitions_match_icu() {
 }
 
 #[test]
+fn minimum_gap_uses_the_transition_at_the_instant_limit() {
+    use formatjs_temporal::{
+        Disambiguation, Error, NamedTimeZone, OffsetTransition, TimeZoneRecord, TimeZoneRegistry,
+        TransitionZone, ZonedDateTime,
+    };
+    let minimum = -MAX_EPOCH_NANOSECONDS;
+    let seconds = (minimum / 1_000_000_000) as i64;
+    let hour = 3_600_000_000_000;
+    let events = [
+        OffsetTransition {
+            epoch_seconds: seconds,
+            offset_seconds: 14_400,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds + 3_600,
+            offset_seconds: -7200,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds + 10_800,
+            offset_seconds: 10_800,
+        },
+    ];
+    let zone = TransitionZone::new(0, &events, None).unwrap();
+    let gap = IsoDateTime::from_epoch_nanoseconds(minimum + 2 * hour).unwrap();
+    for (mode, expected) in [
+        (Disambiguation::Later, Ok(minimum + 5 * hour)),
+        (Disambiguation::Compatible, Ok(minimum + 5 * hour)),
+        (Disambiguation::Earlier, Err(Error::OutOfRange)),
+        (Disambiguation::Reject, Err(Error::InvalidDateTime)),
+    ] {
+        assert_eq!(
+            ZonedDateTime::from_local(gap, zone, mode)
+                .map(|zoned| zoned.instant().epoch_nanoseconds()),
+            expected,
+            "{mode:?}"
+        );
+    }
+    let name = "America/Denver";
+    let tagged = NamedTimeZone::new(name, zone).unwrap();
+    let records = [TimeZoneRecord::new(name, zone).unwrap()];
+    let registered = TimeZoneRegistry::new(&records)
+        .unwrap()
+        .resolve(name)
+        .unwrap();
+    let later = Disambiguation::Later;
+    let expected = Instant::from_epoch_nanoseconds(minimum + 5 * hour).unwrap();
+    assert_eq!(
+        ZonedDateTime::from_local(gap, tagged, later)
+            .unwrap()
+            .instant(),
+        expected
+    );
+    assert_eq!(
+        ZonedDateTime::from_local(gap, registered, later)
+            .unwrap()
+            .instant(),
+        expected
+    );
+}
+
+#[test]
+fn local_gap_below_minimum_uses_the_minimum_transition() {
+    use formatjs_temporal::{
+        Disambiguation, Error, OffsetTransition, TransitionZone, ZonedDateTime,
+    };
+    let minimum = -MAX_EPOCH_NANOSECONDS;
+    let seconds = (minimum / 1_000_000_000) as i64;
+    let minute = 60_000_000_000;
+    let events = [(0, -3), (1, -27), (3, -23), (15, 0)].map(|(when, offset)| OffsetTransition {
+        epoch_seconds: seconds + when * 60,
+        offset_seconds: offset * 60,
+    });
+    let zone = TransitionZone::new(-26 * 60, &events, None).unwrap();
+    let resolve = |local, mode| {
+        ZonedDateTime::from_local(
+            IsoDateTime::from_epoch_nanoseconds(local).unwrap(),
+            zone,
+            mode,
+        )
+        .map(|value| value.instant().epoch_nanoseconds())
+    };
+    assert_eq!(
+        resolve(minimum - 8 * minute - 1, Disambiguation::Reject),
+        Ok(minimum + 15 * minute - 1)
+    );
+    assert_eq!(
+        resolve(minimum - 3 * minute, Disambiguation::Reject),
+        Ok(minimum)
+    );
+    for (mode, expected) in [
+        (Disambiguation::Compatible, Ok(minimum + 15 * minute)),
+        (Disambiguation::Later, Ok(minimum + 15 * minute)),
+        (Disambiguation::Earlier, Ok(minimum + 2 * minute)),
+        (Disambiguation::Reject, Err(Error::InvalidDateTime)),
+    ] {
+        assert_eq!(resolve(minimum - 5 * minute, mode), expected, "{mode:?}");
+    }
+}
+
+#[test]
+fn borrowed_zones_resolve_nearest_gap_boundaries() {
+    use formatjs_temporal::{Disambiguation, OffsetTransition, TransitionZone, ZonedDateTime};
+    let minute = 60_000_000_000i128;
+    let limit_seconds = (MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64;
+    for (initial, changes, local, earlier, later, origins) in [
+        (
+            0,
+            [(0, 14_400), (3_600, 7_200)],
+            90,
+            -30,
+            90,
+            &[0, -limit_seconds + 3_600, limit_seconds - 7_200][..],
+        ),
+        (-7_200, [(-3_600, -14_400), (0, 0)], -90, -90, 30, &[0]),
+        (0, [(0, 14_400), (21_600, 0)], 180, -60, 420, &[0]),
+    ] {
+        for &origin in origins {
+            let changes = changes.map(|(epoch_seconds, offset_seconds)| OffsetTransition {
+                epoch_seconds: origin + epoch_seconds,
+                offset_seconds,
+            });
+            let zone = TransitionZone::new(initial, &changes, None).unwrap();
+            let origin_ns = i128::from(origin) * 1_000_000_000;
+            let fields = IsoDateTime::from_epoch_nanoseconds(origin_ns + local * minute).unwrap();
+            assert!(ZonedDateTime::from_local(fields, zone, Disambiguation::Reject).is_err());
+            for (mode, expected) in [
+                (Disambiguation::Earlier, earlier),
+                (Disambiguation::Later, later),
+                (Disambiguation::Compatible, later),
+            ] {
+                let result = ZonedDateTime::from_local(fields, zone, mode).unwrap();
+                assert_eq!(
+                    result.instant().epoch_nanoseconds(),
+                    origin_ns + expected * minute,
+                    "{mode:?} at {local} minutes from {origin}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn borrowed_and_registered_zones_reject_mixed_instant_bounds() {
+    use formatjs_temporal::{
+        Disambiguation, Error, FutureRule, NamedTimeZone, OffsetOption, OffsetTransition,
+        PlainDate, TimeZoneRecord, TimeZoneRegistry, TransitionZone, ZonedDateTime,
+        ZonedParseOptions,
+    };
+    let second = 1_000_000_000i128;
+    let limit = (MAX_EPOCH_NANOSECONDS / second) as i64;
+    let lower = [OffsetTransition {
+        epoch_seconds: -limit,
+        offset_seconds: 0,
+    }];
+    let upper = [OffsetTransition {
+        epoch_seconds: limit,
+        offset_seconds: 7200,
+    }];
+    let lower_zone = TransitionZone::new(7200, &lower, None).unwrap();
+    let upper_zone =
+        TransitionZone::new(7200, &upper, Some(FutureRule::new(0, None).unwrap())).unwrap();
+    let records = [
+        TimeZoneRecord::new("America/Denver", lower_zone).unwrap(),
+        TimeZoneRecord::new("America/New_York", upper_zone).unwrap(),
+    ];
+    let registry = TimeZoneRegistry::new(&records).unwrap();
+    let modes = [
+        Disambiguation::Earlier,
+        Disambiguation::Later,
+        Disambiguation::Compatible,
+        Disambiguation::Reject,
+    ];
+    for (zone, name, limit, source, used) in [
+        (
+            lower_zone,
+            "America/Denver",
+            -MAX_EPOCH_NANOSECONDS,
+            "-271821-04-20T00:30+00:00[America/Denver]",
+            -MAX_EPOCH_NANOSECONDS + 1800 * second,
+        ),
+        (
+            upper_zone,
+            "America/New_York",
+            MAX_EPOCH_NANOSECONDS,
+            "+275760-09-13T00:30+02:00[America/New_York]",
+            MAX_EPOCH_NANOSECONDS - 5400 * second,
+        ),
+    ] {
+        let local = IsoDateTime::from_epoch_nanoseconds(limit + 1800 * second).unwrap();
+        let named = NamedTimeZone::new(name, zone).unwrap();
+        for mode in modes {
+            assert_eq!(
+                ZonedDateTime::from_local(local, zone, mode).unwrap_err(),
+                Error::OutOfRange,
+                "borrowed {name} {mode:?}"
+            );
+            assert_eq!(
+                ZonedDateTime::from_local(local, named, mode).unwrap_err(),
+                Error::OutOfRange,
+                "named {name} {mode:?}"
+            );
+        }
+        for offset in [
+            OffsetOption::Prefer,
+            OffsetOption::Reject,
+            OffsetOption::Ignore,
+        ] {
+            let options = ZonedParseOptions {
+                offset,
+                ..Default::default()
+            };
+            assert_eq!(
+                ZonedDateTime::parse(source, registry, options).unwrap_err(),
+                Error::OutOfRange,
+                "registered {name} {offset:?}"
+            );
+        }
+        let options = ZonedParseOptions {
+            offset: OffsetOption::Use,
+            ..Default::default()
+        };
+        let exact = ZonedDateTime::parse(source, registry, options).unwrap();
+        assert_eq!(exact.instant().epoch_nanoseconds(), used);
+    }
+    assert_eq!(
+        PlainDate::new(-271821, 4, 20)
+            .unwrap()
+            .to_zoned_date_time(lower_zone, None)
+            .unwrap_err(),
+        Error::OutOfRange
+    );
+}
+
+#[test]
+fn ignores_out_of_range_probes_with_inapplicable_offsets() {
+    use formatjs_temporal::{Disambiguation, OffsetTransition, TransitionZone, ZonedDateTime};
+    let second = 1_000_000_000i128;
+    let limit = (MAX_EPOCH_NANOSECONDS / second) as i64;
+    for (initial, lead, offset, local) in [
+        (0, -limit + 3600, 7200, -limit + 1800),
+        (-7200, limit - 3600, 0, limit - 1800),
+    ] {
+        let events = [OffsetTransition {
+            epoch_seconds: lead,
+            offset_seconds: offset,
+        }];
+        let zone = TransitionZone::new(initial, &events, None).unwrap();
+        let epoch = i128::from(local) * second;
+        let fields = IsoDateTime::from_epoch_nanoseconds(epoch).unwrap();
+        let result = ZonedDateTime::from_local(fields, zone, Disambiguation::Reject).unwrap();
+        assert_eq!(result.instant().epoch_nanoseconds(), epoch);
+    }
+}
+
+#[test]
 fn recurring_leap_only_changes_and_adjacent_gaps() {
     use formatjs_temporal::{
         Disambiguation, FutureRule, OffsetTransition, Overflow, TimeZone, TransitionDirection,
@@ -1661,6 +2223,103 @@ fn independent_icu_zoned_calendar_rounding() {
         count += 1;
     }
     assert_eq!(count, 19440);
+}
+
+#[test]
+fn upstream_polyfill_regressions() {
+    use formatjs_temporal::{
+        Disambiguation, Duration, PlainDateTime, Precision, TransitionDirection, ZonedDateTime,
+    };
+
+    let zones = iana_registry();
+    let parse_zoned = |input| ZonedDateTime::parse(input, zones, Default::default()).unwrap();
+    for line in include_str!(env!("FORMATJS_TEMPORAL_POLYFILL_REGRESSIONS"))
+        .lines()
+        .filter(|line| !line.is_empty() && !line.starts_with('#'))
+    {
+        let fields: Vec<_> = line.split('\t').collect();
+        match fields.as_slice() {
+            ["duration-string", field, value, unit, mode, expected] => {
+                let index = match *field {
+                    "milliseconds" => 7,
+                    "microseconds" => 8,
+                    "nanoseconds" => 9,
+                    _ => panic!("unknown duration field: {line}"),
+                };
+                let precision = match *unit {
+                    "second" => Precision::Digits(0),
+                    "millisecond" => Precision::Digits(3),
+                    "microsecond" => Precision::Digits(6),
+                    _ => panic!("unknown duration precision: {line}"),
+                };
+                let mut record = [0; 10];
+                record[index] = value.parse().unwrap();
+                let actual = Duration::new(record)
+                    .unwrap()
+                    .format(precision, mode.parse().unwrap())
+                    .unwrap();
+                assert_eq!(actual.to_string(), *expected, "{line}");
+            }
+            [
+                operation @ ("zoned-until" | "zoned-since"),
+                start,
+                end,
+                unit,
+                mode,
+                expected,
+            ] => {
+                let start = parse_zoned(start);
+                let end = parse_zoned(end);
+                let largest = "day".parse().unwrap();
+                let smallest = unit.parse().unwrap();
+                let mode = mode.parse().unwrap();
+                let result = if *operation == "zoned-until" {
+                    start.until(&end, largest, smallest, 1, mode)
+                } else {
+                    start.since(&end, largest, smallest, 1, mode)
+                };
+                let duration = result.unwrap_or_else(|error| panic!("{line}: {error}"));
+                assert_eq!(duration.to_string(), *expected, "{line}");
+            }
+            ["epoch-milliseconds", input, expected] => {
+                let instant = Instant::from_epoch_nanoseconds(input.parse().unwrap()).unwrap();
+                assert_eq!(
+                    instant.epoch_milliseconds(),
+                    expected.parse::<i64>().unwrap(),
+                    "{line}"
+                );
+            }
+            ["instant-parse", input, expected] => {
+                let instant: Instant = input.parse().unwrap();
+                assert_eq!(
+                    instant.epoch_nanoseconds(),
+                    expected.parse::<i128>().unwrap(),
+                    "{line}"
+                );
+            }
+            ["zoned-next-transition", input, expected] => {
+                let next = parse_zoned(input)
+                    .transition(TransitionDirection::Next)
+                    .unwrap_or_else(|| panic!("expected a next transition: {line}"));
+                assert_eq!(
+                    next.instant().epoch_nanoseconds(),
+                    expected.parse::<i128>().unwrap(),
+                    "{line}"
+                );
+            }
+            ["zoned-from-local", input, zone, expected] => {
+                let local: PlainDateTime = input.parse().unwrap();
+                let zoned = ZonedDateTime::from_local(
+                    local.fields(),
+                    zones.resolve(zone).unwrap(),
+                    Disambiguation::Compatible,
+                )
+                .unwrap();
+                assert_eq!(zoned.to_string(), *expected, "{line}");
+            }
+            _ => panic!("invalid Temporal fixture: {line}"),
+        }
+    }
 }
 
 #[test]
@@ -2066,6 +2725,25 @@ fn plain_relative_test262_range_and_prefix_cases() {
     use formatjs_temporal::{
         DateTimeUnit as U, Duration, PlainDate, PlainDateTime, RoundingMode as R,
     };
+    let near_min: PlainDate = "-271821-04-20".parse().unwrap();
+    let negative_day: Duration = "-P1D".parse().unwrap();
+    assert!(near_min.total_duration(negative_day, U::Hour).is_err());
+    assert!(
+        near_min
+            .round_duration(negative_day, U::Day, U::Hour, 1, R::HalfExpand)
+            .is_err()
+    );
+    let adjacent: Duration = "-PT23H59M59.999999999S".parse().unwrap();
+    assert_eq!(
+        near_min.total_duration(adjacent, U::Hour).unwrap(),
+        -86_399_999_999_999.0 / 3_600_000_000_000.0
+    );
+    assert_eq!(
+        near_min
+            .round_duration(adjacent, U::Hour, U::Nanosecond, 1, R::HalfExpand)
+            .unwrap(),
+        adjacent
+    );
     let zero = Duration::new([0; 10]).unwrap();
     let earliest: PlainDate = "-271821-04-19".parse().unwrap();
     let latest: PlainDate = "+275760-09-13".parse().unwrap();
@@ -2395,6 +3073,46 @@ fn zoned_clock_rounding_preserves_folds_and_resolves_gaps() {
 }
 
 #[test]
+fn zoned_clock_rounding_validates_the_local_date_and_all_candidates() {
+    use formatjs_temporal::{
+        Error, FixedOffset, OffsetTransition, RoundingMode, TransitionZone, ZonedDateTime,
+        ZonedUnit,
+    };
+
+    let minimum = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap();
+    let value = ZonedDateTime::new(minimum, FixedOffset::new(-3_600_000_000_000).unwrap());
+    assert_eq!(
+        value
+            .round(ZonedUnit::Hour, 1, RoundingMode::HalfExpand)
+            .map(|rounded| rounded.instant()),
+        Err(Error::OutOfRange)
+    );
+    assert_eq!(
+        value
+            .round(ZonedUnit::Nanosecond, 1, RoundingMode::HalfExpand)
+            .unwrap()
+            .instant(),
+        minimum
+    );
+
+    let maximum_seconds = (MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64;
+    let transitions = [OffsetTransition {
+        epoch_seconds: maximum_seconds - 1800,
+        offset_seconds: 0,
+    }];
+    let fold = TransitionZone::new(3600, &transitions, None).unwrap();
+    // Local 00:15 occurs at max − 45m and again at max + 15m.
+    let first = Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 2_700_000_000_000).unwrap();
+    let value = ZonedDateTime::new(first, fold);
+    assert_eq!(
+        value
+            .round(ZonedUnit::Minute, 1, RoundingMode::HalfExpand)
+            .map(|rounded| rounded.instant()),
+        Err(Error::OutOfRange)
+    );
+}
+
+#[test]
 fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
     use formatjs_temporal::{OffsetTransition, TimeZone, TransitionZone};
     let events: Vec<_> = (0..400)
@@ -2442,6 +3160,9 @@ fn bounded_offset_visits_match_full_history_at_gaps_folds_and_bounds() {
         }
         fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
             self.0.visit_offsets(visitor);
+        }
+        fn has_out_of_range_candidate(&self, local: i128) -> bool {
+            self.0.has_out_of_range_candidate(local)
         }
         fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
             self.0.transition(instant, direction)
@@ -2953,4 +3674,1397 @@ fn recurring_month_offsets_match_shifted_transition_intervals() {
             }
         }
     }
+}
+
+#[test]
+fn system_time_zone_falls_back_to_utc() {
+    use formatjs_temporal::TimeZone;
+    let zones = iana_registry();
+    for host in [None, Some(""), Some("Etc/Unknown"), Some("+05:30:15")] {
+        let zone = zones.system(host);
+        assert_eq!(zone.identifier(), "UTC", "{host:?}");
+        assert_eq!(
+            zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(0).unwrap()),
+            0
+        );
+    }
+    assert_eq!(
+        zones.system(Some("asia/calcutta")).identifier(),
+        "Asia/Kolkata"
+    );
+    assert_eq!(zones.system(Some("-06:00")).identifier(), "-06:00");
+    assert_eq!(
+        formatjs_temporal::TimeZoneRegistry::empty()
+            .system(Some("America/Regina"))
+            .identifier(),
+        "UTC"
+    );
+}
+
+#[test]
+fn exact_calendar_totals_validate_the_full_window() {
+    use formatjs_temporal::{DateTimeUnit, Duration, FixedOffset, PlainDate, ZonedDateTime};
+    for (date, duration, unit) in [
+        ("+275759-09-13", "P1Y", DateTimeUnit::Year),
+        ("+275760-08-13", "P1M", DateTimeUnit::Month),
+        ("+275760-09-06", "P1W", DateTimeUnit::Week),
+        ("-271821-05-20", "-P1M", DateTimeUnit::Month),
+    ] {
+        let plain: PlainDate = date.parse().unwrap();
+        let duration: Duration = duration.parse().unwrap();
+        assert!(
+            plain.total_duration(duration, unit).is_err(),
+            "{date} {unit:?}"
+        );
+        let zoned = ZonedDateTime::new(
+            format!("{date}T00:00Z").parse().unwrap(),
+            FixedOffset::new(0).unwrap(),
+        );
+        assert!(
+            zoned.total_duration(duration, unit).is_err(),
+            "{date} {unit:?}"
+        );
+    }
+}
+
+#[test]
+fn zero_calendar_totals_depend_on_anchor_kind() {
+    use formatjs_temporal::{DateTimeUnit, Duration, FixedOffset, PlainDate, ZonedDateTime};
+    let zero: Duration = "PT0S".parse().unwrap();
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let minimum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    for unit in [DateTimeUnit::Year, DateTimeUnit::Month, DateTimeUnit::Week] {
+        assert!(maximum.total_duration(zero, unit).is_err(), "{unit:?}");
+        assert_eq!(minimum.total_duration(zero, unit), Ok(0.0));
+        for text in ["+275760-09-13", "-271821-04-19"] {
+            let plain: PlainDate = text.parse().unwrap();
+            assert_eq!(plain.total_duration(zero, unit), Ok(0.0));
+        }
+    }
+    assert_eq!(maximum.total_duration(zero, DateTimeUnit::Hour), Ok(0.0));
+}
+
+#[test]
+fn comparisons_preserve_chronological_field_order_and_ignore_calendars() {
+    use core::cmp::Ordering;
+    use formatjs_temporal::{PlainDate, PlainDateTime, PlainTime, calendar::Calendar};
+    let clocks = [
+        "00:00:00",
+        "00:00:00.000000001",
+        "00:00:00.000000999",
+        "00:00:00.000001000",
+        "00:00:00.000999999",
+        "00:00:00.001000000",
+        "00:00:00.999999999",
+        "00:00:01",
+        "00:00:59.999999999",
+        "00:01:00",
+        "00:59:59.999999999",
+        "01:00:00",
+        "23:59:59.999999999",
+    ]
+    .map(|text| text.parse::<PlainTime>().unwrap());
+    let date = PlainDate::new(2000, 2, 29).unwrap();
+    for (first, one) in clocks.iter().enumerate() {
+        for (second, two) in clocks.iter().enumerate() {
+            assert_eq!(one.cmp(two), first.cmp(&second));
+            assert_eq!(
+                date.to_date_time(*one)
+                    .unwrap()
+                    .compare(date.to_date_time(*two).unwrap()),
+                first.cmp(&second)
+            );
+        }
+    }
+    let dates = [
+        "-271821-04-19",
+        "-000001-12-31",
+        "0000-01-01",
+        "1900-02-28",
+        "1900-03-01",
+        "2000-02-28",
+        "2000-02-29",
+        "2000-03-01",
+        "+275760-09-13",
+    ]
+    .map(|text| text.parse::<PlainDate>().unwrap());
+    let noon = PlainTime::new(12, 0, 0, 0).unwrap();
+    for (first, one) in dates.iter().enumerate() {
+        for (second, two) in dates.iter().enumerate() {
+            assert_eq!(one.compare(*two), first.cmp(&second));
+            assert_eq!(
+                one.to_date_time(noon)
+                    .unwrap()
+                    .compare(two.to_date_time(noon).unwrap()),
+                first.cmp(&second)
+            );
+        }
+    }
+    let last: PlainDateTime = "2000-02-29T23:59:59.999999999".parse().unwrap();
+    let next: PlainDateTime = "2000-03-01T00:00".parse().unwrap();
+    assert_eq!(last.compare(next), Ordering::Less);
+    assert_eq!(
+        date.compare(date.with_calendar(Calendar::Hebrew).unwrap()),
+        Ordering::Equal
+    );
+    assert_eq!(
+        last.compare(last.with_calendar(Calendar::Hebrew).unwrap()),
+        Ordering::Equal
+    );
+    let epochs = [
+        -MAX_EPOCH_NANOSECONDS,
+        -MAX_EPOCH_NANOSECONDS + 1,
+        -1,
+        0,
+        1,
+        MAX_EPOCH_NANOSECONDS - 1,
+        MAX_EPOCH_NANOSECONDS,
+    ]
+    .map(|value| Instant::from_epoch_nanoseconds(value).unwrap());
+    for (first, one) in epochs.iter().enumerate() {
+        for (second, two) in epochs.iter().enumerate() {
+            assert_eq!(one.cmp(two), first.cmp(&second));
+        }
+    }
+    for value in [-MAX_EPOCH_NANOSECONDS - 1, MAX_EPOCH_NANOSECONDS + 1] {
+        assert_eq!(
+            Instant::from_epoch_nanoseconds(value),
+            Err(formatjs_temporal::Error::OutOfRange)
+        );
+    }
+}
+
+#[test]
+fn exact_clock_difference_vectors_and_component_boundaries() {
+    use formatjs_temporal::{Duration, PlainTime, RoundingMode, TimeUnit};
+    let vectors: serde_json::Value =
+        serde_json::from_str(include_str!(env!("FORMATJS_TEMPORAL_TIME_STRINGS"))).unwrap();
+    for vector in vectors["differences"].as_array().unwrap() {
+        let one: PlainTime = vector["one"].as_str().unwrap().parse().unwrap();
+        let two: PlainTime = vector["two"].as_str().unwrap().parse().unwrap();
+        let mut expected = [0i128; 10];
+        for (index, value) in vector["fields"].as_array().unwrap().iter().enumerate() {
+            expected[index + 4] = i128::from(value.as_i64().unwrap());
+        }
+        let until = one
+            .until(
+                two,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+            .unwrap();
+        assert_eq!(until.fields(), expected, "{vector}");
+        assert_eq!(
+            until.time_nanoseconds(false).unwrap(),
+            vector["nanoseconds"]
+                .as_str()
+                .unwrap()
+                .parse::<i128>()
+                .unwrap()
+        );
+        assert_eq!(
+            one.since(
+                two,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields(),
+            expected.map(|field| -field)
+        );
+        assert_eq!(
+            two.until(
+                one,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields(),
+            expected.map(|field| -field)
+        );
+        assert_eq!(
+            two.since(
+                one,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields(),
+            expected
+        );
+    }
+    let one: PlainTime = "00:59:59.999999999".parse().unwrap();
+    let two: PlainTime = "23:00:00".parse().unwrap();
+    for vector in vectors["largestDifferences"].as_array().unwrap() {
+        let unit = match vector["unit"].as_str().unwrap() {
+            "hour" => TimeUnit::Hour,
+            "minute" => TimeUnit::Minute,
+            "second" => TimeUnit::Second,
+            "millisecond" => TimeUnit::Millisecond,
+            "microsecond" => TimeUnit::Microsecond,
+            "nanosecond" => TimeUnit::Nanosecond,
+            value => panic!("Unknown vector unit: {value}"),
+        };
+        let mut expected = [0i128; 10];
+        for (index, value) in vector["fields"].as_array().unwrap().iter().enumerate() {
+            expected[index + 4] = i128::from(value.as_i64().unwrap());
+        }
+        assert_eq!(
+            one.until(two, unit, TimeUnit::Nanosecond, 1, RoundingMode::Trunc)
+                .unwrap()
+                .fields(),
+            expected
+        );
+        assert_eq!(
+            one.since(two, unit, TimeUnit::Nanosecond, 1, RoundingMode::Trunc)
+                .unwrap()
+                .fields(),
+            expected.map(|field| -field)
+        );
+    }
+    for sign in [1i128, -1] {
+        let mut fields =
+            [0, 0, 0, 0, 2_501_999_792_983, 36, 31, 999, 999, 999].map(|field| field * sign);
+        let value = Duration::new(fields).unwrap();
+        assert_eq!(
+            value.time_nanoseconds(false).unwrap(),
+            sign * 9_007_199_254_740_991_999_999_999
+        );
+        fields[9] += sign;
+        assert!(Duration::new(fields).is_err());
+    }
+}
+
+#[test]
+fn rounding_increment_caps_distinguish_time_and_instant() {
+    use formatjs_temporal::{DateTimeUnit, Duration, PlainTime, RoundingMode, TimeUnit};
+    let time = PlainTime::new(0, 0, 0, 0).unwrap();
+    let duration = Duration::new([0; 10]).unwrap();
+    let instant = Instant::from_epoch_nanoseconds(0).unwrap();
+    for (unit, maximum) in [
+        (TimeUnit::Hour, 24),
+        (TimeUnit::Minute, 60),
+        (TimeUnit::Second, 60),
+        (TimeUnit::Millisecond, 1000),
+        (TimeUnit::Microsecond, 1000),
+        (TimeUnit::Nanosecond, 1000),
+    ] {
+        for increment in [1, 2, maximum / 2] {
+            assert_eq!(
+                time.round(unit, increment, RoundingMode::HalfExpand)
+                    .unwrap(),
+                time
+            );
+            assert_eq!(
+                duration
+                    .round(
+                        unit.into(),
+                        unit.into(),
+                        increment,
+                        RoundingMode::HalfExpand
+                    )
+                    .unwrap(),
+                duration
+            );
+        }
+        for increment in [0, 7, maximum - 1, maximum, maximum + 1] {
+            assert!(
+                time.round(unit, increment, RoundingMode::HalfExpand)
+                    .is_err()
+            );
+            assert!(
+                duration
+                    .round(
+                        unit.into(),
+                        unit.into(),
+                        increment,
+                        RoundingMode::HalfExpand
+                    )
+                    .is_err()
+            );
+        }
+    }
+    for (unit, maximum) in [
+        (TimeUnit::Hour, 24),
+        (TimeUnit::Minute, 1440),
+        (TimeUnit::Second, 86_400),
+        (TimeUnit::Millisecond, 86_400_000),
+    ] {
+        assert_eq!(
+            instant
+                .round(unit, maximum, RoundingMode::HalfExpand)
+                .unwrap(),
+            instant
+        );
+        for increment in [7, maximum + 1] {
+            assert!(
+                instant
+                    .round(unit, increment, RoundingMode::HalfExpand)
+                    .is_err()
+            );
+        }
+    }
+    assert!(
+        instant
+            .round(
+                TimeUnit::Nanosecond,
+                1_000_000_000,
+                RoundingMode::HalfExpand
+            )
+            .is_ok()
+    );
+    assert!(
+        instant
+            .round(
+                TimeUnit::Nanosecond,
+                1_080_000_000,
+                RoundingMode::HalfExpand
+            )
+            .is_err()
+    );
+    assert_eq!(
+        duration
+            .round(
+                DateTimeUnit::Day,
+                DateTimeUnit::Day,
+                1001,
+                RoundingMode::HalfExpand
+            )
+            .unwrap(),
+        duration
+    );
+}
+
+#[test]
+fn instant_offsets_preserve_grammar_and_nanosecond_boundaries() {
+    for sign in [-1i128, 1] {
+        for (body, nanoseconds) in [
+            ("00", 0),
+            ("23", 82_800_000_000_000),
+            ("2359", 86_340_000_000_000),
+            ("23:59", 86_340_000_000_000),
+            ("235959", 86_399_000_000_000),
+            ("23:59:59", 86_399_000_000_000),
+            ("23:59:59.1", 86_399_100_000_000),
+            ("235959,000000001", 86_399_000_000_001),
+            ("23:59:59.999999999", 86_399_999_999_999),
+        ] {
+            let input = format!(
+                "1970-01-01T00:00:00{}{body}",
+                if sign < 0 { '-' } else { '+' }
+            );
+            let instant: Instant = input.parse().unwrap();
+            assert_eq!(instant.epoch_nanoseconds(), -sign * nanoseconds, "{input}");
+        }
+    }
+    for offset in [
+        "",
+        "+",
+        "+0",
+        "+24",
+        "+01:60",
+        "+010260",
+        "+01:02:60",
+        "+0102:03",
+        "+01:0203",
+        "+01.5",
+        "+01:02.5",
+        "+01:02:03.",
+        "+01:02:03,",
+        "+01:02:03.1234567890",
+        "+01:02:03.1x",
+        "+01:02:03.1\n",
+        "+01:02:03.+1",
+        "+01:02:03.١",
+        "−01",
+        "+١٢",
+        "+01 ",
+    ] {
+        let input = format!("1970-01-01T00:00:00{offset}");
+        assert!(input.parse::<Instant>().is_err(), "{input:?}");
+    }
+}
+
+#[test]
+fn fixed_zone_identifiers_keep_minute_precision() {
+    use formatjs_temporal::{TimeZone, TimeZoneRegistry};
+    let registry = TimeZoneRegistry::empty();
+    let epoch = Instant::from_epoch_nanoseconds(0).unwrap();
+    for (input, canonical, nanoseconds) in [
+        ("+00", "+00:00", 0),
+        ("-00", "+00:00", 0),
+        ("-0000", "+00:00", 0),
+        ("-00:00", "+00:00", 0),
+        ("+23", "+23:00", 82_800_000_000_000),
+        ("-2359", "-23:59", -86_340_000_000_000),
+        ("+23:59", "+23:59", 86_340_000_000_000),
+    ] {
+        let zone = registry.resolve(input).unwrap();
+        assert_eq!(zone.identifier(), canonical);
+        assert_eq!(zone.offset_nanoseconds(epoch), nanoseconds);
+    }
+    for input in [
+        "+000000",
+        "+00:00:00",
+        "+010203.1",
+        "+01:02:03,000000001",
+        "+24",
+        "+01:60",
+        "−01",
+        "+١٢",
+        "+01\n",
+    ] {
+        assert!(registry.resolve(input).is_err(), "{input:?}");
+    }
+}
+
+#[test]
+fn clock_differences_round_exact_nanoseconds_before_number_fields() {
+    use formatjs_temporal::{
+        DateTimeUnit, FixedOffset, PlainDateTime, RoundingMode, ZonedDateTime, ZonedUnit,
+    };
+    // Expected values come from the adjacent multiples of ten, before Number conversion.
+    let cases: [(i128, RoundingMode, i128, i128); 10] = [
+        (
+            9_007_199_254_741_005,
+            RoundingMode::HalfExpand,
+            9_007_199_254_741_010,
+            -9_007_199_254_741_010,
+        ),
+        (
+            -9_007_199_254_741_005,
+            RoundingMode::HalfExpand,
+            -9_007_199_254_741_010,
+            9_007_199_254_741_010,
+        ),
+        (
+            9_007_199_254_741_005,
+            RoundingMode::HalfEven,
+            9_007_199_254_741_000,
+            -9_007_199_254_741_000,
+        ),
+        (
+            9_007_199_254_741_015,
+            RoundingMode::HalfEven,
+            9_007_199_254_741_020,
+            -9_007_199_254_741_020,
+        ),
+        (
+            9_007_199_254_741_001,
+            RoundingMode::Ceil,
+            9_007_199_254_741_010,
+            -9_007_199_254_741_000,
+        ),
+        (
+            -9_007_199_254_741_001,
+            RoundingMode::Floor,
+            -9_007_199_254_741_010,
+            9_007_199_254_741_000,
+        ),
+        (
+            9_007_199_254_740_999,
+            RoundingMode::Floor,
+            9_007_199_254_740_990,
+            -9_007_199_254_741_000,
+        ),
+        (
+            -9_007_199_254_740_999,
+            RoundingMode::Ceil,
+            -9_007_199_254_740_990,
+            9_007_199_254_741_000,
+        ),
+        (
+            9_007_199_254_741_005,
+            RoundingMode::Trunc,
+            9_007_199_254_741_000,
+            -9_007_199_254_741_000,
+        ),
+        (
+            -9_007_199_254_741_005,
+            RoundingMode::Trunc,
+            -9_007_199_254_741_000,
+            9_007_199_254_741_000,
+        ),
+    ];
+    let zone = FixedOffset::new(0).unwrap();
+    let zoned_start = ZonedDateTime::new(Instant::from_epoch_nanoseconds(0).unwrap(), zone);
+    let plain_start = PlainDateTime::from_epoch_nanoseconds(0).unwrap();
+    for (delta, mode, until, since) in cases {
+        let zoned_end = ZonedDateTime::new(Instant::from_epoch_nanoseconds(delta).unwrap(), zone);
+        let plain_end = PlainDateTime::from_epoch_nanoseconds(delta).unwrap();
+        let mut expected_until = [0; 10];
+        expected_until[9] = until;
+        let mut expected_since = [0; 10];
+        expected_since[9] = since;
+        assert_eq!(
+            zoned_start
+                .until(
+                    &zoned_end,
+                    ZonedUnit::Nanosecond,
+                    ZonedUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_until,
+            "zoned until: {delta} {mode:?}"
+        );
+        assert_eq!(
+            zoned_start
+                .since(
+                    &zoned_end,
+                    ZonedUnit::Nanosecond,
+                    ZonedUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_since,
+            "zoned since: {delta} {mode:?}"
+        );
+        assert_eq!(
+            plain_start
+                .until(
+                    plain_end,
+                    DateTimeUnit::Nanosecond,
+                    DateTimeUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_until,
+            "plain until: {delta} {mode:?}"
+        );
+        assert_eq!(
+            plain_start
+                .since(
+                    plain_end,
+                    DateTimeUnit::Nanosecond,
+                    DateTimeUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_since,
+            "plain since: {delta} {mode:?}"
+        );
+    }
+}
+
+#[test]
+fn clock_differences_round_exact_leading_microseconds_and_milliseconds() {
+    use formatjs_temporal::{
+        DateTimeUnit, FixedOffset, PlainDateTime, RoundingMode, ZonedDateTime, ZonedUnit,
+    };
+    let zone = FixedOffset::new(0).unwrap();
+    for (plain_unit, zoned_unit, factor, field) in [
+        (
+            DateTimeUnit::Microsecond,
+            ZonedUnit::Microsecond,
+            1000i128,
+            8usize,
+        ),
+        (
+            DateTimeUnit::Millisecond,
+            ZonedUnit::Millisecond,
+            1_000_000i128,
+            7usize,
+        ),
+    ] {
+        let half_span = 9_007_199_254_741_005i128 * factor / 2;
+        let zoned_start =
+            ZonedDateTime::new(Instant::from_epoch_nanoseconds(-half_span).unwrap(), zone);
+        let zoned_end =
+            ZonedDateTime::new(Instant::from_epoch_nanoseconds(half_span).unwrap(), zone);
+        let plain_start = PlainDateTime::from_epoch_nanoseconds(-half_span).unwrap();
+        let plain_end = PlainDateTime::from_epoch_nanoseconds(half_span).unwrap();
+        let mut expected = [0; 10];
+        expected[field] = 9_007_199_254_741_010;
+        assert_eq!(
+            zoned_start
+                .until(
+                    &zoned_end,
+                    zoned_unit,
+                    zoned_unit,
+                    10,
+                    RoundingMode::HalfExpand
+                )
+                .unwrap()
+                .fields(),
+            expected,
+            "zoned {zoned_unit:?}"
+        );
+        assert_eq!(
+            plain_start
+                .until(
+                    plain_end,
+                    plain_unit,
+                    plain_unit,
+                    10,
+                    RoundingMode::HalfExpand
+                )
+                .unwrap()
+                .fields(),
+            expected,
+            "plain {plain_unit:?}"
+        );
+    }
+}
+
+#[test]
+fn zoned_round_rejects_invalid_increments_before_offset_queries() {
+    use core::cell::Cell;
+    use formatjs_temporal::{
+        Error, RoundingMode, TimeZone, TransitionDirection, ZonedDateTime, ZonedUnit,
+    };
+    #[derive(Clone, Copy)]
+    struct CountingZone<'a>(&'a Cell<usize>);
+    impl TimeZone for CountingZone<'_> {
+        fn offset_nanoseconds(&self, _: Instant) -> i128 {
+            self.0.set(self.0.get() + 1);
+            0
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            visitor(0);
+        }
+        fn transition(&self, _: Instant, _: TransitionDirection) -> Option<Instant> {
+            None
+        }
+    }
+    let queries = Cell::new(0);
+    let value = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(0).unwrap(),
+        CountingZone(&queries),
+    );
+    for (unit, increment) in [(ZonedUnit::Nanosecond, 3), (ZonedUnit::Hour, 24)] {
+        queries.set(0);
+        assert_eq!(
+            value.round(unit, increment, RoundingMode::HalfExpand).err(),
+            Some(Error::InvalidRoundingOptions)
+        );
+        assert_eq!(queries.get(), 0, "{unit:?} increment {increment}");
+    }
+}
+
+fn day_window_gap_near_maximum()
+-> formatjs_temporal::ZonedDateTime<formatjs_temporal::TransitionZone<'static>> {
+    use formatjs_temporal::{OffsetTransition, TransitionZone, ZonedDateTime};
+    static EVENTS: [OffsetTransition; 1] = [OffsetTransition {
+        epoch_seconds: 8_639_999_914_500,
+        offset_seconds: 9_900,
+    }];
+    ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(8_639_999_829_900_000_000_000).unwrap(),
+        TransitionZone::new(6_300, &EVENTS, None).unwrap(),
+    )
+}
+
+#[test]
+fn day_rounding_retries_toward_origin_when_first_bound_overshoots() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let jump = OffsetTransition {
+        epoch_seconds: 42 * 3_600,
+        offset_seconds: 12 * 3_600,
+    };
+    let forward = [jump];
+    let backward = [
+        jump,
+        OffsetTransition {
+            epoch_seconds: 48 * 3_600,
+            offset_seconds: -23 * 3_600,
+        },
+    ];
+    for (transitions, start, end, outer, outer_hour, outward) in [
+        (&forward[..], 24, 61, "P2D", 72, RoundingMode::Ceil),
+        (&backward[..], 125, 53, "-P2D", 42, RoundingMode::Floor),
+    ] {
+        let zone = TransitionZone::new(-23 * 3_600, transitions, None).unwrap();
+        let zoned = |value| {
+            ZonedDateTime::new(Instant::from_epoch_nanoseconds(value * hour).unwrap(), zone)
+        };
+        let origin = zoned(start);
+        let target = zoned(end);
+        assert_eq!(
+            origin
+                .checked_add(outer.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            outer_hour * hour
+        );
+        for (mode, expected) in [
+            (RoundingMode::Trunc, "PT0S"),
+            (outward, outer),
+            (RoundingMode::HalfExpand, outer),
+        ] {
+            assert_eq!(
+                origin
+                    .until(&target, DateTimeUnit::Day, DateTimeUnit::Day, 2, mode)
+                    .unwrap()
+                    .to_string(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn week_rounding_finds_an_exact_rebased_bound_in_a_wide_gap() {
+    use formatjs_temporal::calendar::Calendar;
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let epoch = "2024-09-11T00:00Z"
+        .parse::<Instant>()
+        .unwrap()
+        .epoch_nanoseconds();
+    let hour = 3_600_000_000_000;
+    let seconds = (epoch / 1_000_000_000) as i64;
+    let transitions = [(-20, 22), (17, -18), (47, 6)].map(|(when, offset)| OffsetTransition {
+        epoch_seconds: seconds + when * 3_600,
+        offset_seconds: offset * 3_600,
+    });
+    let zone = TransitionZone::new(-23 * 3_600, &transitions, None).unwrap();
+    let at_hour = |value: i128| {
+        ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(epoch + value * hour).unwrap(),
+            zone,
+        )
+        .with_calendar(Calendar::Coptic)
+    };
+    let origin = at_hour(-97);
+    let target = at_hour(10);
+    assert_eq!(
+        origin
+            .checked_add("P1W".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant(),
+        target.instant()
+    );
+    for mode in [
+        RoundingMode::Floor,
+        RoundingMode::Ceil,
+        RoundingMode::HalfEven,
+    ] {
+        assert_eq!(
+            origin
+                .until(&target, DateTimeUnit::Month, DateTimeUnit::Week, 1, mode)
+                .unwrap()
+                .to_string(),
+            "P1W",
+            "{mode:?}"
+        );
+    }
+}
+
+#[test]
+fn day_rounding_finds_exact_rebased_endpoints_across_wide_gaps() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let residual_day = [(9, 0), (20, 16), (39, -22)];
+    let past_adjacent = [(9, 2), (45, 23), (47, -23), (54, 19)];
+    for (initial, events, start, center, end, increment, expected) in [
+        (
+            -23,
+            &residual_day[..],
+            "2024-01-01T23:00Z",
+            "2024-02-01T00:00Z",
+            32,
+            3,
+            "P33D",
+        ),
+        (
+            -22,
+            &past_adjacent[..],
+            "2024-01-01T22:00Z",
+            "2024-02-01T00:00Z",
+            45,
+            2,
+            "P34D",
+        ),
+        (
+            -22,
+            &past_adjacent[..],
+            "+275760-08-10T22:00Z",
+            "+275760-09-10T00:00Z",
+            45,
+            2,
+            "P34D",
+        ),
+    ] {
+        let epoch = center.parse::<Instant>().unwrap().epoch_nanoseconds();
+        let seconds = (epoch / 1_000_000_000) as i64;
+        let transitions: Vec<_> = events
+            .iter()
+            .map(|&(when, offset)| OffsetTransition {
+                epoch_seconds: seconds + when * 3_600,
+                offset_seconds: offset * 3_600,
+            })
+            .collect();
+        let zone = TransitionZone::new(initial * 3_600, &transitions, None).unwrap();
+        let origin = ZonedDateTime::new(start.parse().unwrap(), zone);
+        let target = ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(epoch + end * hour).unwrap(),
+            zone,
+        );
+        assert_eq!(
+            origin
+                .checked_add(expected.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant(),
+            target.instant()
+        );
+        for mode in [
+            RoundingMode::Floor,
+            RoundingMode::Ceil,
+            RoundingMode::HalfEven,
+        ] {
+            assert_eq!(
+                origin
+                    .until(
+                        &target,
+                        DateTimeUnit::Month,
+                        DateTimeUnit::Day,
+                        increment,
+                        mode
+                    )
+                    .unwrap()
+                    .to_string(),
+                expected,
+                "{mode:?}"
+            );
+        }
+    }
+}
+
+#[test]
+fn day_rounding_retries_a_rebased_lower_bound() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let march: Instant = "2024-03-01T00:00Z".parse().unwrap();
+    let epoch = march.epoch_nanoseconds();
+    let hour = 3_600_000_000_000;
+    let seconds = (epoch / 1_000_000_000) as i64;
+    let transitions = [(9, 0), (20, 16), (39, -22)].map(|(when, offset)| OffsetTransition {
+        epoch_seconds: seconds + when * 3_600,
+        offset_seconds: offset * 3_600,
+    });
+    let zone = TransitionZone::new(-23 * 3_600, &transitions, None).unwrap();
+    let origin = ZonedDateTime::new("2024-02-01T23:00Z".parse().unwrap(), zone);
+    let target = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(epoch + 33 * hour).unwrap(),
+        zone,
+    );
+    for (duration, hours) in [("P27D", -25), ("P30D", 46), ("P1M", 45)] {
+        assert_eq!(
+            origin
+                .checked_add(duration.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            epoch + hours * hour,
+            "{duration}"
+        );
+    }
+    for (mode, expected) in [
+        (RoundingMode::Floor, "P27D"),
+        (RoundingMode::Trunc, "P27D"),
+        (RoundingMode::Ceil, "P1M"),
+        (RoundingMode::HalfExpand, "P1M"),
+    ] {
+        assert_eq!(
+            origin
+                .until(&target, DateTimeUnit::Month, DateTimeUnit::Day, 3, mode)
+                .unwrap()
+                .to_string(),
+            expected,
+            "{mode:?}"
+        );
+    }
+}
+
+#[test]
+fn day_rounding_crosses_both_early_occurrences_in_a_wide_fold() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let transitions = [OffsetTransition {
+        epoch_seconds: 72 * 3_600,
+        offset_seconds: -23 * 3_600,
+    }];
+    let zone = TransitionZone::new(23 * 3_600, &transitions, None).unwrap();
+    let zoned =
+        |value| ZonedDateTime::new(Instant::from_epoch_nanoseconds(value * hour).unwrap(), zone);
+    let origin = zoned(23);
+    let target = zoned(73);
+    for (days, endpoint) in [("P1D", 47), ("P2D", 71), ("P3D", 141)] {
+        assert_eq!(
+            origin
+                .checked_add(days.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            endpoint * hour
+        );
+    }
+    for (mode, expected) in [
+        (RoundingMode::Trunc, "P2D"),
+        (RoundingMode::Ceil, "P3D"),
+        (RoundingMode::HalfExpand, "P2D"),
+    ] {
+        assert_eq!(
+            origin
+                .until(&target, DateTimeUnit::Day, DateTimeUnit::Day, 1, mode)
+                .unwrap()
+                .to_string(),
+            expected
+        );
+    }
+}
+
+#[test]
+fn day_window_gap_literal_endpoints() {
+    use formatjs_temporal::{Duration, Overflow};
+    let origin = day_window_gap_near_maximum();
+    let one_day: Duration = "P1D".parse().unwrap();
+    let shifted = origin.checked_add(one_day, Overflow::Constrain).unwrap();
+    assert_eq!(
+        shifted.instant().epoch_nanoseconds(),
+        8_639_999_916_300_000_000_000
+    );
+    assert_eq!(
+        origin
+            .checked_add("P1DT30M".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        8_639_999_918_100_000_000_000
+    );
+    assert_eq!(
+        origin
+            .checked_add("P2D".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        8_639_999_999_100_000_000_000
+    );
+    assert!(shifted.checked_add(one_day, Overflow::Constrain).is_err());
+}
+
+#[test]
+fn day_window_gap_total_retains_original_clock() {
+    use formatjs_temporal::DateTimeUnit;
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .total_duration("P1DT30M".parse().unwrap(), DateTimeUnit::Day)
+            .unwrap(),
+        1.0217391304347827
+    );
+}
+
+#[test]
+fn day_window_gap_round_day_half_expand() {
+    use formatjs_temporal::{DateTimeUnit as U, RoundingMode as R};
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .round_duration("P1DT30M".parse().unwrap(), U::Day, U::Day, 1, R::HalfExpand)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn day_window_gap_round_day_ceil() {
+    use formatjs_temporal::{DateTimeUnit as U, RoundingMode as R};
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .round_duration("P1DT30M".parse().unwrap(), U::Day, U::Day, 1, R::Ceil)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn day_window_gap_round_exact_minute() {
+    use formatjs_temporal::{DateTimeUnit as U, RoundingMode as R};
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .round_duration(
+                "P1DT30M".parse().unwrap(),
+                U::Day,
+                U::Minute,
+                1,
+                R::HalfExpand
+            )
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 1, 0, 30, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn day_window_maximum_zero_day() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        maximum
+            .until(&maximum, U::Day, U::Day, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert_eq!(
+        maximum
+            .since(&maximum, U::Day, U::Day, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert!(
+        maximum
+            .round_duration("PT0S".parse().unwrap(), U::Day, U::Day, 1, R::Trunc)
+            .is_err()
+    );
+}
+
+#[test]
+fn day_window_maximum_zero_minute() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        maximum
+            .until(&maximum, U::Day, U::Minute, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert_eq!(
+        maximum
+            .since(&maximum, U::Day, U::Minute, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert!(
+        maximum
+            .round_duration("PT0S".parse().unwrap(), U::Day, U::Minute, 1, R::Trunc)
+            .is_err()
+    );
+    for (smallest, increment) in [(U::Minute, 7), (U::Hour, 24)] {
+        assert!(
+            maximum
+                .until(&maximum, U::Day, smallest, increment, R::Trunc)
+                .is_err()
+        );
+        assert!(
+            maximum
+                .since(&maximum, U::Day, smallest, increment, R::Trunc)
+                .is_err()
+        );
+    }
+}
+
+#[test]
+fn day_window_maximum_zero_nanosecond() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        maximum
+            .until(&maximum, U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert_eq!(
+        maximum
+            .round_duration("PT0S".parse().unwrap(), U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+}
+
+#[test]
+fn day_window_maximum_exact_minute() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let before = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 60_000_000_000).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert!(
+        before
+            .until(&maximum, U::Day, U::Minute, 1, R::Trunc)
+            .is_err()
+    );
+}
+
+#[test]
+fn day_window_maximum_exact_nanosecond() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let before = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 60_000_000_000).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        before
+            .until(&maximum, U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    );
+    assert_eq!(
+        before
+            .since(&maximum, U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 0, 0, -1, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn year_month_addition_checks_intermediate_full_date_range() {
+    use formatjs_temporal::calendar::Calendar;
+    use formatjs_temporal::{DateFields, Duration, Overflow, PlainYearMonth};
+    let origin = PlainYearMonth::new(275760, 8, 22)
+        .unwrap()
+        .with_calendar(Calendar::IslamicCivil)
+        .unwrap();
+    let target = PlainYearMonth::new(275760, 9, 21)
+        .unwrap()
+        .with_calendar(Calendar::IslamicCivil)
+        .unwrap();
+    assert_eq!(origin.epoch_day(), 99_999_978);
+    assert_eq!(target.epoch_day(), 100_000_008);
+    assert_eq!(
+        origin
+            .with_fields(
+                DateFields {
+                    month: Some(6),
+                    ..DateFields::default()
+                },
+                Overflow::Constrain
+            )
+            .unwrap()
+            .epoch_day(),
+        100_000_008
+    );
+    let forward: Duration = "P1M".parse().unwrap();
+    let backward: Duration = "-P1M".parse().unwrap();
+    assert!(origin.checked_add(forward, Overflow::Constrain).is_err());
+    assert!(
+        origin
+            .checked_subtract(backward, Overflow::Constrain)
+            .is_err()
+    );
+}
+
+#[test]
+fn duration_comparison_validates_calendar_prefix_without_plain_clock_endpoints() {
+    use core::cmp::Ordering::{Equal, Less};
+    use formatjs_temporal::{Duration, FixedOffset, PlainDate, ZonedDateTime};
+    let maximum: PlainDate = "+275760-09-13".parse().unwrap();
+    assert!(
+        maximum
+            .compare_durations("P1YT1H".parse().unwrap(), "P1YT2H".parse().unwrap())
+            .is_err()
+    );
+    assert_eq!(
+        maximum
+            .compare_durations("P1D".parse().unwrap(), "P2D".parse().unwrap())
+            .unwrap(),
+        Less
+    );
+    let prefix: PlainDate = "+275760-08-13".parse().unwrap();
+    assert_eq!(
+        prefix
+            .compare_durations("P1M1D".parse().unwrap(), "P1M2D".parse().unwrap())
+            .unwrap(),
+        Less
+    );
+    let one: Duration = "P1D".parse().unwrap();
+    let zoned = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert!(
+        zoned
+            .compare_durations("P1DT1H".parse().unwrap(), "P1DT2H".parse().unwrap())
+            .is_err()
+    );
+    assert_eq!(
+        zoned
+            .compare_durations("PT1H".parse().unwrap(), "PT2H".parse().unwrap())
+            .unwrap(),
+        Less
+    );
+    assert_eq!(zoned.compare_durations(one, one).unwrap(), Equal);
+}
+
+#[test]
+fn transition_detects_discontinuous_fixed_footer() {
+    use formatjs_temporal::{
+        FutureRule, OffsetTransition, TimeZone, TransitionDirection, TransitionZone,
+    };
+    let rows = [OffsetTransition {
+        epoch_seconds: 0,
+        offset_seconds: 0,
+    }];
+    let zone = TransitionZone::new(0, &rows, Some(FutureRule::new(3600, None).unwrap())).unwrap();
+    let seam = Instant::from_epoch_nanoseconds(1_000_000_000).unwrap();
+    let earlier = Instant::from_epoch_nanoseconds(999_999_999).unwrap();
+    let later = Instant::from_epoch_nanoseconds(1_000_000_001).unwrap();
+    assert_eq!(zone.offset_nanoseconds(earlier), 0);
+    assert_eq!(zone.offset_nanoseconds(seam), 3_600_000_000_000);
+    assert_eq!(
+        zone.transition(earlier, TransitionDirection::Next),
+        Some(seam)
+    );
+    assert_eq!(
+        zone.transition(later, TransitionDirection::Previous),
+        Some(seam)
+    );
+    assert_eq!(zone.transition(seam, TransitionDirection::Next), None);
+    assert_eq!(zone.transition(seam, TransitionDirection::Previous), None);
+}
+
+#[test]
+fn previous_transition_includes_minimum_instant() {
+    use formatjs_temporal::{
+        FutureRule, OffsetTransition, TimeZone, TransitionDirection, TransitionRule,
+        TransitionZone, ZonedDateTime,
+    };
+
+    let minimum = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap();
+    let next_nanosecond = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS + 1).unwrap();
+    let rows = [OffsetTransition {
+        epoch_seconds: (-MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64,
+        offset_seconds: 3600,
+    }];
+    let footer = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Day {
+                day: 109,
+                seconds: 0,
+            },
+            TransitionRule::Day {
+                day: 300,
+                seconds: 0,
+            },
+        )),
+    )
+    .unwrap();
+    for (name, zone) in [
+        ("explicit", TransitionZone::new(0, &rows, None).unwrap()),
+        ("footer", TransitionZone::new(0, &[], Some(footer)).unwrap()),
+    ] {
+        assert_eq!(
+            zone.offset_nanoseconds(minimum),
+            3_600_000_000_000,
+            "{name}"
+        );
+        let zoned = ZonedDateTime::new(next_nanosecond, zone);
+        assert_eq!(
+            zoned
+                .transition(TransitionDirection::Previous)
+                .map(|value| value.instant()),
+            Some(minimum),
+            "{name}"
+        );
+        assert_eq!(
+            zone.transition(minimum, TransitionDirection::Previous),
+            None,
+            "{name}"
+        );
+    }
+    let no_change = TransitionZone::new(3600, &rows, None).unwrap();
+    assert_eq!(
+        no_change.transition(next_nanosecond, TransitionDirection::Previous),
+        None
+    );
+}
+
+#[test]
+fn westward_year_window_carries_previous_rule_year_daylight_offset() {
+    use formatjs_temporal::{
+        FutureRule, TimeZone, TransitionDirection, TransitionRule, TransitionZone,
+    };
+    let footer = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Julian {
+                day: 365,
+                seconds: 144 * 3600,
+            },
+            TransitionRule::Julian {
+                day: 364,
+                seconds: 120 * 3600,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(footer)).unwrap();
+    let january: Instant = "2025-01-01T00:00:00Z".parse().unwrap();
+    let end: Instant = "2025-01-03T23:00:00Z".parse().unwrap();
+    let start: Instant = "2024-01-06T00:00:00Z".parse().unwrap();
+    let before_january = Instant::from_epoch_nanoseconds(january.epoch_nanoseconds() - 1).unwrap();
+    let before_end = Instant::from_epoch_nanoseconds(end.epoch_nanoseconds() - 1).unwrap();
+    assert_eq!(zone.offset_nanoseconds(before_january), 3_600_000_000_000);
+    assert_eq!(zone.offset_nanoseconds(january), 3_600_000_000_000);
+    assert_eq!(zone.offset_nanoseconds(before_end), 3_600_000_000_000);
+    assert_eq!(zone.offset_nanoseconds(end), 0);
+    assert_eq!(
+        zone.transition(before_january, TransitionDirection::Next),
+        Some(end)
+    );
+    assert_eq!(
+        zone.transition(january, TransitionDirection::Previous),
+        Some(start)
+    );
 }

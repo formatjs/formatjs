@@ -1,10 +1,30 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {formatFractionalSeconds} from '#packages/temporal/format-digits.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  arrayIndexOf,
+  bigIntFrom,
+  floor,
+  mathMax,
+  mathMin,
+  mathTrunc,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+import {
+  argumentAt,
+  constructorPrototype,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   nativeTemporal,
   type NativeTimeResult,
 } from '#packages/temporal/native.js'
-import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getTimeSlot as getSlot,
   getNativeTimeSlot,
@@ -31,6 +51,7 @@ import {
 } from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
+  unitOptions,
   unitOption,
   timeUnit,
   timeUnitNanoseconds,
@@ -85,67 +106,97 @@ const names = [
   'microsecond',
   'nanosecond',
 ] as const
-const factors = names.map(name => timeUnitNanoseconds[name])
+const factors = clockValues(index => timeUnitNanoseconds[names[index]])
+const fieldOrder = [0, 4, 3, 1, 5, 2]
 const maxima = [24, 60, 60, 1000, 1000, 1000]
 const day = 86_400_000_000_000n
+// Temporal comparison §4.3.3 step 2. Read the receiver slot or throw.
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
-  if (result === undefined) throw new TypeError('Invalid PlainTime receiver')
+  if (result === undefined)
+    throw new TypeErrorConstructor('Invalid PlainTime receiver')
   return result
 }
+// A private six-field list must not consult array iterators, methods or species.
+// Temporal comparison §4.5.12 step 2. Copy six seed fields into a private list.
+function clockValues<T>(read: (index: number) => T): T[] {
+  return [read(0), read(1), read(2), read(3), read(4), read(5)]
+}
+// Temporal comparison §4.3.3 step 3. Split exact clock nanoseconds into getter fields.
 function fields(value: bigint): number[] {
-  return factors.map((factor, index) =>
-    Number((value / factor) % BigInt(maxima[index]))
+  return clockValues(index =>
+    numberFrom((value / factors[index]) % bigIntFrom(maxima[index]))
   )
 }
+// ECMA-262 preview §7.1.6 steps 1–5 and 8: coerce, check finiteness and truncate.
+// https://tc39.es/ecma262/pr/3966/#sec-snaptointeger
 function integer(value: unknown): number {
-  const result = Math.trunc(+(value as number))
-  if (!Number.isInteger(result))
-    throw new RangeError('Time field must be finite')
+  const result = mathTrunc(+(value as number))
+  // Step 2 rejects non-finite values, which remain non-integral after truncation.
+  if (!numberIsInteger(result))
+    throw new RangeErrorConstructor('Time field must be finite')
+  // Step 3 maps both signed zeros to mathematical zero.
   return result || 0
 }
+// Temporal comparison §13.6 steps 1–3. Read and validate overflow once.
 function overflow(options: unknown): boolean {
   const raw = optionsObject(options).overflow
   const value = raw === undefined ? 'constrain' : ToString(raw)
   if (value !== 'constrain' && value !== 'reject')
-    throw new RangeError('Invalid overflow')
+    throw new RangeErrorConstructor('Invalid overflow')
   return value === 'constrain'
 }
+// Temporal comparison §4.5.8 steps 1–3. Clamp or reject each field before encoding.
 function regulate(values: number[], constrain: boolean): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.regulatePlainTime(values, constrain)
   let result = 0n
+  // ECMA-262 preview §22.3.15.9 steps 1–3: clamp each field or reject out-of-range input.
+  // https://tc39.es/ecma262/pr/3966/#sec-regulatetime
+  // ECMA-262 preview §22.3.15.6 steps 1–7: check the six clock field limits.
+  // https://tc39.es/ecma262/pr/3966/#sec-isvalidtime
   for (let index = 0; index < 6; index++) {
     let value = values[index]
-    if (constrain) value = Math.max(0, Math.min(maxima[index] - 1, value))
+    if (constrain) value = mathMax(0, mathMin(maxima[index] - 1, value))
     if (value < 0 || value >= maxima[index])
-      throw new RangeError('Time out of range')
-    result += BigInt(value) * factors[index]
+      throw new RangeErrorConstructor('Time out of range')
+    result += bigIntFrom(value) * factors[index]
   }
+  // ECMA-262 preview §22.3.15.4 steps 1–3: the validated packed clock has implicit day zero.
+  // https://tc39.es/ecma262/pr/3966/#sec-createtimerecord
   return result
 }
+// Temporal comparison §4.5.6 step 2. Test the property bag branch.
 function object(value: unknown): value is Record<string, unknown> {
-  return (
-    value !== null && (typeof value === 'object' || typeof value === 'function')
-  )
+  return IsObject(value)
 }
+// ECMA-262 preview §22.3.15.13 steps 1–17: read and coerce each present field.
+// https://tc39.es/ecma262/pr/3966/#sec-topartialtimerecord
+// ECMA-262 preview §22.3.15.12: require at least one supplied clock field.
+// https://tc39.es/ecma262/pr/3966/#sec-partial-time-records
 function timeFields(
   item: Record<string, unknown>,
   initial = [0, 0, 0, 0, 0, 0]
 ): number[] {
-  const result = [...initial]
+  const result = clockValues(index => initial[index])
+  // ECMA-262 preview §22.12.3.11 steps 5–16: with() seeds omitted fields from the receiver.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaintime.prototype.with
   let any = false
-  for (const index of [0, 4, 3, 1, 5, 2]) {
+  for (let position = 0; position < 6; position++) {
+    const index = fieldOrder[position]
     const raw = item[names[index]]
     if (raw !== undefined) {
       result[index] = integer(raw)
       any = true
     }
   }
-  if (!any) throw new TypeError('At least one time field required')
+  // Step 16 rejects an input with all six fields absent.
+  if (!any) throw new TypeErrorConstructor('At least one time field required')
   return result
 }
+// ECMA-262 preview §22.12.5.2 steps 2–3: read slots, regulate a property bag, or parse text.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltime
 function toTime(value: unknown, options?: unknown): bigint {
   const existing = getSlot(value as object)
   if (existing !== undefined) {
@@ -163,16 +214,26 @@ function toTime(value: unknown, options?: unknown): bigint {
     return regulate(values, overflow(options))
   }
   if (typeof value !== 'string')
-    throw new TypeError('Expected time string or object')
+    throw new TypeErrorConstructor('Expected time string or object')
   const result = parsePlainTimeString(value)
   overflow(options)
   return result
 }
+export function toPlainTimeNanoseconds(value: unknown): bigint {
+  // ECMA-262 preview §22.3.15.14 steps 2–3: convert a supplied clock and read its time record.
+  // https://tc39.es/ecma262/pr/3966/#sec-totimerecordormidnight
+  // Temporal comparison §4.5.6: reuse internal conversion in both backends.
+  return import.meta.formatjsTemporalNativeData === true
+    ? bigIntFrom(toNativeTime(value).nanoseconds)
+    : toTime(value)
+}
+// Temporal comparison §4.3.3 step 2. Read the native-backed receiver slot or throw.
 function nativeTime(value: object): NativeTimeResult {
   const result = getNativeTimeSlot(value)
-  if (!result) throw new TypeError('Invalid PlainTime receiver')
+  if (!result) throw new TypeErrorConstructor('Invalid PlainTime receiver')
   return result
 }
+// Temporal comparison §4.5.6 steps 2.b.iii and 2.c.iv. Project the native clock result.
 function nativeTimeFromValue(value: bigint): NativeTimeResult {
   return nativeTemporal()!.roundPlainTimeResult(
     ((value % day) + day) % day,
@@ -181,6 +242,8 @@ function nativeTimeFromValue(value: bigint): NativeTimeResult {
     'trunc'
   )
 }
+// ECMA-262 preview §22.12.5.2 steps 2–3: convert to the native clock record.
+// https://tc39.es/ecma262/pr/3966/#sec-totemporaltime
 function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
   const existing = getNativeTimeSlot(value as object)
   if (existing !== undefined) {
@@ -198,47 +261,64 @@ function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
     return nativeTemporal()!.regulatePlainTimeResult(values, overflow(options))
   }
   if (typeof value !== 'string')
-    throw new TypeError('Expected time string or object')
+    throw new TypeErrorConstructor('Expected time string or object')
   const result = nativeTemporal()!.parsePlainTimeResult(value)
   overflow(options)
   return result
 }
+// ECMA-262 preview §22.12.5.1 steps 1–4: allocate and initialize the intrinsic result.
+// https://tc39.es/ecma262/pr/3966/#sec-createtemporaltime
 function create(value: bigint | NativeTimeResult): PlainTimeObject {
   if (import.meta.formatjsTemporalNativeData === true) {
     const data = typeof value === 'bigint' ? nativeTimeFromValue(value) : value
-    const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
+    const result = createObject(PlainTimeValue.prototype) as PlainTimeObject
     setNativeTimeSlot(result, data)
     return result
   }
-  const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
+  const result = createObject(PlainTimeValue.prototype) as PlainTimeObject
+  // ECMA-262 preview §22.3.15.2 steps 1–13: keep the within-day remainder of the balanced clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-balancetime
   setSlot(result, (((value as bigint) % day) + day) % day)
   return result
 }
+// Temporal comparison §4.5.11 steps 1–4. Create a local PlainTime from exact nanoseconds.
+// ECMA-262 preview §22.12.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaintime-instances
 export function createPlainTime(value: bigint): PlainTimeObject {
   return create(value)
 }
-function validateIncrement(unit: TimeUnit, increment: number): void {
-  const maximum = maxima[names.indexOf(unit)]
+// Temporal comparison §13.14 steps 2–4. Check the exclusive rounding increment.
+export function validateTimeIncrement(unit: TimeUnit, increment: number): void {
+  // ECMA-262 preview §22.3.13.3 steps 1–4: select the parent unit's maximum.
+  // https://tc39.es/ecma262/pr/3966/#sec-maximumtemporaldurationroundingincrement
+  // ECMA-262 preview §22.3.13.7 steps 2–4: check the exclusive bound and divisibility.
+  // https://tc39.es/ecma262/pr/3966/#sec-validatetemporalroundingincrement
+  const maximum = maxima[arrayIndexOf(names, unit)]
   if (increment >= maximum || maximum % increment !== 0)
-    throw new RangeError('Invalid time rounding increment')
+    throw new RangeErrorConstructor('Invalid time rounding increment')
 }
+// ECMA-262 preview §22.3.15.10 steps 1–8: round within the parent clock unit.
+// https://tc39.es/ecma262/pr/3966/#sec-roundtime
 export function roundTime(
   value: bigint,
   unit: TimeUnit,
   increment: number,
   mode: RoundingMode
 ): bigint {
-  validateIncrement(unit, increment)
+  validateTimeIncrement(unit, increment)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.roundPlainTime(value, unit, increment, mode)
-  const index = names.indexOf(unit)
+  const index = arrayIndexOf(names, unit)
   const parent = index === 0 ? day : factors[index - 1]
   const base = (value / parent) * parent
   return (
-    base + roundInstant(value - base, factors[index] * BigInt(increment), mode)
+    base +
+    roundInstant(value - base, factors[index] * bigIntFrom(increment), mode)
   )
 }
+// ECMA-262 preview §22.12.5.4 steps 1–9: convert, round, and balance the time difference.
+// https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplaintime
 function difference(
   value: bigint | number,
   other: unknown,
@@ -257,11 +337,11 @@ function difference(
   const increment = roundingIncrement(resolved.roundingIncrement)
   const mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = timeUnit(unitOption(resolved.smallestUnit) ?? 'nanosecond')
-  const smallIndex = names.indexOf(smallest),
-    largeIndex = names.indexOf(timeUnit(largest ?? 'hour'))
+  const smallIndex = arrayIndexOf(names, smallest),
+    largeIndex = arrayIndexOf(names, timeUnit(largest ?? 'hour'))
   if (largeIndex > smallIndex)
-    throw new RangeError('Largest unit smaller than smallest unit')
-  validateIncrement(smallest, increment)
+    throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
+  validateTimeIncrement(smallest, increment)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true)
     return createNativeDuration(
@@ -285,17 +365,21 @@ function difference(
         mode
       )
     )
+  // ECMA-262 preview §22.3.15.5: exact encoded subtraction equals field-wise subtraction.
+  // https://tc39.es/ecma262/pr/3966/#sec-differencetime
   return createDuration(
     balanceDurationTime(
       roundDuration(
         ((end as bigint) - (value as bigint)) * (since ? -1n : 1n),
-        factors[smallIndex] * BigInt(increment),
+        factors[smallIndex] * bigIntFrom(increment),
         mode
       ),
       largeIndex + 4
     )
   )
 }
+// ECMA-262 preview §22.12.5.3 steps 1–5: add the signed time fields and wrap the clock.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurationtotime
 function add(
   value: bigint | number,
   other: unknown,
@@ -310,8 +394,11 @@ function add(
     return create(native!.addPlainTimeResult(value, duration, sign < 0n))
   if (native)
     return create(native.addPlainTime(value as bigint, duration, sign < 0n))
+  // ECMA-262 preview §22.3.15.1 step 1: add the span before balancing the clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-addtime
   return create((value as bigint) + sign * durationNanoseconds(duration, false))
 }
+// Temporal comparison §4.3.16 steps 11–12. Round and format the selected precision.
 function format(
   value: bigint | number,
   precision: Precision = 'auto',
@@ -325,27 +412,27 @@ function format(
       ? 1n
       : precision === 'minute'
         ? factors[1]
-        : 10n ** BigInt(9 - precision)
+        : 10n ** bigIntFrom(9 - precision)
   // One day's nanoseconds fit exactly in a Number.
-  let remaining = Number(
+  let remaining = numberFrom(
     quantum === 1n
       ? (value as bigint)
       : roundInstant(value as bigint, quantum, mode) % day
   )
-  const hour = Math.floor(remaining / 3_600_000_000_000)
+  const hour = floor(remaining / 3_600_000_000_000)
   remaining %= 3_600_000_000_000
-  const minute = Math.floor(remaining / 60_000_000_000)
+  const minute = floor(remaining / 60_000_000_000)
   remaining %= 60_000_000_000
-  const pad = (part: number): string => (part < 10 ? '0' + part : String(part))
+  // ECMA-262 preview §22.3.15.11 steps 1–2: format the exact clock and subsecond remainder.
+  // https://tc39.es/ecma262/pr/3966/#sec-timerecordtostring
+  // §22.5.6 steps 1–7: print the colon-separated clock at the requested precision.
+  // https://tc39.es/ecma262/pr/3966/#sec-formattimestring
+  const pad = (part: number): string =>
+    part < 10 ? '0' + part : ToString(part)
   let result = pad(hour) + ':' + pad(minute)
   if (precision !== 'minute') {
-    result += ':' + pad(Math.floor(remaining / 1_000_000_000))
-    const digits = String(remaining % 1_000_000_000).padStart(9, '0')
-    const fraction =
-      precision === 'auto'
-        ? digits.replace(/0+$/, '')
-        : digits.slice(0, precision)
-    if (fraction) result += '.' + fraction
+    result += ':' + pad(floor(remaining / 1_000_000_000))
+    result += formatFractionalSeconds(remaining % 1_000_000_000, precision)
   }
   return result
 }
@@ -359,7 +446,7 @@ class PlainTimeValue implements PlainTimeObject {
     _microsecond?: unknown,
     _nanosecond?: unknown
   ) {
-    throw new TypeError('Use exported PlainTime constructor')
+    throw new TypeErrorConstructor('Use exported PlainTime constructor')
   }
   declare readonly hour: number
   declare readonly minute: number
@@ -368,11 +455,17 @@ class PlainTimeValue implements PlainTimeObject {
   declare readonly microsecond: number
   declare readonly nanosecond: number
   static from(item: unknown, options: unknown = undefined): PlainTimeObject {
+    // Temporal comparison §4.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.from
     if (import.meta.formatjsTemporalNativeData === true)
       return create(toNativeTime(item, options))
     return create(toTime(item, options))
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // Temporal comparison §4.2.3 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.compare
+    // ECMA-262 preview §22.3.15.3 steps 1–13: compare normalized clock totals.
+    // https://tc39.es/ecma262/pr/3966/#sec-comparetimerecord
     if (import.meta.formatjsTemporalNativeData === true) {
       const left = toNativeTime(one).nanoseconds,
         right = toNativeTime(two).nanoseconds
@@ -383,6 +476,8 @@ class PlainTimeValue implements PlainTimeObject {
     return left < right ? -1 : left > right ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainTimeObject {
+    // Temporal comparison §4.3.11 steps 1–20.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.with
     const value =
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -396,9 +491,9 @@ class PlainTimeValue implements PlainTimeObject {
       getYearMonthSlot(item) ||
       getMonthDaySlot(item)
     )
-      throw new TypeError('Expected partial time object')
+      throw new TypeErrorConstructor('Expected partial time object')
     if (item.calendar !== undefined || item.timeZone !== undefined)
-      throw new TypeError('Unexpected calendar or timeZone')
+      throw new TypeErrorConstructor('Unexpected calendar or timeZone')
     const values = timeFields(
       item,
       import.meta.formatjsTemporalNativeData === true
@@ -412,6 +507,8 @@ class PlainTimeValue implements PlainTimeObject {
     return create(regulate(values, overflow(options)))
   }
   add(duration: unknown): PlainTimeObject {
+    // Temporal comparison §4.3.9 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.add
     return add(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -421,6 +518,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   subtract(duration: unknown): PlainTimeObject {
+    // Temporal comparison §4.3.10 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.subtract
     return add(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -430,6 +529,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §4.3.12 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.until
     return difference(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -440,6 +541,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §4.3.13 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.since
     return difference(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -450,19 +553,26 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §4.3.15 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.equals
     if (import.meta.formatjsTemporalNativeData === true)
       return nativeTime(this).nanoseconds === toNativeTime(other).nanoseconds
     return read(this) === toTime(other)
   }
   round(roundTo: unknown): PlainTimeObject {
+    // Temporal comparison §4.3.14 steps 1–15.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.round
     const value =
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
         : read(this)
-    if (roundTo === undefined) throw new TypeError('roundTo required')
+    if (roundTo === undefined)
+      throw new TypeErrorConstructor('roundTo required')
+    // ECMA-262 preview §22.12.3.14 steps 4–4.c: create an own smallestUnit on a null-prototype object.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaintime.prototype.round
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        ? unitOptions(roundTo)
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement)
     const mode = roundingMode(resolved.roundingMode, 'halfExpand')
@@ -474,6 +584,8 @@ class PlainTimeValue implements PlainTimeObject {
     return create(roundTime(value as bigint, unit, increment, mode))
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §4.3.16 steps 1–12.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tostring
     const value =
         import.meta.formatjsTemporalNativeData === true
           ? nativeTime(this).nanoseconds
@@ -483,7 +595,9 @@ class PlainTimeValue implements PlainTimeObject {
     const mode = roundingMode(resolved.roundingMode, 'trunc')
     const raw = unitOption(resolved.smallestUnit)
     if (raw !== undefined && timeUnit(raw) === 'hour')
-      throw new RangeError('Cannot format hours only')
+      throw new RangeErrorConstructor('Cannot format hours only')
+    // ECMA-262 preview §22.5.9 steps 1–12: select precision before deriving its quantum in format.
+    // https://tc39.es/ecma262/pr/3966/#sec-tosecondsstringprecisionrecord
     const precision: Precision =
       raw === 'minute'
         ? 'minute'
@@ -502,15 +616,20 @@ class PlainTimeValue implements PlainTimeObject {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal Intl §15.11.6.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plaintime.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {kind: 'PlainTime', epochNanoseconds: slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {
+    // Temporal comparison §4.3.18 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tojson
     return format(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -518,7 +637,11 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainTime to primitive')
+    // Temporal comparison §4.3.19 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.valueof
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainTime to primitive'
+    )
   }
 }
 const localeStringIntrinsic = PlainTimeValue.prototype.toString
@@ -527,36 +650,57 @@ Object.defineProperty(PlainTimeValue, 'name', {
   value: 'PlainTime',
   configurable: true,
 })
-export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
+// Temporal comparison §4.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype
+// ECMA-262 preview §22.12.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plaintime-constructor
+// ECMA-262 preview §22.12.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaintime-constructor
+export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
   construct(target, args, newTarget) {
+    // Temporal comparison §4.1.1 steps 1–10.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime
+    const values = clockValues(index =>
+      argumentAt(args, index) === undefined
+        ? 0
+        : integer(argumentAt(args, index))
+    )
     if (import.meta.formatjsTemporalNativeData === true) {
-      const values = names.map((_, index) =>
-        args[index] === undefined ? 0 : integer(args[index])
-      )
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
-      const prototype = Reflect.get(newTarget, 'prototype')
-      const result = Object.create(
-        object(prototype) ? prototype : target.prototype
-      )
+      const prototype = constructorPrototype(newTarget, target)
+      const result = createObject(prototype)
       setNativeTimeSlot(result, value)
       return result
     }
-    const values = names.map((_, index) =>
-      args[index] === undefined ? 0 : integer(args[index])
-    )
     const value = regulate(values, false)
-    const prototype = Reflect.get(newTarget, 'prototype')
-    const result = Object.create(
-      object(prototype) ? prototype : target.prototype
-    )
+    const prototype = constructorPrototype(newTarget, target)
+    const result = createObject(prototype)
     setSlot(result, value)
     return result
   },
 })
+// ECMA-262 preview §22.12.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaintime-prototype-object
 Object.defineProperties(PlainTimeValue.prototype, {
+  // Temporal comparison §4.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.constructor
   constructor: {value: PlainTime, writable: true, configurable: true},
+  // Temporal comparison §4.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainTime', configurable: true},
 })
+// Temporal comparison §4.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.hour
+// Temporal comparison §4.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.minute
+// Temporal comparison §4.3.5 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.second
+// Temporal comparison §4.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.millisecond
+// Temporal comparison §4.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.microsecond
+// Temporal comparison §4.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.nanosecond
 defineGetters(PlainTimeValue.prototype, names, (receiver, _name, index) =>
   import.meta.formatjsTemporalNativeData === true
     ? nativeTime(receiver as object).fields[index]

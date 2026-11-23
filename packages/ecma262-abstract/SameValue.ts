@@ -1,10 +1,5 @@
-/**
- * https://www.ecma-international.org/ecma-262/11.0/index.html#sec-samevalue
- */
+/** ECMA-262 §7.2.9, including Number::sameValue. */
 export function SameValue(x: any, y: any): boolean {
-  if (Object.is) {
-    return Object.is(x, y)
-  }
   if (x === y) {
     return x !== 0 || 1 / x === 1 / y
   }

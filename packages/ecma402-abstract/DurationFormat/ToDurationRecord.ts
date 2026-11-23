@@ -1,19 +1,34 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+import {
   type DurationInput,
   type DurationRecord,
 } from '#packages/ecma402-abstract/types/duration.js'
 import {IsValidDurationRecord} from '#packages/ecma402-abstract/DurationFormat/IsValidDurationRecord.js'
 import {ToIntegerIfIntegral} from '#packages/ecma402-abstract/DurationFormat/ToIntegerIfIntegral.js'
 
+const durationPropertyNames = [
+  'days',
+  'hours',
+  'microseconds',
+  'milliseconds',
+  'minutes',
+  'months',
+  'nanoseconds',
+  'seconds',
+  'weeks',
+  'years',
+] as const
+
 export function ToDurationRecord(input: DurationInput): DurationRecord {
-  if (
-    (typeof input !== 'object' || input === null) &&
-    typeof input !== 'function'
-  ) {
+  if (!IsObject(input)) {
     if (typeof input === 'string') {
-      throw new RangeError('Invalid duration format')
+      throw new RangeErrorConstructor('Invalid duration format')
     }
-    throw new TypeError('Invalid duration')
+    throw new TypeErrorConstructor('Invalid duration')
   }
   const result: DurationRecord = {
     years: 0,
@@ -32,18 +47,8 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
   // https://tc39.es/ecma402/#sec-todurationrecord
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L495-L517
   let anyDefined = false
-  for (const field of [
-    'days',
-    'hours',
-    'microseconds',
-    'milliseconds',
-    'minutes',
-    'months',
-    'nanoseconds',
-    'seconds',
-    'weeks',
-    'years',
-  ] as const) {
+  for (let index = 0; index < durationPropertyNames.length; index++) {
+    const field = durationPropertyNames[index]
     const value = input[field]
     if (value !== undefined) {
       anyDefined = true
@@ -51,10 +56,10 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
     }
   }
   if (!anyDefined) {
-    throw new TypeError('Invalid duration format')
+    throw new TypeErrorConstructor('Invalid duration format')
   }
   if (!IsValidDurationRecord(result)) {
-    throw new RangeError('Invalid duration format')
+    throw new RangeErrorConstructor('Invalid duration format')
   }
   return result
 }

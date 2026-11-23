@@ -86,6 +86,7 @@ impl Calendar {
         Self::IslamicTabular,
         Self::Persian,
     ];
+    // Proposal comparison §3.3.3 step 3: expose the selected arithmetic calendar name.
     pub fn name(self) -> &'static str {
         match self {
             Self::Iso8601 => "iso8601",
@@ -103,6 +104,7 @@ impl Calendar {
             Self::Persian => "persian",
         }
     }
+    // Proposal comparison §12.3.10 step 4: select the arithmetic calendar for a prepared name.
     pub fn from_name(name: &str) -> Option<Self> {
         Some(match name {
             "iso8601" => Self::Iso8601,
@@ -121,6 +123,7 @@ impl Calendar {
             _ => return None,
         })
     }
+    // Proposal comparison §3.3.11 step 3: compute the year boundary used by day-of-year.
     pub fn start_of_year(self, year: i32) -> Result<i64, Error> {
         let year = check_year(i64::from(year))?;
         Ok(match self {
@@ -148,6 +151,7 @@ impl Calendar {
             }
         })
     }
+    // Proposal comparison §3.3.17 step 3: read the arithmetic calendar month count.
     pub fn months_in_year(self, year: i32) -> Result<u8, Error> {
         check_year(i64::from(year))?;
         Ok(match self {
@@ -156,6 +160,7 @@ impl Calendar {
             _ => 12,
         })
     }
+    // Proposal comparison §3.3.15 step 3: calculate month length for the validated calendar month.
     pub fn days_in_month(self, year: i32, month: u8) -> Result<u8, Error> {
         if month == 0 || month > self.months_in_year(year)? {
             return Err(Error::InvalidDate);
@@ -234,6 +239,7 @@ impl Calendar {
             }
         })
     }
+    // Proposal comparison §3.3.8 step 3: map the ordinal to its month code.
     pub fn month_code(self, year: i32, month: u8) -> Result<MonthCode, Error> {
         if month == 0 || month > self.months_in_year(year)? {
             return Err(Error::InvalidDate);
@@ -251,6 +257,7 @@ impl Calendar {
             }
         })
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve the month code to an ordinal.
     pub fn month_from_code(
         self,
         year: i32,
@@ -277,6 +284,7 @@ impl Calendar {
         }
         Ok(code.number + u8::from(self == Self::Hebrew && hebrew_leap(year) && code.number >= 6))
     }
+    // Proposal comparison §12.3.12 steps 2–3: convert fields and check the ordinary date range.
     pub fn to_epoch_day(
         self,
         year: i32,
@@ -286,6 +294,7 @@ impl Calendar {
     ) -> Result<i64, Error> {
         check_day(self.to_epoch_day_raw(year, month, day, overflow)?)
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve the month code before date conversion.
     pub fn to_epoch_day_code(
         self,
         year: i32,
@@ -300,6 +309,7 @@ impl Calendar {
             overflow,
         )
     }
+    // Proposal comparison §12.3.22 steps 1.b, 2: regulate fields and accumulate the epoch day.
     pub(crate) fn to_epoch_day_raw(
         self,
         year: i32,
@@ -320,9 +330,11 @@ impl Calendar {
         }
         Ok(epoch)
     }
+    // Proposal comparison §12.3.26 steps 1.b, 2: project a checked epoch day.
     pub fn from_epoch_day(self, epoch: i64) -> Result<Date, Error> {
         self.from_epoch_day_raw(check_day(epoch)?)
     }
+    // Proposal comparison §12.3.26 steps 1.b, 2: extract civil or arithmetic calendar fields.
     pub(crate) fn from_epoch_day_raw(self, epoch: i64) -> Result<Date, Error> {
         if !(-110_000_000..=110_000_000).contains(&epoch) {
             return Err(Error::OutOfRange);
@@ -386,6 +398,7 @@ impl Calendar {
             month_code: self.month_code(year, month)?,
         })
     }
+    // Proposal comparison §12.3.7 step 2.a: get the serial month prefix for calendar arithmetic.
     pub fn months_before_year(self, year: i32) -> Result<i64, Error> {
         let y = check_year(i64::from(year))?;
         Ok(if self == Self::Hebrew {
@@ -394,6 +407,7 @@ impl Calendar {
             y * i64::from(self.months_in_year(year)?)
         })
     }
+    // Proposal comparison §12.3.7 step 2.a: recover calendar year and month from a serial.
     pub(crate) fn year_month(self, serial: i64) -> Result<(i32, u8), Error> {
         if serial.unsigned_abs() > 6_000_000 {
             return Err(Error::OutOfRange);
@@ -416,17 +430,21 @@ impl Calendar {
         ))
     }
 
+    // Proposal comparison §12.3.7 steps 1, 2.a: delegate calendar addition on raw days.
     fn add_raw(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
         NumericCalendar::add_raw(self, epoch, duration, overflow)
     }
+    // Proposal comparison §12.3.7 steps 2.a, 3: add calendar fields and check the result day.
     pub fn add(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
         check_day(epoch)?;
         check_day(self.add_raw(epoch, duration, overflow)?)
     }
     /// Internal reference dates and rounding coordinates within ±110000000 epoch days.
+    // Proposal comparison §12.3.26 steps 1.b, 2: project a private extended reference day.
     pub fn from_epoch_day_extended(self, epoch: i64) -> Result<Date, Error> {
         self.from_epoch_day_raw(epoch)
     }
+    // Proposal comparison §12.3.13 step 3: convert fields in the wider reference-day range.
     pub fn to_epoch_day_extended(
         self,
         year: i32,
@@ -436,6 +454,7 @@ impl Calendar {
     ) -> Result<i64, Error> {
         check_extended_day(self.to_epoch_day_raw(year, month, day, overflow)?)
     }
+    // Proposal comparison §9.5.8 step 12: add a duration to an extended reference date.
     pub fn add_extended(
         self,
         epoch: i64,
@@ -444,22 +463,27 @@ impl Calendar {
     ) -> Result<i64, Error> {
         check_extended_day(NumericCalendar::add_raw(self, epoch, duration, overflow)?)
     }
+    // Proposal comparison §12.3.9 steps 3–4: check input days and route date difference.
     pub fn until(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         check_day(one)?;
         check_day(two)?;
         self.until_raw(one, two, largest)
     }
     /// Difference for internal rounding coordinates within ±110000000 epoch days.
+    // Proposal comparison §12.3.9 steps 3–4: delegate date difference on typed endpoints.
     pub fn until_raw(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         NumericCalendar::until_raw(self, one, two, largest)
     }
+    // Proposal comparison §3.3.4 and §3.3.5 step 3: check the day before projecting era fields.
     pub fn era(self, epoch: i64) -> Result<Option<Era>, Error> {
         check_day(epoch)?;
         self.era_extended(epoch)
     }
+    // Proposal comparison §9.3.4 and §9.3.5 step 3: project era fields on an extended day.
     pub fn era_extended(self, epoch: i64) -> Result<Option<Era>, Error> {
         Ok(self.era_of(self.from_epoch_day_extended(epoch)?, epoch))
     }
+    // Proposal comparison §12.3.26 steps 1.b, 2: supply era name and year for the projected date.
     pub(crate) fn era_of(self, date: Date, epoch: i64) -> Option<Era> {
         let y = date.year;
         let (name, year) = match self {
@@ -503,6 +527,7 @@ impl Calendar {
         };
         Some(Era { name, year })
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve an era year to the calendar year.
     pub fn year_from_era(self, era: &str, year: i32) -> Result<i32, Error> {
         let value = i64::from(year);
         let result = match (self, era) {
@@ -533,6 +558,7 @@ impl Calendar {
         Ok(check_year(result)? as i32)
     }
 }
+// Proposal comparison §3.5.7 steps 1.a, 1.c, 2.b: clamp or reject a bounded field.
 pub(crate) fn regulate(value: i32, min: i32, max: i32, overflow: Overflow) -> Result<i32, Error> {
     if overflow == Overflow::Reject && (value < min || value > max) {
         Err(Error::InvalidDate)
@@ -540,6 +566,7 @@ pub(crate) fn regulate(value: i32, min: i32, max: i32, overflow: Overflow) -> Re
         Ok(value.clamp(min, max))
     }
 }
+// Proposal comparison §12.3.26 step 2: Bound private calendar year estimates before arithmetic.
 pub(crate) fn check_year(year: i64) -> Result<i64, Error> {
     if (-400_000..=400_000).contains(&year) {
         Ok(year)
@@ -547,6 +574,7 @@ pub(crate) fn check_year(year: i64) -> Result<i64, Error> {
         Err(Error::OutOfRange)
     }
 }
+// Proposal comparison §3.5.12 step 2: check the inclusive ordinary epoch-day range.
 pub(crate) fn check_day(day: i64) -> Result<i64, Error> {
     if (MIN_DAY..=MAX_DAY).contains(&day) {
         Ok(day)
@@ -554,6 +582,7 @@ pub(crate) fn check_day(day: i64) -> Result<i64, Error> {
         Err(Error::OutOfRange)
     }
 }
+// Proposal comparison §9.5.8 step 12: guard private reference-day arithmetic.
 pub(crate) fn check_extended_day(day: i64) -> Result<i64, Error> {
     if (-110_000_000..=110_000_000).contains(&day) {
         Ok(day)
@@ -561,17 +590,21 @@ pub(crate) fn check_extended_day(day: i64) -> Result<i64, Error> {
         Err(Error::OutOfRange)
     }
 }
+// Proposal comparison §12.3.17 step 4: detect a Gregorian leap year.
 fn leap(year: i32) -> bool {
     year.rem_euclid(4) == 0 && (year.rem_euclid(100) != 0 || year.rem_euclid(400) == 0)
 }
+// Proposal comparison §12.3.26 step 2: determine whether a Hebrew year adds a month.
 fn hebrew_leap(year: i32) -> bool {
     (7 * i64::from(year) + 1).rem_euclid(19) < 7
 }
+// Proposal comparison §12.3.26 step 2: compute the Hebrew year-start postponement input.
 fn hebrew_delay(year: i64) -> i64 {
     let months = (235 * year - 234).div_euclid(19);
     let day = 29 * months + (12084 + 13753 * months).div_euclid(25920);
     day + i64::from((3 * (day + 1)).rem_euclid(7) < 3)
 }
+// Proposal comparison §12.3.26 step 2: compute the Hebrew year boundary.
 fn hebrew_start(year: i64) -> i64 {
     let present = hebrew_delay(year);
     -2092590
@@ -585,6 +618,7 @@ fn hebrew_start(year: i64) -> i64 {
         }
 }
 /// Unchecked ISO fields to Unix epoch day; callers validate date fields.
+// Proposal comparison §13.1 steps 3–4: convert prepared civil fields to a Unix epoch day.
 pub fn iso_day(year: i32, month: u8, day: u8) -> i64 {
     let y = i64::from(year) - i64::from(month <= 2);
     let era = y.div_euclid(400);
@@ -599,6 +633,7 @@ pub fn iso_day(year: i32, month: u8, day: u8) -> i64 {
 const ISO_YEAR_BLOCK_COUNT: usize = (146097 + 127) / 128;
 static ISO_YEAR_BLOCKS: [u32; ISO_YEAR_BLOCK_COUNT] = iso_year_blocks();
 
+// Proposal comparison §11.1.10 step 2: precompute year blocks for inverse ISO projection.
 const fn iso_year_blocks() -> [u32; ISO_YEAR_BLOCK_COUNT] {
     let mut blocks = [0; ISO_YEAR_BLOCK_COUNT];
     let mut index = 0;
@@ -620,6 +655,7 @@ const fn iso_year_blocks() -> [u32; ISO_YEAR_BLOCK_COUNT] {
 
 /// Raw inverse ISO conversion for validated epoch days within ±110000000.
 #[inline]
+// Proposal comparison §11.1.10 step 2: recover ISO date fields from an exact epoch day.
 pub fn iso_fields(day: i64) -> (i32, u8, u8) {
     let d = day + 719468;
     let era = d.div_euclid(146097);

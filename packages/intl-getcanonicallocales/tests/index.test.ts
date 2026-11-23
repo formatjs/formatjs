@@ -360,3 +360,204 @@ it('does not identify Locale objects by their visible properties', () => {
   }
   expect(getCanonicalLocales(fake)).toEqual(['en'])
 })
+
+it('canonicalizes variant aliases without a mutable array predicate', () => {
+  const original = Object.getOwnPropertyDescriptor(Array.prototype, 'every')!
+  let actual: string[]
+  try {
+    Object.defineProperty(Array.prototype, 'every', {
+      ...original,
+      value: () => {
+        throw new Error('Mutable alias predicate reached')
+      },
+    })
+    actual = getCanonicalLocales(['hy-arevmda', 'ja-Latn-hepburn-heploc'])
+  } finally {
+    Object.defineProperty(Array.prototype, 'every', original)
+  }
+  expect(actual!).toEqual(['hyw', 'ja-Latn-alalc97'])
+})
+
+it.each([
+  ['floor', Math, 'floor'],
+  ['min', Math, 'min'],
+  ['max', Math, 'max'],
+  ['trunc', Math, 'trunc'],
+  ['isNaN', globalThis, 'isNaN'],
+] as const)(
+  'converts locale-list length without mutable %s',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    const reads: string[] = []
+    const length = {
+      [Symbol.toPrimitive](hint: string) {
+        reads.push(hint)
+        return 1.9
+      },
+    }
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...original,
+        value() {
+          throw new Error('Mutable locale length helper reached')
+        },
+      })
+      actual = getCanonicalLocales({
+        0: 'en',
+        1: 'fr',
+        get length() {
+          reads.push('length')
+          return length
+        },
+      } as any)
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual(['en'])
+    expect(reads).toEqual(['length', 'number'])
+  }
+)
+
+it('boxes locale-list inputs without the mutable Object constructor', () => {
+  const define = Object.defineProperty
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'Object')!
+  let actual: unknown
+  try {
+    define(globalThis, 'Object', {
+      ...original,
+      value() {
+        throw new Error('Mutable locale Object constructor reached')
+      },
+    })
+    actual = [
+      getCanonicalLocales(7 as any),
+      getCanonicalLocales({length: 0} as any),
+    ]
+  } finally {
+    define(globalThis, 'Object', original)
+  }
+  expect(actual).toEqual([[], []])
+})
+
+it('uses intrinsic TypeError for invalid locale-list entries and null input', () => {
+  const Expected = TypeError
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'TypeError')!
+  const errors: unknown[] = []
+  try {
+    Object.defineProperty(globalThis, 'TypeError', {
+      ...original,
+      value: function () {
+        throw new Error('Mutable locale TypeError constructor reached')
+      },
+    })
+    for (const input of [null, [1], [Symbol()]]) {
+      try {
+        getCanonicalLocales(input as any)
+      } catch (error) {
+        errors.push(error)
+      }
+    }
+  } finally {
+    Object.defineProperty(globalThis, 'TypeError', original)
+  }
+  expect(errors).toHaveLength(3)
+  for (const error of errors) expect(error).toBeInstanceOf(Expected)
+})
+
+it('does not read a replaced Intl.Locale property during locale-list conversion', () => {
+  const original = Object.getOwnPropertyDescriptor(Intl, 'Locale')!
+  let actual: unknown
+  try {
+    Object.defineProperty(Intl, 'Locale', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable Locale constructor lookup reached')
+      },
+    })
+    actual = getCanonicalLocales({0: 'en', length: 1} as any)
+  } finally {
+    Object.defineProperty(Intl, 'Locale', original)
+  }
+  expect(actual).toEqual(['en'])
+})
+
+it('does not let a replacement Locale method brand ordinary objects', () => {
+  const original = Object.getOwnPropertyDescriptor(Intl, 'Locale')!
+  function Replacement() {}
+  Replacement.prototype.toString = () => 'fr'
+  let actual: unknown
+  try {
+    Object.defineProperty(Intl, 'Locale', {...original, value: Replacement})
+    actual = getCanonicalLocales({0: 'en', length: 1} as any)
+  } finally {
+    Object.defineProperty(Intl, 'Locale', original)
+  }
+  expect(actual).toEqual(['en'])
+})
+
+it('retains native Locale brand access after prototype replacement', () => {
+  const value = new Intl.Locale('en-US')
+  const prototype = Intl.Locale.prototype
+  const original = Object.getOwnPropertyDescriptor(prototype, 'toString')!
+  let actual: unknown
+  try {
+    Object.defineProperty(prototype, 'toString', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable Locale prototype lookup reached')
+      },
+    })
+    actual = getCanonicalLocales(value)
+  } finally {
+    Object.defineProperty(prototype, 'toString', original)
+  }
+  expect(actual).toEqual(['en-US'])
+})
+
+it.each([
+  ['iterator', Array.prototype, Symbol.iterator],
+  ['iterator next', Object.getPrototypeOf([][Symbol.iterator]()), 'next'],
+] as const)(
+  'brand checks ignore private array %s hooks',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        configurable: true,
+        get() {
+          throw new Error('Mutable Locale reader traversal reached')
+        },
+      })
+      actual = getCanonicalLocales({length: 0} as any)
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual([])
+  }
+)
+
+it.each([
+  ['call', Function.prototype, 'call'],
+  ['apply', Reflect, 'apply'],
+] as const)(
+  'native brand access retains its %s intrinsic',
+  (_name, owner, key) => {
+    const value = new Intl.Locale('en-US')
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...original,
+        value() {
+          throw new Error('Mutable Locale call intrinsic reached')
+        },
+      })
+      actual = getCanonicalLocales(value)
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual(['en-US'])
+  }
+)

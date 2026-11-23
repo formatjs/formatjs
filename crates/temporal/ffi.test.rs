@@ -428,3 +428,124 @@ fn complete_clock_requests_keep_legacy_rounding_responses_unchanged() {
         Ok(json!({"nanoseconds":"86399999999999","fields":[23,59,59,999,999,999]}))
     );
 }
+
+#[test]
+fn zoned_fields_defer_representability_but_validate_the_iso_date() {
+    for (text, year) in [
+        ("+999999-01-01T00:00[UTC]", 999999),
+        ("-999999-01-01T00:00[UTC]", -999999),
+        ("+999999-01-01[UTC]", 999999),
+    ] {
+        let parsed = query(
+            json!({"op":"parseZonedFields","text":text})
+                .to_string()
+                .as_bytes(),
+        )
+        .expect("syntactically valid zoned fields before range checks");
+        assert_eq!(parsed["fields"]["year"], year);
+        assert_eq!(
+            query(
+                json!({"op":"isoToEpochNanoseconds","fields":parsed["fields"]})
+                    .to_string()
+                    .as_bytes()
+            ),
+            Err(1)
+        );
+    }
+    for text in ["+999999-02-30T00:00[UTC]", "+999999-01-01T24:00[UTC]"] {
+        assert_eq!(
+            query(
+                json!({"op":"parseZonedFields","text":text})
+                    .to_string()
+                    .as_bytes()
+            ),
+            Err(1)
+        );
+    }
+}
+
+#[test]
+fn each_clock_field_clamps_before_narrowing_and_rejects_outside_bounds() {
+    for (name, maximum, factor) in [
+        ("hour", 23, 3_600_000_000_000i128),
+        ("minute", 59, 60_000_000_000),
+        ("second", 59, 1_000_000_000),
+        ("millisecond", 999, 1_000_000),
+        ("microsecond", 999, 1000),
+        ("nanosecond", 999, 1),
+    ] {
+        for (value, expected, valid) in [
+            (-f64::MAX, 0, false),
+            (-1e100, 0, false),
+            (-1.0, 0, false),
+            (0.0, 0, true),
+            (f64::from(maximum), maximum, true),
+            (f64::from(maximum + 1), maximum, false),
+            (1e100, maximum, false),
+            (f64::MAX, maximum, false),
+        ] {
+            let mut input = json!({"op":"regulatePlainTime","fields":{
+                "hour":0,"minute":0,"second":0,"millisecond":0,"microsecond":0,"nanosecond":0
+            },"constrain":true});
+            input["fields"][name] = json!(value);
+            let expected = json!((i128::from(expected) * factor).to_string());
+            assert_eq!(
+                query(input.to_string().as_bytes()),
+                Ok(expected.clone()),
+                "{name} {value}"
+            );
+            input["constrain"] = json!(false);
+            assert_eq!(
+                query(input.to_string().as_bytes()),
+                if valid { Ok(expected) } else { Err(1) },
+                "{name} {value}"
+            );
+        }
+    }
+}
+
+#[test]
+fn prepared_offsets_require_complete_utc_offset_strings() {
+    let mut request = json!({"op":"resolveZonedDateTime","nanoseconds":"0","identifier":"UTC","calendar":"iso8601","offset":"+00","behavior":"use","disambiguation":"compatible","matchMinute":false,"dateOnly":false});
+    for (offset, expected) in [
+        ("+00", "0"),
+        ("-00", "0"),
+        ("+23", "-82800000000000"),
+        ("-2359", "86340000000000"),
+        ("+23:59", "-86340000000000"),
+        ("+235959", "-86399000000000"),
+        ("-23:59:59", "86399000000000"),
+        ("+235959,000000001", "-86399000000001"),
+        ("-23:59:59.999999999", "86399999999999"),
+    ] {
+        request["offset"] = json!(offset);
+        assert_eq!(
+            query(request.to_string().as_bytes()),
+            Ok(json!(expected)),
+            "{offset}"
+        );
+    }
+    for offset in [
+        "",
+        "+",
+        "+0",
+        "+24",
+        "+01:60",
+        "+01:02:60",
+        "+0102:03",
+        "+01:0203",
+        "+01.5",
+        "+01:02.5",
+        "+01:02:03.",
+        "+01:02:03.1234567890",
+        "+01:02:03.1x",
+        "+01\n",
+        "+01[UTC]",
+        "+01:02:03Z",
+        "−01",
+        "+١٢",
+    ] {
+        request["offset"] = json!(offset);
+        assert_eq!(query(request.to_string().as_bytes()), Err(1), "{offset:?}");
+    }
+}

@@ -27,6 +27,7 @@ formatjs_library(
     srcs = [
         "accessors.ts",
         "calendar.ts",
+        "calendar-ids.ts",
         "calendar-table.ts",
         "compact-timezone.ts",
         "date-bridge.ts",
@@ -36,7 +37,9 @@ formatjs_library(
         "duration.ts",
         "duration-core.ts",
         "duration-format.ts",
+        "epoch-slots.ts",
         "fallback-data.ts",
+        "format-digits.ts",
         "host-calendar.ts",
         "host-calendar-data.ts",
         "host-timezone.ts",
@@ -45,6 +48,7 @@ formatjs_library(
         "instant.ts",
         "instant-format.ts",
         "instant-string.ts",
+        "intrinsics.ts",
         "kernel.ts",
         "legacy-calendar-date.ts",
         "legacy-durationformat.ts",
@@ -104,8 +108,14 @@ formatjs_library(
     entry_point_external_paths = {
         "index.ts": {"#packages/temporal/native.js": "./native.js"},
         "standalone.ts": {"#packages/temporal/native.js": "./native.js"},
-        "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
-        "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
+        "polyfill.ts": {
+            "#packages/temporal/index.js": "./index.js",
+            "#packages/temporal/native.js": "./native.js",
+        },
+        "polyfill-force.ts": {
+            "#packages/temporal/index.js": "./index.js",
+            "#packages/temporal/native.js": "./native.js",
+        },
     },
     entry_points = [
         "index.ts",
@@ -206,6 +216,17 @@ js_test(
 ]
 
 js_test(
+    name = "legacy_display_year_test",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-display-year.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+js_test(
     name = "legacy_calendar_cache_test",
     args = ["$(rlocationpath :pkg)"],
     data = [
@@ -221,10 +242,14 @@ js_test(
         args = [
             "$(rlocationpath :pkg)",
             mode,
+            "$(rlocationpath //packages/intl-numberformat:pkg)",
         ],
         data = [
             ":pkg",
             "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@formatjs/bigdecimal",
+            "//:node_modules/@formatjs/intl-localematcher",
+            "//packages/intl-numberformat:pkg",
         ],
         entry_point = "tests/partial-intl.test.mjs",
     )
@@ -232,6 +257,8 @@ js_test(
         "",
         "empty",
         "absent",
+        "numberformat_parts",
+        "listformat_parts",
     ]
 ]
 
@@ -780,7 +807,7 @@ sh_test(
             "//packages/ecma262-abstract",
             "//packages/ecma402-abstract/DateTimeFormat",
             "//packages/ecma402-abstract/types",
-        ],
+        ] + (["//:node_modules/@formatjs/intl-getcanonicallocales"] if name == "instant_test" else []),
     )
     for name, sources, data in [
         (
@@ -875,6 +902,11 @@ sh_test(
             ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
         ),
         (
+            "polyfill_regressions_test",
+            ["tests/polyfill-regressions.test.ts"],
+            ["//conformance-tests/temporal:polyfill_regressions"],
+        ),
+        (
             "duration_oracle_test",
             [
                 "tests/duration-oracle.test.ts",
@@ -953,6 +985,11 @@ sh_test(
             ],
         ),
         (
+            "comparisons_test",
+            ["tests/comparisons.test.ts"],
+            [],
+        ),
+        (
             "plain_time_test",
             [
                 "tests/plain-time.test.ts",
@@ -986,6 +1023,7 @@ sh_test(
             "instant_test",
             [
                 "tests/instant.test.ts",
+                "tests/host-exotic.test.ts",
                 "tests/rounding.test.ts",
                 "tests/duration.test.ts",
                 "tests/instant-strings.json",
@@ -1595,6 +1633,18 @@ js_test(
     env = {"TZ": "UTC"},
 )
 
+js_test(
+    name = "legacy_intl_storage_test",
+    size = "small",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-intl-storage.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
 [
     sh_test(
         name = name,
@@ -1979,6 +2029,25 @@ sh_test(
         "//native/hermes:hermes_runner",
         "@hermes//:hermesc",
     ],
+)
+
+js_test(
+    name = "host_candidate_range_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //packages/intl-datetimeformat:pkg)",
+        "$(rlocationpath //packages/intl-localematcher:pkg)",
+        "$(rlocationpath //packages/fast-memoize:pkg)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//packages/fast-memoize:pkg",
+        "//packages/intl-datetimeformat:pkg",
+        "//packages/intl-localematcher:pkg",
+    ],
+    entry_point = "tests/host-candidate-range.test.mjs",
 )
 
 js_test(
@@ -2497,6 +2566,7 @@ rolldown_bundle(
 rolldown_bundle(
     name = "native-iso-host",
     srcs = [
+        "tests/arithmetic-calendar-oracle.ts",
         "tests/native-iso-host.ts",
         "tests/plain-time-oracle.ts",
         "tests/public-calendar-oracle.ts",
@@ -3218,48 +3288,35 @@ sh_test(
     ],
 )
 
-formatjs_test(
-    name = "host_timezone_reference_node26_test",
-    srcs = [
-        "tests/host-timezone-icu.test.ts",
-        "tests/host-timezone-oracle.ts",
-    ],
-    data = [
-        "//conformance-tests/icu4j:temporal_timezone_fixtures",
-        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
-    ],
-    node_toolchain = "//tools/test262:node-runtime",
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        ":lib",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-        "//:node_modules/temporal-polyfill",
-        "//:node_modules/vitest",
-    ],
-)
-
-formatjs_test(
-    name = "host_timezone_icu_test",
-    srcs = [
-        "tests/host-timezone-icu.test.ts",
-        "tests/host-timezone-oracle.ts",
-    ],
-    data = [
-        "//conformance-tests/icu4j:temporal_timezone_fixtures",
-        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
-    ],
-    env = {"FORMATJS_TEMPORAL_HOST_TIMEZONE_STRICT": "1"},
-    tags = ["manual"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        ":lib",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-        "//:node_modules/temporal-polyfill",
-        "//:node_modules/vitest",
-    ],
-)
+[
+    formatjs_test(
+        name = name,
+        srcs = [
+            "tests/host-timezone-icu.test.ts",
+            "tests/host-timezone-oracle.ts",
+        ],
+        data = [
+            "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+        ],
+        env = {"FORMATJS_TEMPORAL_HOST_TIMEZONE_STRICT": "1"} if strict else {},
+        node_toolchain = toolchain,
+        tags = ["manual"] if strict else [],
+        tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+        deps = [
+            ":lib",
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@types/node",
+            "//:node_modules/temporal-polyfill",
+            "//:node_modules/vitest",
+        ],
+    )
+    for name, toolchain, strict in [
+        ("host_timezone_reference_node24_test", None, False),
+        ("host_timezone_reference_node26_test", "//tools/test262:node-runtime", False),
+        ("host_timezone_icu_test", None, True),
+    ]
+]
 
 rolldown_bundle(
     name = "compact-timezone-host",

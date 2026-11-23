@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {Type} from '#packages/ecma262-abstract/Type.js'
@@ -24,15 +28,15 @@ export function PartitionRelativeTimePattern(
   invariant(
     Type(value) === 'Number',
     `value must be number, instead got ${typeof value}`,
-    TypeError
+    TypeErrorConstructor
   )
   invariant(
     Type(unit) === 'String',
     `unit must be number, instead got ${typeof value}`,
-    TypeError
+    TypeErrorConstructor
   )
   if (isNaN(value) || !isFinite(value)) {
-    throw new RangeError(`Invalid value ${value}`)
+    throw new RangeErrorConstructor(`Invalid value ${value}`)
   }
   const resolvedUnit = SingularRelativeTimeUnit(unit)
   const {fields, style, numeric, pluralRules, numberFormat} =

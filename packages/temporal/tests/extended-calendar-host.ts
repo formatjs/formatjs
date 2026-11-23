@@ -67,7 +67,12 @@ for (const locale of [
       }),
       parts = formatter.formatToParts(input as unknown as Date),
       actual = Object.fromEntries(parts.map(part => [part.type, part.value]))
-    equal(actual.year, number(+row[14]), row.join(' ') + ' year')
+    const year = +row[14]
+    equal(
+      actual.year,
+      number(year <= 0 ? 1 - year : year),
+      row.join(' ') + ' year'
+    )
     if (![number(+row[11]), two(+row[11])].includes(actual.month))
       throw new Error(row.join(' ') + ' month')
     if (row[0] === 'datetime')

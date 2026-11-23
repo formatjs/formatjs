@@ -4,7 +4,15 @@
 
 ## Purpose
 
+Private slot access captures WeakMap get/set/has. Number-pattern caches also
+capture get/set and the constructor used by nested composition maps. Compact-magnitude indexes and
+complete NumberFormat contracts retain separate audit status.
+
 Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, unit, and compact notation formatting across 657 locales.
+
+Single-value parts use shared CreatePartsArray for ordered private-list projection
+and own data properties. This implements the result-building steps of ECMA-402
+§16.5.6 without iterator/push/index-setter hooks.
 
 ## Dependencies
 
@@ -29,7 +37,6 @@ matching the CLDR JSON threshold. Identical systems share Latin data through
 registration-time aliases without mutating the caller's data.
 All styles share decimal compact tables inside their style/sign pattern.
 Generation drops currency compact tables; legacy payloads still load.
-See the [audit](audits/2026-11-14-compact-percent-icu-spec.md) for ICU differences.
 
 `scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
 resolver, numbering-system projection, shared plural helpers, and resolver tests.
@@ -237,15 +244,13 @@ other decimal patterns retain the general fallback.
 
 ## Specification, ICU audit, and matching performance
 
-[2026-10-31 audit](audits/2026-10-31-numberformat.md) records independent ICU4C/J
-79.1 comparisons against CLDR 49, specification ambiguity probes, and benchmark
-tradeoffs. Rust/TS parity and tracked Test262 baselines remain separate evidence.
+Rust/TS parity and tracked Test262 baselines remain separate evidence.
 `//crates/intl_numberformat/tests:icu4j_conformance_snapshot_test` checks both
 implementations' text and parts against ICU4J. The Linux-only
 `:icu4c_conformance_snapshot_test` checks both against independent ICU4C text.
 Checked-in snapshots record current differences, including open correctness bugs;
 added, removed, or changed differences fail. Fixture hashes guard the case matrix
-and pinned oracle output. See the audit report for explicit regeneration commands.
+and pinned oracle output.
 The `icu_audit` executable also supports inventory output and strict comparisons.
 
 NumberFormat passes its available-locale Set directly to ResolveLocale, retaining
@@ -294,33 +299,31 @@ ranges, nonfinite values, custom grouping, and locale re-registration.
 
 ## Decimal normalization profile
 
-The [normalization follow-up](audits/2026-10-31-numberformat-normalization.md)
-profiles the remaining arithmetic work after compiled plans. BigDecimal strips
+BigDecimal strips
 trailing zeros in eight-digit chunks, retaining the single-digit tail and unsafe
 exponent fallback. NumberFormat benchmarks now distinguish host and polyfilled
 PluralRules with `--polyfill-plurals`. ICU snapshots remain unchanged.
 
 TS and Rust reuse positive exponent-preview rounding when final scaling stays
 unchanged. Negative directed rounding and exponent rollover retain their final
-pass. No data payload changes. See [measurement and guard coverage](audits/2026-10-31-numberformat-rounding-reuse.md).
+pass. No data payload changes.
 
 Shared TS BigDecimal arithmetic retains bounded small powers of ten and constructs
 safe integer Numbers without string parsing. Fractional/unsafe Numbers preserve
-the existing decimal-string path. See [benchmarks and boundaries](audits/2026-10-31-numberformat-decimal-powers.md).
+the existing decimal-string path.
 
 Decimal power lookup uses canonical Number exponent keys instead of serializing
 Decimal objects. At most 649 common integer scales remain cached; other scales
 compute without retention. Unscaled integer coefficients convert directly to
-Number. See [measurements and rounding guards](audits/2026-10-31-numberformat-exponent-cache.md).
+Number.
 
 Fixed rounding skips candidate arithmetic for integers with rounding increment
 one, retaining minimum fraction padding and the original rounding magnitude.
-Other increments still round normally. This especially helps DateTimeFormat's
-numeric fields; see [integer rendering](audits/2026-10-31-datetimeformat-integer-rendering.md).
+Other increments still round normally.
 
 BigDecimal division by powers of ten skips precision padding and zero stripping
 when exponent arithmetic stays safe. Default rounding increment `1` shares this
-path; general divisors retain fixed division precision. See [benchmarks and legacy arithmetic guards](audits/2026-10-31-numberformat-power-division.md).
+path; general divisors retain fixed division precision.
 
 ## Keep trailing zeros
 

@@ -1,8 +1,16 @@
+import {
+  arraySome,
+  bigIntFrom,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {BigDecimal} from '@formatjs/bigdecimal'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
-  createMemoizedListFormat,
-  createMemoizedNumberFormat,
+  createMemoizedListFormatForConstructor,
+  createMemoizedNumberFormatForConstructor,
+  getListFormatProvider,
+  getFormatterPartsMethod,
+  getNumberFormatProvider,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {TABLE_2} from '#packages/intl-durationformat/constants.js'
@@ -13,16 +21,55 @@ import {
   type DurationRecord,
 } from '#packages/intl-durationformat/types.js'
 
+const apply = Reflect.apply
+
+const stringListIterator = Array.prototype[Symbol.iterator]
+const stringListIteratorNext = Object.getPrototypeOf(
+  apply(stringListIterator, [], [])
+).next
+
+const formatterProviders = new WeakMap<
+  DurationFormat,
+  {
+    numberFormat: ReturnType<typeof createMemoizedNumberFormatForConstructor>
+    listFormat: ReturnType<typeof createMemoizedListFormatForConstructor>
+    numberFormatToParts: ReturnType<
+      ReturnType<typeof createMemoizedNumberFormatForConstructor>
+    >['formatToParts']
+    listFormatToParts: Intl.ListFormat['formatToParts']
+  }
+>()
+const getFormatterProviders = formatterProviders.get.bind(formatterProviders)
+const setFormatterProviders = formatterProviders.set.bind(formatterProviders)
+
+// Temporal comparison §§15.10.1–15.10.2 step4: retain supplied formatter providers.
+// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+export function initializeDurationFormatProviders(df: DurationFormat): void {
+  const NumberFormat = getNumberFormatProvider()
+  const ListFormat = getListFormatProvider()
+  setFormatterProviders(df, {
+    numberFormat: createMemoizedNumberFormatForConstructor(NumberFormat),
+    listFormat: createMemoizedListFormatForConstructor(ListFormat),
+    numberFormatToParts: getFormatterPartsMethod(NumberFormat),
+    listFormatToParts: getFormatterPartsMethod(ListFormat),
+  })
+}
+
+// Temporal amendment §15.9.8: partition normalized Temporal.Duration fields.
+// https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern
 export function PartitionDurationFormatPattern(
   df: DurationFormat,
   duration: DurationRecord
 ): DurationFormatPart[] {
+  // ECMA-402 §13.5.15: append to private Lists without public Array methods.
+  // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
   const result: DurationFormatPart[][] = []
   let done = false
   let separated = false
   let signDisplayed = true
-  const negative = TABLE_2.some(row => duration[row.valueField] < 0)
+  const negative = arraySome(TABLE_2, row => duration[row.valueField] < 0)
   const internalSlots = getInternalSlots(df)
+  const providers = getFormatterProviders(df)!
   let dataLocale = internalSlots.dataLocale
   const dataLocaleData = DurationFormat.localeData[dataLocale]
   if (!dataLocaleData) {
@@ -44,12 +91,13 @@ export function PartitionDurationFormatPattern(
     // Number.toString() may instead produce a shorter, rounded decimal.
     // https://tc39.es/ecma402/#sec-tointegerifintegral
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L475
-    let value = new BigDecimal(BigInt(duration[row.valueField]))
+    // Temporal comparison §§15.10.1–2 step4: private integer conversion keeps runtime intrinsic.
+    let value = new BigDecimal(bigIntFrom(duration[row.valueField]))
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
     const {unit, numberFormatUnit} = row
 
-    const nfOpts: NumberFormatOptions = Object.create(null)
+    const nfOpts = {__proto__: null} as unknown as NumberFormatOptions
     if (
       unit === 'seconds' ||
       unit === 'milliseconds' ||
@@ -64,20 +112,42 @@ export function PartitionDurationFormatPattern(
         nextStyle = internalSlots.nanoseconds
       }
       if (nextStyle === 'numeric' || nextStyle === 'fractional') {
+        // Temporal amendment §15.9.6: fold fractional duration fields exactly.
+        // https://tc39.es/proposal-temporal/#sec-computefractionaldigits
         if (unit === 'seconds') {
           value = value
-            .plus(new BigDecimal(BigInt(duration.milliseconds)).div(1000))
-            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1_000_000))
             .plus(
-              new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000_000)
+              new BigDecimal(bigIntFrom(duration.milliseconds)).div(
+                bigIntFrom(1000)
+              )
+            )
+            .plus(
+              new BigDecimal(bigIntFrom(duration.microseconds)).div(
+                bigIntFrom(1_000_000)
+              )
+            )
+            .plus(
+              new BigDecimal(bigIntFrom(duration.nanoseconds)).div(
+                bigIntFrom(1_000_000_000)
+              )
             )
         } else if (unit === 'milliseconds') {
           value = value
-            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1000))
-            .plus(new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000))
+            .plus(
+              new BigDecimal(bigIntFrom(duration.microseconds)).div(
+                bigIntFrom(1000)
+              )
+            )
+            .plus(
+              new BigDecimal(bigIntFrom(duration.nanoseconds)).div(
+                bigIntFrom(1_000_000)
+              )
+            )
         } else {
           value = value.plus(
-            new BigDecimal(BigInt(duration.nanoseconds)).div(1000)
+            new BigDecimal(bigIntFrom(duration.nanoseconds)).div(
+              bigIntFrom(1000)
+            )
           )
         }
         if (internalSlots.fractionalDigits === undefined) {
@@ -94,7 +164,8 @@ export function PartitionDurationFormatPattern(
     // ECMA-402 §13.5.12, step 15.a: keep zero minutes between displayed
     // numeric hours and seconds, even when minutesDisplay is auto.
     // https://tc39.es/ecma402/#sec-formatnumericunits
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L863-L864
+    // Temporal amendment §15.9.7: format the numeric sequence from duration fields.
+    // https://tc39.es/proposal-temporal/#sec-formatnumericunits
     const minutesBetweenHoursAndSeconds =
       unit === 'minutes' &&
       separated &&
@@ -137,7 +208,7 @@ export function PartitionDurationFormatPattern(
         nfOpts.unit = numberFormatUnit
         nfOpts.unitDisplay = style
       }
-      const nf = createMemoizedNumberFormat(
+      const nf = providers.numberFormat(
         internalSlots.locale,
         nfOpts as Intl.NumberFormatOptions
       )
@@ -146,7 +217,7 @@ export function PartitionDurationFormatPattern(
         list = []
       } else {
         list = result[result.length - 1]
-        list.push({
+        setDataProperty(list, `${list.length}`, {
           type: 'literal',
           value: separator,
         })
@@ -156,57 +227,75 @@ export function PartitionDurationFormatPattern(
       // which sidesteps the IEEE 754 round-trip that breaks
       // `roundingMode: 'trunc'` on values like `1 + 473/1e3` (#6462).
       // BigDecimal.toString() normalizes -0, so preserve that sign at the boundary.
-      let parts = nf.formatToParts(
-        value.isZero() && value.isNegative() ? -0 : value
-      )
-      parts.forEach(({type, value}) => {
-        list.push({
+      let parts = apply(providers.numberFormatToParts, nf, [
+        value.isZero() && value.isNegative() ? -0 : value,
+      ]) as Intl.NumberFormatPart[]
+      for (let index = 0; index < parts.length; index++) {
+        const {type, value} = parts[index]
+        setDataProperty(list, `${list.length}`, {
           type,
           value,
           unit: numberFormatUnit,
         })
-      })
+      }
       if (!separated) {
         if (style === '2-digit' || style === 'numeric') {
           separated = true
         }
-        result.push(list)
+        setDataProperty(result, `${result.length}`, list)
       }
     } else {
       separated = false
     }
   }
-  const lfOpts: Intl.ListFormatOptions = Object.create(null)
+  const lfOpts = {__proto__: null} as unknown as Intl.ListFormatOptions
   lfOpts.type = 'unit'
   let listStyle = internalSlots.style
   if (listStyle === 'digital') {
     listStyle = 'short'
   }
   lfOpts.style = listStyle
-  const lf = createMemoizedListFormat(internalSlots.locale, lfOpts)
+  const lf = providers.listFormat(internalSlots.locale, lfOpts)
   const strings: string[] = []
-  for (const parts of result) {
+  // ECMA-402 §13.5.15: traverse private part Lists by index.
+  // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+  for (let index = 0; index < result.length; index++) {
+    const parts = result[index]
     let string = ''
-    for (const {value} of parts) {
-      string += value
+    for (let partIndex = 0; partIndex < parts.length; partIndex++) {
+      string += parts[partIndex].value
     }
-    strings.push(string)
+    setDataProperty(strings, `${strings.length}`, string)
   }
-  let formatted = lf.formatToParts(strings)
+  // ECMA-402 §13.5.15: delegate a private List without public iterator lookup.
+  // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+  setDataProperty(strings, Symbol.iterator, () => {
+    const iterator = apply(stringListIterator, strings, [])
+    return {
+      __proto__: null,
+      next() {
+        return apply(stringListIteratorNext, iterator, [])
+      },
+    }
+  })
+  let formatted = apply(providers.listFormatToParts, lf, [
+    strings,
+  ]) as ReturnType<Intl.ListFormat['formatToParts']>
   let resultIndex = 0
   let resultLength = result.length
-  let flattened = []
-  for (const {type, value} of formatted) {
+  const flattened: DurationFormatPart[] = []
+  for (let index = 0; index < formatted.length; index++) {
+    const {type, value} = formatted[index]
     if (type === 'element') {
       invariant(resultIndex < resultLength, 'Index out of bounds')
       let parts = result[resultIndex]
-      for (const part of parts) {
-        flattened.push(part)
+      for (let index = 0; index < parts.length; index++) {
+        setDataProperty(flattened, `${flattened.length}`, parts[index])
       }
       resultIndex++
     } else {
       invariant(type === 'literal', 'Type must be literal')
-      flattened.push({
+      setDataProperty(flattened, `${flattened.length}`, {
         type: 'literal',
         value,
       })

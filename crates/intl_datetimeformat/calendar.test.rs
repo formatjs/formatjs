@@ -6,7 +6,7 @@ use formatjs_intl_datetimeformat::{
 use std::sync::Arc;
 
 #[test]
-fn gregorian_and_iso_keep_era_years_and_zero_based_months() {
+fn gregorian_and_iso_keep_signed_years_and_zero_based_months() {
     let registry = CalendarRegistry::default();
     for calendar in ["gregory", "iso8601"] {
         let epoch = registry.date_from_time(calendar, 0).unwrap();
@@ -19,7 +19,7 @@ fn gregorian_and_iso_keep_era_years_and_zero_based_months() {
             .unwrap();
         assert_eq!(
             (zero.era.as_str(), zero.year, zero.month, zero.day),
-            ("BC", 1, 0, 1)
+            ("BC", 0, 0, 1)
         );
         assert!(
             registry
@@ -112,4 +112,34 @@ fn replaced_provider_destructors_run_outside_runtime_borrows() {
     );
     runtime.register_calendar("custom".into(), Arc::new(|_| Err(Error::InvalidDate)));
     assert_eq!(calls.get(), 1);
+}
+
+#[test]
+fn gregorian_records_preserve_signed_years_at_era_and_date_bounds() {
+    let registry = CalendarRegistry::default();
+    for calendar in ["gregory", "iso8601"] {
+        for (milliseconds, year, month, day, era) in [
+            (-TIME_CLIP_BOUND, -271821, 3, 20, "BC"),
+            (-62_198_755_200_000, -1, 0, 1, "BC"),
+            (-62_167_219_200_000, 0, 0, 1, "BC"),
+            (-62_135_596_800_000, 1, 0, 1, "AD"),
+            (0, 1970, 0, 1, "AD"),
+            (TIME_CLIP_BOUND, 275760, 8, 13, "AD"),
+        ] {
+            assert_eq!(
+                registry.date_from_time(calendar, milliseconds).unwrap(),
+                CalendarFields {
+                    era: era.into(),
+                    year,
+                    month,
+                    day,
+                    month_name_index: None,
+                    month_number: None,
+                    leap_month: None,
+                    related_year: None,
+                    year_name: None,
+                }
+            );
+        }
+    }
 }

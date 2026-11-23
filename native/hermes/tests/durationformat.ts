@@ -462,6 +462,37 @@ sameFailure(
   sentinel,
   'coercion exception identity'
 )
+for (const Constructor of [Native, Reference]) {
+  const formatter = new Constructor('en')
+  for (const method of ['format', 'formatToParts'] as const) {
+    const events: string[] = []
+    const failure = {message: 'next duration field'}
+    const input = {
+      get days() {
+        events.push('days')
+        return 1
+      },
+      get hours(): number {
+        events.push('hours')
+        throw failure
+      },
+    }
+    const original = Number.isNaN
+    let error: unknown
+    try {
+      Number.isNaN = () => {
+        throw new Error('Private Number wrapper reached')
+      }
+      formatter[method](input)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Number.isNaN = original
+    }
+    check(error === failure, 'numeric conversion preserves next field failure')
+    equal(events, ['days', 'hours'], 'numeric conversion has no extra hooks')
+  }
+}
 const temporal = (globalThis as any).Temporal
 check(
   !!temporal?.Duration,

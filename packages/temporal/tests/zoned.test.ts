@@ -1,8 +1,9 @@
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
-import {expect, it} from 'vitest'
+import {expect, it, vi} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 
 it('matches independent ICU offsets and local fields through future transitions', () => {
@@ -272,4 +273,579 @@ it('rounds repeated civil dates to earliest midnight boundaries', () => {
       )
     }
   }
+})
+
+it('preserves the pinned lower-date guard for offset prefer and reject', () => {
+  const text = '-271821-04-19T23:00-01:00[-01:00]'
+  for (const offset of ['use', 'ignore'] as const)
+    expect(Temporal.ZonedDateTime.from(text, {offset}).epochNanoseconds).toBe(
+      -8_640_000_000_000_000_000_000n
+    )
+  for (const offset of ['prefer', 'reject'] as const)
+    expect(() => Temporal.ZonedDateTime.from(text, {offset})).toThrow(
+      RangeError
+    )
+})
+
+it.each([
+  '+999999-01-01T00:00[UTC]',
+  '+999999-01-01[UTC]',
+  '-271821-04-19T00:00[UTC]',
+  '+275760-09-14T00:00[UTC]',
+])('reads zoned string options before rejecting range: %s', text => {
+  const reads: string[] = []
+  const options = {
+    get disambiguation() {
+      reads.push('disambiguation')
+      return 'compatible'
+    },
+    get offset() {
+      reads.push('offset')
+      return 'reject'
+    },
+    get overflow() {
+      reads.push('overflow')
+      return 'constrain'
+    },
+  }
+  expect(() => Temporal.ZonedDateTime.from(text, options)).toThrow(RangeError)
+  expect(reads).toEqual(['disambiguation', 'offset', 'overflow'])
+})
+
+it.each(['disambiguation', 'offset', 'overflow'])(
+  'preserves abrupt %s completion before zoned string range failure',
+  name => {
+    const failure = {}
+    const options = Object.defineProperty({}, name, {
+      get() {
+        throw failure
+      },
+    })
+    let caught: unknown
+    try {
+      Temporal.ZonedDateTime.from('+999999-01-01T00:00[UTC]', options)
+    } catch (error) {
+      caught = error
+    }
+    expect(caught).toBe(failure)
+  }
+)
+
+it.each([
+  '+999999-02-30T00:00[UTC]',
+  '+999999-01-01T00:00[NoSuch/Zone]',
+  '+999999-01-01T00:00[UTC][u-ca=unknown]',
+])(
+  'rejects invalid syntax or identifiers before zoned string options: %s',
+  text => {
+    let read = false
+    expect(() =>
+      Temporal.ZonedDateTime.from(text, {
+        get disambiguation() {
+          read = true
+          return 'compatible'
+        },
+      })
+    ).toThrow(RangeError)
+    expect(read).toBe(false)
+  }
+)
+
+it('preserves minimum-Instant parsing despite the MakeDay witness ambiguity', () => {
+  // ECMA-262 §21.4.1.28 step 8: https://tc39.es/ecma262/#sec-makeday
+  // https://github.com/tc39/ecma262/issues/1087
+  expect(
+    Temporal.ZonedDateTime.from('-271821-04-20T00:00Z[UTC]').epochNanoseconds
+  ).toBe(-8_640_000_000_000_000_000_000n)
+})
+
+it('preserves exact zoned instants when rounding to one nanosecond at the bounds', () => {
+  for (const [epoch, zone] of [
+    [-8_640_000_000_000_000_000_000n, '-01:00'],
+    [8_640_000_000_000_000_000_000n, '+01:00'],
+  ] as const) {
+    const value = new Temporal.ZonedDateTime(epoch, zone)
+    for (const roundTo of [
+      'nanosecond',
+      {smallestUnit: 'nanosecond', roundingIncrement: 1},
+    ]) {
+      const rounded = value.round(roundTo)
+      expect(rounded).not.toBe(value)
+      expect(rounded.epochNanoseconds).toBe(epoch)
+      expect(rounded.timeZoneId).toBe(zone)
+      expect(rounded.calendarId).toBe(value.calendarId)
+    }
+  }
+})
+
+it('validates rounding options before returning an unchanged zoned instant', () => {
+  const value = new Temporal.ZonedDateTime(
+    -8_640_000_000_000_000_000_000n,
+    '-01:00'
+  )
+  const reads: string[] = []
+  const rounded = value.round({
+    get roundingIncrement() {
+      reads.push('roundingIncrement')
+      return 1
+    },
+    get roundingMode() {
+      reads.push('roundingMode')
+      return 'halfExpand'
+    },
+    get smallestUnit() {
+      reads.push('smallestUnit')
+      return 'nanosecond'
+    },
+  })
+  expect(rounded.epochNanoseconds).toBe(value.epochNanoseconds)
+  expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
+  expect(() =>
+    value.round({smallestUnit: 'nanosecond', roundingIncrement: 0})
+  ).toThrow(RangeError)
+  expect(() =>
+    value.round({smallestUnit: 'nanosecond', roundingMode: 'invalid'})
+  ).toThrow(RangeError)
+  expect(() => value.round('minute')).toThrow(RangeError)
+  expect(
+    new Temporal.ZonedDateTime(1n, 'UTC').round({
+      smallestUnit: 'nanosecond',
+      roundingIncrement: 2,
+    }).epochNanoseconds
+  ).toBe(2n)
+})
+
+it.each([
+  ['year', 1],
+  ['nanosecond', 3],
+  ['hour', 24],
+  ['day', 2],
+] as const)(
+  'rejects %s increment %s before local conversion',
+  (unit, increment) => {
+    const value = new Temporal.ZonedDateTime(0n, 'UTC')
+    const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'get')!
+    const reads: string[] = []
+    let queries = 0
+    let thrown: unknown
+    Map.prototype.get = function () {
+      queries++
+      throw new Error('Unexpected local-time cache read')
+    }
+    try {
+      value.round({
+        get roundingIncrement() {
+          reads.push('roundingIncrement')
+          return increment
+        },
+        get roundingMode() {
+          reads.push('roundingMode')
+          return 'halfExpand'
+        },
+        get smallestUnit() {
+          reads.push('smallestUnit')
+          return unit
+        },
+      })
+    } catch (error) {
+      thrown = error
+    } finally {
+      Object.defineProperty(Map.prototype, 'get', descriptor)
+    }
+    expect(thrown).toBeInstanceOf(RangeError)
+    expect(queries).toBe(0)
+    expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
+  }
+)
+
+it.each([
+  ['get', 'UTC', 0],
+  ['set', '+13:47', 49_620_000_000_000],
+] as const)(
+  'reads a valid fixed-zone offset without public Map.prototype.%s',
+  async (method, zone, expected) => {
+    vi.resetModules()
+    try {
+      const {Temporal: isolated} = await import('#packages/temporal/index.js')
+      // Fresh module keeps the fixed kernel cold; all objects use its own slots.
+      const value = new isolated.ZonedDateTime(0n, zone)
+      const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, method)!
+      const sentinel = new Error('Observable zone cache method')
+      let actual: number | undefined, error: unknown
+      try {
+        Object.defineProperty(Map.prototype, method, {
+          ...descriptor,
+          value() {
+            throw sentinel
+          },
+        })
+        actual = value.offsetNanoseconds
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(Map.prototype, method, descriptor)
+      }
+      expect(error).toBeUndefined()
+      expect(actual).toBe(expected)
+    } finally {
+      vi.resetModules()
+    }
+  }
+)
+
+it('initializes private timezone spellings without a replacement Map constructor', async () => {
+  vi.resetModules()
+  try {
+    const {Temporal: isolated} = await import('#packages/temporal/index.js')
+    const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'Map')!
+    const sentinel = new Error('Observable timezone Map constructor')
+    let actual: string | undefined, error: unknown
+    try {
+      Object.defineProperty(globalThis, 'Map', {
+        ...descriptor,
+        value: function () {
+          throw sentinel
+        },
+      })
+      actual = new isolated.ZonedDateTime(0n, 'UTC').timeZoneId
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(globalThis, 'Map', descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toBe('UTC')
+  } finally {
+    vi.resetModules()
+  }
+})
+
+it.each(['toLowerCase', 'Object.keys'] as const)(
+  'prepares first-use timezone names without public %s',
+  async hook => {
+    vi.resetModules()
+    try {
+      const {Temporal: isolated} = await import('#packages/temporal/index.js')
+      const owner = hook === 'Object.keys' ? Object : String.prototype
+      const key = hook === 'Object.keys' ? 'keys' : hook
+      const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+      const sentinel = new Error('Observable private timezone preparation')
+      let actual: string | undefined, error: unknown
+      try {
+        Object.defineProperty(owner, key, {
+          ...descriptor,
+          value() {
+            throw sentinel
+          },
+        })
+        actual = new isolated.Instant(0n).toString({timeZone: 'uTc'})
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(owner, key, descriptor)
+      }
+      expect(error).toBeUndefined()
+      expect(actual).toBe('1970-01-01T00:00:00+00:00')
+    } finally {
+      vi.resetModules()
+    }
+  }
+)
+
+it('formats an Instant UTC zone without public String.prototype.toUpperCase', async () => {
+  vi.resetModules()
+  try {
+    const {Temporal: isolated} = await import('#packages/temporal/index.js')
+    const value = new isolated.Instant(0n)
+    const descriptor = Object.getOwnPropertyDescriptor(
+      String.prototype,
+      'toUpperCase'
+    )!
+    const sentinel = new Error('Observable private timezone case conversion')
+    let actual: string | undefined, error: unknown
+    try {
+      Object.defineProperty(String.prototype, 'toUpperCase', {
+        ...descriptor,
+        value() {
+          throw sentinel
+        },
+      })
+      actual = value.toString({timeZone: 'uTc'})
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(String.prototype, 'toUpperCase', descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toBe('1970-01-01T00:00:00+00:00')
+  } finally {
+    vi.resetModules()
+  }
+})
+
+it.each(['iterator', 'push', 'sort', 'index setter', 'future setter'] as const)(
+  'unpacks cold named-zone data without public Array.prototype %s',
+  async hook => {
+    vi.resetModules()
+    try {
+      const {Temporal: isolated} = await import('#packages/temporal/index.js')
+      const future = hook === 'future setter'
+      const value = new isolated.ZonedDateTime(
+        0n,
+        future ? 'America/New_York' : 'Africa/Monrovia'
+      )
+      const key =
+        hook === 'iterator'
+          ? Symbol.iterator
+          : hook === 'index setter'
+            ? '1'
+            : future
+              ? 'future'
+              : hook
+      const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, key)
+      const sentinel = new Error('Observable private timezone rows')
+      const poison = () => {
+        throw sentinel
+      }
+      let actual: number | undefined, error: unknown
+      try {
+        Object.defineProperty(
+          Array.prototype,
+          key,
+          hook === 'index setter' || future
+            ? {configurable: true, set: poison}
+            : {...descriptor, value: poison}
+        )
+        actual = value.offsetNanoseconds
+      } catch (caught) {
+        error = caught
+      } finally {
+        if (descriptor) Object.defineProperty(Array.prototype, key, descriptor)
+        else Reflect.deleteProperty(Array.prototype, key)
+      }
+      expect(error).toBeUndefined()
+      expect(actual).toBe(future ? -18_000_000_000_000 : -2_670_000_000_000)
+    } finally {
+      vi.resetModules()
+    }
+  }
+)
+
+it.each([
+  ['String', 'UTC'],
+  ['padStart', 'UTC'],
+  ['replace', 'Africa/Monrovia'],
+  ['RegExp.test', 'UTC'],
+  ['RegExp.exec', 'UTC'],
+] as const)(
+  'rounds a zoned instant with its raw offset without public %s',
+  (hook, zone) => {
+    const value = new Temporal.ZonedDateTime(1n, zone)
+    const owner =
+      hook === 'String'
+        ? globalThis
+        : hook === 'RegExp.test' || hook === 'RegExp.exec'
+          ? RegExp.prototype
+          : String.prototype
+    const key =
+      hook === 'RegExp.test' ? 'test' : hook === 'RegExp.exec' ? 'exec' : hook
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const sentinel = new Error('Observable zoned rounding offset conversion')
+    const reads: string[] = []
+    let actual: bigint | undefined, error: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...descriptor,
+        value: function () {
+          throw sentinel
+        },
+      })
+      actual = value.round({
+        get roundingIncrement() {
+          reads.push('roundingIncrement')
+          return 1
+        },
+        get roundingMode() {
+          reads.push('roundingMode')
+          return 'halfExpand'
+        },
+        get smallestUnit() {
+          reads.push('smallestUnit')
+          return 'second'
+        },
+      }).epochNanoseconds
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(owner, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toBe(0n)
+    expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
+  }
+)
+
+it.each([
+  [String.prototype, 'slice'],
+  [String.prototype, 'indexOf'],
+  [RegExp.prototype, 'test'],
+  [RegExp.prototype, 'exec'],
+] as const)('converts zoned strings without mutable %s.%s', (owner, key) => {
+  expect(nativeTemporal()).toBeUndefined()
+  const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+  const sentinel = new Error('Observable zoned string classification')
+  const actual: bigint[] = []
+  const failures: unknown[] = []
+  const reads: string[] = []
+  try {
+    Object.defineProperty(owner, key, {
+      ...descriptor,
+      value: function () {
+        throw sentinel
+      },
+    })
+    for (const text of [
+      '1970-01-01[UTC]',
+      '1970-01-01T00:00+00:00[UTC]',
+      '1970-01-01T00:00:00+00:00:00[UTC]',
+      '1970-01-01T00Z[UTC]',
+    ]) {
+      try {
+        actual.push(
+          Temporal.ZonedDateTime.from(text, {
+            get disambiguation() {
+              reads.push('disambiguation')
+              return 'compatible'
+            },
+            get offset() {
+              reads.push('offset')
+              return 'reject'
+            },
+            get overflow() {
+              reads.push('overflow')
+              return 'reject'
+            },
+          }).epochNanoseconds
+        )
+      } catch (error) {
+        failures.push(error)
+      }
+    }
+  } finally {
+    Object.defineProperty(owner, key, descriptor)
+  }
+  expect(failures).toEqual([])
+  expect(actual).toEqual([0n, 0n, 0n, 0n])
+  expect(reads).toEqual([
+    'disambiguation',
+    'offset',
+    'overflow',
+    'disambiguation',
+    'offset',
+    'overflow',
+    'disambiguation',
+    'offset',
+    'overflow',
+    'disambiguation',
+    'offset',
+    'overflow',
+  ])
+})
+
+it('keeps minute and exact offset matching distinct after string classification', () => {
+  expect(
+    Temporal.ZonedDateTime.from('1970-01-01T00:00-00:45[Africa/Monrovia]')
+      .epochNanoseconds
+  ).toBe(2_670_000_000_000n)
+  expect(() =>
+    Temporal.ZonedDateTime.from('1970-01-01T00:00-00:45:00[Africa/Monrovia]')
+  ).toThrow(RangeError)
+})
+
+it('rejects invalid offset syntax before zoned string options', () => {
+  let reads = 0
+  expect(() =>
+    Temporal.ZonedDateTime.from('1970-01-01T00+24:00[UTC]', {
+      get disambiguation() {
+        reads++
+        return 'compatible'
+      },
+    })
+  ).toThrow(RangeError)
+  expect(reads).toBe(0)
+})
+
+it.each(['America/New_York', 'US/Eastern'])(
+  'keeps private primary-zone lookups out of difference validation with %s',
+  otherZone => {
+    const first = new Temporal.ZonedDateTime(0n, 'America/New_York')
+    const last = new Temporal.ZonedDateTime(86_400_000_000_000n, otherZone)
+    const key = 'America/New_York'
+    const descriptor = Object.getOwnPropertyDescriptor(Object.prototype, key)
+    let calls = 0,
+      invalid: unknown,
+      valid: unknown,
+      validError: unknown
+    try {
+      Object.defineProperty(Object.prototype, key, {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error('Inherited primary-zone lookup')
+        },
+      })
+      try {
+        first.until(last, {
+          largestUnit: 'day',
+          smallestUnit: 'hour',
+          roundingIncrement: 24,
+        })
+      } catch (caught) {
+        invalid = caught
+      }
+      try {
+        valid = first
+          .until(last, {largestUnit: 'day', smallestUnit: 'hour'})
+          .toString()
+      } catch (caught) {
+        validError = caught
+      }
+    } finally {
+      if (descriptor) Object.defineProperty(Object.prototype, key, descriptor)
+      else Reflect.deleteProperty(Object.prototype, key)
+    }
+    expect(calls).toBe(0)
+    expect(invalid).toBeInstanceOf(RangeError)
+    expect(validError).toBeUndefined()
+    expect(valid).toBe('P1D')
+  }
+)
+
+it('collects both fold candidates without inherited array index setters', () => {
+  const zone = 'America/New_York'
+  void new Temporal.ZonedDateTime(0n, zone).offsetNanoseconds
+  const original = Object.getOwnPropertyDescriptor(Array.prototype, '1')
+  let epoch: bigint | undefined,
+    error: unknown,
+    calls = 0
+  try {
+    Object.defineProperty(Array.prototype, '1', {
+      configurable: true,
+      set() {
+        calls++
+        throw new Error('Inherited private fold candidate')
+      },
+    })
+    epoch = Temporal.ZonedDateTime.from('2024-11-03T01:30[America/New_York]', {
+      disambiguation: 'later',
+    }).epochNanoseconds
+  } catch (caught) {
+    error = caught
+  } finally {
+    if (original) Object.defineProperty(Array.prototype, '1', original)
+    else Reflect.deleteProperty(Array.prototype, '1')
+  }
+  expect(error).toBeUndefined()
+  expect(calls).toBe(0)
+  expect(epoch).toBe(1730615400000000000n)
 })
