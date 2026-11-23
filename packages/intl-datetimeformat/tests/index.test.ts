@@ -436,7 +436,7 @@ describe('Intl.DateTimeFormat', function () {
         'fractionalSecondDigits'
       )
       let calls = 0,
-        actual: Intl.DateTimeFormat | undefined,
+        actual: InstanceType<typeof DateTimeFormat> | undefined,
         error: unknown
       try {
         Object.defineProperty(Object.prototype, 'fractionalSecondDigits', {
@@ -500,7 +500,7 @@ describe('Intl.DateTimeFormat', function () {
       locale = 'en',
       dateStyle: 'short' | 'medium' = 'short',
       hourCycle?: 'h23',
-      getter = false
+      getter: boolean = false
     ) => {
       const fields = {
         timeZone: 'UTC',
@@ -515,7 +515,7 @@ describe('Intl.DateTimeFormat', function () {
       const sentinel = new Error('Private combined style operation')
       let calls = 0,
         reads = 0,
-        actual: Intl.DateTimeFormat | undefined,
+        actual: InstanceType<typeof DateTimeFormat> | undefined,
         error: unknown
       try {
         actual = new DateTimeFormat(locale, {
