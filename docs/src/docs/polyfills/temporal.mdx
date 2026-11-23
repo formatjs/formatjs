@@ -292,5 +292,7 @@ Independent ICU controls verify calendar arithmetic, offsets, transitions,
 rounding, and locale output. These checks do not establish astronomical accuracy
 beyond the documented calendar authority ranges.
 
-See the [coverage and exclusion audit](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015a-temporal-completion-audit.md)
-for exact profiles, counts, data policies, and limitations.
+The [Bazel targets](https://github.com/formatjs/formatjs/blob/main/packages/temporal/BUILD.bazel)
+define the test profiles and reference their count and exclusion manifests.
+The [host Intl implementation notes](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015-temporal.md#default-installed-intl-timezone-provider)
+describe the time-zone transition search limits.

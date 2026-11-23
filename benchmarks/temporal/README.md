@@ -422,9 +422,8 @@ installation cost for ordinary Date callers, measured on one host.
 
 Runtime and tests live in
 [`packages/temporal`](../../packages/temporal/README.md); this directory owns
-benchmarks and recorded measurements. The package remains private pending release. Current
-[completion evidence](../../knowledge-base/015a-temporal-completion-audit.md) records
-conformance and delivery checks.
+benchmarks and recorded measurements. The [historical audit](https://github.com/formatjs/formatjs/blob/70ecc76dd00743b52d2e1046b788301eb26089a4/knowledge-base/015a-temporal-completion-audit.md)
+records the conformance and delivery checks from that checkpoint.
 
 Latest namespace-consumer measurement: default TS 38,639 bytes gzip; standalone
 339,338; forced `temporal-polyfill/full/implementation` 23,083. Default TS

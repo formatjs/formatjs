@@ -118,9 +118,8 @@ independent astronomical accuracy outside the documented oracle ranges.
 
 Rust exposes typed values and normalized operations for native bindings. Hermes JS
 retains ECMAScript coercion, brands, slots and object allocation; Rust validates
-and computes complete results. See the
-[completion audit](../../knowledge-base/015a-temporal-completion-audit.md) for
-independent controls and conformance scope.
+and computes complete results. The [Bazel targets](BUILD.bazel) define
+conformance coverage and reference independent controls.
 
 Full Intl compatibility gates cover 4,078 executions with Node host Intl and
 4,076 with native SDK Intl. Pinned IANA alias and CLDR zero-offset assumptions

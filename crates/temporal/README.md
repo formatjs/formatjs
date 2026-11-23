@@ -37,9 +37,8 @@ Borrowed and registered transition zones supply it for a day-start search
 clipped at an Instant limit. The default retains the bounded fallback.
 `TimeZone::nearest_gap_boundaries(local_nanoseconds)` lets those providers
 include raw neighboring local times in lower-clipped gap disambiguation.
-See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
-for current verification. Later sections retain historical implementation stages;
-their pending-work statements describe those stages.
+See the [Temporal implementation guide](../../knowledge-base/015-temporal.md#verify-changes)
+for current verification targets. Later sections describe historical checkpoints.
 
 Core supplies Instant parsing, ISO conversion, all nine rounding modes, exact
 Duration parsing/formatting/totals, clock arithmetic, calendar-aware plain
