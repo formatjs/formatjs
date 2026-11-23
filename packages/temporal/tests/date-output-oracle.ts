@@ -357,7 +357,7 @@ export function checkMonthDayLeapCodeHooks(
         day: 1,
       })
     } finally {
-      String.prototype[method] = original
+      Object.defineProperty(String.prototype, method, {value: original})
     }
     equal(regular!.monthCode, 'M01', 'Regular month code')
     equal(constrained!.monthCode, 'M01', 'Constrained leap code')
