@@ -11,6 +11,7 @@ pub struct VerificationOptions {
     pub missing_keys: bool,
     pub extra_keys: bool,
     pub structural_equality: bool,
+    pub plural_categories: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -425,6 +426,55 @@ fn items(resource: &Resource) -> BTreeMap<String, &Item> {
     }
 }
 
+// Android only looks up quantities the locale's plural rules select, and lint's
+// UnusedQuantity flags the rest. Locales without CLDR rules are skipped, as lint does.
+// Current Android lint (targetSdk 34+) checks UnusedQuantity against CLDR 42.
+// CLDR added these categories later, so lint still flags them even though our
+// newer data allows them.
+const ANDROID_LINT_UNUSED: &[(&str, &str)] = &[("gl", "many"), ("vi", "one")];
+
+fn unused_plural_categories(
+    table: &Path,
+    language: &str,
+    catalog: &BTreeMap<String, Resource>,
+) -> Vec<VerificationIssue> {
+    let Some(categories) = crate::plural_categories::cardinal_categories(language) else {
+        return Vec::new();
+    };
+    let base = language.split(['-', '_']).next().unwrap_or(language);
+    let allowed: Vec<&str> = categories
+        .iter()
+        .copied()
+        .filter(|category| {
+            !ANDROID_LINT_UNUSED
+                .iter()
+                .any(|(lang, unused)| lang.eq_ignore_ascii_case(base) && unused == category)
+        })
+        .collect();
+    catalog
+        .iter()
+        .filter_map(|(key, resource)| match resource {
+            Resource::Plurals(plurals) => Some((key, plurals)),
+            _ => None,
+        })
+        .flat_map(|(key, plurals)| {
+            let allowed = &allowed;
+            plurals
+                .keys()
+                .filter(move |quantity| !allowed.contains(&quantity.as_str()))
+                .map(move |quantity| VerificationIssue {
+                    locale: language.into(),
+                    message_id: format!("{}: {key}/{quantity}", table.display()),
+                    error: format!(
+                        "Plural quantity {quantity} is not used by {language} in CLDR {} or Android lint; allowed: {}",
+                        crate::plural_categories::CLDR_VERSION,
+                        allowed.join(", ")
+                    ),
+                })
+        })
+        .collect()
+}
+
 fn verify_item(
     source: &Item,
     target: &Item,
@@ -486,6 +536,13 @@ pub fn verify_resources(
         }
     }
     let mut issues = Vec::new();
+    if options.plural_categories {
+        for (table, catalogs) in &tables {
+            for (language, catalog) in catalogs {
+                issues.extend(unused_plural_categories(table, language, catalog));
+            }
+        }
+    }
     for (table, catalogs) in tables {
         let source = catalogs.get(source_locale).with_context(|| {
             format!(

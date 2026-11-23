@@ -950,8 +950,25 @@ text, checks array lengths and formatting-mode changes, and validates source and
 target printf syntax. `formatted="false"` skips printf checks; item attributes
 override their resource. Plurals require distinct supported quantities and
 `other`; target-only quantities compare against the source `other` item.
-Locale-specific category equality is not required. `translatable="false"`
+Locale-specific category equality is not required; see `--plural-categories`. `translatable="false"`
 resources are excluded, and unrelated Android resource types are ignored.
+
+#### Reject unused plural quantities
+
+`--plural-categories` fails plural items whose quantity the locale's CLDR
+cardinal rules never select, such as `one` in `values-ja` or `few` in
+`values-es`. Android never looks those items up, and lint reports them as
+`UnusedQuantity`. Source and target locales are both checked. Lookup drops
+trailing subtags (`b+sr+Latn` uses `sr`); languages CLDR has no rules for are
+skipped. Data comes from the bundled `cldr-core`; `vi` `one` and `gl` `many`
+are also rejected because current Android lint still uses CLDR 42, which lacks
+them. Apps with targetSdk below 34 get older lint data and may see more
+warnings. The flag currently requires `--message-syntax android`.
+
+```sh
+formatjs verify 'app/src/main/res/**/*.xml' \
+  --message-syntax android --source-locale en --plural-categories
+```
 
 This is a string-resource verifier, not a replacement for AAPT2 resource linking.
 See [Android string resource rules](https://developer.android.com/guide/topics/resources/string-resource#FormattingAndStyling).

@@ -105,6 +105,7 @@ pub fn verify_android_resources(
     missing_keys: bool,
     extra_keys: bool,
     structural_equality: bool,
+    plural_categories: Option<bool>,
 ) -> napi::Result<String> {
     let files = resources
         .into_iter()
@@ -124,6 +125,7 @@ pub fn verify_android_resources(
             missing_keys,
             extra_keys,
             structural_equality,
+            plural_categories: plural_categories.unwrap_or(false),
         },
     )
     .map_err(|error| Error::from_reason(format!("{error:#}")))?;

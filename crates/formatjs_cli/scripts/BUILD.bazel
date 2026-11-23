@@ -1,0 +1,15 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "plural_categories",
+    data = [
+        "//:root_package_json",
+    ],
+    entry_point = "plural_categories.ts",
+    visibility = ["//crates/formatjs_cli:__pkg__"],
+    deps = [
+        "//:node_modules/cldr-core",
+        "//:node_modules/minimist",
+    ],
+)

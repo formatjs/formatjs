@@ -66,6 +66,7 @@ fn options() -> VerificationOptions {
         missing_keys: true,
         extra_keys: true,
         structural_equality: true,
+        plural_categories: false,
     }
 }
 
@@ -496,4 +497,105 @@ fn android_resource_references_resolve_package_namespace_prefixes() {
     let issues = entity_issues(source, &target, true);
     assert_eq!(issues.len(), 1);
     assert!(issues[0].error.contains("resource reference changed"));
+}
+
+fn plurals(quantities: &[&str]) -> String {
+    let items: String = quantities
+        .iter()
+        .map(|quantity| format!(r#"<item quantity="{quantity}">%d {quantity}</item>"#))
+        .collect();
+    format!(r#"<plurals name="count">{items}</plurals>"#)
+}
+
+fn plural_issues(directory: &str, quantities: &[&str], enabled: bool) -> Vec<(String, String)> {
+    let files = BTreeMap::from([
+        (
+            "res/values/strings.xml".into(),
+            xml(&plurals(&["one", "other"])),
+        ),
+        (
+            format!("res/{directory}/strings.xml").into(),
+            xml(&plurals(quantities)),
+        ),
+    ]);
+    verify_resources(
+        &files,
+        "en",
+        VerificationOptions {
+            plural_categories: enabled,
+            ..VerificationOptions::default()
+        },
+    )
+    .unwrap()
+    .into_iter()
+    .map(|issue| (issue.locale, issue.message_id))
+    .collect()
+}
+
+#[test]
+fn android_plural_categories_reject_quantities_the_locale_never_selects() {
+    let six = ["zero", "one", "two", "few", "many", "other"];
+    let unused = |locale: &str, quantities: &[&str]| {
+        quantities
+            .iter()
+            .map(|quantity| (locale.to_string(), format!("res: plurals/count/{quantity}")))
+            .collect::<Vec<_>>()
+    };
+    assert_eq!(
+        plural_issues("values-es", &six, true),
+        unused("es", &["few", "two", "zero"])
+    );
+    assert_eq!(
+        plural_issues("values-pt-rBR", &six, true),
+        unused("pt-BR", &["few", "two", "zero"])
+    );
+    assert_eq!(
+        plural_issues("values-ja", &["one", "other"], true),
+        unused("ja", &["one"])
+    );
+    assert_eq!(
+        plural_issues("values-b+sr+Latn", &six, true),
+        unused("sr-Latn", &["many", "two", "zero"])
+    );
+    assert_eq!(
+        plural_issues("values-iw", &six, true),
+        unused("he", &["few", "many", "zero"])
+    );
+    assert_eq!(
+        plural_issues("values-vi", &["one", "other"], true),
+        unused("vi", &["one"])
+    );
+    assert_eq!(
+        plural_issues("values-gl", &["one", "many", "other"], true),
+        unused("gl", &["many"])
+    );
+    assert!(plural_issues("values-ar", &six, true).is_empty());
+    assert!(plural_issues("values-ja", &["one", "other"], false).is_empty());
+}
+
+#[test]
+fn android_plural_categories_check_the_source_and_skip_unknown_languages() {
+    let files = BTreeMap::from([
+        (
+            "res/values/strings.xml".into(),
+            xml(&plurals(&["one", "few", "other"])),
+        ),
+        (
+            "res/values-qaa/strings.xml".into(),
+            xml(&plurals(&["one", "few", "other"])),
+        ),
+    ]);
+    let issues = verify_resources(
+        &files,
+        "en",
+        VerificationOptions {
+            plural_categories: true,
+            ..VerificationOptions::default()
+        },
+    )
+    .unwrap();
+    assert_eq!(issues.len(), 1);
+    assert_eq!(issues[0].locale, "en");
+    assert_eq!(issues[0].message_id, "res: plurals/count/few");
+    assert!(issues[0].error.contains("allowed: one, other"));
 }

@@ -8,6 +8,8 @@ pub mod extractor;
 pub mod formatters;
 pub mod id_generator;
 pub mod java_printf;
+pub mod plural_categories;
+mod plural_categories_data;
 mod printf_validation;
 pub mod python_extractor;
 pub mod rust_extractor;

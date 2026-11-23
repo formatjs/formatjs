@@ -287,6 +287,10 @@ sentences are not translator-friendly.`
         .default('icu')
     )
     .option(
+      '--plural-categories',
+      `Reject plural categories the locale's CLDR rules never select (android only).`
+    )
+    .option(
       '--follow-links',
       `Whether to follow symbolic links when traversing directories. Defaults to true for compatibility with pnpm symlinked node_modules. Use --no-follow-links to disable.`,
       true

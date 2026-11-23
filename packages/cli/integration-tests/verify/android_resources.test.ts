@@ -51,6 +51,41 @@ describe.each([
       await rm(directory, {recursive: true, force: true})
     }
   })
+  test('rejects plural quantities the locale never selects', async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'formatjs-plurals-'))
+    const resource = (quantities: string[]) =>
+      `<resources><plurals name="count">${quantities
+        .map(quantity => `<item quantity="${quantity}">%d</item>`)
+        .join('')}</plurals></resources>`
+    try {
+      await mkdir(join(directory, 'values'))
+      await mkdir(join(directory, 'values-ja'))
+      await writeFile(
+        join(directory, 'values/strings.xml'),
+        resource(['one', 'other'])
+      )
+      const target = join(directory, 'values-ja/strings.xml')
+      await writeFile(target, resource(['one', 'other']))
+      const run = (pluralCategories: boolean) =>
+        execFile(binary!, [
+          'verify',
+          join(directory, '**/*.xml'),
+          '--message-syntax',
+          'android',
+          '--source-locale',
+          'en',
+          ...(pluralCategories ? ['--plural-categories'] : []),
+        ])
+      await expect(run(false)).resolves.toBeTruthy()
+      await expect(run(true)).rejects.toThrow(
+        /plurals\/count\/one: Plural quantity one is not used by ja/
+      )
+      await writeFile(target, resource(['other']))
+      await expect(run(true)).resolves.toBeTruthy()
+    } finally {
+      await rm(directory, {recursive: true, force: true})
+    }
+  })
   test('preserves custom references when checking structural equality', async () => {
     const directory = await mkdtemp(join(tmpdir(), 'formatjs-entities-'))
     const resource = (text: string) =>

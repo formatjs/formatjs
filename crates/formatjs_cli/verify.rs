@@ -82,6 +82,7 @@ pub fn verify(
         structural_equality,
         follow_links,
         MessageSyntax::Icu,
+        false,
     )
 }
 
@@ -94,8 +95,12 @@ pub fn verify_with_syntax(
     structural_equality: bool,
     follow_links: bool,
     message_syntax: MessageSyntax,
+    plural_categories: bool,
 ) -> Result<()> {
-    // Ensure source locale is provided
+    anyhow::ensure!(
+        !plural_categories || matches!(message_syntax, MessageSyntax::Android),
+        "--plural-categories is only supported with --message-syntax android"
+    );
 
     // Expand glob patterns to actual file paths
     let mut expanded_files = Vec::new();
@@ -144,6 +149,7 @@ pub fn verify_with_syntax(
                     missing_keys,
                     extra_keys,
                     structural_equality,
+                    plural_categories,
                 },
             )?
         } else {
