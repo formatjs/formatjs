@@ -27,6 +27,8 @@
     "@bazel/ibazel": "^0.28.0",
     "@bazel/runfiles": "^6.5.0",
     "@commitlint/cli": "^21.0.0",
+    "@emnapi/core": "2.0.0-beta.3",
+    "@emnapi/runtime": "2.0.0-beta.3",
     "@formatjs/bigdecimal": "workspace:*",
     "@formatjs/cli": "workspace:*",
     "@formatjs/cli-lib": "workspace:*",

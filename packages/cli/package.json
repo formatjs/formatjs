@@ -27,6 +27,10 @@
   "bin": {
     "formatjs": "bin/formatjs"
   },
+  "dependencies": {
+    "@emnapi/core": "2.0.0-beta.3",
+    "@emnapi/runtime": "2.0.0-beta.3"
+  },
   "peerDependencies": {
     "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.97.0",
     "@vue/compiler-core": "3",

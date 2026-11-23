@@ -19,3 +19,17 @@ formatjs_test(
     ],
     entry_point = "test_esm_imports.mjs",
 )
+
+formatjs_test(
+    name = "wasi_package_test",
+    size = "small",
+    data = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@emnapi/core",
+        "//:node_modules/@emnapi/runtime",
+        "//:node_modules/@formatjs/icu-messageformat-parser",
+        "//packages/cli:pkg",
+        "//packages/cli-lib:pkg",
+    ],
+    entry_point = "test_wasi_packages.mjs",
+)

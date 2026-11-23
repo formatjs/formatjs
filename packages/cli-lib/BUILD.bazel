@@ -2,6 +2,7 @@ load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 PACKAGE_NAME = "cli-lib"
 
@@ -67,6 +68,13 @@ copy_file(
     visibility = ["//visibility:public"],
 )
 
+copy_file(
+    name = "wasi_binary",
+    src = "//crates/formatjs_cli_napi:release_node_wasi",
+    out = "formatjs_cli.wasm",
+    visibility = ["//packages/cli:__pkg__"],
+)
+
 formatjs_library(
     name = "cli-lib",
     package_name = "@formatjs/cli-lib",
@@ -109,6 +117,7 @@ formatjs_library(
         "index.ts",
         "static-evaluation.ts",
     ],
+    extra_npm_srcs = [":wasi_binary"],
     homepage = "https://github.com/formatjs/formatjs",
     keywords = [
         "cli",
@@ -130,6 +139,8 @@ formatjs_library(
     license = "MIT",
     main = "index.js",
     package_dependency_version_overrides = {
+        "@emnapi/core": "2.0.0-beta.3",
+        "@emnapi/runtime": "2.0.0-beta.3",
         "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.97.0",
     },
     package_optional_deps = [
@@ -178,6 +189,7 @@ formatjs_library(
         },
     },
     repository = "formatjs/formatjs.git",
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     tsconfig_types = ["node"],
     type = "module",
     version = "10.5.0",  # x-release-please-version
@@ -189,6 +201,8 @@ formatjs_library(
     deps = [
         "//:node_modules/@babel/types",  # keep: transitive type dep required by @vue/compiler-sfc
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@emnapi/core",
+        "//:node_modules/@emnapi/runtime",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@glimmer/syntax",
         "//:node_modules/@types/fs-extra",
@@ -256,6 +270,8 @@ rolldown_bundle(
         "@glimmer/syntax",
         "@glimmer/validator",
         "@vue/compiler-core",
+        "@emnapi/core",
+        "@emnapi/runtime",
         "svelte",
         "source-map-support",
     ],
@@ -266,6 +282,8 @@ rolldown_bundle(
     deps = [
         "//:node_modules/@babel/types",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@emnapi/core",
+        "//:node_modules/@emnapi/runtime",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/icu-skeleton-parser",
         "//:node_modules/@glimmer/syntax",

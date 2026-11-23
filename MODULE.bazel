@@ -238,6 +238,7 @@ crate.from_cargo(
         "aarch64-unknown-linux-gnu",
         "aarch64-unknown-linux-musl",
         "wasm32-unknown-unknown",
+        "wasm32-wasip1",
         "x86_64-apple-darwin",
         "x86_64-apple-ios",
         "x86_64-linux-android",
@@ -336,6 +337,15 @@ register_toolchains(
 ######### test262 rules #########
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# Keep in sync with @emnapi/core and @emnapi/runtime in package.json.
+http_archive(
+    name = "emnapi_wasi",
+    build_file_content = 'exports_files(["lib/wasm32-wasip1/libemnapi-basic-napi-rs.a"], visibility = ["//visibility:public"])',
+    sha256 = "e93c0e2d5ef7da345d6c5370de0dc19dd02c3eda493c61881b376b73fc534db1",
+    strip_prefix = "package",
+    urls = ["https://registry.npmjs.org/emnapi/-/emnapi-2.0.0-beta.3.tgz"],
+)
 
 http_archive(
     name = "freebsd_x86_64_sysroot",
