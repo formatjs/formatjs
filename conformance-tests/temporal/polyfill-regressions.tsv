@@ -1,0 +1,20 @@
+# Shared TS/Rust regressions. Sources and licenses in README.md.
+# duration-string: field, value, smallest unit, rounding mode, expected string
+duration-string	nanoseconds	1152921504606846976	microsecond	ceil	PT1152921504.606847S
+duration-string	nanoseconds	-1152921504606846976	microsecond	floor	-PT1152921504.606847S
+duration-string	milliseconds	1152921504606846976	second	ceil	PT1152921504606847S
+duration-string	microseconds	1152921504606846976	millisecond	ceil	PT1152921504606.847S
+# zoned-until / zoned-since: start, end, smallest unit, rounding mode, expected duration
+zoned-until	2024-12-01T01:30[America/New_York]	2024-11-03T01:30-05:00[America/New_York]	nanosecond	trunc	-P27DT24H
+zoned-since	2024-12-01T01:30[America/New_York]	2024-11-03T01:30-05:00[America/New_York]	nanosecond	trunc	P27DT24H
+zoned-until	2024-11-03T01:30-05:00[America/New_York]	2024-11-04T00:36[America/New_York]	minute	trunc	PT24H6M
+zoned-until	2024-11-02T01:30[America/New_York]	2024-11-03T01:12-05:00[America/New_York]	minute	trunc	P1DT42M
+zoned-until	2024-10-26T01:46+02:00[Antarctica/Troll]	2024-10-27T01:45+00:00[Antarctica/Troll]	hour	floor	P1DT1H
+# epoch-milliseconds: epoch nanoseconds, expected epoch milliseconds (floor)
+epoch-milliseconds	999999999999999999	999999999999
+epoch-milliseconds	1000000000000000001	1000000000000
+epoch-milliseconds	-1000000000000000001	-1000000000001
+epoch-milliseconds	-999999999999999999	-1000000000000
+# instant-parse: RFC 9557 string, expected epoch nanoseconds
+instant-parse	19700101t000000+010203,456789123[America/New_York][example-tag=alpha-beta]	-3723456789123
+instant-parse	1970-01-01T00:00:00,000000001-00:00:00.000000001[!UTC][u-ca=iso8601]	2

@@ -2226,6 +2226,81 @@ fn independent_icu_zoned_calendar_rounding() {
 }
 
 #[test]
+fn upstream_polyfill_regressions() {
+    use formatjs_temporal::{Duration, Precision, ZonedDateTime};
+
+    let zones = iana_registry();
+    let parse_zoned = |input| ZonedDateTime::parse(input, zones, Default::default()).unwrap();
+    for line in include_str!(env!("FORMATJS_TEMPORAL_POLYFILL_REGRESSIONS"))
+        .lines()
+        .filter(|line| !line.is_empty() && !line.starts_with('#'))
+    {
+        let fields: Vec<_> = line.split('\t').collect();
+        match fields.as_slice() {
+            ["duration-string", field, value, unit, mode, expected] => {
+                let index = match *field {
+                    "milliseconds" => 7,
+                    "microseconds" => 8,
+                    "nanoseconds" => 9,
+                    _ => panic!("unknown duration field: {line}"),
+                };
+                let precision = match *unit {
+                    "second" => Precision::Digits(0),
+                    "millisecond" => Precision::Digits(3),
+                    "microsecond" => Precision::Digits(6),
+                    _ => panic!("unknown duration precision: {line}"),
+                };
+                let mut record = [0; 10];
+                record[index] = value.parse().unwrap();
+                let actual = Duration::new(record)
+                    .unwrap()
+                    .format(precision, mode.parse().unwrap())
+                    .unwrap();
+                assert_eq!(actual.to_string(), *expected, "{line}");
+            }
+            [
+                operation @ ("zoned-until" | "zoned-since"),
+                start,
+                end,
+                unit,
+                mode,
+                expected,
+            ] => {
+                let start = parse_zoned(start);
+                let end = parse_zoned(end);
+                let largest = "day".parse().unwrap();
+                let smallest = unit.parse().unwrap();
+                let mode = mode.parse().unwrap();
+                let result = if *operation == "zoned-until" {
+                    start.until(&end, largest, smallest, 1, mode)
+                } else {
+                    start.since(&end, largest, smallest, 1, mode)
+                };
+                let duration = result.unwrap_or_else(|error| panic!("{line}: {error}"));
+                assert_eq!(duration.to_string(), *expected, "{line}");
+            }
+            ["epoch-milliseconds", input, expected] => {
+                let instant = Instant::from_epoch_nanoseconds(input.parse().unwrap()).unwrap();
+                assert_eq!(
+                    instant.epoch_milliseconds(),
+                    expected.parse::<i64>().unwrap(),
+                    "{line}"
+                );
+            }
+            ["instant-parse", input, expected] => {
+                let instant: Instant = input.parse().unwrap();
+                assert_eq!(
+                    instant.epoch_nanoseconds(),
+                    expected.parse::<i128>().unwrap(),
+                    "{line}"
+                );
+            }
+            _ => panic!("invalid Temporal fixture: {line}"),
+        }
+    }
+}
+
+#[test]
 fn zoned_differences_at_instant_limits() {
     use formatjs_temporal::{FixedOffset, RoundingMode, ZonedDateTime, ZonedUnit};
     for seconds in [0, 7200, -25200, 1080, -29520] {

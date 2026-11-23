@@ -97,6 +97,7 @@ formatjs_rust_test(
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
         "//conformance-tests/icu4j:temporal_iso_fixtures",
+        "//conformance-tests/temporal:polyfill_regressions",
     ],
     edition = "2024",
     rustc_env = {
@@ -115,6 +116,7 @@ formatjs_rust_test(
         "FORMATJS_TEMPORAL_STRINGS": "$(execpath //packages/temporal:instant_string_fixtures)",
         "FORMATJS_TEMPORAL_DURATION": "$(execpath //conformance-tests/icu4j:temporal_duration_fixtures)",
         "FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)",
+        "FORMATJS_TEMPORAL_POLYFILL_REGRESSIONS": "$(execpath //conformance-tests/temporal:polyfill_regressions)",
     },
     deps = [
         ":with_time_zones",

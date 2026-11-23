@@ -902,6 +902,11 @@ sh_test(
             ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
         ),
         (
+            "polyfill_regressions_test",
+            ["tests/polyfill-regressions.test.ts"],
+            ["//conformance-tests/temporal:polyfill_regressions"],
+        ),
+        (
             "duration_oracle_test",
             [
                 "tests/duration-oracle.test.ts",
