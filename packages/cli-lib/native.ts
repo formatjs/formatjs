@@ -136,8 +136,7 @@ let nativeBinding: NativeBinding | undefined
 
 function loadWasi(): NativeBinding {
   const {WASI} = require('node:wasi') as typeof nodeWasi
-  const {instantiateNapiModuleSync} =
-    require('@emnapi/core') as typeof emnapiCore
+  const {instantiateAddonSync} = require('@emnapi/core') as typeof emnapiCore
   const {asyncWork, tsfn} =
     require('@emnapi/core/plugins') as typeof emnapiPlugins
   const {getDefaultContext} = require('@emnapi/runtime') as typeof emnapiRuntime
@@ -148,7 +147,7 @@ function loadWasi(): NativeBinding {
     preopens: {'/': root},
   })
   const wasmPath = require.resolve('./formatjs_cli.wasm')
-  const binding = instantiateNapiModuleSync(readFileSync(wasmPath), {
+  const binding = instantiateAddonSync(readFileSync(wasmPath), {
     context: getDefaultContext(),
     wasi,
     plugins: [asyncWork, tsfn],
@@ -168,7 +167,7 @@ function loadWasi(): NativeBinding {
         }
       }
     },
-  }).napiModule.exports as NativeBinding
+  }).addonModule.exports as NativeBinding
 
   return {
     ...binding,

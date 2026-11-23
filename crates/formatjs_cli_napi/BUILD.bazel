@@ -69,7 +69,10 @@ rust_shared_library(
         # Link the WASI reactor and export the entry points emnapi needs.
         "@rules_rs//rs/platforms/config:wasm32-wasip1": [
             "-Clink-arg=$(location @emnapi_wasi//:lib/wasm32-wasip1/libemnapi-basic-napi-rs.a)",
+            # Rust 1.100+ links the reactor itself. Pull this in only if _initialize is missing.
+            "-Clink-arg=--start-lib",
             "-Clink-arg=-l:crt1-reactor.o",
+            "-Clink-arg=--end-lib",
             "-Clink-arg=--export=_initialize",
             "-Clink-arg=--import-undefined",
             "-Clink-arg=--export-table",
