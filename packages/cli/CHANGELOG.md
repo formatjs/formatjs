@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.23.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.22.0...@formatjs/cli@6.23.0) (2026-11-23)
+
+
+### Features
+
+* **@formatjs/cli:** add WASI fallback for CLI bindings ([#8154](https://github.com/formatjs/formatjs/issues/8154)) ([3351d16](https://github.com/formatjs/formatjs/commit/3351d160e617ddbb91092144955e8584d105d880))
+
 ## [6.22.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.21.0...@formatjs/cli@6.22.0) (2026-11-23)
 
 
