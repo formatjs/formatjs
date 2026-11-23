@@ -37,7 +37,7 @@ jobs:
           mkdir -p artifacts/cli-native-freebsd-x64
           cp -RL "$package"/. artifacts/cli-native-freebsd-x64/
 
-      - uses: actions/upload-artifact@v8
+      - uses: actions/upload-artifact@v7
         with:
           name: cli-native-freebsd-x64
           path: artifacts/cli-native-freebsd-x64
