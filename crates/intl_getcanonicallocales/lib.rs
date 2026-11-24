@@ -1,5 +1,6 @@
 //! ECMA-402 locale-tag canonicalization. JavaScript coercion belongs in the host adapter.
-//! https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L45-L96
+//! https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+//! https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
 
 mod aliases_generated;
 
@@ -180,8 +181,8 @@ fn variant(value: &str) -> bool {
     alphanumeric(value, 5, 8) || (alphanumeric(value, 4, 4) && value.as_bytes()[0].is_ascii_digit())
 }
 
-// IsWellFormedLanguageTag 2–6 and 11.f–g: base/tlang grammar and variant uniqueness.
-// https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L46-L64
+// ECMA-402 §6.2.1 steps 2–6 and 11.f–g check base/tlang grammar and variant uniqueness.
+// https://tc39.es/ecma402/#sec-iswellformedlanguagetag
 fn language_id(parts: &[&str], index: &mut usize) -> Result<(), InvalidLocale> {
     if !parts.get(*index).is_some_and(|part| language(part)) {
         return Err(InvalidLocale);
@@ -231,7 +232,7 @@ fn validate(tag: &str) -> Result<(), InvalidLocale> {
     // IsWellFormedLanguageTag 1–3: ASCII case folding is built into comparisons;
     // parse Unicode locale grammar without backwards-compatibility syntax.
     // Underscores, extlangs, private-only tags, and four-letter languages fail here.
-    // https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L45-L47
+    // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
     let parts: Vec<_> = tag.split('-').collect();
     let mut index = 0;
     // Steps 4–7: consume baseName/variants; the remaining index marks the extension suffix.
@@ -244,8 +245,8 @@ fn validate(tag: &str) -> Result<(), InvalidLocale> {
             return Err(InvalidLocale);
         }
         let singleton = singleton.as_bytes()[0].to_ascii_lowercase();
-        // IsWellFormedLanguageTag 11.a: reject repeated extension singletons.
-        // https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L56-L57
+        // ECMA-402 §6.2.1 step 11.a rejects repeated extension singletons.
+        // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
         if singletons[singleton as usize] {
             return Err(InvalidLocale);
         }
@@ -257,7 +258,7 @@ fn validate(tag: &str) -> Result<(), InvalidLocale> {
                 // IsWellFormedLanguageTag 2, 8–10: validate private use, then ignore
                 // its contents for singleton and transformed-variant checks.
                 // Step 9 finds this boundary; 10 truncates further checks. A bare x fails grammar.
-                // https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L53-L55
+                // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
                 if index == parts.len()
                     || !parts[index..].iter().all(|part| alphanumeric(part, 1, 8))
                 {
@@ -287,7 +288,7 @@ fn validate(tag: &str) -> Result<(), InvalidLocale> {
                 // 11.b–d: this branch proves the -t- assertion; index already follows t.
                 // 11.e: consume a language-shaped tlang; otherwise only tfields remain.
                 // 11.f–g.i are fused into language_id; without t/tlang, step 12 supplies true.
-                // https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L58-L64
+                // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
                 if parts.get(index).is_some_and(|part| language(part)) {
                     language_id(&parts, &mut index)?;
                 }
@@ -318,9 +319,9 @@ fn validate(tag: &str) -> Result<(), InvalidLocale> {
             return Err(InvalidLocale);
         }
     }
-    // IsWellFormedLanguageTag 12: grammar and duplicate checks succeeded.
+    // ECMA-402 §6.2.1 step 12 accepts the tag after duplicate checks.
     // Duplicate ukeys/tkeys deliberately pass; canonicalization retains their first value.
-    // https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L65-L68
+    // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
     Ok(())
 }
 
@@ -370,9 +371,9 @@ fn canonicalize_language_id(
 }
 
 // ICU4X drops embedded "true" subtags; preserve ECMA-402 extension values here.
-// CanonicalizeUnicodeLocaleId 2 and UnicodeExtensionComponents are fused with emission.
-// https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/locales-currencies-tz.html#L84-L96
-// https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/negotiation.html#L158-L181
+// ECMA-402 §6.2.2 step 2 and §9.2.5 are applied while emitting the extensions.
+// https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+// https://tc39.es/ecma402/#sec-unicode-extension-components
 fn canonicalize_extensions(
     canonicalizer: &LocaleCanonicalizer,
     parts: &[&str],

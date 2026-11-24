@@ -71,7 +71,6 @@ function extractNumbers(d: Numbers): RawNumberData {
           .range
       // ECMA-402 §16.5.18 steps 7–8 preserve the complete separator.
       // https://tc39.es/ecma402/#sec-partitionnumberrangepattern
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1838-L1839
       invariant(
         rangePattern.startsWith('{0}') && rangePattern.endsWith('{1}'),
         `Unsupported number range pattern: ${rangePattern}`

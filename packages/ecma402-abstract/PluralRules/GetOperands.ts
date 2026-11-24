@@ -6,7 +6,6 @@ import Decimal from '@formatjs/bigdecimal'
  * CLDR Spec: Operands as defined in https://unicode.org/reports/tr35/tr35-numbers.html#Operands
  * ECMA-402 §17.5.1 PluralRuleSelect, decimalString parameter and return definition.
  * CLDR operands for the implementation-defined PluralRuleSelect (https://tc39.es/ecma402/#sec-pluralruleselect)
- * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L285-L290
  *
  * Maps CLDR operand symbols to JavaScript property names:
  * - n → Number (absolute value)
@@ -57,7 +56,6 @@ export interface OperandsRecord {
  * CLDR operands for the implementation-defined PluralRuleSelect
  * ECMA-402 §17.5.1 PluralRuleSelect, decimalString parameter and return definition.
  * https://tc39.es/ecma402/#sec-pluralruleselect
- * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L285-L290
  *
  * Implementation: Extended to support compact exponent (c/e operands)
  *
@@ -72,7 +70,6 @@ export function GetOperands(s: string, exponent: number = 0): OperandsRecord {
   // GetOperands consumes a formatted decimal string, not an ECMAScript Number.
   // ECMA-402 §17.5.1 PluralRuleSelect, decimalString parameter and return definition.
   // Preserve its mathematical value: https://tc39.es/ecma402/#sec-pluralruleselect
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L285-L290
   const n = new Decimal(s)
   invariant(n.isFinite(), 'n should be finite')
   let dp = s.indexOf('.')

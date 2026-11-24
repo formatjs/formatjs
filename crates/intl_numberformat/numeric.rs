@@ -18,9 +18,9 @@ impl Numeric {
         numeric.fraction_digit_count = value.string_fraction_digit_count;
         Ok(numeric)
     }
-    // Input is ToIntlMathematicalValue's normalized wire representation. Keeping
+    // Input is the normalized value from ECMA-402 §16.5.15. Keeping
     // a decimal point separately avoids bounding BigInt magnitude to ICU's i16.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1652-L1670
+    // https://tc39.es/ecma402/#sec-tointlmathematicalvalue
     pub fn parse(input: &str) -> Result<Self, Error> {
         let negative = input.starts_with('-');
         let text = input.strip_prefix(['-', '+']).unwrap_or(input);

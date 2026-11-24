@@ -270,8 +270,8 @@ pub fn best_fit(available: &[String], requested: &[String]) -> Result<Option<Str
 }
 
 /// Return the winning request index as well as its data locale. ResolveLocale
-/// needs that request's Unicode extensions, not the first requested tag's.
-/// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L237-L246
+/// (ECMA-402 §9.2.7 steps 1–2 and 8) uses that request's Unicode extensions.
+/// https://tc39.es/ecma402/#sec-resolvelocale
 pub fn best_fit_requested(
     available: &[String],
     requested: &[String],

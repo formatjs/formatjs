@@ -12,7 +12,6 @@ function main(args: Args) {
   const digitMapping: Record<string, string[]> = {}
   // ECMA-402 §16.5.5 step 4.c.iii.1.a uses the ten code points in Table 30.
   // https://tc39.es/ecma402/#table-numbering-system-digits
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L844-L855
   // CLDR supplies complete digit strings, including non-contiguous hanidec.
   for (const [name, definition] of Object.entries(
     numberingSystems.supplemental.numberingSystems

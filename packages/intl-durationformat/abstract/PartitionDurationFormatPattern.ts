@@ -170,7 +170,7 @@ export function PartitionDurationFormatPattern(
       // ECMA-402 §13.5.15 step 4.h.iii.2 and §13.5.12 steps 16–18:
       // display the duration sign once, including on a leading zero unit.
       // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L868-L882
+      // https://tc39.es/ecma402/#sec-formatnumericunits
       if (signDisplayed) {
         if (value.isZero() && negative) value = new BigDecimal('-0')
         signDisplayed = false
@@ -180,7 +180,7 @@ export function PartitionDurationFormatPattern(
       nfOpts.numberingSystem = internalSlots.numberingSystem
       // ECMA-402 §13.5.9 step 9 and §13.5.10–11 step 10 disable grouping.
       // https://tc39.es/ecma402/#sec-formatnumerichours
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L811
+      // https://tc39.es/ecma402/#sec-formatnumericseconds
       if (style === 'numeric' || style === '2-digit') nfOpts.useGrouping = false
       // Hours, minutes and seconds share sign, grouping and digit-width options.
       // ECMA-402 §13.5.10 https://tc39.es/ecma402/#sec-formatnumericminutes

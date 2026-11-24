@@ -112,7 +112,6 @@ export function ToRawPrecision(
 
   // ECMA-402 §16.5.7, step 8: rounding magnitude includes the precision offset.
   // https://tc39.es/ecma402/#sec-torawprecision
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1332
   return {
     formattedString: m,
     roundedNumber: xFinal,

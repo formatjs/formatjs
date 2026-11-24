@@ -172,8 +172,8 @@ function extractLanguageStyleData(cldrLanguageData: LanguageRawData): {
 }
 
 // CLDR omits files when a locale has no translated names for that category.
-// Keep empty maps so DisplayNames.of applies its code/undefined fallback.
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L185-L189
+// Keep empty maps for the code or undefined fallback in ECMA-402 §12.3.3 steps 7–8.
+// https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
 async function optionalNames<T>(specifier: string): Promise<T | undefined> {
   try {
     return (await import(specifier, {with: {type: 'json'}})).default as T

@@ -64,7 +64,6 @@ export function InitializeNumberFormat(
     // ResolveOptions step 6.d.ii rejects malformed Unicode types.
     // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
     // https://tc39.es/ecma402/#sec-resolveoptions
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
     throw RangeErrorConstructor(`Invalid numberingSystems: ${numberingSystem}`)
   }
   // ECMA-402 §16.2.3 maps the nu extension to the numberingSystem option.

@@ -761,7 +761,6 @@ export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   // ICU derives the same spans from repeated field positions:
   // https://github.com/unicode-org/icu/blob/030fa1a4791ee7c2f58505ebb61253c3032916ec/icu4c/source/i18n/formattedval_iterimpl.cpp#L86-L122
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
   // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L868-L882
   const result: RangePatternPart[] = []

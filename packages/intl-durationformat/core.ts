@@ -512,7 +512,7 @@ Object.defineProperty(DurationFormat, '__defaultLocale', {
 
 // ECMA-402 §13.1.1 and §13.2.2: lengths count required parameters.
 // https://tc39.es/ecma402/#sec-Intl.DurationFormat
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L141
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat.supportedLocalesOf
 Object.defineProperty(DurationFormat, 'length', {value: 0, configurable: true})
 Object.defineProperty(DurationFormat.supportedLocalesOf, 'length', {
   value: 1,
