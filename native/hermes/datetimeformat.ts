@@ -491,6 +491,8 @@
           throw new BadReceiver('timeZone option conflicts with ZonedDateTime')
         zone = temporal.timeZone
       }
+      // The Temporal integration reads timeZone before looking up the host default.
+      // https://github.com/tc39/ecma402/pull/1044
       if (zone === undefined) updateHostTimeZone()
       // ECMA-402 §11.1.2 step 18 uses GetOption, which throws for Symbols.
       // https://tc39.es/ecma402/#sec-createdatetimeformat

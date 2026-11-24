@@ -142,6 +142,18 @@ int main(int argc, char **argv) {
       catch (error) { zoneError = error; }
       check(zoneError instanceof TypeError);
       check(hostReads === before);
+      var getterReads = 0;
+      var resolved = new Constructor('en', {
+        get timeZone() {
+          getterReads++;
+          hostZone = 'Asia/Tokyo';
+          return undefined;
+        }
+      }).resolvedOptions();
+      check(getterReads === 1);
+      check(hostReads === before + 1);
+      check(resolved.timeZone === 'Asia/Tokyo');
+      hostZone = 'America/New_York';
       Constructor.__setDefaultTimeZone('+05:30');
       check(Constructor.getDefaultTimeZone() === '+05:30');
       check(new Constructor('en').resolvedOptions().timeZone === '+05:30');
