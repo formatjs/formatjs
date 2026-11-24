@@ -475,7 +475,7 @@ ts_project(
     ],
     declaration = True,
     no_emit = True,
-    tsconfig = ESNEXT_TSCONFIG,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-durationformat",
