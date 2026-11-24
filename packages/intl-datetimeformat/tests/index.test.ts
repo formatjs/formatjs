@@ -111,6 +111,31 @@ describe('Intl.DateTimeFormat', function () {
       expect(defaultFormatter.format(0)).toBe(reference.format(0))
     }
   )
+  it('detects a native formatter without formatRangeToParts', () => {
+    const original = Intl.DateTimeFormat
+    const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
+    const descriptor = Object.getOwnPropertyDescriptor(
+      polyfill.prototype,
+      'formatRangeToParts'
+    )!
+    let complete: string | undefined
+    let incomplete: string | undefined
+    try {
+      Intl.DateTimeFormat = polyfill
+      complete = shouldPolyfill('en')
+      Reflect.deleteProperty(polyfill.prototype, 'formatRangeToParts')
+      incomplete = shouldPolyfill('en')
+    } finally {
+      Object.defineProperty(
+        polyfill.prototype,
+        'formatRangeToParts',
+        descriptor
+      )
+      Intl.DateTimeFormat = original
+    }
+    expect(complete).toBeUndefined()
+    expect(incomplete).toBe('en')
+  })
   it.each([
     ['Asia/Calcutta', 'Asia/Kolkata'],
     ['Etc/UTC', 'UTC'],
