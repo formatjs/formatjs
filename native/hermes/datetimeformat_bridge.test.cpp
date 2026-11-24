@@ -137,6 +137,10 @@ int main(int argc, char **argv) {
       check(new Constructor('en', localOptions).format(0) === '19:00');
       var before = hostReads;
       check(new Constructor('en', {timeZone:'UTC'}).resolvedOptions().timeZone === 'UTC');
+      var zoneError;
+      try { new Constructor('en', {timeZone: Symbol('UTC')}); }
+      catch (error) { zoneError = error; }
+      check(zoneError instanceof TypeError);
       check(hostReads === before);
       Constructor.__setDefaultTimeZone('+05:30');
       check(Constructor.getDefaultTimeZone() === '+05:30');
