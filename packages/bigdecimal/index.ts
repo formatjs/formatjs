@@ -6,6 +6,15 @@ const NumberConstructor = Number
 const BigIntConstructor = BigInt
 const StringConstructor = String
 const parseInteger = parseInt
+const create = Object.create
+const apply = Reflect.apply
+const arrayPush = Array.prototype.push
+const {
+  indexOf: stringIndexOf,
+  repeat: stringRepeat,
+  slice: stringSlice,
+  trim: stringTrim,
+} = String.prototype
 
 const enum SpecialValue {
   NONE = 0,
@@ -67,7 +76,9 @@ function bigintPow10(n: number): bigint {
   // Bound retained powers; division repeatedly needs 10^40.
   if (n <= 64 && isInteger(n)) {
     for (let i = SMALL_POWERS_OF_TEN.length; i <= n; i++) {
-      SMALL_POWERS_OF_TEN.push(SMALL_POWERS_OF_TEN[i - 1] * TEN_BIGINT)
+      apply(arrayPush, SMALL_POWERS_OF_TEN, [
+        SMALL_POWERS_OF_TEN[i - 1] * TEN_BIGINT,
+      ])
     }
     return SMALL_POWERS_OF_TEN[n]
   }
@@ -89,7 +100,7 @@ function parseDecimalString(s: string): {
   special: SpecialValue
   negativeZero: boolean
 } {
-  s = s.trim()
+  s = apply(stringTrim, s, [])
 
   if (s === 'NaN') {
     return {
@@ -126,24 +137,24 @@ function parseDecimalString(s: string): {
   }
 
   // Split by 'e' or 'E' for scientific notation
-  let eIdx = s.indexOf('e', idx)
-  if (eIdx === -1) eIdx = s.indexOf('E', idx)
+  let eIdx = apply(stringIndexOf, s, ['e', idx])
+  if (eIdx === -1) eIdx = apply(stringIndexOf, s, ['E', idx])
   let sciExp = 0
   let numPart: string
   if (eIdx !== -1) {
-    sciExp = parseInteger(s.substring(eIdx + 1), 10)
-    numPart = s.substring(idx, eIdx)
+    sciExp = parseInteger(apply(stringSlice, s, [eIdx + 1]), 10)
+    numPart = apply(stringSlice, s, [idx, eIdx])
   } else {
-    numPart = s.substring(idx)
+    numPart = apply(stringSlice, s, [idx])
   }
 
   // Split by decimal point
-  const dotIdx = numPart.indexOf('.')
+  const dotIdx = apply(stringIndexOf, numPart, ['.'])
   let intPart: string
   let fracPart: string
   if (dotIdx !== -1) {
-    intPart = numPart.substring(0, dotIdx)
-    fracPart = numPart.substring(dotIdx + 1)
+    intPart = apply(stringSlice, numPart, [0, dotIdx])
+    fracPart = apply(stringSlice, numPart, [dotIdx + 1])
   } else {
     intPart = numPart
     fracPart = ''
@@ -219,7 +230,9 @@ export class BigDecimal {
         this._mantissa = 0n
         this._exponent = 0
         this._special = SpecialValue.NONE
-        this._negativeZero = Object.is(value, -0)
+        // ECMA-402 §16.5.15 step 4.b preserves a Number's negative zero.
+        // https://tc39.es/ecma402/#sec-tointlmathematicalvalue
+        this._negativeZero = 1 / value === -Infinity
         return
       }
       if (isSafeInteger(value)) {
@@ -248,7 +261,7 @@ export class BigDecimal {
     special: SpecialValue,
     negativeZero: boolean
   ): BigDecimal {
-    const bd = Object.create(BigDecimal.prototype) as BigDecimal
+    const bd = create(BigDecimal.prototype) as BigDecimal
     ;(bd as any)._mantissa = mantissa
     ;(bd as any)._exponent = exponent
     ;(bd as any)._special = special
@@ -701,7 +714,7 @@ export class BigDecimal {
     if (this._mantissa === 0n) return '0'
 
     const negative = this._mantissa < 0n
-    const absStr = bigintAbs(this._mantissa).toString()
+    const absStr = `${bigintAbs(this._mantissa)}`
     const prefix = negative ? '-' : ''
 
     if (this._exponent === 0) {
@@ -710,19 +723,20 @@ export class BigDecimal {
 
     if (this._exponent > 0) {
       // Append zeros
-      return prefix + absStr + '0'.repeat(this._exponent)
+      return prefix + absStr + apply(stringRepeat, '0', [this._exponent])
     }
 
     // Negative exponent: insert decimal point
     const decimalPlaces = -this._exponent
     if (decimalPlaces < absStr.length) {
-      const intPart = absStr.slice(0, absStr.length - decimalPlaces)
-      const fracPart = absStr.slice(absStr.length - decimalPlaces)
+      const split = absStr.length - decimalPlaces
+      const intPart = apply(stringSlice, absStr, [0, split])
+      const fracPart = apply(stringSlice, absStr, [split])
       return prefix + intPart + '.' + fracPart
     } else {
       // Need leading zeros: 0.000...digits
       const leadingZeros = decimalPlaces - absStr.length
-      return prefix + '0.' + '0'.repeat(leadingZeros) + absStr
+      return prefix + '0.' + apply(stringRepeat, '0', [leadingZeros]) + absStr
     }
   }
 

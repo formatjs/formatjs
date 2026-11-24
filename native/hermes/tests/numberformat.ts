@@ -106,6 +106,22 @@ for (const Constructor of [Native, Reference]) {
   equal(results, ['1.12', '1.13', '1.13'], 'exact rounding near the midpoint')
 }
 for (const Constructor of [Native, Reference]) {
+  const {create, is} = Object
+  const formatter = new Constructor('en', {maximumFractionDigits: 2})
+  const unexpected = () => {
+    throw new Error('Called a public Object helper during formatting')
+  }
+  let results: string[]
+  try {
+    Object.create = Object.is = unexpected
+    results = [formatter.format(-0), formatter.format('1.125')]
+  } finally {
+    Object.create = create
+    Object.is = is
+  }
+  equal(results, ['-0', '1.13'], 'internal rounding and negative zero')
+}
+for (const Constructor of [Native, Reference]) {
   const receiver = Object.create(Constructor.prototype)
   check(
     Constructor.call(receiver, 'en', {minimumFractionDigits: 2}) === receiver,

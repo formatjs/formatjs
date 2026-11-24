@@ -2,6 +2,36 @@ import {describe, expect, it} from 'vitest'
 import {BigDecimal} from '#packages/bigdecimal/index'
 
 describe('BigDecimal', () => {
+  it('parses and renders decimals with replaced primitive methods', () => {
+    const {indexOf, repeat, slice, substring, trim} = String.prototype
+    const bigintToString = BigInt.prototype.toString
+    const push = Array.prototype.push
+    const unexpected = () => {
+      throw new Error('Called a public primitive method')
+    }
+    let results: string[]
+    try {
+      String.prototype.indexOf = unexpected
+      String.prototype.repeat = unexpected
+      String.prototype.slice = unexpected
+      String.prototype.substring = unexpected
+      String.prototype.trim = unexpected
+      BigInt.prototype.toString = unexpected
+      Array.prototype.push = unexpected
+      results = [
+        new BigDecimal(' 12.5e0 ').toString(),
+        new BigDecimal('1e-64').ceil().toString(),
+        new BigDecimal('1e-4').toString(),
+        new BigDecimal('1e4').toString(),
+      ]
+    } finally {
+      Object.assign(String.prototype, {indexOf, repeat, slice, substring, trim})
+      BigInt.prototype.toString = bigintToString
+      Array.prototype.push = push
+    }
+    expect(results).toEqual(['12.5', '1', '0.0001', '10000'])
+  })
+
   // --- Constructor ---
   describe('constructor', () => {
     it('handles number 0', () => {
