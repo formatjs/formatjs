@@ -1,6 +1,7 @@
 import minimist from 'minimist'
 import {readFileSync} from 'node:fs'
 import {outputFileSync} from 'fs-extra/esm'
+import decompositionMappings from '@unicode/unicode-17.0.0/Decomposition_Mapping/Canonical/code-points.mjs'
 import decimalDigits from '@unicode/unicode-17.0.0/General_Category/Decimal_Number/code-points.mjs'
 import {
   buildUCATrie,
@@ -64,6 +65,11 @@ function countTrieNodes(node: PackedTrieNode): number {
 function serialize(value: unknown): string {
   // Keep large numeric tables out of the JavaScript parser during startup.
   return `JSON.parse(${JSON.stringify(JSON.stringify(value))})`
+}
+
+function fullDecomposition(point: number): number[] {
+  const mapping = decompositionMappings.get(point)
+  return mapping ? mapping.flatMap(fullDecomposition) : [point]
 }
 
 function hanImplicitWeights(source: string) {
@@ -226,6 +232,14 @@ const combiningClasses = Array.from(
 ).sort(([a], [b]) => a - b)
 if (!combiningClasses.length)
   throw new Error('Missing canonical combining classes')
+// UAX #15 §1.3 recursively applies canonical mappings before ordering marks.
+// https://www.unicode.org/reports/tr15/#Description_Norm
+const canonicalDecompositions: Record<number, number[]> = {}
+for (const point of decompositionMappings.keys()) {
+  // Unicode §3.12.2 decomposes Hangul arithmetically at runtime.
+  if (point < 0xac00 || point > 0xd7a3)
+    canonicalDecompositions[point] = fullDecomposition(point)
+}
 const han = hanImplicitWeights(source)
 const entries = parseUCA(source, point => {
   const primary = han.weights.get(point)
@@ -345,6 +359,7 @@ export const rootElements: readonly (readonly PackedCollationElement[])[] = ${se
 
 export const rootPrefixEntries: readonly PackedPrefixEntry[] = ${serialize(rootPrefixEntries)}
 export const combiningClasses: readonly (readonly [number, number, number])[] = ${JSON.stringify(combiningClasses)}
+export const canonicalDecompositionJSON = ${JSON.stringify(JSON.stringify(canonicalDecompositions))}
 
 export const decimalDigitZeros: readonly number[] = ${JSON.stringify(decimalDigitZeros)}
 export const numericOrderingElement: PackedCollationElement = ${JSON.stringify(numericOrderingElement)}

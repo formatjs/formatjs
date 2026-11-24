@@ -136,6 +136,8 @@ Runtime comparison consumes generated root and locale collation data:
 - comparison preserves existing `numeric`, `caseFirst`, and sensitivity behavior
 
 Fallback implicit weights are used for code points not present in the root data.
+If native string normalization is unavailable, Collator lazily loads canonical
+decompositions from the pinned Unicode data and orders combining marks by class.
 
 ## Tests
 
