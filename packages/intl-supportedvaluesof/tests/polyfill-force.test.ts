@@ -30,9 +30,8 @@ describe('Intl.supportedValuesOf polyfill-force', () => {
       enumerable: false,
       configurable: true,
     })
-    expect(Array.isArray(globalThis.Intl.supportedValuesOf('calendar'))).toBe(
-      true
-    )
+    expect(globalThis.Intl.supportedValuesOf('calendar')).toEqual(['iso8601'])
+    expect(globalThis.Intl.supportedValuesOf('timeZone')).toEqual(['UTC'])
     // @ts-expect-error exercising runtime key validation
     expect(() => globalThis.Intl.supportedValuesOf('invalid')).toThrow(
       RangeError

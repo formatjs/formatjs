@@ -189,6 +189,28 @@ try {
   )
 }
 
+const dateTimeFormatDescriptor = Object.getOwnPropertyDescriptor(
+  Intl,
+  'DateTimeFormat'
+)!
+try {
+  Object.defineProperty(Intl, 'DateTimeFormat', {value: undefined})
+  equal(candidate('timeZone'), ['UTC'], 'Native UTC without DateTimeFormat')
+  equal(reference('timeZone'), ['UTC'], 'TypeScript UTC without DateTimeFormat')
+  equal(
+    candidate('calendar'),
+    ['iso8601'],
+    'Native ISO calendar without DateTimeFormat'
+  )
+  equal(
+    reference('calendar'),
+    ['iso8601'],
+    'TypeScript ISO calendar without DateTimeFormat'
+  )
+} finally {
+  Object.defineProperty(Intl, 'DateTimeFormat', dateTimeFormatDescriptor)
+}
+
 const numberFormatDescriptor = Object.getOwnPropertyDescriptor(
   Intl,
   'NumberFormat'

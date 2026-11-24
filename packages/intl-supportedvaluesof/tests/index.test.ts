@@ -157,9 +157,9 @@ describe('Intl.supportedValuesOf', () => {
     try {
       Intl.DateTimeFormat =
         DateTimeFormat as unknown as typeof Intl.DateTimeFormat
-      expect(supportedValuesOf('calendar')).toEqual(['gregory'])
+      expect(supportedValuesOf('calendar')).toEqual(['gregory', 'iso8601'])
       calendar = 'japanese'
-      expect(supportedValuesOf('calendar')).toEqual(['japanese'])
+      expect(supportedValuesOf('calendar')).toEqual(['iso8601', 'japanese'])
     } finally {
       Intl.DateTimeFormat = original
     }
@@ -187,9 +187,13 @@ describe('Intl.supportedValuesOf', () => {
     try {
       Intl.DateTimeFormat =
         DateTimeFormat as unknown as typeof Intl.DateTimeFormat
-      expect(supportedValuesOf('calendar')).toEqual(['gregory'])
+      expect(supportedValuesOf('calendar')).toEqual(['gregory', 'iso8601'])
       loadLocale()
-      expect(supportedValuesOf('calendar')).toEqual(['gregory', 'japanese'])
+      expect(supportedValuesOf('calendar')).toEqual([
+        'gregory',
+        'iso8601',
+        'japanese',
+      ])
     } finally {
       Intl.DateTimeFormat = original
     }

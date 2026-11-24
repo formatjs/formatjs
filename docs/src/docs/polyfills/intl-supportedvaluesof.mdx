@@ -46,8 +46,8 @@ pnpm add @formatjs/intl-supportedvaluesof
 
 Timezone enumeration uses pinned IANA/CLDR primary IDs, including country-specific
 IDs such as `Africa/Accra`. It omits aliases such as `America/Yellowknife`.
-With FormatJS DateTimeFormat, the list reflects the loaded time-zone pack,
-including UTC and fixed IANA zones built into the polyfill. Time-zone enumeration
+The list always includes `UTC`. With FormatJS DateTimeFormat, it also reflects
+the loaded time-zone pack and built-in fixed IANA zones. Time-zone enumeration
 works before locale data loads. Older hosts may resolve a primary ID to an older
 spelling.
 
@@ -81,8 +81,8 @@ and Android packages and installation of all twelve APIs.
 
 Install trusted `Intl.DateTimeFormat`, `Intl.NumberFormat` and `Intl.Collator`
 implementations first. Rust filters CLDR/IANA candidates against those
-formatters' actual capabilities. Missing formatters produce empty categories;
-the installer does not supply the formatters themselves.
+formatters' actual capabilities. The installer provides `UTC`, `iso8601`,
+and the required units and numbering systems without formatter dependencies.
 
 ```cpp
 #include <formatjs/hermes/supported_values.h>

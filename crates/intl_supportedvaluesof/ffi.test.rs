@@ -65,7 +65,10 @@ fn ffi_copies_callback_observations_and_owns_independent_outputs() {
                 ),
                 0
             );
-            assert_eq!(slice::from_raw_parts(output.data, output.len), b"gregory");
+            assert_eq!(
+                slice::from_raw_parts(output.data, output.len),
+                b"gregory\niso8601"
+            );
         }
         assert_ne!(first.data, second.data);
         assert!(count > 2);

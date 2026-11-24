@@ -228,8 +228,10 @@ describe('Rust supportedValuesOf against TypeScript source', () => {
     const actual = rust(requests)
     for (const [index, key] of runtimeKeys.entries()) {
       const response = responses[keys.indexOf(key)]
+      const required =
+        key === 'calendar' ? ['iso8601'] : key === 'timeZone' ? ['UTC'] : []
       expect(actual[index * 3]).toEqual(response)
-      expect(actual[index * 3 + 1]).toEqual({values: []})
+      expect(actual[index * 3 + 1]).toEqual({values: required})
       expect(actual[index * 3 + 2]).toEqual(response)
     }
   })

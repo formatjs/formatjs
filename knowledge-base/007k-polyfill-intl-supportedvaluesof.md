@@ -68,6 +68,7 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 - Numbering systems include ECMA-402 Table 30. Additional systems are checked in NumberFormat, DateTimeFormat, and RelativeTimeFormat using English and CLDR rule and locale data.
 - Currencies use NumberFormat and check DisplayNames when installed. Currencies without an English name use CLDR locale candidates.
 - FormatJS DateTimeFormat supplies calendar and time-zone availability from its registries. Other providers use formatter probes.
+- Calendar and time-zone lists always include `iso8601` and `UTC`, respectively.
 - Each value type is a `const` array for type safety
 
 ## Key coercion
