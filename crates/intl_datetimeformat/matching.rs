@@ -6,6 +6,8 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
+// ECMA-402 §11.5.2 steps 10.b.vii.5–9 clamp and score the width delta.
+// https://tc39.es/ecma402/#sec-basicformatmatcher
 fn delta_penalty(delta: i32) -> i32 {
     match delta.clamp(-2, 2) {
         2 => 6,
@@ -15,6 +17,8 @@ fn delta_penalty(delta: i32) -> i32 {
         _ => 0,
     }
 }
+// ECMA-402 §11.5.2 step 10.b.vi scores zone names and offsets separately.
+// https://tc39.es/ecma402/#sec-basicformatmatcher
 fn zone_penalty(requested: ZoneWidth, actual: ZoneWidth) -> i32 {
     use ZoneWidth::*;
     match (requested, actual) {
@@ -37,6 +41,8 @@ fn with_requested_precision(options: Components, mut format: Components) -> Comp
     format
 }
 
+// ECMA-402 §11.5.2 steps 1–7 and 10.a–b set the penalties and score Table 16 fields.
+// https://tc39.es/ecma402/#sec-basicformatmatcher
 pub fn basic_score(options: Components, format: Components) -> i32 {
     let format = with_requested_precision(options, format);
     let mut score = 0;
@@ -109,6 +115,8 @@ where
         && formats.clone().any(|format| {
             format.pattern_fields.hour.is_some() && hour_cycle_matches(format.pattern_fields)
         });
+    // ECMA-402 §11.5.2 steps 8–10 initialize scores and visit formats in order.
+    // https://tc39.es/ecma402/#sec-basicformatmatcher
     let mut best = None;
     let mut best_score = i32::MIN;
     for format in formats {
@@ -125,6 +133,7 @@ where
         } else {
             format.pattern_fields
         };
+        // Step 10.c keeps the first format on a tie. Best fit can prefer a month width.
         let score = score(options, fields);
         if score > best_score
             || (best_fit
