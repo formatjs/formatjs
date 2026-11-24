@@ -111,26 +111,25 @@ describe('Intl.DateTimeFormat', function () {
       expect(defaultFormatter.format(0)).toBe(reference.format(0))
     }
   )
-  it('detects a native formatter without formatRangeToParts', () => {
+  it.each([
+    ['prototype', 'formatRange'],
+    ['prototype', 'formatRangeToParts'],
+    ['prototype', 'formatToParts'],
+    ['constructor', 'supportedLocalesOf'],
+  ] as const)('detects non-callable native %s.%s', (owner, method) => {
     const original = Intl.DateTimeFormat
     const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
-    const descriptor = Object.getOwnPropertyDescriptor(
-      polyfill.prototype,
-      'formatRangeToParts'
-    )!
+    const target = owner === 'prototype' ? polyfill.prototype : polyfill
+    const descriptor = Object.getOwnPropertyDescriptor(target, method)!
     let complete: string | undefined
     let incomplete: string | undefined
     try {
       Intl.DateTimeFormat = polyfill
       complete = shouldPolyfill('en')
-      Reflect.deleteProperty(polyfill.prototype, 'formatRangeToParts')
+      Object.defineProperty(target, method, {value: undefined})
       incomplete = shouldPolyfill('en')
     } finally {
-      Object.defineProperty(
-        polyfill.prototype,
-        'formatRangeToParts',
-        descriptor
-      )
+      Object.defineProperty(target, method, descriptor)
       Intl.DateTimeFormat = original
     }
     expect(complete).toBeUndefined()

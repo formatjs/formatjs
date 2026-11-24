@@ -464,7 +464,7 @@ preserves named identifiers with IANA casing: `asia/calcutta` becomes
 `Asia/Calcutta`, and `Etc/GMT` stays `Etc/GMT`. Formatting uses the linked zone's
 transition data and localized names. `__setDefaultTimeZone` preserves names too.
 `shouldPolyfill()` detects native implementations that replace these identifiers
-or lack range formatting methods.
+or lack callable locale, range, or parts methods.
 
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.
