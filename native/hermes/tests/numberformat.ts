@@ -76,6 +76,35 @@ try {
   Number.isNaN = isNaN
   Number.isSafeInteger = isSafeInteger
 }
+const belowMidpoint = '1.124' + '9'.repeat(54) + 'e0'
+const aboveMidpoint = '1.125' + '0'.repeat(53) + '1e0'
+for (const Constructor of [Native, Reference]) {
+  const {Number, BigInt, String, parseInt} = globalThis
+  const formatter = new Constructor('en', {maximumSignificantDigits: 3})
+  const rejectCalls = {
+    apply() {
+      throw new Error('Called a public conversion function during formatting')
+    },
+  }
+  let results: string[]
+  try {
+    globalThis.Number = new Proxy(Number, rejectCalls)
+    globalThis.BigInt = new Proxy(BigInt, rejectCalls)
+    globalThis.String = new Proxy(String, rejectCalls)
+    globalThis.parseInt = new Proxy(parseInt, rejectCalls)
+    results = [
+      formatter.format(belowMidpoint),
+      formatter.format(aboveMidpoint),
+      formatter.format(1.125),
+    ]
+  } finally {
+    globalThis.Number = Number
+    globalThis.BigInt = BigInt
+    globalThis.String = String
+    globalThis.parseInt = parseInt
+  }
+  equal(results, ['1.12', '1.13', '1.13'], 'exact rounding near the midpoint')
+}
 for (const Constructor of [Native, Reference]) {
   const receiver = Object.create(Constructor.prototype)
   check(
