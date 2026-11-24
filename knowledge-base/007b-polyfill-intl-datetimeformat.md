@@ -269,6 +269,9 @@ legacy RegExp statics during constructor format matching.
 Hour-cycle preferences affect matching only when an hour is requested.
 Minute/second-only formats keep their requested fields.
 
+Locale registration uses private calendar maps. Legacy packs without ISO 8601
+patterns use their Gregorian patterns.
+
 With all calendar modules and locale patterns loaded, negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
 `ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
 `japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share arithmetic;

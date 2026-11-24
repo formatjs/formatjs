@@ -1106,8 +1106,16 @@ function prepareLocaleData(
     __proto__: null,
     ...entry.data,
     ca: [...entry.data.ca],
-    formats: {...entry.data.formats},
-    calendarData: {...entry.data.calendarData},
+    // ECMA-402 §11.2.3 uses private calendar-indexed records.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+    formats: {
+      __proto__: null,
+      ...entry.data.formats,
+    } as unknown as RawDateTimeLocaleData['data']['formats'],
+    calendarData: {
+      __proto__: null,
+      ...entry.data.calendarData,
+    } as unknown as NonNullable<RawDateTimeLocaleData['data']['calendarData']>,
   }
   for (const patch of patches?.values() ?? []) {
     if (arrayIndexOf(d.ca, patch.calendar) < 0) d.ca.push(patch.calendar)

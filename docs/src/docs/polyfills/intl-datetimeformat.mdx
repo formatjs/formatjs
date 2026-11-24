@@ -246,7 +246,8 @@ calendar and timezone data.
 
 The base polyfill and `locale-data/<locale>.js` include Gregorian and ISO 8601.
 ISO 8601 uses its own CLDR patterns, including year-first numeric dates such as
-`2024-01-15`; Gregorian formatting follows the locale's date order.
+`2024-01-15`. Gregorian formatting follows the locale's date order.
+Legacy packs without ISO patterns use their Gregorian patterns.
 Other calendars require both their arithmetic module and their localized names
 and patterns. Load them before constructing a formatter:
 
