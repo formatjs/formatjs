@@ -10,6 +10,16 @@ const codePointAt = String.prototype.codePointAt
 const indexOf = String.prototype.indexOf
 const trim = String.prototype.trim
 
+// LDML uses Unicode White_Space. ECMAScript trim adds BOM and omits NEL.
+// https://unicode.org/reports/tr35/tr35-numbers.html#Range_Pattern_Processing
+// https://tc39.es/ecma262/#sec-white-space
+function isRangeSpace(character: string): boolean {
+  return (
+    character === '\u0085' ||
+    (character !== '\ufeff' && apply(trim, character, []) === '')
+  )
+}
+
 function isAffix(type: NumberFormatPartTypes): boolean {
   return (
     type === 'unit' ||
@@ -156,8 +166,8 @@ export function CollapseNumberRange(
     (!isDigit(result[aEnd - 1].type) || !isDigit(result[bStart].type))
   ) {
     // Retain the locale's own whitespace before adding optional spacing.
-    if (!separator || apply(trim, separator[0], [])) separator = ' ' + separator
-    if (apply(trim, separator[separator.length - 1], [])) separator += ' '
+    if (!separator || !isRangeSpace(separator[0])) separator = ' ' + separator
+    if (!isRangeSpace(separator[separator.length - 1])) separator += ' '
   }
 
   const parts: NumberFormatPart[] = []

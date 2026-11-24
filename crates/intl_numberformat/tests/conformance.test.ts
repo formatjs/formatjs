@@ -246,6 +246,46 @@ it('uses fallback patterns for sanctioned units missing from locale data', () =>
   }
 })
 
+it.each([
+  {name: 'NEL', rangeSign: '\u0085–\u0085', expected: '\u0085–\u0085'},
+  {name: 'BOM', rangeSign: '\ufeff–\ufeff', expected: ' \ufeff–\ufeff '},
+])(
+  'uses Unicode White_Space for range separators containing $name',
+  ({rangeSign, expected}) => {
+    const original = JSON.parse(
+      readFileSync(join(directory, 'en.json'), 'utf8')
+    )
+    const localeData = structuredClone(original)
+    localeData.data.numbers.symbols.latn.rangeSign = rangeSign
+    const path = mkdtempSync(
+      join(process.env.TEST_TMPDIR || tmpdir(), 'range-')
+    )
+    const options = {useGrouping: false, numberingSystem: 'latn'} as const
+    const start = '-0',
+      end = '-9007199254740993'
+    try {
+      writeFileSync(join(path, 'en.json'), JSON.stringify(localeData))
+      NumberFormat.__addLocaleData(localeData)
+      compare(
+        [{locales: ['en'], options, values: [], ranges: [[start, end]]}],
+        path
+      )
+      const formatter = new NumberFormat('en', options)
+      expect(formatter.formatRange(start, end)).toBe(
+        `${start}${expected}${end}`
+      )
+      expect(formatter.formatRangeToParts(start, end)).toContainEqual({
+        type: 'literal',
+        value: expected,
+        source: 'shared',
+      })
+    } finally {
+      NumberFormat.__addLocaleData(original)
+      rmSync(path, {recursive: true, force: true})
+    }
+  }
+)
+
 it('selects Russian compact labels from the displayed mantissa', () => {
   const compact = {notation: 'compact', compactDisplay: 'long'} as const
   const cases = [
