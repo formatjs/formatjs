@@ -279,7 +279,10 @@
     return value
   }
   function value(input: unknown, allowNow: boolean): string {
-    if (input === undefined && allowNow) input = apply(dateNow, Date, [])
+    // ECMA-402 §11.3.3 step 4.a.i and §11.3.6 step 3.a call %Date.now%.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
+    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts
+    if (input === undefined && allowNow) input = dateNow()
     if (input !== null && typeof input === 'object' && readers.length) {
       let isDate = false
       try {
