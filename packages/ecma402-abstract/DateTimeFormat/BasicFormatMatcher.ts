@@ -32,7 +32,7 @@ export function BasicFormatMatcher(
   formats: Formats[],
   supplementalFormat?: Formats
 ): Formats {
-  // ECMA-402 §11.5.2: score private format/field Lists with captured intrinsics.
+  // ECMA-402 §11.5.2 steps 8–10 initialize scores and visit formats in order.
   // https://tc39.es/ecma402/#sec-basicformatmatcher
   let bestScore = -Infinity
   let bestFormat = formats[0]
@@ -42,7 +42,7 @@ export function BasicFormatMatcher(
   for (let formatIndex = 0; formatIndex < count; formatIndex++) {
     const format =
       formatIndex < formats.length ? formats[formatIndex] : supplementalFormat!
-    // ECMA-402 §11.5.2 step 10.b.iii reads the format record's actual widths.
+    // Step 10.b.iii reads the pattern's actual widths.
     // https://tc39.es/ecma402/#sec-basicformatmatcher
     const fields = getDateTimePatternFields(format)
     if (
@@ -52,6 +52,7 @@ export function BasicFormatMatcher(
     ) {
       continue
     }
+    // Steps 10.a–b score the fields in Table 16 order.
     let score = 0
     for (let propIndex = 0; propIndex < DATE_TIME_PROPS.length; propIndex++) {
       const prop = DATE_TIME_PROPS[propIndex]
@@ -62,6 +63,7 @@ export function BasicFormatMatcher(
         prop === 'fractionalSecondDigits' && fields.second !== undefined
           ? (fields.fractionalSecondDigits ?? optionsProp)
           : fields[prop]
+      // Steps 10.b.iv–vii score missing fields, zone names, and width deltas.
       if (optionsProp === undefined && formatProp !== undefined) {
         score -= additionPenalty
       } else if (optionsProp !== undefined && formatProp === undefined) {
@@ -134,6 +136,7 @@ export function BasicFormatMatcher(
         }
       }
     }
+    // Step 10.c keeps the first format on a tie.
     if (score > bestScore) {
       bestScore = score
       bestFormat = format

@@ -18,6 +18,8 @@ export function calendarLocaleData(
   return data
 }
 
+// ECMA-402 §11.1.2 step 25 and §11.5.2 step 10.b both use Table 16 order.
+// https://tc39.es/ecma402/#table-datetimeformat-components
 export const DATE_TIME_PROPS: Array<
   keyof Pick<IntlDateTimeFormatInternal, TABLE_6>
 > = [
@@ -34,6 +36,8 @@ export const DATE_TIME_PROPS: Array<
   'timeZoneName',
 ]
 
+// ECMA-402 §11.5.2 steps 1–7 define the basic matcher penalties.
+// https://tc39.es/ecma402/#sec-basicformatmatcher
 export const removalPenalty = 120
 export const additionPenalty = 20
 export const differentNumericTypePenalty = 15
