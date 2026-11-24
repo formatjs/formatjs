@@ -448,6 +448,8 @@ pub unsafe extern "C" fn formatjs_datetime_zone(
         else {
             return Err(2);
         };
+        // ECMA-402 §11.1.2 steps 19–21 validate and retain the resolved zone.
+        // https://tc39.es/ecma402/#sec-createdatetimeformat
         let zone = handle
             .construction
             .as_ref()
