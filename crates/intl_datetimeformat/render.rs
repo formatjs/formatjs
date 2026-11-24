@@ -67,6 +67,16 @@ fn partition(pattern: &str) -> Result<Vec<Token<'_>>, Error> {
     Ok(result)
 }
 
+// ECMA-402 §11.5.4 step 15.f.iv applies to every calendar.
+// https://tc39.es/ecma402/#sec-formatdatetimepattern
+fn display_year(year: i32) -> Result<i32, Error> {
+    if year <= 0 {
+        1_i32.checked_sub(year).ok_or(Error::InvalidDate)
+    } else {
+        Ok(year)
+    }
+}
+
 pub struct RenderData {
     locale: Arc<LocaleData>,
     calendar: Arc<CalendarLocale>,
@@ -296,33 +306,27 @@ impl RenderData {
                             .map_err(|_| Error::InvalidLocaleData)?,
                     },
                 ),
-                Token::Field("yearName") => (
-                    PartKind::YearName,
-                    self.calendar
-                        .names
-                        .year_names
-                        .as_ref()
-                        .and_then(|names| {
-                            fields
-                                .year_name
-                                .and_then(|index| names.get(usize::from(index)))
-                        })
-                        .cloned()
-                        .ok_or(Error::InvalidLocaleData)?,
-                ),
+                Token::Field("yearName") => {
+                    // ECMA-402 §11.5.4 step 15.i requires a string. LDML uses
+                    // the numeric year when the cyclic label is missing.
+                    // https://tc39.es/ecma402/#sec-formatdatetimepattern
+                    // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+                    let name = self.calendar.names.year_names.as_ref().and_then(|names| {
+                        fields
+                            .year_name
+                            .and_then(|index| names.get(usize::from(index)))
+                    });
+                    let value = match name {
+                        Some(name) => name.clone(),
+                        None => self.numbers.numeric(display_year(fields.year)?)?,
+                    };
+                    (PartKind::YearName, value)
+                }
                 Token::Field(name) => {
                     let (field, kind, value) = match name {
                         "weekday" => (Field::Weekday, PartKind::Weekday, i32::from(civil.weekday)),
                         "era" => (Field::Era, PartKind::Era, 0),
-                        "year" => {
-                            // ECMA-402 §11.5.4 step 15.f.iv applies to every calendar.
-                            let year = if fields.year <= 0 {
-                                1_i32.checked_sub(fields.year).ok_or(Error::InvalidDate)?
-                            } else {
-                                fields.year
-                            };
-                            (Field::Year, PartKind::Year, year)
-                        }
+                        "year" => (Field::Year, PartKind::Year, display_year(fields.year)?),
                         "month" => (
                             Field::Month,
                             PartKind::Month,

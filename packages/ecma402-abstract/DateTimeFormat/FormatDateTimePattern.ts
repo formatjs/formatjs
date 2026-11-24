@@ -603,9 +603,16 @@ export function FormatDateTimePattern(
         value: fv,
       })
     } else if (p === 'yearName') {
-      const v = tm.yearName
-      // @ts-ignore
-      const fv = dataLocaleData.yearNames![v!]
+      // ECMA-402 §11.5.4 step 15.i requires a string. LDML uses the numeric
+      // year when the cyclic label is missing.
+      // https://tc39.es/ecma402/#sec-formatdatetimepattern
+      // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+      const index = tm.yearName
+      const name =
+        index === undefined
+          ? undefined
+          : ownField(ownField(dataLocaleData, 'yearNames'), index)
+      const fv = name ?? nf(tm.year <= 0 ? 1 - tm.year : tm.year)
       setDataProperty(result, `${result.length}`, {
         // @ts-ignore TODO: Fix TS type
         type: 'yearName',
