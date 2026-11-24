@@ -156,20 +156,23 @@ let pluralRulesProvider = ownIntlProvider(
   'PluralRules'
 ) as typeof Intl.PluralRules
 
-const numberFormatIntrinsicKey = Symbol.for('@formatjs/intlNumberFormat')
+type FormatterIntrinsicName = 'NumberFormat' | 'PluralRules'
+const formatterIntrinsicKeys: Record<FormatterIntrinsicName, symbol> = {
+  NumberFormat: Symbol.for('@formatjs/intlNumberFormat'),
+  PluralRules: Symbol.for('@formatjs/intlPluralRules'),
+}
 const defineIntrinsic = Object.defineProperty
 const isExtensible = Object.isExtensible
 let numberFormatIntrinsic = numberFormatProvider
 
-export function registerNumberFormatIntrinsic(
+export function registerFormatterIntrinsic(
   intl: typeof Intl,
+  name: FormatterIntrinsicName,
   Constructor: new (...args: never[]) => object
 ): void {
-  if (
-    getOwnPropertyDescriptor(intl, numberFormatIntrinsicKey) ||
-    isExtensible(intl)
-  ) {
-    defineIntrinsic(intl, numberFormatIntrinsicKey, {
+  const key = formatterIntrinsicKeys[name]
+  if (getOwnPropertyDescriptor(intl, key) || isExtensible(intl)) {
+    defineIntrinsic(intl, key, {
       __proto__: null,
       configurable: true,
       value: Constructor,
@@ -181,7 +184,7 @@ export function registerNumberFormatIntrinsic(
 // https://tc39.es/ecma402/#sec-formatdatetimepattern
 export function getNumberFormatIntrinsic(): typeof Intl.NumberFormat {
   if (providerIntl === undefined) providerIntl = globalThis.Intl
-  const registered = ownIntlProvider(numberFormatIntrinsicKey)
+  const registered = ownIntlProvider(formatterIntrinsicKeys.NumberFormat)
   if (typeof registered === 'function')
     return registered as typeof Intl.NumberFormat
   if (typeof numberFormatIntrinsic !== 'function')
@@ -205,10 +208,17 @@ export function getListFormatProvider(): typeof Intl.ListFormat {
     listFormatProvider = candidate as typeof Intl.ListFormat
   return listFormatProvider
 }
-export function getPluralRulesProvider(): typeof Intl.PluralRules {
-  const candidate = ownIntlProvider('PluralRules')
-  if (typeof candidate === 'function')
-    pluralRulesProvider = candidate as typeof Intl.PluralRules
+// ECMA-402 §18.1.1 step 17 constructs %Intl.PluralRules%.
+// https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
+export function getPluralRulesIntrinsic(): typeof Intl.PluralRules {
+  if (providerIntl === undefined) providerIntl = globalThis.Intl
+  const registered = ownIntlProvider(formatterIntrinsicKeys.PluralRules)
+  if (typeof registered === 'function')
+    return registered as typeof Intl.PluralRules
+  if (typeof pluralRulesProvider !== 'function')
+    pluralRulesProvider = ownIntlProvider(
+      'PluralRules'
+    ) as typeof Intl.PluralRules
   return pluralRulesProvider
 }
 

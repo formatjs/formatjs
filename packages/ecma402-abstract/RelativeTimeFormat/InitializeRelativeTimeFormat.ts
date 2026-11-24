@@ -12,8 +12,8 @@ import {
   createMemoizedPluralRulesForConstructor,
   findFormatterPartsMethod,
   findPluralRulesSelectMethod,
-  getNumberFormatProvider,
-  getPluralRulesProvider,
+  getNumberFormatIntrinsic,
+  getPluralRulesIntrinsic,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
@@ -104,12 +104,12 @@ export function InitializeRelativeTimeFormat(
   // the resolved locale for both internal formatters.
   // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
   const nfOptions = {__proto__: null, numberingSystem: nu}
-  const NumberFormat = getNumberFormatProvider()
+  const NumberFormat = getNumberFormatIntrinsic()
   const numberFormat = createMemoizedNumberFormatForConstructor(NumberFormat)(
     locale,
     nfOptions
   )
-  const PluralRules = getPluralRulesProvider()
+  const PluralRules = getPluralRulesIntrinsic()
   const pluralRules =
     createMemoizedPluralRulesForConstructor(PluralRules)(locale)
   // §18.5.2 steps 11–12 invoke internal operations. Retain the provider

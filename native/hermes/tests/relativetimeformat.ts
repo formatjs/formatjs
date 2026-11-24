@@ -45,6 +45,26 @@ for (const text of fixtures.packs) {
     pack.number
   )
 }
+for (const Constructor of [Native, Reference]) {
+  for (const key of ['NumberFormat', 'PluralRules'] as const) {
+    const saved = Object.getOwnPropertyDescriptor(Intl, key)!
+    let actual: string
+    try {
+      Object.defineProperty(Intl, key, {
+        ...saved,
+        value: class {
+          constructor() {
+            throw new Error('Called replacement Intl.' + key)
+          }
+        },
+      })
+      actual = new Constructor('en').format(1, 'day')
+    } finally {
+      Object.defineProperty(Intl, key, saved)
+    }
+    equal(actual, 'in 1 day', 'constructor retains ' + key)
+  }
+}
 const units = [
   'second',
   'minute',
