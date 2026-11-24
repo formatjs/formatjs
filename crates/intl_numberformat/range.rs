@@ -122,8 +122,8 @@ impl NumberFormat {
         for part in prefix.iter_mut().chain(&mut suffix) {
             part.source = Some("shared");
         }
-        // Preserve CLDR's separator whitespace and add spacing only around
-        // retained affixes, matching the TS range-collapse profile.
+        // LDML uses Unicode White_Space at the edges of the range separator.
+        // https://unicode.org/reports/tr35/tr35-numbers.html#Range_Pattern_Processing
         if !a.is_empty() && !b.is_empty() && (!digits(a.last().unwrap().kind) || !digits(b[0].kind))
         {
             if separator
