@@ -33,7 +33,11 @@
   const BadOption = RangeError
   const iteratorSymbol: typeof Symbol.iterator = Symbol.iterator
   const tagSymbol: typeof Symbol.toStringTag = Symbol.toStringTag
-  const iteratorPrototype = getPrototypeOf(getPrototypeOf([][iteratorSymbol]()))
+  // ECMA-402 §19.6.2 uses %Iterator.prototype%. Get it from a generator.
+  // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%-object
+  // ECMA-262 §27.8.1 https://tc39.es/ecma262/#sec-properties-of-generator-prototype
+  const generatorPrototype = getPrototypeOf(function* () {}.prototype)
+  const iteratorPrototype = getPrototypeOf(generatorPrototype)
   const getSlot = WeakMap.prototype.get
   const setSlot = WeakMap.prototype.set
   // ECMA-402 §19.4: the native handle owns locale and granularity.

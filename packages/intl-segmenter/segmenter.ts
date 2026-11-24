@@ -522,12 +522,14 @@ class SegmentIterator
 Reflect.deleteProperty(Segments.prototype, 'constructor')
 Reflect.deleteProperty(SegmentIterator.prototype, 'constructor')
 
-// %IntlSegmentIteratorPrototype% inherits the standard iterator prototype.
-// ECMA-402 §19.6.2 The %IntlSegmentIteratorPrototype% Object, third bullet.
+// ECMA-402 §19.6.2 uses %Iterator.prototype%. Get it from a generator's
+// prototype chain without calling a replaceable array iterator.
 // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%-object
+// ECMA-262 §27.8.1 https://tc39.es/ecma262/#sec-properties-of-generator-prototype
+const generatorPrototype = Object.getPrototypeOf(function* () {}.prototype)
 Object.setPrototypeOf(
   SegmentIterator.prototype,
-  Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()))
+  Object.getPrototypeOf(generatorPrototype)
 )
 // ECMA-402 §19.6.2.2 https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.%symbol.tostringtag%
 Object.defineProperty(SegmentIterator.prototype, Symbol.toStringTag, {
