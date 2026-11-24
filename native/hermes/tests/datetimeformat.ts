@@ -187,6 +187,34 @@ for (const Constructor of [Native, Reference]) {
   check(firstFormat === secondFormat, 'private bound format cache')
   equal(firstFormat(0), formatter.format(0), 'detached bound format')
 
+  const firstCharacter = Object.getOwnPropertyDescriptor(String.prototype, '0')
+  let emptyZone: unknown
+  try {
+    emptyZone = outcome(
+      () =>
+        new Constructor('en', {
+          timeZone: {
+            toString() {
+              Object.defineProperty(String.prototype, '0', {
+                configurable: true,
+                get() {
+                  throw new Error('Read past the end of an empty time zone')
+                },
+              })
+              return ''
+            },
+          },
+        })
+    )
+  } finally {
+    if (firstCharacter) {
+      Object.defineProperty(String.prototype, '0', firstCharacter)
+    } else {
+      Reflect.deleteProperty(String.prototype, '0')
+    }
+  }
+  equal(emptyZone, {error: 'RangeError'}, 'empty time zone after coercion')
+
   const periods = new Constructor('en', {timeZone: 'UTC', dayPeriod: 'long'})
   const morning = Date.UTC(2026, 0, 15, 9)
   const laterMorning = Date.UTC(2026, 0, 15, 11)

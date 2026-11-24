@@ -50,6 +50,7 @@ export function CanonicalizeTimeZoneName(
     uppercaseLinks: Record<string, string>
   }
 ): string | undefined {
+  if (tz.length === 0) return undefined
   if (tz[0] === '+' || tz[0] === '-') {
     const offset = UTCOffsetNanoseconds(tz)
     return offset === undefined ? undefined : formatOffset(offset)

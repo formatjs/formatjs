@@ -17,6 +17,8 @@ export function IsValidTimeZoneName(
     uppercaseLinks: Record<string, string>
   }
 ): boolean {
+  // §6.5.2 step 2 returns empty for an empty identifier.
+  if (tz.length === 0) return false
   if (tz[0] === '+' || tz[0] === '-') {
     // Step 19.c limits DateTimeFormat identifiers to minute precision.
     // https://tc39.es/ecma262/#sec-time-zone-offset-strings
