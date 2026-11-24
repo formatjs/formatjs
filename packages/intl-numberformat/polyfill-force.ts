@@ -3,7 +3,7 @@ import {installNumberLocaleMethods} from '#packages/intl-numberformat/to_locale_
 import {
   defineProperty,
   ensureIntl,
-  registerNumberFormatIntrinsic,
+  registerFormatterIntrinsic,
 } from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
@@ -11,7 +11,7 @@ const intl = ensureIntl()
 // ECMA-402 §8.2.7 installs Intl.NumberFormat.
 // https://tc39.es/ecma402/#sec-intl.numberformat-intro
 defineProperty(intl, 'NumberFormat', {value: NumberFormat})
-registerNumberFormatIntrinsic(intl, NumberFormat)
+registerFormatterIntrinsic(intl, 'NumberFormat', NumberFormat)
 installNumberLocaleMethods()
 
 // Drain any locale data that was buffered before polyfill loaded

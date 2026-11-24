@@ -1,11 +1,16 @@
 import {PluralRules} from '#packages/intl-pluralrules/index.js'
 import {shouldPolyfill} from '#packages/intl-pluralrules/should-polyfill.js'
-import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+import {
+  defineProperty,
+  ensureIntl,
+  registerFormatterIntrinsic,
+} from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
 
 if (shouldPolyfill()) {
   defineProperty(intl, 'PluralRules', {value: PluralRules})
+  registerFormatterIntrinsic(intl, 'PluralRules', PluralRules)
 
   // Drain any locale data that was buffered before polyfill loaded
   const buf = (globalThis as Record<string, unknown>)
