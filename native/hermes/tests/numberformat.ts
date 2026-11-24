@@ -43,6 +43,32 @@ for (const pack of fixtures.packs) {
   Native.__addLocaleData(pack)
   Reference.__addLocaleData(JSON.parse(pack))
 }
+const {min, max} = Math
+try {
+  Math.min = Math.max = () => {
+    throw new Error('Read public Math.min or Math.max during rounding')
+  }
+  for (const Constructor of [Native, Reference]) {
+    equal(
+      new Constructor('en', {maximumFractionDigits: 2}).format(1.125),
+      '1.13',
+      'rounding with a default minimum fraction'
+    )
+    equal(
+      new Constructor('en', {minimumFractionDigits: 2}).format(1),
+      '1.00',
+      'rounding with a default maximum fraction'
+    )
+    equal(
+      new Constructor('en', {maximumSignificantDigits: 3}).format(1.125),
+      '1.13',
+      'rounding with significant digits'
+    )
+  }
+} finally {
+  Math.min = min
+  Math.max = max
+}
 for (const Constructor of [Native, Reference]) {
   const receiver = Object.create(Constructor.prototype)
   check(

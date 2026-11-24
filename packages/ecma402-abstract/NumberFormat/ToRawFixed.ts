@@ -1,4 +1,5 @@
 import type {Decimal} from '@formatjs/bigdecimal'
+import {mathMax, mathMin} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type RawNumberFormatResult,
   type UnsignedRoundingModeType,
@@ -54,9 +55,9 @@ export function ToRawFixed(
   // https://tc39.es/ecma402/#sec-torawfixed
   if (roundingIncrement === 1 && x.isInteger()) {
     const integer = x.toString()
-    const minimum = Math.min(
+    const minimum = mathMin(
       maxFraction,
-      Math.max(
+      mathMax(
         minFraction,
         x.isZero() ? fractionDigitCount : digitCount - integer.length
       )
@@ -144,7 +145,7 @@ export function ToRawFixed(
   const sourceFraction = n.isZero()
     ? fractionDigitCount
     : digitCount - int + leadingZeros
-  let cut = maxFraction - Math.max(minFraction, sourceFraction)
+  let cut = maxFraction - mathMax(minFraction, sourceFraction)
 
   // 12. Repeat, while cut > 0 and the last character of m is "0",
   while (cut > 0 && m[m.length - 1] === '0') {
