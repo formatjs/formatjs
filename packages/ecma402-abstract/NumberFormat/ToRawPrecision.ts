@@ -9,6 +9,9 @@ import {invariant, repeat} from '#packages/ecma402-abstract/utils.js'
 import {ApplyUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/ApplyUnsignedRoundingMode.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
+const apply = Reflect.apply
+const {includes, slice} = String.prototype
+
 //IMPL: Helper function to find n1, e1, and r1 using direct calculation
 function findN1E1R1(x: Decimal, p: number) {
   const maxN1 = getPowerOf10(p)
@@ -198,7 +201,7 @@ export function ToRawPrecision(
   } else if (e >= 0) {
     // 5. Else if e ≥ 0, then
     // a. Let m be the string-concatenation of the first e + 1 characters of m, ".", and the remaining p - (e + 1) characters of m.
-    m = m.slice(0, e + 1) + '.' + m.slice(m.length - (p - (e + 1)))
+    m = apply(slice, m, [0, e + 1]) + '.' + apply(slice, m, [e + 1])
     // b. Let int be e + 1.
     int = e + 1
   } else {
@@ -216,19 +219,19 @@ export function ToRawPrecision(
     minPrecision,
     xFinal.isZero() ? fractionDigitCount + 1 : digitCount
   )
-  if (m.includes('.') && maxPrecision > resolvedMinPrecision) {
+  if (apply(includes, m, ['.']) && maxPrecision > resolvedMinPrecision) {
     let cut = maxPrecision - resolvedMinPrecision
     // b. Repeat, while cut > 0 and the last character of m is "0",
     while (cut > 0 && m[m.length - 1] === '0') {
       // i. Remove the last character from m.
-      m = m.slice(0, m.length - 1)
+      m = apply(slice, m, [0, m.length - 1])
       // ii. Decrease cut by 1.
       cut--
     }
     // c. If the last character of m is ".", then
     if (m[m.length - 1] === '.') {
       // i. Remove the last character from m.
-      m = m.slice(0, m.length - 1)
+      m = apply(slice, m, [0, m.length - 1])
     }
   }
 

@@ -8,6 +8,9 @@ import {repeat} from '#packages/ecma402-abstract/utils.js'
 import {ApplyUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/ApplyUnsignedRoundingMode.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
+const apply = Reflect.apply
+const slice = String.prototype.slice
+
 //IMPL: Helper function to calculate raw fixed value
 function ToRawFixedFn(n: Decimal, f: number) {
   return n.times(getPowerOf10(-f))
@@ -128,9 +131,9 @@ export function ToRawFixed(
     }
 
     // c. Let a be the substring of m from 0 to k - f.
-    const a = m.slice(0, k - f)
+    const a = apply(slice, m, [0, k - f])
     // d. Let b be the substring of m from k - f to k.
-    const b = m.slice(m.length - f)
+    const b = apply(slice, m, [m.length - f])
     // e. Set m to the string-concatenation of a, ".", and b.
     m = a + '.' + b
     // f. Let int be the length of a.
@@ -150,7 +153,7 @@ export function ToRawFixed(
   // 12. Repeat, while cut > 0 and the last character of m is "0",
   while (cut > 0 && m[m.length - 1] === '0') {
     // a. Remove the last character from m.
-    m = m.slice(0, m.length - 1)
+    m = apply(slice, m, [0, m.length - 1])
     // b. Decrease cut by 1.
     cut--
   }
@@ -158,7 +161,7 @@ export function ToRawFixed(
   // 13. If the last character of m is ".", then
   if (m[m.length - 1] === '\u002e') {
     // a. Remove the last character from m.
-    m = m.slice(0, m.length - 1)
+    m = apply(slice, m, [0, m.length - 1])
   }
 
   // 14. Return the Record { [[FormattedString]]: m, [[RoundedNumber]]: xFinal, [[IntegerDigitsCount]]: int, [[RoundingMagnitude]]: -f }.

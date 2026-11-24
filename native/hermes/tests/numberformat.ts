@@ -590,6 +590,42 @@ const rawInputs = [
   '\ud800',
 ]
 compare('en', {}, rawInputs)
+for (const Constructor of [Native, Reference]) {
+  const fixed = new Constructor('en', {maximumFractionDigits: 2})
+  const significant = new Constructor('en', {maximumSignificantDigits: 3})
+  const strip = new Constructor('en', {
+    minimumFractionDigits: 2,
+    trailingZeroDisplay: 'stripIfInteger',
+  })
+  const scientific = new Constructor('en', {notation: 'scientific'})
+  const {includes, indexOf, repeat, slice} = String.prototype
+  const toString = BigInt.prototype.toString
+  const unexpected = () => {
+    throw new Error('Called a public string helper during rounding')
+  }
+  let results: string[]
+  try {
+    String.prototype.includes =
+      String.prototype.indexOf =
+      String.prototype.repeat =
+      String.prototype.slice =
+        unexpected
+    BigInt.prototype.toString = unexpected
+    results = [
+      fixed.format(1.125),
+      significant.format(1.125),
+      strip.format(1),
+      scientific.format(1000),
+    ]
+  } finally {
+    String.prototype.includes = includes
+    String.prototype.indexOf = indexOf
+    String.prototype.repeat = repeat
+    String.prototype.slice = slice
+    BigInt.prototype.toString = toString
+  }
+  equal(results, ['1.13', '1.13', '1', '1E3'], 'internal rounding strings')
+}
 const calls: string[] = []
 const exotic = {
   [Symbol.toPrimitive](hint: string) {
