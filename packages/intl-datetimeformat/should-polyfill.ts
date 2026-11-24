@@ -69,15 +69,27 @@ function supportedLocalesOf(locale?: string | string[]) {
   )
 }
 
+function hasRequiredMethods() {
+  const Constructor = Intl.DateTimeFormat
+  const prototype = Constructor?.prototype
+  // ECMA-402 §11.2.2 and §§11.3.4–11.3.6 require these methods.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat.supportedlocalesof
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
+  // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
+  // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts
+  return (
+    typeof Constructor === 'function' &&
+    typeof Constructor.supportedLocalesOf === 'function' &&
+    typeof prototype?.formatRange === 'function' &&
+    typeof prototype?.formatRangeToParts === 'function' &&
+    typeof prototype?.formatToParts === 'function'
+  )
+}
+
 export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     typeof Intl === 'undefined' ||
-    !('DateTimeFormat' in Intl) ||
-    !('formatToParts' in Intl.DateTimeFormat.prototype) ||
-    !('formatRange' in Intl.DateTimeFormat.prototype) ||
-    // ECMA-402 §11.3.5 requires formatRangeToParts alongside formatRange.
-    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
-    typeof Intl.DateTimeFormat.prototype.formatRangeToParts !== 'function' ||
+    !hasRequiredMethods() ||
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle() ||
