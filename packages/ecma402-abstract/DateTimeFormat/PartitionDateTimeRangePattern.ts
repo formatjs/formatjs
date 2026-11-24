@@ -147,33 +147,11 @@ export function PartitionDateTimeRangePattern(
     )
   }
 
-  let fallback = rangePatterns.default
-  if (!fallback) {
-    // ECMA-402 §11.5.8 step 18.a: prepare the default interval as a private List.
-    const parsed = PartitionPattern<'0' | '1' | 'literal'>(
-      dataLocaleData.intervalFormatFallback
-    )
-    const patternParts: RangePatterns['patternParts'] = []
-    for (let index = 0; index < parsed.length; index++) {
-      const part = parsed[index]
-      setDataProperty(patternParts, index, {
-        source:
-          part.type === 'literal'
-            ? RangePatternType.shared
-            : part.type === '0'
-              ? RangePatternType.startRange
-              : RangePatternType.endRange,
-        pattern: part.type === 'literal' ? part.value! : pattern,
-      })
-    }
-    fallback = {__proto__: null, patternParts} as RangePatterns
-  }
-
   // ECMA-402 §11.5.8, steps 15–16 compare relevant fields and collapse
   // equal ranges. Use fallback intervals through displayed precision;
   // smaller undisplayed fields must not make the endpoints differ.
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
-  let rangePattern: RangePatterns | undefined
+  let differentField: TABLE_2 | undefined
   for (let index = 0; index <= lastField; index++) {
     const field = TABLE_2_FIELDS[index]
     // Temporal amendment §15.6.8 steps 23.c–d.i: keep scanning displayed fields
@@ -224,18 +202,14 @@ export function PartitionDateTimeRangePattern(
     // Temporal comparison §15.6.8 step 23.d.vi compares the prepared values;
     // numeric equality includes both signs of zero from calendar providers.
     if (!equal) {
-      // Temporal comparison §15.6.8 step 23.d.vi.1 encodes inequality with
-      // a selected pattern and ends the search.
-      // ECMA-402 §11.5.8 step 15.b and Temporal comparison §15.6.8 step 23.b.
-      // A missing field on the private interval map yields undefined.
-      const interval = rangePatterns[field]
-      rangePattern = interval || fallback
+      // ECMA-402 §11.5.8 step 15.d.vi stops comparing on the first difference.
+      differentField = field
       break
     }
   }
   // Temporal comparison §15.6.8 step 24: undefined encodes no unequal
   // encountered field; full field coverage remains a separate premise.
-  if (rangePattern === undefined) {
+  if (differentField === undefined) {
     // ECMA-402 §11.5.8 step 16.b: pass the selected local time privately.
     // Temporal comparison §15.6.8 step 24.b reuses the rendering local time.
     // Both render paths use +00:00 for Plain endpoints.
@@ -261,8 +235,10 @@ export function PartitionDateTimeRangePattern(
   }
 
   // Some combined-style intervals contain only the time pattern.
-  const selected = rangePattern
+  const selected = rangePatterns[differentField]
+  let rangePattern = selected
   if (
+    !selected ||
     arraySome(
       DATE_FIELDS,
       field =>
@@ -276,7 +252,28 @@ export function PartitionDateTimeRangePattern(
         )
     )
   ) {
-    rangePattern = fallback
+    rangePattern = rangePatterns.default
+  }
+  if (!rangePattern) {
+    // ECMA-402 §11.5.8 step 18.a uses the default only for an unmatched range.
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+    const parsed = PartitionPattern<'0' | '1' | 'literal'>(
+      dataLocaleData.intervalFormatFallback
+    )
+    const patternParts: RangePatterns['patternParts'] = []
+    for (let index = 0; index < parsed.length; index++) {
+      const part = parsed[index]
+      setDataProperty(patternParts, index, {
+        source:
+          part.type === 'literal'
+            ? RangePatternType.shared
+            : part.type === '0'
+              ? RangePatternType.startRange
+              : RangePatternType.endRange,
+        pattern: part.type === 'literal' ? part.value! : pattern,
+      })
+    }
+    rangePattern = {__proto__: null, patternParts} as RangePatterns
   }
   const originalParts = rangePattern.patternParts
   let firstEndpoint: (typeof originalParts)[number] | undefined

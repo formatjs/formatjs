@@ -687,6 +687,7 @@ impl RangeSnapshot {
                 !equal
             })
         });
+        // ECMA-402 §11.5.8 step 16 collapses equal ranges into shared parts.
         let Some(index) = different else {
             let mut parts = render.pattern(
                 config,
@@ -727,6 +728,7 @@ impl RangeSnapshot {
                 })
             })
             .or_else(|| profile.range_patterns.get("default"));
+        // Step 18.a uses the default only when no field interval applies.
         let fallback;
         let patterns = if let Some(selected) = selected {
             &selected.pattern_parts
