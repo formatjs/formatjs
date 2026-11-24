@@ -5,6 +5,15 @@ use std::{
     sync::{Arc, OnceLock},
 };
 
+/// ECMA-402 §§9–9.1 require well-formed fallback tags. Strip extensions as a unit.
+/// https://tc39.es/ecma402/#sec-internal-slots
+pub fn locale_fallback_base(tag: &str) -> Option<&str> {
+    tag.as_bytes()
+        .windows(3)
+        .position(|part| part[0] == b'-' && part[2] == b'-')
+        .map(|start| &tag[..start])
+}
+
 pub struct Compiled<T> {
     bytes: &'static [u8],
     marker: PhantomData<fn() -> T>,

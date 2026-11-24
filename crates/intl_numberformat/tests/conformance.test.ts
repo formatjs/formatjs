@@ -286,6 +286,43 @@ it.each([
   }
 )
 
+it('retains the numbering extension before private-use subtags', () => {
+  const locale = 'en-x-u-private'
+  const requested = 'en-u-nu-arab-x-u-private'
+  const pack = {
+    ...JSON.parse(readFileSync(join(directory, 'en.json'), 'utf8')),
+    locale,
+    aliases: [],
+  }
+  const path = mkdtempSync(
+    join(process.env.TEST_TMPDIR || tmpdir(), 'nf-locale-')
+  )
+  const options = {localeMatcher: 'lookup'} as const
+  try {
+    writeFileSync(join(path, 'en.json'), JSON.stringify(pack))
+    NumberFormat.__addLocaleData(pack)
+    expect(
+      new NumberFormat(requested, options).resolvedOptions()
+    ).toMatchObject({
+      locale: requested,
+      numberingSystem: 'arab',
+    })
+    compare(
+      [
+        {locales: [requested], options, values: [123]},
+        {
+          locales: [requested],
+          options: {...options, numberingSystem: 'latn'},
+          values: [123],
+        },
+      ],
+      path
+    )
+  } finally {
+    rmSync(path, {recursive: true, force: true})
+  }
+})
+
 it('selects Russian compact labels from the displayed mantissa', () => {
   const compact = {notation: 'compact', compactDisplay: 'long'} as const
   const cases = [

@@ -97,8 +97,19 @@ impl Registry {
                 extension = false;
             }
         }
+        // ECMA-402 §9.2.6 steps 6–10 put the Unicode extension before private use.
+        // https://tc39.es/ecma402/#sec-insert-unicode-extension-and-canonicalize
         let locale = if extension {
-            format!("{data_locale}-u-nu-{numbering_system}")
+            Locale::new(
+                &data_locale,
+                &LocaleOptions {
+                    numbering_system: Some(numbering_system.clone()),
+                    ..Default::default()
+                },
+            )
+            .map_err(|_| Error::InvalidLocale)?
+            .as_str()
+            .to_owned()
         } else {
             data_locale.clone()
         };
@@ -186,7 +197,13 @@ impl Registry {
         // https://tc39.es/ecma402/#sec-internal-slots
         for tag in tags {
             let selected = self.data[&tag].clone();
-            let mut parts: Vec<_> = tag.split('-').collect();
+            let base = if let Some(base) = formatjs_intl_data::locale_fallback_base(&tag) {
+                self.insert(base.to_owned(), selected.clone(), false);
+                base
+            } else {
+                &tag
+            };
+            let mut parts: Vec<_> = base.split('-').collect();
             while parts.len() > 1 {
                 if parts.len() > 2 && parts[1].len() == 4 {
                     let scriptless = std::iter::once(parts[0])

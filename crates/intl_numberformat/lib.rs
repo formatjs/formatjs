@@ -46,7 +46,7 @@ pub struct NumberFormat {
 impl NumberFormat {
     pub(crate) fn new(
         data: Arc<LocaleData>,
-        mut locale: String,
+        locale: String,
         requested: Option<&str>,
         options: &Options,
     ) -> Result<Self, Error> {
@@ -83,10 +83,22 @@ impl NumberFormat {
                 extension = false;
             }
         }
-        if extension {
-            locale.push_str("-u-nu-");
-            locale.push_str(&system);
-        }
+        // ECMA-402 §9.2.6 steps 6–10 put the Unicode extension before private use.
+        // https://tc39.es/ecma402/#sec-insert-unicode-extension-and-canonicalize
+        let locale = if extension {
+            Locale::new(
+                &locale,
+                &LocaleOptions {
+                    numbering_system: Some(system.clone()),
+                    ..Default::default()
+                },
+            )
+            .map_err(|_| Error::InvalidLocale)?
+            .as_str()
+            .to_owned()
+        } else {
+            locale
+        };
         Self::with_locale(data, locale, system, options)
     }
     pub(crate) fn reconfigure(&self, options: &Options) -> Result<Self, Error> {

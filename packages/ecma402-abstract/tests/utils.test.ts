@@ -164,6 +164,18 @@ describe('locale data registration', () => {
     expect(locales.has('de-DE')).toBe(true)
     expect(data['de-DE']).toBe(record)
   })
+  it('adds scriptless fallbacks without truncating extensions', () => {
+    const data = {}
+    const locales = new Set<string>()
+    registerLocaleData('de-Latn-DE-x-u-private', {}, data, locales)
+    expect([...locales].sort()).toEqual([
+      'de',
+      'de-DE',
+      'de-Latn',
+      'de-Latn-DE',
+      'de-Latn-DE-x-u-private',
+    ])
+  })
   it('registers en-US from English data without consulting Intl.Locale', () => {
     const descriptor = Object.getOwnPropertyDescriptor(Intl, 'Locale')!
     Object.defineProperty(Intl, 'Locale', {

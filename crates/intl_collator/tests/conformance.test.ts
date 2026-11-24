@@ -26,10 +26,11 @@ const resolve = (path: string) =>
 const units = (text: string) =>
   Array.from({length: text.length}, (_, index) => text.charCodeAt(index))
 const sign = (value: number) => (value < 0 ? -1 : value > 0 ? 1 : 0)
-function run(requests: Request[]): Result[] {
+function run(requests: Request[], env = process.env): Result[] {
   const result = spawnSync(resolve('crates/intl_collator/conformance'), [], {
     input: requests.map(request => JSON.stringify(request)).join('\n') + '\n',
     encoding: 'utf8',
+    env,
     maxBuffer: 64 * 1024 * 1024,
   })
   if (result.error) throw new Error(String(result.error) + '\n' + result.stderr)
@@ -71,6 +72,32 @@ function compare(
   }
   return results
 }
+it('retains collation extensions before private-use subtags', () => {
+  const base = 'de-x-u-private'
+  const locale = 'de-u-co-phonebk-kf-upper-kn-x-u-private'
+  const options = {localeMatcher: 'lookup'} as const
+  const [result] = run([{locales: [locale], options, pairs: []}], {
+    ...process.env,
+    LC_ALL: base,
+  })
+  TypeScriptCollator.availableLocales.add(base)
+  TypeScriptCollator.localeData[base] = TypeScriptCollator.localeData.de
+  try {
+    const reference = new TypeScriptCollator(locale, options).resolvedOptions()
+    expect(reference).toMatchObject({
+      locale,
+      collation: 'phonebk',
+      caseFirst: 'upper',
+      numeric: true,
+    })
+    expect(result.error).toBeUndefined()
+    expect(result.options).toEqual(reference)
+  } finally {
+    TypeScriptCollator.availableLocales.delete(base)
+    Reflect.deleteProperty(TypeScriptCollator.localeData, base)
+  }
+})
+
 it('ports the full existing TSV corpus against Rust, TS and native Intl.Collator', () => {
   const lines = readFileSync(
     resolve('packages/intl-collator/tests/collator-conformance.tsv'),

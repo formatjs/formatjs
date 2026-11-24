@@ -208,7 +208,13 @@ impl Registry {
         }
         for tag in tags {
             let selected = self.compiled[&tag].clone();
-            let mut parts: Vec<_> = tag.split('-').collect();
+            let base = if let Some(base) = formatjs_intl_data::locale_fallback_base(&tag) {
+                self.insert_compiled(base.to_owned(), selected.clone(), false);
+                base
+            } else {
+                &tag
+            };
+            let mut parts: Vec<_> = base.split('-').collect();
             while parts.len() > 1 {
                 if parts.len() > 2 && parts[1].len() == 4 {
                     let scriptless = std::iter::once(parts[0])
@@ -284,7 +290,13 @@ impl Registry {
         }
         for tag in tags {
             let selected = self.data[&tag].clone();
-            let mut parts: Vec<_> = tag.split('-').collect();
+            let base = if let Some(base) = formatjs_intl_data::locale_fallback_base(&tag) {
+                self.insert(base.to_owned(), selected.clone(), false);
+                base
+            } else {
+                &tag
+            };
+            let mut parts: Vec<_> = base.split('-').collect();
             while parts.len() > 1 {
                 if parts.len() > 2 && parts[1].len() == 4 {
                     let scriptless = std::iter::once(parts[0])

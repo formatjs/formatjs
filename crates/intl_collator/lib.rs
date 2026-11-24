@@ -157,7 +157,7 @@ impl Collator {
         // ResolveLocale checks requested keywords, then supported option overrides.
         // Only extensions that actually contributed remain in the locale string.
         // https://tc39.es/ecma402/#sec-resolvelocale
-        let mut keywords = Vec::new();
+        let mut retained = LocaleOptions::default();
         let mut resolved_values = Vec::new();
         let numeric = options
             .numeric
@@ -225,7 +225,12 @@ impl Collator {
                 }
             }
             if extension {
-                keywords.push((key, value.to_owned()));
+                match key {
+                    "co" => retained.collation = Some(value.to_owned()),
+                    "kn" => retained.numeric = Some(value == "true"),
+                    "kf" => retained.case_first = Some(value.to_owned()),
+                    _ => unreachable!(),
+                }
             }
             resolved_values.push(value.to_owned());
         }
@@ -234,7 +239,7 @@ impl Collator {
         // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
         let tailoring_defaults = metadata.collation_defaults.get(&resolved_values[0]);
         let case_first = match tailoring_defaults {
-            Some(defaults) if first.is_none() && !keywords.iter().any(|(key, _)| *key == "kf") => {
+            Some(defaults) if first.is_none() && retained.case_first.is_none() => {
                 defaults.case_first
             }
             _ => match resolved_values[2].as_str() {
@@ -243,20 +248,19 @@ impl Collator {
                 _ => CaseFirst::False,
             },
         };
-        let mut locale = base_locale.clone();
-        if !keywords.is_empty() {
-            locale.push_str("-u");
-            for (key, value) in keywords {
-                locale.push('-');
-                locale.push_str(key);
-                if value != "true" {
-                    locale.push('-');
-                    locale.push_str(&value);
-                }
-            }
-            locale = formatjs_intl_getcanonicallocales::canonicalize_locale(&locale)
-                .map_err(|_| Error::InvalidLocale)?;
-        }
+        // ECMA-402 §9.2.6 steps 6–10 put the Unicode extension before private use.
+        // https://tc39.es/ecma402/#sec-insert-unicode-extension-and-canonicalize
+        let locale = if retained.collation.is_some()
+            || retained.numeric.is_some()
+            || retained.case_first.is_some()
+        {
+            Locale::new(&base_locale, &retained)
+                .map_err(|_| Error::InvalidLocale)?
+                .as_str()
+                .to_owned()
+        } else {
+            base_locale.clone()
+        };
         let sensitivity = options
             .sensitivity
             .unwrap_or(if options.usage == Usage::Sort {
