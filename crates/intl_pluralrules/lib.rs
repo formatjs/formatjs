@@ -261,8 +261,8 @@ impl LocaleRules {
                 .map(|position| -((position + 1).min(i16::MAX as usize) as i16))
                 .unwrap_or(0)
         };
-        // ResolvePlural 8–10 uses this locale's compact scale after rounding.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L316-L321
+        // ECMA-402 §17.5.2 steps 8–10 use the locale's compact scale after rounding.
+        // https://tc39.es/ecma402/#sec-resolveplural
         Ok(self
             .compact_exponents
             .get(if long { "long" } else { "short" })
@@ -278,8 +278,8 @@ impl LocaleRules {
         }
     }
     pub fn categories(&self, ordinal: bool) -> Vec<&'static str> {
-        // resolvedOptions step 4 specifies category order, independent of data order.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L115
+        // ECMA-402 §17.3.2 step 4 specifies category order.
+        // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.resolvedoptions
         [
             PluralCategory::Zero,
             PluralCategory::One,
@@ -313,9 +313,9 @@ impl LocaleRules {
                 .category_for(operands(decimal, exponent)?),
         ))
     }
-    /// ResolvePluralRange 1–9 rejects NaN, permits infinities, then compares
+    /// ECMA-402 §17.5.4 steps 1–9 reject NaN, permit infinities, then compare
     /// formatted strings before consulting the locale's range matrix.
-    /// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L379
+    /// https://tc39.es/ecma402/#sec-resolvepluralrange
     pub fn select_range_rounded(
         &self,
         start: &str,

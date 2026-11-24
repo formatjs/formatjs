@@ -31,7 +31,6 @@ const maxDistance = Math.max
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
 // A private-use subtag named "u" does not start a Unicode extension.
 // https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L116-L118
 export function splitUnicodeExtension(locale: string): {
   locale: string
   extension?: string

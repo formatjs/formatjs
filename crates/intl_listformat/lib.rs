@@ -149,9 +149,9 @@ impl Pattern {
         self.for_next(next).literal_len
     }
     fn parse(text: &str) -> Result<Self, Error> {
-        // LocaleData requires each placeholder exactly once. Compile its
+        // ECMA-402 §14.2.3 requires each placeholder once. Compile its
         // PartitionPattern result on load; substitution never reparses inputs.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L80-L84
+        // https://tc39.es/ecma402/#sec-Intl.ListFormat-internal-slots
         let mut tokens = Vec::new();
         let mut rest = text;
         let mut counts = [0, 0];
@@ -247,8 +247,8 @@ impl LocalePatterns {
         let locale = canonical(&pack.locale)?;
         let language = locale.split('-').next().unwrap();
         let mut templates = BTreeMap::new();
-        // LocaleData has three types, each with all three styles.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L80-L84
+        // ECMA-402 §14.2.3 requires all three styles for each list type.
+        // https://tc39.es/ecma402/#sec-Intl.ListFormat-internal-slots
         for (kind, styles) in pack.data {
             let mut compiled = BTreeMap::new();
             for (style, raw) in styles {
@@ -319,8 +319,8 @@ impl ListFormat {
         }
     }
     pub fn resolved_options(&self) -> ResolvedOptions {
-        // Return a fresh locale/type/style record in the specified order.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L119-L151
+        // ECMA-402 §14.3.2 steps 3–5 return locale, type, and style in order.
+        // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.resolvedoptions
         ResolvedOptions {
             locale: self.locale.clone(),
             kind: self.options.kind,
@@ -456,8 +456,8 @@ impl ListFormat {
         self.parts_with(list)
     }
     fn format_with<T: AsRef<[u16]>>(&self, list: &[T]) -> Vec<u16> {
-        // FormatList 1–5: concatenate all part values, including empty elements.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L317-L321
+        // ECMA-402 §14.5.3 steps 1–4 join all part values, including empty elements.
+        // https://tc39.es/ecma402/#sec-formatlist
         let input_len: usize = list.iter().map(|value| value.as_ref().len()).sum();
         // Each template substitutes both slots once, so order doesn't affect size.
         let literal_len = match list.len() {

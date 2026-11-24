@@ -386,7 +386,6 @@ async function loadDatesFields(
   // ECMA-402 11.1.2, step 11: resolve [[NumberingSystem]] from [[nu]].
   // Keep the locale default first; NumberFormat supplies digits for every system.
   // https://tc39.es/ecma402/#sec-createdatetimeformat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L76
   const nu = numbers
     ? [
         numbers.defaultNumberingSystem,
@@ -1065,12 +1064,10 @@ async function loadDatesFields(
     // ECMA-402 §6.9.1 AvailableCalendars requires iso8601 and limits
     // advertised calendars to implemented functionality (no numbered steps).
     // https://tc39.es/ecma402/#sec-availablecalendars
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L523-L527
     ca: ['gregory', 'iso8601'],
     // ECMA-402 §11.2.3 requires null followed by all four cycles. The
     // null sentinel lets hour12 override an hc extension during resolution.
     // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L229
     hc: [null, 'h11', 'h12', 'h23', 'h24'],
   }
 }

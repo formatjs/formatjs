@@ -69,7 +69,6 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
   // ECMA-402 §6.2.2, step 1 applies UTS #35 Processing LocaleIds, step 2.
   // Canonicalize aliases before removing Unicode "true" values; tvalues keep it.
   // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
   // https://unicode.org/reports/tr35/#processing-localeids
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4255-L4262
   for (let i = 0; i < arr.length; i++) {
@@ -82,7 +81,6 @@ function canonicalizeKVs(arr: KV[], extension: 'u' | 't'): KV[] {
     // ECMA-402 §6.2.2, step 1 applies UTS #35 Processing LocaleIds, step 3:
     // rg/sd use subdivision aliases, including territory replacements with zzzz.
     // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
     // https://unicode.org/reports/tr35/#processing-localeids
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4263-L4267
     if (extension === 'u' && (key === 'rg' || key === 'sd')) {
@@ -185,7 +183,6 @@ export function canonicalizeUnicodeLanguageId(
 ): UnicodeLanguageId {
   // ECMA-402 §6.2.2, step 1: canonicalize case before matching CLDR aliases.
   // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
   unicodeLanguageId.lang = lowerCase(unicodeLanguageId.lang)
   if (unicodeLanguageId.script) {
     unicodeLanguageId.script =
@@ -205,7 +202,6 @@ export function canonicalizeUnicodeLanguageId(
   // ECMA-402 §6.2.2, step 1 applies UTS #35 matching and replacement.
   // Remove matched subtags; retain fields that the rule does not replace.
   // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L78-L81
   // https://unicode.org/reports/tr35/#4.-replacement
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L4103-L4133
   const matches = ({type}: LanguageAliasRule) =>

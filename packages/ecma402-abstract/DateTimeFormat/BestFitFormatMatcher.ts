@@ -46,7 +46,6 @@ export function bestFitFormatMatcherScore(
   // ECMA-402 §11.5.3 matches requested components (no numbered steps).
   // An hour-cycle preference must not add an unrequested hour field.
   // https://tc39.es/ecma402/#sec-bestfitformatmatcher
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1310-L1322
   if (options.hour !== undefined) {
     if (options.hour12 && !format.hour12) {
       score -= removalPenalty
@@ -141,7 +140,6 @@ export function BestFitFormatMatcher(
   // ECMA-402 §11.5.3 returns an internal Record (no numbered steps).
   // Reuse registered pattern fields so matching preserves RegExp statics.
   // https://tc39.es/ecma402/#sec-bestfitformatmatcher
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1310-L1315
   const patternFormat = {
     __proto__: null,
     rawPattern: bestFormat.rawPattern,

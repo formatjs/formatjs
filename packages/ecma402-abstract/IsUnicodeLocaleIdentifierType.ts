@@ -6,7 +6,6 @@ export function IsUnicodeLocaleIdentifierType(value: string): boolean {
   // ResolveOptions step 6.d.ii requires a Unicode locale identifier type.
   // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
   // https://tc39.es/ecma402/#sec-resolveoptions
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
   let length = 0
   for (let index = 0; index < value.length; index++) {
     const code = typeApply(charCodeAt, value, [index]) as number

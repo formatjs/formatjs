@@ -1,7 +1,7 @@
 // Pinned ICU4X 2.3 / CLDR TS profiles. Both sides asserted; no skipped cases.
-// ECMA-402 makes boundaries and word-like status implementation-defined.
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L372
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L406
+// ECMA-402 §§19.7.1 and 19.8.1 leave word-like status and boundaries to implementations.
+// https://tc39.es/ecma402/#sec-createsegmentdataobject
+// https://tc39.es/ecma402/#sec-findboundary
 export const profiles = [
   // ICU dictionary/LSTM words; TS uses CLDR break-rule boundaries.
   {

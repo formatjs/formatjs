@@ -201,7 +201,7 @@ impl Digits {
         // For huge integers, significant rounding always has a larger rounding
         // magnitude than fraction rounding. MorePrecision chooses fraction;
         // LessPrecision chooses significant, even after a carry.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L726-L738
+        // https://tc39.es/ecma402/#sec-formatnumerictostring
         if matches!(self.kind, Kind::Significant | Kind::Less) {
             let maximum = usize::from(self.maximum_significant_digits.unwrap());
             let mut retained = integer.as_bytes()[..maximum].to_vec();
@@ -274,8 +274,8 @@ impl Digits {
         if minimum_default > maximum_default || maximum_default > 100 {
             return Err(Error::Range("fractionDigits"));
         }
-        // SetNumberFormatDigitOptions 1–15: common options precede digit limits.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L112
+        // ECMA-402 §16.1.2 steps 1–16 read common options before picking digit limits.
+        // https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
         let minimum_integer_digits = number(
             options.minimum_integer_digits,
             1,
@@ -310,8 +310,8 @@ impl Digits {
             || options.maximum_significant_digits.is_some();
         let has_fraction =
             options.minimum_fraction_digits.is_some() || options.maximum_fraction_digits.is_some();
-        // Steps 16–22: only coerce/validate active precision options.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L113-L139
+        // Steps 17–22 coerce and validate active precision options.
+        // https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
         let need_significant = rounding_priority != Priority::Auto || has_significant;
         let need_fraction =
             rounding_priority != Priority::Auto || !(has_significant || (!has_fraction && compact));
@@ -362,8 +362,8 @@ impl Digits {
             minimum_fraction_digits = Some(min.unwrap() as u8);
             maximum_fraction_digits = Some(max.unwrap() as u8);
         }
-        // Steps 23–28: compact defaults, priority, then increment compatibility.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L140-L162
+        // Steps 23–28 set compact defaults and priority, then check the increment.
+        // https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
         let kind = if !need_significant && !need_fraction {
             minimum_fraction_digits = Some(0);
             maximum_fraction_digits = Some(0);
@@ -438,9 +438,9 @@ impl Digits {
                 (digit_count, fraction_digit_count)
             };
         let mut number = Decimal::from_str(input).map_err(|_| Error::InvalidNumber)?;
-        // FormatNumericToString 1–6: retain sign for directed rounding, but its
-        // FormattedString is unsigned. Plural range equality uses that string.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L700-L723
+        // ECMA-402 §16.5.2 steps 1–6 preserve the sign for directed rounding. The
+        // formatted digits are unsigned. Plural range equality uses that string.
+        // https://tc39.es/ecma402/#sec-formatnumerictostring
         let mode = self.rounding_mode.unsigned(input.starts_with('-'));
         let mut source = number.absolute.clone();
         source.trim_start();
@@ -452,7 +452,7 @@ impl Digits {
                     self.significant(&source, mode, digit_count, fraction_digit_count);
                 let fraction = self.fraction(&source, mode, digit_count, fraction_digit_count);
                 // Steps 7.c–d: compare rounding magnitudes, including carries.
-                // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L726-L738
+                // https://tc39.es/ecma402/#sec-formatnumerictostring
                 if (significant.1 <= fraction.1) == (self.kind == Kind::More) {
                     significant
                 } else {
@@ -462,7 +462,7 @@ impl Digits {
         };
         // Steps 9–13: strip fractional zeros for integer results, then pad only
         // the formatted integer. Keep returned rounded number mathematically equal.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L740-L751
+        // https://tc39.es/ecma402/#sec-formatnumerictostring
         if self.trailing_zero_display == TrailingZeros::StripIfInteger {
             rounded.trim_end_if_integer();
         }

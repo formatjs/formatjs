@@ -67,9 +67,9 @@ impl PluralRules {
         locale: String,
         options: &Options,
     ) -> Result<Self, Error> {
-        // Constructor 7–14: validate type, notation, compactDisplay, then digits.
+        // ECMA-402 §17.1.1 steps 7–14: validate type, notation, compactDisplay, then digits.
         // compactDisplay is validated even when notation is not compact.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
+        // https://tc39.es/ecma402/#sec-intl.pluralrules
         let kind = option(options.kind.as_deref(), &["cardinal", "ordinal"], "type")?;
         let notation = option(
             options.notation.as_deref(),
@@ -93,9 +93,9 @@ impl PluralRules {
     }
 
     pub fn resolved_options(&self) -> ResolvedOptions<'_> {
-        // resolvedOptions 3–6: include only active slots, ordered categories.
+        // ECMA-402 §17.3.2 steps 3–6: include only active slots, ordered categories.
         // The host creates a fresh ordinary object in the spec table's order.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L114-L127
+        // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.resolvedoptions
         ResolvedOptions {
             locale: &self.locale,
             kind: if self.ordinal { "ordinal" } else { "cardinal" },
@@ -107,8 +107,8 @@ impl PluralRules {
     }
 
     fn formatted(&self, value: &str) -> Result<String, Error> {
-        // ResolvePlural 1–4: non-finite values bypass numeric rounding.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L306-L316
+        // ECMA-402 §17.5.2 steps 1–4: non-finite values bypass numeric rounding.
+        // https://tc39.es/ecma402/#sec-resolveplural
         if ["NaN", "Infinity", "-Infinity"].contains(&value) {
             Ok(value.to_owned())
         } else {
@@ -212,8 +212,8 @@ impl PluralRules {
     }
 
     pub fn select_range(&self, start: &str, end: &str) -> Result<&str, Error> {
-        // ResolvePluralRange 1–9: reject NaN before resolving either endpoint.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L365
+        // ECMA-402 §17.5.4 steps 1–9: reject NaN before resolving either endpoint.
+        // https://tc39.es/ecma402/#sec-resolvepluralrange
         if start == "NaN" || end == "NaN" {
             return Err(Error::InvalidRange);
         }

@@ -85,7 +85,6 @@ async function loadRelativeFields(locale: string): Promise<LocaleFieldsData> {
   // ECMA-402 18.1.1, steps 9 and 15–16: resolve nu and pass it to NumberFormat.
   // Keep the locale default first; every CLDR numeric system is available.
   // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/relativetimeformat.html#L29-L36
   const nu = defaultNumberingSystem
     ? [
         defaultNumberingSystem,

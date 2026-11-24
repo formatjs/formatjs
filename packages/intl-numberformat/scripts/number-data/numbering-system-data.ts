@@ -213,7 +213,6 @@ export function expandNumberingSystems(
   // ECMA-402 16.5.5, step 4.c.iii.1.a: substitute the selected system's digits.
   // Resolve its LDML symbols and patterns too; digit substitution alone is insufficient.
   // https://tc39.es/ecma402/#sec-partitionnotationsubpattern
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L844-L855
   const result: RawNumberData = {
     minimumGroupingDigits: existing.minimumGroupingDigits,
     nu: [

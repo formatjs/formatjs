@@ -56,7 +56,6 @@ export function splitSubtags(
 // ECMA-402 §6.2.1, step 2 validates ASCII locale grammar without observable
 // RegExp execution, including changes to legacy RegExp constructor statics.
 // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
 function isLetter(code: number): boolean {
   return (code >= 65 && code <= 90) || (code >= 97 && code <= 122)
 }
@@ -234,7 +233,6 @@ function parseTransformedExtension(chunks: string[]): TransformedExtension {
   // ECMA-402 §6.2.1, step 2: transformed extensions allow a language,
   // fields, or both. Do not consume a field key as a failed language parse.
   // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
   if (chunks.length && isUnicodeLanguageSubtag(chunks[0])) {
     lang = parseUnicodeLanguageId(chunks)
   }
@@ -282,7 +280,6 @@ function parseOtherExtensionValue(chunks: string[]): string {
   }
   // ECMA-402 §6.2.1, step 2: every extension singleton needs a value.
   // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L46
   throw new RangeErrorConstructor('Missing extension value')
 }
 function parseExtensions(chunks: string[]): Omit<UnicodeLocaleId, 'lang'> {

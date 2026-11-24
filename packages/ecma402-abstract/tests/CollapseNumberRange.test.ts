@@ -7,9 +7,8 @@ const numberFormat = new Intl.NumberFormat('it')
 
 function collapse(start: NumberFormatPart[], end: NumberFormatPart[]) {
   // PartitionNumberRangePattern assigns endpoint sources before collapsing.
-  // ECMA-402 §16.5.19 steps 6–9; only the separator starts as shared.
+  // ECMA-402 §16.5.18 steps 6–9; only the separator starts as shared.
   // https://tc39.es/ecma402/#sec-partitionnumberrangepattern
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1836-L1841
   return CollapseNumberRange(
     numberFormat,
     [
