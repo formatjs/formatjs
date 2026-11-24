@@ -55,6 +55,7 @@ const lowerCase = String.prototype.toLowerCase
 const split = String.prototype.split
 const slice = String.prototype.slice
 const indexOf = String.prototype.indexOf
+const join = Array.prototype.join
 
 export interface IntlLocaleOptions {
   language?: string
@@ -866,12 +867,13 @@ export class Locale extends nullClassBase {
    */
   public get variants(): string | undefined {
     const locale = getInternalSlots(this).locale
-    // ECMA-402 §15.5.5 https://tc39.es/ecma402/#sec-getlocalevariants
+    // ECMA-402 §15.5.5 steps 7–8 return the variant suffix or undefined.
+    // https://tc39.es/ecma402/#sec-getlocalevariants
     const variants = parseUnicodeLanguageId(locale).variants
     if (!variants || variants.length === 0) {
       return undefined
     }
-    return variants.join('-')
+    return apply(join, variants, ['-'])
   }
 
   // ECMA-402 §15.3.6 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.firstDayOfWeek

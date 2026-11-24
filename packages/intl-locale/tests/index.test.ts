@@ -228,10 +228,19 @@ describe('intl-locale', () => {
       expect(new Locale('ca-valencia').variants).toBe('valencia')
     })
 
-    it('should return hyphen-joined variants for locale with multiple variants', function () {
-      // Note: variants are sorted alphabetically during canonicalization
+    it('joins canonical variants without calling a replaced array method', () => {
       const locale = new Locale('de-DE-1996-1901')
-      expect(locale.variants).toBe('1901-1996')
+      const join = Array.prototype.join
+      let variants: string | undefined
+      try {
+        Array.prototype.join = () => {
+          throw new Error('unexpected Array.prototype.join')
+        }
+        variants = locale.variants
+      } finally {
+        Array.prototype.join = join
+      }
+      expect(variants).toBe('1901-1996')
     })
 
     it('should return undefined for locale with only language', function () {
