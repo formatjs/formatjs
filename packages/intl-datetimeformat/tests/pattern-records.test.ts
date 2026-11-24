@@ -11,6 +11,45 @@ import type {RawDateTimeLocaleData} from '#packages/intl-datetimeformat/types.js
 
 DateTimeFormat.__addLocaleData(en as any, ja as any)
 
+it.each(['calendarData', 'intervalFormatTemplates'] as const)(
+  'ignores inherited %s while loading calendar intervals',
+  field => {
+    const raw = en as unknown as RawDateTimeLocaleData
+    const data = {...raw.data}
+    delete data.calendarData
+    delete data.intervalFormatTemplates
+    if (field === 'intervalFormatTemplates') {
+      data.calendarData = {gregory: {...data}}
+    }
+    const pack = {locale: 'en-NZ', data}
+    const format = () =>
+      new DateTimeFormat(pack.locale, {
+        calendar: 'gregory',
+        timeZone: 'UTC',
+        dateStyle: 'short',
+        timeStyle: 'short',
+      }).formatRangeToParts(0, 86_400_000)
+    DateTimeFormat.__addLocaleData(pack)
+    const expected = format()
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, field)
+    let actual: ReturnType<typeof format>
+    try {
+      Object.defineProperty(Object.prototype, field, {
+        configurable: true,
+        get() {
+          throw new Error(`Inherited ${field} read`)
+        },
+      })
+      DateTimeFormat.__addLocaleData(pack)
+      actual = format()
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, field, original)
+      else Reflect.deleteProperty(Object.prototype, field)
+    }
+    expect(actual).toEqual(expected)
+  }
+)
+
 it.each([false, true])(
   'uses private ISO calendar patterns when the pack supplies ISO patterns = %s',
   supplied => {
