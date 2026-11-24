@@ -127,6 +127,8 @@ See [ECMA-402 §16.5.11](https://tc39.es/ecma402/#sec-getnumberformatpattern).
 
 ## Range endpoints
 
+`shouldPolyfill` checks that the host exposes the range and parts methods.
+
 `formatRange` and `formatRangeToParts` reject missing or undefined endpoints with
 `TypeError` before coercing either argument. NaN endpoints still throw `RangeError`.
 See [ECMA-402 §16.3.4, step 3](https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange)

@@ -78,6 +78,24 @@ function supportsSourcePrecision() {
   }
 }
 
+function supportsRangeAndParts() {
+  const prototype = Intl.NumberFormat.prototype as
+    | (Intl.NumberFormat & {
+        formatRange?: unknown
+        formatRangeToParts?: unknown
+      })
+    | undefined
+  // ECMA-402 §§16.3.4–16.3.6 require all three methods.
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formattoparts
+  return (
+    typeof prototype?.formatRange === 'function' &&
+    typeof prototype?.formatRangeToParts === 'function' &&
+    typeof prototype?.formatToParts === 'function'
+  )
+}
+
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -92,6 +110,7 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
     !supportsES2023() ||
+    !supportsRangeAndParts() ||
     !supportsSourcePrecision() ||
     onlySupportsEn() ||
     !supportedLocalesOf(locale)
