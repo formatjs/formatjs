@@ -64,7 +64,4 @@ export interface CollatorLocaleData {
   defaultCollation?: string
   sensitivity: CollatorSensitivity
   ignorePunctuation: boolean
-  collationDefaults?: Readonly<
-    Record<string, {caseFirst: CollatorCaseFirst; ignorePunctuation: boolean}>
-  >
 }

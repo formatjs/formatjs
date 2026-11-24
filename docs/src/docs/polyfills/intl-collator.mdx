@@ -114,8 +114,9 @@ left-to-right order and rejects Symbols with `TypeError`.
 but cannot be constructed with `new`. The constructor's `prototype` property
 is non-writable; the compare getter and bound function expose the standard names.
 
-The default `ignorePunctuation` value follows the locale’s CLDR collation
-settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
+The resolved locale and `usage` supply the defaults for `caseFirst` and
+`ignorePunctuation`. Thai defaults to ignoring punctuation. Set
+`ignorePunctuation: false` to preserve it.
 
 CLDR `root` data remains available for collation inheritance, but is excluded
 from available locale identifiers used during negotiation.
