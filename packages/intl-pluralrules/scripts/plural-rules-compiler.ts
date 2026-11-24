@@ -43,14 +43,25 @@ function parseOperand(operandStr: string, modulo?: string): ts.Expression {
     // Extract the divisor from "% 100" format
     const divisor = parseInt(modulo.replace('%', '').trim(), 10)
     if ('nift'.includes(name)) {
-      const digits = ts.factory.createIdentifier(
-        name === 'f' || name === 't' ? 'decimalPart' : 'integerPart'
-      )
+      const fraction = name === 'f' || name === 't'
       const args: ts.Expression[] = [
-        digits,
+        ts.factory.createIdentifier(
+          fraction ? 'fractionStart' : 'integerStart'
+        ),
+        name === 't'
+          ? ts.factory.createBinaryExpression(
+              ts.factory.createIdentifier('fractionStart'),
+              ts.SyntaxKind.PlusToken,
+              ts.factory.createIdentifier('w')
+            )
+          : fraction
+            ? ts.factory.createPropertyAccessExpression(
+                ts.factory.createIdentifier('numStr'),
+                'length'
+              )
+            : ts.factory.createIdentifier('integerEnd'),
         ts.factory.createNumericLiteral(divisor),
       ]
-      if (name === 't') args.push(ts.factory.createIdentifier('w'))
       return ts.factory.createCallExpression(
         ts.factory.createIdentifier('modDigits'),
         undefined,
@@ -181,14 +192,11 @@ function parseComparison(comparisonStr: string): ts.Expression {
   if (operandStr === 'n') {
     // CLDR '=' tests membership in integer values/ranges. Fractional n cannot
     // satisfy it; '!=' is its complement. Visible zero fractions remain integers.
-    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1324-L1368
-    const fractional = ts.factory.createCallExpression(
-      ts.factory.createPropertyAccessExpression(
-        ts.factory.createRegularExpressionLiteral('/[1-9]/'),
-        'test'
-      ),
-      undefined,
-      [ts.factory.createIdentifier('decimalPart')]
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Plural_rules_syntax
+    const fractional = ts.factory.createBinaryExpression(
+      ts.factory.createIdentifier('w'),
+      ts.SyntaxKind.ExclamationEqualsEqualsToken,
+      ts.factory.createNumericLiteral(0)
     )
     comparison = ts.factory.createParenthesizedExpression(
       ts.factory.createBinaryExpression(
@@ -360,22 +368,22 @@ export class PluralRulesCompiler {
     // https://unicode.org/reports/tr35/tr35-numbers.html#Operands
     // Format: [symbol, JavaScript expression, dependencies]
     const allOperands: Array<[string, string, string[]]> = [
-      // CLDR spec: n = absolute value of the source number
-      ['n', 'Math.abs(parseFloat(numStr))', []],
+      // Relations on n test integers only. The w guard rejects fractions.
+      ['n', 'readDigits(integerStart, integerEnd)', ['w']],
       // CLDR spec: i = integer digits of n
-      ['i', 'Math.floor(Math.abs(parseFloat(integerPart)))', []],
+      ['i', used.has('n') ? 'n' : 'readDigits(integerStart, integerEnd)', []],
       // CLDR spec: v = number of visible fraction digits in n, with trailing zeros
-      ['v', 'decimalPart.length', []],
+      ['v', 'numStr.length - fractionStart', []],
       // CLDR spec: w = number of visible fraction digits in n, without trailing zeros
       [
         'w',
-        '(() => { let end = decimalPart.length; while (end > 0 && decimalPart[end - 1] === "0") end--; return end; })()',
+        '(() => { let end = numStr.length; while (end > fractionStart && numStr[end - 1] === "0") end--; return end - fractionStart; })()',
         [],
       ],
       // CLDR spec: f = visible fractional digits in n, with trailing zeros
-      ['f', 'v > 0 ? parseInt(decimalPart, 10) : 0', ['v']],
+      ['f', 'readDigits(fractionStart, numStr.length)', []],
       // CLDR spec: t = visible fractional digits in n, without trailing zeros
-      ['t', 'w > 0 ? parseInt(decimalPart.slice(0, w), 10) : 0', ['w']],
+      ['t', 'readDigits(fractionStart, fractionStart + w)', ['w']],
       // CLDR spec: c = compact decimal exponent (extension for compact notation)
       ['c', 'exponent', []],
       // CLDR spec: e = compact decimal exponent (synonym for c)
@@ -429,93 +437,10 @@ export class PluralRulesCompiler {
         )
       )
 
-    // Only generate parsing code if we actually need operands
     if (operands.length > 0) {
-      // Parse number string to extract operands
       statements.push(
-        // const numStr = String(num);
-        ts.factory.createVariableStatement(
-          undefined,
-          ts.factory.createVariableDeclarationList(
-            [
-              ts.factory.createVariableDeclaration(
-                'numStr',
-                undefined,
-                undefined,
-                ts.factory.createCallExpression(
-                  ts.factory.createIdentifier('String'),
-                  undefined,
-                  [ts.factory.createIdentifier('num')]
-                )
-              ),
-            ],
-            ts.NodeFlags.Const
-          )
-        ),
-
-        // const parts = numStr.split('.');
-        ts.factory.createVariableStatement(
-          undefined,
-          ts.factory.createVariableDeclarationList(
-            [
-              ts.factory.createVariableDeclaration(
-                'parts',
-                undefined,
-                undefined,
-                ts.factory.createCallExpression(
-                  ts.factory.createPropertyAccessExpression(
-                    ts.factory.createIdentifier('numStr'),
-                    'split'
-                  ),
-                  undefined,
-                  [ts.factory.createStringLiteral('.')]
-                )
-              ),
-            ],
-            ts.NodeFlags.Const
-          )
-        ),
-
-        // const integerPart = parts[0];
-        ts.factory.createVariableStatement(
-          undefined,
-          ts.factory.createVariableDeclarationList(
-            [
-              ts.factory.createVariableDeclaration(
-                'integerPart',
-                undefined,
-                undefined,
-                ts.factory.createElementAccessExpression(
-                  ts.factory.createIdentifier('parts'),
-                  ts.factory.createNumericLiteral(0)
-                )
-              ),
-            ],
-            ts.NodeFlags.Const
-          )
-        ),
-
-        // const decimalPart = parts[1] || '';
-        ts.factory.createVariableStatement(
-          undefined,
-          ts.factory.createVariableDeclarationList(
-            [
-              ts.factory.createVariableDeclaration(
-                'decimalPart',
-                undefined,
-                undefined,
-                ts.factory.createBinaryExpression(
-                  ts.factory.createElementAccessExpression(
-                    ts.factory.createIdentifier('parts'),
-                    ts.factory.createNumericLiteral(1)
-                  ),
-                  ts.SyntaxKind.BarBarToken,
-                  ts.factory.createStringLiteral('')
-                )
-              ),
-            ],
-            ts.NodeFlags.Const
-          )
+        ts.factory.createExpressionStatement(
+          ts.factory.createIdentifier('__DECIMAL_SETUP__')
         )
       )
     }
@@ -606,16 +531,36 @@ export class PluralRulesCompiler {
       ts.ScriptKind.JS
     )
     let code = printer.printNode(ts.EmitHint.Unspecified, func, sourceFile)
+    // ECMA-402 §17.5.1 receives a private decimal string. Indexed reads
+    // implement LDML operands without invoking user code or updating RegExp statics.
+    // https://tc39.es/ecma402/#sec-pluralruleselect
+    // https://unicode.org/reports/tr35/tr35-numbers.html#Operands
+    if (operands.length > 0) {
+      code = code.replace(
+        '__DECIMAL_SETUP__;',
+        `const numStr = '' + num;
+      const integerStart = numStr[0] === '-' || numStr[0] === '+' ? 1 : 0;
+      let integerEnd = integerStart;
+      while (integerEnd < numStr.length && numStr[integerEnd] !== '.') integerEnd++;
+      const fractionStart = integerEnd < numStr.length ? integerEnd + 1 : integerEnd;
+      function readDigits(start, end) {
+        let value = 0;
+        for (let index = start; index < end; index++) {
+          value = value * 10 + +numStr[index];
+        }
+        return value;
+      }`
+      )
+    }
     if (preciseModulo) {
       // Reduce decimal digits before Number conversion. CLDR divisors stay
       // small, so each intermediate remains exact even for BigInt-sized inputs.
       code = code.replace(
         '__MOD_DIGITS__;',
-        `function modDigits(digits, divisor, end = digits.length) {
+        `function modDigits(start, end, divisor) {
         let value = 0;
-        for (let index = 0; index < end; index++) {
-          const digit = digits.charCodeAt(index) - 48;
-          if (digit >= 0 && digit <= 9) value = (value * 10 + digit) % divisor;
+        for (let index = start; index < end; index++) {
+          value = (value * 10 + +numStr[index]) % divisor;
         }
         return value;
       }`

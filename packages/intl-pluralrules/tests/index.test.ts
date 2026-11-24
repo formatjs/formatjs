@@ -637,6 +637,35 @@ it('preserves RegExp state when Icelandic rules trim trailing zeros', () => {
   expect(after).toEqual(before)
 })
 
+it('preserves RegExp state when English ordinals check for fractions', () => {
+  const rules = new PluralRules('en', {type: 'ordinal'})
+  void /probe(.)/.exec('probe!')
+  const before = [RegExp.lastMatch, RegExp.$1]
+  const category = rules.select('1.2')
+  const regexState = [RegExp.lastMatch, RegExp.$1]
+  expect(category).toBe('other')
+  expect(regexState).toEqual(before)
+})
+
+it('selects exact ordinals without calling public String methods', () => {
+  const rules = new PluralRules('en', {type: 'ordinal'})
+  const split = String.prototype.split
+  const charCodeAt = String.prototype.charCodeAt
+  const unexpectedCall = () => {
+    throw new Error('Called a public String method')
+  }
+  let categories: string[]
+  try {
+    String.prototype.split = unexpectedCall
+    String.prototype.charCodeAt = unexpectedCall
+    categories = [rules.select('9007199254740993'), rules.select('1.2')]
+  } finally {
+    String.prototype.split = split
+    String.prototype.charCodeAt = charCodeAt
+  }
+  expect(categories).toEqual(['few', 'other'])
+})
+
 it('accepts infinite range endpoints but still rejects NaN', () => {
   const rules = new PluralRules('en')
   for (const infinity of [-Infinity, Infinity]) {
