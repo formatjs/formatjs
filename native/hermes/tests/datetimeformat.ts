@@ -386,6 +386,43 @@ for (const text of fixtures.patches) {
   Native.__addCalendarLocaleData(text)
   Reference.__addCalendarLocaleData(JSON.parse(text))
 }
+for (const Constructor of [Native, Reference]) {
+  for (const calendar of ['chinese', 'dangi', 'hebrew', 'islamic-umalqura']) {
+    const formatter = new Constructor('en', {
+      calendar,
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    equal(formatter.resolvedOptions().calendar, calendar, 'selected calendar')
+    const date = Date.UTC(2023, 2, 22)
+    const expected = formatter.formatToParts(date)
+    for (const [owner, key] of [
+      [Math, 'floor'],
+      [Number, 'isFinite'],
+      [String.prototype, 'indexOf'],
+      [String.prototype, 'slice'],
+    ] as const) {
+      const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+      let actual: Intl.DateTimeFormatPart[]
+      try {
+        Object.defineProperty(owner, key, {
+          ...descriptor,
+          value() {
+            throw new Error(
+              'Called mutable ' + key + ' while decoding a calendar'
+            )
+          },
+        })
+        actual = formatter.formatToParts(date)
+      } finally {
+        Object.defineProperty(owner, key, descriptor)
+      }
+      equal(actual, expected, calendar + ' calendar ignores mutable ' + key)
+    }
+  }
+}
 for (const calendar of fixtures.calendars)
   for (const locale of fixtures.locales)
     for (const profile of [
