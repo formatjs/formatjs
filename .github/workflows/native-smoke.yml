@@ -128,7 +128,9 @@ jobs:
           release: '10.2'
           copyback: false
           prepare: |
-            PKG_PATH=https://cdn.netbsd.org/pub/pkgsrc/packages/NetBSD/amd64/10.0/All/ /usr/sbin/pkg_add nodejs
+            package_path=pub/pkgsrc/packages/NetBSD/amd64/10.0/All/
+            # Try the JAIST mirror first to avoid truncated CDN downloads.
+            PKG_PATH="https://ftp.jaist.ac.jp/$package_path;https://cdn.netbsd.org/$package_path" /usr/sbin/pkg_add nodejs
           run: ${{ env.WASI_SMOKE_COMMAND }}
 
       - name: Smoke Test on OpenBSD
