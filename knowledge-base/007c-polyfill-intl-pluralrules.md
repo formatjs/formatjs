@@ -36,18 +36,9 @@ pluralRule-count-one: i = 1 and v = 0
 pluralRule-count-other:
 ```
 
-**Compiled output:**
-
-```javascript
-function(num, isOrdinal, exponent = 0) {
-  const i = Math.floor(Math.abs(parseFloat(integerPart)));
-  const v = decimalPart.length;
-  if (!isOrdinal) {
-    if (i === 1 && v === 0) return "one";
-  }
-  return "other";
-}
-```
+The compiler emits `i === 1 && v === 0` for this condition. Generated rules read
+the rounded decimal string by index, preserving exact remainders and leaving
+RegExp statics untouched.
 
 **Compiler optimizations:**
 
