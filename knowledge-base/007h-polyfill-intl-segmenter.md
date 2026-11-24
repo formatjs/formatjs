@@ -69,6 +69,8 @@ export const CLDR_SEGMENTATION_RULES: Record<Granularity, Record<Locale, RuleSet
 - Full Unicode 17 grapheme, word and sentence corpora run without exclusions.
   Context transparency applies inside repetitions; abbreviation suppressions
   preserve mandatory paragraph boundaries.
+- Lone UTF-16 surrogates participate in boundary rules as individual code
+  points. Generated rules keep flag pairs intact and attach ignored marks.
 
 ## Iteration and default locale
 

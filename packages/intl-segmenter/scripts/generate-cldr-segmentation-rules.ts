@@ -23,8 +23,10 @@ const SEGMENTATION_LOCALES = [
 ] as const
 
 const WORD_BREAK_TRANSPARENT = '(?:$Extend|$Format|$ZWJ)'
-const NON_REGIONAL_INDICATOR = rewritePattern(
-  '[^\\p{Regional_Indicator}]',
+const LONE_LEAD_SURROGATE = '[\\uD800-\\uDBFF](?![\\uDC00-\\uDFFF])'
+const LONE_TRAIL_SURROGATE = '(?:^|[^\\uD800-\\uDBFF])[\\uDC00-\\uDFFF]'
+const NON_RI_EXCEPT_LONE_TRAIL = rewritePattern(
+  '[^\\p{Regional_Indicator}\\uDC00-\\uDFFF]',
   'u',
   {unicodePropertyEscapes: 'transform', unicodeFlag: 'transform'}
 )
@@ -33,16 +35,17 @@ const NON_REGIONAL_INDICATOR = rewritePattern(
 const HARDCODED_RULE_REPLACEMENTS: Record<string, string> = {
   // GB13 matches a non-RI code point before the run.
   // https://www.unicode.org/reports/tr29/#GB13
-  'root.GraphemeClusterBreak.13.before': `${NON_REGIONAL_INDICATOR}($RI$RI)*$RI`,
+  'root.GraphemeClusterBreak.13.before': `(?:${NON_RI_EXCEPT_LONE_TRAIL}|${LONE_TRAIL_SURROGATE})($RI$RI)*$RI`,
 
   // WB4 makes Extend, Format, and ZWJ transparent for RI parity in WB15–16.
-  // Match whole code points so a surrogate cannot restart a flag sequence.
+  // A lone trail surrogate match consumes preceding context. Apply the
+  // transparency check to ordinary code points only.
   // https://www.unicode.org/reports/tr29/#WB4
   // https://www.unicode.org/reports/tr29/#WB15
   // https://www.unicode.org/reports/tr29/#WB16
   'root.WordBreak.15.before': `^${WORD_BREAK_TRANSPARENT}*($RI$RI)*$RI`,
   'root.WordBreak.16.before':
-    `(?!${WORD_BREAK_TRANSPARENT})${NON_REGIONAL_INDICATOR}` +
+    `(?:(?!${WORD_BREAK_TRANSPARENT})${NON_RI_EXCEPT_LONE_TRAIL}|${LONE_TRAIL_SURROGATE})` +
     `${WORD_BREAK_TRANSPARENT}*($RI$RI)*$RI`,
 }
 
@@ -604,17 +607,17 @@ const remapSegmentationJson = (
             if (hasParaSep) excludeParts.push('$ParaSep')
           }
 
-          // The pattern for the character BEFORE the break: any character that is NOT in the exclude list
-          // IMPORTANT: Use a pattern that matches ALL characters including emoji (surrogate pairs)
-          // NOT just $XX which only matches BMP characters
-          // Pattern: (?:[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF])
-          // This matches BMP characters OR surrogate pairs (emoji, etc.)
+          // UAX #29 WB4 and SB5 attach ignored characters to the previous
+          // code point, including lone surrogates in ECMAScript strings.
+          // https://www.unicode.org/reports/tr29/#WB4
+          // https://www.unicode.org/reports/tr29/#SB5
           const anyCharPattern =
             '(?:[\\0-\\uD7FF\\uE000-\\uFFFF]|[\\uD800-\\uDBFF][\\uDC00-\\uDFFF])'
-          const beforePattern =
+          const ordinaryCharacter =
             excludeParts.length > 0
               ? `(?:(?!(?:${excludeParts.join('|')}))${anyCharPattern})`
               : anyCharPattern
+          const beforePattern = `(?:${ordinaryCharacter}|${LONE_LEAD_SURROGATE}|${LONE_TRAIL_SURROGATE})`
 
           // Create the rule
           // WB4: (Any ÷ Any) / (Any × (Extend | Format | ZWJ))
