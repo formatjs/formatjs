@@ -64,11 +64,3 @@ export const stringLowerCase = Function.prototype.call.bind(
 export const stringCharCodeAt = Function.prototype.call.bind(
   String.prototype.charCodeAt
 ) as (value: string, index: number) => number
-
-const split = String.prototype.split
-// A private separator supplies "-" without a mutable @@split lookup.
-const hyphen = {__proto__: null, toString: () => '-'}
-
-export function splitLocaleSubtags(value: string): string[] {
-  return apply(split, value, [hyphen])
-}

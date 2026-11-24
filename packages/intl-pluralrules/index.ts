@@ -1,4 +1,7 @@
-import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  canonicalizeLocaleDataTag,
+  registerLocaleData,
+} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {
   arrayIncludes,
   createFromConstructor,
@@ -216,7 +219,7 @@ export class PluralRules extends nullClassBase {
       // AvailableLocales and its data keys must use the same canonical ID.
       // Otherwise sh resolves to sr-Latn, where no registered payload exists.
       // https://tc39.es/ecma402/#sec-internal-slots
-      const [locale] = CanonicalizeLocaleList(tag)
+      const locale = canonicalizeLocaleDataTag(tag)
       registerLocaleData(
         locale,
         d,

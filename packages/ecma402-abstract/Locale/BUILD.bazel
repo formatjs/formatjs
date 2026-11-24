@@ -1,0 +1,7 @@
+load("//tools:compile.bzl", "formatjs_library")
+
+formatjs_library(
+    name = "Locale",
+    srcs = ["splitUnicodeExtension.ts"],
+    visibility = ["//visibility:public"],
+)

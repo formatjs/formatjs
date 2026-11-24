@@ -2,6 +2,7 @@
 //! matcher through the shared ICU-compatible distance implementation.
 
 use crate::LocaleError;
+use formatjs_intl_getcanonicallocales::{InvalidLocale, canonicalize_locale};
 use formatjs_intl_localematcher::LocaleMatcher;
 use std::{
     cell::RefCell,
@@ -38,6 +39,13 @@ pub fn without_unicode_extension(locale: &str) -> String {
             .join("-");
     }
     locale.to_owned()
+}
+
+/// ECMA-402 §§6.2.3 and 9 exclude Unicode extensions from default and available locales.
+/// https://tc39.es/ecma402/#sec-defaultlocale
+/// https://tc39.es/ecma402/#locale-and-parameter-negotiation
+pub fn canonicalize_data_locale(locale: &str) -> Result<String, InvalidLocale> {
+    canonicalize_locale(locale).map(|locale| without_unicode_extension(&locale))
 }
 
 fn prefix<'a>(available: &BTreeSet<&'a str>, requested: &str) -> Option<&'a str> {

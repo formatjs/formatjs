@@ -2,7 +2,10 @@ import {
   createFromConstructor,
   nullClassBase,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  canonicalizeLocaleDataTag,
+  registerLocaleData,
+} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
@@ -105,7 +108,7 @@ export default class RelativeTimeFormat extends nullClassBase {
 
   public static __addLocaleData(...data: RelativeTimeLocaleData[]): void {
     for (const {data: d, locale: tag} of data) {
-      const [locale] = CanonicalizeLocaleList(tag)
+      const locale = canonicalizeLocaleDataTag(tag)
       registerLocaleData(
         locale,
         d,

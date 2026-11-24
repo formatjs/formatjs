@@ -1,5 +1,7 @@
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
+import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
+import {splitUnicodeExtension} from '#packages/ecma402-abstract/Locale/splitUnicodeExtension.js'
 import {defaultContent} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 
 const registrations = new WeakMap<object, Map<string, string>>()
@@ -13,6 +15,14 @@ const setOwner = Map.prototype.set
 const forEachOwner = Map.prototype.forEach
 const split = String.prototype.split
 const slice = String.prototype.slice
+
+// ECMA-402 §§6.2.3 and 9 exclude Unicode extensions from default and available locales.
+// https://tc39.es/ecma402/#sec-defaultlocale
+// https://tc39.es/ecma402/#locale-and-parameter-negotiation
+export function canonicalizeLocaleDataTag(tag: string): string {
+  const [locale] = CanonicalizeLocaleList(tag)
+  return splitUnicodeExtension(locale).locale
+}
 
 // ECMA-402 §9 defines [[AvailableLocales]] over canonical tags. Callers
 // canonicalize pack labels before indexing their data.

@@ -236,6 +236,36 @@ it('shares the canonical locale key for a legacy pack and calendar patch', () =>
     Reference.localeData['he-IL'].calendarData?.buddhist.month.long[0]
   ).toBe('canonical patch')
 })
+it('loads base packs and calendar patches under an extension-free locale key', () => {
+  const base = 'qaa-x-u-private'
+  const requested = 'qaa-u-nu-arab-x-u-private'
+  compare([
+    addPatch(patch('qaa-u-ca-buddhist-x-u-private', 'buddhist', 'patch')),
+    {action: 'provider', calendar: 'buddhist'},
+    load(fixture(requested)),
+    info(base, 'qaa'),
+    {action: 'resolve', locales: [], options: {localeMatcher: 'lookup'}},
+    {
+      action: 'resolve',
+      locales: [requested],
+      options: {localeMatcher: 'lookup'},
+    },
+  ])
+  expect(Reference.getDefaultLocale()).toBe(base)
+  expect(Reference.availableLocales.has(requested)).toBe(false)
+  expect(Reference.localeData[base].calendarData?.buddhist.month.long[0]).toBe(
+    'patch'
+  )
+  expect(new Reference().resolvedOptions()).toMatchObject({
+    locale: base,
+    numberingSystem: 'latn',
+  })
+  expect(new Reference(requested).resolvedOptions()).toMatchObject({
+    locale: requested,
+    numberingSystem: 'arab',
+  })
+})
+
 it('matches locale/Unicode option negotiation, overrides and supportedLocalesOf', () => {
   const steps: Step[] = ['en', 'fr', 'ar', 'ja', 'zh-Hans'].map(locale =>
     load(fixture(locale, locale, locale))

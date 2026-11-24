@@ -1,5 +1,5 @@
 use crate::Error;
-use formatjs_intl_getcanonicallocales::canonicalize_locale;
+use formatjs_intl_locale::matcher::canonicalize_data_locale;
 use formatjs_intl_pluralrules::LocaleRules;
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -166,11 +166,11 @@ impl LocaleData {
                 "Invalid NumberFormat locale pack".into(),
             ));
         }
-        let locale = canonicalize_locale(&pack.locale).map_err(|_| Error::InvalidLocale)?;
+        let locale = canonicalize_data_locale(&pack.locale).map_err(|_| Error::InvalidLocale)?;
         let aliases = pack
             .aliases
             .iter()
-            .map(|tag| canonicalize_locale(tag))
+            .map(|tag| canonicalize_data_locale(tag))
             .collect::<Result<Vec<_>, _>>()
             .map_err(|_| Error::InvalidLocale)?;
         for system in pack.data.nu.iter().chain(&pack.data.numbers.nu) {

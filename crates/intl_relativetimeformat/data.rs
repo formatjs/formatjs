@@ -1,5 +1,5 @@
 use crate::{Error, Resolution};
-use formatjs_intl_getcanonicallocales::canonicalize_locale;
+use formatjs_intl_locale::matcher::canonicalize_data_locale;
 use formatjs_intl_numberformat::registry::Registry as NumberRegistry;
 use formatjs_intl_numberformat::{NumberFormat, Options as NumberOptions};
 use serde::Deserialize;
@@ -114,11 +114,11 @@ impl LocaleData {
                 }
             }
         }
-        let locale = canonicalize_locale(&pack.locale).map_err(|_| Error::InvalidLocale)?;
+        let locale = canonicalize_data_locale(&pack.locale).map_err(|_| Error::InvalidLocale)?;
         let aliases = pack
             .aliases
             .iter()
-            .map(|tag| canonicalize_locale(tag).map_err(|_| Error::InvalidLocale))
+            .map(|tag| canonicalize_data_locale(tag).map_err(|_| Error::InvalidLocale))
             .collect::<Result<_, _>>()?;
         let mut numbers = NumberRegistry::default();
         numbers
