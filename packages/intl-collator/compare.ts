@@ -27,7 +27,7 @@ import {
   type PackedLDMLReset,
 } from '@formatjs_generated/cldr.collation/tailoring.js'
 
-const IMPORT_COLLATION_RE = /^(.+?)(?:-u-co-([a-z0-9-]+))?$/i
+const COLLATION_EXTENSION = '-u-co-'
 const VARIABLE = 1
 const NUMERIC_PAYLOAD = 2
 const MERGE_SEPARATOR = 8
@@ -48,7 +48,6 @@ const isArray = Array.isArray
 const MapConstructor = Map
 const mapGet = Map.prototype.get
 const mapSet = Map.prototype.set
-const regexpExec = RegExp.prototype.exec
 const SetConstructor = Set
 const setHas = Set.prototype.has
 const setAdd = Set.prototype.add
@@ -584,18 +583,24 @@ function applyTailoring(
       if (rule[1] === 'strength') tailoring.tertiaryStrength = value === '3'
       if (rule[1] === 'suppressContractions' && isArray(value))
         suppressContractions(tailoring, value as readonly number[])
-      // Apply imported rules to the current mappings in this order.
+      // Apply imports in order without touching the host's RegExp state.
+      // ECMA-402 §10.3.3.1 https://tc39.es/ecma402/#sec-collator-comparestrings
       // https://www.unicode.org/reports/tr35/tr35-collation.html#Special_Purpose_Commands
       if (rule[1] === 'import' && typeof value === 'string') {
-        const imported = apply(regexpExec, IMPORT_COLLATION_RE, [value])
-        if (imported) {
-          const type = imported[2] || 'standard'
-          const source = findTailoringLocale(
-            imported[1] === 'und' ? 'root' : imported[1],
-            type
-          )
-          applyTailoring(source, type, tailoring, active)
-        }
+        const extension = apply(lastIndexOf, value, [COLLATION_EXTENSION])
+        const locale =
+          extension < 0 ? value : apply(stringSlice, value, [0, extension])
+        const type =
+          extension < 0
+            ? 'standard'
+            : apply(stringSlice, value, [
+                extension + COLLATION_EXTENSION.length,
+              ])
+        const source = findTailoringLocale(
+          locale === 'und' ? 'root' : locale,
+          type
+        )
+        applyTailoring(source, type, tailoring, active)
       }
     } else if (rule[0] === 'reset') {
       flushRelations()
