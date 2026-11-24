@@ -19,7 +19,7 @@ import {
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
   createMemoizedNumberFormatForConstructor,
-  getNumberFormatProvider,
+  getNumberFormatIntrinsic,
 } from '#packages/ecma402-abstract/utils.js'
 
 import {
@@ -257,7 +257,7 @@ function numericFormatGetter(Constructor: typeof Intl.NumberFormat) {
   }
   return undefined
 }
-const initialNumericProvider = getNumberFormatProvider()
+const initialNumericProvider = getNumberFormatIntrinsic()
 if (typeof initialNumericProvider === 'function')
   numericFormatGetter(initialNumericProvider)
 
@@ -297,7 +297,7 @@ function createNumberFormatters(
   )
     return cached.formatters
   // Comparison §15.6.4 steps5,10,11.f: preserve lazy supplied-provider selection.
-  const NumberFormat = getNumberFormatProvider()
+  const NumberFormat = getNumberFormatIntrinsic()
   const createNumberFormat =
     createMemoizedNumberFormatForConstructor(NumberFormat)
   // Temporal comparison §15.6.4 steps16.c.iv,16.f.viii.1,16.f.ix.1,16.h.ii:

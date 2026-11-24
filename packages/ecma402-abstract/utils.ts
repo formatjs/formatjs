@@ -142,9 +142,7 @@ const formatterMemoizeOptions = {
   strategy: strategies.variadic,
 }
 let providerIntl = globalThis.Intl
-function ownIntlProvider(
-  name: 'NumberFormat' | 'ListFormat' | 'PluralRules'
-): unknown {
+function ownIntlProvider(name: string | symbol): unknown {
   const descriptor =
     providerIntl && getOwnPropertyDescriptor(providerIntl, name)
   const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
@@ -157,6 +155,41 @@ let listFormatProvider = ownIntlProvider('ListFormat') as typeof Intl.ListFormat
 let pluralRulesProvider = ownIntlProvider(
   'PluralRules'
 ) as typeof Intl.PluralRules
+
+const numberFormatIntrinsicKey = Symbol.for('@formatjs/intlNumberFormat')
+const defineIntrinsic = Object.defineProperty
+const isExtensible = Object.isExtensible
+let numberFormatIntrinsic = numberFormatProvider
+
+export function registerNumberFormatIntrinsic(
+  intl: typeof Intl,
+  Constructor: new (...args: never[]) => object
+): void {
+  if (
+    getOwnPropertyDescriptor(intl, numberFormatIntrinsicKey) ||
+    isExtensible(intl)
+  ) {
+    defineIntrinsic(intl, numberFormatIntrinsicKey, {
+      __proto__: null,
+      configurable: true,
+      value: Constructor,
+    } as PropertyDescriptor)
+  }
+}
+
+// ECMA-402 §11.5.4 steps 5, 10, and 11.f construct %Intl.NumberFormat%.
+// https://tc39.es/ecma402/#sec-formatdatetimepattern
+export function getNumberFormatIntrinsic(): typeof Intl.NumberFormat {
+  if (providerIntl === undefined) providerIntl = globalThis.Intl
+  const registered = ownIntlProvider(numberFormatIntrinsicKey)
+  if (typeof registered === 'function')
+    return registered as typeof Intl.NumberFormat
+  if (typeof numberFormatIntrinsic !== 'function')
+    numberFormatIntrinsic = ownIntlProvider(
+      'NumberFormat'
+    ) as typeof Intl.NumberFormat
+  return numberFormatIntrinsic
+}
 
 // Temporal comparison §§15.10.1–2 step4: retain supplied providers without accessor Gets.
 // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format

@@ -919,44 +919,23 @@ test.each([false, true])(
   }
 )
 
-// Real engine providers; observable digit output checks lazy provider selection and profile reuse.
-test('Temporal numeric producers retain late supplied providers after first rendering', () => {
+test('cold Temporal rendering retains the NumberFormat intrinsic', () => {
   const Original = Intl.NumberFormat
-  const descriptor = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
-  class FirstProvider extends Original {
-    constructor(
-      locales?: Intl.LocalesArgument,
-      options?: Intl.NumberFormatOptions
-    ) {
-      super(locales, {...options, numberingSystem: 'arab'})
-    }
-  }
-  class SecondProvider extends Original {
-    constructor(
-      locales?: Intl.LocalesArgument,
-      options?: Intl.NumberFormatOptions
-    ) {
-      super(locales, {...options, numberingSystem: 'latn'})
-    }
-  }
   const value = new Temporal.PlainDate(2024, 2, 29)
-  const first = new DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'})
-  const second = new DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'})
-  let firstText: string | undefined,
-    secondText: string | undefined,
-    retainedText: string | undefined
+  const formatter = new DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'})
+  let actual: string
   try {
-    Intl.NumberFormat = FirstProvider as unknown as typeof Original
-    firstText = first.format(value)
-    Intl.NumberFormat = SecondProvider as unknown as typeof Original
-    secondText = second.format(value)
-    retainedText = first.format(value)
+    Intl.NumberFormat = class extends Original {
+      constructor() {
+        super()
+        throw new Error('Called replacement Intl.NumberFormat')
+      }
+    } as unknown as typeof Original
+    actual = formatter.format(value)
   } finally {
-    Object.defineProperty(Intl, 'NumberFormat', descriptor)
+    Intl.NumberFormat = Original
   }
-  expect(firstText).toBe('٢٠٢٤')
-  expect(secondText).toBe('2024')
-  expect(retainedText).toBe('٢٠٢٤')
+  expect(actual).toBe('2024')
 })
 
 test('Temporal day periods ignore mutable Array.find', () => {

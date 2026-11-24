@@ -26,7 +26,7 @@ import {
 import {
   invariant,
   createMemoizedNumberFormatForConstructor,
-  getNumberFormatProvider,
+  getNumberFormatIntrinsic,
   getFormatterPartsMethod,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
@@ -260,7 +260,7 @@ function applyExplicitTimePatternOptions(
     // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
     const numberOptions = createObject(null)
     numberOptions.numberingSystem = numberingSystem
-    const NumberFormat = getNumberFormatProvider()
+    const NumberFormat = getNumberFormatIntrinsic()
     const numberFormat = createMemoizedNumberFormatForConstructor(NumberFormat)(
       locale,
       numberOptions
