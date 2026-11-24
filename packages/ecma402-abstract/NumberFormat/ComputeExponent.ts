@@ -2,12 +2,10 @@ import {Decimal} from '@formatjs/bigdecimal'
 import {type NumberFormatInternal} from '#packages/ecma402-abstract/types/number.js'
 import {ComputeExponentForMagnitude} from '#packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.js'
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
-import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
-
-function decimalMagnitude(value: Decimal): Decimal {
-  // The positive mantissa's digit count gives floor(log10(value)) exactly.
-  return new Decimal(`${value._mantissa}`.length - 1 + value._exponent)
-}
+import {
+  decimalMagnitude,
+  getPowerOf10,
+} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
 // Return the exponent, magnitude, and reusable positive rounding preview.
 // ECMA-402 §16.5.12 https://tc39.es/ecma402/#sec-computeexponent
@@ -23,7 +21,7 @@ export function ComputeExponent(
     x = x.negated()
   }
 
-  const magnitude = decimalMagnitude(x)
+  const magnitude = new Decimal(decimalMagnitude(x))
   const exponent = ComputeExponentForMagnitude(internalSlots, magnitude)
   // Preserve more precision by doing multiplication when exponent is negative.
   x = x.times(getPowerOf10(-exponent))
@@ -35,7 +33,7 @@ export function ComputeExponent(
   }
 
   const newMagnitude = decimalMagnitude(formatNumberResult.roundedNumber)
-  if (newMagnitude.eq(magnitude.minus(exponent))) {
+  if (magnitude.minus(exponent).eq(newMagnitude)) {
     return [exponent, magnitude.toNumber(), preview]
   }
   const nextMagnitude = magnitude.plus(1)

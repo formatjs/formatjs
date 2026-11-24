@@ -6,6 +6,11 @@ const readPower = powersOfTen.get.bind(powersOfTen)
 const storePower = powersOfTen.set.bind(powersOfTen)
 const powerOf = Decimal.pow
 
+// The value must be positive and finite.
+export function decimalMagnitude(value: Decimal): number {
+  return `${value._mantissa}`.length - 1 + value._exponent
+}
+
 export function getPowerOf10(exponent: number | Decimal): Decimal {
   const n = typeof exponent === 'number' ? exponent : exponent.toNumber()
   const cached = readPower(n)

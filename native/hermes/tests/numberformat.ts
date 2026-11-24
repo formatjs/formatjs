@@ -106,6 +106,26 @@ for (const Constructor of [Native, Reference]) {
   equal(results, ['1.12', '1.13', '1.13'], 'exact rounding near the midpoint')
 }
 for (const Constructor of [Native, Reference]) {
+  const options = {minimumSignificantDigits: 3, maximumSignificantDigits: 3}
+  const fixed = new Constructor('en', {...options, roundingMode: 'halfEven'})
+  equal(
+    fixed.format('0.09994' + '9'.repeat(54)),
+    '0.0999',
+    'exact value below the significant-digit carry midpoint'
+  )
+  equal(
+    fixed.format('0.09995' + '0'.repeat(53) + '1'),
+    '0.100',
+    'exact value above the significant-digit carry midpoint'
+  )
+  const scientific = new Constructor('en', {...options, notation: 'scientific'})
+  equal(
+    scientific.format(9_999_999_999_999_999n),
+    '1.00E16',
+    'significant-digit carry past a 16-digit BigInt'
+  )
+}
+for (const Constructor of [Native, Reference]) {
   const {create, is} = Object
   const formatter = new Constructor('en', {maximumFractionDigits: 2})
   const unexpected = () => {

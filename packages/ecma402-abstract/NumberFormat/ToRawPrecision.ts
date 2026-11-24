@@ -7,129 +7,13 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {invariant, repeat} from '#packages/ecma402-abstract/utils.js'
 import {ApplyUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/ApplyUnsignedRoundingMode.js'
-import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
+import {
+  decimalMagnitude,
+  getPowerOf10,
+} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
 const apply = Reflect.apply
 const {includes, slice} = String.prototype
-
-//IMPL: Helper function to find n1, e1, and r1 using direct calculation
-function findN1E1R1(x: Decimal, p: number) {
-  const maxN1 = getPowerOf10(p)
-  const minN1 = getPowerOf10(p - 1)
-
-  // Direct calculation: compute e1 from logarithm
-  // e1 is the exponent such that n1 * 10^(e1-p+1) <= x
-  // Taking log: log(n1) + (e1-p+1)*log(10) <= log(x)
-  // Since n1 is between 10^(p-1) and 10^p, we have:
-  // (p-1) + (e1-p+1) <= log10(x) < p + (e1-p+1)
-  // Simplifying: e1 <= log10(x) < e1 + 1
-  // Therefore: e1 = floor(log10(x))
-  const log10x = x.log(10)
-  let e1 = log10x.floor()
-
-  // Calculate n1 and r1 from e1
-  const divisor = getPowerOf10(e1.minus(p).plus(1))
-  let n1 = x.div(divisor).floor()
-  let r1 = n1.times(divisor)
-
-  // Verify and adjust if n1 is out of bounds
-  // This handles edge cases near powers of 10
-  if (n1.greaterThanOrEqualTo(maxN1)) {
-    e1 = e1.plus(1)
-    const newDivisor = getPowerOf10(e1.minus(p).plus(1))
-    n1 = x.div(newDivisor).floor()
-    r1 = n1.times(newDivisor)
-  } else if (n1.lessThan(minN1)) {
-    e1 = e1.minus(1)
-    const newDivisor = getPowerOf10(e1.minus(p).plus(1))
-    n1 = x.div(newDivisor).floor()
-    r1 = n1.times(newDivisor)
-  }
-
-  // Final verification with fallback to iterative search if needed
-  if (
-    r1.lessThanOrEqualTo(x) &&
-    n1.lessThan(maxN1) &&
-    n1.greaterThanOrEqualTo(minN1)
-  ) {
-    return {n1, e1, r1}
-  }
-
-  // Fallback: iterative search (should rarely be needed)
-  const maxE1 = x.div(minN1).log(10).plus(p).minus(1).ceil()
-  let currentE1 = maxE1
-  while (true) {
-    const currentDivisor = getPowerOf10(currentE1.minus(p).plus(1))
-    let currentN1 = x.div(currentDivisor).floor()
-    if (currentN1.lessThan(maxN1) && currentN1.greaterThanOrEqualTo(minN1)) {
-      const currentR1 = currentN1.times(currentDivisor)
-      if (currentR1.lessThanOrEqualTo(x)) {
-        return {
-          n1: currentN1,
-          e1: currentE1,
-          r1: currentR1,
-        }
-      }
-    }
-    currentE1 = currentE1.minus(1)
-  }
-}
-
-//IMPL: Helper function to find n2, e2, and r2 using direct calculation
-function findN2E2R2(x: Decimal, p: number) {
-  const maxN2 = getPowerOf10(p)
-  const minN2 = getPowerOf10(p - 1)
-
-  // Direct calculation: similar to findN1E1R1 but with ceiling
-  const log10x = x.log(10)
-  let e2 = log10x.floor()
-
-  // Calculate n2 and r2 from e2
-  const divisor = getPowerOf10(e2.minus(p).plus(1))
-  let n2 = x.div(divisor).ceil()
-  let r2 = n2.times(divisor)
-
-  // Verify and adjust if n2 is out of bounds
-  if (n2.greaterThanOrEqualTo(maxN2)) {
-    e2 = e2.plus(1)
-    const newDivisor = getPowerOf10(e2.minus(p).plus(1))
-    n2 = x.div(newDivisor).ceil()
-    r2 = n2.times(newDivisor)
-  } else if (n2.lessThan(minN2)) {
-    e2 = e2.minus(1)
-    const newDivisor = getPowerOf10(e2.minus(p).plus(1))
-    n2 = x.div(newDivisor).ceil()
-    r2 = n2.times(newDivisor)
-  }
-
-  // Final verification with fallback to iterative search if needed
-  if (
-    r2.greaterThanOrEqualTo(x) &&
-    n2.lessThan(maxN2) &&
-    n2.greaterThanOrEqualTo(minN2)
-  ) {
-    return {n2, e2, r2}
-  }
-
-  // Fallback: iterative search (should rarely be needed)
-  const minE2 = x.div(maxN2).log(10).plus(p).minus(1).floor()
-  let currentE2 = minE2
-  while (true) {
-    const currentDivisor = getPowerOf10(currentE2.minus(p).plus(1))
-    let currentN2 = x.div(currentDivisor).ceil()
-    if (currentN2.lessThan(maxN2) && currentN2.greaterThanOrEqualTo(minN2)) {
-      const currentR2 = currentN2.times(currentDivisor)
-      if (currentR2.greaterThanOrEqualTo(x)) {
-        return {
-          n2: currentN2,
-          e2: currentE2,
-          r2: currentR2,
-        }
-      }
-    }
-    currentE2 = currentE2.plus(1)
-  }
-}
 
 /**
  * https://tc39.es/ecma402/#sec-torawprecision
@@ -161,40 +45,31 @@ export function ToRawPrecision(
     // c. Let xFinal be 0.
     xFinal = ZERO
   } else {
-    // 3. Else,
-    // a. Let {n1, e1, r1} be the result of findN1E1R1(x, p).
-    const {n1, e1, r1} = findN1E1R1(x, p)
-    // b. Let {n2, e2, r2} be the result of findN2E2R2(x, p).
-    const {n2, e2, r2} = findN2E2R2(x, p)
-    // c. Let r be ApplyUnsignedRoundingMode(x, r1, r2, unsignedRoundingMode).
-    let r = ApplyUnsignedRoundingMode(x, r1, r2, unsignedRoundingMode)
-    let n
-    // d. If r = r1, then
-    if (r.eq(r1)) {
-      // i. Let n be n1.
-      n = n1
-      // ii. Let e be e1.
-      e = e1.toNumber()
-      // iii. Let xFinal be r1.
-      xFinal = r1
-    } else {
-      // e. Else,
-      // i. Let n be n2.
-      n = n2
-      // ii. Let e be e2.
-      e = e2.toNumber()
-      // iii. Let xFinal be r2.
-      xFinal = r2
+    // ECMA-402 §16.5.7 steps 3.a–c find the adjacent values at this precision.
+    // The mantissa's digit count gives the exponent exactly. Division by a
+    // power of ten shifts BigDecimal's scale without rounding.
+    // https://tc39.es/ecma402/#sec-torawprecision
+    e = decimalMagnitude(x)
+    const step = getPowerOf10(e - p + 1)
+    const scaled = x.div(step)
+    const n1 = scaled.floor()
+    const n2 = scaled.ceil()
+    const r1 = n1.times(step)
+    const r2 = n2.times(step)
+    xFinal = ApplyUnsignedRoundingMode(x, r1, r2, unsignedRoundingMode)
+    m = (xFinal.eq(r1) ? n1 : n2).toString()
+    // Steps 3.e–f. An upper neighbor of 10^p has one extra digit.
+    if (m.length > p) {
+      e++
+      m = apply(slice, m, [0, p])
     }
-    // f. Let m be the String representation of n.
-    m = n.toString()
   }
 
   let int
 
   // 4. If e ≥ p - 1, then
   if (e >= p - 1) {
-    // a. Let m be the string-concatenation of m and p - 1 - e occurrences of the character "0".
+    // a. Let m be the string-concatenation of m and e - p + 1 occurrences of the character "0".
     m = m + repeat('0', e - p + 1)
     // b. Let int be e + 1.
     int = e + 1
