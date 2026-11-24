@@ -11,6 +11,60 @@ import type {RawDateTimeLocaleData} from '#packages/intl-datetimeformat/types.js
 
 DateTimeFormat.__addLocaleData(en as any, ja as any)
 
+it.each([false, true])(
+  'uses private ISO calendar patterns when the pack supplies ISO patterns = %s',
+  supplied => {
+    const raw = en as unknown as RawDateTimeLocaleData
+    const {gregory, iso8601} = raw.data.formats
+    const pack: RawDateTimeLocaleData = {
+      locale: 'en-CA',
+      data: {
+        ...raw.data,
+        ca: ['gregory'],
+        calendarData: undefined,
+        formats: supplied ? {gregory, iso8601} : {gregory},
+      },
+    }
+    const format = () => {
+      const formatter = new DateTimeFormat(pack.locale, {
+        calendar: 'iso8601',
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      })
+      return {
+        calendar: formatter.resolvedOptions().calendar,
+        date: formatter.format(0),
+        range: formatter.formatRange(0, 86_400_000),
+      }
+    }
+    DateTimeFormat.__addLocaleData(pack)
+    const expected = format()
+    const original = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'iso8601'
+    )
+    let actual: ReturnType<typeof format>
+    try {
+      Object.defineProperty(Object.prototype, 'iso8601', {
+        configurable: true,
+        get() {
+          throw new Error('Inherited ISO calendar data read')
+        },
+      })
+      DateTimeFormat.__addLocaleData(pack)
+      actual = format()
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, 'iso8601', original)
+      else Reflect.deleteProperty(Object.prototype, 'iso8601')
+    }
+    expect(expected.calendar).toBe('iso8601')
+    expect(expected.date).toBe(supplied ? '1970-01-01' : '1/1/1970')
+    expect(actual).toEqual(expected)
+  }
+)
+
 const combinedStyles = {dateStyle: 'short', timeStyle: 'short'} as const
 it.each([
   ['combined styles', combinedStyles, false],
