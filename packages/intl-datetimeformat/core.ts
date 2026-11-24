@@ -850,12 +850,17 @@ const getIntervalCandidates = intervalCandidates.get.bind(intervalCandidates)
 const setIntervalCandidates = intervalCandidates.set.bind(intervalCandidates)
 const deleteIntervalCandidates =
   intervalCandidates.delete.bind(intervalCandidates)
+const IntervalMap = Map
+const intervalMapGet = Map.prototype.get
+const intervalMapSet = Map.prototype.set
+const intervalIndexOf = String.prototype.indexOf
+const intervalSlice = String.prototype.slice
+
 function intervalSignature(format: Formats): number {
-  const fields = DATE_TIME_PROPS.reduce(
-    (mask, field, index) =>
-      mask | (format[field] === undefined ? 0 : 1 << index),
-    0
-  )
+  let fields = 0
+  for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+    if (format[DATE_TIME_PROPS[index]] !== undefined) fields |= 1 << index
+  }
   return (
     fields |
     (format.hour12 ? 1 << DATE_TIME_PROPS.length : 0) |
@@ -870,12 +875,13 @@ function findIntervalFormat(
   intervalFormats: Record<string, any>,
   rawPattern = skeleton
 ): Record<string, string> | undefined {
-  const commaIdx = skeleton.indexOf(', ')
+  const commaIdx = reflectApply(intervalIndexOf, skeleton, [', '])
   if (commaIdx !== -1) {
-    const datePart = skeleton.slice(0, commaIdx)
-    const timePart = skeleton.slice(commaIdx + 2)
+    const datePart = reflectApply(intervalSlice, skeleton, [0, commaIdx])
+    const timePart = reflectApply(intervalSlice, skeleton, [commaIdx + 2])
     let canonical = ''
-    for (const c of timePart) {
+    for (let index = 0; index < timePart.length; index++) {
+      const c = timePart[index]
       if (
         ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) &&
         c !== 'a' &&
@@ -894,33 +900,40 @@ function findIntervalFormat(
   let bestScore = Infinity
   let candidates = getIntervalCandidates(intervalFormats)
   if (!candidates) {
-    candidates = new Map()
-    for (const key of Object.keys(intervalFormats)) {
-      if (
-        typeof intervalFormats[key] !== 'object' ||
-        !Object.keys(intervalFormats[key]).length
-      )
-        continue
-      const ranges = intervalFormats[key] as Record<string, string>
+    candidates = new IntervalMap()
+    const keys = objectKeys(intervalFormats)
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index]
+      const ranges = intervalFormats[key]
+      if (typeof ranges !== 'object') continue
+      const fields = objectKeys(ranges)
+      if (!fields.length) continue
       const format = parseDateTimeSkeleton(
         key,
-        getRangePatternInfo(ranges[Object.keys(ranges)[0]]).pattern
+        getRangePatternInfo(ranges[fields[0]]).pattern
       )
       const signature = intervalSignature(format)
-      let group = candidates.get(signature)
-      if (!group) candidates.set(signature, (group = []))
-      Object.defineProperty(group, group.length, {
-        value: {key, format},
-        writable: true,
-        enumerable: true,
-        configurable: true,
-      })
+      let group: IntervalCandidate[] | undefined = reflectApply(
+        intervalMapGet,
+        candidates,
+        [signature]
+      )
+      if (!group) {
+        group = []
+        reflectApply(intervalMapSet, candidates, [signature, group])
+      }
+      setDataProperty(group, group.length, {key, format})
     }
     setIntervalCandidates(intervalFormats, candidates)
   }
-  for (const {key, format: candidate} of candidates.get(
-    intervalSignature(target)
-  ) || []) {
+  const group: IntervalCandidate[] | undefined = reflectApply(
+    intervalMapGet,
+    candidates,
+    [intervalSignature(target)]
+  )
+  if (!group) return undefined
+  for (let index = 0; index < group.length; index++) {
+    const {key, format: candidate} = group[index]
     if (!!target.hour12 !== !!candidate.hour12) continue
     const numericMonth = (month: unknown) =>
       month === 'numeric' || month === '2-digit'
@@ -937,16 +950,13 @@ function findIntervalFormat(
           (target[field] !== undefined) === (candidate[field] !== undefined)
       )
     ) {
-      const score = DATE_TIME_PROPS.reduce(
-        (score, field) =>
-          score +
-          (field === 'timeZoneName' || target[field] === candidate[field]
-            ? 0
-            : field === 'month'
-              ? 2
-              : 1),
-        0
-      )
+      let score = 0
+      for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+        const field = DATE_TIME_PROPS[index]
+        if (field !== 'timeZoneName' && target[field] !== candidate[field]) {
+          score += field === 'month' ? 2 : 1
+        }
+      }
       if (score < bestScore) {
         best = intervalFormats[key]
         bestScore = score
@@ -1135,19 +1145,26 @@ function prepareLocaleData(
     Object.defineProperty(processedData.formats, calendar, {
       enumerable: true,
       get() {
-        return (parsed ??= Object.keys(formats[calendar]).map(skeleton =>
-          parseDateTimeSkeleton(
+        if (parsed) return parsed
+        // ECMA-402 §11.1.2 step 32.g reads the resolved calendar's private formats.
+        // https://tc39.es/ecma402/#sec-createdatetimeformat
+        const calendarFormats = formats[calendar]
+        const skeletons = objectKeys(calendarFormats)
+        const prepared: Formats[] = []
+        for (let index = 0; index < skeletons.length; index++) {
+          const skeleton = skeletons[index]
+          const pattern = calendarFormats[skeleton]
+          const format = parseDateTimeSkeleton(
             skeleton,
-            formats[calendar][skeleton],
-            findIntervalFormat(
-              skeleton,
-              calendarIntervals,
-              formats[calendar][skeleton]
-            ),
+            pattern,
+            findIntervalFormat(skeleton, calendarIntervals, pattern),
             calendarIntervals.intervalFormatFallback,
             true
           )
-        ))
+          setDataProperty(prepared, prepared.length, format)
+        }
+        parsed = prepared
+        return parsed
       },
     })
   }
