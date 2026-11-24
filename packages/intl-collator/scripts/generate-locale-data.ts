@@ -33,10 +33,9 @@ const DEFAULT_COLLATION_RE =
 const UNDERSCORE_RE = /_/g
 const WHITESPACE_RE = /\s+/g
 
-// Emits the ECMA-402 locale data shape consumed by ResolveLocale for
-// Intl.Collator relevant extension keys co/kn/kf.
+// ECMA-402 §10.2.3 defines the Collator locale data for co, kf, and kn.
 // https://tc39.es/ecma402/#sec-initializecollator
-// https://tc39.es/ecma402/#sec-intl.collator-internal-slots
+// https://tc39.es/ecma402/#sec-intl-collator-internal-slots
 
 function collationPaths(dir: string): string[] {
   const entries = readdirSync(dir).flatMap(entry => {
