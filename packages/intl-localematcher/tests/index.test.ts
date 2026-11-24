@@ -281,6 +281,20 @@ test('best fit retains a supported prefix when the script distance is too high',
   ])
 })
 
+test('best fit isolates pseudolocale variants before extensions', () => {
+  const available = ['zh', 'en']
+  const requested = [
+    'zh-TW-x-psaccent',
+    'zh-TW-a-psbidi',
+    'zh-TW-t-en-pscrack',
+    'zh-TW-psaccent',
+    'en-XA',
+  ]
+  expect(FilterLocales(available, requested, 'best fit')).toEqual(
+    requested.slice(0, 3)
+  )
+})
+
 test('preserves legacy RegExp statics across matching paths', () => {
   for (const [requested, supported] of [
     [['en'], ['en', 'fr']],

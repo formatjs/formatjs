@@ -230,9 +230,12 @@ pub fn is_likely_script(locale: &str, script: &str) -> bool {
 fn raw_key(tag: &str) -> Option<&str> {
     let mut parts = tag.split('-');
     let language = parts.next()?;
+    // ECMA-402 §9.2.4: stop scanning for ICU pseudolocale variants at the first singleton.
+    // https://tc39.es/ecma402/#sec-lookupmatchinglocalebybestfit
     if language == "und"
-        || tag
-            .split('-')
+        || parts
+            .clone()
+            .take_while(|part| part.len() != 1)
             .any(|part| matches!(part, "psaccent" | "psbidi" | "pscrack"))
     {
         return None;

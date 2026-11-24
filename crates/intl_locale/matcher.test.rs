@@ -31,6 +31,22 @@ fn best_fit_filter_retains_a_supported_prefix_when_distance_is_too_high() {
 }
 
 #[test]
+fn best_fit_filter_only_isolates_pseudolocale_variants_before_extensions() {
+    let available = tags(&["zh", "en"]);
+    let requested = tags(&[
+        "zh-TW-x-psaccent",
+        "zh-TW-a-psbidi",
+        "zh-TW-t-en-pscrack",
+        "zh-TW-psaccent",
+        "en-XA",
+    ]);
+    assert_eq!(
+        filter(&available, &requested, false).unwrap(),
+        requested[..3]
+    );
+}
+
+#[test]
 fn shared_icu4j_locale_matching_fixtures() {
     #[derive(serde::Deserialize)]
     struct Fixture {
