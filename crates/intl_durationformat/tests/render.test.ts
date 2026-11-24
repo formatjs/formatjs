@@ -1,8 +1,10 @@
 import '@formatjs/intl-getcanonicallocales/polyfill-force.js'
+import '@formatjs/intl-listformat/polyfill-force.js'
+import '@formatjs/intl-numberformat/polyfill-force.js'
 import '@formatjs/intl-pluralrules/polyfill-force.js'
-import {NumberFormat} from '@formatjs/intl-numberformat'
+import type {NumberFormat} from '@formatjs/intl-numberformat'
 import type {PluralRules} from '@formatjs/intl-pluralrules'
-import ListFormat from '@formatjs/intl-listformat'
+import type ListFormat from '@formatjs/intl-listformat'
 import {DurationFormat} from '@formatjs/intl-durationformat'
 import type {DurationFormatOptions} from '@formatjs/intl-durationformat'
 import {runfiles} from '@bazel/runfiles'
@@ -29,16 +31,8 @@ const units = [
 const locales = ['en', 'fr', 'ar', 'de', 'ja', 'ru', 'zh', 'fa']
 
 it('matches native number/list composition, exact folding, signs and parts', () => {
-  Object.defineProperty(Intl, 'NumberFormat', {
-    value: NumberFormat,
-    configurable: true,
-    writable: true,
-  })
-  Object.defineProperty(Intl, 'ListFormat', {
-    value: ListFormat,
-    configurable: true,
-    writable: true,
-  })
+  const numberFormat = Intl.NumberFormat as unknown as typeof NumberFormat
+  const listFormat = Intl.ListFormat as unknown as typeof ListFormat
   const requests: object[] = []
   for (const locale of locales) {
     const number = read(`crates/intl_numberformat/locale-data/${locale}.json`)
@@ -48,8 +42,8 @@ it('matches native number/list composition, exact folding, signs and parts', () 
         '(' + read(`packages/intl-pluralrules/cldr-raw/${locale}.js`) + ')'
       )
     )
-    NumberFormat.__addLocaleData(JSON.parse(number))
-    ListFormat.__addLocaleData(
+    numberFormat.__addLocaleData(JSON.parse(number))
+    listFormat.__addLocaleData(
       JSON.parse(read(`packages/intl-listformat/cldr-raw/${locale}.json`))
     )
     requests.push(
