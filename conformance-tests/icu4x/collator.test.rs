@@ -53,5 +53,5 @@ fn ordering_matches_icu4c_icu4j_and_formatjs() {
         assert_eq!(actual, fields[8].parse::<i32>().unwrap(), "ICU4X: {row}");
         checked += 1;
     }
-    assert_eq!(checked, 111);
+    assert_eq!(checked, 113);
 }
