@@ -72,6 +72,7 @@ formatjs_test(
     srcs = [
         "tests/conformance.test.ts",
         "tests/index.test.ts",
+        "tests/should-polyfill.test.ts",
     ],
     data = [
         "tests/collator-conformance.tsv",  # keep: TSV fixture loaded at runtime

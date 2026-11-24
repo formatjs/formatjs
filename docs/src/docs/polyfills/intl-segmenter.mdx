@@ -198,7 +198,9 @@ import '@formatjs/intl-segmenter/polyfill.js'
 ### Dynamic import + capability detection
 
 ```tsx
-async function polyfill(locale: string) {
+import {shouldPolyfill} from '@formatjs/intl-segmenter/should-polyfill.js'
+
+async function polyfill() {
   if (shouldPolyfill()) {
     await import('@formatjs/intl-segmenter/polyfill-force.js')
   }

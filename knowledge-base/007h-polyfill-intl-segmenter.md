@@ -6,6 +6,8 @@
 
 Polyfill for `Intl.Segmenter` — performs text segmentation at grapheme, word, and sentence boundaries using CLDR segmentation rules and Unicode character properties.
 
+The conditional installer keeps a callable host `Intl.Segmenter`.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
