@@ -3,6 +3,8 @@ import {
   floor,
   numberIsFinite,
 } from '#packages/ecma262-abstract/intrinsics.js'
+
+// ECMA-262 §21.4.1.2 https://tc39.es/ecma262/#sec-time-related-constants
 const MS_PER_DAY = 86400000
 
 function mod(x: number, y: number): number {
@@ -10,11 +12,13 @@ function mod(x: number, y: number): number {
 }
 
 // ECMA-262 §21.4.1.3 step 1: mathematical floor, including pre-epoch days.
+// https://tc39.es/ecma262/#sec-day
 export function Day(t: number): number {
   return floor(t / MS_PER_DAY)
 }
 
 // ECMA-262 §21.4.1.12 step 1: nonnegative weekday remainder.
+// https://tc39.es/ecma262/#sec-weekday
 export function WeekDay(t: number): number {
   return mod(Day(t) + 4, 7)
 }
@@ -44,6 +48,7 @@ export function YearFromTime(t: number): number {
 }
 
 // ECMA-262 §21.4.1.9 steps 1–4: equivalent divisibility order; adapt Boolean to day count.
+// https://tc39.es/ecma262/#sec-isleapyear
 export function DaysInYear(y: number): 365 | 366 {
   if (y % 4 !== 0) return 365
   if (y % 100 !== 0) return 366
@@ -52,6 +57,7 @@ export function DaysInYear(y: number): 365 | 366 {
 }
 
 // ECMA-262 §21.4.1.8 step 1: subtract the enclosing year origin.
+// https://tc39.es/ecma262/#sec-daywithinyear
 export function DayWithinYear(t: number): number {
   return Day(t) - DayFromYear(YearFromTime(t))
 }
@@ -62,6 +68,7 @@ export function InLeapYear(t: number): 0 | 1 {
 }
 
 // ECMA-262 §21.4.1.10 steps 1–16: ordered month thresholds with leap-day adjustment.
+// https://tc39.es/ecma262/#sec-monthfromtime
 export function MonthFromTime(
   t: number
 ): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 {
@@ -83,6 +90,7 @@ export function MonthFromTime(
 }
 
 // ECMA-262 §21.4.1.11 steps 1–17: month-specific subtraction yields one-based date.
+// https://tc39.es/ecma262/#sec-datefromtime
 export function DateFromTime(t: number): number {
   const dwy = DayWithinYear(t)
   const mft = MonthFromTime(t)
@@ -110,21 +118,25 @@ const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE
 const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR
 
 // ECMA-262 §21.4.1.13 step 1: floor before nonnegative modulo.
+// https://tc39.es/ecma262/#sec-hourfromtime
 export function HourFromTime(t: number): number {
   return mod(floor(t / MS_PER_HOUR), HOURS_PER_DAY)
 }
 
 // ECMA-262 §21.4.1.14 step 1: floor before nonnegative modulo.
+// https://tc39.es/ecma262/#sec-minutefromtime
 export function MinFromTime(t: number): number {
   return mod(floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR)
 }
 
 // ECMA-262 §21.4.1.15 step 1: floor before nonnegative modulo.
+// https://tc39.es/ecma262/#sec-secondfromtime
 export function SecFromTime(t: number): number {
   return mod(floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE)
 }
 
 // ECMA-262 §21.4.1.16 step 1: nonnegative millisecond remainder.
+// https://tc39.es/ecma262/#sec-millisecondfromtime
 export function msFromTime(t: number): number {
   return mod(t, MS_PER_SECOND)
 }
