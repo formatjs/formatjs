@@ -1,4 +1,5 @@
 import {arrayIncludes} from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   type DateTimeFormatLocaleInternalData,
   type Formats,
@@ -39,6 +40,15 @@ function replaceStyleToken(
         styleSlice(pattern, index + token.length)
 }
 
+function styleConnectors(data: DateTimeFormatLocaleInternalData) {
+  // ECMA-402 §11.5.1 step 4.d uses the resolved locale's connector record.
+  // https://tc39.es/ecma402/#sec-date-time-style-format
+  const atTime = HasOwnProperty(data, 'dateTimeFormatAtTime')
+    ? data.dateTimeFormatAtTime
+    : undefined
+  return atTime ?? data.dateTimeFormat
+}
+
 // LDML combines missing date/time skeleton fields with a locale connector.
 // A zone name can fill the time side without introducing a clock pattern.
 // https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
@@ -56,7 +66,7 @@ export function DateWithTimeZoneFormat(
       : date.month === 'short'
         ? 'medium'
         : 'short'
-  const connector = (data.dateTimeFormatAtTime || data.dateTimeFormat)[style]
+  const connector = styleConnectors(data)[style]
   const withZone = replaceStyleToken(connector, '{0}', '{timeZoneName}')
   const pattern = replaceStyleToken(withZone, '{1}', date.pattern)
   const format = {
@@ -237,9 +247,7 @@ export function DateTimeStyleFormat(
         format[field] = timeFormat[field]
       }
     }
-    const connector = (
-      dataLocaleData.dateTimeFormatAtTime || dataLocaleData.dateTimeFormat
-    )[dateStyle]
+    const connector = styleConnectors(dataLocaleData)[dateStyle]
     const rangeConnector = dataLocaleData.dateTimeFormat[dateStyle]
     const pattern = replaceStyleToken(
       replaceStyleToken(connector, '{0}', timeFormat!.pattern),

@@ -972,20 +972,22 @@ function findIntervalFormat(
   return best
 }
 
-function parseDateTimeStyles({
-  dateFormat,
-  timeFormat,
-  dateTimeFormat,
-  dateTimeFormatAtTime,
-  intervalFormats,
-}: Pick<
-  RawDateTimeLocaleData['data'],
-  | 'dateFormat'
-  | 'timeFormat'
-  | 'dateTimeFormat'
-  | 'dateTimeFormatAtTime'
-  | 'intervalFormats'
->) {
+function parseDateTimeStyles(
+  styles: Pick<
+    RawDateTimeLocaleData['data'],
+    | 'dateFormat'
+    | 'timeFormat'
+    | 'dateTimeFormat'
+    | 'dateTimeFormatAtTime'
+    | 'intervalFormats'
+  >
+) {
+  const {dateFormat, timeFormat, dateTimeFormat, intervalFormats} = styles
+  // ECMA-402 §11.2.3.7 uses a private connector record.
+  // https://tc39.es/ecma402/#sec-datetimeformat-connector-record
+  const dateTimeFormatAtTime = HasOwnProperty(styles, 'dateTimeFormatAtTime')
+    ? styles.dateTimeFormatAtTime
+    : undefined
   const parseStyle = (pattern: string) => {
     const format = parseDateTimeSkeleton(
       pattern,
@@ -1101,6 +1103,7 @@ function prepareLocaleData(
   for (const calendar of Object.keys(entry.data.calendarData || {}))
     deleteIntervalCandidates(entry.data.calendarData![calendar].intervalFormats)
   const d = {
+    __proto__: null,
     ...entry.data,
     ca: [...entry.data.ca],
     formats: {...entry.data.formats},

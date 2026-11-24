@@ -7,8 +7,55 @@ import {FormatDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/F
 import {ToLocalTime} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import type {IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
+import type {RawDateTimeLocaleData} from '#packages/intl-datetimeformat/types.js'
 
 DateTimeFormat.__addLocaleData(en as any, ja as any)
+
+const combinedStyles = {dateStyle: 'short', timeStyle: 'short'} as const
+it.each([
+  ['combined styles', combinedStyles, false],
+  [
+    'date with zone name',
+    {year: 'numeric', month: 'numeric', day: 'numeric', timeZoneName: 'short'},
+    false,
+  ],
+  ['legacy locale reload', combinedStyles, true],
+] as const)(
+  'uses the private legacy connector for %s',
+  (_, options, reload) => {
+    const raw = en as unknown as RawDateTimeLocaleData
+    const legacy = {locale: 'en-AU', data: {...raw.data}}
+    delete legacy.data.dateTimeFormatAtTime
+    DateTimeFormat.__addLocaleData(legacy)
+    const format = () =>
+      new DateTimeFormat(legacy.locale, {...options, timeZone: 'UTC'}).format(0)
+    const expected = format()
+    const original = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'dateTimeFormatAtTime'
+    )
+    let actual: string
+    try {
+      Object.defineProperty(Object.prototype, 'dateTimeFormatAtTime', {
+        configurable: true,
+        get() {
+          throw new Error('Inherited date/time connector read')
+        },
+      })
+      if (reload) DateTimeFormat.__addLocaleData(legacy)
+      actual = format()
+    } finally {
+      if (original)
+        Object.defineProperty(
+          Object.prototype,
+          'dateTimeFormatAtTime',
+          original
+        )
+      else Reflect.deleteProperty(Object.prototype, 'dateTimeFormatAtTime')
+    }
+    expect(actual).toBe(expected)
+  }
+)
 
 it('reads the default interval only for a range with different dates', () => {
   const locale = DateTimeFormat.localeData.ja
