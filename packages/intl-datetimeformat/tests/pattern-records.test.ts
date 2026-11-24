@@ -2,12 +2,47 @@ import {expect, it} from 'vitest'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
+import ja from '#packages/intl-datetimeformat/tests/locale-data/ja.json' with {type: 'json'}
 import {FormatDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
 import {ToLocalTime} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import type {IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date-time.js'
 
-DateTimeFormat.__addLocaleData(en as any)
+DateTimeFormat.__addLocaleData(en as any, ja as any)
+
+it('reads the default interval only for a range with different dates', () => {
+  const locale = DateTimeFormat.localeData.ja
+  const original = Object.getOwnPropertyDescriptor(
+    locale,
+    'intervalFormatFallback'
+  )!
+  const formatter = new DateTimeFormat('ja', {
+    timeZone: 'UTC',
+    timeZoneName: 'short',
+  })
+  const start = Date.UTC(2026, 0, 15, 15)
+  const nextDay = start + 86_400_000
+  let reads = 0
+  try {
+    Object.defineProperty(locale, 'intervalFormatFallback', {
+      configurable: true,
+      get() {
+        reads++
+        return '{0} ~ {1}'
+      },
+    })
+    expect(formatter.formatRangeToParts(start, start + 3_600_000)).toEqual(
+      formatter.formatToParts(start).map(part => ({...part, source: 'shared'}))
+    )
+    expect(reads).toBe(0)
+    expect(formatter.formatRange(start, nextDay)).toBe(
+      `${formatter.format(start)} ~ ${formatter.format(nextDay)}`
+    )
+    expect(reads).toBe(1)
+  } finally {
+    Object.defineProperty(locale, 'intervalFormatFallback', original)
+  }
+})
 
 it('keeps the locale data resolved before reading timeZone', () => {
   const localeData = DateTimeFormat.localeData.en
