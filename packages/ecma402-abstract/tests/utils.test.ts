@@ -1,7 +1,7 @@
 import {IsWellFormedUnitIdentifier} from '#packages/ecma402-abstract/IsWellFormedUnitIdentifier.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
-import {afterEach, beforeEach, describe, expect, it} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
 
 describe('polyfill utilities', () => {
   let intlDescriptor: PropertyDescriptor | undefined
@@ -50,6 +50,36 @@ describe('polyfill utilities', () => {
       configurable: true,
     })
   })
+
+  it.each(['read', 'write'])(
+    'keeps canonicalizing locales when the provider registry rejects %s',
+    async operation => {
+      const key = Symbol.for('@formatjs/intlCanonicalizeLocaleList')
+      const intl = new Proxy(Intl, {
+        getOwnPropertyDescriptor(target, property) {
+          if (property === key && operation === 'read') throw new Error('read')
+          return Reflect.getOwnPropertyDescriptor(target, property)
+        },
+        defineProperty(target, property, descriptor) {
+          if (property === key && operation === 'write')
+            throw new Error('write')
+          return Reflect.defineProperty(target, property, descriptor)
+        },
+      })
+      Object.defineProperty(globalThis, 'Intl', {value: intl})
+      vi.resetModules()
+      try {
+        const {CanonicalizeLocaleList, registerCanonicalizeLocaleList} =
+          await import('#packages/ecma402-abstract/CanonicalizeLocaleList.js')
+        expect(CanonicalizeLocaleList('EN-us')).toEqual(['en-US'])
+        expect(() => CanonicalizeLocaleList('en-x')).toThrow(RangeError)
+        registerCanonicalizeLocaleList(intl, () => ['fr-CA'])
+        expect(CanonicalizeLocaleList('fr')).toEqual(['fr-CA'])
+      } finally {
+        vi.resetModules()
+      }
+    }
+  )
 })
 
 it('validates compound units without a mutable string split hook', () => {

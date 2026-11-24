@@ -12,17 +12,33 @@ function ownCanonicalProvider() {
 }
 let canonicalProvider = ownCanonicalProvider()
 
+function registeredCanonicalProvider() {
+  try {
+    const descriptor =
+      canonicalIntl && canonicalDescriptor(canonicalIntl, providerKey)
+    return descriptor && canonicalDescriptor(descriptor, 'value')?.value
+  } catch {
+    // The shared registry is optional. Keep using the captured canonicalizer.
+  }
+}
+
 // Locale and getCanonicalLocales installers share their provider across bundles.
 export function registerCanonicalizeLocaleList(
   intl: typeof Intl,
   provider: (locales?: any) => string[]
 ): void {
-  if (canonicalDescriptor(intl, providerKey) || canonicalIsExtensible(intl)) {
-    canonicalDefine(intl, providerKey, {
-      __proto__: null,
-      configurable: true,
-      value: provider,
-    } as PropertyDescriptor)
+  if (canonicalIntl === undefined) canonicalIntl = intl
+  if (canonicalIntl === intl) canonicalProvider = provider
+  try {
+    if (canonicalDescriptor(intl, providerKey) || canonicalIsExtensible(intl)) {
+      canonicalDefine(intl, providerKey, {
+        __proto__: null,
+        configurable: true,
+        value: provider,
+      } as PropertyDescriptor)
+    }
+  } catch {
+    // The installing bundle can use the provider even when sharing fails.
   }
 }
 
@@ -33,10 +49,7 @@ export function CanonicalizeLocaleList(
 ): string[] {
   // Official installs can add FormatJS Locale brand support after setup.
   if (canonicalIntl === undefined) canonicalIntl = globalThis.Intl
-  const descriptor =
-    canonicalIntl && canonicalDescriptor(canonicalIntl, providerKey)
-  const registered =
-    descriptor && canonicalDescriptor(descriptor, 'value')?.value
+  const registered = registeredCanonicalProvider()
   if (typeof registered === 'function')
     return canonicalApply(registered, canonicalIntl, [locales])
 
