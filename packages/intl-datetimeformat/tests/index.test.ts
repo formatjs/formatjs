@@ -24,6 +24,25 @@ DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
 DateTimeFormat.__addTZData(allData)
 const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 
+it('preserves legacy RegExp state when selecting fractional second patterns', () => {
+  void /probe(.)/.exec('probe!')
+  const before = [RegExp.lastMatch, RegExp.$1]
+
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    second: 'numeric',
+    fractionalSecondDigits: 3,
+    formatMatcher: 'basic',
+  })
+
+  const after = [RegExp.lastMatch, RegExp.$1]
+  expect(after).toEqual(before)
+  expect(formatter.formatToParts(123)).toContainEqual({
+    type: 'fractionalSecond',
+    value: '123',
+  })
+})
+
 it.each(['ja', 'zh'])(
   'keeps the GMT offset separate from date fields in %s',
   locale => {

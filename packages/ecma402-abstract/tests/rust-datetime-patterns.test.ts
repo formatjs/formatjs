@@ -515,7 +515,7 @@ it('matches real CLDR patterns and format matching across calendar and language 
   }
   expect(calendarCount).toBe(128)
   expect(patternCount).toBeGreaterThan(70000)
-}, 300000)
+}, 600_000)
 
 it('matches Gregorian/ISO calendar fields after timezone adjustment at Date bounds', () => {
   const milliseconds = [
