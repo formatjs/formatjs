@@ -382,7 +382,20 @@ it.each([
       )
     ) as Patch
     const provider = calendars.find(data => data.calendar === 'chinese')!
-    patch.data.yearNames = yearNames
+    entry.data.yearNames = Array(60).fill('Gregorian year')
+    const leap = 'Gregorian leap {0}'
+    const leapWidths = {narrow: leap, short: leap, long: leap}
+    entry.data.leapMonthPatterns = {
+      numeric: leap,
+      format: leapWidths,
+      standalone: leapWidths,
+    }
+    if (yearNames) patch.data.yearNames = yearNames
+    else delete patch.data.yearNames
+    delete patch.data.leapMonthPatterns
+    const value = Date.UTC(2020, 4, 23)
+    const fields = provider.dateFromTime(value)
+    expect(fields.leapMonth).toBe(true)
     const tz = read('packages/intl-datetimeformat/tz-all.json')
     Reference.localeData = {}
     Reference.availableLocales = new Set()
@@ -401,14 +414,20 @@ it.each([
           numberingSystem: 'mathbold',
           timeZone: 'UTC',
         },
-        values: [{type: 'date', value: Date.UTC(2024, 2, 11)}],
+        values: [{type: 'date', value}],
       },
     ]
     const expected = [
       [
         {
-          text: expect.stringContaining('(𝟐𝟎𝟐𝟒)'),
-          parts: expect.arrayContaining([{type: 'yearName', value: '𝟐𝟎𝟐𝟒'}]),
+          text: expect.stringContaining('(𝟐𝟎𝟐𝟎)'),
+          parts: expect.arrayContaining([
+            {type: 'yearName', value: '𝟐𝟎𝟐𝟎'},
+            {
+              type: 'month',
+              value: patch.data.month.long[fields.monthNameIndex!],
+            },
+          ]),
         },
       ],
     ]
@@ -490,34 +509,56 @@ it('rejects malformed optional table packs before registration', () => {
   expect(run({method: 'validate', data: good})).toEqual(good.map(() => true))
 })
 
-it('keeps Hebrew standalone month names independent of Gregorian names', () => {
-  const entry = JSON.parse(
-    read('crates/intl_datetimeformat/locale-data/ru.json')
-  ) as Locale
-  const patch = JSON.parse(
-    read(
-      'packages/intl-datetimeformat-calendar-hebrew/locale-data-json/ru.json'
-    )
-  ) as Patch
-  const provider = calendars.find(data => data.calendar === 'hebrew')!
-  const value = 1710115200000
-  const fields = provider.dateFromTime(value)
-  const expected = patch.data.month.long[fields.monthNameIndex!]
-  expect(typeof expected).toBe('string')
-  Reference.localeData = {}
-  Reference.availableLocales = new Set()
-  Reference.__defaultLocale = ''
-  Reference.calendarData = Object.create(null)
-  Reference.__addCalendarData(provider)
-  Reference.__addCalendarLocaleData(patch)
-  Reference.__addLocaleData(entry)
-  const formatter = new Reference(['ru'], {
-    calendar: 'hebrew',
-    month: 'long',
-    timeZone: 'UTC',
-  })
-  expect(formatter.format(value)).toBe(expected)
-  expect(
-    formatter.formatToParts(value).every(part => typeof part.value === 'string')
-  ).toBe(true)
-})
+it.each([false, true])(
+  'keeps Hebrew month names independent of Gregorian names (legacy pack: %s)',
+  legacy => {
+    const entry = JSON.parse(
+      read('crates/intl_datetimeformat/locale-data/ru.json')
+    ) as Locale
+    const patch = JSON.parse(
+      read(
+        'packages/intl-datetimeformat-calendar-hebrew/locale-data-json/ru.json'
+      )
+    ) as Patch
+    const provider = calendars.find(data => data.calendar === 'hebrew')!
+    const value = 1710115200000
+    const fields = provider.dateFromTime(value)
+    const gregoryNames = entry.data.monthStandalone ?? entry.data.month
+    entry.data.monthStandalone = {
+      ...gregoryNames,
+      long: Array(14).fill('Gregorian month'),
+    }
+    if (legacy) delete patch.data.monthStandalone
+    const month = (patch.data.monthStandalone ?? patch.data.month).long[
+      fields.monthNameIndex!
+    ]
+    const expected = [[{parts: [{type: 'month', value: month}], text: month}]]
+    const tz = read('packages/intl-datetimeformat/tz-all.json')
+    Reference.localeData = {}
+    Reference.availableLocales = new Set()
+    Reference.__defaultLocale = ''
+    Reference.calendarData = Object.create(null)
+    Reference.__addCalendarData(provider)
+    Reference.__addCalendarLocaleData(patch)
+    Reference.__addLocaleData(entry)
+    Reference.__addTZData(JSON.parse(tz))
+    const cases: Case[] = [
+      {
+        locales: ['ru'],
+        options: {calendar: 'hebrew', month: 'long', timeZone: 'UTC'},
+        values: [{type: 'date', value}],
+      },
+    ]
+    expect.soft(referenceCases(cases)).toEqual(expected)
+    expect(
+      run({
+        method: 'render',
+        data: JSON.stringify(pack(provider.calendar)),
+        locale: JSON.stringify(entry),
+        patch: JSON.stringify(patch),
+        tz,
+        cases,
+      })
+    ).toEqual(expected)
+  }
+)

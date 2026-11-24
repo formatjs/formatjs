@@ -1221,6 +1221,11 @@ function prepareLocaleData(
           return (parsed ??= {
             ...processedData,
             ...calendarFields,
+            // ECMA-402 §11.2.3 keeps names in the selected calendar's record.
+            // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+            monthStandalone: fields.monthStandalone,
+            yearNames: fields.yearNames,
+            leapMonthPatterns: fields.leapMonthPatterns,
             // Keep parsed formats even if a caller supplies a wider locale record.
             formats: processedData.formats,
             ...parseDateTimeStyles({

@@ -132,25 +132,9 @@ struct RawCalendar {
 }
 
 impl RawCalendar {
-    fn inherit_names(&mut self, base: &CalendarNames) {
-        self.names.month_standalone = self
-            .names
-            .month_standalone
-            .take()
-            .or_else(|| base.month_standalone.clone());
-        self.names.year_names = self
-            .names
-            .year_names
-            .take()
-            .or_else(|| base.year_names.clone());
-        self.names.leap_month_patterns = self
-            .names
-            .leap_month_patterns
-            .take()
-            .or_else(|| base.leap_month_patterns.clone());
-    }
-
     fn with_formats(self, formats: RawPatterns) -> CalendarLocale {
+        // ECMA-402 §11.2.3 keeps names in the selected calendar's record.
+        // https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
         CalendarLocale {
             names: self.names,
             raw: CalendarPatterns {
@@ -300,12 +284,11 @@ impl LocaleData {
         }
         let mut calendars = BTreeMap::new();
         for (calendar, formats) in data.formats.0 {
-            let mut raw = data
+            let raw = data
                 .calendar_data
                 .get(&calendar)
                 .unwrap_or(&data.gregory)
                 .clone();
-            raw.inherit_names(&data.gregory.names);
             calendars.insert(calendar, Arc::new(raw.with_formats(formats)));
         }
         let gregory = calendars
@@ -318,12 +301,11 @@ impl LocaleData {
         let iso = if let Some(iso) = calendars.get("iso8601") {
             iso.clone()
         } else if gregory_override || data.calendar_data.contains_key("iso8601") {
-            let mut raw = data
+            let raw = data
                 .calendar_data
                 .get("iso8601")
                 .unwrap_or(&data.gregory)
                 .clone();
-            raw.inherit_names(&data.gregory.names);
             let mut iso = raw.with_formats(RawPatterns::default());
             iso.formats_from = Some(gregory);
             Arc::new(iso)
