@@ -92,6 +92,13 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
     !('NumberFormat' in Intl) ||
     !supportsES2020() ||
     !supportsES2023() ||
+    // ECMA-402 §§16.3.4–16.3.6 require all three methods.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formattoparts
+    typeof Intl.NumberFormat.prototype?.formatRange !== 'function' ||
+    typeof Intl.NumberFormat.prototype?.formatRangeToParts !== 'function' ||
+    typeof Intl.NumberFormat.prototype?.formatToParts !== 'function' ||
     !supportsSourcePrecision() ||
     onlySupportsEn() ||
     !supportedLocalesOf(locale)

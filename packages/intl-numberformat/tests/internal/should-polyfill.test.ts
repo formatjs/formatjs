@@ -6,6 +6,30 @@ import {NumberFormat} from '#packages/intl-numberformat/core.js'
 import en from '#packages/intl-numberformat/tests/locale-data/en.json' with {type: 'json'}
 NumberFormat.__addLocaleData(en as any)
 
+it.each(['formatRange', 'formatRangeToParts', 'formatToParts'] as const)(
+  'detects a native formatter without %s',
+  method => {
+    const original = Intl.NumberFormat
+    const descriptor = Object.getOwnPropertyDescriptor(
+      NumberFormat.prototype,
+      method
+    )!
+    let complete: string | undefined
+    let incomplete: string | undefined
+    try {
+      ;(Intl as any).NumberFormat = NumberFormat
+      complete = shouldPolyfill('en')
+      Reflect.deleteProperty(NumberFormat.prototype, method)
+      incomplete = shouldPolyfill('en')
+    } finally {
+      Object.defineProperty(NumberFormat.prototype, method, descriptor)
+      Intl.NumberFormat = original
+    }
+    expect(complete).toBeUndefined()
+    expect(incomplete).toBe('en')
+  }
+)
+
 it('detects missing source precision in native NumberFormat', () => {
   const original = Intl.NumberFormat
   try {
