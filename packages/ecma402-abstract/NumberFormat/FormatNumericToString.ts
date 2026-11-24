@@ -9,6 +9,9 @@ import {GetUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/G
 import {ToRawFixed} from '#packages/ecma402-abstract/NumberFormat/ToRawFixed.js'
 import {ToRawPrecision} from '#packages/ecma402-abstract/NumberFormat/ToRawPrecision.js'
 
+const apply = Reflect.apply
+const {indexOf, slice} = String.prototype
+
 // ECMA-402 §16.5.2 https://tc39.es/ecma402/#sec-formatnumerictostring
 export function FormatNumericToString(
   intlObject: Pick<
@@ -125,10 +128,12 @@ export function FormatNumericToString(
 
   x = result.roundedNumber
   let string = result.formattedString
+  // ECMA-402 §16.5.2 step 10 removes the fraction from a rounded integer.
+  // https://tc39.es/ecma402/#sec-formatnumerictostring
   if (intlObject.trailingZeroDisplay === 'stripIfInteger' && x.isInteger()) {
-    let i = string.indexOf('.')
+    const i = apply(indexOf, string, ['.'])
     if (i > -1) {
-      string = string.slice(0, i)
+      string = apply(slice, string, [0, i])
     }
   }
   const int = result.integerDigitsCount

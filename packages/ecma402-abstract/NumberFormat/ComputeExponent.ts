@@ -6,7 +6,7 @@ import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cach
 
 function decimalMagnitude(value: Decimal): Decimal {
   // The positive mantissa's digit count gives floor(log10(value)) exactly.
-  return new Decimal(value._mantissa.toString().length - 1 + value._exponent)
+  return new Decimal(`${value._mantissa}`.length - 1 + value._exponent)
 }
 
 // Return the exponent, magnitude, and reusable positive rounding preview.

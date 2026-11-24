@@ -5,15 +5,20 @@ import {
 import type {BigDecimal} from '@formatjs/bigdecimal'
 import {memoize, strategies} from '@formatjs/fast-memoize'
 
+const apply = Reflect.apply
+const stringRepeat = String.prototype.repeat
+const arrayFrom = Array.from
+const arrayJoin = Array.prototype.join
+
 export function repeat(s: string, times: number): string {
-  if (typeof s.repeat === 'function') {
-    return s.repeat(times)
+  if (typeof stringRepeat === 'function') {
+    return apply(stringRepeat, s, [times])
   }
-  const arr = Array.from({length: times})
+  const arr = arrayFrom({length: times})
   for (let i = 0; i < arr.length; i++) {
     arr[i] = s
   }
-  return arr.join('')
+  return apply(arrayJoin, arr, [''])
 }
 
 export interface LiteralPart {
