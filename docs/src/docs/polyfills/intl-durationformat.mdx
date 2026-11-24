@@ -199,14 +199,12 @@ import '@formatjs/intl-durationformat/polyfill.js'
 ### Dynamic import + capability detection
 
 ```tsx
-async function polyfill(locale: string) {
-  const unsupportedLocale = shouldPolyfill(locale)
-  // This locale is supported
-  if (!unsupportedLocale) {
-    return
+import {shouldPolyfill} from '@formatjs/intl-durationformat/should-polyfill.js'
+
+async function polyfill() {
+  if (shouldPolyfill()) {
+    await import('@formatjs/intl-durationformat/polyfill-force.js')
   }
-  // Load the polyfill 1st BEFORE loading data
-  await import('@formatjs/intl-durationformat/polyfill-force.js')
 }
 ```
 

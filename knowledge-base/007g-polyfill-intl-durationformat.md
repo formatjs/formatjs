@@ -10,6 +10,8 @@ Duration-like field conversion keeps primitive Numbers through ToIntegerIfIntegr
 Captured Number.isInteger validates the full finite integral Number domain;
 private Decimal construction cannot interrupt consecutive field Gets.
 
+The conditional installer keeps a callable host `Intl.DurationFormat`.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`

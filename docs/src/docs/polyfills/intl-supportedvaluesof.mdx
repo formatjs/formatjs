@@ -60,13 +60,12 @@ import '@formatjs/intl-supportedvaluesof/polyfill.js'
 ### Dynamic import + capability detection
 
 ```tsx
+import {shouldPolyfill} from '@formatjs/intl-supportedvaluesof/should-polyfill.js'
+
 async function polyfill() {
-  // This platform already supports Intl.supportedValuesOf
   if (shouldPolyfill()) {
-    await import('@formatjs/intl-supportedvaluesof/polyfill.js')
+    await import('@formatjs/intl-supportedvaluesof/polyfill-force.js')
   }
-  // Alternatively, force the polyfill regardless of support
-  await import('@formatjs/intl-supportedvaluesof/polyfill-force.js')
 }
 ```
 

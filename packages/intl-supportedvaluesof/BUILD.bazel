@@ -83,6 +83,7 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/polyfill-force.test.ts",
+        "tests/should-polyfill.test.ts",
     ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),

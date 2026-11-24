@@ -76,6 +76,8 @@ Supported option plumbing includes:
 - `ignorePunctuation`
 - cached bound compare functions
 
+The conditional installer keeps a callable host `Intl.Collator`.
+
 ## Data Sources
 
 The collator data pipeline uses CLDR common data rather than CLDR JSON packages:

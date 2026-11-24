@@ -6,6 +6,8 @@
 
 Polyfill for `Intl.supportedValuesOf()` — returns arrays of supported values for calendar, collation, currency, numberingSystem, timeZone, and unit.
 
+The conditional installer keeps a callable host `Intl.supportedValuesOf`.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/fast-memoize`

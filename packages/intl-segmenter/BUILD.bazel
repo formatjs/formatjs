@@ -95,6 +95,7 @@ formatjs_test(
         "tests/installation.test.ts",
         "tests/isWordLike.test.ts",
         "tests/sentence.test.ts",
+        "tests/should-polyfill.test.ts",
         "tests/test-utils.ts",
         "tests/word.test.ts",
     ],
