@@ -1118,6 +1118,43 @@ for (const timeZone of [
         inputs
       )
 
+const intervalPack = JSON.parse(fixtures.packs[fixtures.locales.indexOf('en')])
+Object.assign(intervalPack.data, {
+  calendarData: {},
+  ca: ['gregory'],
+  formats: {gregory: {'yMMMd, Hm': 'MMM d, y HH:mm'}},
+  intervalFormats: {intervalFormatFallback: '{1} – {0}'},
+  intervalFormatTemplates: {
+    dates: [['yMMMd', "MMM d, y '$&'", '{1}, {0}', "{1} 'at' {0}"]],
+    times: [['Hm', 'HH:mm', {H: "latestFirst:HH:mm '$$'–HH:mm"}]],
+  },
+})
+Native.__addLocaleData(stringify(intervalPack))
+Reference.__addLocaleData(intervalPack)
+for (const Constructor of [Native, Reference]) {
+  const formatter = new Constructor('en', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+  const start = Date.UTC(2024, 0, 15, 10, 15)
+  const end = Date.UTC(2024, 0, 15, 11, 45)
+  equal(
+    formatter.formatRange(start, end),
+    'Jan 15, 2024 $&, 11:45 $$–10:15',
+    'compact interval keeps literal pattern text'
+  )
+  equal(
+    formatter.formatRange(start, end + 86_400_000),
+    'Jan 16, 2024 $& at 11:45 – Jan 15, 2024 $& at 10:15',
+    'compact interval fallback keeps literal pattern text'
+  )
+}
+
 ;(globalThis as any).print(
   stringify({
     type: 'DateTimeFormat-conformance',

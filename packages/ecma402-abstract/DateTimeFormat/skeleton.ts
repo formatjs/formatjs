@@ -43,6 +43,23 @@ const skeletonTrim = Function.prototype.call.bind(String.prototype.trim) as (
   value: string
 ) => string
 
+function replaceIntervalToken(
+  pattern: string,
+  token: string,
+  value: string
+): string {
+  const index = skeletonIndexOf(pattern, token)
+  return index < 0
+    ? pattern
+    : skeletonSlice(pattern, 0, index) +
+        value +
+        skeletonSlice(pattern, index + token.length)
+}
+
+// ECMA-402 §11.2.3.2 and §11.2.3.7. Expand CLDR connectors and range
+// patterns with literal pattern text.
+// https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-record
+// https://tc39.es/ecma402/#sec-datetimeformat-connector-record
 export function expandIntervalFormatTemplates(
   data: IntervalFormatsData,
   templates?: IntervalFormatTemplates
@@ -56,25 +73,35 @@ export function expandIntervalFormatTemplates(
       connector,
       fallbackConnector,
     ] of templates.dates) {
-      const key = connector.replace('{0}', timeKey).replace('{1}', dateKey)
+      const key = replaceIntervalToken(
+        replaceIntervalToken(connector, '{0}', timeKey),
+        '{1}',
+        dateKey
+      )
       if (expanded[key] !== undefined) continue
       const ranges = skeletonCreate(null) as Record<string, string>
-      for (const field of Object.keys(timeRanges)) {
+      for (const field of skeletonKeys(timeRanges)) {
         const info = getRangePatternInfo(timeRanges[field])
-        const pattern = connector
-          .replace('{0}', info.pattern)
-          .replace('{1}', date)
+        const pattern = replaceIntervalToken(
+          replaceIntervalToken(connector, '{0}', info.pattern),
+          '{1}',
+          date
+        )
         ranges[field] =
           info.reversed === undefined
             ? pattern
             : `${info.reversed ? 'latestFirst' : 'earliestFirst'}:${pattern}`
       }
-      const endpoint = fallbackConnector
-        .replace('{0}', time)
-        .replace('{1}', date)
-      ranges.date = data.intervalFormatFallback
-        .replace('{0}', endpoint)
-        .replace('{1}', endpoint)
+      const endpoint = replaceIntervalToken(
+        replaceIntervalToken(fallbackConnector, '{0}', time),
+        '{1}',
+        date
+      )
+      ranges.date = replaceIntervalToken(
+        replaceIntervalToken(data.intervalFormatFallback, '{0}', endpoint),
+        '{1}',
+        endpoint
+      )
       expanded[key] = ranges
     }
   }
