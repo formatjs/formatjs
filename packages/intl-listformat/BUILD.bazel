@@ -89,6 +89,7 @@ formatjs_test(
     name = "intl-listformat_test",
     srcs = [
         "tests/index.test.ts",
+        "tests/should-polyfill.test.ts",
         "tests/supported-locales-of.test.ts",
         ":tests-locale-data-en",  # keep: generated locale data imported by tests
         ":tests-locale-data-en-AI",  # keep: generated locale data imported by tests
