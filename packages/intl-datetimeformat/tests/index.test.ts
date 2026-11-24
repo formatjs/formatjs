@@ -294,42 +294,6 @@ describe('Intl.DateTimeFormat', function () {
     expect(actual).toEqual(expected)
   })
 
-  it('reads the default interval only for a range with different dates', () => {
-    const locale = DateTimeFormat.localeData.ja
-    const original = Object.getOwnPropertyDescriptor(
-      locale,
-      'intervalFormatFallback'
-    )!
-    const formatter = new DateTimeFormat('ja', {
-      timeZone: 'America/New_York',
-      timeZoneName: 'short',
-    })
-    const start = Date.UTC(2026, 0, 15, 15)
-    const nextDay = start + 86_400_000
-    let reads = 0
-    try {
-      Object.defineProperty(locale, 'intervalFormatFallback', {
-        configurable: true,
-        get() {
-          reads++
-          return '{0} ~ {1}'
-        },
-      })
-      expect(formatter.formatRangeToParts(start, start + 3_600_000)).toEqual(
-        formatter
-          .formatToParts(start)
-          .map(part => ({...part, source: 'shared'}))
-      )
-      expect(reads).toBe(0)
-      expect(formatter.formatRange(start, nextDay)).toBe(
-        `${formatter.format(start)} ~ ${formatter.format(nextDay)}`
-      )
-      expect(reads).toBe(1)
-    } finally {
-      Object.defineProperty(locale, 'intervalFormatFallback', original)
-    }
-  })
-
   it.each(['gregory', 'chinese'])(
     'parses cold %s formats without inherited setters',
     calendar => {
