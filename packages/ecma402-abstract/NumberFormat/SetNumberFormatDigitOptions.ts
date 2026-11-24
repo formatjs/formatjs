@@ -2,6 +2,8 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayIncludes,
+  mathMax,
+  mathMin,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {DefaultNumberOption} from '#packages/ecma402-abstract/DefaultNumberOption.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
@@ -166,11 +168,11 @@ Valid values are ${validRoundingIncrementList}.`
         invariant(mxfd !== undefined, 'maximumFractionDigits must be defined')
 
         // 22.a.iii.2. Set mnfd to min(mnfdDefault, mxfd).
-        mnfd = Math.min(mnfdDefault, mxfd)
+        mnfd = mathMin(mnfdDefault, mxfd)
       } else if (mxfd === undefined) {
         // 22.a.iv. Else if mxfd is undefined, then
         // 22.a.iv.1. Set mxfd to max(mxfdDefault, mnfd).
-        mxfd = Math.max(mxfdDefault, mnfd)
+        mxfd = mathMax(mxfdDefault, mnfd)
       } else if (mnfd > mxfd) {
         // 22.a.v. Else if mnfd > mxfd, throw a RangeError exception.
         throw new RangeErrorConstructor(`Invalid range, ${mnfd} > ${mxfd}`)

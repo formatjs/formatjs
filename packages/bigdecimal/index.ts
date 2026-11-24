@@ -1,5 +1,6 @@
 // Division precision: 40 extra digits (matches decimal.js default)
 const DIV_PRECISION = 40
+const mathMin = Math.min
 
 const enum SpecialValue {
   NONE = 0,
@@ -335,7 +336,7 @@ export class BigDecimal {
     let m2 = other._mantissa
     const e1 = this._exponent
     const e2 = other._exponent
-    const minE = Math.min(e1, e2)
+    const minE = mathMin(e1, e2)
     if (e1 > minE) m1 *= bigintPow10(e1 - minE)
     if (e2 > minE) m2 *= bigintPow10(e2 - minE)
 
@@ -390,7 +391,7 @@ export class BigDecimal {
     let m2 = other._mantissa
     const e1 = this._exponent
     const e2 = other._exponent
-    const minE = Math.min(e1, e2)
+    const minE = mathMin(e1, e2)
     if (e1 > minE) m1 *= bigintPow10(e1 - minE)
     if (e2 > minE) m2 *= bigintPow10(e2 - minE)
 
@@ -608,7 +609,7 @@ export class BigDecimal {
     let m2 = other._mantissa
     const e1 = this._exponent
     const e2 = other._exponent
-    const minE = Math.min(e1, e2)
+    const minE = mathMin(e1, e2)
     if (e1 > minE) m1 *= bigintPow10(e1 - minE)
     if (e2 > minE) m2 *= bigintPow10(e2 - minE)
 

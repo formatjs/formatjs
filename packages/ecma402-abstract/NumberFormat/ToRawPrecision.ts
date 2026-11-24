@@ -1,4 +1,5 @@
 import type {Decimal} from '@formatjs/bigdecimal'
+import {mathMax} from '#packages/ecma262-abstract/intrinsics.js'
 import {ZERO} from '#packages/ecma402-abstract/constants.js'
 import {
   type RawNumberFormatResult,
@@ -211,7 +212,7 @@ export function ToRawPrecision(
   }
 
   // https://tc39.es/proposal-intl-keep-trailing-zeros/#sec-torawprecision
-  const resolvedMinPrecision = Math.max(
+  const resolvedMinPrecision = mathMax(
     minPrecision,
     xFinal.isZero() ? fractionDigitCount + 1 : digitCount
   )
