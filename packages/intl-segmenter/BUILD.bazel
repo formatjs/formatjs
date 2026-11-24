@@ -92,12 +92,14 @@ formatjs_test(
     name = "intl-segmenter_test",
     srcs = [
         "tests/grapheme.test.ts",
+        "tests/installation.test.ts",
         "tests/isWordLike.test.ts",
         "tests/sentence.test.ts",
         "tests/test-utils.ts",
         "tests/word.test.ts",
     ],
     data = [
+        ":test262-polyfill",  # keep: installation regression loads the bundle
         "@GraphemeBreakTest//file",  # keep: Unicode test data loaded via Bazel runfiles
         "@SentenceBreakTest//file",  # keep: Unicode test data loaded via Bazel runfiles
         "@WordBreakTest//file",  # keep: Unicode test data loaded via Bazel runfiles
