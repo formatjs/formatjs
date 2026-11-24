@@ -232,6 +232,34 @@ it('registers a legacy pack label under the canonical locale', () => {
     rmSync(path, {recursive: true, force: true})
   }
 })
+it('retains the numbering extension before private-use subtags', () => {
+  const locale = 'en-x-u-private'
+  const requested = 'en-u-nu-arab-x-u-private'
+  const pack = {
+    ...JSON.parse(readFileSync(join(directory, 'en.json'), 'utf8')),
+    locale,
+    aliases: [],
+  }
+  const path = mkdtempSync(
+    join(process.env.TEST_TMPDIR || tmpdir(), 'rtf-locale-')
+  )
+  const options = {localeMatcher: 'lookup'} as const
+  try {
+    writeFileSync(join(path, 'en.json'), JSON.stringify(pack))
+    Reference.__addLocaleData(pack)
+    expect(new Reference(requested, options).resolvedOptions()).toMatchObject({
+      locale: requested,
+      numberingSystem: 'arab',
+    })
+    compare(
+      [{locales: [requested], options, values: [2], units: ['day']}],
+      path
+    )
+  } finally {
+    rmSync(path, {recursive: true, force: true})
+  }
+})
+
 const values = [
   0,
   -0,

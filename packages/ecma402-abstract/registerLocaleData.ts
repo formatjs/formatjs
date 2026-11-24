@@ -67,7 +67,19 @@ export function registerLocaleData<T>(
     const parts = apply(split, tag, ['-']) as string[]
     const scriptEnd = parts[0].length + 5
     let parent = tag
-    for (let length = parts.length; length > 1; length--) {
+    // ECMA-402 §§9–9.1 require well-formed fallback tags. Drop extension
+    // sequences as a unit so a fallback never ends in a bare singleton.
+    // https://tc39.es/ecma402/#sec-internal-slots
+    let length = 1
+    let end = parts[0].length
+    for (; length < parts.length && parts[length].length > 1; length++) {
+      end += parts[length].length + 1
+    }
+    if (length < parts.length) {
+      parent = apply(slice, parent, [0, end])
+      addFallback(parent)
+    }
+    for (; length > 1; length--) {
       if (length > 2 && parts[1].length === 4) {
         addFallback(parts[0] + apply(slice, parent, [scriptEnd]))
       }
