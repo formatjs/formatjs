@@ -46,6 +46,20 @@ for (const text of fixtures.packs) {
   )
 }
 for (const Constructor of [Native, Reference]) {
+  const create = Object.create
+  let formatter: Intl.RelativeTimeFormat
+  try {
+    Object.create = () => {
+      throw new Error(
+        'Called public Object.create during RelativeTimeFormat construction'
+      )
+    }
+    formatter = new Constructor('en')
+  } finally {
+    Object.create = create
+  }
+  equal(formatter.format(1, 'day'), 'in 1 day', 'private formatting slots')
+
   for (const key of ['NumberFormat', 'PluralRules'] as const) {
     const saved = Object.getOwnPropertyDescriptor(Intl, key)!
     let actual: string

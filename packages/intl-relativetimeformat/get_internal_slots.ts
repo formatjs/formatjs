@@ -1,7 +1,10 @@
 // Type-only circular import
 // eslint-disable-next-line import/no-cycle
 
-import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  TypeErrorConstructor,
+  objectCreate,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {type RelativeTimeFormatInternal} from '#packages/ecma402-abstract/types/relative-time.js'
 
 // ECMA-402 §18.4: each initialized instance owns its formatting state.
@@ -32,7 +35,9 @@ export default function getInternalSlots(
 ): RelativeTimeFormatInternal {
   let internalSlots = readSlots(x)
   if (!internalSlots) {
-    internalSlots = Object.create(null) as RelativeTimeFormatInternal
+    // ECMA-402 §18.1.1 step 2 allocates private formatting state.
+    // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
+    internalSlots = objectCreate(null) as RelativeTimeFormatInternal
     writeSlots(x, internalSlots)
   }
   return internalSlots
