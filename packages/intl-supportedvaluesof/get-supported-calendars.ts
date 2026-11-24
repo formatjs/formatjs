@@ -5,6 +5,7 @@ import type {Calendar} from '@formatjs_generated/cldr.supported-values/calendars
 import {calendars} from '@formatjs_generated/cldr.supported-values/calendars.js'
 
 // ECMA-402 §8.3.2 step 2.b filters §6.9.1 to canonical calendar identifiers.
+// ISO 8601 is required even without a formatter probe.
 // https://tc39.es/ecma402/#sec-calendar-types
 // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
 // https://tc39.es/ecma402/#sec-availablecalendars
@@ -14,12 +15,14 @@ export function getSupportedCalendars(): Calendar[] {
     const available = probe.availableCalendars()
     return supportedEntries(
       calendars,
-      calendar => arrayIndexOf(available, calendar) >= 0
+      calendar =>
+        calendar === 'iso8601' || arrayIndexOf(available, calendar) >= 0
     )
   }
-  if (!probe?.resolve) return []
+  if (!probe?.resolve) return ['iso8601']
   const {create, resolve} = probe
   return supportedEntries(calendars, calendar => {
+    if (calendar === 'iso8601') return true
     try {
       return resolve(create(`en-u-ca-${calendar}`)).calendar === calendar
     } catch {

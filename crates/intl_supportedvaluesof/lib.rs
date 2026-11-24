@@ -141,16 +141,18 @@ pub fn supported_values_of(
     // ECMA-402 §8.3.2 steps 2–8 dispatch to sorted, unique lists. ASCII byte
     // order matches UTF-16 code unit order for these candidates.
     // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
-    let mut supported = BTreeSet::new();
+    // ECMA-402 §6.5.1 step 6 and §6.9.1 require UTC and ISO 8601.
+    // https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
+    // https://tc39.es/ecma402/#sec-availablecalendars
     // ECMA-402 §6.7.1 requires every Table 30 system.
     // https://tc39.es/ecma402/#sec-availablecanonicalnumberingsystems
-    if key == Key::NumberingSystem {
-        supported.extend(
-            REQUIRED_NUMBERING_SYSTEMS
-                .iter()
-                .map(|system| (*system).to_owned()),
-        );
-    }
+    let required: &[&str] = match key {
+        Key::TimeZone => &["UTC"],
+        Key::Calendar => &["iso8601"],
+        Key::NumberingSystem => REQUIRED_NUMBERING_SYSTEMS,
+        _ => &[],
+    };
+    let mut supported: BTreeSet<_> = required.iter().map(|value| (*value).to_owned()).collect();
     for candidate in candidates(key) {
         if supported.contains(&candidate.value) {
             continue;

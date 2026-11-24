@@ -159,13 +159,14 @@ This polyfill is only needed for older browsers that don't have native support f
 - Firefox 93+
 - Safari 15.4+
 
-The polyfill requires the following `Intl` APIs to be available:
+The polyfill checks these `Intl` APIs for additional supported values:
 
 - `Intl.DateTimeFormat` (for `calendar`, `timeZone`)
 - `Intl.NumberFormat` (for `currency`)
 - `Intl.Collator` (for `collation`)
 
 Currency enumeration also checks `Intl.DisplayNames` when installed.
+`timeZone` always includes `UTC`, and `calendar` always includes `iso8601`.
 
 The `unit` category returns the sanctioned units from ECMA-402 Table 2 and
 works without a formatter. The `numberingSystem` category always includes

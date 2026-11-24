@@ -44,9 +44,14 @@ fn lists_are_sorted_unique_and_runtime_specific() {
         assert!(!values.is_empty(), "{key:?}");
         assert!(values.windows(2).all(|pair| pair[0] < pair[1]), "{key:?}");
         if !matches!(key, Key::Unit | Key::NumberingSystem) {
+            let required = match key {
+                Key::Calendar => vec!["iso8601".to_owned()],
+                Key::TimeZone => vec!["UTC".to_owned()],
+                _ => vec![],
+            };
             assert_eq!(
                 supported_values_of(key.as_str(), |_, _, _| None),
-                Ok(Vec::new())
+                Ok(required)
             );
         }
     }
@@ -63,7 +68,12 @@ fn aliases_and_formatter_fallbacks_are_not_advertised() {
             }
         })
         .unwrap();
-        assert_eq!(values.len(), 1, "{key}");
+        let expected = if key == "calendar" {
+            vec!["gregory", "iso8601"]
+        } else {
+            vec!["emoji"]
+        };
+        assert_eq!(values, expected, "{key}");
     }
     let calendars = supported_values_of("calendar", |_, value, _| {
         resolved(if value == "islamicc" {
@@ -186,7 +196,7 @@ fn primary_time_zones_survive_older_formatter_aliases() {
     .unwrap();
     assert_eq!(
         values,
-        ["Africa/Accra", "America/Edmonton", "Asia/Kathmandu"]
+        ["Africa/Accra", "America/Edmonton", "Asia/Kathmandu", "UTC"]
     );
     for alias in ["America/Yellowknife", "Asia/Katmandu", "Europe/Kiev"] {
         assert!(
