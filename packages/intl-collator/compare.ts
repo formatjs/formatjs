@@ -4,6 +4,7 @@ import type {
 } from '#packages/intl-collator/types.js'
 import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {
+  canonicalDecompositionJSON,
   combiningClasses,
   decimalDigitZeros,
   hanImplicitStart,
@@ -41,6 +42,9 @@ const unassignedStart =
 const apply = Reflect.apply
 const normalizeString = String.prototype.normalize
 const codePointAt = String.prototype.codePointAt
+const fromCodePoint = String.fromCodePoint
+const arraySort = Array.prototype.sort
+const parseJSON = JSON.parse
 const stringSlice = String.prototype.slice
 const lastIndexOf = String.prototype.lastIndexOf
 const hasOwn = Object.prototype.hasOwnProperty
@@ -52,6 +56,9 @@ const SetConstructor = Set
 const setHas = Set.prototype.has
 const setAdd = Set.prototype.add
 const setDelete = Set.prototype.delete
+let canonicalDecompositions:
+  | Readonly<Record<number, readonly number[]>>
+  | undefined
 
 // ECMA-402 leaves CompareStrings locale-sensitive ordering
 // implementation-defined; this implementation maps the resolved Collator
@@ -61,7 +68,61 @@ const setDelete = Set.prototype.delete
 function normalize(input: string): string {
   return typeof normalizeString === 'function'
     ? apply(normalizeString, input, ['NFD'])
-    : input
+    : normalizeWithoutIntrinsic(input)
+}
+
+// ECMA-402 §10.3.3.1 requires canonically equivalent strings to compare equal.
+// https://tc39.es/ecma402/#sec-collator-comparestrings
+// https://www.unicode.org/reports/tr15/#Description_Norm
+function normalizeWithoutIntrinsic(input: string): string {
+  const decompositions = (canonicalDecompositions ??= parseJSON(
+    canonicalDecompositionJSON
+  ))
+  let result = ''
+  const marks: {point: number; ccc: number; order: number}[] = []
+  function flushMarks() {
+    if (marks.length > 1) {
+      apply(arraySort, marks, [
+        (a: (typeof marks)[number], b: (typeof marks)[number]) =>
+          a.ccc - b.ccc || a.order - b.order,
+      ])
+    }
+    for (let index = 0; index < marks.length; index++) {
+      result += fromCodePoint(marks[index].point)
+    }
+    marks.length = 0
+  }
+  function emit(point: number) {
+    const ccc = combiningClass(point)
+    if (ccc === 0) {
+      flushMarks()
+      result += fromCodePoint(point)
+    } else {
+      append(marks, {point, ccc, order: marks.length})
+    }
+  }
+
+  for (let index = 0; index < input.length; index++) {
+    const point = apply(codePointAt, input, [index])!
+    if (point > 0xffff) index++
+    const syllable = point - 0xac00
+    if (syllable >= 0 && syllable < 11172) {
+      // Unicode §3.12.2 derives leading, vowel, and optional trailing Jamo.
+      // https://www.unicode.org/versions/Unicode17.0.0/core-spec/chapter-3/#G56669
+      emit(0x1100 + ((syllable / 588) | 0))
+      emit(0x1161 + (((syllable % 588) / 28) | 0))
+      const trailing = syllable % 28
+      if (trailing !== 0) emit(0x11a7 + trailing)
+      continue
+    }
+    const mapping = ownValue(decompositions, point)
+    if (mapping === undefined) emit(point)
+    else {
+      for (let part = 0; part < mapping.length; part++) emit(mapping[part])
+    }
+  }
+  flushMarks()
+  return result
 }
 
 function compareNumbers(left: number, right: number): number {

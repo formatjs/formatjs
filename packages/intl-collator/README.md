@@ -6,6 +6,9 @@ The TypeScript and Rust implementations use compiled CLDR/UCA data. Locale
 collations inherit the root `emoji` and `eor` types; private LDML collations
 remain internal.
 
+The TypeScript build uses native string normalization when available and
+includes a Unicode fallback.
+
 ```js
 new Intl.Collator('en', {collation: 'emoji'}).compare('🤣', '😂') // -1
 ```

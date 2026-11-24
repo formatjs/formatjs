@@ -122,3 +122,16 @@ it('uses the resolved data locale for a host locale alias', () => {
     {locale: 'sv-US', collation: 'default', order: -1},
   ])
 })
+
+it('preserves canonical equivalence without String.prototype.normalize', () => {
+  const context = createContext()
+  runInContext('delete String.prototype.normalize', context)
+  runInContext(
+    readFileSync(new URL('../test262-polyfill.js', import.meta.url), 'utf8'),
+    context
+  )
+  const compare = runInContext("new Intl.Collator('ko').compare", context)
+  expect(compare('각', '\u1100\u1161\u11a8')).toBe(0)
+  expect(compare('ậ', 'a\u0302\u0323')).toBe(0)
+  expect(compare('a\u0300\u0301', 'a\u0301\u0300')).not.toBe(0)
+})
