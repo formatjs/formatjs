@@ -269,6 +269,8 @@ export class DurationFormat
   // @ts-expect-error TS2377: extends null and returns its own receiver.
   // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
   constructor(locales?: string | string[], options?: DurationFormatOptions) {
+    // ECMA-402 §13.1.1 steps 1–3 allocate before resolving options.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat
     const receiver = createFromConstructor(new.target, DurationFormat.prototype)
     // Canonicalize the requested locales into a standard format
     const requestedLocales = CanonicalizeLocaleList(locales)
@@ -327,7 +329,8 @@ export class DurationFormat
     internalSlots.locale = locale
     internalSlots.numberingSystem = r.nu
     internalSlots.dataLocale = r.dataLocale
-    // Steps 7–10 capture separators before reading style or per-unit options.
+    // ECMA-402 §13.1.1 steps 7–10 capture separators before reading style.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat
     const digitalFormat = r.localeData?.digitalFormat
     invariant(!!digitalFormat, `Invalid locale ${r.dataLocale}`)
     const separator = hasOwn(digitalFormat, r.nu)
@@ -350,7 +353,8 @@ export class DurationFormat
     let prevStyle = ''
     const unitStyles: Record<(typeof TABLE_3)[number]['styleSlot'], string> =
       internalSlots
-    // ECMA-402 §13.1.1: Table3 is a private List.
+    // ECMA-402 §13.1.1 step 15 reads unit options in table order.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat
     for (let index = 0; index < TABLE_3.length; index++) {
       const row = TABLE_3[index]
       const {
@@ -360,7 +364,11 @@ export class DurationFormat
         values: valueList,
         digitalDefault: digitalBase,
       } = row
-      // Get the style and display options for this unit
+      // §13.2.3 describes padding for numeric hours, but §13.5.6 step 8
+      // also rewrites textual hour styles. Keep padding explicit.
+      // https://tc39.es/ecma402/#sec-Intl.DurationFormat-internal-slots
+      // https://tc39.es/ecma402/#sec-getdurationunitoptions
+      // CLDR pattern discussion: https://github.com/tc39/proposal-intl-duration-format/issues/161
       const unitOptions = GetDurationUnitOptions(
         unit,
         opts,
