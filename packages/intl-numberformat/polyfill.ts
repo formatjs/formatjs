@@ -1,12 +1,17 @@
 import {NumberFormat} from '#packages/intl-numberformat/core.js'
 import {installNumberLocaleMethods} from '#packages/intl-numberformat/to_locale_string.js'
-import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+import {
+  defineProperty,
+  ensureIntl,
+  registerNumberFormatIntrinsic,
+} from '#packages/ecma402-abstract/utils.js'
 import {shouldPolyfill} from '#packages/intl-numberformat/should-polyfill.js'
 
 const intl = ensureIntl()
 
 if (shouldPolyfill()) {
   defineProperty(intl, 'NumberFormat', {value: NumberFormat})
+  registerNumberFormatIntrinsic(intl, NumberFormat)
   installNumberLocaleMethods()
 
   // Drain any locale data that was buffered before polyfill loaded

@@ -273,6 +273,22 @@ for (const Constructor of [Native, Reference]) {
     'supportedLocalesOf retains canonicalizer'
   )
 
+  const numberFormat = Intl.NumberFormat
+  const numeric = new Constructor('en', {timeZone: 'UTC', year: 'numeric'})
+  let renderedYear: string
+  try {
+    Intl.NumberFormat = class extends numberFormat {
+      constructor() {
+        super()
+        throw new Error('Called replacement Intl.NumberFormat')
+      }
+    } as unknown as typeof numberFormat
+    renderedYear = numeric.format(0)
+  } finally {
+    Intl.NumberFormat = numberFormat
+  }
+  equal(renderedYear, '1970', 'first render retains NumberFormat')
+
   const periods = new Constructor('en', {timeZone: 'UTC', dayPeriod: 'long'})
   const morning = Date.UTC(2026, 0, 15, 9)
   const laterMorning = Date.UTC(2026, 0, 15, 11)
