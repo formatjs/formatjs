@@ -61,11 +61,17 @@
     dateNow = Date.now
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
-  const HostDateTimeFormat = intl.DateTimeFormat
-  const hostResolvedOptions =
-    typeof HostDateTimeFormat === 'function' && !HostDateTimeFormat.polyfilled
-      ? HostDateTimeFormat.prototype?.resolvedOptions
-      : undefined
+  const hostTimeZoneProvider = (() => {
+    try {
+      const Constructor = intl.DateTimeFormat
+      if (typeof Constructor !== 'function' || Constructor.polyfilled) return
+      const resolvedOptions = Constructor.prototype?.resolvedOptions
+      if (typeof resolvedOptions === 'function')
+        return {Constructor, resolvedOptions}
+    } catch {
+      // A partial host Intl can fail before the time-zone query.
+    }
+  })()
   let lastHostZone: string | undefined
   const canonicalize = intl.getCanonicalLocales
   if (typeof canonicalize !== 'function')
@@ -260,10 +266,11 @@
   // ECMA-402 §11.1.2 step 18 reads the host's zone for omitted options.
   // https://tc39.es/ecma402/#sec-createdatetimeformat
   function updateHostTimeZone(): void {
-    if (typeof hostResolvedOptions !== 'function') return
+    if (!hostTimeZoneProvider) return
+    const {Constructor, resolvedOptions} = hostTimeZoneProvider
     let zone: string | undefined
     try {
-      const resolved = apply(hostResolvedOptions, new HostDateTimeFormat(), [])
+      const resolved = apply(resolvedOptions, new Constructor(), [])
       // ECMA-402 §11.3.2 step 5 creates an own data property for the zone.
       // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
       const field = descriptor(resolved, 'timeZone')

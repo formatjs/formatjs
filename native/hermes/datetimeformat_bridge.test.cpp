@@ -228,6 +228,16 @@ int main(int argc, char **argv) {
       }
     )JS");
 
+    evaluate(rt, R"JS(
+      Intl.DateTimeFormat = class {
+        get resolvedOptions() { throw new Error('Host probe unavailable'); }
+      };
+    )JS");
+    auto partialFacade = formatjs::installDateTimeFormat(rt);
+    evaluate(rt, R"JS(
+      Intl.DateTimeFormat.__addLocaleData(packJson);
+      check(new Intl.DateTimeFormat('en').resolvedOptions().timeZone === 'UTC');
+    )JS");
     return 0;
   } catch (const jsi::JSError &error) {
     std::cerr << error.what() << '\n';

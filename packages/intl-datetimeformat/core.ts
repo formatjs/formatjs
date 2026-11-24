@@ -82,12 +82,21 @@ const reflectApply = Reflect.apply
 const timeZoneUpperCase = String.prototype.toUpperCase
 const timeZoneCharCodeAt = String.prototype.charCodeAt
 const objectKeys = Object.keys
-const HostDateTimeFormat = globalThis.Intl?.DateTimeFormat
-const hostResolvedOptions =
-  HostDateTimeFormat &&
-  !getOwnPropertyDescriptor(HostDateTimeFormat, 'polyfilled')?.value
-    ? HostDateTimeFormat.prototype.resolvedOptions
-    : undefined
+const hostTimeZoneProvider = (() => {
+  try {
+    const Constructor = globalThis.Intl?.DateTimeFormat
+    if (
+      typeof Constructor !== 'function' ||
+      getOwnPropertyDescriptor(Constructor, 'polyfilled')?.value
+    )
+      return
+    const resolvedOptions = Constructor.prototype?.resolvedOptions
+    if (typeof resolvedOptions === 'function')
+      return {Constructor, resolvedOptions}
+  } catch {
+    // A partial host Intl can fail before the time-zone query.
+  }
+})()
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -769,13 +778,10 @@ function getDefaultTimeZone(): string {
   // https://tc39.es/ecma402/#sec-createdatetimeformat
   // ECMA-262 §21.4.1.24 uses a primary identifier or fixed offset.
   // https://tc39.es/ecma262/#sec-systemtimezoneidentifier
-  if (HostDateTimeFormat && hostResolvedOptions) {
+  if (hostTimeZoneProvider) {
+    const {Constructor, resolvedOptions} = hostTimeZoneProvider
     try {
-      const resolved = reflectApply(
-        hostResolvedOptions,
-        new HostDateTimeFormat(),
-        []
-      )
+      const resolved = reflectApply(resolvedOptions, new Constructor(), [])
       // ECMA-402 §11.3.2 step 5 creates an own data property for the zone.
       // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
       const field = getOwnPropertyDescriptor(resolved, 'timeZone')

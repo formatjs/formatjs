@@ -82,6 +82,27 @@ it('resolves the host provider’s own ASCII time zone against loaded data', () 
   }
 })
 
+it('installs when the host time-zone probe cannot be read', () => {
+  const context = createContext({localeData: en})
+  runInContext(
+    `Intl.DateTimeFormat = class {
+      get resolvedOptions() { throw new Error('Host probe unavailable') }
+    }`,
+    context
+  )
+  runInContext(
+    readFileSync(new URL('../polyfill.iife.js', import.meta.url), 'utf8'),
+    context
+  )
+  expect(
+    runInContext(
+      `Intl.DateTimeFormat.__addLocaleData(localeData)
+       new Intl.DateTimeFormat('en').resolvedOptions().timeZone`,
+      context
+    )
+  ).toBe('UTC')
+})
+
 it('preserves direct zone names and historical offset seconds against ICU', () => {
   DateTimeFormat.__addLocaleData(en as any)
   DateTimeFormat.__addTZData(data)
