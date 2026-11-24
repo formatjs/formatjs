@@ -193,6 +193,29 @@ describe('Intl.DateTimeFormat', function () {
       Intl.DateTimeFormat = original
     }
   })
+  it.each(['rejects', 'ignores'] as const)(
+    'detects a host that %s numeric time-zone offsets',
+    behavior => {
+      const original = Intl.DateTimeFormat
+      const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
+      try {
+        Intl.DateTimeFormat = polyfill
+        expect(shouldPolyfill('en')).toBeUndefined()
+        Intl.DateTimeFormat = new Proxy(polyfill, {
+          construct(target, [locales, options]) {
+            if (options?.timeZone?.startsWith('+')) {
+              if (behavior === 'rejects') throw new RangeError('Unknown zone')
+              return new target(locales, {...options, timeZone: 'UTC'})
+            }
+            return new target(locales, options)
+          },
+        })
+        expect(shouldPolyfill('en')).toBe('en')
+      } finally {
+        Intl.DateTimeFormat = original
+      }
+    }
+  )
   it('does not add an hour to minute/second-only requests', () => {
     const date = Date.UTC(2020, 0, 2, 1, 2, 3, 456)
     for (const hourCycle of ['h11', 'h12', 'h23', 'h24'] as const) {

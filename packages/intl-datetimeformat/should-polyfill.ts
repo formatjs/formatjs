@@ -10,12 +10,19 @@ function supportsDateStyle() {
   ).dateStyle
 }
 
-function preservesTimeZoneIdentifiers() {
+function supportsTimeZoneIdentifiers() {
+  // ECMA-402 §11.1.2 step 19 accepts and normalizes numeric offsets.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://tc39.es/ecma402/#sec-formatoffsettimezoneidentifier
   return arrayEvery(
-    ['Asia/Calcutta', 'Etc/UTC'],
-    timeZone =>
-      new Intl.DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone ===
-      timeZone
+    [
+      ['Asia/Calcutta', 'Asia/Calcutta'],
+      ['Etc/UTC', 'Etc/UTC'],
+      ['+0530', '+05:30'],
+    ],
+    probe =>
+      new Intl.DateTimeFormat('en', {timeZone: probe[0]}).resolvedOptions()
+        .timeZone === probe[1]
   )
 }
 
@@ -82,7 +89,7 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
       !hasChromeLt71Bug() &&
       !hasUnthrownDateTimeStyleBug() &&
       supportsDateStyle() &&
-      preservesTimeZoneIdentifiers() &&
+      supportsTimeZoneIdentifiers() &&
       supportedLocalesOf(locale)
     )
       return undefined
