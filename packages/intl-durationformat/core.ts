@@ -16,7 +16,7 @@ import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
-  getNumberFormatProvider,
+  getNumberFormatIntrinsic,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
@@ -89,7 +89,7 @@ function numberFormatResolvedOptions(Constructor: typeof Intl.NumberFormat) {
   }
   return undefined
 }
-const initialNumberFormat = getNumberFormatProvider()
+const initialNumberFormat = getNumberFormatIntrinsic()
 if (typeof initialNumberFormat === 'function')
   numberFormatResolvedOptions(initialNumberFormat)
 
@@ -120,7 +120,7 @@ function numberingUnion(
 }
 
 function supportedNumberingSystems(): string[] {
-  const NumberFormat = getNumberFormatProvider()
+  const NumberFormat = getNumberFormatIntrinsic()
   let systems = getNumberingSystems(NumberFormat)
   if (!systems) {
     systems = []

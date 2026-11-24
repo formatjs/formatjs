@@ -1,6 +1,7 @@
 import '@formatjs/intl-getcanonicallocales/polyfill-force.js'
+import '@formatjs/intl-numberformat/polyfill-force.js'
 import {DurationFormat} from '@formatjs/intl-durationformat'
-import {NumberFormat} from '@formatjs/intl-numberformat'
+import type {NumberFormat} from '@formatjs/intl-numberformat'
 import type {DurationFormatOptions} from '@formatjs/intl-durationformat'
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
@@ -33,11 +34,7 @@ function safely(callback: () => unknown): unknown {
   }
 }
 it('matches static availability and locale/numbering negotiation before and after dependency loading', () => {
-  Object.defineProperty(Intl, 'NumberFormat', {
-    value: NumberFormat,
-    configurable: true,
-    writable: true,
-  })
+  const numberFormat = Intl.NumberFormat as unknown as typeof NumberFormat
   const available = [...DurationFormat.availableLocales]
   for (const locale of available) {
     const [language, script, region] = locale.split('-')
@@ -64,7 +61,7 @@ it('matches static availability and locale/numbering negotiation before and afte
     resolve('crates/intl_numberformat/locale-data/en.json'),
     'utf8'
   )
-  NumberFormat.__addLocaleData(JSON.parse(pack))
+  numberFormat.__addLocaleData(JSON.parse(pack))
   requests.push({method: 'numberData', data: pack})
   expected.push(true)
   for (const localeMatcher of ['lookup', 'best fit'] as const) {

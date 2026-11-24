@@ -475,7 +475,7 @@ ts_project(
     ],
     declaration = True,
     no_emit = True,
-    tsconfig = ESNEXT_TSCONFIG,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-durationformat",
@@ -483,6 +483,7 @@ ts_project(
         "//:node_modules/@formatjs/intl-numberformat",
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@types/node",
+        "//packages/ecma402-abstract",
     ],
 )
 
@@ -497,6 +498,7 @@ rolldown_bundle(
         "//:node_modules/@formatjs/intl-listformat",
         "//:node_modules/@formatjs/intl-numberformat",
         "//:node_modules/@formatjs/intl-pluralrules",
+        "//packages/ecma402-abstract",
     ],
 )
 

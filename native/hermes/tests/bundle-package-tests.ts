@@ -336,11 +336,6 @@ Intl.DateTimeFormat.__addTZData(timezone);
     if (kind === 'collator')
       exclusions['Intl.Collator > keeps CLDR root out of locale negotiation'] =
         'TS private availableLocales table; public locale negotiation remains covered'
-    if (kind === 'durationformat')
-      exclusions[
-        'numbering system support refreshes when NumberFormat is replaced'
-      ] =
-        'TS delegates to host NumberFormat; Rust owns its internal formatter registry'
     if (kind === 'pluralrules' && entry.name === 'index.test.ts')
       exclusions['preserves plural operands above Number.MAX_SAFE_INTEGER'] =
         'Direct TS GetOperands helper; Rust operand tests cover native implementation'

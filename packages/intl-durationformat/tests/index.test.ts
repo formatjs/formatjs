@@ -556,7 +556,7 @@ test('DurationFormat resolves numbering systems supported by NumberFormat', () =
   ).toBe('deva')
 })
 
-test('numbering system support refreshes when NumberFormat is replaced', () => {
+test('numbering system support uses the NumberFormat intrinsic', () => {
   const NativeNumberFormat = Intl.NumberFormat
   try {
     new DurationFormat('en', {numberingSystem: 'arab'})
@@ -568,10 +568,12 @@ test('numbering system support refreshes when NumberFormat is replaced', () => {
         super(locales, {...options, numberingSystem: 'latn'})
       }
     } as typeof Intl.NumberFormat
-    expect(
-      new DurationFormat('en', {numberingSystem: 'arab'}).resolvedOptions()
-        .numberingSystem
-    ).toBe('latn')
+    const formatter = new DurationFormat('en', {
+      numberingSystem: 'arab',
+      style: 'long',
+    })
+    expect(formatter.resolvedOptions().numberingSystem).toBe('arab')
+    expect(formatter.format({minutes: 1})).toBe('١ minute')
   } finally {
     Intl.NumberFormat = NativeNumberFormat
   }

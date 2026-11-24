@@ -34,11 +34,10 @@ Hermes already has a registration hook and keeps its direct Rust formatter path.
 
 ## Supplied formatter providers
 
-Each DurationFormat instance retains selected NumberFormat/ListFormat constructors
-and captured formatToParts methods. Callable own data-valued replacements on the
-supplied Intl object are adopted for new instances, including polyfills installed
-after module import. Accessor replacements are skipped, retaining the previously
-captured provider. Existing instances keep their choices through first rendering.
+Each DurationFormat instance captures the NumberFormat and ListFormat
+constructors and their `formatToParts` methods at construction. The
+`polyfill` and `polyfill-force` entry points register their constructors for
+future instances, including installs after module import.
 Clock separators are captured during locale resolution, before the style getter.
 Parts methods are captured per constructor through data descriptors, including
 inherited supplied methods. Initial providers are captured during module load;
@@ -118,9 +117,8 @@ Subsecond contributions participate in the bound comparison exactly.
 
 Numbering-system resolution includes systems supported by the selected
 `Intl.NumberFormat` provider, keeping the locale default first. Support is checked
-lazily per constructor. A supplied data-valued replacement updates new
-DurationFormat instances; existing instances retain their provider. Time-separator
-data includes every numbering-system symbol record supplied by CLDR.
+lazily per constructor. Time-separator data includes every numbering-system
+symbol record supplied by CLDR.
 
 ### Temporal inputs
 
