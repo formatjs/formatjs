@@ -319,7 +319,7 @@ import '@formatjs/intl-numberformat/locale-data/en.js' // locale-data for en
 ### Dynamic import + capability detection
 
 `shouldPolyfill()` checks native support for locale queries, range formatting,
-and parts formatting.
+and parts formatting. A throwing host probe also selects the polyfill.
 
 ```tsx
 async function polyfill(locale: string) {

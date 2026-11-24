@@ -26,3 +26,23 @@ describe('after polyfill', function () {
 test('GH #4267', function () {
   expect(shouldPolyfill('fr')).toBe('fr')
 })
+
+it('returns a locale pack when the native locale query throws', () => {
+  const host = Object.getOwnPropertyDescriptor(Intl, 'DisplayNames')!
+  const method = Object.getOwnPropertyDescriptor(
+    DisplayNames,
+    'supportedLocalesOf'
+  )!
+  try {
+    Object.defineProperty(Intl, 'DisplayNames', {value: DisplayNames})
+    Object.defineProperty(DisplayNames, 'supportedLocalesOf', {
+      value() {
+        throw new RangeError('Host locale support unavailable')
+      },
+    })
+    expect(shouldPolyfill('fr')).toBe('fr')
+  } finally {
+    Object.defineProperty(DisplayNames, 'supportedLocalesOf', method)
+    Object.defineProperty(Intl, 'DisplayNames', host)
+  }
+})

@@ -41,6 +41,8 @@ function hasScriptBug() {
   return false
 }
 
+// ECMA-402 §12.2.2 provides the host locale support query.
+// https://tc39.es/ecma402/#sec-Intl.DisplayNames.supportedLocalesOf
 function supportedLocalesOf(locale?: string | string[]) {
   if (!locale) {
     return true
@@ -55,7 +57,7 @@ function supportedLocalesOf(locale?: string | string[]) {
 export function _shouldPolyfillWithoutLocale(): boolean {
   return (
     typeof Intl === 'undefined' ||
-    !(Intl as any).DisplayNames ||
+    typeof (Intl as any).DisplayNames !== 'function' ||
     hasMissingICUBug() ||
     hasScriptBug()
   )
@@ -63,9 +65,13 @@ export function _shouldPolyfillWithoutLocale(): boolean {
 
 export function shouldPolyfill(locale = 'en'): string | true | undefined {
   try {
-    if (_shouldPolyfillWithoutLocale() || !supportedLocalesOf(locale)) {
-      return match([locale], supportedLocales, 'en')
-    }
+    if (!_shouldPolyfillWithoutLocale() && supportedLocalesOf(locale))
+      return undefined
+  } catch {
+    // A partial host can throw on a valid capability probe.
+  }
+  try {
+    return match([locale], supportedLocales, 'en')
   } catch {
     return true
   }

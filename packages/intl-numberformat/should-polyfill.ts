@@ -19,23 +19,15 @@ function onlySupportsEn() {
  * @param unit unit to check
  */
 function supportsES2020() {
-  try {
-    const s = new Intl.NumberFormat('en', {
-      style: 'unit',
-      unit: 'bit',
-      unitDisplay: 'long',
-      notation: 'scientific',
-    }).format(10000)
-
-    // Check for a plurality bug in environment that uses the older versions of ICU:
-    // https://unicode-org.atlassian.net/browse/ICU-13836
-    if (s !== '1E4 bits') {
-      return false
-    }
-  } catch {
-    return false
-  }
-  return true
+  const s = new Intl.NumberFormat('en', {
+    style: 'unit',
+    unit: 'bit',
+    unitDisplay: 'long',
+    notation: 'scientific',
+  }).format(10000)
+  // Older ICU versions can select the wrong plural form.
+  // https://unicode-org.atlassian.net/browse/ICU-13836
+  return s === '1E4 bits'
 }
 
 /**
@@ -46,36 +38,28 @@ function supportsES2020() {
  * @param unit unit to check
  */
 function supportsES2023() {
-  try {
-    const s = new Intl.NumberFormat('en', {
-      notation: 'compact',
-      minimumSignificantDigits: 3,
-      maximumSignificantDigits: 3,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      // @ts-ignore TS types are old
-      roundingPriority: 'morePrecision',
-    }).format(1e8)
-    return s === '100.00M'
-  } catch {
-    return false
-  }
+  const s = new Intl.NumberFormat('en', {
+    notation: 'compact',
+    minimumSignificantDigits: 3,
+    maximumSignificantDigits: 3,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    // @ts-ignore TS types are old
+    roundingPriority: 'morePrecision',
+  }).format(1e8)
+  return s === '100.00M'
 }
 
 function supportsSourcePrecision() {
-  try {
-    const keep = new Intl.NumberFormat('en')
-    const strip = new Intl.NumberFormat('en', {
-      trailingZeroDisplay: 'stripToMinimum',
-    } as any)
-    return (
-      keep.format('1.00' as any) === '1.00' &&
-      keep.format(1) === '1' &&
-      strip.format('1.00' as any) === '1'
-    )
-  } catch {
-    return false
-  }
+  const keep = new Intl.NumberFormat('en')
+  const strip = new Intl.NumberFormat('en', {
+    trailingZeroDisplay: 'stripToMinimum',
+  } as any)
+  return (
+    keep.format('1.00' as any) === '1.00' &&
+    keep.format(1) === '1' &&
+    strip.format('1.00' as any) === '1'
+  )
 }
 
 function supportsRangeAndParts() {
@@ -105,19 +89,23 @@ function supportedLocalesOf(locale?: string | string[]) {
 }
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
-  if (
-    typeof Intl === 'undefined' ||
-    typeof Intl.NumberFormat !== 'function' ||
-    // ECMA-402 §16.2.2 provides the locale support query.
-    // https://tc39.es/ecma402/#sec-intl.numberformat.supportedlocalesof
-    typeof Intl.NumberFormat.supportedLocalesOf !== 'function' ||
-    !supportsES2020() ||
-    !supportsES2023() ||
-    !supportsRangeAndParts() ||
-    !supportsSourcePrecision() ||
-    onlySupportsEn() ||
-    !supportedLocalesOf(locale)
-  ) {
-    return locale ? match([locale], supportedLocales, 'en') : undefined
+  try {
+    if (
+      typeof Intl !== 'undefined' &&
+      typeof Intl.NumberFormat === 'function' &&
+      // ECMA-402 §16.2.2 provides the locale support query.
+      // https://tc39.es/ecma402/#sec-intl.numberformat.supportedlocalesof
+      typeof Intl.NumberFormat.supportedLocalesOf === 'function' &&
+      supportsES2020() &&
+      supportsES2023() &&
+      supportsRangeAndParts() &&
+      supportsSourcePrecision() &&
+      !onlySupportsEn() &&
+      supportedLocalesOf(locale)
+    )
+      return undefined
+  } catch {
+    // A partial host can throw on a valid capability probe.
   }
+  return locale ? match([locale], supportedLocales, 'en') : undefined
 }

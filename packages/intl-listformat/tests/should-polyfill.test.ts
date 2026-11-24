@@ -6,7 +6,15 @@ import en from '#packages/intl-listformat/tests/locale-data/en.json' with {type:
 import {expect, it} from 'vitest'
 ListFormat.__addLocaleData(en)
 
-it('falls back when the host cannot query supported locales', () => {
+it.each([
+  ['unavailable', undefined],
+  [
+    'throwing',
+    () => {
+      throw new RangeError('Host locale support unavailable')
+    },
+  ],
+] as const)('falls back when the native locale query is %s', (_kind, probe) => {
   const host = Object.getOwnPropertyDescriptor(Intl, 'ListFormat')!
   const method = Object.getOwnPropertyDescriptor(
     ListFormat,
@@ -15,7 +23,7 @@ it('falls back when the host cannot query supported locales', () => {
   try {
     Object.defineProperty(Intl, 'ListFormat', {value: ListFormat})
     expect(shouldPolyfill('en')).toBeUndefined()
-    Object.defineProperty(ListFormat, 'supportedLocalesOf', {value: undefined})
+    Object.defineProperty(ListFormat, 'supportedLocalesOf', {value: probe})
     expect(shouldPolyfill('en')).toBe('en')
   } finally {
     Object.defineProperty(ListFormat, 'supportedLocalesOf', method)

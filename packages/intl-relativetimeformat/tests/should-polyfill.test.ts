@@ -8,7 +8,15 @@ import RelativeTimeFormat from '#packages/intl-relativetimeformat/index.js'
 import {expect, it} from 'vitest'
 RelativeTimeFormat.__addLocaleData(en)
 
-it('falls back when the host cannot query supported locales', () => {
+it.each([
+  ['unavailable', undefined],
+  [
+    'throwing',
+    () => {
+      throw new RangeError('Host locale support unavailable')
+    },
+  ],
+] as const)('falls back when the native locale query is %s', (_kind, probe) => {
   const host = Object.getOwnPropertyDescriptor(Intl, 'RelativeTimeFormat')!
   const method = Object.getOwnPropertyDescriptor(
     RelativeTimeFormat,
@@ -20,7 +28,7 @@ it('falls back when the host cannot query supported locales', () => {
     })
     expect(shouldPolyfill('en')).toBeUndefined()
     Object.defineProperty(RelativeTimeFormat, 'supportedLocalesOf', {
-      value: undefined,
+      value: probe,
     })
     expect(shouldPolyfill('en')).toBe('en')
   } finally {
