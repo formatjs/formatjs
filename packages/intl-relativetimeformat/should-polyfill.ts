@@ -13,28 +13,28 @@ function supportedLocalesOf(locale?: string | string[]) {
 }
 
 function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
-  try {
-    return (
-      'numberingSystem' in
-      new Intl.RelativeTimeFormat(locale || 'en', {
-        numeric: 'auto',
-      }).resolvedOptions()
-    )
-  } catch {
-    return false
-  }
+  return (
+    'numberingSystem' in
+    new Intl.RelativeTimeFormat(locale || 'en', {
+      numeric: 'auto',
+    }).resolvedOptions()
+  )
 }
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
-  if (
-    typeof Intl === 'undefined' ||
-    typeof Intl.RelativeTimeFormat !== 'function' ||
-    // ECMA-402 §18.2.2 provides the locale support query.
-    // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.supportedLocalesOf
-    typeof Intl.RelativeTimeFormat.supportedLocalesOf !== 'function' ||
-    !supportedLocalesOf(locale) ||
-    !hasResolvedOptionsNumberingSystem(locale)
-  ) {
-    return match([locale], supportedLocales, 'en')
+  try {
+    if (
+      typeof Intl !== 'undefined' &&
+      typeof Intl.RelativeTimeFormat === 'function' &&
+      // ECMA-402 §18.2.2 provides the locale support query.
+      // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.supportedLocalesOf
+      typeof Intl.RelativeTimeFormat.supportedLocalesOf === 'function' &&
+      supportedLocalesOf(locale) &&
+      hasResolvedOptionsNumberingSystem(locale)
+    )
+      return undefined
+  } catch {
+    // A partial host can throw on a valid capability probe.
   }
+  return match([locale], supportedLocales, 'en')
 }

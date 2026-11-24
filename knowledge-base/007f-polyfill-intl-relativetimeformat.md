@@ -9,7 +9,8 @@ operations and own private-list appends. The caller's interpolation loops retain
 
 Polyfill for `Intl.RelativeTimeFormat` — formats relative time expressions (e.g., "2 days ago", "in 3 hours") across 700+ locales.
 
-The conditional installer requires a callable host `supportedLocalesOf`.
+The conditional installer falls back when the host locale query is missing or
+throws.
 
 ## Dependencies
 

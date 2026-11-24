@@ -21,7 +21,15 @@ it('detects missing source precision in native PluralRules', () => {
   }
 })
 
-it('falls back when the host cannot query supported locales', () => {
+it.each([
+  ['unavailable', undefined],
+  [
+    'throwing',
+    () => {
+      throw new RangeError('Host locale support unavailable')
+    },
+  ],
+] as const)('falls back when the native locale query is %s', (_kind, probe) => {
   const host = Object.getOwnPropertyDescriptor(Intl, 'PluralRules')!
   const method = Object.getOwnPropertyDescriptor(
     PluralRules,
@@ -30,7 +38,7 @@ it('falls back when the host cannot query supported locales', () => {
   try {
     Object.defineProperty(Intl, 'PluralRules', {value: PluralRules})
     expect(shouldPolyfill('en')).toBeUndefined()
-    Object.defineProperty(PluralRules, 'supportedLocalesOf', {value: undefined})
+    Object.defineProperty(PluralRules, 'supportedLocalesOf', {value: probe})
     expect(shouldPolyfill('en')).toBe('en')
   } finally {
     Object.defineProperty(PluralRules, 'supportedLocalesOf', method)

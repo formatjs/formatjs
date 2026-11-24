@@ -203,6 +203,8 @@ import '@formatjs/intl-displaynames/locale-data/en.js' // locale-data for en
 
 ### Dynamic import + capability detection
 
+`shouldPolyfill()` returns a locale pack to load when a host probe throws.
+
 ```tsx
 async function polyfill(locale: string) {
   const unsupportedLocale = shouldPolyfill(locale)
@@ -212,7 +214,8 @@ async function polyfill(locale: string) {
   }
   // Load the polyfill 1st BEFORE loading data
   await import('@formatjs/intl-displaynames/polyfill-force.js')
-  await import(`@formatjs/intl-displaynames/locale-data/${locale}.js`)
+  const dataLocale = unsupportedLocale === true ? 'en' : unsupportedLocale
+  await import(`@formatjs/intl-displaynames/locale-data/${dataLocale}.js`)
 }
 ```
 

@@ -13,14 +13,18 @@ function supportedLocalesOf(locale?: string | string[]) {
 }
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
-  if (
-    typeof Intl === 'undefined' ||
-    typeof (Intl as any).ListFormat !== 'function' ||
-    // ECMA-402 §14.2.2 provides the locale support query.
-    // https://tc39.es/ecma402/#sec-Intl.ListFormat.supportedLocalesOf
-    typeof (Intl as any).ListFormat.supportedLocalesOf !== 'function' ||
-    !supportedLocalesOf(locale)
-  ) {
-    return locale ? match([locale], supportedLocales, 'en') : undefined
+  try {
+    if (
+      typeof Intl !== 'undefined' &&
+      typeof (Intl as any).ListFormat === 'function' &&
+      // ECMA-402 §14.2.2 provides the locale support query.
+      // https://tc39.es/ecma402/#sec-Intl.ListFormat.supportedLocalesOf
+      typeof (Intl as any).ListFormat.supportedLocalesOf === 'function' &&
+      supportedLocalesOf(locale)
+    )
+      return undefined
+  } catch {
+    // A partial host can throw on a valid capability probe.
   }
+  return locale ? match([locale], supportedLocales, 'en') : undefined
 }

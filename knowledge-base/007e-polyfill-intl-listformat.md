@@ -9,7 +9,8 @@ operations and own private-list appends. The caller's interpolation loops retain
 
 Polyfill for `Intl.ListFormat` — formats lists with locale-specific conjunctions, disjunctions, and unit separators across 700+ locales.
 
-The conditional installer requires a callable host `supportedLocalesOf`.
+The conditional installer falls back when the host locale query is missing or
+throws.
 
 ## Dependencies
 

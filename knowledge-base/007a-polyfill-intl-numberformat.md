@@ -17,7 +17,8 @@ and own data properties. This implements the result-building steps of ECMA-402
 Installed Number and BigInt locale methods read their receiver slots before
 constructing a formatter, per ECMA-402 §20.2.1 and §20.3.1.
 
-The conditional installer requires a callable host `supportedLocalesOf`.
+The conditional installer falls back when the host locale query is missing or
+throws.
 
 ## Dependencies
 

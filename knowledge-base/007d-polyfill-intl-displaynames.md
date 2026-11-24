@@ -6,6 +6,8 @@
 
 Polyfill for `Intl.DisplayNames` — provides localized display names for languages, regions, scripts, currencies, calendars, and date/time fields across 643 locales.
 
+A throwing host probe still lets `shouldPolyfill` return a matching locale pack.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`

@@ -153,7 +153,7 @@ import '@formatjs/intl-listformat/locale-data/en.js' // locale-data for en
 
 ### Dynamic import + capability detection
 
-`shouldPolyfill()` falls back when the host lacks a callable `supportedLocalesOf`.
+`shouldPolyfill()` falls back when the host locale query is missing or throws.
 
 ```tsx
 async function polyfill(locale: string) {
