@@ -75,6 +75,9 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
     !('DateTimeFormat' in Intl) ||
     !('formatToParts' in Intl.DateTimeFormat.prototype) ||
     !('formatRange' in Intl.DateTimeFormat.prototype) ||
+    // ECMA-402 §11.3.5 requires formatRangeToParts alongside formatRange.
+    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
+    typeof Intl.DateTimeFormat.prototype.formatRangeToParts !== 'function' ||
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle() ||
