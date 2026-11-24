@@ -306,8 +306,9 @@ function findBoundary(
     return breaksAtResult(false, '0.1')
   }
 
-  // The boundary search is internal. Use captured operations on primitive
-  // strings and private regexps without reading public prototype methods.
+  // Use captured string and RegExp methods for the private boundary rules.
+  // RegExp execution can update legacy match statics on hosts that expose them.
+  // https://github.com/tc39/ecma262/issues/137
   const stringBeforeBreak = substring(input, 0, position)
   const stringAfterBreak = substring(input, position)
 
@@ -426,22 +427,23 @@ class Segments implements Iterable<SegmentResult> {
         isWordLike?: boolean
       }
     | undefined {
-    // ECMA-402 §19.5.2.1 containing, step 6: ToIntegerOrInfinity uses ToNumber.
+    // ECMA-402 §19.5.2.1 steps 2–6: require the slot before coercing the index.
     // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%.containing
     // Unary + rejects BigInt after object coercion and preserves thrown errors.
     // ECMA-262 §7.1.4 ToNumber, steps 2, 8–10.
     // https://tc39.es/ecma262/#sec-tonumber
     const {model, input} = requireState(readSegments, this)
-    // ECMA-262 ToIntegerOrInfinity. Undefined becomes NaN before rounding.
+    // ECMA-262 §7.1.5: undefined becomes NaN, then zero.
     // https://tc39.es/ecma262/#sec-tointegerorinfinity
     const number = +(positionInput as number)
     const position = !number ? 0 : number < 0 ? -floor(-number) : floor(number)
 
+    // ECMA-402 §19.5.2.1 step 7: check the truncated index.
     if (position < 0 || position >= input.length) {
       return undefined
     }
 
-    //find previous break point
+    // Steps 8–9: find the boundaries enclosing this UTF-16 code unit.
     let previousBreakPoint = 0
     if (position === 0) {
       previousBreakPoint = 0
@@ -456,11 +458,11 @@ class Segments implements Iterable<SegmentResult> {
       }
     }
     const checkString = substring(input, previousBreakPoint)
-    //find next break point
     for (let cursor = 1; cursor <= checkString.length; cursor++) {
       const {breaks} = findBoundary(model, cursor, checkString)
       if (breaks) {
         const segment = substring(checkString, 0, cursor)
+        // Step 10: return the slice with its original index and input.
         return createSegmentDataObject(
           model,
           segment,
@@ -489,11 +491,11 @@ class SegmentIterator
   // ECMA-402 §19.6.2.1: advance the cursor and return a fresh iterator result.
   // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.next
   next(): IteratorResult<SegmentResult> {
+    // Steps 2–6: read the input and cursor from their internal slots.
     const state = requireState(readCursor, this)
-    //using only the relevant bit of the string
     const checkString = substring(state.input, state.lastSegmentIndex)
 
-    //loop from the start of the checkString, until exactly length (breaksAt returns break at pos=== lenght)
+    // Steps 8–9: search from the cursor and advance to the next boundary.
     for (let position = 1; position <= checkString.length; position++) {
       const {breaks} = findBoundary(state.model, position, checkString)
       if (breaks) {
@@ -501,6 +503,7 @@ class SegmentIterator
         const index = state.lastSegmentIndex
         state.lastSegmentIndex += position
 
+        // Steps 10–11: return a fresh segment record and iterator result.
         return {
           value: createSegmentDataObject(
             state.model,
@@ -512,7 +515,7 @@ class SegmentIterator
         }
       }
     }
-    //no segment was found by the loop, therefore the segmentation is done
+    // Step 7: the empty suffix leaves an exhausted cursor unchanged.
     return {value: undefined, done: true}
   }
 }

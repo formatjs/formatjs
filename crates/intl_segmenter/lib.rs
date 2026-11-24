@@ -239,7 +239,7 @@ impl Segments {
     }
     pub fn record(&self, index: usize) -> Option<SegmentData<'_>> {
         let boundary = self.0.boundaries.get(index)?;
-        // CreateSegmentDataObject 1–13: slice the original string, retain its
+        // ECMA-402 §19.7.1 steps 1–11: slice the original string, retain its
         // UTF-16 start index/input, and expose isWordLike only for word mode.
         // ICU's status excludes punctuation/space as recommended by the spec.
         // https://tc39.es/ecma402/#sec-createsegmentdataobject
