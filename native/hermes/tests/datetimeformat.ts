@@ -461,6 +461,46 @@ for (const text of fixtures.patches) {
   Native.__addCalendarLocaleData(text)
   Reference.__addCalendarLocaleData(JSON.parse(text))
 }
+const coldCalendarStyles = {
+  calendar: 'hebrew',
+  timeZone: 'UTC',
+  dateStyle: 'short',
+  timeStyle: 'short',
+} as const
+const coldCalendarRanges = []
+for (const Constructor of [Native, Reference]) {
+  const {keys, defineProperty} = Object
+  const iterator = Array.prototype[Symbol.iterator]
+  const unexpected = () => {
+    throw new Error('Called a public method while preparing calendar styles')
+  }
+  let formatter: Intl.DateTimeFormat
+  try {
+    formatter = new Constructor('en', {
+      ...coldCalendarStyles,
+      get timeZoneName() {
+        Object.keys = Object.defineProperty = unexpected
+        Array.prototype[Symbol.iterator] = unexpected
+        return undefined
+      },
+    })
+  } finally {
+    Object.keys = keys
+    Object.defineProperty = defineProperty
+    Array.prototype[Symbol.iterator] = iterator
+  }
+  equal(
+    formatter.resolvedOptions().calendar,
+    'hebrew',
+    'cold calendar selected'
+  )
+  coldCalendarRanges.push(formatter.formatRangeToParts(0, 86_400_000))
+}
+equal(
+  coldCalendarRanges[0],
+  coldCalendarRanges[1],
+  'first use of calendar styles'
+)
 for (const Constructor of [Native, Reference]) {
   for (const calendar of ['chinese', 'dangi', 'hebrew', 'islamic-umalqura']) {
     const formatter = new Constructor('en', {

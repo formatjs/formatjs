@@ -987,20 +987,24 @@ function parseDateTimeStyles({
       findIntervalFormat(pattern, intervalFormats),
       intervalFormats.intervalFormatFallback
     )
-    for (const ranges of [format.rangePatterns, format.rangePatterns12]) {
-      for (const key of Object.keys(ranges)) {
-        if (key !== 'default') continue
-        const range = ranges[key as keyof typeof ranges]
-        for (const field of DATE_TIME_PROPS) {
-          if (format[field] !== undefined) {
-            Object.defineProperty(range, field, {
-              value: format[field],
-              writable: true,
-              enumerable: true,
-              configurable: true,
-            })
-          }
-        }
+    // ECMA-402 §11.2.3.6 and §11.5.1 steps 2.b and 3.b use private style records.
+    // https://tc39.es/ecma402/#sec-datetimeformat-style-record
+    // https://tc39.es/ecma402/#sec-date-time-style-format
+    const defaults = [
+      format.rangePatterns.default,
+      format.rangePatterns12.default,
+    ]
+    for (let rangeIndex = 0; rangeIndex < defaults.length; rangeIndex++) {
+      const range = defaults[rangeIndex]
+      if (!range) continue
+      for (
+        let fieldIndex = 0;
+        fieldIndex < DATE_TIME_PROPS.length;
+        fieldIndex++
+      ) {
+        const field = DATE_TIME_PROPS[fieldIndex]
+        const value = format[field]
+        if (value !== undefined) setDataProperty(range, field, value)
       }
     }
     return format
