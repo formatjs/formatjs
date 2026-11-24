@@ -1,12 +1,29 @@
+import {registerFormatterIntrinsic} from '#packages/ecma402-abstract/utils.js'
 import {ToTemporalDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToTemporalDurationRecord.js'
 import {runInThisContext} from 'node:vm'
 import {setFlagsFromString} from 'node:v8'
 import {configureLocaleFormatting} from '#packages/temporal/locale.js'
-import {expect, it} from 'vitest'
+import {afterEach, beforeEach, expect, it} from 'vitest'
 import {DurationFormat} from '#packages/intl-durationformat/core.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {Temporal as Reference} from 'temporal-polyfill/implementation'
 import {installLegacyDurationFormat} from '#packages/temporal/legacy-durationformat.js'
+
+const numberFormatKey = Symbol.for('@formatjs/intlNumberFormat')
+let numberFormatRegistration: PropertyDescriptor | undefined
+beforeEach(() => {
+  numberFormatRegistration = Object.getOwnPropertyDescriptor(
+    Intl,
+    numberFormatKey
+  )
+})
+afterEach(() => {
+  if (numberFormatRegistration) {
+    Object.defineProperty(Intl, numberFormatKey, numberFormatRegistration)
+  } else {
+    Reflect.deleteProperty(Intl, numberFormatKey)
+  }
+})
 
 // Register first so the shared paradigm Set is still cold.
 it('allocates private best-fit paradigms without a global Set Get', () => {
@@ -700,7 +717,7 @@ it.each([
   }
 )
 
-it('preserves late supplied NumberFormat providers through first rendering', () => {
+it('retains registered NumberFormat providers through first rendering', () => {
   DurationFormat.__addTemporalNamespace(Temporal)
   const Original = Intl.NumberFormat
   const descriptor = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
@@ -729,8 +746,10 @@ it('preserves late supplied NumberFormat providers through first rendering', () 
     }
   }
   try {
+    registerFormatterIntrinsic(Intl, 'NumberFormat', FirstProvider)
     Intl.NumberFormat = FirstProvider as unknown as typeof Original
     const first = new DurationFormat('en', {style: 'long'})
+    registerFormatterIntrinsic(Intl, 'NumberFormat', SecondProvider)
     Intl.NumberFormat = SecondProvider as unknown as typeof Original
     const second = new DurationFormat('en', {style: 'long'})
     Object.defineProperty(Intl, 'NumberFormat', descriptor)
@@ -812,6 +831,7 @@ it.each(['stringify', 'toJSON'] as const)(
     class Provider extends Original {}
     let formatter: DurationFormat
     try {
+      registerFormatterIntrinsic(Intl, 'NumberFormat', Provider)
       Intl.NumberFormat = Provider as unknown as typeof Original
       formatter = new DurationFormat('en-u-nu-fullwide', {style: 'long'})
     } finally {
@@ -949,6 +969,7 @@ it.each(['filter', 'forEach', 'resolvedOptions'] as const)(
       error: unknown,
       calls = 0
     try {
+      registerFormatterIntrinsic(Intl, 'NumberFormat', Provider)
       Intl.NumberFormat = Provider as unknown as typeof Original
       define(Intl, 'DurationFormat', {
         ...durationFormatDescriptor,
@@ -1106,6 +1127,7 @@ it.each(['test', 'exec', 'isNaN', 'floor', 'getCanonicalLocales'] as const)(
       error: unknown,
       hooks = 0
     try {
+      registerFormatterIntrinsic(Intl, 'NumberFormat', FreshProvider)
       define(Intl, 'NumberFormat', {...numberDescriptor, value: FreshProvider})
       define(Intl, 'DurationFormat', {
         configurable: true,
@@ -1283,6 +1305,7 @@ it.each(['lookup', 'best fit'] as const)(
       hooks = 0
     try {
       DurationFormat.availableLocales = freshAvailable
+      registerFormatterIntrinsic(Intl, 'NumberFormat', FreshLocaleNumberFormat)
       define(Intl, 'NumberFormat', {
         ...numberDescriptor,
         value: FreshLocaleNumberFormat,
@@ -1432,6 +1455,11 @@ it.each([
       hooks = 0
     try {
       DurationFormat.availableLocales = freshAvailable
+      registerFormatterIntrinsic(
+        Intl,
+        'NumberFormat',
+        FreshStageOneNumberFormat
+      )
       define(Intl, 'NumberFormat', {
         ...numberDescriptor,
         value: FreshStageOneNumberFormat,
@@ -1583,6 +1611,7 @@ it.each([
   let hooks = 0
   try {
     DurationFormat.availableLocales = fresh
+    registerFormatterIntrinsic(Intl, 'NumberFormat', LookupNumberFormat)
     define(Intl, 'NumberFormat', {
       ...numberDescriptor,
       value: LookupNumberFormat,
@@ -1830,6 +1859,7 @@ it.each([
     let hooks = 0
     try {
       DurationFormat.availableLocales = fresh
+      registerFormatterIntrinsic(Intl, 'NumberFormat', BestFitNumberFormat)
       define(Intl, 'NumberFormat', {
         ...numberDescriptor,
         value: BestFitNumberFormat,
@@ -2214,6 +2244,7 @@ it.each([
     let actual: string | undefined
     try {
       DurationFormat.availableLocales = fresh
+      registerFormatterIntrinsic(Intl, 'NumberFormat', FreshNumberFormat)
       define(Intl, 'NumberFormat', {
         ...numberDescriptor,
         value: FreshNumberFormat,

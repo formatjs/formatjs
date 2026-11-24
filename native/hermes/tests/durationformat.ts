@@ -4,6 +4,7 @@ import type {PluralRules} from '@formatjs/intl-pluralrules'
 import ListFormat from '@formatjs/intl-listformat'
 import {DurationFormat as Reference} from '@formatjs/intl-durationformat'
 import type {DurationFormatOptions} from '@formatjs/intl-durationformat'
+import {registerFormatterIntrinsic} from '#packages/ecma402-abstract/utils.js'
 const Native = (Intl as any).DurationFormat
 const HostNumberFormat = Intl.NumberFormat as typeof Intl.NumberFormat & {
   __addLocaleData?: (...packs: string[]) => void
@@ -25,6 +26,8 @@ Object.defineProperty(Intl, 'ListFormat', {
   writable: true,
   configurable: true,
 })
+registerFormatterIntrinsic(Intl, 'NumberFormat', NumberFormat)
+registerFormatterIntrinsic(Intl, 'ListFormat', ListFormat)
 let assertions = 0,
   cases = 0
 function check(value: unknown, message: string): void {
@@ -597,6 +600,28 @@ try {
 } finally {
   Object.defineProperty(Intl, 'NumberFormat', numberDescriptor)
   Object.defineProperty(Intl, 'ListFormat', listDescriptor)
+}
+for (const key of ['NumberFormat', 'ListFormat'] as const) {
+  const descriptor = Object.getOwnPropertyDescriptor(Intl, key)!
+  try {
+    Object.defineProperty(Intl, key, {
+      ...descriptor,
+      value: class {
+        constructor() {
+          throw new Error('Called replacement Intl.' + key)
+        }
+      },
+    })
+    for (const Constructor of [Native, Reference]) {
+      equal(
+        new Constructor('en', {style: 'long'}).format({minutes: 1, seconds: 2}),
+        '1 minute, 2 seconds',
+        'constructor retains ' + key
+      )
+    }
+  } finally {
+    Object.defineProperty(Intl, key, descriptor)
+  }
 }
 print(
   JSON.stringify({

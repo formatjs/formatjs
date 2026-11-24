@@ -73,11 +73,15 @@ formatjs_library(
 
 formatjs_test(
     name = "intl-durationformat_test",
-    srcs = ["tests/index.test.ts"],
+    srcs = [
+        "tests/index.test.ts",
+        "tests/list-provider.test.ts",
+    ],
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         ":intl-durationformat",
+        "//:node_modules/@formatjs/intl-listformat",
         "//:node_modules/vitest",
     ],
 )

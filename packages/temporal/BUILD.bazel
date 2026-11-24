@@ -172,6 +172,7 @@ formatjs_test(
         ":lib",
         "//:node_modules/temporal-polyfill",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract",
         "//packages/intl-durationformat:lib",
         "//packages/intl-durationformat:types",
     ],

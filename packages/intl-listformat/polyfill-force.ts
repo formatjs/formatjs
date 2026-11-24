@@ -1,5 +1,9 @@
 import ListFormat from '#packages/intl-listformat/index.js'
-import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
+import {
+  defineProperty,
+  ensureIntl,
+  registerFormatterIntrinsic,
+} from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
 
@@ -7,6 +11,7 @@ const intl = ensureIntl()
 // https://tc39.es/ecma402/#sec-intl-listformat-constructor
 // https://tc39.es/ecma402/#sec-intl.listformat-intro
 defineProperty(intl, 'ListFormat', {value: ListFormat})
+registerFormatterIntrinsic(intl, 'ListFormat', ListFormat)
 
 // Drain any locale data that was buffered before polyfill loaded
 const buf = (globalThis as Record<string, unknown>)

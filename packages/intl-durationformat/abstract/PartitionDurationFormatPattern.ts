@@ -8,9 +8,9 @@ import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.
 import {
   createMemoizedListFormatForConstructor,
   createMemoizedNumberFormatForConstructor,
-  getListFormatProvider,
+  getListFormatIntrinsic,
   getFormatterPartsMethod,
-  getNumberFormatProvider,
+  getNumberFormatIntrinsic,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {TABLE_2} from '#packages/intl-durationformat/constants.js'
@@ -44,8 +44,8 @@ const setFormatterProviders = formatterProviders.set.bind(formatterProviders)
 
 // Capture runtime NumberFormat and ListFormat providers for this instance.
 export function initializeDurationFormatProviders(df: DurationFormat): void {
-  const NumberFormat = getNumberFormatProvider()
-  const ListFormat = getListFormatProvider()
+  const NumberFormat = getNumberFormatIntrinsic()
+  const ListFormat = getListFormatIntrinsic()
   setFormatterProviders(df, {
     numberFormat: createMemoizedNumberFormatForConstructor(NumberFormat),
     listFormat: createMemoizedListFormatForConstructor(ListFormat),

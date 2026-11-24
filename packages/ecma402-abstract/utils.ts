@@ -148,22 +148,24 @@ function ownIntlProvider(name: string | symbol): unknown {
   const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
   return value?.value
 }
-let numberFormatProvider = ownIntlProvider(
+let numberFormatIntrinsic = ownIntlProvider(
   'NumberFormat'
 ) as typeof Intl.NumberFormat
-let listFormatProvider = ownIntlProvider('ListFormat') as typeof Intl.ListFormat
+let listFormatIntrinsic = ownIntlProvider(
+  'ListFormat'
+) as typeof Intl.ListFormat
 let pluralRulesProvider = ownIntlProvider(
   'PluralRules'
 ) as typeof Intl.PluralRules
 
-type FormatterIntrinsicName = 'NumberFormat' | 'PluralRules'
+type FormatterIntrinsicName = 'NumberFormat' | 'ListFormat' | 'PluralRules'
 const formatterIntrinsicKeys: Record<FormatterIntrinsicName, symbol> = {
   NumberFormat: Symbol.for('@formatjs/intlNumberFormat'),
+  ListFormat: Symbol.for('@formatjs/intlListFormat'),
   PluralRules: Symbol.for('@formatjs/intlPluralRules'),
 }
 const defineIntrinsic = Object.defineProperty
 const isExtensible = Object.isExtensible
-let numberFormatIntrinsic = numberFormatProvider
 
 export function registerFormatterIntrinsic(
   intl: typeof Intl,
@@ -194,19 +196,18 @@ export function getNumberFormatIntrinsic(): typeof Intl.NumberFormat {
   return numberFormatIntrinsic
 }
 
-// Temporal comparison §§15.10.1–2 step4: retain supplied providers without accessor Gets.
-// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
-export function getNumberFormatProvider(): typeof Intl.NumberFormat {
-  const candidate = ownIntlProvider('NumberFormat')
-  if (typeof candidate === 'function')
-    numberFormatProvider = candidate as typeof Intl.NumberFormat
-  return numberFormatProvider
-}
-export function getListFormatProvider(): typeof Intl.ListFormat {
-  const candidate = ownIntlProvider('ListFormat')
-  if (typeof candidate === 'function')
-    listFormatProvider = candidate as typeof Intl.ListFormat
-  return listFormatProvider
+// ECMA-402 §13.5.14 step 6 constructs %Intl.ListFormat%.
+// https://tc39.es/ecma402/#sec-listformatparts
+export function getListFormatIntrinsic(): typeof Intl.ListFormat {
+  if (providerIntl === undefined) providerIntl = globalThis.Intl
+  const registered = ownIntlProvider(formatterIntrinsicKeys.ListFormat)
+  if (typeof registered === 'function')
+    return registered as typeof Intl.ListFormat
+  if (typeof listFormatIntrinsic !== 'function')
+    listFormatIntrinsic = ownIntlProvider(
+      'ListFormat'
+    ) as typeof Intl.ListFormat
+  return listFormatIntrinsic
 }
 // ECMA-402 §18.1.1 step 17 constructs %Intl.PluralRules%.
 // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
@@ -266,10 +267,10 @@ export function getFormatterPartsMethod<T>(Constructor: object): T {
     throw new TypeErrorConstructor('Missing supplied formatter parts method')
   return method as T
 }
-if (typeof numberFormatProvider === 'function')
-  findFormatterPartsMethod(numberFormatProvider)
-if (typeof listFormatProvider === 'function')
-  findFormatterPartsMethod(listFormatProvider)
+if (typeof numberFormatIntrinsic === 'function')
+  findFormatterPartsMethod(numberFormatIntrinsic)
+if (typeof listFormatIntrinsic === 'function')
+  findFormatterPartsMethod(listFormatIntrinsic)
 if (typeof pluralRulesProvider === 'function')
   findPluralRulesSelectMethod(pluralRulesProvider)
 
