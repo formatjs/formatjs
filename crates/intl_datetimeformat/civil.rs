@@ -31,8 +31,15 @@ impl CivilDateTime {
         if value < -bound || value > bound {
             return Err(Error::InvalidDate);
         }
+        // ECMA-262 §§21.4.1.3–4, step 1, split the timestamp at local midnight.
+        // https://tc39.es/ecma262/#sec-day
+        // https://tc39.es/ecma262/#sec-timewithinday
         let days = value.div_euclid(NANOSECONDS_PER_DAY);
         let time = value.rem_euclid(NANOSECONDS_PER_DAY);
+        // ECMA-262 §§21.4.1.7 and 21.4.1.10–11 map the day to a Gregorian date.
+        // https://tc39.es/ecma262/#sec-yearfromtime
+        // https://tc39.es/ecma262/#sec-monthfromtime
+        // https://tc39.es/ecma262/#sec-datefromtime
         let shifted = days + 719_468;
         let era = shifted.div_euclid(146_097);
         let day_of_era = shifted.rem_euclid(146_097);
@@ -47,10 +54,18 @@ impl CivilDateTime {
             year: year as i32,
             month: month as u8,
             day: day as u8,
+            // ECMA-262 §21.4.1.12 step 1: the epoch starts on Thursday.
+            // https://tc39.es/ecma262/#sec-weekday
             weekday: (days + 4).rem_euclid(7) as u8,
+            // ECMA-262 §§21.4.1.13–16, step 1, extract clock fields.
+            // https://tc39.es/ecma262/#sec-hourfromtime
+            // https://tc39.es/ecma262/#sec-minutefromtime
+            // https://tc39.es/ecma262/#sec-secondfromtime
             hour: (time / (3_600 * NANOSECONDS_PER_SECOND)) as u8,
             minute: (time / (60 * NANOSECONDS_PER_SECOND) % 60) as u8,
             second: (time / NANOSECONDS_PER_SECOND % 60) as u8,
+            // Keep the subsecond remainder in nanoseconds until rendering.
+            // https://tc39.es/ecma262/#sec-millisecondfromtime
             nanosecond: (time % NANOSECONDS_PER_SECOND) as u32,
         })
     }
