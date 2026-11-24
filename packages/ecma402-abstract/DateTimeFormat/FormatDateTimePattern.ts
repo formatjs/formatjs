@@ -435,7 +435,7 @@ export function FormatDateTimePattern(
     if (p === 'literal') {
       // ECMA-402 §11.5.4 step 15.b preserves the CLDR literal verbatim.
       // The pinned hanidec test expects ASCII space before AM. CLDR uses U+202F.
-      // https://github.com/tc39/test262/issues/3711
+      // https://github.com/tc39/test262/blob/2a1ade303f72d3de80565c921d685222405c32ce/test/intl402/DateTimeFormat/prototype/format/numbering-system.js#L26
       // https://tc39.es/ecma402/#sec-formatdatetimepattern
       setDataProperty(result, `${result.length}`, {
         type: 'literal',
