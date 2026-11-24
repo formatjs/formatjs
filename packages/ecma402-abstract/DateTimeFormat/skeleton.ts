@@ -689,6 +689,47 @@ export function splitFallbackRangePattern(
   return parts
 }
 
+const skeletonLastIndexOf = Function.prototype.call.bind(
+  String.prototype.lastIndexOf
+) as (value: string, search: string) => number
+
+// Keep the recorded endpoint and share punctuation outside its field span.
+// ECMA-402 §11.5.8 step 19 https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+export function expandFallbackRangePattern(
+  parts: RangePatternPart[],
+  endpoint: string
+): RangePatternPart[] {
+  if (
+    !arraySome(parts, part => part.pattern === '{0}' || part.pattern === '{1}')
+  )
+    return parts
+  const start = skeletonIndexOf(endpoint, '{')
+  const end = skeletonLastIndexOf(endpoint, '}') + 1
+  const result: RangePatternPart[] = []
+  const append = (pattern: string, source: RangePatternType) => {
+    if (!pattern) return
+    const previous = result.length ? result[result.length - 1] : undefined
+    if (source === RangePatternType.shared && previous?.source === source) {
+      previous.pattern += pattern
+    } else {
+      setDataProperty(result, result.length, {pattern, source})
+    }
+  }
+  for (let index = 0; index < parts.length; index++) {
+    const {pattern, source} = parts[index]
+    if (pattern !== '{0}' && pattern !== '{1}') {
+      append(pattern, source)
+    } else if (start < 0 || end <= start) {
+      append(endpoint, source)
+    } else {
+      append(skeletonSlice(endpoint, 0, start), RangePatternType.shared)
+      append(skeletonSlice(endpoint, start, end), source)
+      append(skeletonSlice(endpoint, end), RangePatternType.shared)
+    }
+  }
+  return result
+}
+
 export function splitRangePattern(pattern: string): Array<RangePatternPart> {
   const fields = new SkeletonMap<string, {start: number; end: number}>()
   let startBegin = pattern.length

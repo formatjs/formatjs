@@ -740,6 +740,8 @@ impl RangeSnapshot {
             fallback = pattern::split_fallback(self.calendar.interval_fallback());
             &fallback
         };
+        let expanded = selected.and_then(|_| pattern::expand_fallback(patterns, &profile.pattern));
+        let patterns = expanded.as_deref().unwrap_or(patterns);
         let expand = |pattern: &str| {
             if matches!(pattern, "{0}" | "{1}") {
                 profile.pattern.clone()
@@ -751,30 +753,6 @@ impl RangeSnapshot {
             .iter()
             .map(|part| expand(&part.pattern))
             .collect::<String>();
-        let expanded;
-        // ECMA-402 §11.5.8 steps 19.b–f preserve the fallback records' sources.
-        // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
-        let patterns = if let Some(first) = selected.and_then(|interval| {
-            interval
-                .pattern_parts
-                .iter()
-                .find(|part| matches!(part.pattern.as_str(), "{0}" | "{1}"))
-        }) {
-            let mut parts = pattern::split_range(&context);
-            if first.source == Source::EndRange {
-                for part in &mut parts {
-                    part.source = match part.source {
-                        Source::StartRange => Source::EndRange,
-                        Source::EndRange => Source::StartRange,
-                        Source::Shared => Source::Shared,
-                    };
-                }
-            }
-            expanded = parts;
-            &expanded
-        } else {
-            patterns
-        };
         let mut format = profile.components;
         if let Some(selected) = selected {
             format.month_standalone = selected
@@ -792,6 +770,8 @@ impl RangeSnapshot {
             }
         }
         let mut result = Vec::new();
+        // ECMA-402 §11.5.8 steps 19.a–f keep each record's source.
+        // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
         for part in patterns {
             let pattern = expand(&part.pattern);
             if !pattern.contains('{') {

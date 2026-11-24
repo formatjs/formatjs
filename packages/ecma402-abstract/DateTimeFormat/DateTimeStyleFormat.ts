@@ -11,6 +11,7 @@ import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import {
+  expandFallbackRangePattern,
   setDateTimePatternFields,
   splitRangePattern,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
@@ -104,55 +105,38 @@ function combineStyleRanges(
     const field = keys[index]
     if (arrayIncludes(['era', 'year', 'month', 'day'], field)) continue
     const range = ranges[field]
-    let reversed = false
-    for (
-      let partIndex = 0;
-      partIndex < range.patternParts.length;
-      partIndex++
-    ) {
-      const source = range.patternParts[partIndex].source
-      if (source !== RangePatternType.shared) {
-        reversed = source === RangePatternType.endRange
-        break
-      }
-    }
-    let endpoint: string | undefined
+    let patternParts: RangePatterns['patternParts']
     if (field === 'default') {
-      endpoint = replaceStyleToken(
+      const endpoint = replaceStyleToken(
         replaceStyleToken(fallbackConnector, '{0}', timePattern),
         '{1}',
         date.pattern
       )
-    }
-    let combinedParts = ''
-    for (
-      let partIndex = 0;
-      partIndex < range.patternParts.length;
-      partIndex++
-    ) {
-      const pattern = range.patternParts[partIndex].pattern
-      combinedParts +=
-        endpoint !== undefined && (pattern === '{0}' || pattern === '{1}')
-          ? endpoint
-          : pattern
-    }
-    const combined =
-      field === 'default'
-        ? combinedParts
-        : replaceStyleToken(
-            replaceStyleToken(connector, '{0}', combinedParts),
-            '{1}',
-            date.pattern
-          )
-    const patternParts = splitRangePattern(combined)
-    if (reversed)
-      for (let partIndex = 0; partIndex < patternParts.length; partIndex++) {
-        const part = patternParts[partIndex]
-        if (part.source === 'startRange')
-          part.source = RangePatternType.endRange
-        else if (part.source === 'endRange')
-          part.source = RangePatternType.startRange
+      patternParts = expandFallbackRangePattern(range.patternParts, endpoint)
+    } else {
+      let firstSource: RangePatternType | undefined
+      let combinedParts = ''
+      for (let index = 0; index < range.patternParts.length; index++) {
+        const {source, pattern} = range.patternParts[index]
+        if (source !== RangePatternType.shared) firstSource ??= source
+        combinedParts += pattern
       }
+      const combined = replaceStyleToken(
+        replaceStyleToken(connector, '{0}', combinedParts),
+        '{1}',
+        date.pattern
+      )
+      patternParts = splitRangePattern(combined)
+      if (firstSource === RangePatternType.endRange) {
+        for (let partIndex = 0; partIndex < patternParts.length; partIndex++) {
+          const part = patternParts[partIndex]
+          if (part.source === 'startRange')
+            part.source = RangePatternType.endRange
+          else if (part.source === 'endRange')
+            part.source = RangePatternType.startRange
+        }
+      }
+    }
     result[field] = {
       __proto__: null,
       ...fields,

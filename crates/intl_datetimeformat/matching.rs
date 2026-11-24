@@ -409,30 +409,23 @@ pub fn style(
                         !matches!(field.as_str(), "era" | "year" | "month" | "day")
                     })
                     .map(|(field, mut range)| {
-                        let reversed = range
-                            .pattern_parts
-                            .iter()
-                            .find(|part| part.source != Source::Shared)
-                            .is_some_and(|part| part.source == Source::EndRange);
                         if field == "default" {
                             let endpoint = data
                                 .connector
                                 .get(date)
                                 .replace("{0}", time_pattern)
                                 .replace("{1}", &range_date.pattern);
-                            let combined = range
+                            if let Some(parts) =
+                                pattern::expand_fallback(&range.pattern_parts, &endpoint)
+                            {
+                                range.pattern_parts = parts;
+                            }
+                        } else {
+                            let reversed = range
                                 .pattern_parts
                                 .iter()
-                                .map(|part| {
-                                    if part.pattern == "{0}" || part.pattern == "{1}" {
-                                        endpoint.as_str()
-                                    } else {
-                                        part.pattern.as_str()
-                                    }
-                                })
-                                .collect::<String>();
-                            range.pattern_parts = pattern::split_range(&combined);
-                        } else {
+                                .find(|part| part.source != Source::Shared)
+                                .is_some_and(|part| part.source == Source::EndRange);
                             let time_pattern = range
                                 .pattern_parts
                                 .iter()
@@ -444,14 +437,14 @@ pub fn style(
                                 .replacen("{0}", &time_pattern, 1)
                                 .replacen("{1}", &range_date.pattern, 1);
                             range.pattern_parts = pattern::split_range(&combined);
-                        }
-                        if reversed {
-                            for part in &mut range.pattern_parts {
-                                part.source = match part.source {
-                                    Source::StartRange => Source::EndRange,
-                                    Source::EndRange => Source::StartRange,
-                                    Source::Shared => Source::Shared,
-                                };
+                            if reversed {
+                                for part in &mut range.pattern_parts {
+                                    part.source = match part.source {
+                                        Source::StartRange => Source::EndRange,
+                                        Source::EndRange => Source::StartRange,
+                                        Source::Shared => Source::Shared,
+                                    };
+                                }
                             }
                         }
                         for date_field in Field::ALL {

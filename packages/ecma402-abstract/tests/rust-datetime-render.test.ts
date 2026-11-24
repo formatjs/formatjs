@@ -408,6 +408,61 @@ it('preserves endpoint sources when a date-plus-zone range uses a reversed fallb
   ])
 })
 
+it.each([false, true])(
+  'keeps repeated fields inside their fallback range endpoint (styles: %s)',
+  styles => {
+    const entry = pack('en')
+    entry.data.formats.gregory = {d: "'day 'd'/'d"}
+    entry.data.intervalFormats = {intervalFormatFallback: '[{1}] – [{0}]'}
+    entry.data.dateFormat.short = entry.data.formats.gregory.d
+    entry.data.timeFormat.short = 'HH:mm'
+    entry.data.dateTimeFormat.short = '{1}, {0}'
+    const options: Intl.DateTimeFormatOptions = styles
+      ? {dateStyle: 'short', timeStyle: 'short', hourCycle: 'h23'}
+      : {day: 'numeric'}
+    const clock = styles
+      ? ([
+          {type: 'literal', value: ', '},
+          {type: 'hour', value: '00'},
+          {type: 'literal', value: ':'},
+          {type: 'minute', value: '00'},
+        ] as const)
+      : []
+    const results = compare(
+      entry,
+      read('packages/intl-datetimeformat/tz-all.json'),
+      [
+        {
+          locales: ['en'],
+          options: {...options, timeZone: 'UTC'},
+          values: [{type: 'range', first: '0', second: '86400000'}],
+        },
+      ]
+    )
+    const time = styles ? ', 00:00' : ''
+    expect(results).toEqual([
+      [
+        {
+          text: `[day 2/2${time}] – [day 1/1${time}]`,
+          parts: [
+            {type: 'literal', value: '[day ', source: 'shared'},
+            {type: 'day', value: '2', source: 'endRange'},
+            {type: 'literal', value: '/', source: 'endRange'},
+            {type: 'day', value: '2', source: 'endRange'},
+            ...clock.map(part => ({...part, source: 'endRange'})),
+            {type: 'literal', value: '] – [day ', source: 'shared'},
+            {type: 'day', value: '1', source: 'startRange'},
+            {type: 'literal', value: '/', source: 'startRange'},
+            {type: 'day', value: '1', source: 'startRange'},
+            ...clock.map(part => ({...part, source: 'startRange'})),
+            {type: 'literal', value: ']', source: 'shared'},
+          ],
+        },
+      ],
+    ])
+  }
+)
+
 it('renders localized Gregorian/ISO fields, eras, digits, day periods and historical timezone offsets', () => {
   const values: Input[] = [
     -8640000000000000, -62167219200000, -62135596800000, -2208988800000, -1.9,
