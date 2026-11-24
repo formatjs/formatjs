@@ -43,11 +43,14 @@ for (const pack of fixtures.packs) {
   Native.__addLocaleData(pack)
   Reference.__addLocaleData(JSON.parse(pack))
 }
-const {min, max} = Math
+const {min, max, log10} = Math
+const {isInteger, isNaN, isSafeInteger} = Number
 try {
-  Math.min = Math.max = () => {
-    throw new Error('Read public Math.min or Math.max during rounding')
+  const unexpected = () => {
+    throw new Error('Called a public numeric helper during rounding')
   }
+  Math.min = Math.max = Math.log10 = unexpected
+  Number.isInteger = Number.isNaN = Number.isSafeInteger = unexpected
   for (const Constructor of [Native, Reference]) {
     equal(
       new Constructor('en', {maximumFractionDigits: 2}).format(1.125),
@@ -68,6 +71,10 @@ try {
 } finally {
   Math.min = min
   Math.max = max
+  Math.log10 = log10
+  Number.isInteger = isInteger
+  Number.isNaN = isNaN
+  Number.isSafeInteger = isSafeInteger
 }
 for (const Constructor of [Native, Reference]) {
   const receiver = Object.create(Constructor.prototype)

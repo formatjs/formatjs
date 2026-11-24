@@ -1,6 +1,7 @@
 // Division precision: 40 extra digits (matches decimal.js default)
 const DIV_PRECISION = 40
-const mathMin = Math.min
+const {log10: mathLog10, min: mathMin} = Math
+const {isInteger, isNaN, isSafeInteger} = Number
 
 const enum SpecialValue {
   NONE = 0,
@@ -18,8 +19,8 @@ function removeTrailingZeros(
   // Division commonly leaves 40 decimal zeros. Remove full chunks first.
   while (
     mantissa % 100000000n === 0n &&
-    Number.isSafeInteger(exponent) &&
-    Number.isSafeInteger(exponent + 8)
+    isSafeInteger(exponent) &&
+    isSafeInteger(exponent + 8)
   ) {
     mantissa /= 100000000n
     exponent += 8
@@ -60,7 +61,7 @@ const SMALL_POWERS_OF_TEN: bigint[] = [1n]
 function bigintPow10(n: number): bigint {
   if (n <= 0) return 1n
   // Bound retained powers; division repeatedly needs 10^40.
-  if (n <= 64 && Number.isInteger(n)) {
+  if (n <= 64 && isInteger(n)) {
     for (let i = SMALL_POWERS_OF_TEN.length; i <= n; i++) {
       SMALL_POWERS_OF_TEN.push(SMALL_POWERS_OF_TEN[i - 1] * TEN_BIGINT)
     }
@@ -189,7 +190,7 @@ export class BigDecimal {
     }
 
     if (typeof value === 'number') {
-      if (Number.isNaN(value)) {
+      if (isNaN(value)) {
         this._mantissa = 0n
         this._exponent = 0
         this._special = SpecialValue.NAN
@@ -217,7 +218,7 @@ export class BigDecimal {
         this._negativeZero = Object.is(value, -0)
         return
       }
-      if (Number.isSafeInteger(value)) {
+      if (isSafeInteger(value)) {
         const normalized = removeTrailingZeros(BigInt(value), 0)
         this._mantissa = normalized[0]
         this._exponent = normalized[1]
@@ -301,8 +302,8 @@ export class BigDecimal {
     // Powers of ten only shift scale. Preserve legacy unsafe-exponent arithmetic.
     if (
       (other._mantissa === 1n || other._mantissa === -1n) &&
-      Number.isSafeInteger(exponent) &&
-      Number.isSafeInteger(newExponent)
+      isSafeInteger(exponent) &&
+      isSafeInteger(newExponent)
     ) {
       return BigDecimal._create(
         other._mantissa === 1n ? this._mantissa : -this._mantissa,
@@ -521,7 +522,7 @@ export class BigDecimal {
 
     // General case: log_b(x) = log10(x) / log10(b)
     const log10x = this._log10()
-    const log10b = new BigDecimal(Math.log10(base))
+    const log10b = new BigDecimal(mathLog10(base))
     return log10x.div(log10b)
   }
 
@@ -541,11 +542,11 @@ export class BigDecimal {
     // This avoids Math.pow(10, shift) overflow for shift > 308
     let log10Mantissa: number
     if (digits <= 15) {
-      log10Mantissa = Math.log10(Number(absMantissa))
+      log10Mantissa = mathLog10(Number(absMantissa))
     } else {
       const shift = digits - 17
       const leading = absMantissa / bigintPow10(shift)
-      log10Mantissa = Math.log10(Number(leading)) + shift
+      log10Mantissa = mathLog10(Number(leading)) + shift
     }
 
     // Total log10 = log10(mantissa) + exponent
