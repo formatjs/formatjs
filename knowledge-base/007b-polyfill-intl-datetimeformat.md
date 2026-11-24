@@ -241,7 +241,8 @@ Stage 4 Temporal timezone handling preserves the case-regularized identifier in
 `timeZone`, including aliases such as `Asia/Calcutta`, `US/Eastern`, and `Etc/GMT`.
 The separate `dataTimeZone` slot selects transition data and localized names
 for single dates, Temporal profiles, and ranges. Default timezone overrides also
-preserve identifiers. `shouldPolyfill` checks alias and UTC-name preservation.
+preserve identifiers. `shouldPolyfill` checks alias and UTC-name preservation
+and falls back when a host capability probe throws.
 It also checks that `supportedLocalesOf` and the range and parts methods are callable.
 This follows the [Temporal integration text](https://tc39.es/proposal-temporal/#sec-intl.datetimeformat),
 which uses `[[Identifier]]` where the standalone ECMA-402 draft still uses

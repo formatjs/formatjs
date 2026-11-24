@@ -135,6 +135,41 @@ describe('Intl.DateTimeFormat', function () {
     expect(complete).toBeUndefined()
     expect(incomplete).toBe('en')
   })
+  it.each(['locale getter', 'locale method', 'parts method'] as const)(
+    'selects locale data when the native %s throws',
+    kind => {
+      const original = Intl.DateTimeFormat
+      const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
+      const unsupported = () => {
+        throw new RangeError('Host formatter support unavailable')
+      }
+      try {
+        Intl.DateTimeFormat = polyfill
+        expect(shouldPolyfill('en')).toBeUndefined()
+        Intl.DateTimeFormat = new Proxy(polyfill, {
+          get(target, key, receiver) {
+            if (key === 'supportedLocalesOf' && kind !== 'parts method') {
+              if (kind === 'locale getter') unsupported()
+              return unsupported
+            }
+            return Reflect.get(target, key, receiver)
+          },
+          construct(target, args) {
+            const formatter = Reflect.construct(target, args)
+            if (kind === 'parts method') {
+              Object.defineProperty(formatter, 'formatToParts', {
+                value: unsupported,
+              })
+            }
+            return formatter
+          },
+        })
+        expect(shouldPolyfill('en')).toBe('en')
+      } finally {
+        Intl.DateTimeFormat = original
+      }
+    }
+  )
   it.each([
     ['Asia/Calcutta', 'Asia/Kolkata'],
     ['Etc/UTC', 'UTC'],
