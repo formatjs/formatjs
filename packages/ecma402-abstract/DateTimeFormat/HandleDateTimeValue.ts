@@ -29,6 +29,10 @@ export function HandleDateTimeValue(
   value: DateTimeFormattable
 ): ValueFormatRecord {
   if (!isTemporalDateTimeValue(value)) {
+    // ECMA-402 §11.5.5 steps 1–3 and §11.5.8 steps 1–6 clip Number
+    // inputs and convert whole milliseconds to exact epoch nanoseconds.
+    // https://tc39.es/ecma402/#sec-partitiondatetimepattern
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
     // Temporal Intl §15.6.21 steps 1–5 clip Number inputs before making the record.
     // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimeothers
     const clipped = TimeClip(value)

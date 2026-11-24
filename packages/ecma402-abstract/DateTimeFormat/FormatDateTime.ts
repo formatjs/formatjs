@@ -2,12 +2,9 @@ import {type DateTimeFormat} from '#packages/ecma402-abstract/types/date-time.js
 import type {DateTimeFormattable} from '#packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.js'
 import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimePattern.js'
 
-/**
- * https://tc39.es/ecma402/#sec-formatdatetime
- * @param dtf DateTimeFormat
- * @param x
- */
-// Temporal amendment §15.6.6: format the prepared value.
+// ECMA-402 §11.5.6 step 1 partitions the date. Steps 2–4 join the part values.
+// https://tc39.es/ecma402/#sec-formatdatetime
+// Temporal §15.6.6 also accepts a prepared Temporal value.
 // https://tc39.es/proposal-temporal/#sec-formatdatetime
 export function FormatDateTime(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
@@ -16,7 +13,6 @@ export function FormatDateTime(
 ): string {
   const parts = PartitionDateTimePattern(dtf, x, implDetails)
   let result = ''
-  // Temporal comparison §15.6.6 steps3–3.a: concatenate a private List.
   for (let index = 0; index < parts.length; index++) {
     result += parts[index].value
   }

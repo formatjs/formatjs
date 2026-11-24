@@ -22,11 +22,9 @@ const patterns = new WeakMap<
 const getPattern = patterns.get.bind(patterns)
 const setPattern = patterns.set.bind(patterns)
 
-/**
- * https://tc39.es/ecma402/#sec-partitiondatetimepattern
- * @param dtf
- * @param x
- */
+// ECMA-402 §11.5.5 steps 1–3 convert the input. Steps 4–6 select the
+// stored format and hour-cycle pattern. Steps 7–8 render its parts.
+// https://tc39.es/ecma402/#sec-partitiondatetimepattern
 export function PartitionDateTimePattern(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
   x: DateTimeFormattable,
