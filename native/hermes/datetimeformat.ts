@@ -479,11 +479,11 @@
         zone = temporal.timeZone
       }
       if (zone === undefined) updateHostTimeZone()
+      // ECMA-402 §11.1.2 step 18 uses GetOption, which throws for Symbols.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
+      // https://tc39.es/ecma402/#sec-getoption
       checked(
-        nativeZone(
-          construction,
-          zone === undefined ? 'null' : quote(string(zone))
-        )
+        nativeZone(construction, zone === undefined ? 'null' : quote(`${zone}`))
       )
       for (let index = 0; index < componentNames.length; index++) {
         const key = componentNames[index]
