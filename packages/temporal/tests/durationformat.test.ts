@@ -1203,7 +1203,7 @@ it.each(['constructor', 'hasInstance'] as const)(
   }
 )
 
-it('Duration construction adopts a later data-valued canonicalizer provider', () => {
+it('Duration construction retains its locale canonicalizer', () => {
   const descriptor = Object.getOwnPropertyDescriptor(
     Intl,
     'getCanonicalLocales'
@@ -1224,7 +1224,7 @@ it('Duration construction adopts a later data-valued canonicalizer provider', ()
       style: 'long',
     })
     expect(formatter.format({minutes: 1})).toBe('1 minute')
-    expect(calls).toBeGreaterThan(0)
+    expect(calls).toBe(0)
   } finally {
     Object.defineProperty(Intl, 'getCanonicalLocales', descriptor)
   }

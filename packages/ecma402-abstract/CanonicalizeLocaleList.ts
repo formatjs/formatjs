@@ -9,17 +9,15 @@ function ownCanonicalProvider() {
 }
 let canonicalProvider = ownCanonicalProvider()
 
-/**
- * http://ecma-international.org/ecma-402/7.0/index.html#sec-canonicalizelocalelist
- * @param locales
- */
+// ECMA-402 §9.2.1 uses an internal operation.
+// https://tc39.es/ecma402/#sec-canonicalizelocalelist
 export function CanonicalizeLocaleList(
   locales?: string | ReadonlyArray<string>
 ): string[] {
-  // ECMA-402 §9.2.1: delegate canonicalization without a mutable accessor Get.
-  // Late real polyfill assignments remain available before the next call.
-  if (canonicalIntl === undefined) canonicalIntl = globalThis.Intl
-  const candidate = ownCanonicalProvider()
-  if (typeof candidate === 'function') canonicalProvider = candidate
+  // A polyfill can supply the provider when the host has none.
+  if (typeof canonicalProvider !== 'function') {
+    if (canonicalIntl === undefined) canonicalIntl = globalThis.Intl
+    canonicalProvider = ownCanonicalProvider()
+  }
   return canonicalApply(canonicalProvider, canonicalIntl, [locales])
 }

@@ -215,6 +215,28 @@ for (const Constructor of [Native, Reference]) {
   }
   equal(emptyZone, {error: 'RangeError'}, 'empty time zone after coercion')
 
+  const canonicalize = Intl.getCanonicalLocales
+  const requested = 'en-u-nu-arab'
+  let resolvedLocale: string
+  let supportedLocales: string[]
+  try {
+    Intl.getCanonicalLocales = () => {
+      throw new Error('Called replacement Intl.getCanonicalLocales')
+    }
+    resolvedLocale = new Constructor(requested, {
+      timeZone: 'UTC',
+    }).resolvedOptions().locale
+    supportedLocales = Constructor.supportedLocalesOf([requested])
+  } finally {
+    Intl.getCanonicalLocales = canonicalize
+  }
+  equal(resolvedLocale, requested, 'constructor retains locale canonicalizer')
+  equal(
+    supportedLocales,
+    [requested],
+    'supportedLocalesOf retains canonicalizer'
+  )
+
   const periods = new Constructor('en', {timeZone: 'UTC', dayPeriod: 'long'})
   const morning = Date.UTC(2026, 0, 15, 9)
   const laterMorning = Date.UTC(2026, 0, 15, 11)
