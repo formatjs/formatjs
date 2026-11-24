@@ -88,6 +88,14 @@ import {
   rule as preferFullSentence,
   name as preferFullSentenceName,
 } from '#packages/eslint-plugin-formatjs/rules/prefer-full-sentence.js'
+import {
+  rule as noLiteralNumberSymbol,
+  name as noLiteralNumberSymbolName,
+} from '#packages/eslint-plugin-formatjs/rules/no-literal-number-symbol.js'
+import {
+  rule as noCountWithoutPlural,
+  name as noCountWithoutPluralName,
+} from '#packages/eslint-plugin-formatjs/rules/no-count-without-plural.js'
 
 // @ts-ignore - package.json only available in rolldown/typecheck builds, not vitest
 import * as packageJsonNs from './package.json' with {type: 'json'}
@@ -119,6 +127,8 @@ const rules: ESLint.Plugin['rules'] = {
   [noMissingIcuPluralOnePlaceholdersName]: noMissingIcuPluralOnePlaceholders,
   [noLiteralStringInObjectName]: noLiteralStringInObject,
   [preferFullSentenceName]: preferFullSentence,
+  [noLiteralNumberSymbolName]: noLiteralNumberSymbol,
+  [noCountWithoutPluralName]: noCountWithoutPlural,
 }
 
 type Plugin = {
@@ -189,6 +199,8 @@ const configs: Plugin['configs'] = {
         ],
       ],
       'formatjs/prefer-full-sentence': 'error',
+      'formatjs/no-literal-number-symbol': 'error',
+      'formatjs/no-count-without-plural': 'error',
     },
   },
   recommended: {

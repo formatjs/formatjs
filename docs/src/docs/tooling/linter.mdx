@@ -478,6 +478,47 @@ Messages that look like `{thing, plural, one {1 thing} other {# things}}` will n
 
 - one is a category for any number that behaves like 1. So in some languages, for example Ukrainian, Russian and Serbian, one → numbers that end in 1 (like 1, 21, 151) but that don’t end in 11 (like 11, 111, 10311). [More info](https://formatjs.github.io/docs/core-concepts/icu-syntax/#plural-format)
 
+### `no-count-without-plural`
+
+A count argument followed by a noun must use an ICU plural. In strict config.
+
+#### Why
+
+- `{count, number} files` only localizes the digits. Other locales inflect the noun, and nearby words, for up to 6 plural categories.
+- A noun passed as its own placeholder (`{count, number} {label}`) can't agree with the count in any locale.
+
+Counts are matched by argument name. The default pattern is `^(?:count|n|num|total|quantity|qty|\w+Count|\w+Total)$`, which skips `{amount}` (usually money) and `{number}` (usually an identifier). Counts already inside a plural branch are skipped.
+
+```tsx
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage: '{count, plural, one {# file} other {# files}}',
+  },
+  // FAILS
+  bar: {
+    defaultMessage: '{count} files',
+  },
+  // FAILS
+  baz: {
+    defaultMessage: '{count, number} {label}',
+  },
+})
+```
+
+#### Options
+
+```json
+{
+  "rules": {
+    "formatjs/no-count-without-plural": [
+      "error",
+      {"countPattern": "^(?:count|\\w+Count)$"}
+    ]
+  }
+}
+```
+
 ### `no-emoji`
 
 Emoji detection supports the ESM data files shipped by `@unicode/unicode-17.0.0` 2.x.
@@ -529,6 +570,44 @@ const messages = defineMessages({
   // FAILS with option {versionAbove: '12.0'}
   bar_foo: {
     defaultMessage: '🥹 Smileys & People',
+  },
+})
+```
+
+### `no-literal-number-symbol`
+
+Don't write a percent, per mille, plus/minus, currency or degree symbol next to a number argument. Format the number with the matching ICU skeleton so the locale renders the symbol. In strict config.
+
+| Literal                 | Use                                                |
+| ----------------------- | -------------------------------------------------- |
+| `{x}%`, `%{x}`, `{x} %` | `{x, number, ::percent}` with a ratio              |
+| `{x}‰`                  | `{x, number, ::permille}` with a ratio             |
+| `+{x}`, `-{x}`, `−{x}`  | `{x, number, ::sign-always}` or `sign-except-zero` |
+| `${x}`, `{x} €`         | `{x, number, ::currency/USD}`                      |
+| `{x}°C`, `{x}°`         | `{x, number, ::unit/celsius}`, `::unit/degree`     |
+
+#### Why
+
+- Locales differ on the symbol, spacing and position: `50 %` in French, `%50` in Turkish, `٪٥٠` in Arabic, `10 €` vs `€10`.
+- A literal sign also pins the glyph and its position, and a pre-signed string can't be pluralized or formatted.
+- A skeleton that doesn't render the symbol, like `{x, number, ::compact-short}%`, still fails.
+
+Ranges (`{start}-{end}`), arithmetic (`{a} + {b}`) and "or more" (`{count}+`) are not treated as signs.
+
+```tsx
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage:
+      '{amount, number, ::currency/USD sign-always} bonus credits, {ratio, number, ::percent} off',
+  },
+  // FAILS
+  bar: {
+    defaultMessage: '+{amount} bonus credits',
+  },
+  // FAILS
+  baz: {
+    defaultMessage: '{ratio}% off',
   },
 })
 ```
