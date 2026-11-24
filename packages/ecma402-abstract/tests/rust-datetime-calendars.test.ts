@@ -366,6 +366,66 @@ it('renders all calendars with localized names, leap/cyclic years, Temporal prof
         ).toEqual(expected[index])
     }
 }, 300000)
+
+it.each([
+  {name: 'missing names', yearNames: undefined},
+  {name: 'partial names', yearNames: ['jia-zi']},
+])(
+  'uses the numeric year for a missing cyclic label ($name)',
+  ({yearNames}) => {
+    const entry = JSON.parse(
+      read('crates/intl_datetimeformat/locale-data/en.json')
+    ) as Locale
+    const patch = JSON.parse(
+      read(
+        'packages/intl-datetimeformat-calendar-chinese/locale-data-json/en.json'
+      )
+    ) as Patch
+    const provider = calendars.find(data => data.calendar === 'chinese')!
+    patch.data.yearNames = yearNames
+    const tz = read('packages/intl-datetimeformat/tz-all.json')
+    Reference.localeData = {}
+    Reference.availableLocales = new Set()
+    Reference.__defaultLocale = ''
+    Reference.calendarData = Object.create(null)
+    Reference.__addCalendarData(provider)
+    Reference.__addCalendarLocaleData(patch)
+    Reference.__addLocaleData(entry)
+    Reference.__addTZData(JSON.parse(tz))
+    const cases: Case[] = [
+      {
+        locales: ['en'],
+        options: {
+          calendar: 'chinese',
+          dateStyle: 'full',
+          numberingSystem: 'mathbold',
+          timeZone: 'UTC',
+        },
+        values: [{type: 'date', value: Date.UTC(2024, 2, 11)}],
+      },
+    ]
+    const expected = [
+      [
+        {
+          text: expect.stringContaining('(𝟐𝟎𝟐𝟒)'),
+          parts: expect.arrayContaining([{type: 'yearName', value: '𝟐𝟎𝟐𝟒'}]),
+        },
+      ],
+    ]
+    expect.soft(referenceCases(cases)).toEqual(expected)
+    expect(
+      run({
+        method: 'render',
+        data: JSON.stringify(pack(provider.calendar)),
+        locale: JSON.stringify(entry),
+        patch: JSON.stringify(patch),
+        tz,
+        cases,
+      })
+    ).toEqual(expected)
+  }
+)
+
 it('rejects malformed optional table packs before registration', () => {
   const raw = pack('chinese'),
     umm = pack('islamic-umalqura')
