@@ -11,6 +11,16 @@ function ownCanonicalizer() {
 
 let canonicalize = ownCanonicalizer()
 
+function registeredCanonicalizer() {
+  try {
+    const descriptor =
+      canonicalIntl && getOwnDescriptor(canonicalIntl, providerKey)
+    return descriptor && getOwnDescriptor(descriptor, 'value')?.value
+  } catch {
+    // The shared registry is optional. Keep using the captured canonicalizer.
+  }
+}
+
 // ECMA-402 §9.2.1 uses an internal operation.
 // https://tc39.es/ecma402/#sec-canonicalizelocalelist
 export function CanonicalizeLocaleList(
@@ -18,9 +28,7 @@ export function CanonicalizeLocaleList(
 ): string[] {
   // Read the provider registered by the FormatJS installers.
   if (canonicalIntl === undefined) canonicalIntl = globalThis.Intl
-  const descriptor =
-    canonicalIntl && getOwnDescriptor(canonicalIntl, providerKey)
-  const registered = descriptor && getOwnDescriptor(descriptor, 'value')?.value
+  const registered = registeredCanonicalizer()
   if (typeof registered === 'function')
     return apply(registered, canonicalIntl, [locales])
 

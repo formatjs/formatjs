@@ -3,7 +3,30 @@ import {
   FilterLocales,
   LookupSupportedLocales,
 } from '#packages/intl-localematcher/index.js'
-import {expect, test} from 'vitest'
+import {expect, test, vi} from 'vitest'
+
+test('matches locales when the optional canonicalizer registry rejects inspection', async () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'Intl')!
+  const key = Symbol.for('@formatjs/intlCanonicalizeLocaleList')
+  const intl = new Proxy(Intl, {
+    getOwnPropertyDescriptor(target, property) {
+      if (property === key) throw new Error('registry unavailable')
+      return Reflect.getOwnPropertyDescriptor(target, property)
+    },
+  })
+  try {
+    Object.defineProperty(globalThis, 'Intl', {value: intl})
+    vi.resetModules()
+    const {match: matchLocale} =
+      await import('#packages/intl-localematcher/index.js')
+    expect(matchLocale(['FR-ca'], ['en', 'fr'], 'en')).toBe('fr')
+    expect(() => matchLocale(['fr-x'], ['en', 'fr'], 'en')).toThrow(RangeError)
+  } finally {
+    Object.defineProperty(globalThis, 'Intl', original)
+    vi.resetModules()
+  }
+})
+
 test('zh-HK', function () {
   // zh-HK matches zh-HANT (returns original supported locale string as-is)
   expect(match(['zh-HK'], ['zh', 'zh-HANT', 'en'], 'en')).toEqual('zh-HANT')
