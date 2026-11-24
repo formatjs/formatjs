@@ -35,6 +35,8 @@ function IsCallable(fn: any): fn is Function {
   }
 }
 
+// ECMA-262 §7.1.1.1 reads methods in hint order and returns the first primitive.
+// https://tc39.es/ecma262/#sec-ordinarytoprimitive
 function OrdinaryToPrimitive<
   T extends 'string' | 'number' = 'string' | 'number',
 >(O: object, hint: T): Primitive {

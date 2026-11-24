@@ -1,6 +1,7 @@
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 
-/** ECMA-262 §6.1 language-type classification. */
+// ECMA-262 §6.1 classifies ECMAScript values by language type.
+// https://tc39.es/ecma262/#sec-ecmascript-language-types
 export function Type(
   x: any
 ):
