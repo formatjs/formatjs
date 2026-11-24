@@ -2,6 +2,18 @@ import {describe, expect, it} from 'vitest'
 import {Collator} from '#packages/intl-collator/index.js'
 
 describe('Intl.Collator', () => {
+  it('preserves legacy RegExp state while loading search tailoring', () => {
+    const compare = new Collator('de', {usage: 'search'}).compare
+    void /probe(.)/.exec('probe!')
+    const before = [RegExp.lastMatch, RegExp.$1]
+
+    const result = compare('a', 'b')
+
+    const after = [RegExp.lastMatch, RegExp.$1]
+    expect(after).toEqual(before)
+    expect(result).toBeLessThan(0)
+  })
+
   it('exposes resolved options', () => {
     expect(
       new Collator('en-u-kn-true-kf-upper', {
