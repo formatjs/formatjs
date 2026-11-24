@@ -1,5 +1,8 @@
 import type {Collator, CollatorSlots} from '#packages/intl-collator/types.js'
-import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  TypeErrorConstructor,
+  objectCreate,
+} from '#packages/ecma262-abstract/intrinsics.js'
 
 // ECMA-402 §10.4 stores options and the bound comparison per instance.
 // https://tc39.es/ecma402/#sec-properties-of-intl-collator-instances
@@ -20,7 +23,9 @@ export function getInternalSlots(collator: Collator): CollatorSlots {
   if (internalSlots) {
     return internalSlots
   }
-  const newInternalSlots: CollatorSlots = Object.create(null)
+  // ECMA-402 §10.1.1 step 3 allocates private comparison state.
+  // https://tc39.es/ecma402/#sec-intl.collator
+  const newInternalSlots: CollatorSlots = objectCreate(null)
   write(collator, newInternalSlots)
   return newInternalSlots
 }

@@ -118,6 +118,21 @@ for (const sensitivity of ['base', 'accent', 'case', 'variant'] as const)
               usage,
             },
           })
+for (const Constructor of [Native, TypeScriptCollator]) {
+  const create = Object.create
+  let formatter: Intl.Collator
+  try {
+    Object.create = () => {
+      throw new Error(
+        'Called public Object.create during Collator construction'
+      )
+    }
+    formatter = new Constructor('en')
+  } finally {
+    Object.create = create
+  }
+  equal(sign(formatter.compare('a', 'b')), -1, 'private comparison slots')
+}
 for (const {locale, options} of requests) {
   const model = new Native(locale, options)
   const reference = new TypeScriptCollator(locale, options)

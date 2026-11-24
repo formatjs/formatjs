@@ -9,7 +9,7 @@ export const objectFrom: typeof Object = Object
 // A derived class can allocate its receiver without the base-class prototype read.
 export const nullClassBase: abstract new () => object = null as never
 
-const objectCreate = Object.create
+export const objectCreate: typeof Object.create = Object.create
 
 // ECMA-262 §10.1.13–14 use the requested prototype or the intrinsic fallback.
 // This fallback is limited to the polyfill's own realm.
