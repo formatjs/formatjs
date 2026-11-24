@@ -315,6 +315,8 @@ Compatible interval lookup requires the same fields and hour-cycle family;
 flexible `B` periods stay distinct from implicit AM/PM.
 Combined date/time styles wrap time intervals with the selected date pattern and
 locale connector, retaining a shared date and its grammatical context.
+Legacy packs fall back to their standard connector when the optional
+`dateTimeFormatAtTime` field is absent.
 
 Flexible day periods use CLDR format names and supplemental day-period rules,
 resolved through locale parents. `B` widths map to narrow/short/long names;
