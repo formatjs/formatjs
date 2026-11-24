@@ -1,6 +1,11 @@
 // Division precision: 40 extra digits (matches decimal.js default)
 const DIV_PRECISION = 40
-const mathMin = Math.min
+const {log10: mathLog10, min: mathMin} = Math
+const {isInteger, isNaN, isSafeInteger} = Number
+const NumberConstructor = Number
+const BigIntConstructor = BigInt
+const StringConstructor = String
+const parseInteger = parseInt
 
 const enum SpecialValue {
   NONE = 0,
@@ -18,8 +23,8 @@ function removeTrailingZeros(
   // Division commonly leaves 40 decimal zeros. Remove full chunks first.
   while (
     mantissa % 100000000n === 0n &&
-    Number.isSafeInteger(exponent) &&
-    Number.isSafeInteger(exponent + 8)
+    isSafeInteger(exponent) &&
+    isSafeInteger(exponent + 8)
   ) {
     mantissa /= 100000000n
     exponent += 8
@@ -46,7 +51,7 @@ function digitCount(n: bigint): number {
     count += 15
   }
   // Remaining digits
-  let r = Number(n)
+  let r = NumberConstructor(n)
   while (r >= 1) {
     r /= 10
     count++
@@ -60,7 +65,7 @@ const SMALL_POWERS_OF_TEN: bigint[] = [1n]
 function bigintPow10(n: number): bigint {
   if (n <= 0) return 1n
   // Bound retained powers; division repeatedly needs 10^40.
-  if (n <= 64 && Number.isInteger(n)) {
+  if (n <= 64 && isInteger(n)) {
     for (let i = SMALL_POWERS_OF_TEN.length; i <= n; i++) {
       SMALL_POWERS_OF_TEN.push(SMALL_POWERS_OF_TEN[i - 1] * TEN_BIGINT)
     }
@@ -126,7 +131,7 @@ function parseDecimalString(s: string): {
   let sciExp = 0
   let numPart: string
   if (eIdx !== -1) {
-    sciExp = parseInt(s.substring(eIdx + 1), 10)
+    sciExp = parseInteger(s.substring(eIdx + 1), 10)
     numPart = s.substring(idx, eIdx)
   } else {
     numPart = s.substring(idx)
@@ -160,7 +165,7 @@ function parseDecimalString(s: string): {
     }
   }
 
-  let mantissa = BigInt(combined)
+  let mantissa = BigIntConstructor(combined)
   if (negative) mantissa = -mantissa
 
   const [normMantissa, normExponent] = removeTrailingZeros(mantissa, exponent)
@@ -189,7 +194,7 @@ export class BigDecimal {
     }
 
     if (typeof value === 'number') {
-      if (Number.isNaN(value)) {
+      if (isNaN(value)) {
         this._mantissa = 0n
         this._exponent = 0
         this._special = SpecialValue.NAN
@@ -217,8 +222,8 @@ export class BigDecimal {
         this._negativeZero = Object.is(value, -0)
         return
       }
-      if (Number.isSafeInteger(value)) {
-        const normalized = removeTrailingZeros(BigInt(value), 0)
+      if (isSafeInteger(value)) {
+        const normalized = removeTrailingZeros(BigIntConstructor(value), 0)
         this._mantissa = normalized[0]
         this._exponent = normalized[1]
         this._special = SpecialValue.NONE
@@ -226,7 +231,7 @@ export class BigDecimal {
         return
       }
       // Convert via string to preserve exact decimal representation
-      value = String(value)
+      value = StringConstructor(value)
     }
 
     const parsed = parseDecimalString(value)
@@ -301,8 +306,8 @@ export class BigDecimal {
     // Powers of ten only shift scale. Preserve legacy unsafe-exponent arithmetic.
     if (
       (other._mantissa === 1n || other._mantissa === -1n) &&
-      Number.isSafeInteger(exponent) &&
-      Number.isSafeInteger(newExponent)
+      isSafeInteger(exponent) &&
+      isSafeInteger(newExponent)
     ) {
       return BigDecimal._create(
         other._mantissa === 1n ? this._mantissa : -this._mantissa,
@@ -448,7 +453,7 @@ export class BigDecimal {
         : this
     }
     if (this._mantissa === 0n) return new BigDecimal(0)
-    const m = this._mantissa ** BigInt(n)
+    const m = this._mantissa ** BigIntConstructor(n)
     const e = this._exponent * n
     const [nm, ne] = removeTrailingZeros(m, e)
     return BigDecimal._create(nm, ne, SpecialValue.NONE, false)
@@ -521,7 +526,7 @@ export class BigDecimal {
 
     // General case: log_b(x) = log10(x) / log10(b)
     const log10x = this._log10()
-    const log10b = new BigDecimal(Math.log10(base))
+    const log10b = new BigDecimal(mathLog10(base))
     return log10x.div(log10b)
   }
 
@@ -541,11 +546,11 @@ export class BigDecimal {
     // This avoids Math.pow(10, shift) overflow for shift > 308
     let log10Mantissa: number
     if (digits <= 15) {
-      log10Mantissa = Math.log10(Number(absMantissa))
+      log10Mantissa = mathLog10(NumberConstructor(absMantissa))
     } else {
       const shift = digits - 17
       const leading = absMantissa / bigintPow10(shift)
-      log10Mantissa = Math.log10(Number(leading)) + shift
+      log10Mantissa = mathLog10(NumberConstructor(leading)) + shift
     }
 
     // Total log10 = log10(mantissa) + exponent
@@ -685,8 +690,8 @@ export class BigDecimal {
     if (this._special === SpecialValue.POSITIVE_INFINITY) return Infinity
     if (this._special === SpecialValue.NEGATIVE_INFINITY) return -Infinity
     if (this._mantissa === 0n) return this._negativeZero ? -0 : 0
-    if (this._exponent === 0) return Number(this._mantissa)
-    return Number(this.toString())
+    if (this._exponent === 0) return NumberConstructor(this._mantissa)
+    return NumberConstructor(this.toString())
   }
 
   toString(): string {

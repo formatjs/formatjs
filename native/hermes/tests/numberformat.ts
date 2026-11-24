@@ -43,11 +43,14 @@ for (const pack of fixtures.packs) {
   Native.__addLocaleData(pack)
   Reference.__addLocaleData(JSON.parse(pack))
 }
-const {min, max} = Math
+const {min, max, log10} = Math
+const {isInteger, isNaN, isSafeInteger} = Number
 try {
-  Math.min = Math.max = () => {
-    throw new Error('Read public Math.min or Math.max during rounding')
+  const unexpected = () => {
+    throw new Error('Called a public numeric helper during rounding')
   }
+  Math.min = Math.max = Math.log10 = unexpected
+  Number.isInteger = Number.isNaN = Number.isSafeInteger = unexpected
   for (const Constructor of [Native, Reference]) {
     equal(
       new Constructor('en', {maximumFractionDigits: 2}).format(1.125),
@@ -68,6 +71,39 @@ try {
 } finally {
   Math.min = min
   Math.max = max
+  Math.log10 = log10
+  Number.isInteger = isInteger
+  Number.isNaN = isNaN
+  Number.isSafeInteger = isSafeInteger
+}
+const belowMidpoint = '1.124' + '9'.repeat(54) + 'e0'
+const aboveMidpoint = '1.125' + '0'.repeat(53) + '1e0'
+for (const Constructor of [Native, Reference]) {
+  const {Number, BigInt, String, parseInt} = globalThis
+  const formatter = new Constructor('en', {maximumSignificantDigits: 3})
+  const rejectCalls = {
+    apply() {
+      throw new Error('Called a public conversion function during formatting')
+    },
+  }
+  let results: string[]
+  try {
+    globalThis.Number = new Proxy(Number, rejectCalls)
+    globalThis.BigInt = new Proxy(BigInt, rejectCalls)
+    globalThis.String = new Proxy(String, rejectCalls)
+    globalThis.parseInt = new Proxy(parseInt, rejectCalls)
+    results = [
+      formatter.format(belowMidpoint),
+      formatter.format(aboveMidpoint),
+      formatter.format(1.125),
+    ]
+  } finally {
+    globalThis.Number = Number
+    globalThis.BigInt = BigInt
+    globalThis.String = String
+    globalThis.parseInt = parseInt
+  }
+  equal(results, ['1.12', '1.13', '1.13'], 'exact rounding near the midpoint')
 }
 for (const Constructor of [Native, Reference]) {
   const receiver = Object.create(Constructor.prototype)
