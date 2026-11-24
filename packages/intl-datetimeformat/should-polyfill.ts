@@ -3,44 +3,32 @@ import {match} from '@formatjs/intl-localematcher'
 import {supportedLocales} from '@formatjs_generated/cldr.supported-locales/intl-datetimeformat.js'
 
 function supportsDateStyle() {
-  try {
-    return !!(
-      new Intl.DateTimeFormat(undefined, {
-        dateStyle: 'short',
-      } as any).resolvedOptions() as any
-    ).dateStyle
-  } catch {
-    return false
-  }
+  return !!(
+    new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'short',
+    } as any).resolvedOptions() as any
+  ).dateStyle
 }
 
 function preservesTimeZoneIdentifiers() {
-  try {
-    return arrayEvery(
-      ['Asia/Calcutta', 'Etc/UTC'],
-      timeZone =>
-        new Intl.DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone ===
-        timeZone
-    )
-  } catch {
-    return false
-  }
+  return arrayEvery(
+    ['Asia/Calcutta', 'Etc/UTC'],
+    timeZone =>
+      new Intl.DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone ===
+      timeZone
+  )
 }
 
 /**
  * https://bugs.chromium.org/p/chromium/issues/detail?id=865351
  */
 function hasChromeLt71Bug() {
-  try {
-    return (
-      new Intl.DateTimeFormat('en', {
-        hourCycle: 'h11',
-        hour: 'numeric',
-      } as any).formatToParts(0)[2].type !== 'dayPeriod'
-    )
-  } catch {
-    return false
-  }
+  return (
+    new Intl.DateTimeFormat('en', {
+      hourCycle: 'h11',
+      hour: 'numeric',
+    } as any).formatToParts(0)[2].type !== 'dayPeriod'
+  )
 }
 
 /**
@@ -87,15 +75,19 @@ function hasRequiredMethods() {
 }
 
 export function shouldPolyfill(locale = 'en'): string | undefined {
-  if (
-    typeof Intl === 'undefined' ||
-    !hasRequiredMethods() ||
-    hasChromeLt71Bug() ||
-    hasUnthrownDateTimeStyleBug() ||
-    !supportsDateStyle() ||
-    !preservesTimeZoneIdentifiers() ||
-    !supportedLocalesOf(locale)
-  ) {
-    return locale ? match([locale], supportedLocales, 'en') : undefined
+  try {
+    if (
+      typeof Intl !== 'undefined' &&
+      hasRequiredMethods() &&
+      !hasChromeLt71Bug() &&
+      !hasUnthrownDateTimeStyleBug() &&
+      supportsDateStyle() &&
+      preservesTimeZoneIdentifiers() &&
+      supportedLocalesOf(locale)
+    )
+      return undefined
+  } catch {
+    // A partial host can throw even on a valid ECMA-402 probe.
   }
+  return locale ? match([locale], supportedLocales, 'en') : undefined
 }
