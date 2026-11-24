@@ -76,6 +76,8 @@ impl UnitResolver {
         }
     }
     pub fn prepare(&self, unit: Unit, input: Option<UnitStyle>) -> Result<PreparedUnit, Error> {
+        // ECMA-402 §13.5.6 steps 1–4 validate style and derive defaults.
+        // https://tc39.es/ecma402/#sec-getdurationunitoptions
         if input.is_some_and(|style| {
             style == UnitStyle::Fractional
                 || (style.numeric()
@@ -118,7 +120,7 @@ impl UnitResolver {
             display_default,
         })
     }
-    // ECMA-402 §13.5.6.2 validates style/display against the preceding unit.
+    // ECMA-402 §13.5.6 step 7 validates display and the preceding style.
     // https://tc39.es/ecma402/#sec-validatedurationunitstyle
     pub fn finish(
         &mut self,
@@ -135,6 +137,8 @@ impl UnitResolver {
         {
             return Err(Error::InvalidOption);
         }
+        // ECMA-402 §13.5.6 step 9 pads minutes or seconds after a numeric unit.
+        // https://tc39.es/ecma402/#sec-getdurationunitoptions
         if matches!(prepared.unit, Unit::Minutes | Unit::Seconds)
             && self.previous.is_some_and(UnitStyle::numeric)
         {
@@ -217,6 +221,9 @@ impl Configuration {
         })
     }
 }
+// ECMA-402 §13.1.1 step 16 bounds fractionalDigits before flooring.
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat
+// https://tc39.es/ecma402/#sec-defaultnumberoption
 pub(crate) fn fractional_digits(value: Option<f64>) -> Result<Option<u8>, Error> {
     value
         .map(|value| {

@@ -137,7 +137,7 @@
       result += (index ? ',' : '') + quote(values[index])
     return result + ']'
   }
-  // Constructor uses GetOptionsObject. FilterLocales boxes primitives.
+  // ECMA-402 §§9.2.8 step 3 and 9.2.9 step 1 use different option coercions.
   // https://tc39.es/ecma402/#sec-resolveoptions
   // https://tc39.es/ecma402/#sec-filterlocales
   function options(value: unknown, strict = false): any {
@@ -258,16 +258,17 @@
     throw new BadReceiver('Invalid duration')
   }
   function format(receiver: unknown, input: unknown, mode: number): any {
-    // ECMA-402 §13.3.3–13.3.4: require the instance slot before coercion.
+    // ECMA-402 §§13.3.3–13.3.4 steps 2–4 check the receiver before reading fields.
     // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.format
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.formatToParts
     const model = slot(receiver),
       record = numbers(input)
-    // ECMA-402 §13.5.3 steps 23–24 validate the record after all JS reads.
+    // ECMA-402 §13.5.3 steps 23–25 validate the record after all JS reads.
     // https://tc39.es/ecma402/#sec-todurationrecord
     return decoded(nativeFormat(model, record.values, record.defined, mode))
   }
   class DurationFormat extends null {
-    // ECMA-402 §13.1.1 steps 1–3: allocate from NewTarget before resolving options.
+    // ECMA-402 §13.1.1 steps 1–2 allocate from NewTarget.
     // https://tc39.es/ecma402/#sec-Intl.DurationFormat
     constructor(
       locales: unknown = undefined,
@@ -281,6 +282,10 @@
           ? requestedPrototype
           : prototype
       )
+      // ECMA-402 §13.1.1 steps 3–11 resolve locale and numbering before style.
+      // https://tc39.es/ecma402/#sec-Intl.DurationFormat
+      // ECMA-402 §9.2.8 steps 2–7 canonicalize locales before reading options.
+      // https://tc39.es/ecma402/#sec-resolveoptions
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
       const opts = options(optionsInput, true)
       const matcher = option(opts, 'localeMatcher', ['lookup', 'best fit'])
@@ -290,6 +295,8 @@
       const construction = handle(
         nativeBegin(request(requested, matcher, system))
       )
+      // ECMA-402 §13.1.1 steps 12–15 read style, then unit options in table order.
+      // https://tc39.es/ecma402/#sec-Intl.DurationFormat
       check(
         nativeStyle(
           construction,
@@ -298,6 +305,8 @@
           )
         )
       )
+      // ECMA-402 §13.5.6 steps 1 and 5–7 read style before display, then validate.
+      // https://tc39.es/ecma402/#sec-getdurationunitoptions
       for (let index = 0; index < fields.length; index++) {
         check(
           nativeUnit(
@@ -326,6 +335,8 @@
           )
         )
       }
+      // ECMA-402 §13.1.1 steps 16–17 read fractionalDigits last.
+      // https://tc39.es/ecma402/#sec-Intl.DurationFormat
       const rawDigits = opts.fractionalDigits
       const digits = rawDigits === undefined ? undefined : +rawDigits
       const model = handle(nativeFinish(construction, digits))
@@ -336,7 +347,8 @@
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
-      // ECMA-402 §13.2.2 https://tc39.es/ecma402/#sec-Intl.DurationFormat.supportedLocalesOf
+      // ECMA-402 §13.2.2 steps 2–3 canonicalize locales before filtering.
+      // https://tc39.es/ecma402/#sec-Intl.DurationFormat.supportedLocalesOf
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
       const matcher = option(options(optionsInput), 'localeMatcher', [
         'lookup',

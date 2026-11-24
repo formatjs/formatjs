@@ -19,6 +19,8 @@ fn lookup(options: &ResolutionOptions) -> Result<bool, Error> {
 pub fn available_locales() -> Result<&'static [String], Error> {
     Ok(&metadata::load()?.available)
 }
+// ECMA-402 §13.2.2 steps 2–3 canonicalize locales before filtering.
+// https://tc39.es/ecma402/#sec-Intl.DurationFormat.supportedLocalesOf
 pub fn supported_locales(
     requested: &[String],
     options: &ResolutionOptions,
@@ -71,6 +73,8 @@ impl Renderer {
             })
             .transpose()?;
         let data = metadata::load()?;
+        // ECMA-402 §9.2.7 steps 1–7 match a locale and capture its data.
+        // https://tc39.es/ecma402/#sec-resolvelocale
         let matched = if lookup {
             requested.iter().enumerate().find_map(|(index, tag)| {
                 matcher::lookup(&data.available, std::slice::from_ref(tag))
@@ -99,6 +103,8 @@ impl Renderer {
             locale_data.nu.iter().any(|value| value == system)
                 || systems.iter().any(|value| value == system)
         };
+        // ECMA-402 §9.2.7 steps 11–13 apply the default, extension and option.
+        // https://tc39.es/ecma402/#sec-resolvelocale
         let mut numbering_system = locale_data
             .nu
             .first()
@@ -188,6 +194,8 @@ impl DurationFormat {
             .locales
             .get(&resolution.data_locale)
             .ok_or_else(|| Error::InvalidData(resolution.data_locale.clone()))?;
+        // ECMA-402 §13.1.1 steps 7–10 select the clock separators.
+        // https://tc39.es/ecma402/#sec-Intl.DurationFormat
         let separator = locale
             .separator
             .get(&resolution.numbering_system)
@@ -204,6 +212,8 @@ impl DurationFormat {
     pub fn resolved_options(&self) -> &ResolvedOptions {
         &self.resolved
     }
+    // ECMA-402 §13.3.4 steps 4–8 return parts with units where present.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.formatToParts
     pub fn format_to_parts(
         &self,
         renderer: &mut Renderer,
@@ -217,6 +227,8 @@ impl DurationFormat {
             duration,
         )
     }
+    // ECMA-402 §13.3.3 steps 4–7 concatenate part values.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.format
     pub fn format(
         &self,
         renderer: &mut Renderer,

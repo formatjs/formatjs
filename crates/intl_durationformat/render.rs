@@ -94,6 +94,9 @@ impl NumberKey {
                 options.unit_display = Some(width.name().into());
             }
         }
+        // ECMA-402 §§13.5.11 steps 11–14 and 13.5.15 step 4.h.ii set precision.
+        // https://tc39.es/ecma402/#sec-formatnumericseconds
+        // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
         match self.fraction {
             Fraction::Default => {}
             Fraction::Flexible => {
@@ -222,6 +225,10 @@ impl Renderer {
                     || Unit::ALL[Unit::Seconds as usize..]
                         .iter()
                         .any(|unit| duration.get(*unit) != 0));
+            // ECMA-402 §13.5.15 step 4.h.iii and §13.5.12 steps 10–18
+            // select visible fields and emit the sign once.
+            // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+            // https://tc39.es/ecma402/#sec-formatnumericunits
             if value != 0 || options.display == Display::Always || minutes_between {
                 let negative_zero = !sign_displayed && value == 0 && duration.is_negative();
                 let fraction = if fold {
@@ -270,6 +277,9 @@ impl Renderer {
                     groups.push(Vec::new());
                 }
                 let group = groups.last_mut().ok_or(RenderError::InvalidParts)?;
+                // ECMA-402 §§13.5.10–11 step 2 insert separators without a unit.
+                // https://tc39.es/ecma402/#sec-formatnumericminutes
+                // https://tc39.es/ecma402/#sec-formatnumericseconds
                 if separated {
                     group.push(Part {
                         kind: "literal",
@@ -293,7 +303,7 @@ impl Renderer {
                 break;
             }
         }
-        // ECMA-402 §13.5.14: format unit groups as a list, using short for digital.
+        // ECMA-402 §13.5.14 steps 1–6 construct a unit list, using short for digital.
         // https://tc39.es/ecma402/#sec-listformatparts
         let width = match configuration.style {
             Style::Long => Width::Long,
@@ -312,6 +322,8 @@ impl Renderer {
             )?;
             self.list_cache.insert(key.clone(), formatter);
         }
+        // ECMA-402 §13.5.14 steps 7–14 format group strings and restore their parts.
+        // https://tc39.es/ecma402/#sec-listformatparts
         let strings: Vec<Vec<u16>> = groups
             .iter()
             .map(|parts| {

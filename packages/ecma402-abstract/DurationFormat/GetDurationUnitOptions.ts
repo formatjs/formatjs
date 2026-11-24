@@ -73,6 +73,8 @@ export function GetDurationUnitOptions(
   ) {
     throw new RangeErrorConstructor("Can't mix numeric and non-numeric styles")
   }
+  // ECMA-402 §13.5.6 steps 8–9 apply clock padding after validation.
+  // https://tc39.es/ecma402/#sec-getdurationunitoptions
   if (twoDigitHours && unit === 'hours') {
     style = '2-digit'
   }
