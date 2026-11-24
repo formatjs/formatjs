@@ -203,6 +203,7 @@ formatjs_test(
         "tests/format-range.test.ts",
         "tests/ftp-main.test.ts",
         "tests/index.test.ts",
+        "tests/locale-provider.test.ts",
         "tests/offset-timezone.test.ts",
         "tests/pattern-records.test.ts",
         ":tests-locale-data-ar",  # keep: generated locale data imported by tests

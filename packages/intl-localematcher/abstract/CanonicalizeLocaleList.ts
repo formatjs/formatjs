@@ -1,6 +1,7 @@
 let canonicalIntl: typeof Intl | undefined = globalThis.Intl
 const getOwnDescriptor = Object.getOwnPropertyDescriptor
 const apply = Reflect.apply
+const providerKey = Symbol.for('@formatjs/intlCanonicalizeLocaleList')
 
 function ownCanonicalizer() {
   const descriptor =
@@ -15,9 +16,15 @@ let canonicalize = ownCanonicalizer()
 export function CanonicalizeLocaleList(
   locales?: string | readonly string[]
 ): string[] {
-  // A polyfill can supply the provider when the host has none.
+  // Read the provider registered by the FormatJS installers.
+  if (canonicalIntl === undefined) canonicalIntl = globalThis.Intl
+  const descriptor =
+    canonicalIntl && getOwnDescriptor(canonicalIntl, providerKey)
+  const registered = descriptor && getOwnDescriptor(descriptor, 'value')?.value
+  if (typeof registered === 'function')
+    return apply(registered, canonicalIntl, [locales])
+
   if (typeof canonicalize !== 'function') {
-    if (canonicalIntl === undefined) canonicalIntl = globalThis.Intl
     canonicalize = ownCanonicalizer()
   }
   return apply(canonicalize, canonicalIntl, [locales])

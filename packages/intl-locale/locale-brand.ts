@@ -1,4 +1,5 @@
 import {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
+import {registerCanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {getInternalSlotsIfPresent} from '#packages/intl-locale/get_internal_slots.js'
 import type {Locale} from '#packages/intl-locale/index.js'
 
@@ -54,6 +55,7 @@ export function registerLocaleBrand(
       configurable: true,
       enumerable: false,
     })
+    registerCanonicalizeLocaleList(intl, getCanonicalLocales)
     target = canonicalize
   }
   if (
