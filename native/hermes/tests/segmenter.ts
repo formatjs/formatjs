@@ -305,6 +305,31 @@ equal(
   'supported extension preserved'
 )
 const words = new Native('en', {granularity: 'word'})
+for (const [input, expected] of [
+  ['\u200d\udc00🇨🇦', ['\u200d', '\udc00', '🇨🇦']],
+  ['\n\udc00\u0301', ['\n', '\udc00\u0301']],
+  ['\ud800\u0301', ['\ud800\u0301']],
+] as const) {
+  const segments = words.segment(input)
+  const records = Array.from(segments) as {
+    index: number
+    segment: string
+  }[]
+  equal(
+    records.map(record => record.segment),
+    expected,
+    'ill-formed word boundaries'
+  )
+  for (const record of records) {
+    for (
+      let index = record.index;
+      index < record.index + record.segment.length;
+      index++
+    ) {
+      equal(segments.containing(index), record, 'ill-formed word containing')
+    }
+  }
+}
 for (const [text, expected] of [
   ['こんにちは世界', ['こんにちは', '世界']],
   ['ทุกสองสัปดาห์', ['ทุก', 'สอง', 'สัปดาห์']],

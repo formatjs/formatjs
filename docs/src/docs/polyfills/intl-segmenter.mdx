@@ -48,6 +48,8 @@ The `Segments` object returned by `segment()` is:
 - **Iterable** - Can be used with `for...of` loops
 - **`containing(index)`** - Finds the segment containing a UTF-16 code-unit index
 
+Segment records preserve the original UTF-16 text, including lone surrogates.
+
 #### Segment Object Properties
 
 Each segment has:
