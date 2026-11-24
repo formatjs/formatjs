@@ -21,7 +21,10 @@ import '@formatjs/intl-pluralrules/locale-data/tr.js'
 import '@formatjs/intl-pluralrules/locale-data/uk.js'
 import '@formatjs/intl-pluralrules/locale-data/zh.js'
 import {NumberFormat} from '#packages/intl-numberformat/core'
-import {toLocaleString} from '#packages/intl-numberformat/to_locale_string.js'
+import {
+  installNumberLocaleMethods,
+  toLocaleString,
+} from '#packages/intl-numberformat/to_locale_string.js'
 
 const LOCALES = [
   'en',
@@ -119,12 +122,16 @@ it('should lookup locale correctly', function () {
   ).toBe('1,000 US gal')
 })
 
-it('supportedLocalesOf should return correct result based on data loaded', function () {
-  expect(NumberFormat.supportedLocalesOf(['zh', 'en-US', 'af'])).toEqual([
+it('supportedLocalesOf uses best fit by default and honors prefix lookup', () => {
+  const locales = ['zh', 'en-US', 'af', 'zz-ZZ']
+  expect(NumberFormat.supportedLocalesOf(locales)).toEqual([
     'zh',
     'en-US',
+    'af',
   ])
-  expect(NumberFormat.supportedLocalesOf(['af'])).toEqual([])
+  expect(
+    NumberFormat.supportedLocalesOf(locales, {localeMatcher: 'lookup'})
+  ).toEqual(['zh', 'en-US'])
 })
 it('should not crash if unit is not specified', function () {
   expect(new NumberFormat().resolvedOptions().unit).toBeUndefined()
@@ -134,6 +141,43 @@ it('formats BigInt values through toLocaleString ponyfill', function () {
   expect(toLocaleString(1234567890123456789n, 'en')).toBe(
     '1,234,567,890,123,456,789'
   )
+})
+
+it('installed number locale methods read their own receiver slots', () => {
+  const numberDescriptor = Object.getOwnPropertyDescriptor(
+    Number.prototype,
+    'toLocaleString'
+  )!
+  const bigIntDescriptor = Object.getOwnPropertyDescriptor(
+    BigInt.prototype,
+    'toLocaleString'
+  )!
+  const options = {
+    get style(): never {
+      throw new Error('options read')
+    },
+  }
+  const boxed = Object(1234)
+  boxed.valueOf = () => 0
+
+  installNumberLocaleMethods()
+  try {
+    const numberMethod = Number.prototype.toLocaleString
+    const bigIntMethod = BigInt.prototype.toLocaleString
+    expect(numberMethod.length).toBe(0)
+    expect(bigIntMethod.length).toBe(0)
+    expect(Reflect.apply(numberMethod, boxed, ['en'])).toBe('1,234')
+    expect(Reflect.apply(bigIntMethod, Object(1234n), ['en'])).toBe('1,234')
+    expect(() => Reflect.apply(numberMethod, 12n, ['en', options])).toThrow(
+      TypeError
+    )
+    expect(() => Reflect.apply(bigIntMethod, 12, ['en', options])).toThrow(
+      TypeError
+    )
+  } finally {
+    Object.defineProperty(Number.prototype, 'toLocaleString', numberDescriptor)
+    Object.defineProperty(BigInt.prototype, 'toLocaleString', bigIntDescriptor)
+  }
 })
 
 // Some test262
@@ -272,7 +316,54 @@ it('chose compact pattern with rounded number', () => {
   expect(nf.format(999995000)).toEqual('1.00B')
 })
 
+test('fraction digit limits expose positive zero for negative zero inputs', () => {
+  const formatter = new NumberFormat('en', {
+    minimumFractionDigits: -0,
+    maximumFractionDigits: -0,
+  })
+  const {minimumFractionDigits, maximumFractionDigits} =
+    formatter.resolvedOptions()
+  expect(minimumFractionDigits).toBe(0)
+  expect(maximumFractionDigits).toBe(0)
+})
+
 describe('For wrong options NumberFormat correctly throws exception', () => {
+  it.each([1, 3])(
+    'checks rounding increment %i without public collection methods',
+    roundingIncrement => {
+      const originalFrom = Array.from
+      const originalJoin = Array.prototype.join
+      const unexpected = (): never => {
+        throw new TypeError('Read a public collection method')
+      }
+      let formatter: InstanceType<typeof NumberFormat> | undefined
+      let error: unknown
+      try {
+        formatter = Reflect.construct(NumberFormat, [
+          'en',
+          {
+            get roundingIncrement() {
+              Array.from = unexpected
+              Array.prototype.join = unexpected
+              return roundingIncrement
+            },
+          },
+        ])
+      } catch (caught) {
+        error = caught
+      } finally {
+        Array.from = originalFrom
+        Array.prototype.join = originalJoin
+      }
+      if (roundingIncrement === 1) {
+        expect(error).toBeUndefined()
+        expect(formatter?.resolvedOptions().roundingIncrement).toBe(1)
+      } else {
+        expect(error).toBeInstanceOf(RangeError)
+      }
+    }
+  )
+
   it('uses an invalid value for rounding increment', () => {
     const createInstance = () =>
       new NumberFormat('en', {roundingIncrement: 3 as any})
@@ -651,6 +742,26 @@ describe('Symbol coercion', () => {
   })
 })
 
+it('normalizes currency without reading a public uppercase method', () => {
+  const original = String.prototype.toUpperCase
+  let currency
+  try {
+    currency = new NumberFormat('en', {
+      style: 'currency',
+      currency: 'usd',
+      get unitDisplay() {
+        String.prototype.toUpperCase = () => {
+          throw new Error('Read a public uppercase method')
+        }
+        return 'short' as const
+      },
+    }).resolvedOptions().currency
+  } finally {
+    String.prototype.toUpperCase = original
+  }
+  expect(currency).toBe('USD')
+})
+
 describe('unit option case sensitivity', () => {
   it.each([
     'MILE',
@@ -790,6 +901,41 @@ describe('NumberFormat receiver branding', () => {
   })
 })
 
+test('uses the exact magnitude for decimal strings just below a power of ten', () => {
+  const formatter = new NumberFormat('en', {
+    notation: 'scientific',
+    maximumFractionDigits: 2,
+    roundingMode: 'trunc',
+  })
+  expect(formatter.format('9999999999999999999999999')).toBe('9.99E24')
+  expect(formatter.format('0.0999999999999999999')).toBe('9.99E-2')
+})
+
+test('resolvedOptions defines own properties without invoking inherited setters', () => {
+  const formatter = new NumberFormat('en', {roundingPriority: 'morePrecision'})
+  const previous = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'roundingPriority'
+  )
+  let options: ReturnType<typeof formatter.resolvedOptions>
+  try {
+    Object.defineProperty(Object.prototype, 'roundingPriority', {
+      configurable: true,
+      set() {
+        throw new Error('called inherited roundingPriority setter')
+      },
+    })
+    options = formatter.resolvedOptions()
+  } finally {
+    if (previous)
+      Object.defineProperty(Object.prototype, 'roundingPriority', previous)
+    else Reflect.deleteProperty(Object.prototype, 'roundingPriority')
+  }
+  expect(
+    Object.getOwnPropertyDescriptor(options, 'roundingPriority')?.value
+  ).toBe('morePrecision')
+})
+
 test.each(['auto', 'morePrecision', 'lessPrecision'] as const)(
   'resolvedOptions preserves rounding property order for %s',
   roundingPriority => {
@@ -871,22 +1017,103 @@ it('preserves range separators and only collapses matching affixes', () => {
   expect(scientific.formatRange(3000, 5000)).toBe('3E3–5E3')
 })
 
-it.each(['en', 'de-CH', 'es-CL', 'fy', 'ar-SS'])(
-  'places unsigned approximate currency at the %s minus-sign position',
-  locale => {
+it('keeps affix-only range endpoints intact', () => {
+  const original = require('./locale-data/en.json')
+  const fixture = JSON.parse(JSON.stringify(original))
+  // A locale can supply a unit affix with no number for a particular category.
+  fixture.data.units.simple.meter.long.one = 'meters'
+  fixture.data.units.simple.meter.long.other = 'meters{0}meters'
+  try {
+    NumberFormat.__addLocaleData(fixture)
+    const formatter = new NumberFormat('en', {
+      style: 'unit',
+      unit: 'meter',
+      unitDisplay: 'long',
+    })
+    expect(formatter.formatRangeToParts(1, 2)).toEqual([
+      {type: 'unit', value: 'meters', source: 'startRange'},
+      {type: 'literal', value: ' – ', source: 'shared'},
+      {type: 'unit', value: 'meters', source: 'endRange'},
+      {type: 'integer', value: '2', source: 'endRange'},
+      {type: 'unit', value: 'meters', source: 'endRange'},
+    ])
+    expect(formatter.formatRangeToParts(1, 1)).toEqual([
+      {type: 'approximatelySign', value: '~', source: 'shared'},
+      {type: 'unit', value: 'meters', source: 'shared'},
+    ])
+  } finally {
+    NumberFormat.__addLocaleData(original)
+  }
+})
+
+it('creates range parts without invoking public array methods or source setters', () => {
+  const formatter = new NumberFormat('en')
+  const map = Array.prototype.map
+  const splice = Array.prototype.splice
+  const source = Object.getOwnPropertyDescriptor(Object.prototype, 'source')
+  let setterCalls = 0
+  let reversed: ReturnType<typeof formatter.formatRangeToParts>
+  let approximate: ReturnType<typeof formatter.formatRangeToParts>
+  let formatted: string
+  try {
+    const unexpected = (): never => {
+      throw new Error('Used a public number range operation')
+    }
+    Array.prototype.map = unexpected
+    Array.prototype.splice = unexpected
+    Object.defineProperty(Object.prototype, 'source', {
+      configurable: true,
+      set() {
+        setterCalls++
+      },
+    })
+    reversed = formatter.formatRangeToParts(5, 3)
+    approximate = formatter.formatRangeToParts(2, 2)
+    formatted = formatter.formatRange(5, 3)
+  } finally {
+    Array.prototype.map = map
+    Array.prototype.splice = splice
+    if (source) Object.defineProperty(Object.prototype, 'source', source)
+    else Reflect.deleteProperty(Object.prototype, 'source')
+  }
+  // ECMA-402 §16.5.18 steps 2–9 preserve order and assign source fields.
+  // https://tc39.es/ecma402/#sec-partitionnumberrangepattern
+  expect(reversed!).toEqual([
+    {type: 'integer', value: '5', source: 'startRange'},
+    {type: 'literal', value: '–', source: 'shared'},
+    {type: 'integer', value: '3', source: 'endRange'},
+  ])
+  expect(approximate!).toEqual([
+    {type: 'approximatelySign', value: '~', source: 'shared'},
+    {type: 'integer', value: '2', source: 'shared'},
+  ])
+  expect(formatted!).toBe('5–3')
+  expect(setterCalls).toBe(0)
+})
+
+it.each([
+  ['en', '~', 0],
+  ['de-CH', '≈', 2],
+  ['es-CL', '~', 2],
+  ['fy', '~', 3],
+  ['ar-SS', '~', 1],
+] as const)(
+  'inserts the %s approximation sign while retaining the endpoint parts',
+  (locale, sign, index) => {
     const nf = new NumberFormat(locale, {
       style: 'currency',
       currency: 'EUR',
       numberingSystem: 'latn',
       maximumFractionDigits: 0,
     })
-    const expected = nf.formatToParts(-3).map(part => ({
-      ...part,
-      ...(part.type === 'minusSign'
-        ? {type: 'approximatelySign', value: locale === 'de-CH' ? '≈' : '~'}
-        : {}),
+    const expected = nf
+      .formatToParts(2.9)
+      .map(part => ({...part, source: 'shared'}))
+    expected.splice(index, 0, {
+      type: 'approximatelySign',
+      value: sign,
       source: 'shared',
-    }))
+    })
     expect(nf.formatRangeToParts(2.9, 3.1)).toEqual(expected)
   }
 )
@@ -1027,6 +1254,47 @@ it('falls back to the currency code when a locale has no translated currency nam
   ).toEqual([{type: 'currency', value: 'USD'}])
 })
 
+it('uses the registered English name for XAD', () => {
+  const formatter = new NumberFormat('en', {
+    style: 'currency',
+    currency: 'XAD',
+    currencyDisplay: 'name',
+  })
+  expect(formatter.formatToParts(1)).toContainEqual({
+    type: 'currency',
+    value: 'Arab Accounting Dinar',
+  })
+})
+
+it.each(['symbol', 'narrowSymbol', 'name', 'code'] as const)(
+  'uses the currency code when %s has no locale entry',
+  currencyDisplay => {
+    const currency = 'ZZQ'
+    const formatter = new NumberFormat('en', {
+      style: 'currency',
+      currency,
+      currencyDisplay,
+    })
+    const previous = Object.getOwnPropertyDescriptor(Object.prototype, currency)
+    let parts: ReturnType<typeof formatter.formatToParts>
+    try {
+      Object.defineProperty(Object.prototype, currency, {
+        configurable: true,
+        get() {
+          throw new Error('inherited currency data')
+        },
+      })
+      parts = formatter.formatToParts(2)
+    } finally {
+      if (previous) Object.defineProperty(Object.prototype, currency, previous)
+      else Reflect.deleteProperty(Object.prototype, currency)
+    }
+    expect(parts.filter(part => part.type === 'currency')).toEqual([
+      {type: 'currency', value: currency},
+    ])
+  }
+)
+
 it('localizes exponent digits without applying mantissa rounding increments', () => {
   for (const options of [
     {notation: 'scientific', numberingSystem: 'arab'},
@@ -1052,4 +1320,101 @@ it('localizes exponent digits without applying mantissa rounding increments', ()
       )
     }
   }
+})
+
+it('keeps localized mantissa, grouping, and exponent digits private', () => {
+  // Use a fresh locale pack so the first render decodes its pattern plan.
+  NumberFormat.__addLocaleData(
+    JSON.parse(JSON.stringify(require('./locale-data/en.json')))
+  )
+  const grouped = new NumberFormat('en', {numberingSystem: 'adlm'})
+  const scientific = new NumberFormat('en', {
+    notation: 'scientific',
+    numberingSystem: 'arab',
+  })
+  const originalExec = RegExp.prototype.exec
+  const originalEntries = Array.prototype.entries
+  const originalMap = Array.prototype.map
+  void /probe(.)/.exec('probe!')
+  const before = RegExp.lastMatch
+  let parts: ReturnType<typeof grouped.formatToParts>
+  let sci: ReturnType<typeof scientific.formatToParts>
+  let after: string
+  try {
+    const unexpected = (): never => {
+      throw new Error('Used a public digit partitioning operation')
+    }
+    RegExp.prototype.exec = unexpected
+    Array.prototype.entries = unexpected
+    Array.prototype.map = unexpected
+    parts = grouped.formatToParts(12345.67)
+    sci = scientific.formatToParts(0.0001234)
+    after = RegExp.lastMatch
+  } finally {
+    RegExp.prototype.exec = originalExec
+    Array.prototype.entries = originalEntries
+    Array.prototype.map = originalMap
+  }
+  // ECMA-402 §16.5.4 step 4.c.iii groups and substitutes private digit strings.
+  // https://tc39.es/ecma402/#sec-partitionnotationsubpattern
+  expect(parts!).toEqual([
+    {type: 'integer', value: '𞥑𞥒'},
+    {type: 'group', value: ','},
+    {type: 'integer', value: '𞥓𞥔𞥕'},
+    {type: 'decimal', value: '.'},
+    {type: 'fraction', value: '𞥖𞥗'},
+  ])
+  expect(sci!.find(part => part.type === 'exponentInteger')?.value).toBe('٤')
+  expect(after!).toBe(before)
+})
+
+it('renders currency, compound units, and compact patterns without public regex hooks', () => {
+  NumberFormat.__addLocaleData(
+    JSON.parse(JSON.stringify(require('./locale-data/en.json')))
+  )
+  const code = new NumberFormat('en', {
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'code',
+  })
+  const name = new NumberFormat('en', {
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'name',
+  })
+  const unit = new NumberFormat('en', {
+    style: 'unit',
+    unit: 'meter-per-second',
+    unitDisplay: 'long',
+  })
+  const compact = new NumberFormat('en', {notation: 'compact'})
+  const exec = RegExp.prototype.exec
+  const replace = String.prototype.replace
+  void /probe(.)/.exec('probe!')
+  const before = RegExp.lastMatch
+  let result: string[]
+  let parts: ReturnType<typeof unit.formatToParts>
+  let after: string
+  try {
+    const unexpected = (): never => {
+      throw new Error('Used a public number pattern operation')
+    }
+    RegExp.prototype.exec = unexpected
+    String.prototype.replace = unexpected
+    result = [code.format(2), name.format(2), compact.format(2000)]
+    parts = unit.formatToParts(2)
+    after = RegExp.lastMatch
+  } finally {
+    RegExp.prototype.exec = exec
+    String.prototype.replace = replace
+  }
+  // ECMA-402 §16.5.3 step 9 expands patterns from private locale data.
+  // https://tc39.es/ecma402/#sec-partitionnumberpattern
+  expect(result!).toEqual(['USD\u00a02.00', '2.00 US dollars', '2K'])
+  expect(parts!).toEqual([
+    {type: 'integer', value: '2'},
+    {type: 'literal', value: ' '},
+    {type: 'unit', value: 'meters per second'},
+  ])
+  expect(after!).toBe(before)
 })

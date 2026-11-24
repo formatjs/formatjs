@@ -1,6 +1,16 @@
 import {it, expect} from 'vitest'
 import _formatToParts from '#packages/ecma402-abstract/NumberFormat/format_to_parts.js'
 import Decimal from '@formatjs/bigdecimal'
+import {cardinalRules} from '@formatjs_generated/cldr.number/cardinal-rules.js'
+import {match} from '@formatjs/intl-localematcher'
+
+function pluralCategory(locale: string) {
+  const rule = cardinalRules[match([locale], Object.keys(cardinalRules), 'en')]
+  return (value: Decimal, formatted?: string) =>
+    value.isFinite()
+      ? rule(formatted ?? value.toString(), false)
+      : ('other' as const)
+}
 
 function format(...args: Parameters<typeof _formatToParts>): string {
   return _formatToParts(...args)
@@ -25,7 +35,7 @@ const baseNumberResult = {
 
 it('formats decimal', () => {
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '1',
@@ -39,7 +49,7 @@ it('formats decimal', () => {
 it('formats percentage', () => {
   const options = {...defaultOptions, style: 'percent'} as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '42',
@@ -59,7 +69,7 @@ it('formats percentage with compact display', () => {
     compactDisplay: 'short',
   } as const
   const data = require('./locale-data/en.json').data
-  const pl = new Intl.PluralRules('en-US')
+  const pl = pluralCategory('en-US')
   const n = {
     ...baseNumberResult,
     formattedString: '1',
@@ -79,7 +89,7 @@ it('formats accounting currency sign pattern', () => {
     currencySign: 'accounting',
   } as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '42',
@@ -103,7 +113,7 @@ it('formats currency where the number precedes the symbol', () => {
     numberingSystem: 'arab',
   } as const
   const data = require('./locale-data/ar-SS.json').data
-  const pl = new Intl.PluralRules('ar-SS')
+  const pl = pluralCategory('ar-SS')
   const n = {
     ...baseNumberResult,
     formattedString: '12',
@@ -130,7 +140,7 @@ it('respects currencyBefore insertion rule', () => {
     currencySign: 'standard',
   } as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '123',
@@ -152,7 +162,7 @@ it('respects currencyBefore insertion rule', () => {
 // - narrow symbol: -১২৩.০০$
 it('respects currencyAfter insertion rule', () => {
   const data = require('./locale-data/bn.json').data
-  const pl = new Intl.PluralRules('bn')
+  const pl = pluralCategory('bn')
   const n = {
     ...baseNumberResult,
     formattedString: '123.00',
@@ -175,7 +185,7 @@ it('respects currencyAfter insertion rule', () => {
 // The same insertion rule also applies to currency compact display.
 it('respects currencyAfter insertion rule for compact display', () => {
   const data = require('./locale-data/en.json').data
-  const pl = new Intl.PluralRules('bn')
+  const pl = pluralCategory('bn')
   const n = {
     ...baseNumberResult,
     formattedString: '10',
@@ -205,7 +215,7 @@ it('formats unit pattern with both prefix and suffix', () => {
     unitDisplay: 'long',
   } as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '123',
@@ -227,7 +237,7 @@ it('formats currency name pattern with currency before number', () => {
   } as const
   const data = structuredClone(require('./locale-data/sw.json').data)
   data.numbers.currency.latn.unitPattern = '{1} {0}'
-  const pl = new Intl.PluralRules('sw')
+  const pl = pluralCategory('sw')
   const n = {
     ...baseNumberResult,
     formattedString: '123.00',
@@ -251,7 +261,7 @@ it('keeps style and sign outside prefix compact notation', () => {
     compactDisplay: 'long',
   } as const
   const data = require('./locale-data/sw.json').data
-  const pl = new Intl.PluralRules('sw')
+  const pl = pluralCategory('sw')
   const n = {
     ...baseNumberResult,
     formattedString: '100',
@@ -288,7 +298,7 @@ it('properly unquotes characters from CLDR pattern', () => {
     numberingSystem: 'beng',
   } as const
   const data = require('./locale-data/bn.json').data
-  const pl = new Intl.PluralRules('bn')
+  const pl = pluralCategory('bn')
   const n = {
     ...baseNumberResult,
     formattedString: '1000',
@@ -314,7 +324,7 @@ it('determines plurality of unit based on the number value of the scientific not
     notation: 'scientific',
   } as const
   const data = require('./locale-data/en-BS.json').data
-  const pl = new Intl.PluralRules('en-BS')
+  const pl = pluralCategory('en-BS')
   const n = {
     ...baseNumberResult,
     formattedString: '1',
@@ -335,7 +345,7 @@ it('determines the plurality of the currency in the compact notation based on th
     compactDisplay: 'short',
   } as const
   const data = require('./locale-data/en-GB.json').data
-  const pl = new Intl.PluralRules('en-GB')
+  const pl = pluralCategory('en-GB')
   const n = {
     ...baseNumberResult,
     formattedString: '1',
@@ -355,7 +365,7 @@ it('determines plurality of currency based on the number value of scientific not
     notation: 'scientific',
   } as const
   const data = require('./locale-data/en-BS.json').data
-  const pl = new Intl.PluralRules('en-BS')
+  const pl = pluralCategory('en-BS')
   const n = {
     ...baseNumberResult,
     formattedString: '1',
@@ -380,7 +390,7 @@ it('uses decimal compact pattern to format currency with currencyDisplay === "na
     currencyDisplay: 'name',
   } as const
   const data = require('./locale-data/de.json').data
-  const pl = new Intl.PluralRules('de')
+  const pl = pluralCategory('de')
   const n = {
     ...baseNumberResult,
     formattedString: '10',
@@ -403,7 +413,7 @@ it('falls back to non-compact formatting when the matching CLDR compact pattern 
     useGrouping: true,
   } as const
   const data = require('./locale-data/de.json').data
-  const pl = new Intl.PluralRules('de')
+  const pl = pluralCategory('de')
   const n = {
     ...baseNumberResult,
     formattedString: '10000',
@@ -416,7 +426,7 @@ it('falls back to non-compact formatting when the matching CLDR compact pattern 
 it('correctly handles NaN and Infinity in scientific notation', () => {
   const options = {...defaultOptions, notation: 'scientific'} as const
   const data = require('./locale-data/en.json').data
-  const pl = new Intl.PluralRules('en')
+  const pl = pluralCategory('en')
   const n1 = {
     ...baseNumberResult,
     formattedString: '∞',
@@ -448,7 +458,7 @@ it('formats compound unit that has the specialized pattern available', () => {
     unitDisplay: 'short',
   } as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '42',
@@ -467,7 +477,7 @@ it('formats compound unit that has perUnitPattern available', () => {
     unitDisplay: 'long',
   } as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '5',
@@ -492,7 +502,7 @@ it('formats compound unit with fallback "per" compound pattern', () => {
     unitDisplay: 'long',
   } as const
   const data = require('./locale-data/ja.json').data
-  const pl = new Intl.PluralRules('ja')
+  const pl = pluralCategory('ja')
   const n = {
     ...baseNumberResult,
     formattedString: '42',
@@ -510,7 +520,7 @@ it('formats compound unit with fallback "per" compound pattern', () => {
 
 it('correctly formats NaN to parts', () => {
   const data = require('./locale-data/en.json').data
-  const pl = new Intl.PluralRules('en')
+  const pl = pluralCategory('en')
   const n = {
     ...baseNumberResult,
     formattedString: 'NaN',
@@ -523,7 +533,7 @@ it('correctly formats NaN to parts', () => {
 
 it('correctly formats Infinity to parts', () => {
   const data = require('./locale-data/en.json').data
-  const pl = new Intl.PluralRules('en')
+  const pl = pluralCategory('en')
   const n = {
     ...baseNumberResult,
     formattedString: '∞',
@@ -536,7 +546,7 @@ it('correctly formats Infinity to parts', () => {
 
 it('can format numbers with primary and secondary grouping sizes', () => {
   const data = require('./locale-data/hi.json').data
-  const pl = new Intl.PluralRules('hi')
+  const pl = pluralCategory('hi')
   const n = {
     ...baseNumberResult,
     formattedString: '123556.456',
@@ -565,7 +575,7 @@ it('can format numbers with primary and secondary grouping sizes', () => {
 
 it('groups supplementary-plane digits without splitting surrogate pairs', () => {
   const data = require('./locale-data/en.json').data
-  const pl = new Intl.PluralRules('en')
+  const pl = pluralCategory('en')
   const number = {
     ...baseNumberResult,
     formattedString: '12345.67',
@@ -612,7 +622,7 @@ it('groups supplementary-plane digits without splitting surrogate pairs', () => 
 
 it('preserves primary and secondary grouping sizes for mapped digits', () => {
   const data = require('./locale-data/bn.json').data
-  const pl = new Intl.PluralRules('bn')
+  const pl = pluralCategory('bn')
   const number = {
     ...baseNumberResult,
     formattedString: '12345678',
@@ -674,7 +684,7 @@ it.each([
         roundedNumber: new Decimal(123456789),
       },
       data,
-      new Intl.PluralRules('en'),
+      pluralCategory('en'),
       {
         ...defaultOptions,
         numberingSystem,

@@ -8,7 +8,10 @@ import {
   type TABLE_6,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import {getDateTimePatternFields} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {
+  availableFormatHourCycle,
+  getDateTimePatternFields,
+} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {
   DATE_TIME_PROPS,
   additionPenalty,
@@ -54,7 +57,12 @@ export function bestFitFormatMatcherScore(
   for (let propIndex = 0; propIndex < DATE_TIME_PROPS.length; propIndex++) {
     const prop = DATE_TIME_PROPS[propIndex]
     const optionsProp = options[prop as TABLE_6]
-    const formatProp = format[prop as TABLE_6]
+    // LDML matching skeletons allow adding precision to a seconds pattern.
+    // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
+    const formatProp =
+      prop === 'fractionalSecondDigits' && format.second !== undefined
+        ? (format.fractionalSecondDigits ?? optionsProp)
+        : format[prop as TABLE_6]
     if (optionsProp === undefined && formatProp !== undefined) {
       score -= additionPenalty
     } else if (optionsProp !== undefined && formatProp === undefined) {
@@ -91,22 +99,31 @@ export function bestFitFormatMatcherScore(
 
 /**
  * https://tc39.es/ecma402/#sec-bestfitformatmatcher
- * Just alias to basic for now
  * @param options
  * @param formats
- * @param implDetails Implementation details
+ * @param supplementalFormat
  */
 export function BestFitFormatMatcher(
   options: Intl.DateTimeFormatOptions,
-  formats: Formats[]
+  formats: Formats[],
+  supplementalFormat?: Formats
 ): Formats {
   // ECMA-402 §11.5.3: preserve the implementation-defined matching score/adjustment.
   // https://tc39.es/ecma402/#sec-bestfitformatmatcher
   let bestScore = -Infinity
   let bestFormat = formats[0]
   invariant(formatListIsArray(formats), 'formats should be a list of things')
-  for (let formatIndex = 0; formatIndex < formats.length; formatIndex++) {
-    const format = formats[formatIndex]
+  const hour12 = availableFormatHourCycle(options, formats)
+  const count = formats.length + (supplementalFormat ? 1 : 0)
+  for (let formatIndex = 0; formatIndex < count; formatIndex++) {
+    const format =
+      formatIndex < formats.length ? formats[formatIndex] : supplementalFormat!
+    if (hour12 !== undefined) {
+      const fields = getDateTimePatternFields(format)
+      if (fields.hour !== undefined && (fields.hour12 === true) !== hour12) {
+        continue
+      }
+    }
     const score = bestFitFormatMatcherScore(options, format)
     if (
       score > bestScore ||

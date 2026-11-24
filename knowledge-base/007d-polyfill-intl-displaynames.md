@@ -28,9 +28,10 @@ Loads all CLDR locale data via dynamic imports and extracts:
 - **Language names**: Display names for language codes with style variants (standard, long, short, narrow)
 - **Region names**: Display names for territory/country codes
 - **Script names**: Display names for script codes (Latn, Cyrl, etc.)
-- **Currency names**: Currency display names with plural forms
+- **Currency names**: CLDR display names, with missing entries left to fallback
 - **Calendar names**: Calendar system display names
 - **Date/time field names**: Field labels (year, month, day, etc.) with width variants
+  and ECMA-402 field keys such as `dayPeriod`
 
 ### Build Pipeline
 
@@ -52,6 +53,10 @@ Stage 3: supported-locales.generated.ts
 
 ## Code validation and fallback
 
+`of()` and `resolvedOptions()` require initialized instance slots. Per
+[ECMA-402 §12.3.2](https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.resolvedOptions),
+the options result includes `languageDisplay` only for `type: 'language'`.
+
 Calendar codes use hyphen-separated Unicode type identifiers; underscore forms
 throw `RangeError`. When `fallback: 'code'` applies, `of` returns the canonical
 code, such as `ZZZ` for an unknown currency supplied as `zzz`.
@@ -59,12 +64,11 @@ code, such as `ZZZ` for an unknown currency supplied as `zzz`.
 Language display-name codes accept Unicode language subtags of two, three, or
 five to eight ASCII letters, with optional script, region, and variant subtags.
 
-Language names use CLDR longest-match lookup, then compose remaining script and
-region names with `patterns.locale` and `patterns.separator`. The optional
-separator defaults to `{0}, {1}` for older locale packs. Standard language data
-contains base names so regional dialect names do not leak into standard output.
-Missing qualifier names respect code/undefined fallback. Unknown variants are
-not silently discarded. Nested parentheses use CLDR bracket replacements.
+Language names use CLDR longest-match lookup for dialect names, then compose
+remaining script, region, and variant names with `patterns.locale` and
+`patterns.separator`. Standard names start with the base language. The optional
+separator defaults to `{0}, {1}` for older locale packs. Missing qualifiers use
+the configured fallback. Nested parentheses use CLDR bracket replacements.
 
 ECMA-402 leaves locale data implementation-defined; the composition follows the
 [CLDR locale display-name algorithm](https://unicode.org/reports/tr35/tr35-general.html#locale_display_name_algorithm).
@@ -79,8 +83,9 @@ while ICU4J [ignores a short region name equal to its code](https://github.com/u
 such as `US`. Preferred outputs follow CLDR longest-match lookup and short-name
 data. Test262 retains the two existing cross-realm constructor baseline failures.
 
-Calendar display-name data uses BCP 47 identifiers, including `gregory` and
-`ethioaa`, rather than CLDR legacy keys.
+Calendar display names use BCP 47 identifiers such as `gregory` and `ethioaa`.
+Well-formed CLDR calendar aliases with their own labels, such as
+`ethiopic-amete-alem`, also resolve.
 
 ## Rust port
 

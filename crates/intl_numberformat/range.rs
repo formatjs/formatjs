@@ -47,6 +47,8 @@ impl NumberFormat {
         let end = Numeric::parse(end)?;
         self.partition_range(start, end)
     }
+    // ECMA-402 §16.5.21 concatenates range parts in their locale order.
+    // https://tc39.es/ecma402/#sec-formatnumericrange
     pub fn format_range_values(
         &self,
         start: &crate::MathematicalValue,
@@ -58,6 +60,8 @@ impl NumberFormat {
             .map(|part| part.value.as_str())
             .collect())
     }
+    // ECMA-402 §16.5.22 returns fresh parts carrying their range source.
+    // https://tc39.es/ecma402/#sec-formatnumericrangetoparts
     pub fn format_range_values_to_parts(
         &self,
         start: &crate::MathematicalValue,
@@ -65,20 +69,23 @@ impl NumberFormat {
     ) -> Result<Vec<Part>, Error> {
         self.partition_range(Numeric::from_value(start)?, Numeric::from_value(end)?)
     }
+    // ECMA-402 §16.5.18 validates, formats, then compares endpoints.
+    // https://tc39.es/ecma402/#sec-partitionnumberrangepattern
     fn partition_range(&self, start: Numeric, end: Numeric) -> Result<Vec<Part>, Error> {
         if start.special == Some("NaN") || end.special == Some("NaN") {
             return Err(Error::Range("range"));
         }
-        let mut a = self.partition(&start, false)?;
-        let mut b = self.partition(&end, false)?;
+        let start = self.render(&start)?;
+        let mut a = self.partition_rendered(&start)?;
+        let mut b = self.partition(&end)?;
         if a.iter().map(|part| part.value.as_str()).collect::<String>()
             == b.iter().map(|part| part.value.as_str()).collect::<String>()
         {
-            let mut parts = self.partition(&start, true)?;
-            for part in &mut parts {
+            self.insert_approximate_sign(&mut a, &start)?;
+            for part in &mut a {
                 part.source = Some("shared");
             }
-            return Ok(parts);
+            return Ok(a);
         }
         for part in &mut a {
             part.source = Some("startRange");
@@ -89,9 +96,13 @@ impl NumberFormat {
         let mut separator = self.data.numbers.symbols[&self.system].range_sign.clone();
         let (a_prefix, b_prefix) = (affix_len(&a, false), affix_len(&b, false));
         let (a_suffix, b_suffix) = (affix_len(&a, true), affix_len(&b, true));
-        let can_share = !a.iter().chain(&b).any(|part| {
-            part.kind == "literal" && (part.value.contains('(') || part.value.contains(')'))
-        });
+        // ECMA-402 §16.5.20 preserves affix-only endpoints in full.
+        // https://tc39.es/ecma402/#sec-collapsenumberrange
+        let can_share = a_prefix + a_suffix < a.len()
+            && b_prefix + b_suffix < b.len()
+            && !a.iter().chain(&b).any(|part| {
+                part.kind == "literal" && (part.value.contains('(') || part.value.contains(')'))
+            });
         let suffix_same =
             can_share && same(&a[a.len() - a_suffix..], &b[b.len() - b_suffix..], false);
         let shared_unit = suffix_same

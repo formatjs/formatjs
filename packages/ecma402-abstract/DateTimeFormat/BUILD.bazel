@@ -19,7 +19,6 @@ formatjs_library(
         "PartitionDateTimeRangePattern.ts",
         "TemporalDateTime.ts",
         "TimeZoneOffset.ts",
-        "ToDateTimeOptions.ts",
         "ToLocalTime.ts",
         "UnpackTimeZoneData.ts",
         "skeleton.ts",
@@ -27,7 +26,6 @@ formatjs_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract",

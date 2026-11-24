@@ -1,5 +1,6 @@
 import {readFileSync} from 'node:fs'
 import {dirname, join} from 'node:path'
+import {createContext, runInContext} from 'node:vm'
 import {Collator as FormatJSCollator} from '#packages/intl-collator/index.js'
 import {describe, expect, it} from 'vitest'
 
@@ -94,4 +95,30 @@ describe('Intl.Collator conformance with native Node Intl.Collator', () => {
       expect(formatjsResult).toBe(nativeResult)
     })
   }
+})
+
+it('uses the resolved data locale for a host locale alias', () => {
+  const context = createContext()
+  runInContext(
+    "Object.defineProperty(Intl, Symbol.for('@formatjs/intlHostDefaultLocale'), {value: 'sv-US'})",
+    context
+  )
+  runInContext(
+    readFileSync(new URL('../test262-polyfill.js', import.meta.url), 'utf8'),
+    context
+  )
+  const results = runInContext(
+    `
+    [undefined, 'sv-US'].map(requested => {
+      const collator = new Intl.Collator(requested, {localeMatcher: 'lookup'})
+      const {locale, collation} = collator.resolvedOptions()
+      return {locale, collation, order: Math.sign(collator.compare('z', 'å'))}
+    })
+  `,
+    context
+  )
+  expect(results).toEqual([
+    {locale: 'sv-US', collation: 'default', order: -1},
+    {locale: 'sv-US', collation: 'default', order: -1},
+  ])
 })

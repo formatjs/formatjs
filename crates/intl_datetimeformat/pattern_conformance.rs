@@ -233,6 +233,10 @@ fn creation(registry: &mut Registry, case: &CreationCase) -> Result<Value, Error
     let resolution = registry.resolve(&case.locales, &options)?;
     let components: Components = serde_json::from_value(case.options.clone())
         .map_err(|_| Error::InvalidOption("components"))?;
+    // Capture the resolved record before simulating an option getter that
+    // reloads locale data. This driver receives components as plain JSON.
+    // ECMA-402 §11.1.2 step 13 https://tc39.es/ecma402/#sec-createdatetimeformat
+    let snapshot = Snapshot::capture(registry, resolution, components)?;
     if let Some(Reload {
         json,
         phase: ReloadPhase::BeforeSnapshot,
@@ -240,7 +244,6 @@ fn creation(registry: &mut Registry, case: &CreationCase) -> Result<Value, Error
     {
         registry.add_locale_data(json)?;
     }
-    let snapshot = Snapshot::capture(registry, resolution, components)?;
     if let Some(Reload {
         json,
         phase: ReloadPhase::AfterSnapshot,

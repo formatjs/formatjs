@@ -66,7 +66,7 @@ fn unicode_type(value: &str) -> bool {
 
 fn weekday(value: &str) -> &str {
     // WeekdayToUValue 1–2 / Table 26: only exact numeric strings are mapped.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L786-L790
+    // https://tc39.es/ecma402/#sec-weekdaytouvalue
     match value {
         "0" | "7" => "sun",
         "1" => "mon",
@@ -82,8 +82,8 @@ fn weekday(value: &str) -> &str {
 /// Validate immediately after each JS GetOption, before reading later options.
 pub fn validate_option(name: &str, value: &str) -> Result<(), LocaleError> {
     // UpdateLanguageId 1–9 and Intl.Locale 16–35 validate syntax/allowed values.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L89-L108
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L38-L61
+    // https://tc39.es/ecma402/#sec-updatelanguageid
+    // https://tc39.es/ecma402/#sec-Intl.Locale
     let valid = match name {
         "language" => {
             ((2..=3).contains(&value.len()) || (5..=8).contains(&value.len()))
@@ -194,7 +194,7 @@ impl Locale {
     pub fn new(tag: &str, options: &LocaleOptions) -> Result<Self, LocaleError> {
         // Intl.Locale 11–14: validate and canonicalize the original tag before
         // overrides, so alias resolution keeps its original language context.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L33-L36
+        // https://tc39.es/ecma402/#sec-Intl.Locale
         let mut locale = Self::from_tag(tag)?;
         for (name, value) in [
             ("language", &options.language),
@@ -226,7 +226,7 @@ impl Locale {
         }
         // UpdateLanguageId 10–14 canonicalizes overrides before Unicode options;
         // an unchanged language ID is already canonical.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L109-L113
+        // https://tc39.es/ecma402/#sec-updatelanguageid
         if [
             &options.language,
             &options.script,
@@ -279,7 +279,10 @@ impl Locale {
         }
         // MakeLocaleRecord 4.e–f canonicalizes option values and stores exactly
         // the canonical keywords serialized in [[Locale]], including empty kn.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L136-L156
+        // https://tc39.es/ecma402/#sec-makelocalerecord
+        // ECMA-402 §§9.2.2 and 9.2.6 canonicalize the rewritten extension.
+        // https://tc39.es/ecma402/#sec-canonicalizeuvalue
+        // https://tc39.es/ecma402/#sec-insert-unicode-extension-and-canonicalize
         locale.rebuild_unicode();
         Ok(Self::parse(
             canonicalize_locale(&locale.emit_with_id(&locale.id))
@@ -309,6 +312,8 @@ impl Locale {
             };
             rest = &values[end..];
             let values = &values[..end];
+            // ECMA-402 §9.2.5 collects Unicode extension keyword/value components.
+            // https://tc39.es/ecma402/#sec-unicode-extension-components
             if singleton == b'u' {
                 let mut subtags = values.split('-').peekable();
                 let mut offset = 0;
@@ -398,21 +403,30 @@ impl Locale {
     pub fn as_str(&self) -> &str {
         &self.tag
     }
+    // ECMA-402 §15.5.1 returns the language identifier without extensions.
+    // https://tc39.es/ecma402/#sec-getlocalebasename
     pub fn base_name(&self) -> String {
         self.id.emit()
     }
+    // ECMA-402 §15.5.2 https://tc39.es/ecma402/#sec-getlocalelanguage
     pub fn language(&self) -> &str {
         &self.id.language
     }
+    // ECMA-402 §15.5.3 https://tc39.es/ecma402/#sec-getlocalescript
     pub fn script(&self) -> Option<&str> {
         self.id.script.as_deref()
     }
+    // ECMA-402 §15.5.4 https://tc39.es/ecma402/#sec-getlocaleregion
     pub fn region(&self) -> Option<&str> {
         self.id.region.as_deref()
     }
+    // ECMA-402 §15.5.5 joins variants when present.
+    // https://tc39.es/ecma402/#sec-getlocalevariants
     pub fn variants(&self) -> Option<String> {
         (!self.id.variants.is_empty()).then(|| self.id.variants.join("-"))
     }
+    // ECMA-402 §15.5.6 looks up a keyword in the parsed Unicode extension.
+    // https://tc39.es/ecma402/#sec-unicodeextensionvalue
     pub fn keyword(&self, key: &str) -> Option<&str> {
         self.keywords.get(key).map(String::as_str)
     }
@@ -460,7 +474,7 @@ impl Locale {
 
     pub fn maximize(&self) -> Self {
         // Intl.Locale.prototype.maximize 3–4 preserves variants/extensions.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L284-L285
+        // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.maximize
         self.with_id(Self::maximized_id(&self.id))
     }
 
@@ -486,6 +500,8 @@ impl Locale {
         self.with_id(maximal)
     }
 
+    // ECMA-402 §15.5.6–7 validates the keyword and canonicalizes its region.
+    // https://tc39.es/ecma402/#sec-canonicalunicodesubdivision
     fn subdivision_region(&self, key: &str) -> Option<TinyAsciiStr<3>> {
         let value = self.keyword(key)?;
         let size = if value.len() >= 3 && value.as_bytes()[..2].iter().all(u8::is_ascii_alphabetic)
@@ -514,7 +530,7 @@ impl Locale {
     fn region_preference(&self) -> (String, Option<String>) {
         // RegionPreference 1–4: explicit region, subdivision, likely region,
         // then world; the rg override is separate and only used with data.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L606-L616
+        // https://tc39.es/ecma402/#sec-regionpreference
         let region = self
             .id
             .region
@@ -528,26 +544,46 @@ impl Locale {
     }
 
     pub fn calendars(&self) -> Vec<String> {
+        self.calendars_with_support(None)
+    }
+
+    // ECMA-402 §15.2.2: locale-specific calendar data and calendar availability.
+    // https://tc39.es/ecma402/#sec-intl.locale-internal-slots
+    pub fn calendars_with_support(&self, available: Option<&[String]>) -> Vec<String> {
         if let Some(value) = self.keyword("ca") {
             return vec![value.to_owned()];
         }
         let (region, region_override) = self.region_preference();
-        // CalendarsOfLocale 2–9: override first, language-region before region.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L633-L648
+        // CalendarsOfLocale steps 2–6 select the preferred region's data.
+        // https://tc39.es/ecma402/#sec-calendarsoflocale
         for candidate in region_override.iter().chain(std::iter::once(&region)) {
             let key = format!("{}-{candidate}", self.id.language);
             if let Some(values) = lookup(CALENDARS, &key).or_else(|| lookup(CALENDARS, candidate)) {
-                return values
-                    .iter()
-                    .map(|value| {
-                        if *value == "gregorian" {
-                            "gregory"
-                        } else {
-                            value
-                        }
-                        .to_string()
-                    })
-                    .collect();
+                // Steps 7–11 canonicalize, filter and deduplicate in preference order.
+                let mut result = Vec::new();
+                for &value in *values {
+                    let value = if value == "gregorian" {
+                        "gregory"
+                    } else {
+                        value
+                    };
+                    let Ok(locale) =
+                        Self::new(&format!("und-u-ca-{value}"), &LocaleOptions::default())
+                    else {
+                        continue;
+                    };
+                    if let Some(calendar) = locale.keyword("ca")
+                        && available
+                            .is_none_or(|values| values.iter().any(|value| value == calendar))
+                        && !result.iter().any(|value| value == calendar)
+                    {
+                        result.push(calendar.to_owned());
+                    }
+                }
+                if !result.is_empty() {
+                    return result;
+                }
+                break;
             }
         }
         vec!["gregory".to_owned()]
@@ -559,7 +595,7 @@ impl Locale {
         }
         let (region, region_override) = self.region_preference();
         // HourCyclesOfLocale 2–7 uses the same region preference/data order.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L692-L702
+        // https://tc39.es/ecma402/#sec-hourcyclesoflocale
         for candidate in region_override.iter().chain(std::iter::once(&region)) {
             let key = format!("{}-{candidate}", self.id.language);
             if let Some(values) =
@@ -574,7 +610,7 @@ impl Locale {
     pub fn numbering_systems(&self, matched_default: Option<&str>) -> Vec<String> {
         // NumberingSystemsOfLocale 1–5: explicit nu, matched formatter default,
         // then latn. The embedding supplies its actual NumberFormat match.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L715-L727
+        // https://tc39.es/ecma402/#sec-numberingsystemsoflocale
         self.numbering_systems_with(|| matched_default.map(str::to_owned))
     }
 
@@ -613,7 +649,7 @@ impl Locale {
         }
         // CollationsOfLocale 1–5: requested restriction, lookup match or the
         // prescribed emoji/eor fallback, then a fresh sorted unique list.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L661-L674
+        // https://tc39.es/ecma402/#sec-collationsoflocale
         if !matched {
             return vec!["emoji".to_owned(), "eor".to_owned()];
         }
@@ -628,7 +664,7 @@ impl Locale {
 
     pub fn time_zones(&self) -> Option<Vec<String>> {
         // TimeZonesOfLocale 1–4: only an explicit region supplies time zones.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L739-L742
+        // https://tc39.es/ecma402/#sec-timezonesoflocale
         let region = self.region()?.to_ascii_lowercase();
         let mut values: Vec<_> = lookup(TIME_ZONES, &region)
             .copied()
@@ -644,7 +680,7 @@ impl Locale {
     pub fn text_info(&self) -> TextInfo {
         // TextDirectionOfLocale 1–6: script metadata, independent of extensions;
         // no known/likely script or unknown direction produces undefined.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L758-L767
+        // https://tc39.es/ecma402/#sec-textdirectionoflocale
         let script = self
             .id
             .script
@@ -661,7 +697,7 @@ impl Locale {
     pub fn week_info(&self) -> WeekInfo {
         let (region, region_override) = self.region_preference();
         // WeekInfoOfLocale 1–9: available override, region, world, then fw.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L877-L890
+        // https://tc39.es/ecma402/#sec-weekinfooflocale
         let fallback = (1, &[6, 7][..]);
         let (first_day, weekend) = *region_override
             .as_deref()
@@ -669,6 +705,8 @@ impl Locale {
             .or_else(|| lookup(WEEK_DATA, &region))
             .or_else(|| lookup(WEEK_DATA, "001"))
             .unwrap_or(&fallback);
+        // ECMA-402 §15.5.16 uses one-based weekdays, Monday first.
+        // https://tc39.es/ecma402/#sec-weekdayuvaluetonumber
         let day = self
             .keyword("fw")
             .and_then(|value| {

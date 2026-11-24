@@ -248,9 +248,8 @@
     define(target, name, descriptor)
   }
 
-  // Constructor 1–6: a derived constructor allocates its own ordinary receiver;
-  // read newTarget.prototype exactly once, before locale/option coercion.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L21-L26
+  // ECMA-402 §17.1.1 steps 1–6 allocate the receiver before locale and option coercion.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules
   class PluralRules extends null {
     constructor(
       locales: unknown = undefined,
@@ -260,17 +259,16 @@
       const receiver = create(
         isObject(requestedPrototype) ? requestedPrototype : prototype
       )
-      // ResolveOptions 1–4: locale-list access precedes option coercion/getters.
-      // PluralRules has no relevant Unicode extension keys or resolution options.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L303-L318
+      // ECMA-402 §9.2.8 steps 1–4 canonicalize locales before reading localeMatcher.
+      // https://tc39.es/ecma402/#sec-resolveoptions
       const requested = canonicalize(locales) as string[]
       const opts = options(optionsInput)
       const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
       const locale = match(requested, matcher === 'lookup', false) as string
       // Undefined options expose no getters; Rust resolves all defaults.
       if (optionsInput === undefined) return initialize(receiver, locale, '{}')
-      // Constructor 7–13: each enum's coercion/validation precedes the next Get.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
+      // ECMA-402 §17.1.1 steps 7–12 validate each enum before reading the next.
+      // https://tc39.es/ecma402/#sec-intl.pluralrules
       const kind = option(opts, 'type', types, 'cardinal')
       const notation = option(opts, 'notation', notations, 'standard')
       const compactDisplay = option(
@@ -363,6 +361,8 @@
           '}'
       )
     }
+    // ECMA-402 §17.2.2 canonicalizes locales before reading the matcher.
+    // https://tc39.es/ecma402/#sec-intl.pluralrules.supportedlocalesof
     static supportedLocalesOf(
       locales: unknown,
       optionsInput: unknown = undefined
@@ -394,12 +394,14 @@
       return decoded(nativeInfo()).default || ''
     }
   }
+  // ECMA-402 §17.3.1: class syntax supplies the prototype's constructor.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.constructor
   const prototype = PluralRules.prototype
   Object.setPrototypeOf(prototype, objectPrototype)
   const members = {
     select(this: unknown, value: unknown): string {
-      // select 1–4: receiver brand precedes ToIntlMathematicalValue.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L220-L223
+      // ECMA-402 §17.3.3 steps 1–4: check the receiver before coercion.
+      // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.select
       const handle = slot(this)
       let result: number
       if (typeof value === 'number') {
@@ -417,9 +419,9 @@
       return categories[result]
     },
     selectRange(this: unknown, start: unknown, end: unknown): string {
-      // selectRange 1–6: reject either undefined endpoint before coercing either;
+      // ECMA-402 §17.3.4 steps 1–6: reject undefined before coercion.
       // coerce start, then end, before Rust rejects any resulting NaN.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L233-L238
+      // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange
       const handle = slot(this)
       if (start === undefined || end === undefined)
         throw new BadReceiver('Range endpoints must be defined')
@@ -438,9 +440,8 @@
       return categories[result]
     },
     resolvedOptions(this: unknown): object {
-      // resolvedOptions 1–6: fresh ordinary object, fresh category array, and
-      // spec table property order. Null descriptors bypass prototype setters.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L112-L127
+      // ECMA-402 §17.3.2 steps 1–6: fresh result and categories in table order.
+      // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.resolvedoptions
       const values = decoded(
         nativeQuery(slot(this), '{"method":"resolvedOptions"}')
       )
@@ -482,8 +483,11 @@
   ]
   for (let index = 0; index < names.length; index++)
     data(prototype, names[index], members[names[index]])
+  // ECMA-402 §17.3.5 https://tc39.es/ecma402/#sec-intl.pluralrules.prototype-%symbol.tostringtag%
   data(prototype, Symbol.toStringTag, 'Intl.PluralRules', false)
   data(PluralRules, 'polyfilled', true)
+  // ECMA-402 §17.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype
   const descriptor = create(null)
   descriptor.writable = false
   define(PluralRules, 'prototype', descriptor)

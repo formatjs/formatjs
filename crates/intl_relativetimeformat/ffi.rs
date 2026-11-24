@@ -8,6 +8,7 @@ use std::{
 };
 pub struct RelativeRegistry(Registry);
 pub struct RelativeHandle(RelativeTimeFormat);
+pub struct RelativeResolution(Resolution);
 #[repr(C)]
 pub struct RelativeBytes {
     pub data: *mut u8,
@@ -126,6 +127,40 @@ struct ResolveRequest {
     #[serde(default)]
     options: LocaleOptions,
 }
+fn resolve(registry: &Registry, request: &str) -> Result<Resolution, i32> {
+    let request: ResolveRequest = serde_json::from_str(request).map_err(|_| 2)?;
+    let options = Options {
+        locale_matcher: request.options.locale_matcher,
+        numbering_system: request.options.numbering_system,
+        ..Default::default()
+    };
+    registry.resolve(&request.locales, &options).map_err(|_| 1)
+}
+
+/// Capture the resolved locale data before host option getters can reload it.
+/// # Safety
+/// Registry live; input readable for len bytes; out writable. Destroy result once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_resolve_snapshot(
+    registry: *const RelativeRegistry,
+    data: *const u8,
+    len: usize,
+    out: *mut *mut RelativeResolution,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let resolution = resolve(unsafe { &(*registry).0 }, unsafe { input(data, len)? })?;
+        unsafe { out.write(Box::into_raw(Box::new(RelativeResolution(resolution)))) };
+        Ok(())
+    })
+}
+
 /// Fix locale/nu before the host reads style and numeric. Does not retain fields.
 /// # Safety
 /// Registry live; input readable for len bytes; out writable. Free output once.
@@ -146,16 +181,7 @@ pub unsafe extern "C" fn formatjs_relative_resolve(
         return 2;
     }
     guarded(|| {
-        let request: ResolveRequest =
-            serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
-        let options = Options {
-            locale_matcher: request.options.locale_matcher,
-            numbering_system: request.options.numbering_system,
-            ..Default::default()
-        };
-        let resolution = unsafe { &(*registry).0 }
-            .resolve(&request.locales, &options)
-            .map_err(|_| 1)?;
+        let resolution = resolve(unsafe { &(*registry).0 }, unsafe { input(data, len)? })?;
         unsafe {
             output(encode(&resolution)?, out);
         }
@@ -168,6 +194,53 @@ struct FormatOptions {
     style: Option<String>,
     numeric: Option<String>,
 }
+impl From<FormatOptions> for Options {
+    fn from(options: FormatOptions) -> Self {
+        Self {
+            style: options.style,
+            numeric: options.numeric,
+            ..Default::default()
+        }
+    }
+}
+
+/// Construct a formatter from retained locale data and style/numeric options.
+/// # Safety
+/// Snapshot live; input readable for len bytes; out writable. Destroy result once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_create_from_snapshot(
+    snapshot: *const RelativeResolution,
+    data: *const u8,
+    len: usize,
+    out: *mut *mut RelativeHandle,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(ptr::null_mut()) };
+    if snapshot.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let options: FormatOptions =
+            serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
+        let resolution = unsafe { &(*snapshot).0 };
+        let data = resolution.data.clone().ok_or(2)?;
+        let model = RelativeTimeFormat::new(data, resolution, &options.into()).map_err(|_| 1)?;
+        unsafe { out.write(Box::into_raw(Box::new(RelativeHandle(model)))) };
+        Ok(())
+    })
+}
+
+/// # Safety
+/// Destroy a live snapshot once. Null is allowed.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_relative_snapshot_destroy(snapshot: *mut RelativeResolution) {
+    if !snapshot.is_null() {
+        unsafe { drop(Box::from_raw(snapshot)) };
+    }
+}
+
 #[derive(Deserialize)]
 struct CreateRequest {
     resolution: Resolution,
@@ -197,13 +270,8 @@ pub unsafe extern "C" fn formatjs_relative_create(
     guarded(|| {
         let request: CreateRequest =
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
-        let options = Options {
-            style: request.options.style,
-            numeric: request.options.numeric,
-            ..Default::default()
-        };
         let model = unsafe { &(*registry).0 }
-            .create_resolved(&request.resolution, &options)
+            .create_resolved(&request.resolution, &request.options.into())
             .map_err(|_| 1)?;
         unsafe {
             out.write(Box::into_raw(Box::new(RelativeHandle(model))));
@@ -212,7 +280,7 @@ pub unsafe extern "C" fn formatjs_relative_create(
     })
 }
 /// # Safety
-/// Registry live; input readable canonical locale array; out writable. Free once.
+/// Registry live; input readable JSON locale request; out writable. Free once.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn formatjs_relative_supported(
     registry: *const RelativeRegistry,
@@ -230,11 +298,14 @@ pub unsafe extern "C" fn formatjs_relative_supported(
         return 2;
     }
     guarded(|| {
-        let requested: Vec<String> =
+        let request: formatjs_intl_locale::matcher::FilterRequest =
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
+        let (requested, lookup) = request.into_parts();
         let requested =
             formatjs_intl_getcanonicallocales::get_canonical_locales(&requested).map_err(|_| 1)?;
-        let supported = unsafe { &(*registry).0 }.supported_locales(&requested);
+        let locales = unsafe { &(*registry).0 }.available_locales();
+        let supported =
+            formatjs_intl_locale::matcher::filter(locales, &requested, lookup).map_err(|_| 1)?;
         unsafe {
             output(encode(&supported)?, out);
         }

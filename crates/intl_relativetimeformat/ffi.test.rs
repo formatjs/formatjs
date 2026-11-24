@@ -98,6 +98,45 @@ fn loaded() -> (Registry, Value) {
     let resolution = registry.resolve(json!({"locales":["en"]})).unwrap();
     (registry, resolution)
 }
+
+#[test]
+fn abi_snapshot_can_outlive_the_registry() {
+    let (registry, _) = loaded();
+    let request = br#"{"locales":["en"]}"#;
+    let mut snapshot = ptr::null_mut();
+    assert_eq!(
+        unsafe {
+            formatjs_relative_resolve_snapshot(
+                registry.0,
+                request.as_ptr(),
+                request.len(),
+                &mut snapshot,
+            )
+        },
+        0
+    );
+    drop(registry);
+    let options = b"{}";
+    let mut model = ptr::null_mut();
+    let status = unsafe {
+        formatjs_relative_create_from_snapshot(
+            snapshot,
+            options.as_ptr(),
+            options.len(),
+            &mut model,
+        )
+    };
+    unsafe { formatjs_relative_snapshot_destroy(snapshot) };
+    assert_eq!(status, 0);
+    let model = Handle(model);
+    let result = model
+        .raw(json!({"method":"format","value":"2","unit":"day"}))
+        .unwrap();
+    assert_eq!(
+        serde_json::from_str::<String>(&result).unwrap(),
+        "in 2 days"
+    );
+}
 #[test]
 fn abi_reads_fields_after_resolution_and_owns_records_after_registry_release() {
     let (registry, resolution) = loaded();

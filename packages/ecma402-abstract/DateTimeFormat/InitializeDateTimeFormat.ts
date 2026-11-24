@@ -6,6 +6,7 @@ import {
   arraySome,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -31,9 +32,15 @@ import {
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {BasicFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.js'
 import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
-import {DateTimeStyleFormat} from '#packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.js'
+import {
+  DateTimeStyleFormat,
+  DateWithTimeZoneFormat,
+} from '#packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
-import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
+import {
+  calendarLocaleData,
+  DATE_TIME_PROPS,
+} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 const TemporalFormatMap = Map
 const temporalFormatMapGet = Map.prototype.get
@@ -57,6 +64,9 @@ function matchRangeWidths(
   // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
   // Temporal comparison §15.4.1 step46.m: adapt private selected-format records.
   // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+  const standaloneWeekday =
+    HasOwnProperty(format.format, 'weekdayStandalone') &&
+    format.format.weekdayStandalone
   const widths = {__proto__: null} as unknown as Partial<RangePatterns>
   for (let index = 0; index < rangeTextWidthFields.length; index++) {
     const field = rangeTextWidthFields[index]
@@ -118,7 +128,8 @@ function matchRangeWidths(
       __proto__: null,
       ...range,
       ...widths,
-      ...(range.weekdayStandalone && range.weekday
+      // Keep the interval's width when its weekday form differs from the single pattern.
+      ...(range.weekdayStandalone && !standaloneWeekday && range.weekday
         ? {weekday: range.weekday}
         : {}),
       ...(range.month === 'numeric' || range.month === '2-digit'
@@ -137,16 +148,53 @@ function matchRangeWidths(
   return result
 }
 
-function isTimeRelated(opt: Opt) {
-  for (const prop of ['hour', 'minute', 'second'] as Array<
-    keyof Pick<Opt, 'hour' | 'minute' | 'second'>
-  >) {
-    const value = opt[prop]
-    if (value !== undefined) {
-      return true
+function isTimeRelated(opt: Pick<Opt, 'hour' | 'minute' | 'second'>) {
+  return (
+    opt.hour !== undefined ||
+    opt.minute !== undefined ||
+    opt.second !== undefined
+  )
+}
+
+function matchComponents(
+  options: Opt,
+  formats: Formats[],
+  data: DateTimeFormatLocaleInternalData,
+  matcher: string
+): Formats {
+  const match = matcher === 'basic' ? BasicFormatMatcher : BestFitFormatMatcher
+  const zone = options.timeZoneName
+  // ECMA-402 §11.1.2 step 32.g–h matches components after defaults.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  if (
+    zone &&
+    !isTimeRelated(options) &&
+    options.dayPeriod === undefined &&
+    options.fractionalSecondDigits === undefined
+  ) {
+    const dates: Formats[] = []
+    for (let i = 0; i < formats.length; i++) {
+      const candidate = formats[i]
+      if (
+        !isTimeRelated(candidate) &&
+        candidate.dayPeriod === undefined &&
+        candidate.fractionalSecondDigits === undefined &&
+        candidate.timeZoneName === undefined
+      )
+        setDataProperty(dates, dates.length, candidate)
+    }
+    if (dates.length) {
+      // §11.5.2 step 10.c keeps the first format on a tie.
+      // https://tc39.es/ecma402/#sec-basicformatmatcher
+      const supplementalFormat = DateWithTimeZoneFormat(
+        match(options, dates),
+        zone,
+        data
+      )
+      return match(options, formats, supplementalFormat)
     }
   }
-  return false
+  return match(options, formats)
 }
 
 function resolveHourCycle(
@@ -154,25 +202,28 @@ function resolveHourCycle(
   data: DateTimeFormatLocaleInternalData,
   hour12?: boolean
 ) {
-  // ECMA-402 §11.1.2, steps 13–15: hour12 selects an independent locale
-  // preference, rather than deriving h11/h24 from the default cycle.
+  // ECMA-402 §11.1.2 steps 15–17 use separate locale preferences for hour12.
   // https://tc39.es/ecma402/#sec-createdatetimeformat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L78-L87
-  if (hour12 === true) {
-    return (
-      data.hourCycle12 ||
-      data.hc.find(cycle => cycle === 'h11' || cycle === 'h12') ||
-      'h12'
+  if (hour12 === undefined) return hc ?? data.hourCycle ?? 'h23'
+  const preference = hour12 ? 'hourCycle12' : 'hourCycle24'
+  const preferred = HasOwnProperty(data, preference)
+    ? data[preference]
+    : undefined
+  if (preferred) return preferred
+
+  // Older packs store the preference in the ordered list of supported cycles.
+  const cycles = data.hc
+  for (let index = 0; index < cycles.length; index++) {
+    const cycle = cycles[index]
+    if (cycle === null) continue
+    if (
+      hour12
+        ? cycle === 'h11' || cycle === 'h12'
+        : cycle === 'h23' || cycle === 'h24'
     )
+      return cycle
   }
-  if (hour12 === false) {
-    return (
-      data.hourCycle24 ||
-      data.hc.find(cycle => cycle === 'h23' || cycle === 'h24') ||
-      'h23'
-    )
-  }
-  return hc == null ? data.hourCycle : hc
+  return hour12 ? 'h12' : 'h23'
 }
 
 const createObject = Object.create
@@ -296,11 +347,12 @@ export function InitializeDateTimeFormat(
     timeZone: localeTimeZone,
   }: DateTimeFormatContext = {}
 ): Intl.DateTimeFormat {
+  // ECMA-402 §11.1.2 steps 2–14 and §9.2.8 steps 1–8 resolve locale options.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // https://tc39.es/ecma402/#sec-resolveoptions
   // @ts-ignore
   const requestedLocales: string[] = CanonicalizeLocaleList(locales)
   const options = CoerceOptionsToObject<Intl.DateTimeFormatOptions>(opts)
-  // Temporal §15.4.1 step 4 creates the locale resolution record.
-  // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
   let opt: Opt = createObject(null)
   let matcher = GetOption(
     options,
@@ -349,16 +401,30 @@ export function InitializeDateTimeFormat(
     opt as any,
     relevantExtensionKeys,
     localeData,
-    getDefaultLocale
+    getDefaultLocale,
+    'hostDefaultWithLocaleData'
   )
   internalSlots.locale = r.locale
   calendar = r.ca
   internalSlots.calendar = calendar
-  internalSlots.hourCycle = r.hc
   internalSlots.numberingSystem = r.nu
   const {dataLocale} = r
   internalSlots.dataLocale = dataLocale
-  // Temporal §15.4.1 steps 27–32 resolve the named or fixed-offset identifier.
+  // ECMA-402 §11.1.2 step 13 retains the resolved locale data before option reads.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  const rootLocaleData = r.localeData
+  invariant(!!rootLocaleData, `Missing locale data for ${dataLocale}`)
+  // ECMA-402 §11.1.2 steps 15–17 resolve the cycle from locale-wide preferences.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  const resolvedHourCycle = resolveHourCycle(r.hc, rootLocaleData, hour12)
+  const uses12HourCycle =
+    resolvedHourCycle === 'h11' || resolvedHourCycle === 'h12'
+  // ECMA-402 §11.1.2 steps 18–21 resolve the default, named, or offset zone.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // The Stage 4 integration reads the option before querying the host zone,
+  // matching native Intl when the option getter changes the host setting.
+  // https://github.com/tc39/ecma402/pull/1044
+  // Temporal §15.4.1 also checks for a conflicting ZonedDateTime zone.
   // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
   let {timeZone} = options
   if (timeZone !== undefined) {
@@ -383,15 +449,20 @@ export function InitializeDateTimeFormat(
       zoneNames: objectKeys(tzData),
       uppercaseLinks,
     }) ?? timeZone
-  // Temporal preserves the supplied identifier; formatting uses its target data.
-  // https://tc39.es/proposal-temporal/#sec-intl.datetimeformat
-  internalSlots.timeZone =
-    uppercaseIdentifiers[
-      temporalFormatApply(timeZoneUpperCase, timeZone, [])
-    ] ?? dataTimeZone
+  // ECMA-402 §11.1.2 steps 19.g and 20.c resolve offsets and named zones.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // Stage 4 Temporal preserves the supplied identifier and uses its target data.
+  // https://github.com/tc39/ecma402/pull/1044
+  internalSlots.timeZone = dataTimeZone
+  if (timeZone[0] !== '+' && timeZone[0] !== '-') {
+    const identifier = temporalFormatApply(timeZoneUpperCase, timeZone, [])
+    if (HasOwnProperty(uppercaseIdentifiers, identifier))
+      internalSlots.timeZone = uppercaseIdentifiers[identifier]
+  }
   internalSlots.dataTimeZone = dataTimeZone
 
-  // Temporal §15.4.1 step 35 creates the format options record.
+  // ECMA-402 §11.1.2 steps 22–25 read components in Table 16 order.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
   opt = createObject(null)
   opt.weekday = GetOption(
     options,
@@ -456,9 +527,6 @@ export function InitializeDateTimeFormat(
     ['2-digit', 'numeric'],
     undefined
   )
-  // ECMA-402 §11.1.2, step 25: read components in table order.
-  // https://tc39.es/ecma402/#sec-createdatetimeformat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L107-L116
   opt.fractionalSecondDigits = GetNumberOption(
     options,
     'fractionalSecondDigits',
@@ -481,10 +549,7 @@ export function InitializeDateTimeFormat(
     undefined
   )
 
-  const rootLocaleData = localeData[dataLocale]
-  invariant(!!rootLocaleData, `Missing locale data for ${dataLocale}`)
-  const dataLocaleData =
-    rootLocaleData.calendarData?.[calendar as string] ?? rootLocaleData
+  const dataLocaleData = calendarLocaleData(rootLocaleData, calendar as string)
   const formats = dataLocaleData.formats[calendar as string]
   // UNSPECCED: IMPLEMENTATION DETAILS
   if (!formats) {
@@ -494,6 +559,8 @@ export function InitializeDateTimeFormat(
       ).join(', ')}`
     )
   }
+  // ECMA-402 §11.1.2 steps 26–30 read the matcher and styles in order.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
   const formatMatcher = GetOption(
     options,
     'formatMatcher',
@@ -519,17 +586,9 @@ export function InitializeDateTimeFormat(
   internalSlots.timeStyle = timeStyle
 
   const temporalOptions = {...opt}
-  const temporalHourCycle = resolveHourCycle(
-    internalSlots.hourCycle,
-    dataLocaleData,
-    hour12
-  )
   let bestFormat
   if (dateStyle === undefined && timeStyle === undefined) {
-    // ECMA-402 §11.1.2 CreateDateTimeFormat, step 32.a–d: compute
-    // defaults from the already-read fields, without touching options again.
-    // https://tc39.es/ecma402/#sec-createdatetimeformat
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L135-L146
+    // ECMA-402 §11.1.2 step 32.a–f computes defaults from the private fields.
     const dateFields = ['weekday', 'year', 'month', 'day'] as const
     const timeFields = [
       'dayPeriod',
@@ -538,13 +597,11 @@ export function InitializeDateTimeFormat(
       'second',
       'fractionalSecondDigits',
     ] as const
-    const relevant =
-      required === 'date'
-        ? dateFields
-        : required === 'time'
-          ? timeFields
-          : [...dateFields, ...timeFields]
-    const needDefaults = arrayEvery(relevant, key => opt[key] === undefined)
+    const needDefaults =
+      (required === 'time' ||
+        arrayEvery(dateFields, key => opt[key] === undefined)) &&
+      (required === 'date' ||
+        arrayEvery(timeFields, key => opt[key] === undefined))
     if (needDefaults) {
       if (defaults !== 'time') {
         opt.year = 'numeric'
@@ -557,23 +614,13 @@ export function InitializeDateTimeFormat(
         opt.second = 'numeric'
       }
     }
-    if (formatMatcher === 'basic') {
-      bestFormat = BasicFormatMatcher(opt, formats)
-    } else {
-      // IMPL DETAILS START
-      if (isTimeRelated(opt)) {
-        const hc = resolveHourCycle(
-          internalSlots.hourCycle,
-          dataLocaleData,
-          hour12
-        )
-        opt.hour12 = hc === 'h11' || hc === 'h12'
-      }
-      // IMPL DETAILS END
-      bestFormat = BestFitFormatMatcher(opt, formats)
+    // Step 32.g–h selects the format with the requested matcher.
+    if (isTimeRelated(opt)) {
+      opt.hour12 = uses12HourCycle
     }
+    bestFormat = matchComponents(opt, formats, dataLocaleData, formatMatcher)
   } else {
-    // ECMA-402 §11.1.2 step 31.a: check the private component fields in order.
+    // ECMA-402 §11.1.2 step 31.a–c checks for conflicting fields or styles.
     for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
       const prop = DATE_TIME_PROPS[index]
       const p = opt[prop]
@@ -592,46 +639,31 @@ export function InitializeDateTimeFormat(
       throw new TypeErrorConstructor(
         'DateTimeFormat style conflicts with required type'
       )
-    // Spec: ECMA-402 11.1.2 CreateDateTimeFormat steps 12-14 resolve
-    // hour12 to hc; step 30.5 picks the style format; step 33 stores
-    // [[HourCycle]] when the selected format has [[hour]].
-    // FormatJS impl detail: pass that resolved 12/24 preference through
-    // because our style data is represented as concrete 12/24 patterns.
-    const hc =
-      timeStyle !== undefined
-        ? resolveHourCycle(internalSlots.hourCycle, dataLocaleData, hour12)
-        : undefined
+    // Step 31.d–e selects a style format. Pass the resolved hour cycle
+    // through because locale data stores separate 12- and 24-hour patterns.
     bestFormat = DateTimeStyleFormat(
       dateStyle,
       timeStyle,
       dataLocaleData,
       formats,
-      hc !== undefined ? hc === 'h11' || hc === 'h12' : undefined
+      timeStyle !== undefined ? uses12HourCycle : undefined
     )
   }
-  // IMPL DETAIL START
-  // For debugging
+  // ECMA-402 §11.1.2 step 33 stores the chosen format.
   internalSlots.format = bestFormat
-  // IMPL DETAIL END
   for (const prop in opt) {
     const p = bestFormat[prop as 'era']
     if (p !== undefined) {
       internalSlots[prop as 'year'] = p as 'numeric'
     }
   }
-  if (opt.dayPeriod !== undefined) {
-    internalSlots.dayPeriod = opt.dayPeriod
-  }
-  if (opt.fractionalSecondDigits !== undefined) {
-    internalSlots.fractionalSecondDigits = opt.fractionalSecondDigits
-  }
   let pattern
   let rangePatterns
+  // Step 34 exposes the hour cycle when the selected format has an hour.
   if (internalSlots.hour !== undefined) {
-    const hc = resolveHourCycle(internalSlots.hourCycle, dataLocaleData, hour12)
-    internalSlots.hourCycle = hc
+    internalSlots.hourCycle = resolvedHourCycle
 
-    if (hc === 'h11' || hc === 'h12') {
+    if (uses12HourCycle) {
       pattern = bestFormat.pattern12
       rangePatterns = bestFormat.rangePatterns12
     } else {
@@ -650,6 +682,22 @@ export function InitializeDateTimeFormat(
     internalSlots.locale,
     internalSlots.numberingSystem
   )
+  // ECMA-402 §11.2.3.1 Table 5 ties period and precision fields to the pattern.
+  // https://tc39.es/ecma402/#sec-datetimeformat-format-record
+  if (
+    opt.dayPeriod !== undefined &&
+    temporalFormatApply(timePatternIndexOf, pattern, ['{dayPeriod}']) >= 0
+  ) {
+    internalSlots.dayPeriod = opt.dayPeriod
+  }
+  if (
+    opt.fractionalSecondDigits !== undefined &&
+    temporalFormatApply(timePatternIndexOf, pattern, [
+      '{fractionalSecondDigits}',
+    ]) >= 0
+  ) {
+    internalSlots.fractionalSecondDigits = opt.fractionalSecondDigits
+  }
   internalSlots.pattern = pattern
   internalSlots.rangePatterns = matchRangeWidths(
     rangePatterns,
@@ -736,8 +784,7 @@ export function InitializeDateTimeFormat(
         DATE_TIME_PROPS,
         key => bestFormat[key] !== undefined && !arrayIncludes(allowed, key)
       )
-      selectedOptions.hour12 =
-        temporalHourCycle === 'h11' || temporalHourCycle === 'h12'
+      selectedOptions.hour12 = uses12HourCycle
       selected = !conflicting
         ? bestFormat
         : formatMatcher === 'basic'
@@ -766,38 +813,48 @@ export function InitializeDateTimeFormat(
         )
           selectedOptions.timeZoneName = 'short'
       }
-      selectedOptions.hour12 =
-        temporalHourCycle === 'h11' || temporalHourCycle === 'h12'
-      selected =
-        formatMatcher === 'basic'
-          ? BasicFormatMatcher(selectedOptions, formats)
-          : BestFitFormatMatcher(selectedOptions, formats)
+      selectedOptions.hour12 = uses12HourCycle
+      selected = matchComponents(
+        selectedOptions,
+        formats,
+        dataLocaleData,
+        formatMatcher
+      )
     }
     const slots = {...internalSlots}
     for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
       const key = DATE_TIME_PROPS[index]
       setDataProperty(slots, key, selected[key])
     }
-    if (selectedOptions.dayPeriod !== undefined)
-      slots.dayPeriod = selectedOptions.dayPeriod
-    if (selectedOptions.fractionalSecondDigits !== undefined)
-      slots.fractionalSecondDigits = selectedOptions.fractionalSecondDigits
-    slots.hourCycle = temporalHourCycle
-    const use12 =
-      selected.hour !== undefined &&
-      (temporalHourCycle === 'h11' || temporalHourCycle === 'h12')
+    slots.hourCycle = resolvedHourCycle
+    const use12 = selected.hour !== undefined && uses12HourCycle
     slots.pattern = applyExplicitTimePatternOptions(
       use12 ? selected.pattern12 : selected.pattern,
       selectedOptions,
       slots.locale,
       slots.numberingSystem
     )
+    if (
+      selectedOptions.dayPeriod !== undefined &&
+      temporalFormatApply(timePatternIndexOf, slots.pattern, ['{dayPeriod}']) >=
+        0
+    ) {
+      slots.dayPeriod = selectedOptions.dayPeriod
+    }
+    if (
+      selectedOptions.fractionalSecondDigits !== undefined &&
+      temporalFormatApply(timePatternIndexOf, slots.pattern, [
+        '{fractionalSecondDigits}',
+      ]) >= 0
+    ) {
+      slots.fractionalSecondDigits = selectedOptions.fractionalSecondDigits
+    }
+    slots.format = selected
     slots.rangePatterns = matchRangeWidths(
       use12 ? selected.rangePatterns12 : selected.rangePatterns,
       slots,
       selectedOptions
     )
-    slots.format = selected
     temporalFormatApply(temporalFormatMapSet, temporalFormats, [kind, slots])
     return slots
   }

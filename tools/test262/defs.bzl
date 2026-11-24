@@ -43,27 +43,28 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
         root + "/test/" + suite + "/**/*.js",
     ]
     polyfill_args = args + ["--prelude", "$(rootpath %s)" % realm_prelude]
-    test262_harness_bin.test262_harness_binary(
-        node_toolchain = "//tools/test262:node-runtime",
-        name = name + "-harness",
-        data = data + prelude_files,
-        tags = ["manual"] + [tag for tag in tags if tag != "manual"],
-        testonly = True,
-    )
 
     # Reports belong to test execution, so --nocache_test_results reruns the
     # harness instead of revalidating a cached build output.
-    sh_test(
-        name = name,
-        srcs = ["//tools/test262:run.sh"],
-        data = [":" + name + "-harness", baseline, "//tools/test262:validator"] + prelude_files,
-        args = ["$(rootpath :%s-harness)" % name, "$(rootpath //tools/test262:validator)", suite, "$(rootpath %s)" % baseline] + polyfill_args,
-        env = {"TZ": "UTC"},
-        exec_properties = execution_resources,
-        tags = tags + resource_tags,
-        size = "large",
-        timeout = timeout,
-    )
+    if baseline != None:
+        test262_harness_bin.test262_harness_binary(
+            node_toolchain = "//tools/test262:node-runtime",
+            name = name + "-harness",
+            data = data + prelude_files,
+            tags = ["manual"] + [tag for tag in tags if tag != "manual"],
+            testonly = True,
+        )
+        sh_test(
+            name = name,
+            srcs = ["//tools/test262:run.sh"],
+            data = [":" + name + "-harness", baseline, "//tools/test262:validator"] + prelude_files,
+            args = ["$(rootpath :%s-harness)" % name, "$(rootpath //tools/test262:validator)", suite, "$(rootpath %s)" % baseline] + polyfill_args,
+            env = {"TZ": "UTC"},
+            exec_properties = execution_resources,
+            tags = tags + resource_tags,
+            size = "large",
+            timeout = timeout,
+        )
     for mode in ["strict", "native"]:
         test262_harness_bin.test262_harness_test(
             node_toolchain = "//tools/test262:node-runtime",

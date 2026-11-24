@@ -180,6 +180,16 @@ const rawFormats: RawFormat[] = [
   ranges: {d: 'MMM d–d, y', h: 'h:mm–h:mm a'},
   fallback: '{0} – {1}',
 }))
+it('scores basic formats by the rendered widths', () => {
+  const options = {minute: '2-digit', second: '2-digit'} as const
+  const formats = [
+    {skeleton: 'mmss', rawPattern: 'm:s'},
+    {skeleton: 'ms', rawPattern: 'mm:ss'},
+  ]
+  const selected = BasicFormatMatcher(options, formats.map(parse))
+  expect(selected).toMatchObject({rawPattern: 'mm:ss', ...options})
+  expect(run([{method: 'basic', options, formats}])).toEqual([selected])
+})
 it('matches basic/best-fit selection, scores, field adjustment and hour preferences', () => {
   const formats = rawFormats.map(parse)
   const options: Intl.DateTimeFormatOptions[] = []

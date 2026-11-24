@@ -28,7 +28,10 @@ Rust exports using `//tools/ffi_headers` and pinned cbindgen. Consumers need
 neither Rust nor cbindgen to compile the packaged adapter.
 
 The SDK uses compiled locale providers. Source targets retain explicit registries
-for custom providers and conformance fixtures. See
+for custom providers and conformance fixtures. When no requested locale matches,
+formatters check `LC_ALL`, `LC_MESSAGES`, then `LANG` for the process locale and
+keep that locale tag when its data comes from a parent locale. Use the package
+fallback when neither has data. See
 [compiled data](../../knowledge-base/007m-hermes-distribution.md) for package flow.
 
 ## Hermes version
@@ -50,6 +53,10 @@ DateTimeFormat's individual installer returns a guard. Keep it on the JavaScript
 thread until formatting stops, then destroy it before the runtime. `installIntl`
 retains this guard in runtime data automatically. Rust queues GC releases and
 drains them on the runtime thread.
+
+DateTimeFormat uses the host Intl zone when supported by loaded data. It can
+also read an IANA name from `TZ` or a POSIX `/etc/localtime` zoneinfo link, with
+UTC as the fallback.
 
 Install Temporal before DurationFormat to accept duration strings and branded
 Temporal durations. Duration-like records work without Temporal.

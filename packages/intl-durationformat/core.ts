@@ -3,16 +3,17 @@ import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicod
 // Core implementation of Intl.DurationFormat polyfill
 // Follows the TC39 Intl.DurationFormat proposal specification
 
-import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
-import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {
   setDataProperty,
-  TypeErrorConstructor,
+  numberFrom,
+  createFromConstructor,
+  nullClassBase,
   RangeErrorConstructor,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
+import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {
   getNumberFormatProvider,
@@ -29,7 +30,10 @@ import {
   registerTemporalDurationNamespace,
   type TemporalDurationNamespace,
 } from '#packages/ecma402-abstract/DurationFormat/ToTemporalDurationRecord.js'
-import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
+import {
+  getInternalSlots,
+  requireInternalSlots,
+} from '#packages/intl-durationformat/get_internal_slots.js'
 import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
   DurationFormatLocaleInternalData,
@@ -42,6 +46,11 @@ import type {
 import {type DurationFormatOptions} from '#packages/intl-durationformat/types.js'
 
 // NumberFormat is a runtime dependency and may be replaced by its polyfill.
+let defaultLocale = 'en'
+function getDefaultLocale(): string {
+  return defaultLocale
+}
+
 const numberingSystemsByConstructor = new WeakMap<
   typeof Intl.NumberFormat,
   string[]
@@ -53,6 +62,7 @@ const setNumberingSystems = numberingSystemsByConstructor.set.bind(
   numberingSystemsByConstructor
 )
 const createObject = Object.create
+const hasOwn = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
 const providerApply = Reflect.apply
 const providerDescriptor = Object.getOwnPropertyDescriptor
 const providerPrototype = Object.getPrototypeOf
@@ -247,21 +257,25 @@ const TABLE_3 = [
  * DurationFormat provides locale-sensitive duration formatting
  * Implements the Intl.DurationFormat API from the TC39 proposal
  */
-export class DurationFormat implements DurationFormatType {
+// ECMA-402 §13.2.1 https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype
+// ECMA-402 §13.3.1 https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.constructor
+export class DurationFormat
+  extends nullClassBase
+  implements DurationFormatType
+{
   static __addTemporalNamespace(namespace: TemporalDurationNamespace): void {
     registerTemporalDurationNamespace(namespace)
   }
+  // @ts-expect-error TS2377: extends null and returns its own receiver.
+  // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
   constructor(locales?: string | string[], options?: DurationFormatOptions) {
-    // ECMA-402 §13.1.1 steps1–2: retain runtime new.target; no public constructor Get.
-    if (!new.target) {
-      throw new TypeErrorConstructor(
-        "Intl.DurationFormat must be called with 'new'"
-      )
-    }
+    const receiver = createFromConstructor(new.target, DurationFormat.prototype)
     // Canonicalize the requested locales into a standard format
     const requestedLocales = CanonicalizeLocaleList(locales)
     const opt: any = createObject(null)
-    const opts = options === undefined ? createObject(null) : ToObject(options)
+    // ECMA-402 §9.2.8, step 3. DurationFormat uses GetOptionsObject.
+    // https://tc39.es/ecma402/#sec-resolveoptions
+    const opts = GetOptionsObject(options)
 
     // Get locale matching algorithm preference ('best fit' or 'lookup')
     const matcher = GetOption(
@@ -287,7 +301,6 @@ export class DurationFormat implements DurationFormatType {
       // ResolveOptions step 6.d.ii rejects malformed Unicode types.
       // ECMA-402 §9.2.8 ResolveOptions, step 6.d.ii.
       // https://tc39.es/ecma402/#sec-resolveoptions
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L314
       throw RangeErrorConstructor(
         `Invalid numberingSystems: ${numberingSystem}`
       )
@@ -303,15 +316,25 @@ export class DurationFormat implements DurationFormatType {
       // [[RelevantExtensionKeys]] slot - only 'nu' (numbering system) is supported
       ['nu'],
       localeData,
-      DurationFormat.getDefaultLocale
+      getDefaultLocale,
+      'hostDefaultWithLocaleData'
     )
     const locale = r.locale
 
     // Initialize internal slots for this formatter instance
-    const internalSlots = getInternalSlots(this)
+    const internalSlots = getInternalSlots(receiver)
     internalSlots.initializedDurationFormat = true
     internalSlots.locale = locale
     internalSlots.numberingSystem = r.nu
+    internalSlots.dataLocale = r.dataLocale
+    // Steps 7–10 capture separators before reading style or per-unit options.
+    const digitalFormat = r.localeData?.digitalFormat
+    invariant(!!digitalFormat, `Invalid locale ${r.dataLocale}`)
+    const separator = hasOwn(digitalFormat, r.nu)
+      ? digitalFormat[r.nu]
+      : digitalFormat.default
+    internalSlots.hourMinuteSeparator = separator
+    internalSlots.minuteSecondSeparator = separator
 
     // Get overall formatting style: 'long' (3 hours), 'short' (3 hr), 'narrow' (3h), or 'digital' (3:00:00)
     const style = GetOption(
@@ -322,10 +345,11 @@ export class DurationFormat implements DurationFormatType {
       'short'
     )
     internalSlots.style = style
-    internalSlots.dataLocale = r.dataLocale
     // Process each duration unit (years through nanoseconds) to determine
     // its display style and when to show it (always/auto/never)
     let prevStyle = ''
+    const unitStyles: Record<(typeof TABLE_3)[number]['styleSlot'], string> =
+      internalSlots
     // ECMA-402 §13.1.1: Table3 is a private List.
     for (let index = 0; index < TABLE_3.length; index++) {
       const row = TABLE_3[index]
@@ -345,7 +369,7 @@ export class DurationFormat implements DurationFormatType {
         digitalBase,
         prevStyle
       )
-      internalSlots[styleSlot] = unitOptions.style
+      unitStyles[styleSlot] = unitOptions.style
       internalSlots[displaySlot] = unitOptions.display
 
       // Track the previous style for time units (hours through microseconds)
@@ -369,46 +393,36 @@ export class DurationFormat implements DurationFormatType {
       9,
       undefined
     )
-    initializeDurationFormatProviders(this)
+    initializeDurationFormatProviders(receiver)
+    return receiver
   }
   resolvedOptions(): ResolvedDurationFormatOptions {
-    if (
-      typeof this !== 'object' ||
-      !OrdinaryHasInstance(DurationFormat, this)
-    ) {
-      throw TypeError(
-        'Method Intl.DurationFormat.prototype.resolvedOptions called on incompatible receiver'
-      )
-    }
-    const internalSlots = getInternalSlots(this)
+    const internalSlots = requireInternalSlots(this)
     const ro: Record<string, unknown> = {}
     // ECMA-402 §13.3.2, step 4: emit defined values in table order.
     // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.resolvedOptions
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L205-L208
-    for (const key of RESOLVED_OPTIONS_KEYS) {
+    for (let index = 0; index < RESOLVED_OPTIONS_KEYS.length; index++) {
+      const key = RESOLVED_OPTIONS_KEYS[index]
       let v = internalSlots[key]
       if (key === 'fractionalDigits') {
         if (v === undefined) continue
-        v = Number(v)
+        v = numberFrom(v)
       } else if (v === 'fractional') {
         v = 'numeric'
       } else {
         invariant(v !== undefined, `Missing internal slot ${key}`)
       }
-      ro[key] = v
+      setDataProperty(ro, key, v)
     }
     return ro as any
   }
   formatToParts(duration: DurationInput | string): DurationFormatPart[] {
-    const locInternalSlots = getInternalSlots(this)
-    if (locInternalSlots.initializedDurationFormat === undefined) {
-      throw new TypeError('Error uninitialized locale')
-    }
+    // ECMA-402 §13.3.4: require slots, convert input, then create fresh parts.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.formatToParts
+    requireInternalSlots(this)
     const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     const result: DurationFormatPart[] = []
-    // Proposal comparison §15.10.2 steps 7.d–e: CreateDataProperty, not Set.
-    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.formatToParts
     for (let index = 0; index < parts.length; index++) {
       const {type, unit, value} = parts[index]
       const obj: DurationFormatPart = {type, value}
@@ -420,15 +434,12 @@ export class DurationFormat implements DurationFormatType {
     return result
   }
   format(duration: DurationInput | string): string {
-    const locInternalSlots = getInternalSlots(this)
-    if (locInternalSlots.initializedDurationFormat === undefined) {
-      throw new TypeError('Error uninitialized locale')
-    }
+    // ECMA-402 §13.3.3: require slots, convert input, then concatenate part values.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.format
+    requireInternalSlots(this)
     const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     let result = ''
-    // Temporal comparison §15.10.1 steps6–6.a: concatenate the private part List.
-    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
     for (let index = 0; index < parts.length; index++) {
       result += parts[index].value
     }
@@ -439,6 +450,7 @@ export class DurationFormat implements DurationFormatType {
     locales: string | string[],
     options?: Pick<DurationFormatOptions, 'localeMatcher'>
   ): string[] {
+    // ECMA-402 §13.2.2 https://tc39.es/ecma402/#sec-Intl.DurationFormat.supportedLocalesOf
     return SupportedLocales(
       DurationFormat.availableLocales,
       CanonicalizeLocaleList(locales),
@@ -446,7 +458,7 @@ export class DurationFormat implements DurationFormatType {
     )
   }
 
-  static __defaultLocale = 'en'
+  declare static __defaultLocale: string
   static availableLocales: Set<string> = new Set<string>()
   static localeData: Record<
     string,
@@ -462,7 +474,6 @@ export class DurationFormat implements DurationFormatType {
         // ECMA-402 §13.2.3 [[LocaleData]] constraints (not algorithm steps):
         // expose numbering systems supported by the NumberFormat dependency.
         // https://tc39.es/ecma402/#sec-Intl.DurationFormat-internal-slots
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L162-L169
         get nu() {
           const defaults = TIME_SEPARATORS.localeData[locale].nu
           return numberingUnion(defaults, supportedNumberingSystems())
@@ -476,15 +487,23 @@ export class DurationFormat implements DurationFormatType {
     },
     {}
   )
-  static getDefaultLocale = (): string => {
-    return DurationFormat.__defaultLocale
-  }
+  static getDefaultLocale: () => string = getDefaultLocale
   static polyfilled = true
 }
 
+// ECMA-402 §9.2.7 step 3 uses the internal default during locale resolution.
+// https://tc39.es/ecma402/#sec-resolvelocale
+Object.defineProperty(DurationFormat, '__defaultLocale', {
+  configurable: true,
+  enumerable: true,
+  get: getDefaultLocale,
+  set(locale: string) {
+    defaultLocale = locale
+  },
+})
+
 // ECMA-402 §13.1.1 and §13.2.2: lengths count required parameters.
 // https://tc39.es/ecma402/#sec-Intl.DurationFormat
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L16
 // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L141
 Object.defineProperty(DurationFormat, 'length', {value: 0, configurable: true})
 Object.defineProperty(DurationFormat.supportedLocalesOf, 'length', {
@@ -493,7 +512,8 @@ Object.defineProperty(DurationFormat.supportedLocalesOf, 'length', {
 })
 // ECMA-402 §13.3.5: the prototype exposes the specified toStringTag descriptor.
 // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype-%symbol.tostringtag%
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L351-L354
+Object.setPrototypeOf(DurationFormat.prototype, Object.prototype)
+
 Object.defineProperty(DurationFormat.prototype, Symbol.toStringTag, {
   value: 'Intl.DurationFormat',
   configurable: true,

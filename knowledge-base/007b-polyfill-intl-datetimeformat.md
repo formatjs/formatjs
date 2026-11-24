@@ -31,7 +31,13 @@ Array.from hooks. Date-range SameValue comparisons use pure equality, including
 NaN and signed-zero rules.
 
 Constructor instance checks use the captured realm intrinsic rather than mutable
-Object.prototype.isPrototypeOf.
+Object.prototype.isPrototypeOf. Calls on legacy receivers store a separate formatter.
+Only `format` and `resolvedOptions` use it.
+
+Installed Date locale methods read the receiver’s Date value before locales or
+options, then use the defaults in ECMA-402 §20.4.1–3. Invalid dates return early.
+Errors from locales and options propagate. The JS and Hermes formatters use the host Intl
+time zone when they can resolve it with loaded data, with `UTC` as fallback.
 
 Historical timezone names retain direct CLDR standard/daylight overrides, including
 London's British Summer Time before 1970. Only metazone-derived names use the
@@ -191,8 +197,10 @@ Stage 4: supported-locales.generated.ts
 
 ### Runtime Loading
 
-- `DateTimeFormat.__addLocaleData()` registers locale data (parses skeletons on load)
+- Locale packs and calendar patches are prepared before publication. Rejected
+  updates leave the last valid data available for later loads.
 - `DateTimeFormat.__addTZData()` registers timezone data (unpacks base-36 encoding)
+- Fixed IANA `Etc/GMT` offsets work without a transition pack.
 - Timezone offset lookup uses binary search through transition array
 - Buffered via `globalThis.__FORMATJS_DATETIMEFORMAT_DATA__`
 - Date prototype ponyfills pass options through `ToDateTimeOptions` with the
@@ -226,8 +234,8 @@ Resolved options follow specification property order: `hour12` follows
 
 Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
 
-Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
-letter case only; non-ASCII lookalikes are rejected.
+Zero UTC offsets normalize to `+00:00`. Explicit and host-supplied zone names
+match using ASCII case folding.
 
 Stage 4 Temporal timezone handling preserves the case-regularized identifier in
 `timeZone`, including aliases such as `Asia/Calcutta`, `US/Eastern`, and `Etc/GMT`.
@@ -237,6 +245,9 @@ preserve identifiers. `shouldPolyfill` checks alias and UTC-name preservation.
 This follows the [Temporal integration text](https://tc39.es/proposal-temporal/#sec-intl.datetimeformat),
 which uses `[[Identifier]]` where the standalone ECMA-402 draft still uses
 `[[PrimaryIdentifier]]`.
+
+The system default uses the primary identifier, even when its transitions come
+from another zone. Hermes checks host Intl, then the process timezone, then UTC.
 
 The alias generator reads both IANA `backward` and `etcetera`; the latter supplies
 `GMT`. Rust retains the same identifier/lookup-target distinction. Primary timezone
@@ -313,10 +324,10 @@ API provides no context to distinguish the start from the end of a day.
 CLDR alternate-key suffixes are metadata, not skeleton fields. The extractor
 uses default entries and excludes `-alt-*` keys before parsing skeletons.
 
-`formatRangeToParts` marks unique fields and separators as `shared`. Repeated
-fields belong to their endpoint; punctuation between repeated fields stays with
-that endpoint. Shared month names retain the complete date pattern for
-grammatical context.
+Interval patterns assign sources to repeated fields and surrounding literals.
+When no interval pattern is available, the fallback preserves the sources of
+the locale's endpoint placeholders and the text between them. Shared month
+names retain the complete date pattern for grammatical context.
 
 An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
 and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
@@ -447,13 +458,18 @@ on demand. Aliases compile separately. Loads replace the complete map atomically
 existing records use its current transitions. Local conversion preserves exact
 historical seconds and DST flags, with binary search and nanosecond boundaries.
 Fixed offsets and ASCII-only matching follow the TS validation contract.
+Local-time projection adds fractional offsets in integer nanoseconds before
+rounding down to milliseconds.
 
 Differential coverage compares all 453 full/247 golden zones, every explicit
 transition, aliases, Date endpoints and year-2500 samples. Raw JSON must equal the
 shipped JS payload. Generator flags are explicitly boolean so the first TZif JSON
 file stays positional. TZif timestamps outside the supported range are excluded before
 packing; IANA `Zone` lines and comments cannot become bogus link aliases.
-Canonicalization also recognizes known alias targets before transitions load.
+Alias lookup uses target transitions or the alias's own rows from the loaded
+pack. UTC aliases work without a pack.
+New formatters skip a default override while its zone is absent from the
+current pack.
 
 Rust LDML parsing and Basic/BestFit/Style matching now retain separate skeleton
 and raw-pattern fields, property-presence metadata, stable ties and interval
@@ -461,6 +477,9 @@ sources. `locale_patterns::CalendarPatterns` prepares formats/styles per calenda
 without importing locale data or optional arithmetic. Its interval fallback
 selection normalizes raw time skeletons and matches date fields with numeric-month
 compatibility. Raw pattern maps retain registration order.
+
+For date fields with a zone name, the locale connector supplies a candidate
+without clock fields. Both matchers score it after the supplied patterns.
 
 `//:rust_datetime_pattern_test` compares the Rust implementation with TS abstract
 operations and actual locale registration: 71,421 CLDR patterns, eight language

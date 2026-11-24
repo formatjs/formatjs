@@ -29,7 +29,9 @@ enum Query {
     Properties,
     Maximize,
     Minimize,
-    Calendars,
+    Calendars {
+        available: Option<Vec<String>>,
+    },
     HourCycles,
     NumberingSystems {
         #[serde(rename = "defaultNumberingSystem")]
@@ -231,7 +233,9 @@ pub unsafe extern "C" fn formatjs_locale_query(
             Query::Properties => serde_json::to_vec(&Properties::from(locale)),
             Query::Maximize => serde_json::to_vec(locale.maximize().as_str()),
             Query::Minimize => serde_json::to_vec(locale.minimize().as_str()),
-            Query::Calendars => serde_json::to_vec(&locale.calendars()),
+            Query::Calendars { available } => {
+                serde_json::to_vec(&locale.calendars_with_support(available.as_deref()))
+            }
             Query::HourCycles => serde_json::to_vec(&locale.hour_cycles()),
             Query::NumberingSystems {
                 default_numbering_system,

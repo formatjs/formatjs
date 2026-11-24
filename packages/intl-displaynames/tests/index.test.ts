@@ -8,6 +8,66 @@ import en from '#packages/intl-displaynames/tests/locale-data/en.json' with {typ
 import agq from '#packages/intl-displaynames/tests/locale-data/agq.json' with {type: 'json'}
 import zh from '#packages/intl-displaynames/tests/locale-data/zh.json' with {type: 'json'}
 
+it('retains the resolved names when a style getter reloads the pack', () => {
+  DisplayNames.__addLocaleData(en)
+  const replacement: typeof en = JSON.parse(JSON.stringify(en))
+  replacement.data.types.region.long.US = 'US replacement'
+  try {
+    const formatter = new DisplayNames('en', {
+      type: 'region',
+      get style() {
+        DisplayNames.__addLocaleData(replacement)
+        return 'long' as const
+      },
+    })
+    expect(formatter.of('US')).toBe('United States')
+    expect(new DisplayNames('en', {type: 'region'}).of('US')).toBe(
+      'US replacement'
+    )
+  } finally {
+    DisplayNames.__addLocaleData(en)
+  }
+})
+
+it('checks display name slots independently of the receiver prototype', () => {
+  DisplayNames.__addLocaleData(en)
+  const names = new DisplayNames('en', {type: 'region'})
+  const {of, resolvedOptions} = DisplayNames.prototype
+  Object.setPrototypeOf(names, null)
+  expect(of.call(names, 'US')).toBe('United States')
+  expect(resolvedOptions.call(names).type).toBe('region')
+
+  const fake = Object.create(DisplayNames.prototype)
+  const code = {
+    toString() {
+      throw new Error('coerced code for an invalid receiver')
+    },
+  }
+  expect(() => of.call(fake, code)).toThrow(TypeError)
+  expect(() => resolvedOptions.call(fake)).toThrow(TypeError)
+})
+
+it('negotiates the available locales without invoking the Set iterator', () => {
+  DisplayNames.__addLocaleData(en)
+  const descriptor = Object.getOwnPropertyDescriptor(
+    Set.prototype,
+    Symbol.iterator
+  )!
+  let name: string | undefined
+  try {
+    Object.defineProperty(Set.prototype, Symbol.iterator, {
+      ...descriptor,
+      value() {
+        throw new Error('iterated the available locale list')
+      },
+    })
+    name = new DisplayNames('en', {type: 'region'}).of('US')
+  } finally {
+    Object.defineProperty(Set.prototype, Symbol.iterator, descriptor)
+  }
+  expect(name).toBe('United States')
+})
+
 it('composes scripts with localized separators and safe nested brackets', () => {
   const data: typeof en = JSON.parse(JSON.stringify(en))
   data.data.types.language.dialect.long.en = 'English (test)'
@@ -17,12 +77,25 @@ it('composes scripts with localized separators and safe nested brackets', () => 
   data.data.patterns.separator = '{0} / {1}'
   try {
     DisplayNames.__addLocaleData(data)
-    expect(
-      new DisplayNames('en', {
-        type: 'language',
-        languageDisplay: 'standard',
-      }).of('sr-Latn-RS')
-    ).toBe('Serbian (Latin [script] / Serbia)')
+    const names = new DisplayNames('en', {
+      type: 'language',
+      languageDisplay: 'standard',
+    })
+    const findIndex = Array.prototype.findIndex
+    const replace = String.prototype.replace
+    const fail = () => {
+      throw new Error('Read public language composition operation')
+    }
+    let name: string | undefined
+    try {
+      Array.prototype.findIndex = fail
+      String.prototype.replace = fail
+      name = names.of('sr-Latn-RS')
+    } finally {
+      Array.prototype.findIndex = findIndex
+      String.prototype.replace = replace
+    }
+    expect(name).toBe('Serbian (Latin [script] / Serbia)')
     expect(new DisplayNames('en', {type: 'language'}).of('en-Latn-XY')).toBe(
       'English [test] (Latin [script] / XY)'
     )
@@ -45,6 +118,75 @@ it('composes scripts with localized separators and safe nested brackets', () => 
   }
 })
 DisplayNames.__addLocaleData(en, zh)
+
+it('throws the intrinsic TypeError for a missing display name type', () => {
+  const OriginalTypeError = globalThis.TypeError
+  let caught: unknown
+  try {
+    globalThis.TypeError = function () {
+      throw new Error('Read public TypeError constructor')
+    } as unknown as typeof TypeError
+    // @ts-expect-error Test the required option at runtime.
+    new DisplayNames('en', {})
+  } catch (error) {
+    caught = error
+  } finally {
+    globalThis.TypeError = OriginalTypeError
+  }
+  expect((caught as Error | undefined)?.constructor).toBe(OriginalTypeError)
+})
+
+it('validates and canonicalizes codes using retained operations', () => {
+  const cases = [
+    [new DisplayNames('en', {type: 'region'}), 'us'],
+    [new DisplayNames('en', {type: 'script'}), 'lATN'],
+    [new DisplayNames('en', {type: 'calendar'}), 'GREGORY'],
+    [new DisplayNames('en', {type: 'currency'}), 'usd'],
+  ] as const
+  const expected = cases.map(([names, code]) => names.of(code))
+  const invalid = new DisplayNames('en', {type: 'region', fallback: 'none'})
+  const exec = RegExp.prototype.exec
+  const {toUpperCase, toLowerCase} = String.prototype
+  const fail = () => {
+    throw new Error('Read public code validation operation')
+  }
+  let actual: (string | undefined)[]
+  let invalidError: unknown
+  try {
+    RegExp.prototype.exec = fail
+    String.prototype.toUpperCase = fail
+    String.prototype.toLowerCase = fail
+    actual = cases.map(([names, code]) => names.of(code))
+    try {
+      invalid.of('us\n')
+    } catch (error) {
+      invalidError = error
+    }
+  } finally {
+    RegExp.prototype.exec = exec
+    String.prototype.toUpperCase = toUpperCase
+    String.prototype.toLowerCase = toLowerCase
+  }
+  expect(actual).toEqual(expected)
+  expect(invalidError).toBeInstanceOf(RangeError)
+})
+
+it('preserves legacy RegExp state while validating codes', () => {
+  const language = new DisplayNames('en', {type: 'language'})
+  const region = new DisplayNames('en', {type: 'region'})
+  const script = new DisplayNames('en', {type: 'script'})
+  const calendar = new DisplayNames('en', {type: 'calendar'})
+  void /probe(.)/.exec('probe!')
+  const previous = [RegExp.lastMatch, RegExp.$1]
+  language.of('en-Latn-US')
+  region.of('us')
+  script.of('latn')
+  calendar.of('islamic-civil')
+  // ECMA-402 §12.5.1 checks grammar and canonicalizes private strings.
+  // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
+  const after = [RegExp.lastMatch, RegExp.$1]
+  expect(after).toEqual(previous)
+})
 
 describe('.of()', () => {
   describe('with type set to "language"', () => {
@@ -132,6 +274,11 @@ describe('.of()', () => {
     ).toBe('Chinese Yuan')
   })
 
+  it('uses the registered English name for XAD with fallback disabled', () => {
+    const names = new DisplayNames('en', {type: 'currency', fallback: 'none'})
+    expect(names.of('XAD')).toBe('Arab Accounting Dinar')
+  })
+
   it('finds script correctly', function () {
     expect(
       new DisplayNames('zh', {type: 'script', fallback: 'code'}).of('arab')
@@ -144,7 +291,8 @@ describe('.of()', () => {
       const dn = new DisplayNames('en', {type: 'calendar', fallback: 'none'})
       expect(dn.of('gregory')).toBe('Gregorian Calendar')
       expect(dn.of('ethioaa')).toBe('Ethiopic Amete Alem Calendar')
-      expect(dn.of('ethiopic-amete-alem')).toBeUndefined()
+      expect(dn.of('ethiopic-amete-alem')).toBe('Ethiopic Amete Alem Calendar')
+      expect(dn.of('islamicc')).toBeUndefined()
     })
 
     it('finds the calendar correctly with long style', () => {
@@ -186,7 +334,7 @@ describe('.of()', () => {
       expect(dn.of('islamic-civil')).toBe(
         'Hijri Calendar (tabular, civil epoch)'
       )
-      expect(dn.of('ethiopic-amete-alem')).toBe('ethiopic-amete-alem')
+      expect(dn.of('ETHIOPIC-AMETE-ALEM')).toBe('Ethiopic Amete Alem Calendar')
     })
 
     it('handles calendar codes case-insensitively (canonicalizes to lowercase)', () => {
@@ -245,8 +393,7 @@ describe('.of()', () => {
       expect(dn.of('weekOfYear')).toBe('week')
       expect(dn.of('weekday')).toBe('day of the week')
       expect(dn.of('day')).toBe('day')
-      // dayPeriod is valid but returns its code since data uses lowercase key
-      expect(dn.of('dayPeriod')).toBeDefined()
+      expect(dn.of('dayPeriod')).toBe('AM/PM')
       expect(dn.of('hour')).toBe('hour')
       expect(dn.of('minute')).toBe('minute')
       expect(dn.of('second')).toBe('second')
@@ -323,11 +470,17 @@ describe('.resolvedOptions()', () => {
       ).toBe('dialect')
     })
 
-    it('is undefined when the option is omitted and type is not "language"', () => {
-      expect(
-        new DisplayNames('en', {type: 'currency'}).resolvedOptions()
-          .languageDisplay
-      ).toBeUndefined()
+    it('omits the property for currency names even when the option was set', () => {
+      const result = new DisplayNames('en', {
+        type: 'currency',
+        languageDisplay: 'standard',
+      }).resolvedOptions()
+      expect(Object.keys(result)).toEqual([
+        'locale',
+        'style',
+        'type',
+        'fallback',
+      ])
     })
   })
 })
@@ -393,3 +546,38 @@ it('excludes scoped calendar groups from generated display names', () => {
     )
   }
 })
+
+it('uses its intrinsic prototype for a same-realm primitive NewTarget prototype', () => {
+  DisplayNames.__addLocaleData(en)
+  const newTarget = function () {}
+  Object.defineProperty(newTarget, 'prototype', {value: null})
+  const instance = Reflect.construct(
+    DisplayNames,
+    ['en', {type: 'region'}],
+    newTarget
+  )
+  expect(Object.getPrototypeOf(instance)).toBe(DisplayNames.prototype)
+  expect(instance.of('US')).toBe('United States')
+})
+
+it.each(['getDefaultLocale', '__defaultLocale'] as const)(
+  'keeps locale state private from %s',
+  property => {
+    const original = Object.getOwnPropertyDescriptor(DisplayNames, property)
+    try {
+      Object.defineProperty(DisplayNames, property, {
+        configurable: true,
+        get() {
+          throw new Error(`Read public ${property}`)
+        },
+      })
+      DisplayNames.__addLocaleData(en)
+      expect(new DisplayNames('en', {type: 'region'}).of('US')).toBe(
+        'United States'
+      )
+    } finally {
+      if (original) Object.defineProperty(DisplayNames, property, original)
+      else Reflect.deleteProperty(DisplayNames, property)
+    }
+  }
+)

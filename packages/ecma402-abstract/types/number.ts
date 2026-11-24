@@ -246,7 +246,7 @@ export interface NumberFormatInternal extends NumberFormatDigitInternalSlots {
   compactDisplay: NumberFormatOptionsCompactDisplay
   signDisplay: NumberFormatOptionsSignDisplay
   useGrouping?: UseGroupingType
-  pl: Intl.PluralRules
+  selectPlural: (value: Decimal, formatted?: string) => LDMLPluralRule
   boundFormat?: Intl.NumberFormat['format']
   numberingSystem: string
   // Locale-dependent formatter data

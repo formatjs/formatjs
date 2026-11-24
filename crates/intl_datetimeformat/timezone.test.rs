@@ -24,6 +24,7 @@ fn etc_gmt_zones_use_tzdb_signs_without_transition_data() {
 #[test]
 fn named_aliases_preserve_identifiers_and_use_target_offsets() {
     let registry = TimeZoneRegistry::default();
+    assert_eq!(registry.resolve("us/eastern"), Err(Error::InvalidTimeZone));
     registry.load_json(PACK).unwrap();
     let alias = registry.resolve("us/eastern").unwrap();
     assert_eq!(alias.identifier(), "US/Eastern");
@@ -179,10 +180,7 @@ fn construction_snapshots_keep_name_availability_but_use_current_offsets() {
         registry.default_time_zone().identifier(),
         "Test/Replacement"
     );
-    assert_eq!(
-        before.resolve("US/Eastern").unwrap().identifier(),
-        "US/Eastern"
-    );
+    assert_eq!(before.resolve("US/Eastern"), Err(Error::InvalidTimeZone));
     assert_eq!(before.resolve("-00").unwrap().identifier(), "+00:00");
 }
 
@@ -201,6 +199,7 @@ fn construction_reads_default_timezone_after_earlier_options() {
     );
     runtime.time_zones().set_default_time_zone(None).unwrap();
     assert_eq!(construction.time_zone(None).unwrap().identifier(), "UTC");
+    runtime.time_zones().load_json(PACK).unwrap();
     runtime
         .time_zones()
         .set_default_time_zone(Some("us/eastern"))

@@ -3,6 +3,7 @@ use crate::ffi_input::Value;
 use crate::{
     DateTimeFormat, Error, Runtime,
     calendar::{CalendarFields, CalendarProvider},
+    data::LocaleData,
     fields::Components,
     instance::Construction,
     registry::{Resolution, ResolutionOptions},
@@ -34,10 +35,12 @@ enum Phase {
     Begun,
     Resolved {
         resolution: Resolution,
+        locale: Arc<LocaleData>,
         hour12: Option<bool>,
     },
     Zoned {
         resolution: Resolution,
+        locale: Arc<LocaleData>,
         hour12: Option<bool>,
         zone: TimeZone,
     },
@@ -205,7 +208,64 @@ pub unsafe extern "C" fn formatjs_datetime_registry_info(
         Ok(())
     })
 }
-/// JSON string selects the default; null resets UTC.
+/// # Safety
+/// Registry live; out writable. Free successful bytes once.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_registry_calendars(
+    registry: *const DateTimeRegistry,
+    out: *mut DateTimeBytes,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe {
+        out.write(DateTimeBytes::EMPTY);
+    }
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let runtime = unsafe { (&*registry).runtime() };
+        unsafe {
+            output(encode(&runtime.available_calendars())?, out);
+        }
+        Ok(())
+    })
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum RegistryZone {
+    Host {
+        #[serde(rename = "hostTimeZone")]
+        name: String,
+    },
+    Override(Option<String>),
+}
+/// Return 0 for an available zone, 1 for an unavailable zone.
+/// # Safety
+/// Registry live; input readable for len bytes.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_datetime_registry_has_zone(
+    registry: *const DateTimeRegistry,
+    data: *const u8,
+    len: usize,
+) -> i32 {
+    if registry.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let runtime = unsafe { (&*registry).runtime() };
+        runtime
+            .time_zones()
+            .resolve(unsafe { input(data, len)? })
+            .map(|_| ())
+            .map_err(status)
+    })
+}
+
+/// JSON string sets an override; null clears it. An object with hostTimeZone
+/// updates the host default while retaining any override.
 /// # Safety
 /// Registry live; input readable for len bytes.
 #[unsafe(no_mangle)]
@@ -219,11 +279,16 @@ pub unsafe extern "C" fn formatjs_datetime_registry_zone(
     }
     guarded(|| {
         let runtime = unsafe { (&*registry).runtime() };
-        let value: Option<String> = unsafe { request(data, len)? };
-        runtime
-            .time_zones()
-            .set_default_time_zone(value.as_deref())
-            .map_err(status)
+        match unsafe { request(data, len)? } {
+            RegistryZone::Host { name } => {
+                runtime.time_zones().set_host_time_zone(name);
+                Ok(())
+            }
+            RegistryZone::Override(value) => runtime
+                .time_zones()
+                .set_default_time_zone(value.as_deref())
+                .map_err(status),
+        }
     })
 }
 #[derive(Default, Deserialize)]
@@ -345,14 +410,17 @@ pub unsafe extern "C" fn formatjs_datetime_resolve(
         if !matches!(handle.phase, Phase::Begun) {
             return Err(2);
         }
-        let resolution = handle
+        // ECMA-402 §11.1.2 step 13 retains the resolved record across option reads.
+        // https://tc39.es/ecma402/#sec-createdatetimeformat
+        let (resolution, locale) = handle
             .construction
             .as_ref()
             .ok_or(2)?
-            .resolve(&request.locales, &request.options)
+            .resolve_with_data(&request.locales, &request.options)
             .map_err(status)?;
         handle.phase = Phase::Resolved {
             resolution,
+            locale,
             hour12: request.options.hour12,
         };
         Ok(())
@@ -372,7 +440,12 @@ pub unsafe extern "C" fn formatjs_datetime_zone(
     guarded(|| {
         let value: Option<String> = unsafe { request(data, len)? };
         let handle = unsafe { &mut *handle };
-        let Phase::Resolved { resolution, hour12 } = &handle.phase else {
+        let Phase::Resolved {
+            resolution,
+            locale,
+            hour12,
+        } = &handle.phase
+        else {
             return Err(2);
         };
         let zone = handle
@@ -383,13 +456,14 @@ pub unsafe extern "C" fn formatjs_datetime_zone(
             .map_err(status)?;
         handle.phase = Phase::Zoned {
             resolution: resolution.clone(),
+            locale: locale.clone(),
             hour12: *hour12,
             zone,
         };
         Ok(())
     })
 }
-/// Force current locale/calendar formats before host reads late options.
+/// Load formats from the resolved record before the host reads late options.
 /// # Safety
 /// Construction live and exclusive, already zoned; component JSON readable.
 #[unsafe(no_mangle)]
@@ -406,6 +480,7 @@ pub unsafe extern "C" fn formatjs_datetime_capture(
         let handle = unsafe { &mut *handle };
         let Phase::Zoned {
             resolution,
+            locale,
             hour12,
             zone,
         } = &handle.phase
@@ -413,11 +488,7 @@ pub unsafe extern "C" fn formatjs_datetime_capture(
             return Err(2);
         };
         components.hour12 = *hour12;
-        let snapshot = handle
-            .construction
-            .as_ref()
-            .ok_or(2)?
-            .capture(resolution.clone(), components)
+        let snapshot = Snapshot::from_locale(locale.clone(), resolution.clone(), components)
             .map_err(status)?;
         handle.phase = Phase::Captured {
             snapshot,
@@ -432,6 +503,8 @@ struct CreateOptions {
     options: Options,
     #[serde(default, rename = "zonedLocale")]
     zoned_locale: bool,
+    #[serde(default, rename = "dateLocale")]
+    date_locale: Option<crate::selection::DateLocaleMode>,
 }
 /// A valid finalization attempt consumes construction state, even when options fail.
 /// # Safety
@@ -464,7 +537,7 @@ pub unsafe extern "C" fn formatjs_datetime_create(
             return Err(2);
         };
         let configuration = snapshot
-            .select(&options.options)
+            .select_with_date_locale(&options.options, options.date_locale)
             .map_err(status)?
             .with_zoned_locale(options.zoned_locale);
         let value = handle

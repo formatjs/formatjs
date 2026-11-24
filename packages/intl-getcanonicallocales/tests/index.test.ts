@@ -1,6 +1,27 @@
 import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
 import {describe, expect, it} from 'vitest'
 describe('Intl.getCanonicalLocales', () => {
+  it('has the shape of a non-constructor built-in', () => {
+    expect(Object.hasOwn(getCanonicalLocales, 'prototype')).toBe(false)
+    expect(() => Reflect.construct(getCanonicalLocales, ['en'])).toThrow(
+      TypeError
+    )
+  })
+
+  it('creates result entries without calling a replaced Object.defineProperty', () => {
+    const defineProperty = Object.defineProperty
+    let result: string[]
+    try {
+      Object.defineProperty = () => {
+        throw new Error('unexpected defineProperty')
+      }
+      result = getCanonicalLocales(['EN-us', 'en-US', 'fr'])
+    } finally {
+      Object.defineProperty = defineProperty
+    }
+    expect(result!).toEqual(['en-US', 'fr'])
+  })
+
   it.each([
     ['en-z-foo-x-private', 'en-z-foo-x-private'],
     ['en-z-foo-u-kn-x-private', 'en-u-kn-z-foo-x-private'],
@@ -280,6 +301,62 @@ describe('Intl.getCanonicalLocales', () => {
     })
   })
 })
+
+it.each(['root', 'de-gregory-GREGORY', 'en-t-de-gregory-GREGORY', 'en-K-foo'])(
+  'rejects invalid locale syntax in %s',
+  tag => {
+    expect(() => getCanonicalLocales(tag)).toThrow(RangeError)
+  }
+)
+
+it('accepts variants matching inherited property names', () => {
+  expect(getCanonicalLocales('en-valueOf')).toEqual(['en-valueof'])
+})
+
+it('coalesces aliases that produce the same variant', () => {
+  expect(
+    getCanonicalLocales(['el-polyton-polytoni', 'de-t-el-polyton-polytoni'])
+  ).toEqual(['el-polyton', 'de-t-el-polyton'])
+})
+
+it.each([
+  ['String#charCodeAt', String.prototype, 'charCodeAt'],
+  ['String#toLowerCase', String.prototype, 'toLowerCase'],
+  ['String#@@split', String.prototype, Symbol.split],
+  ['Array#shift', Array.prototype, 'shift'],
+  ['Array#sort', Array.prototype, 'sort'],
+  ['Array#constructor', Array.prototype, 'constructor'],
+  ['Array#@@iterator', Array.prototype, Symbol.iterator],
+  ['Set#has', Set.prototype, 'has'],
+  ['Object#valueof', Object.prototype, 'valueof'],
+] as const)(
+  'does not consult %s during canonicalization',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)
+    let actual: string[]
+    try {
+      Object.defineProperty(owner, key, {
+        configurable: true,
+        get() {
+          throw new Error('Unexpected prototype hook')
+        },
+      })
+      actual = getCanonicalLocales([
+        'JA-latn-hepburn-heploc-t-de-DE-h0-hybrid-u-FOO-ca-islamicc-kn-yes',
+        'en-valueof',
+      ])
+    } finally {
+      if (original) Object.defineProperty(owner, key, original)
+      else Reflect.deleteProperty(owner, key)
+    }
+    // ECMA-402 §6.2.1–2 validate and canonicalize private strings and records.
+    // https://tc39.es/ecma402/#sec-iswellformedlanguagetag
+    expect(actual!).toEqual([
+      'ja-Latn-alalc97-t-de-de-h0-hybrid-u-foo-ca-islamic-civil-kn',
+      'en-valueof',
+    ])
+  }
+)
 
 it('applies ToObject and reads/coerces array-like length once', () => {
   expect(() => getCanonicalLocales(null as any)).toThrow(TypeError)

@@ -1,20 +1,23 @@
 import '@formatjs/intl-getcanonicallocales/polyfill-force.js'
-import '@formatjs/intl-pluralrules/polyfill-force.js'
-import type {PluralRules} from '@formatjs/intl-pluralrules'
 import {NumberFormat} from '@formatjs/intl-numberformat'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
-import {readFileSync, readdirSync} from 'node:fs'
+import {
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
+import {tmpdir} from 'node:os'
 import {join} from 'node:path'
-import {runInNewContext} from 'node:vm'
 import {beforeAll, expect, it} from 'vitest'
 
 const resolve = (path: string) =>
   runfiles.resolve(`${process.env.TEST_WORKSPACE || '_main'}/${path}`)
 const directory = resolve('crates/intl_numberformat/locale-data')
-const referencePluralRules = Intl.PluralRules as unknown as typeof PluralRules
 const files = readdirSync(directory)
   .filter(file => file.endsWith('.json'))
   .sort(
@@ -22,26 +25,6 @@ const files = readdirSync(directory)
       Number(b === 'en.json') - Number(a === 'en.json') || a.localeCompare(b)
   )
 beforeAll(() => {
-  const plurals = resolve('crates/intl_pluralrules/locale-data')
-  const pluralFiles = readdirSync(plurals)
-    .filter(file => file.endsWith('.json'))
-    .sort(
-      (a, b) =>
-        Number(b === 'en.json') - Number(a === 'en.json') || a.localeCompare(b)
-    )
-  for (const file of pluralFiles) {
-    const raw = runInNewContext(
-      '(' +
-        readFileSync(
-          resolve(
-            'packages/intl-pluralrules/cldr-raw/' + file.replace('.json', '.js')
-          ),
-          'utf8'
-        ) +
-        ')'
-    )
-    referencePluralRules.__addLocaleData(raw)
-  }
   for (const file of files)
     NumberFormat.__addLocaleData(
       JSON.parse(readFileSync(join(directory, file), 'utf8'))
@@ -70,10 +53,10 @@ function wire(input: Input) {
         : value.value.toString(),
   }
 }
-function compare(cases: Case[]) {
+function compare(cases: Case[], localeDirectory = directory) {
   const result = spawnSync(
     resolve('crates/intl_numberformat/conformance'),
-    [directory],
+    [localeDirectory],
     {
       input:
         cases
@@ -162,6 +145,230 @@ it('matches compact currency fallback across numbering systems', () => {
       )
     )
   )
+})
+
+it('uses exact rounded operands for Russian unit, currency and compact plurals', () => {
+  const values = [9007199254741021n, '9007199254741021', '9007199254741022']
+  const cases: Case[] = [
+    {
+      locales: ['ru'],
+      options: {style: 'unit', unit: 'meter', unitDisplay: 'long'},
+      values,
+    },
+    {
+      locales: ['ru'],
+      options: {
+        style: 'currency',
+        currency: 'RUB',
+        currencyDisplay: 'name',
+        maximumFractionDigits: 0,
+      },
+      values,
+    },
+  ]
+  compare(cases)
+  for (const {options} of cases) {
+    const formatter = new NumberFormat('ru', options)
+    expect(
+      values.map(
+        value =>
+          formatter
+            .formatToParts(value)
+            .find(part => part.type === options.style)?.value
+      )
+    ).toEqual(
+      options.style === 'unit'
+        ? ['метр', 'метр', 'метра']
+        : ['российский рубль', 'российский рубль', 'российских рубля']
+    )
+  }
+  const compact: Case = {
+    locales: ['ru'],
+    options: {
+      notation: 'compact',
+      compactDisplay: 'long',
+      maximumFractionDigits: 0,
+    },
+    values: [9007199254741021000000000000n, '9007199254741022000000000000'],
+  }
+  compare([compact])
+  const formatter = new NumberFormat('ru', compact.options)
+  expect(
+    compact.values.map(
+      value =>
+        formatter.formatToParts(value).find(part => part.type === 'compact')
+          ?.value
+    )
+  ).toEqual(['триллион', 'триллиона'])
+})
+
+it('uses fallback patterns for sanctioned units missing from locale data', () => {
+  const original = JSON.parse(readFileSync(join(directory, 'en.json'), 'utf8'))
+  const sparse = structuredClone(original)
+  delete sparse.data.units.simple.meter
+  const path = mkdtempSync(join(process.env.TEST_TMPDIR || tmpdir(), 'units-'))
+  try {
+    const cases: Case[] = ['meter', 'meter-per-acre'].map(unit => ({
+      locales: ['en'],
+      options: {style: 'unit', unit, unitDisplay: 'long'},
+      values: [-2],
+      ranges: [[1, 2]],
+    }))
+    writeFileSync(join(path, 'en.json'), JSON.stringify(sparse))
+    NumberFormat.__addLocaleData(sparse)
+    compare(cases, path)
+    for (const {options} of cases) {
+      const formatter = new NumberFormat('en', options)
+      expect(formatter.formatToParts(-2)).toEqual([
+        {type: 'minusSign', value: '-'},
+        {type: 'integer', value: '2'},
+        {type: 'literal', value: ' '},
+        {type: 'unit', value: options.unit},
+      ])
+    }
+
+    const fallback = {other: '[{0}] units'}
+    sparse.data.units.simple.fallback = {
+      long: fallback,
+      short: fallback,
+      narrow: fallback,
+      perUnit: {},
+    }
+    writeFileSync(join(path, 'en.json'), JSON.stringify(sparse))
+    NumberFormat.__addLocaleData(sparse)
+    compare(cases, path)
+    expect(new NumberFormat('en', cases[0].options).format(-2)).toBe(
+      '[-2] units'
+    )
+  } finally {
+    NumberFormat.__addLocaleData(original)
+    rmSync(path, {recursive: true, force: true})
+  }
+})
+
+it('selects Russian compact labels from the displayed mantissa', () => {
+  const compact = {notation: 'compact', compactDisplay: 'long'} as const
+  const cases = [
+    [compact, '1000', '1,0 тысячи'],
+    [{...compact, trailingZeroDisplay: 'stripToMinimum'}, '1000', '1 тысяча'],
+    [
+      {
+        ...compact,
+        minimumFractionDigits: 1,
+        trailingZeroDisplay: 'stripIfInteger',
+      },
+      1000,
+      '1 тысяча',
+    ],
+  ] as const
+  compare(
+    cases.map(([options, value]) => ({
+      locales: ['ru'],
+      options,
+      values: [value],
+    }))
+  )
+  for (const [options, value, expected] of cases) {
+    expect(new NumberFormat('ru', options).format(value)).toBe(expected)
+  }
+})
+
+it('selects scientific and engineering labels after shifting the mantissa', () => {
+  const unit = {style: 'unit', unit: 'meter', unitDisplay: 'long'} as const
+  const currency = {
+    style: 'currency',
+    currency: 'RUB',
+    currencyDisplay: 'name',
+  } as const
+  const cases = (['scientific', 'engineering'] as const).flatMap(notation => [
+    {
+      options: {...unit, notation, minimumFractionDigits: 2},
+      values: [1, 1000, 1200],
+      expected: ['1,00E0 метра', '1,00E3 метров', '1,20E3 метров'],
+    },
+    {
+      options: {...currency, notation, maximumFractionDigits: 0},
+      values: [0.001, 1, 1000],
+      expected: [
+        '1E-3 российского рубля',
+        '1E0 российский рубль',
+        '1E3 российских рублей',
+      ],
+    },
+  ])
+  compare(
+    cases.map(({options, values}) => ({locales: ['ru'], options, values}))
+  )
+  for (const {options, values, expected} of cases) {
+    const formatter = new NumberFormat('ru', options)
+    expect(values.map(value => formatter.format(value))).toEqual(expected)
+  }
+})
+
+it('selects long unit and currency names from visible trailing zeros', () => {
+  const unit = {style: 'unit', unit: 'meter', unitDisplay: 'long'} as const
+  const currency = {
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'name',
+    minimumFractionDigits: 0,
+  } as const
+  const cases = [
+    [unit, '1.0', '1.0 meters'],
+    [{...unit, unit: 'meter-per-second'}, '1.0', '1.0 meters per second'],
+    [
+      {...unit, unit: 'meter-per-acre', minimumFractionDigits: 2},
+      2,
+      '2.00 meters per acre',
+    ],
+    [{...unit, trailingZeroDisplay: 'stripToMinimum'}, '1.0', '1 meter'],
+    [{...unit, minimumFractionDigits: 2}, 1, '1.00 meters'],
+    [
+      {
+        ...unit,
+        minimumFractionDigits: 2,
+        trailingZeroDisplay: 'stripIfInteger',
+      },
+      1,
+      '1 meter',
+    ],
+    [currency, '1.0', '1.0 US dollars'],
+    [
+      {...currency, trailingZeroDisplay: 'stripIfInteger'},
+      '1.0',
+      '1 US dollar',
+    ],
+  ] as const
+  compare(
+    cases.map(([options, value]) => ({
+      locales: ['en'],
+      options,
+      values: [value],
+    }))
+  )
+  for (const [options, value, expected] of cases) {
+    expect(new NumberFormat('en', options).format(value)).toBe(expected)
+  }
+})
+
+it('uses visible fractions in Arabic, Czech and Polish unit plurals', () => {
+  const value = '9007199254740993.125'
+  const options = {style: 'unit', unit: 'meter', unitDisplay: 'long'} as const
+  const cases = [
+    ['ar', 'متر'],
+    ['cs', 'metru'],
+    ['pl', 'metra'],
+  ] as const
+  compare(
+    cases.map(([locale]) => ({locales: [locale], options, values: [value]}))
+  )
+  // LDML plural ranges contain integers. Arabic n % 100 = 11..99 therefore
+  // cannot match 93.125, even though ICU 79 picks the “many” unit form here.
+  // https://unicode.org/reports/tr35/tr35-numbers.html#Plural_rules_syntax
+  for (const [locale, unit] of cases) {
+    const parts = new NumberFormat(locale, options).formatToParts(value)
+    expect(parts.find(part => part.type === 'unit')?.value, locale).toBe(unit)
+  }
 })
 
 it('compares number styles and notations with TS across locale families', () => {
@@ -370,6 +577,57 @@ it('compares currency digits, precision defaults and range affixes', () => {
   compare(cases)
 }, 120_000)
 
+it('adds an approximation sign without changing the rendered endpoint', () => {
+  const cases = [
+    {
+      locales: ['ar'],
+      options: {style: 'unit', unit: 'meter', unitDisplay: 'long'},
+      values: [],
+      ranges: [[1, 1]],
+      sign: '~',
+    },
+    {
+      locales: ['de-CH'],
+      options: {style: 'currency', currency: 'CHF', currencyDisplay: 'code'},
+      values: [],
+      ranges: [['1.0001', '1.0002']],
+      sign: '≈',
+    },
+    {
+      locales: ['de-CH'],
+      options: {
+        style: 'currency',
+        currency: 'USD',
+        currencySign: 'accounting',
+        notation: 'compact',
+        compactDisplay: 'long',
+      },
+      values: [],
+      ranges: [[999.5, 1000.5]],
+      sign: '≈',
+    },
+  ] satisfies (Case & {sign: string})[]
+  compare(cases)
+  // ECMA-402 §16.5.19 step 2 inserts one part into the endpoint's List.
+  // https://tc39.es/ecma402/#sec-formatapproximately
+  for (const {
+    locales,
+    options,
+    ranges: [[start, end]],
+    sign,
+  } of cases) {
+    const formatter = new NumberFormat(locales, options)
+    expect(formatter.format(start)).toBe(formatter.format(end))
+    const parts = formatter.formatRangeToParts(start, end)
+    expect(parts.filter(part => part.type === 'approximatelySign')).toEqual([
+      {type: 'approximatelySign', value: sign, source: 'shared'},
+    ])
+    expect(parts.filter(part => part.type !== 'approximatelySign')).toEqual(
+      formatter.formatToParts(start).map(part => ({...part, source: 'shared'}))
+    )
+  }
+})
+
 it('preserves large integers, long fractions and notation carries', () => {
   const cases: Case[] = []
   for (const options of [
@@ -407,6 +665,19 @@ it('preserves large integers, long fractions and notation carries', () => {
     })
   compare(cases)
 }, 120_000)
+it('agrees on exact decimals below scientific notation thresholds', () => {
+  compare([
+    {
+      locales: ['en'],
+      options: {
+        notation: 'scientific',
+        maximumFractionDigits: 2,
+        roundingMode: 'trunc',
+      },
+      values: ['9999999999999999999999999', '0.0999999999999999999'],
+    },
+  ])
+})
 it('compares rounding, precision, sign and grouping options with TS', () => {
   const cases: Case[] = []
   for (const roundingMode of [

@@ -177,6 +177,40 @@ fn staged_abi_orders_phases_and_preserves_initial_timezone_names() {
     assert_eq!(construction.capture(json!({})), 2);
 }
 #[test]
+fn default_zone_uses_loaded_host_alias_before_utc() {
+    let registry = Registry::new();
+    let host = r#"{"hostTimeZone":"europe/uzhgorod"}"#;
+    assert_eq!(
+        unsafe { formatjs_datetime_registry_zone(registry.0, host.as_ptr(), host.len()) },
+        0
+    );
+    for (zones, expected, hour) in [
+        (vec!["Europe/Uzhgorod|,0,0,0"], "Europe/Uzhgorod", "02"),
+        (
+            vec!["Europe/Uzhgorod|,0,0,0", "Europe/Kyiv|,0,1,0"],
+            "Europe/Kyiv",
+            "03",
+        ),
+        (vec![], "UTC", "00"),
+    ] {
+        let pack = json!({"abbrvs":"EET","offsets":"5k0|8c0","zones":zones}).to_string();
+        assert_eq!(registry.load(2, &pack), 0);
+        let construction = Construction::begin(&registry);
+        assert_eq!(construction.resolve(json!({"hourCycle":"h23"})), 0);
+        assert_eq!(construction.zone(Value::Null), 0);
+        assert_eq!(construction.capture(json!({"hour":"numeric"})), 0);
+        let handle = construction.finish(json!({})).ok().unwrap();
+        let resolved: Value =
+            serde_json::from_str(&handle.query(json!({"op":"resolved"})).unwrap()).unwrap();
+        assert_eq!(resolved["timeZone"], expected);
+        let value = handle
+            .query(json!({"op":"format","value":{"type":"number","value":"0"}}))
+            .unwrap();
+        assert_eq!(serde_json::from_str::<String>(&value).unwrap(), hour);
+    }
+}
+
+#[test]
 fn abi_validates_inputs_and_retains_formatter_after_registry_destruction() {
     unsafe {
         assert_eq!(formatjs_datetime_registry_create(ptr::null_mut()), 2);

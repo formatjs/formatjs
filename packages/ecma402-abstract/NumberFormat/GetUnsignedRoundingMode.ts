@@ -27,6 +27,7 @@ const positiveMapping: Record<RoundingModeType, UnsignedRoundingModeType> = {
   halfEven: 'half-even',
 }
 
+// ECMA-402 §16.5.16 https://tc39.es/ecma402/#sec-getunsignedroundingmode
 export function GetUnsignedRoundingMode(
   roundingMode: RoundingModeType,
   isNegative: boolean

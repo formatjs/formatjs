@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {DefaultNumberOption} from '#packages/ecma402-abstract/DefaultNumberOption.js'
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
@@ -12,10 +13,12 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 
-//IMPL: Valid rounding increments as per implementation
-const VALID_ROUNDING_INCREMENTS = new Set([
+// ECMA-402 §16.1.2 step 7 uses a private List of allowed increments.
+// https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
+const VALID_ROUNDING_INCREMENTS = [
   1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
-])
+]
+const validRoundingIncrementList = VALID_ROUNDING_INCREMENTS.join(', ')
 
 /**
  * https://tc39.es/ecma402/#sec-setnfdigitoptions
@@ -30,22 +33,13 @@ export function SetNumberFormatDigitOptions(
   // 1. Let mnid be ? GetNumberOption(opts, "minimumIntegerDigits", 1, 21, 1).
   const mnid = GetNumberOption(opts, 'minimumIntegerDigits', 1, 21, 1)
 
-  // 2. Let mnfd be opts.[[MinimumFractionDigits]].
+  // Steps 2–5 read the precision values before coercing the active ones.
   let mnfd = opts.minimumFractionDigits
-
-  // 3. Let mxfd be opts.[[MaximumFractionDigits]].
   let mxfd = opts.maximumFractionDigits
-
-  // 4. Let mnsd be opts.[[MinimumSignificantDigits]].
   let mnsd = opts.minimumSignificantDigits
-
-  // 5. Let mxsd be opts.[[MaximumSignificantDigits]].
   let mxsd = opts.maximumSignificantDigits
 
-  // 6. Set internalSlots.[[MinimumIntegerDigits]] to mnid.
-  internalSlots.minimumIntegerDigits = mnid
-
-  // 7. Let roundingIncrement be ? GetNumberOption(opts, "roundingIncrement", 1, 5000, 1).
+  // Step 6 reads and coerces roundingIncrement before checking membership.
   const roundingIncrement = GetNumberOption(
     opts,
     'roundingIncrement',
@@ -54,17 +48,16 @@ export function SetNumberFormatDigitOptions(
     1
   )
 
-  // ECMA-402 §16.1.2, step 8: invalid increments must throw RangeError.
+  // ECMA-402 §16.1.2 step 7 throws without calling public collection methods.
   // https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L104
-  invariant(
-    VALID_ROUNDING_INCREMENTS.has(roundingIncrement),
-    `Invalid rounding increment value: ${roundingIncrement}.
-Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
-    RangeErrorConstructor
-  )
+  if (!arrayIncludes(VALID_ROUNDING_INCREMENTS, roundingIncrement)) {
+    throw new RangeErrorConstructor(
+      `Invalid rounding increment value: ${roundingIncrement}.
+Valid values are ${validRoundingIncrementList}.`
+    )
+  }
 
-  // 9. Let roundingMode be ? GetOption(opts, "roundingMode", "string", « "ceil", "floor", "expand", "trunc", "halfCeil", "halfFloor", "halfExpand", "halfTrunc", "halfEven" », "halfExpand").
+  // Steps 8–10 read rounding mode, priority, and trailing-zero display.
   const roundingMode = GetOption(
     opts,
     'roundingMode',
@@ -83,7 +76,6 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
     'halfExpand'
   )
 
-  // 10. Let roundingPriority be ? GetOption(opts, "roundingPriority", "string", « "auto", "morePrecision", "lessPrecision" », "auto").
   const roundingPriority = GetOption(
     opts,
     'roundingPriority',
@@ -92,7 +84,6 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
     'auto'
   )
 
-  // 11. Let trailingZeroDisplay be ? GetOption(opts, "trailingZeroDisplay", "string", « "auto", "stripIfInteger", "stripToMinimum" », "auto").
   const trailingZeroDisplay = GetOption(
     opts,
     'trailingZeroDisplay',
@@ -101,34 +92,24 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
     'auto'
   )
 
-  // 12. If roundingIncrement is not 1, then
+  // Steps 11–12 finish option reads and adjust the default fraction width.
   if (roundingIncrement !== 1) {
     // 12.a. Set mxfdDefault to mnfdDefault.
     mxfdDefault = mnfdDefault
   }
 
-  // 13. Set internalSlots.[[RoundingIncrement]] to roundingIncrement.
+  // Steps 13–16 store the resolved digit and rounding settings.
+  internalSlots.minimumIntegerDigits = mnid
   internalSlots.roundingIncrement = roundingIncrement
-
-  // 14. Set internalSlots.[[RoundingMode]] to roundingMode.
   internalSlots.roundingMode = roundingMode
-
-  // 15. Set internalSlots.[[TrailingZeroDisplay]] to trailingZeroDisplay.
   internalSlots.trailingZeroDisplay = trailingZeroDisplay
 
-  // 16. Let hasSd be true if mnsd is not undefined or mxsd is not undefined; otherwise, let hasSd be false.
+  // Steps 17–18 record which precision options were supplied.
   const hasSd = mnsd !== undefined || mxsd !== undefined
-
-  // 17. Let hasFd be true if mnfd is not undefined or mxfd is not undefined; otherwise, let hasFd be false.
   const hasFd = mnfd !== undefined || mxfd !== undefined
-
-  // 18. Let needSd be true.
   let needSd = true
-
-  // 19. Let needFd be true.
   let needFd = true
-
-  // 20. If roundingPriority is "auto", then
+  // Steps 19–20 choose which precision rules apply.
   if (roundingPriority === 'auto') {
     // 20.a. Set needSd to hasSd.
     needSd = hasSd

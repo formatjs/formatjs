@@ -1,29 +1,9 @@
-import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
+import {supportedEntries} from '#packages/intl-supportedvaluesof/supported-entries.js'
 import type {Unit} from '@formatjs_generated/cldr.supported-values/units.js'
 import {units} from '@formatjs_generated/cldr.supported-values/units.js'
 
-/**
- * Implementation: Tests if a unit is supported by attempting to create
- * a NumberFormat with that unit and verifying it was accepted.
- *
- * CLDR Data: Candidate values come from CLDR unit types
- */
-function isSupportedUnit(unit: Unit): boolean {
-  try {
-    // Always use 'en' for testing
-    const formatter = createMemoizedNumberFormat('en', {style: 'unit', unit})
-    return formatter.resolvedOptions().unit === unit
-  } catch {}
-
-  return false
-}
-
-/**
- * ECMA-402 Spec: Returns supported unit identifiers
- * ECMA-402 Spec: Results must be sorted lexicographically
- *
- * Implementation: Filters CLDR list against actual runtime support
- */
+// ECMA-402 §8.3.2 step 7 returns every sanctioned single unit in Table 2.
+// https://tc39.es/ecma402/#sec-availablecanonicalunits
 export function getSupportedUnits(): Unit[] {
-  return units.filter(isSupportedUnit).sort()
+  return supportedEntries(units, () => true)
 }

@@ -1,7 +1,7 @@
 {
   "total": 162,
   "failures": {
-    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'",
-    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.ListFormat must be called with 'new'"
+    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.ListFormat]», «[object Intl.ListFormat]») to be true",
+    "intl402/ListFormat/constructor/constructor/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(«[object Intl.ListFormat]», «[object Intl.ListFormat]») to be true"
   }
 }

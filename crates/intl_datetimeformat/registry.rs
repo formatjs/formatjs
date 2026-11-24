@@ -6,10 +6,11 @@ use crate::{
 #[cfg(feature = "compiled_data")]
 use formatjs_intl_data::Compiled;
 use formatjs_intl_data::Data;
-use formatjs_intl_getcanonicallocales::get_canonical_locales;
+use formatjs_intl_getcanonicallocales::{canonicalize_locale, get_canonical_locales};
 use formatjs_intl_locale::{Locale, LocaleOptions, matcher};
 use serde::{Deserialize, Serialize};
 use std::{
+    cell::OnceCell,
     collections::{BTreeMap, BTreeSet},
     sync::{Arc, OnceLock},
 };
@@ -37,6 +38,7 @@ pub struct Resolution {
 struct CompiledLocale {
     locale: String,
     raw: Data<RawLocale>,
+    calendar_candidates: &'static [&'static str],
     prepared: OnceLock<Option<Arc<LocaleData>>>,
 }
 impl CompiledLocale {
@@ -64,6 +66,7 @@ pub struct Registry {
     available: formatjs_intl_locale::matcher::AvailableLocales,
     default: Option<String>,
     providers: CalendarRegistry,
+    available_calendars: OnceCell<Vec<String>>,
 }
 
 fn aliases() -> &'static BTreeMap<String, Vec<String>> {
@@ -186,10 +189,12 @@ impl Registry {
         locale: &str,
         _aliases: &[&str],
         data: &'static Compiled<RawLocale>,
+        calendar_candidates: &'static [&'static str],
     ) {
         let record = Arc::new(CompiledLocale {
             locale: locale.into(),
             raw: Data::compiled(data),
+            calendar_candidates,
             prepared: OnceLock::new(),
         });
         self.explicit.insert(locale.into());
@@ -226,7 +231,7 @@ impl Registry {
     #[cfg(feature = "compiled_data")]
     fn insert_compiled(&mut self, tag: String, data: Arc<CompiledLocale>, replace: bool) {
         if !self.compiled.contains_key(&tag) {
-            self.available.push(tag.clone());
+            self.available.push_service_locale(tag.clone());
         }
         if replace || !self.compiled.contains_key(&tag) {
             self.compiled.insert(tag, data);
@@ -243,7 +248,7 @@ impl Registry {
 
     fn insert(&mut self, tag: String, data: Arc<LocaleData>, replace: bool) {
         if !self.data.contains_key(&tag) && !self.compiled.contains_key(&tag) {
-            self.available.push(tag.clone());
+            self.available.push_service_locale(tag.clone());
         }
         if replace || (!self.data.contains_key(&tag) && !self.compiled.contains_key(&tag)) {
             self.data.insert(tag, data);
@@ -251,6 +256,7 @@ impl Registry {
     }
 
     fn publish(&mut self, locale: &str, data: Arc<LocaleData>) {
+        self.available_calendars.take();
         for (tag, record) in &self.compiled {
             if record.locale == locale && !self.data.contains_key(tag) {
                 self.data.insert(tag.clone(), data.clone());
@@ -299,7 +305,11 @@ impl Registry {
     }
 
     pub fn add_locale_data(&mut self, json: &str) -> Result<(), Error> {
-        let raw: RawLocale = serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
+        let mut raw: RawLocale =
+            serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
+        // ECMA-402 §9 requires canonical AvailableLocales entries.
+        // https://tc39.es/ecma402/#locale-and-parameter-negotiation
+        raw.locale = canonicalize_locale(&raw.locale).map_err(|_| Error::InvalidLocale)?;
         let data = Self::prepare(
             &raw,
             self.patches
@@ -314,8 +324,9 @@ impl Registry {
     }
 
     pub fn add_calendar_locale_data(&mut self, json: &str) -> Result<(), Error> {
-        let patch: CalendarPatch =
+        let mut patch: CalendarPatch =
             serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
+        patch.locale = canonicalize_locale(&patch.locale).map_err(|_| Error::InvalidLocale)?;
         let locale = patch.locale.clone();
         if !self.raw.contains_key(&locale) {
             if let Some(record) = self.compiled.get(&locale) {
@@ -345,6 +356,7 @@ impl Registry {
     }
 
     pub fn register_calendar(&mut self, calendar: String, provider: Arc<dyn CalendarProvider>) {
+        self.available_calendars.take();
         self.providers.register(calendar, provider);
     }
 
@@ -353,6 +365,7 @@ impl Registry {
         calendar: String,
         provider: Arc<dyn CalendarProvider>,
     ) -> Option<Arc<dyn CalendarProvider>> {
+        self.available_calendars.take();
         self.providers.replace(calendar, provider)
     }
 
@@ -361,6 +374,7 @@ impl Registry {
     }
 
     pub fn get(&self, locale: &str) -> Result<Arc<LocaleData>, Error> {
+        let locale = self.available.data_locale(locale);
         if let Some(data) = self.data.get(locale) {
             return Ok(data.clone());
         }
@@ -377,14 +391,39 @@ impl Registry {
         Ok(self.get(locale)?.available_calendars(&self.providers))
     }
 
+    // ECMA-402 §6.9.1. Include every effective locale, using compiled metadata
+    // to avoid decoding any untouched locale packs.
+    // https://tc39.es/ecma402/#sec-availablecalendars
+    pub(crate) fn all_available_calendars(&self) -> &[String] {
+        self.available_calendars.get_or_init(|| {
+            let loaded = self
+                .data
+                .values()
+                .flat_map(|data| data.calendar_candidates());
+            let compiled = self
+                .compiled
+                .iter()
+                .filter(|(locale, _)| !self.data.contains_key(*locale))
+                .flat_map(|(_, data)| data.calendar_candidates.iter().copied());
+            loaded
+                .chain(compiled)
+                .filter(|calendar| self.providers.contains(calendar))
+                .collect::<BTreeSet<_>>()
+                .into_iter()
+                .map(str::to_owned)
+                .collect()
+        })
+    }
+
     pub fn supported_locales(
         &self,
         requested: &[String],
         locale_matcher: Option<&str>,
     ) -> Result<Vec<String>, Error> {
         let requested = get_canonical_locales(requested).map_err(|_| Error::InvalidLocale)?;
-        lookup_matcher(locale_matcher)?;
-        Ok(matcher::supported(self.available.as_slice(), &requested))
+        let lookup = lookup_matcher(locale_matcher)?;
+        matcher::filter(self.available.as_slice(), &requested, lookup)
+            .map_err(|_| Error::InvalidLocale)
     }
 
     pub fn resolve(
@@ -392,6 +431,15 @@ impl Registry {
         requested: &[String],
         options: &ResolutionOptions,
     ) -> Result<Resolution, Error> {
+        self.resolve_with_data(requested, options)
+            .map(|(resolution, _)| resolution)
+    }
+
+    pub(crate) fn resolve_with_data(
+        &self,
+        requested: &[String],
+        options: &ResolutionOptions,
+    ) -> Result<(Resolution, Arc<LocaleData>), Error> {
         let requested = get_canonical_locales(requested).map_err(|_| Error::InvalidLocale)?;
         let lookup = lookup_matcher(options.locale_matcher.as_deref())?;
         let calendar = normalized(options.calendar.as_deref(), true)?;
@@ -409,6 +457,9 @@ impl Registry {
         };
         let (index, data_locale) = matched
             .map(|(index, locale)| (Some(index), locale))
+            .or_else(|| {
+                matcher::host_default(self.available.as_slice()).map(|locale| (None, locale))
+            })
             .or_else(|| self.default.clone().map(|locale| (None, locale)))
             .ok_or(Error::MissingLocale)?;
         let request = index
@@ -482,12 +533,15 @@ impl Registry {
         } else {
             data_locale.clone()
         };
-        Ok(Resolution {
-            locale,
-            data_locale,
-            calendar,
-            numbering_system,
-            hour_cycle: selected,
-        })
+        Ok((
+            Resolution {
+                locale,
+                data_locale,
+                calendar,
+                numbering_system,
+                hour_cycle: selected,
+            },
+            data,
+        ))
     }
 }

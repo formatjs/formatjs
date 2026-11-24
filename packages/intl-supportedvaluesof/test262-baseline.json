@@ -1,7 +1,4 @@
 {
   "total": 50,
-  "failures": {
-    "intl402/Intl/supportedValuesOf/currencies-accepted-by-DisplayNames.js (default)": "CNX supported but not returned by supportedValuesOf",
-    "intl402/Intl/supportedValuesOf/currencies-accepted-by-DisplayNames.js (strict mode)": "CNX supported but not returned by supportedValuesOf"
-  }
+  "failures": {}
 }

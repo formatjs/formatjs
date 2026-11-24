@@ -3,12 +3,19 @@
   nativeLoad: (pack: string) => number
   nativeInfo: () => string | number
   nativeMatch: (request: string) => string | number
-  nativeCreate: (locale: string, options: string) => object | number
+  nativeCapture: (request: string) => object | number
+  nativeCreate: (snapshot: object, options: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
 }) {
   'use strict'
-  const {nativeLoad, nativeInfo, nativeMatch, nativeCreate, nativeQuery} =
-    native
+  const {
+    nativeLoad,
+    nativeInfo,
+    nativeMatch,
+    nativeCapture,
+    nativeCreate,
+    nativeQuery,
+  } = native
   const apply = Reflect.apply
   const create = Object.create
   const define = Object.defineProperty
@@ -20,6 +27,8 @@
   const charCodeAt = String.prototype.charCodeAt
   const BadReceiver = TypeError
   const BadOption = RangeError
+  // ECMA-402 §12.4: the native handle owns the instance's locale and options.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-displaynames-instances
   const slots = new WeakMap<object, object>()
   const getSlot = WeakMap.prototype.get
   const setSlot = WeakMap.prototype.set
@@ -44,8 +53,16 @@
     return stringify(value)!
   }
   function options(value: unknown, required = false): any {
+    // ECMA-402 §9.2.8 steps 2–3 require constructor options to be an object.
+    // https://tc39.es/ecma402/#sec-resolveoptions
+    if (required) {
+      if (!isObject(value))
+        throw new BadReceiver('Intl.DisplayNames requires an options object')
+      return value
+    }
+    // §9.2.9 step 1 coerces options for supportedLocalesOf.
+    // https://tc39.es/ecma402/#sec-filterlocales
     if (value === undefined) {
-      if (required) throw new BadReceiver('Intl.DisplayNames requires options')
       return create(null)
     }
     if (value === null) throw new BadReceiver('options must not be null')
@@ -76,24 +93,22 @@
       throw new BadReceiver('Incompatible Intl.DisplayNames receiver')
     return handle
   }
-  function match(
+  function matchRequest(
     requested: string[],
     lookup: boolean,
     supported: boolean
-  ): any {
+  ): string {
     let tags = '['
     for (let index = 0; index < requested.length; index++)
       tags += (index ? ',' : '') + quote(requested[index])
-    return decoded(
-      nativeMatch(
-        '{"requested":' +
-          tags +
-          '],"lookup":' +
-          lookup +
-          ',"supported":' +
-          supported +
-          '}'
-      )
+    return (
+      '{"requested":' +
+      tags +
+      '],"lookup":' +
+      lookup +
+      ',"supported":' +
+      supported +
+      '}'
     )
   }
   function property(
@@ -118,9 +133,9 @@
       result += (index ? ',' : '') + apply(charCodeAt, code, [index])
     return result + ']'
   }
-  // Constructor 1–6: allocate once before ResolveOptions. A derived constructor
+  // ECMA-402 §12.1.1 steps 1–6: allocate once before ResolveOptions. A derived constructor
   // avoids Hermes allocating from newTarget.prototype before our explicit Get.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L21-L25
+  // https://tc39.es/ecma402/#sec-Intl.DisplayNames
   class DisplayNames extends null {
     constructor(locales: unknown, optionsInput: unknown) {
       const requestedPrototype = new.target.prototype
@@ -130,7 +145,7 @@
       const requested = apply(canonicalize, intl, [locales]) as string[]
       // ResolveOptions requires options for DisplayNames, after locale-list
       // canonicalization and before reading localeMatcher.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L23
+      // https://tc39.es/ecma402/#sec-resolveoptions
       const opts = options(optionsInput, true)
       const matcher = option(
         opts,
@@ -138,10 +153,12 @@
         ['lookup', 'best fit'],
         'best fit'
       )
-      const locale = match(requested, matcher === 'lookup', false) as string
-      // Constructor 6–18: validate style, required type, fallback, then
+      const snapshot = nativeCapture(
+        matchRequest(requested, matcher === 'lookup', false)
+      )
+      if (typeof snapshot === 'number') return decoded(snapshot)
+      // Steps 6–16: validate style, required type, fallback, then
       // languageDisplay even for non-language types. Rust selects the fields.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L26-L45
       const style = option(opts, 'style', ['narrow', 'short', 'long'], 'long')!
       const type = option(
         opts,
@@ -166,7 +183,7 @@
         'dialect'
       )!
       const handle = nativeCreate(
-        locale,
+        snapshot,
         '{"style":' +
           quote(style) +
           ',"type":' +
@@ -185,8 +202,8 @@
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
-      // CanonicalizeLocaleList precedes FilterLocales and its option accesses.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L73-L75
+      // ECMA-402 §12.2.2: canonicalize before FilterLocales reads options.
+      // https://tc39.es/ecma402/#sec-Intl.DisplayNames.supportedLocalesOf
       const requested = apply(canonicalize, intl, [locales]) as string[]
       const matcher = option(
         options(optionsInput),
@@ -194,7 +211,9 @@
         ['lookup', 'best fit'],
         'best fit'
       )
-      return match(requested, matcher === 'lookup', true)
+      return decoded(
+        nativeMatch(matchRequest(requested, matcher === 'lookup', true))
+      )
     }
     static __addLocaleData(...packs: unknown[]): void {
       for (let index = 0; index < packs.length; index++) {
@@ -208,13 +227,15 @@
       return decoded(nativeInfo()).default || ''
     }
   }
+  // ECMA-402 §12.3.1: the class supplies the prototype's constructor property.
+  // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.constructor
   const prototype = DisplayNames.prototype
   setPrototypeOf(prototype, objectPrototype)
   const members = {
     of(this: unknown, code: unknown): string | undefined {
-      // of 1–4: brand before ToString. Template substitution uses string hint
+      // ECMA-402 §12.3.3 steps 1–4: check the slot before ToString. Template substitution uses string hint
       // and rejects Symbol. Rust validates/canonicalizes the resulting code.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L182-L189
+      // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
       const handle = slot(this)
       const text = `${code}`
       const value = decoded(
@@ -223,9 +244,8 @@
       return value === null ? undefined : value
     },
     resolvedOptions(this: unknown): object {
-      // Fresh ordinary result, table property order; null descriptors avoid
-      // inherited setters and poisoned descriptor getters.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L132-L170
+      // ECMA-402 §12.3.2 steps 2–5: fresh result, own properties in table order.
+      // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.resolvedOptions
       const values = decoded(
         nativeQuery(slot(this), '{"method":"resolvedOptions"}')
       )
@@ -242,8 +262,11 @@
   const names: (keyof typeof members)[] = ['of', 'resolvedOptions']
   for (let index = 0; index < names.length; index++)
     property(prototype, names[index], members[names[index]])
+  // ECMA-402 §12.3.4 https://tc39.es/ecma402/#sec-intl.displaynames.prototype-%symbol.tostringtag%
   property(prototype, Symbol.toStringTag, 'Intl.DisplayNames', false, false)
   property(DisplayNames, 'polyfilled', true)
+  // ECMA-402 §12.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype
   const descriptor = create(null)
   descriptor.writable = false
   define(DisplayNames, 'prototype', descriptor)

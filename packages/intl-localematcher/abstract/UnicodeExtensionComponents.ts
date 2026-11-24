@@ -9,6 +9,8 @@ import {
 import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
 import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
+// ECMA-402 §9.2.5 keeps the first occurrence of each attribute and keyword.
+// https://tc39.es/ecma402/#sec-unicode-extension-components
 export function UnicodeExtensionComponents(extension: string): {
   attributes: string[]
   keywords: Array<Keyword>

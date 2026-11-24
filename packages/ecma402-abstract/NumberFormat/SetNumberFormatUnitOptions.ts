@@ -11,6 +11,9 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 
+const apply = Reflect.apply
+const upperCase = String.prototype.toUpperCase
+
 /**
  * https://tc39.es/ecma402/#sec-setnumberformatunitoptions
  */
@@ -37,15 +40,14 @@ export function SetNumberFormatUnitOptions(
     undefined,
     undefined
   )
-  // 4. If currency is not undefined, then
-  // a. If the result of IsWellFormedCurrencyCode(currency) is false, throw a RangeError exception.
+  // Step 5.a validates a supplied currency code.
   invariant(
     currency === undefined || IsWellFormedCurrencyCode(currency),
     'Malformed currency code',
     RangeErrorConstructor
   )
 
-  // 5. If style is "currency" and currency is undefined, throw a TypeError exception.
+  // Step 4.a requires currency for currency style.
   invariant(
     style !== 'currency' || currency !== undefined,
     'currency cannot be undefined',
@@ -71,14 +73,13 @@ export function SetNumberFormatUnitOptions(
 
   // 8. Let unit be ? GetOption(options, "unit", "string", undefined, undefined).
   const unit = GetOption(options, 'unit', 'string', undefined, undefined)
-  // 9. If unit is not undefined, then
-  // a. If the result of IsWellFormedUnitIdentifier(unit) is false, throw a RangeError exception.
+  // Step 10.a validates a supplied unit identifier.
   invariant(
     unit === undefined || IsWellFormedUnitIdentifier(unit),
     'Invalid unit argument for Intl.NumberFormat()',
     RangeErrorConstructor
   )
-  // 10. If style is "unit" and unit is undefined, throw a TypeError exception.
+  // Step 9.a requires unit for unit style.
   invariant(
     style !== 'unit' || unit !== undefined,
     'unit cannot be undefined',
@@ -96,8 +97,9 @@ export function SetNumberFormatUnitOptions(
 
   // 12. If style is "currency", then
   if (style === 'currency') {
-    // a. Set internalSlots.[[Currency]] to the result of converting currency to upper case as specified in 6.1.
-    internalSlots.currency = currency!.toUpperCase()
+    // Step 12.a uses ASCII uppercase on the validated code.
+    // https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
+    internalSlots.currency = apply(upperCase, currency, [])
     // b. Set internalSlots.[[CurrencyDisplay]] to currencyDisplay.
     internalSlots.currencyDisplay = currencyDisplay
     // c. Set internalSlots.[[CurrencySign]] to currencySign.

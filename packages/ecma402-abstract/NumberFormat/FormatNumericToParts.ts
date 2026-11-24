@@ -8,6 +8,7 @@ import {
 import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.js'
 
 /** ECMA-402 §16.5.6. */
+// ECMA-402 §16.5.6 https://tc39.es/ecma402/#sec-formatnumbertoparts
 export function FormatNumericToParts(
   nf: Intl.NumberFormat,
   x: Decimal | IntlMathematicalValue,

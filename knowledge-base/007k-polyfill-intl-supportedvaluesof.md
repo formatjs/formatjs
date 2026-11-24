@@ -14,24 +14,24 @@ Polyfill for `Intl.supportedValuesOf()` — returns arrays of supported values f
 
 ### Sources
 
-| CLDR Package                 | Data Used                                                        |
-| ---------------------------- | ---------------------------------------------------------------- |
-| `cldr-bcp47`                 | calendar.json (calendar types), collation.json (collation types) |
-| `cldr-numbers-full`          | currencies.json (currency codes)                                 |
-| `@formatjs/ecma402-abstract` | SIMPLE_UNITS constant (spec-defined unit list)                   |
-| Pre-computed timezone list   | IANA timezone identifiers                                        |
+| CLDR Package                 | Data Used                                      |
+| ---------------------------- | ---------------------------------------------- |
+| `cldr-bcp47`                 | calendar, collation, and currency registries   |
+| `cldr-numbers-full`          | currencies.json (currency codes)               |
+| `@formatjs/ecma402-abstract` | SIMPLE_UNITS constant (spec-defined unit list) |
+| Pre-computed timezone list   | IANA timezone identifiers                      |
 
 ### Extraction Scripts (`scripts/`)
 
 5 independent scripts, each generating one value list:
 
-| Script          | Output                                                                              |
-| --------------- | ----------------------------------------------------------------------------------- |
-| `calendars.ts`  | `calendars.generated.ts` — Calendar type strings from cldr-bcp47                    |
-| `collations.ts` | `collations.generated.ts` — Collation type strings (filters keys starting with `_`) |
-| `currencies.ts` | `currencies.generated.ts` — ISO 4217 currency codes from cldr-numbers-full          |
-| `timezones.ts`  | `timezones.generated.ts` — IANA timezone identifiers (passed via `--zone` args)     |
-| `units.ts`      | `units.generated.ts` — SIMPLE_UNITS from ecma402-abstract (spec-defined list)       |
+| Script          | Output                                                                                               |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| `calendars.ts`  | `calendars.generated.ts` — Canonical calendar types from cldr-bcp47                                  |
+| `collations.ts` | `collations.generated.ts` — Collation type strings (filters keys starting with `_`)                  |
+| `currencies.ts` | `currencies.generated.ts` — ISO 4217 candidates from localized data and the BCP 47 currency registry |
+| `timezones.ts`  | `timezones.generated.ts` — IANA timezone identifiers (passed via `--zone` args)                      |
+| `units.ts`      | `units.generated.ts` — SIMPLE_UNITS from ecma402-abstract (spec-defined list)                        |
 
 Numbering systems data is symlinked from intl-numberformat.
 
@@ -64,7 +64,10 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 ### Runtime Loading
 
 - **No dynamic locale loading** — all value lists compiled into the bundle
-- `supportedValuesOf(key)` looks up the correct generated constant and returns a sorted copy
+- `supportedValuesOf(key)` returns a fresh, sorted array. Units come from ECMA-402 Table 2. Other categories probe installed formatters.
+- Numbering systems include ECMA-402 Table 30. Additional systems are checked in NumberFormat, DateTimeFormat, and RelativeTimeFormat using English and CLDR rule and locale data.
+- Currencies use NumberFormat and check DisplayNames when installed. Currencies without an English name use CLDR locale candidates.
+- FormatJS DateTimeFormat supplies calendar and time-zone availability from its registries. Other providers use formatter probes.
 - Each value type is a `const` array for type safety
 
 ## Key coercion
@@ -78,10 +81,9 @@ Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
 in addition to continental transition zones. The generator maps them through
 the shared IANA/zone.tab/CLDR primary table, removing aliases such as
 `America/Yellowknife` while retaining country primaries such as `Africa/Accra`.
-Runtime filtering probes construction only: current DateTimeFormat preserves
-aliases, and older hosts may resolve a primary ID to an older spelling. Neither
-resolved spelling determines primary identity. Rust uses the same candidate list
-and successful-construction rule.
+TypeScript and Hermes query FormatJS DateTimeFormat's current zone registry
+without loading locale data. Other providers check whether construction succeeds.
+Resolved spelling does not determine primary identity.
 
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.

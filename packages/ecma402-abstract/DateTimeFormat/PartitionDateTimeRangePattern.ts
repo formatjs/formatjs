@@ -29,9 +29,10 @@ import {
   type ToLocalTimeImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {calendarLocaleData} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
-// Temporal comparison §15.6.8 step 23.a reads the ECMA-402 Table 6 order.
-// The default row supplies fallback data and has no field to compare.
+// ECMA-402 §11.5.8 step 15 follows Table 6. The default row is fallback only.
+// https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
   'year',
@@ -92,17 +93,21 @@ export function PartitionDateTimeRangePattern(
     )
   }
   const slots = implDetails.getInternalSlots(dtf)
-  // Steps 8–11 prepare each endpoint and retain its epoch nanoseconds.
+  // ECMA-402 §11.5.8 steps 1–6 clip both endpoints and convert them to nanoseconds.
+  // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
   const first = HandleDateTimeValue(slots, x)
   const second = HandleDateTimeValue(slots, y)
-  // Step 15 uses the first endpoint's format for the range.
+  // ECMA-402 §11.5.8 steps 9–11 use the selected format and hour cycle.
+  // Temporal §15.6.8 steps 15–16 require both endpoints to use the same format.
+  // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
   const internalSlots = first.format
   implDetails = {...implDetails, getInternalSlots: () => internalSlots}
   const {tzData, calendarData, localeData} = implDetails
   const dataLocale = internalSlots.dataLocale
-  const rootLocaleData = localeData[dataLocale]
-  const dataLocaleData =
-    rootLocaleData.calendarData?.[internalSlots.calendar!] ?? rootLocaleData
+  const dataLocaleData = calendarLocaleData(
+    localeData[dataLocale],
+    internalSlots.calendar
+  )
   /** IMPL END */
   // §15.6.8 steps 12–13 use the formatter zone. §15.6.4 step 12 renders
   // Plain values in UTC. Compare in UTC too to preserve distinct wall times.
@@ -188,8 +193,8 @@ export function PartitionDateTimeRangePattern(
       // Temporal comparison §15.6.8 steps 23.d.ii.1–2 encode am/pm as Booleans.
       equal = tm1.hour < 12 === tm2.hour < 12
     } else if (field === 'dayPeriod') {
-      // Temporal comparison §15.6.8 steps 23.d.iii.1–2 resolve each local
-      // day period with the selected locale and available clock fields.
+      // ECMA-402 §11.5.8 step 15.d.iii compares localized day periods.
+      // Stand-alone periods still compare even when there is no hour field.
       const first = getDayPeriodName(
         dataLocaleData,
         tm1,

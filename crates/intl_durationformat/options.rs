@@ -44,6 +44,8 @@ pub struct UnitInput {
     pub display: Option<Display>,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+// ECMA-402 §13.5.6.1: each resolved unit has style and display fields.
+// https://tc39.es/ecma402/#sec-durationformat-unit-options-record
 pub struct UnitOptions {
     pub style: UnitStyle,
     pub display: Display,
@@ -116,6 +118,8 @@ impl UnitResolver {
             display_default,
         })
     }
+    // ECMA-402 §13.5.6.2 validates style/display against the preceding unit.
+    // https://tc39.es/ecma402/#sec-validatedurationunitstyle
     pub fn finish(
         &mut self,
         prepared: PreparedUnit,

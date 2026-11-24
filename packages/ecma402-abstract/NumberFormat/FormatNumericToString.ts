@@ -9,9 +9,7 @@ import {GetUnsignedRoundingMode} from '#packages/ecma402-abstract/NumberFormat/G
 import {ToRawFixed} from '#packages/ecma402-abstract/NumberFormat/ToRawFixed.js'
 import {ToRawPrecision} from '#packages/ecma402-abstract/NumberFormat/ToRawPrecision.js'
 
-/**
- * https://tc39.es/ecma402/#sec-formatnumberstring
- */
+// ECMA-402 §16.5.2 https://tc39.es/ecma402/#sec-formatnumerictostring
 export function FormatNumericToString(
   intlObject: Pick<
     NumberFormatDigitInternalSlots,

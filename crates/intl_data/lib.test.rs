@@ -1,5 +1,8 @@
-use formatjs_intl_data::{Compiled, Data, decode};
-use std::sync::{Arc, RwLock};
+use formatjs_intl_data::{Compiled, Data, decode, refresh_locale_data};
+use std::{
+    collections::BTreeMap,
+    sync::{Arc, RwLock},
+};
 
 static NUMBERS: Compiled<RwLock<Vec<u32>>> = Compiled::new(&[0x81, 0x01]);
 
@@ -21,4 +24,20 @@ fn malformed_truncated_and_trailing_records_reject() {
         assert!(decode::<Vec<u32>>(bytes).is_err());
     }
     assert_eq!(decode::<Vec<u32>>(&[0x81, 0x01]).unwrap(), vec![1]);
+}
+
+#[test]
+fn reloading_a_pack_refreshes_only_its_undecoded_aliases() {
+    static UNDECODABLE: Compiled<Vec<u32>> = Compiled::new(&[0xff]);
+    let pack = Data::compiled(&UNDECODABLE);
+    let mut locales = BTreeMap::from([
+        ("aa-DJ".to_owned(), pack.clone()),
+        ("aa".to_owned(), pack),
+        ("aa-ET".to_owned(), Data::compiled(&UNDECODABLE)),
+    ]);
+    let replacement = Data::Owned(Arc::new(vec![2]));
+    refresh_locale_data(&mut locales, "aa-DJ", &replacement);
+    assert_eq!(*locales["aa"].get().unwrap(), [2]);
+    assert_eq!(*locales["aa-DJ"].get().unwrap(), [2]);
+    assert!(locales["aa-ET"].get().is_err());
 }

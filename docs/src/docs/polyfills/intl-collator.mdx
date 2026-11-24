@@ -78,6 +78,9 @@ const collator = new Collator('zh-u-co-pinyin', {
 - `numeric`, `caseFirst`, `sensitivity`, `usage`, and `ignorePunctuation`
 - Root CLDR collation data plus generated locale collation metadata and
   tailorings
+- Canadian French accent ordering for `fr-CA`
+- CLDR script ordering, including Greek, Cyrillic, and Arabic before Latin in
+  their respective locales
 
 ## Data Model
 
@@ -102,6 +105,8 @@ fall back during locale negotiation. `compare` converts arguments to strings in
 left-to-right order and rejects Symbols with `TypeError`.
 
 ### Built-in descriptors
+
+`Collator()` creates a fresh instance when called with or without `new`.
 
 `resolvedOptions` and `supportedLocalesOf` are writable, configurable methods,
 but cannot be constructed with `new`. The constructor's `prototype` property
@@ -135,19 +140,34 @@ formatter construction and module initialization are excluded.
 ## Comparison consistency
 
 `numeric: true` keeps unmatched digit runs significant (`x < x1 < x2`).
-`caseFirst` affects case-sensitive comparisons; `base` and `accent` still ignore
-case. `ignorePunctuation` preserves letters and digits. Canonically equivalent
-strings share case-order keys, including precomposed
-and decomposed accented letters. Sensitivity selects UCA levels after locale
-tailoring, preserving primary letters such as Swedish ä.
+`sensitivity: 'case'` uses primary and case weights, so width and ligature
+variants with the same case compare equal.
+At variant sensitivity, explicit `caseFirst` orders case before other tertiary
+differences, such as circled forms. `ignorePunctuation` preserves letters and
+digits and ignores accents attached to ignored punctuation. Canonically
+equivalent strings compare equal, including precomposed and decomposed accented
+letters. A combining mark can leave a contraction intact while contributing its
+own accent weight. Sensitivity selects UCA levels after locale
+tailoring. In Swedish, `ä` and `æ` share a primary weight and differ at
+accent sensitivity.
 
 ## Rust Hermes extension
 
 `crates/intl_collator` ports the CLDR sort/search comparison profile to Rust.
-ICU4X supplies normalization and locale-sensitive casing. Generated data stays
-static, matching this package. The comparison profile retains compact implicit
-weights and CLDR variable-element filtering; it does not claim full ICU Collator
-ordering parity.
+ICU4X supplies normalization. Generated data stays
+static, matching this package. Both implementations use CLDR radical-stroke
+order for Han and sort unassigned code points before trailing characters.
+Japanese standard collation orders Latin, Kana, then Han.
+Japanese long-vowel marks compare using the preceding Kana.
+Breton sorts `ch`, `c’h`, then `d`.
+Search collation uses CLDR search rules, including logical-order matching for
+Thai and Lao vowels.
+Danish and Maltese sort uppercase first by default. Thai ignores punctuation by
+default for sort and keeps it significant for search. Explicit options override
+these defaults.
+When a host locale falls back to bundled parent data, comparison uses that
+parent’s collation and `resolvedOptions().locale` keeps the host locale.
+ICU results can vary with Unicode versions and locale tailoring.
 
 Follow the [native SDK guide](/docs/guides/hermes-intl): link
 `:collator`, install after canonicalization, or register `js/37-IntlCollator.js`

@@ -9,6 +9,7 @@ constexpr char wrapperSource[] =
 #include "displaynames.inc"
     ;
 using Model = hermes_bridge::Record<FormatjsDisplayHandle, formatjs_display_destroy>;
+using Snapshot = hermes_bridge::Record<FormatjsDisplaySnapshot, formatjs_display_snapshot_destroy>;
 using Bytes = hermes_bridge::Buffer<FormatjsDisplayBytes, formatjs_display_bytes_free>;
 using Registry = std::unique_ptr<FormatjsDisplayRegistry, decltype(&formatjs_display_registry_destroy)>;
 constexpr hermes_bridge::Policy results{18, "Rust DisplayNames bridge failed"};
@@ -25,8 +26,10 @@ void installDisplayNames(jsi::Runtime &runtime, jsi::Object &extensions) {
       nullptr, results, formatjs_display_registry_info, registry));
   bridge.setProperty(runtime, "nativeMatch", hermes_bridge::json<1, Bytes>(runtime, "displayMatch",
       "Expected display locale match JSON", results, formatjs_display_registry_match, registry));
-  bridge.setProperty(runtime, "nativeCreate", hermes_bridge::create<2, Model>(runtime, "displayCreate",
-      "Expected display locale and options JSON", {18, "Rust display construction failed"}, formatjs_display_create, registry));
+  bridge.setProperty(runtime, "nativeCapture", hermes_bridge::create<1, Snapshot>(runtime, "displayCapture",
+      "Expected display locale match JSON", results, formatjs_display_capture, registry));
+  bridge.setProperty(runtime, "nativeCreate", hermes_bridge::createFromSnapshot<Model, Snapshot>(runtime, "displayCreate",
+      "Expected DisplayNames snapshot and options JSON", {18, "Rust display construction failed"}, formatjs_display_create_from_snapshot));
   hermes_bridge::bind(runtime, bridge, "nativeQuery", "displayQuery", 2,
       [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
         if (count != 2 || !args[0].isObject() || !args[1].isString()) throw jsi::JSError(rt, "Expected display record and query JSON");

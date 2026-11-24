@@ -13,6 +13,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Arc;
 
 #[derive(Default)]
+// ECMA-402 §17.2.3: locale matching uses registered rules and no Unicode keys.
+// https://tc39.es/ecma402/#sec-intl.pluralrules-internal-slots
 pub struct Registry {
     data: BTreeMap<String, Data<LocaleRules>>,
     explicit: BTreeSet<String>,
@@ -45,6 +47,7 @@ impl Registry {
                 })
         };
         matched
+            .or_else(|| formatjs_intl_locale::matcher::host_default(self.available.as_slice()))
             .or_else(|| self.default.clone())
             .ok_or(Error::MissingLocale)
     }
@@ -57,7 +60,7 @@ impl Registry {
     fn insert(&mut self, tag: String, rules: Data<LocaleRules>, replace: bool) {
         let exists = self.data.contains_key(&tag);
         if !exists {
-            self.available.push(tag.clone());
+            self.available.push_service_locale(tag.clone());
         }
         if replace || !exists {
             self.data.insert(tag, rules);
@@ -97,7 +100,9 @@ impl Registry {
     }
 
     fn register(&mut self, locale: String, aliases: Vec<String>, rules: Data<LocaleRules>) {
-        self.explicit.insert(locale.clone());
+        if !self.explicit.insert(locale.clone()) {
+            formatjs_intl_data::refresh_locale_data(&mut self.data, &locale, &rules);
+        }
         let tags: Vec<_> = std::iter::once(locale.clone()).chain(aliases).collect();
         for tag in &tags {
             let replace = tag == &locale || !self.explicit.contains(tag);
@@ -142,7 +147,7 @@ impl Registry {
     pub fn create(&self, locale: &str, options: &Options) -> Result<PluralRules, Error> {
         let rules = self
             .data
-            .get(locale)
+            .get(self.available.data_locale(locale))
             .ok_or(Error::MissingLocale)?
             .get()
             .map_err(Error::InvalidData)?;

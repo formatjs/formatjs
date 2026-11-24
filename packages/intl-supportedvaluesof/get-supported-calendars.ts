@@ -1,32 +1,29 @@
-import {createMemoizedDateTimeFormat} from '#packages/intl-supportedvaluesof/memoize.js'
+import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
+import {supportedEntries} from '#packages/intl-supportedvaluesof/supported-entries.js'
+import {getDateTimeFormatProbe} from '#packages/intl-supportedvaluesof/memoize.js'
 import type {Calendar} from '@formatjs_generated/cldr.supported-values/calendars.js'
 import {calendars} from '@formatjs_generated/cldr.supported-values/calendars.js'
 
-/**
- * Implementation: Tests if a calendar is supported by attempting to create
- * a DateTimeFormat with that calendar and verifying it was accepted.
- *
- * CLDR Data: Candidate values come from CLDR calendar types
- */
-function isSupportedCalendar(item: Calendar): boolean {
-  try {
-    // Always use 'en' for testing
-    const dateTimeFormat = createMemoizedDateTimeFormat(`en-u-ca-${item}`)
-    const options = dateTimeFormat.resolvedOptions().calendar
-
-    // Verify the calendar was actually accepted (resolved calendar matches requested)
-    return options === item
-  } catch {}
-
-  return false
-}
-
-/**
- * ECMA-402 Spec: Returns supported calendar identifiers
- * ECMA-402 Spec: Results must be sorted lexicographically
- *
- * Implementation: Filters CLDR list against actual runtime support
- */
+// ECMA-402 §8.3.2 step 2.b filters §6.9.1 to canonical calendar identifiers.
+// https://tc39.es/ecma402/#sec-calendar-types
+// https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+// https://tc39.es/ecma402/#sec-availablecalendars
 export function getSupportedCalendars(): Calendar[] {
-  return calendars.filter(isSupportedCalendar).sort()
+  const probe = getDateTimeFormatProbe()
+  if (probe?.availableCalendars) {
+    const available = probe.availableCalendars()
+    return supportedEntries(
+      calendars,
+      calendar => arrayIndexOf(available, calendar) >= 0
+    )
+  }
+  if (!probe?.resolve) return []
+  const {create, resolve} = probe
+  return supportedEntries(calendars, calendar => {
+    try {
+      return resolve(create(`en-u-ca-${calendar}`)).calendar === calendar
+    } catch {
+      return false
+    }
+  })
 }

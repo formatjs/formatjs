@@ -1,4 +1,6 @@
+import {getIntlFallbackSymbol} from '#packages/ecma402-abstract/intl-fallback-symbol.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   arrayEvery,
   arrayIncludes,
@@ -38,7 +40,6 @@ import {
 import {
   defineProperty,
   createDataProperty,
-  invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {FormatDateTime} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTime.js'
 import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRange.js'
@@ -62,7 +63,10 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '@formatjs_generated/tz/links.js'
-import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
+import primary from '@formatjs_generated/tz/primary.js'
+import getInternalSlots, {
+  hasInternalSlots,
+} from '#packages/intl-datetimeformat/get_internal_slots.js'
 import {unpack} from '#packages/intl-datetimeformat/unpack.js'
 import {
   type PackedData,
@@ -72,6 +76,18 @@ import {
 
 const now = Date.now
 const createObject = Object.create
+const objectDefineProperty = Object.defineProperty
+const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+const reflectApply = Reflect.apply
+const timeZoneUpperCase = String.prototype.toUpperCase
+const timeZoneCharCodeAt = String.prototype.charCodeAt
+const objectKeys = Object.keys
+const HostDateTimeFormat = globalThis.Intl?.DateTimeFormat
+const hostResolvedOptions =
+  HostDateTimeFormat &&
+  !getOwnPropertyDescriptor(HostDateTimeFormat, 'polyfilled')?.value
+    ? HostDateTimeFormat.prototype.resolvedOptions
+    : undefined
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -90,6 +106,8 @@ const UPPERCASED_IDENTIFIERS = Object.keys(links).reduce(
   },
   {}
 )
+
+const PRIMARY_TIME_ZONES: Readonly<Record<string, string | undefined>> = primary
 
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDateTimeFormatInternal, 'pattern' | 'boundFormat'>
@@ -120,17 +138,27 @@ function getDateTimeImplementationDetails() {
     localeData: DateTimeFormat.localeData,
     tzData: DateTimeFormat.tzData,
     calendarData: DateTimeFormat.calendarData,
-    getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+    getDefaultTimeZone,
   }
+}
+
+// ECMA-402 §11.5.13 unwraps legacy receivers for format and resolvedOptions.
+// https://tc39.es/ecma402/#sec-unwrapdatetimeformat
+function unwrapDateTimeFormat(dtf: IDateTimeFormat): IDateTimeFormat {
+  if (!hasInternalSlots(dtf) && OrdinaryHasInstance(DateTimeFormat, dtf)) {
+    return (dtf as unknown as Record<symbol, IDateTimeFormat>)[
+      getIntlFallbackSymbol()
+    ]
+  }
+  return dtf
 }
 
 const formatDescriptor = {
   enumerable: false,
   configurable: true,
   get(this: IDateTimeFormat) {
-    const internalSlots = getInternalSlots(this)
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const dtf = this
+    const dtf = unwrapDateTimeFormat(this)
+    const internalSlots = getInternalSlots(dtf)
     // ECMA-402 §11.3.3 steps 4–5 cache an anonymous, one-argument function.
     // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
     if (internalSlots.boundFormat === undefined) {
@@ -195,8 +223,8 @@ export interface DateTimeFormatConstructor {
   getDefaultLocale(): string
   relevantExtensionKeys: string[]
   __defaultLocale: string
-  __defaultTimeZone: string
-  __setDefaultTimeZone(tz: string): void
+  __defaultTimeZone: string | undefined
+  __setDefaultTimeZone(tz?: string): void
   getDefaultTimeZone(): string
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   availableLocales: Set<string>
@@ -205,18 +233,52 @@ export interface DateTimeFormatConstructor {
   __addTZData(d: PackedData): void
 }
 
-export const DateTimeFormat = function (
-  this: IDateTimeFormat,
-  locales?: string | string[],
-  options?: Intl.DateTimeFormatOptions
-) {
-  // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-  if (!this || !OrdinaryHasInstance(DateTimeFormat, this)) {
-    return new DateTimeFormat(locales, options)
-  }
-
-  initialize(this, locales, options)
-} as DateTimeFormatConstructor
+// ECMA-402 §11.1.1 creates a formatter for calls and construction.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat
+export const DateTimeFormat: DateTimeFormatConstructor = new Proxy(
+  function DateTimeFormat(
+    this: IDateTimeFormat,
+    locales: string | string[] | undefined = undefined,
+    options?: Intl.DateTimeFormatOptions
+  ) {
+    initialize(this, locales, options)
+  },
+  {
+    // The private proxy handler has no inherited traps.
+    // https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots-get-p-receiver
+    __proto__: null,
+    apply(_target, receiver, args) {
+      const formatter = new DateTimeFormat(args[0], args[1])
+      // ECMA-402 §11.1.1.1 checks and wraps the receiver after initialization.
+      // https://tc39.es/ecma402/#sec-chaindatetimeformat
+      if (OrdinaryHasInstance(DateTimeFormat, receiver)) {
+        const descriptor = {
+          __proto__: null,
+          value: formatter,
+          writable: false,
+          enumerable: false,
+          configurable: false,
+        }
+        objectDefineProperty(receiver, getIntlFallbackSymbol(), descriptor)
+        return receiver
+      }
+      return formatter
+    },
+    construct(target, args, newTarget) {
+      // ECMA-402 §11.1.2 step 1 reads NewTarget.prototype before options.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
+      // ECMA-262 §10.1.14 step 4 uses the constructor's realm. Here the
+      // intrinsic fallback is limited to the polyfill's own realm.
+      // https://tc39.es/ecma262/#sec-getprototypefromconstructor
+      const prototype = newTarget.prototype
+      const formatter = createObject(
+        IsObject(prototype) ? prototype : DateTimeFormat.prototype
+      )
+      reflectApply(target, formatter, args)
+      return formatter
+    },
+  } as ProxyHandler<Function>
+) as unknown as DateTimeFormatConstructor
 
 function initialize(
   dtf: IDateTimeFormat,
@@ -233,34 +295,39 @@ function initialize(
       uppercaseLinks: UPPERCASED_LINKS,
       uppercaseIdentifiers: UPPERCASED_IDENTIFIERS,
       availableLocales: DateTimeFormat.availableLocales,
-      relevantExtensionKeys: DateTimeFormat.relevantExtensionKeys,
-      getDefaultLocale: DateTimeFormat.getDefaultLocale,
-      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+      relevantExtensionKeys: RELEVANT_EXTENSION_KEYS,
+      getDefaultLocale,
+      getDefaultTimeZone,
       getInternalSlots: dtf => getInternalSlots(dtf, true),
       localeData: DateTimeFormat.localeData,
     },
     context
   )
+}
 
-  /** IMPL START */
-  const internalSlots = getInternalSlots(dtf)
-
-  const dataLocale = internalSlots.dataLocale
-  const dataLocaleData = DateTimeFormat.localeData[dataLocale]
-  invariant(
-    dataLocaleData !== undefined,
-    `Cannot load locale-dependent data for ${dataLocale}.`
-  )
-  /** IMPL END */
+// ECMA-402 §20.4.1–3 steps 5–6 create a formatter with method-specific
+// defaults and call FormatDateTime directly.
+// https://tc39.es/ecma402/#sup-properties-of-the-date-prototype-object
+export function formatDateWithDefaults(
+  value: number,
+  locales: string | string[] | undefined,
+  options: Intl.DateTimeFormatOptions | undefined,
+  context: DateTimeFormatContext
+): string {
+  const formatter = createObject(DateTimeFormat.prototype) as IDateTimeFormat
+  initialize(formatter, locales, options, context)
+  return FormatDateTime(formatter, value, getDateTimeImplementationDetails())
 }
 
 // ECMA-402 §7 applies ECMA-262 §18: methods are non-constructible built-ins.
 // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
-// https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L30375-L30385
 // ECMA-402 §11.2.1 specifies a non-writable prototype property (no steps).
 // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L193-L194
 Object.defineProperty(DateTimeFormat, 'prototype', {writable: false})
+
+// ECMA-402 §11.3.1 links the prototype to the public constructor.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.constructor
+defineProperty(DateTimeFormat.prototype, 'constructor', {value: DateTimeFormat})
 
 defineProperty(DateTimeFormat, '__formatTemporal', {
   value(
@@ -318,7 +385,6 @@ defineProperty(DateTimeFormat, 'supportedLocalesOf', {
 })
 // ECMA-402 §11.2.2 has one required parameter.
 // https://tc39.es/ecma402/#sec-intl.datetimeformat.supportedlocalesof
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L198
 Object.defineProperty(supportedLocalesOf, 'length', {
   value: 1,
   configurable: true,
@@ -326,9 +392,10 @@ Object.defineProperty(supportedLocalesOf, 'length', {
 
 const {resolvedOptions} = {
   resolvedOptions(this: IDateTimeFormat) {
-    const internalSlots = getInternalSlots(this)
+    const internalSlots = getInternalSlots(unwrapDateTimeFormat(this))
     const ro: Record<string, unknown> = {}
-    for (const key of RESOLVED_OPTIONS_KEYS) {
+    for (let index = 0; index < RESOLVED_OPTIONS_KEYS.length; index++) {
+      const key = RESOLVED_OPTIONS_KEYS[index]
       let value = internalSlots[key]
       if (arrayIndexOf(DATE_TIME_PROPS, key as TABLE_6) > -1) {
         if (
@@ -342,12 +409,10 @@ const {resolvedOptions} = {
       if (value !== undefined) {
         // ECMA-402 §11.3.2, step 5.d.ii: define own data properties.
         // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L905
-        createDataProperty(ro, key, value)
+        setDataProperty(ro, key, value)
         // ECMA-402 §11.3.2, step 5: create properties in table order.
         // hourCycle precedes hour12; style properties follow components.
         // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L887-L905
         if (key === 'hourCycle') {
           const hour12 =
             value === 'h11' || value === 'h12'
@@ -356,7 +421,7 @@ const {resolvedOptions} = {
                 ? false
                 : undefined
           if (hour12 !== undefined) {
-            createDataProperty(ro, 'hour12', hour12)
+            setDataProperty(ro, 'hour12', hour12)
           }
         }
       }
@@ -369,6 +434,8 @@ defineProperty(DateTimeFormat.prototype, 'resolvedOptions', {
   value: resolvedOptions,
 })
 
+// ECMA-402 §11.3.6 checks the receiver before defaulting or converting the date.
+// https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts
 const {formatToParts} = {
   formatToParts(
     this: Intl.DateTimeFormat,
@@ -593,6 +660,8 @@ Object.defineProperty(
   {value: () => timeZoneDataGeneration}
 )
 
+// ECMA-402 §11.3.5 checks both endpoints before coercion.
+// https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
 const {formatRangeToParts} = {
   formatRangeToParts(
     this: Intl.DateTimeFormat,
@@ -623,6 +692,8 @@ defineProperty(DateTimeFormat.prototype, 'formatRangeToParts', {
   value: formatRangeToParts,
 })
 
+// ECMA-402 §11.3.4 checks both endpoints before coercion.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
 const {formatRange} = {
   formatRange(
     this: Intl.DateTimeFormat,
@@ -647,7 +718,7 @@ defineProperty(DateTimeFormat.prototype, 'formatRange', {value: formatRange})
 
 const DEFAULT_TIMEZONE = 'UTC'
 
-DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
+DateTimeFormat.__setDefaultTimeZone = (timeZone?: string) => {
   if (timeZone !== undefined) {
     timeZone = String(timeZone)
     if (
@@ -662,16 +733,107 @@ DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
       zoneNames: Object.keys(DateTimeFormat.tzData),
       uppercaseLinks: UPPERCASED_LINKS,
     })
-    timeZone = UPPERCASED_IDENTIFIERS[timeZone.toUpperCase()] ?? dataTimeZone
-  } else {
-    timeZone = DEFAULT_TIMEZONE
+    const identifier = reflectApply(timeZoneUpperCase, timeZone, [])
+    timeZone = HasOwnProperty(UPPERCASED_IDENTIFIERS, identifier)
+      ? UPPERCASED_IDENTIFIERS[identifier]
+      : dataTimeZone
   }
   DateTimeFormat.__defaultTimeZone = timeZone
 }
-DateTimeFormat.relevantExtensionKeys = ['nu', 'ca', 'hc']
+// ECMA-402 §11.2.3 keeps the locale extension keys in a private list.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+const RELEVANT_EXTENSION_KEYS = ['ca', 'hc', 'nu']
+DateTimeFormat.relevantExtensionKeys = [...RELEVANT_EXTENSION_KEYS]
 
-DateTimeFormat.__defaultTimeZone = DEFAULT_TIMEZONE
-DateTimeFormat.getDefaultTimeZone = () => DateTimeFormat.__defaultTimeZone
+DateTimeFormat.__defaultTimeZone = undefined
+DateTimeFormat.getDefaultTimeZone = getDefaultTimeZone
+
+function getDefaultTimeZone(): string {
+  const override = getOwnPropertyDescriptor(DateTimeFormat, '__defaultTimeZone')
+  // Recheck the override against the current pack before using it.
+  if (
+    override &&
+    HasOwnProperty(override, 'value') &&
+    typeof override.value === 'string' &&
+    (override.value === DEFAULT_TIMEZONE ||
+      HasOwnProperty(DateTimeFormat.tzData, override.value) ||
+      IsValidTimeZoneName(override.value, {
+        zoneNamesFromData: objectKeys(DateTimeFormat.tzData),
+        uppercaseLinks: UPPERCASED_LINKS,
+      }))
+  ) {
+    return override.value
+  }
+
+  // ECMA-402 §11.1.2 step 18 uses the host's default zone.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  // ECMA-262 §21.4.1.24 uses a primary identifier or fixed offset.
+  // https://tc39.es/ecma262/#sec-systemtimezoneidentifier
+  if (HostDateTimeFormat && hostResolvedOptions) {
+    try {
+      const resolved = reflectApply(
+        hostResolvedOptions,
+        new HostDateTimeFormat(),
+        []
+      )
+      // ECMA-402 §11.3.2 step 5 creates an own data property for the zone.
+      // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
+      const field = getOwnPropertyDescriptor(resolved, 'timeZone')
+      const hostName = field && getOwnPropertyDescriptor(field, 'value')?.value
+      if (typeof hostName === 'string') {
+        // ECMA-402 §§6.1 and 6.5.2 step 1.a match IANA names with ASCII case folding.
+        // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
+        for (let index = 0; index < hostName.length; index++) {
+          if (reflectApply(timeZoneCharCodeAt, hostName, [index]) > 0x7f)
+            return DEFAULT_TIMEZONE
+        }
+        const upper = reflectApply(timeZoneUpperCase, hostName, [])
+        const identifier = HasOwnProperty(UPPERCASED_IDENTIFIERS, upper)
+          ? UPPERCASED_IDENTIFIERS[upper]
+          : undefined
+        const name = identifier ?? hostName
+        const primary = HasOwnProperty(PRIMARY_TIME_ZONES, name)
+          ? (PRIMARY_TIME_ZONES[name] ?? name)
+          : name
+        if (
+          primary === DEFAULT_TIMEZONE ||
+          HasOwnProperty(DateTimeFormat.tzData, primary)
+        )
+          return primary
+        const zoneNames = objectKeys(DateTimeFormat.tzData)
+        // A partial pack can retain the host alias after omitting its primary zone.
+        const candidates = primary === name ? [name] : [primary, name]
+        for (let index = 0; index < candidates.length; index++) {
+          const timeZone = candidates[index]
+          if (
+            !IsValidTimeZoneName(timeZone, {
+              zoneNamesFromData: zoneNames,
+              uppercaseLinks: UPPERCASED_LINKS,
+            })
+          )
+            continue
+          const dataZone = CanonicalizeTimeZoneName(timeZone, {
+            zoneNames,
+            uppercaseLinks: UPPERCASED_LINKS,
+          })
+          if (dataZone !== undefined) {
+            if (
+              dataZone === DEFAULT_TIMEZONE ||
+              dataZone[0] === '+' ||
+              dataZone[0] === '-'
+            )
+              return dataZone
+            if (HasOwnProperty(DateTimeFormat.tzData, dataZone))
+              return identifier ? timeZone : dataZone
+          }
+        }
+      }
+    } catch {
+      // A partial host implementation may not expose a default zone.
+    }
+  }
+  return DEFAULT_TIMEZONE
+}
 
 /**
  * GH #4535: When a format skeleton uses raw pattern form (e.g., "MMMEd, h:mm a")
@@ -870,6 +1032,27 @@ function parseDateTimeStyles({
 const rawLocaleData = new Map<string, RawDateTimeLocaleData>()
 const calendarLocaleData = new Map<string, Map<string, RawCalendarLocaleData>>()
 const processedLocales = new Map<string, DateTimeFormatLocaleInternalData>()
+const forEachProcessedLocale = processedLocales.forEach.bind(processedLocales)
+
+// ECMA-402 §6.9.1 includes calendars supported across all loaded locales.
+// https://tc39.es/ecma402/#sec-availablecalendars
+Object.defineProperty(
+  DateTimeFormat,
+  Symbol.for('@formatjs/intl-datetimeformat/availableCalendars'),
+  {
+    value(): string[] {
+      const calendars: string[] = []
+      forEachProcessedLocale(data => {
+        for (let index = 0; index < data.ca.length; index++) {
+          const calendar = data.ca[index]
+          if (arrayIndexOf(calendars, calendar) < 0)
+            setDataProperty(calendars, calendars.length, calendar)
+        }
+      })
+      return calendars
+    },
+  }
+)
 const calendarPreferences = new WeakMap<
   DateTimeFormatLocaleInternalData,
   string[]
@@ -890,155 +1073,178 @@ function updateAvailableCalendars(data: DateTimeFormatLocaleInternalData) {
   )
 }
 
-DateTimeFormat.__addLocaleData = function __addLocaleData(
-  ...data: RawDateTimeLocaleData[]
-) {
-  for (const entry of data) {
-    const {locale} = entry
-    deleteIntervalCandidates(entry.data.intervalFormats)
-    for (const calendar of Object.keys(entry.data.calendarData || {}))
-      deleteIntervalCandidates(
-        entry.data.calendarData![calendar].intervalFormats
-      )
-    rawLocaleData.set(locale, entry)
-    const d = {
-      ...entry.data,
-      ca: [...entry.data.ca],
-      formats: {...entry.data.formats},
-      calendarData: {...entry.data.calendarData},
-    }
-    for (const patch of calendarLocaleData.get(locale)?.values() ?? []) {
-      if (arrayIndexOf(d.ca, patch.calendar) < 0) d.ca.push(patch.calendar)
-      d.formats[patch.calendar] = patch.formats
-      d.calendarData[patch.calendar] = patch.data
-    }
-    d.intervalFormats = expandIntervalFormatTemplates(
-      d.intervalFormats,
-      d.intervalFormatTemplates
+function prepareLocaleData(
+  entry: RawDateTimeLocaleData,
+  patches: ReadonlyMap<string, RawCalendarLocaleData> | undefined
+): DateTimeFormatLocaleInternalData {
+  deleteIntervalCandidates(entry.data.intervalFormats)
+  for (const calendar of Object.keys(entry.data.calendarData || {}))
+    deleteIntervalCandidates(entry.data.calendarData![calendar].intervalFormats)
+  const d = {
+    ...entry.data,
+    ca: [...entry.data.ca],
+    formats: {...entry.data.formats},
+    calendarData: {...entry.data.calendarData},
+  }
+  for (const patch of patches?.values() ?? []) {
+    if (arrayIndexOf(d.ca, patch.calendar) < 0) d.ca.push(patch.calendar)
+    d.formats[patch.calendar] = patch.formats
+    d.calendarData[patch.calendar] = patch.data
+  }
+  d.intervalFormats = expandIntervalFormatTemplates(
+    d.intervalFormats,
+    d.intervalFormatTemplates
+  )
+  delete d.intervalFormatTemplates
+  for (const calendar of Object.keys(d.calendarData)) {
+    const fields = {...d.calendarData[calendar]}
+    fields.intervalFormats = expandIntervalFormatTemplates(
+      fields.intervalFormats,
+      fields.intervalFormatTemplates
     )
-    delete d.intervalFormatTemplates
-    for (const calendar of Object.keys(d.calendarData)) {
-      const fields = {...d.calendarData[calendar]}
-      fields.intervalFormats = expandIntervalFormatTemplates(
-        fields.intervalFormats,
-        fields.intervalFormatTemplates
-      )
-      delete fields.intervalFormatTemplates
-      d.calendarData[calendar] = fields
-    }
-    const {
+    delete fields.intervalFormatTemplates
+    d.calendarData[calendar] = fields
+  }
+  const {
+    dateFormat,
+    timeFormat,
+    dateTimeFormat,
+    dateTimeFormatAtTime,
+    formats,
+    intervalFormats,
+    calendarData,
+    ...rawData
+  } = d
+  const processedData: DateTimeFormatLocaleInternalData = {
+    ...rawData,
+    ...parseDateTimeStyles({
       dateFormat,
       timeFormat,
       dateTimeFormat,
       dateTimeFormatAtTime,
-      formats,
       intervalFormats,
-      calendarData,
-      ...rawData
-    } = d
-    const processedData: DateTimeFormatLocaleInternalData = {
-      ...rawData,
-      ...parseDateTimeStyles({
-        dateFormat,
-        timeFormat,
-        dateTimeFormat,
-        dateTimeFormatAtTime,
-        intervalFormats,
-      }),
-      intervalFormatFallback: intervalFormats.intervalFormatFallback,
-      formats: {},
-    }
+    }),
+    intervalFormatFallback: intervalFormats.intervalFormatFallback,
+    formats: {},
+  }
 
-    for (const calendar in formats) {
-      const calendarIntervals =
-        calendarData?.[calendar]?.intervalFormats ?? intervalFormats
-      let parsed:
-        | DateTimeFormatLocaleInternalData['formats'][string]
-        | undefined
-      Object.defineProperty(processedData.formats, calendar, {
+  for (const calendar in formats) {
+    const calendarIntervals =
+      calendarData?.[calendar]?.intervalFormats ?? intervalFormats
+    let parsed: DateTimeFormatLocaleInternalData['formats'][string] | undefined
+    Object.defineProperty(processedData.formats, calendar, {
+      enumerable: true,
+      get() {
+        return (parsed ??= Object.keys(formats[calendar]).map(skeleton =>
+          parseDateTimeSkeleton(
+            skeleton,
+            formats[calendar][skeleton],
+            findIntervalFormat(
+              skeleton,
+              calendarIntervals,
+              formats[calendar][skeleton]
+            ),
+            calendarIntervals.intervalFormatFallback,
+            true
+          )
+        ))
+      },
+    })
+  }
+
+  // Legacy locale packs may omit separate ISO 8601 patterns.
+  if (!formats.iso8601)
+    Object.defineProperty(processedData.formats, 'iso8601', {
+      enumerable: true,
+      get: () => processedData.formats.gregory,
+    })
+  // ECMA-402 §6.9.1 requires ISO 8601, including with legacy locale packs.
+  // https://tc39.es/ecma402/#sec-availablecalendars
+  if (arrayIndexOf(d.ca, 'iso8601') < 0) d.ca.push('iso8601')
+
+  if (calendarData) {
+    processedData.calendarData = {}
+    for (const calendar of Object.keys(calendarData)) {
+      const fields = calendarData[calendar]
+      const {intervalFormats: calendarIntervals, ...calendarFields} = fields
+      let parsed: DateTimeFormatLocaleInternalData | undefined
+      Object.defineProperty(processedData.calendarData, calendar, {
         enumerable: true,
         get() {
-          return (parsed ??= Object.keys(formats[calendar]).map(skeleton =>
-            parseDateTimeSkeleton(
-              skeleton,
-              formats[calendar][skeleton],
-              findIntervalFormat(
-                skeleton,
-                calendarIntervals,
-                formats[calendar][skeleton]
-              ),
-              calendarIntervals.intervalFormatFallback,
-              true
-            )
-          ))
+          return (parsed ??= {
+            ...processedData,
+            ...calendarFields,
+            // Keep parsed formats even if a caller supplies a wider locale record.
+            formats: processedData.formats,
+            ...parseDateTimeStyles({
+              ...calendarFields,
+              intervalFormats: calendarIntervals,
+            }),
+            intervalFormatFallback: calendarIntervals.intervalFormatFallback,
+            calendarData: undefined,
+          })
         },
       })
     }
+  }
 
-    // Legacy locale packs may omit separate ISO 8601 patterns.
-    if (!formats.iso8601)
-      Object.defineProperty(processedData.formats, 'iso8601', {
-        enumerable: true,
-        get: () => processedData.formats.gregory,
-      })
+  setCalendarPreferences(processedData, [...d.ca])
+  updateAvailableCalendars(processedData)
+  return processedData
+}
 
-    if (calendarData) {
-      processedData.calendarData = {}
-      for (const calendar of Object.keys(calendarData)) {
-        const fields = calendarData[calendar]
-        const {intervalFormats: calendarIntervals, ...calendarFields} = fields
-        let parsed: DateTimeFormatLocaleInternalData | undefined
-        Object.defineProperty(processedData.calendarData, calendar, {
-          enumerable: true,
-          get() {
-            return (parsed ??= {
-              ...processedData,
-              ...calendarFields,
-              // Keep parsed formats even if a caller supplies a wider locale record.
-              formats: processedData.formats,
-              ...parseDateTimeStyles({
-                ...calendarFields,
-                intervalFormats: calendarIntervals,
-              }),
-              intervalFormatFallback: calendarIntervals.intervalFormatFallback,
-              calendarData: undefined,
-            })
-          },
-        })
-      }
-    }
+// Publish only prepared records. Failed registrations leave the last valid
+// data available for ECMA-402 §11.1.2 steps 8–13.
+// https://tc39.es/ecma402/#sec-createdatetimeformat
+function publishLocaleData(
+  locale: string,
+  data: DateTimeFormatLocaleInternalData
+): void {
+  registerLocaleData(
+    locale,
+    data,
+    DateTimeFormat.localeData,
+    DateTimeFormat.availableLocales
+  )
+  processedLocales.set(locale, data)
+  if (!defaultLocale) {
+    defaultLocale = locale
+  }
+}
 
-    setCalendarPreferences(processedData, [...d.ca])
-    updateAvailableCalendars(processedData)
-    const previous = processedLocales.get(locale)
-    if (previous) {
-      for (const tag of Object.keys(DateTimeFormat.localeData)) {
-        if (DateTimeFormat.localeData[tag] === previous) {
-          DateTimeFormat.localeData[tag] = processedData
-        }
-      }
-    }
-    processedLocales.set(locale, processedData)
-    registerLocaleData(
+DateTimeFormat.__addLocaleData = function __addLocaleData(
+  ...data: RawDateTimeLocaleData[]
+) {
+  for (const entry of data) {
+    const [locale] = CanonicalizeLocaleList(entry.locale)
+    publishLocaleData(
       locale,
-      processedData,
-      DateTimeFormat.localeData,
-      DateTimeFormat.availableLocales
+      prepareLocaleData(entry, calendarLocaleData.get(locale))
     )
-    if (!DateTimeFormat.__defaultLocale) {
-      DateTimeFormat.__defaultLocale = locale
-    }
+    rawLocaleData.set(locale, entry)
   }
 }
 
 Object.defineProperty(DateTimeFormat.prototype, 'format', formatDescriptor)
 
-DateTimeFormat.__defaultLocale = ''
+let defaultLocale = ''
+// Keep the FormatJS registration hook backed by private state.
+objectDefineProperty(DateTimeFormat, '__defaultLocale', {
+  configurable: true,
+  enumerable: true,
+  get: getDefaultLocale,
+  set(locale: string) {
+    defaultLocale = locale
+  },
+})
 DateTimeFormat.localeData = {}
 DateTimeFormat.availableLocales = new Set()
-DateTimeFormat.getDefaultLocale = () => {
-  return DateTimeFormat.__defaultLocale
+// ECMA-402 §6.2.3 supplies the default for ResolveLocale step 3.
+// https://tc39.es/ecma402/#sec-defaultlocale
+function getDefaultLocale(): string {
+  return defaultLocale
 }
+DateTimeFormat.getDefaultLocale = getDefaultLocale
 DateTimeFormat.polyfilled = true
 DateTimeFormat.calendarData = Object.create(null)
 // Registration is a FormatJS extension. Custom providers supply their own
@@ -1059,24 +1265,59 @@ DateTimeFormat.__addCalendarLocaleData = function (
   ...data: RawCalendarLocaleData[]
 ) {
   for (const patch of data) {
-    let calendars = calendarLocaleData.get(patch.locale)
-    if (!calendars) {
-      calendars = new Map()
-      calendarLocaleData.set(patch.locale, calendars)
-    }
+    const [locale] = CanonicalizeLocaleList(patch.locale)
+    const calendars = new Map(calendarLocaleData.get(locale))
     calendars.set(patch.calendar, patch)
-    const raw = rawLocaleData.get(patch.locale)
-    if (raw) DateTimeFormat.__addLocaleData(raw)
+    const raw = rawLocaleData.get(locale)
+    if (raw) publishLocaleData(locale, prepareLocaleData(raw, calendars))
+    calendarLocaleData.set(locale, calendars)
   }
 }
-DateTimeFormat.tzData = {}
+// ECMA-402 §6.5.1 includes IANA fixed zones. They need no transition pack.
+// https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
+// https://data.iana.org/time-zones/tzdb/etcetera
+function addFixedTimeZones(
+  zones: Record<string, UnpackedTimeZoneData>
+): Record<string, UnpackedTimeZoneData> {
+  for (let hour = -12; hour <= 14; hour++) {
+    if (hour === 0) continue
+    // IANA's Etc/GMT names use the POSIX sign convention.
+    const id = hour < 0 ? `Etc/GMT+${-hour}` : `Etc/GMT-${hour}`
+    const abbreviation = hour < 0 ? `GMT${hour}` : `GMT+${hour}`
+    if (!HasOwnProperty(zones, id)) {
+      setDataProperty(zones, id, [
+        [-Infinity, abbreviation, hour * 3600, false],
+      ])
+    }
+  }
+  return zones
+}
+
+DateTimeFormat.tzData = addFixedTimeZones({})
+// ECMA-402 §6.5.2 resolves zone identifiers independently of locale data.
+// https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
+objectDefineProperty(
+  DateTimeFormat,
+  Symbol.for('@formatjs/intl-datetimeformat/hasTimeZone'),
+  {
+    __proto__: null,
+    value(timeZone: string): boolean {
+      return IsValidTimeZoneName(timeZone, {
+        zoneNamesFromData: objectKeys(DateTimeFormat.tzData),
+        uppercaseLinks: UPPERCASED_LINKS,
+      })
+    },
+  } as PropertyDescriptor
+)
 DateTimeFormat.__addTZData = function (d: PackedData) {
-  DateTimeFormat.tzData = unpack(d)
+  DateTimeFormat.tzData = addFixedTimeZones(unpack(d))
   timeZoneDataGeneration = {}
 }
 
 try {
   if (typeof Symbol !== 'undefined') {
+    // ECMA-402 §11.3.7.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype-%symbol.tostringtag%
     Object.defineProperty(DateTimeFormat.prototype, Symbol.toStringTag, {
       value: 'Intl.DateTimeFormat',
       writable: false,
@@ -1084,16 +1325,6 @@ try {
       configurable: true,
     })
   }
-
-  // ECMA-402 §11.1.1 has no required parameters.
-  // https://tc39.es/ecma402/#sec-intl.datetimeformat
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L16
-  Object.defineProperty(DateTimeFormat.prototype.constructor, 'length', {
-    value: 0,
-    writable: false,
-    enumerable: false,
-    configurable: true,
-  })
 } catch {
   // Meta fix so we're test262-compliant, not important
 }

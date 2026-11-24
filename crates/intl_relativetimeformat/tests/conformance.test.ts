@@ -6,8 +6,15 @@ import type {PluralRules} from '@formatjs/intl-pluralrules'
 import Reference from '@formatjs/intl-relativetimeformat'
 import {runfiles} from '@bazel/runfiles'
 import {spawnSync} from 'node:child_process'
-import {readFileSync, readdirSync} from 'node:fs'
+import {
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import {join} from 'node:path'
+import {tmpdir} from 'node:os'
 import {runInNewContext} from 'node:vm'
 import {beforeAll, expect, it} from 'vitest'
 
@@ -82,10 +89,10 @@ interface Result {
 function wire(value: number): string {
   return Object.is(value, -0) ? '-0' : String(value)
 }
-function compare(cases: Case[]) {
+function compare(cases: Case[], localeDirectory = directory) {
   const result = spawnSync(
     resolve('crates/intl_relativetimeformat/conformance'),
-    [directory],
+    [localeDirectory],
     {
       input:
         cases
@@ -135,6 +142,7 @@ function compare(cases: Case[]) {
         ).toEqual(expected)
       }
   }
+  return output
 }
 const units = [
   'second',
@@ -146,6 +154,84 @@ const units = [
   'quarter',
   'year',
 ]
+
+it('looks up named offsets before rounding the numeric fallback', () => {
+  // ECMA-402 §18.5.2 steps 7–11 use the original Number for the name and tense.
+  // https://tc39.es/ecma402/#sec-PartitionRelativeTimePattern
+  const [actual] = compare([
+    {
+      locales: ['en'],
+      options: {numeric: 'auto'},
+      values: [-1.0001, -0.0001, 0.0001, 1.0001],
+      units: ['day'],
+    },
+  ])
+  expect(actual.values).toEqual([
+    {
+      text: '1 day ago',
+      parts: [
+        {type: 'integer', value: '1', unit: 'day'},
+        {type: 'literal', value: ' day ago'},
+      ],
+    },
+    {
+      text: '0 days ago',
+      parts: [
+        {type: 'integer', value: '0', unit: 'day'},
+        {type: 'literal', value: ' days ago'},
+      ],
+    },
+    {
+      text: 'in 0 days',
+      parts: [
+        {type: 'literal', value: 'in '},
+        {type: 'integer', value: '0', unit: 'day'},
+        {type: 'literal', value: ' days'},
+      ],
+    },
+    {
+      text: 'in 1 day',
+      parts: [
+        {type: 'literal', value: 'in '},
+        {type: 'integer', value: '1', unit: 'day'},
+        {type: 'literal', value: ' day'},
+      ],
+    },
+  ])
+})
+
+it('registers a legacy pack label under the canonical locale', () => {
+  const original = JSON.parse(readFileSync(join(directory, 'he.json'), 'utf8'))
+  const pack = {
+    ...original,
+    locale: 'IW',
+    data: {...original.data, day: {...original.data.day, 0: 'custom today'}},
+  }
+  const path = mkdtempSync(
+    join(process.env.TEST_TMPDIR || tmpdir(), 'rtf-locale-')
+  )
+  try {
+    writeFileSync(join(path, 'iw.json'), JSON.stringify(pack))
+    Reference.__addLocaleData(pack)
+    compare(
+      [
+        {
+          locales: ['iw'],
+          options: {numeric: 'auto', localeMatcher: 'lookup'},
+          values: [0],
+          units: ['day'],
+        },
+      ],
+      path
+    )
+    expect(new Reference('he', {numeric: 'auto'}).format(0, 'day')).toBe(
+      'custom today'
+    )
+  } finally {
+    Reference.__addLocaleData(original)
+    rmSync(path, {recursive: true, force: true})
+  }
+})
 const values = [
   0,
   -0,

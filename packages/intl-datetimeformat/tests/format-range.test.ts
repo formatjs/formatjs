@@ -13,6 +13,23 @@ import {describe, expect, it, test} from 'vitest'
 DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl, ru)
 DateTimeFormat.__addTZData(allData)
 describe('range parity', () => {
+  it.each([
+    ['long', 'Thursday', 'Friday'],
+    ['narrow', 'T', 'F'],
+  ] as const)(
+    'keeps %s stand-alone weekday widths in a range',
+    (weekday, thursday, friday) => {
+      const formatter = new DateTimeFormat('en', {timeZone: 'UTC', weekday})
+      const start = Date.UTC(2025, 3, 17)
+      const end = Date.UTC(2025, 3, 18)
+      expect(formatter.formatRangeToParts(start, end)).toEqual([
+        {type: 'weekday', value: thursday, source: 'startRange'},
+        {type: 'literal', value: '\u2009–\u2009', source: 'shared'},
+        {type: 'weekday', value: friday, source: 'endRange'},
+      ])
+    }
+  )
+
   test('shares punctuation outside fallback endpoint fields', () => {
     const options: Intl.DateTimeFormatOptions = {
       calendar: 'gregory',
@@ -360,14 +377,6 @@ test('v8 test/intl/date-format/format-rage error', function () {
   expect(() => dtf.formatRange(date1, date2)).not.toThrow()
 })
 
-test.skip('v8 test/intl/date-format/format-rage error negative', function () {
-  const date1 = new Date('2019-1-3')
-  const date2 = new Date('2019-1-5')
-  const dtf = new DateTimeFormat(['en'])
-  // @ts-ignore
-  expect(() => dtf.formatRange(date2, date1)).toThrow(RangeError)
-})
-
 test('v8 test/intl/date-format/format-range', function () {
   const date1 = new Date('2019-1-3')
   const date2 = new Date('2019-1-5')
@@ -401,30 +410,34 @@ test('v8 test/intl/date-format/format-range 2', function () {
   expect(dtf.formatRange(date3, date4)).toBe('Mar 4, 2019 – Mar 4, 2020')
 })
 
-test('v8 test/intl/date-format/format-range TimeClip', function () {
-  const dtf = new DateTimeFormat(['en'], {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-
-  // Test the sequence of ToNumber and TimeClip
-  var secondDateAccessed = false
-  expect(() =>
-    dtf.formatRange(
-      new Date(864000000 * 10000000 + 1), // a date will cause TimeClip return NaN
-      // @ts-ignore
-      {
-        // @ts-ignore
-        get [Symbol.toPrimitive]() {
-          secondDateAccessed = true
-          return {}
-        },
-      }
-    )
-  ).toThrow(TypeError)
-  expect(secondDateAccessed).toBe(true)
-})
+it.each(['formatRange', 'formatRangeToParts'] as const)(
+  '%s converts both endpoints left to right before TimeClip',
+  method => {
+    const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+    const calls: string[] = []
+    const sentinel = new Error('end conversion')
+    const start = {
+      [Symbol.toPrimitive](hint: string) {
+        calls.push(`start:${hint}`)
+        return 8_640_000_000_000_001
+      },
+    }
+    const end = {
+      [Symbol.toPrimitive](hint: string) {
+        calls.push(`end:${hint}`)
+        throw sentinel
+      },
+    }
+    let thrown: unknown
+    try {
+      Reflect.apply(formatter[method], formatter, [start, end])
+    } catch (error) {
+      thrown = error
+    }
+    expect(thrown).toBe(sentinel)
+    expect(calls).toEqual(['start:number', 'end:number'])
+  }
+)
 
 test.skip('v8 test/intl/date-format/format_range_hour_cycle.js', function () {
   let midnight = new Date(2019, 3, 4, 0)
@@ -1160,6 +1173,28 @@ it('retains both flexible periods when their boundary precedes the hour differen
     {type: 'dayPeriod', value: 'in the afternoon', source: 'startRange'},
     {type: 'dayPeriod', value: 'in the evening', source: 'endRange'},
   ])
+})
+
+it('includes both local dates for standalone day periods across midnight', () => {
+  const start = Date.UTC(2024, 0, 1)
+  const end = Date.UTC(2024, 0, 1, 15, 33)
+  for (const dayPeriod of ['narrow', 'short', 'long'] as const) {
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'America/New_York',
+      dayPeriod,
+    })
+    const parts = formatter.formatRangeToParts(start, end)
+    const dateAndPeriod = (source: 'startRange' | 'endRange') =>
+      parts
+        .filter(part => part.source === source)
+        .map(part => part.value)
+        .join('')
+    expect(dateAndPeriod('startRange')).toBe('12/31/2023, in the evening')
+    expect(dateAndPeriod('endRange')).toBe('1/1/2024, in the morning')
+    expect(formatter.formatRangeToParts(start, start + 3600000)).toEqual([
+      {type: 'dayPeriod', value: 'in the evening', source: 'shared'},
+    ])
+  }
 })
 
 it('uses the closest CLDR zoned fallback independently of single-date widths', () => {

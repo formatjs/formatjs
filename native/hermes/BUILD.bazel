@@ -359,6 +359,23 @@ cc_binary(
 )
 
 sh_test(
+    name = "default_locale_test",
+    size = "small",
+    srcs = ["default_locale_test.sh"],
+    args = [
+        "$(rootpath :hermes_runner)",
+        "$(rootpath //crates/intl_numberformat:locale-data/en.json)",
+        "$(rootpath //crates/intl_numberformat:locale-data/fr.json)",
+    ],
+    data = [
+        ":hermes_runner",
+        "//crates/intl_numberformat:locale-data/en.json",
+        "//crates/intl_numberformat:locale-data/fr.json",
+    ],
+    target_compatible_with = HOST_COMPATIBILITY,
+)
+
+sh_test(
     name = "canonical_locales_test",
     size = "small",
     srcs = ["test.sh"],
@@ -888,17 +905,25 @@ cc_library(
 cc_test(
     name = "datetimeformat_bridge_test",
     srcs = ["datetimeformat_bridge.test.cpp"],
-    args = ["$(rootpath //crates/intl_datetimeformat:locale-data/en.json)"],
+    args = [
+        "$(rootpath //crates/intl_datetimeformat:locale-data/en.json)",
+        "$(rootpath //crates/intl_numberformat:locale-data/en.json)",
+    ],
     copts = [
         "-std=c++17",
         "-fexceptions",
     ],
-    data = ["//crates/intl_datetimeformat:locale-data/en.json"],
+    data = [
+        "//crates/intl_datetimeformat:locale-data/en.json",
+        "//crates/intl_numberformat:locale-data/en.json",
+    ],
+    env = {"TZ": "Asia/Tokyo"},
     target_compatible_with = HOST_COMPATIBILITY,
     deps = [
         ":canonical_locales",
         ":datetimeformat",
         ":hermes_vm",
+        ":numberformat",
     ],
 )
 

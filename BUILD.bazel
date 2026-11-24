@@ -361,6 +361,7 @@ formatjs_test(
         "//packages/intl-datetimeformat:rust_pattern_cldr_data",
     ] + ["//crates/intl_numberformat:locale-data/%s.json" % locale for locale in [
         "en",
+        "de",
         "fr",
         "ar",
         "ja",

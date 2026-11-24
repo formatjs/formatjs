@@ -297,9 +297,8 @@ impl LocaleRules {
         .map(name)
         .collect()
     }
-    /// ResolvePlural's implementation-defined PluralRuleSelect consumes the
-    /// rounded decimal string. Trailing zeros remain visible to ICU4X operands.
-    /// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L316-L321
+    /// ECMA-402 §17.5.1 uses the rounded decimal. ICU4X sees trailing zeros.
+    /// https://tc39.es/ecma402/#sec-pluralruleselect
     pub fn select_rounded(
         &self,
         decimal: &str,
@@ -334,6 +333,8 @@ impl LocaleRules {
             return Ok(first);
         }
         let kind = if ordinal { "ordinal" } else { "cardinal" };
+        // ECMA-402 §17.5.3 selects the locale's range category.
+        // https://tc39.es/ecma402/#sec-pluralruleselectrange
         Ok(self
             .ranges
             .get(kind)

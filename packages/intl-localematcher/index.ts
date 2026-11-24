@@ -18,10 +18,13 @@ export function match(
       localeMatcher: opts?.algorithm || 'best fit',
     },
     [],
-    {},
+    undefined,
     () => defaultLocale
   ).locale
 }
 
-export {LookupSupportedLocales} from '#packages/intl-localematcher/abstract/LookupSupportedLocales.js'
+export {
+  FilterLocales,
+  LookupSupportedLocales,
+} from '#packages/intl-localematcher/abstract/LookupSupportedLocales.js'
 export {ResolveLocale} from '#packages/intl-localematcher/abstract/ResolveLocale.js'

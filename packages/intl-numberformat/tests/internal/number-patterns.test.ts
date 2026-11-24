@@ -109,6 +109,40 @@ it('represents literal-only compact templates without inventing a number slot', 
   expect(plan.parts).toEqual([['compact', 'mille']])
 })
 
+it('decodes legacy patterns on first use without public regexp or map methods', () => {
+  const original = NumberFormat.localeData.en!
+  const data = structuredClone(original)
+  delete data.numbers.patternPlans
+  const exec = RegExp.prototype.exec
+  const map = Array.prototype.map
+  const get = Map.prototype.get
+  let result: string
+  let parts: ReturnType<typeof getNumberPattern>['parts']
+  try {
+    NumberFormat.__addLocaleData({locale: 'en', data})
+    const formatter = new NumberFormat('en')
+    const unexpected = (): never => {
+      throw new Error('Used a public pattern decoding operation')
+    }
+    RegExp.prototype.exec = unexpected
+    Array.prototype.map = unexpected
+    result = formatter.format(1234.5)
+    Map.prototype.get = unexpected
+    parts = getNumberPattern(data.numbers, '0K', true, 0, true).parts
+  } finally {
+    RegExp.prototype.exec = exec
+    Array.prototype.map = map
+    Map.prototype.get = get
+    NumberFormat.__addLocaleData({locale: 'en', data: original})
+  }
+  expect(result!).toBe('1,234.5')
+  expect(parts!).toEqual([
+    ['approximatelySign', ''],
+    ['number', ''],
+    ['compact', 'K'],
+  ])
+})
+
 it('keeps style around a numberless notation template', () => {
   const original = NumberFormat.localeData.en!
   const data = structuredClone(original)
@@ -123,4 +157,19 @@ it('keeps style around a numberless notation template', () => {
   } finally {
     NumberFormat.__addLocaleData({locale: 'en', data: original})
   }
+})
+it('keeps the locale data resolved before reading style', () => {
+  const localeData = NumberFormat.localeData.en!
+  let formatter: InstanceType<typeof NumberFormat>
+  try {
+    formatter = new NumberFormat('en', {
+      get style() {
+        delete NumberFormat.localeData.en
+        return 'decimal' as const
+      },
+    })
+  } finally {
+    NumberFormat.localeData.en = localeData
+  }
+  expect(formatter.format(1234)).toBe('1,234')
 })

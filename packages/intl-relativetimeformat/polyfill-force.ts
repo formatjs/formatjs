@@ -3,6 +3,9 @@ import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
 
+// ECMA-402 §8.2.9 and §18.1 install Intl.RelativeTimeFormat.
+// https://tc39.es/ecma402/#sec-intl-relativetimeformat-constructor
+// https://tc39.es/ecma402/#sec-intl.relativetimeformat-intro
 defineProperty(intl, 'RelativeTimeFormat', {value: RelativeTimeFormat})
 
 // Drain any locale data that was buffered before polyfill loaded

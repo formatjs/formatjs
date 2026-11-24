@@ -4,6 +4,16 @@ load("//tools:index.bzl", "ts_binary")
 exports_files(glob(["*.sh"]))
 
 ts_binary(
+    name = "cardinal-rules",
+    data = [
+        "//:root_package_json",
+        "//packages/intl-pluralrules/scripts:plural_rules_compiler",
+    ],
+    entry_point = "cardinal-rules.ts",
+    visibility = ["//packages/intl-numberformat:__pkg__"],
+)
+
+ts_binary(
     name = "generate-locale-test",
     data = [
         "//:node_modules/fs-extra",

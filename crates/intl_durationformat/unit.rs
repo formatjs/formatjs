@@ -70,6 +70,8 @@ impl Unit {
     pub fn is_clock(self) -> bool {
         matches!(self, Self::Hours | Self::Minutes | Self::Seconds)
     }
+    // ECMA-402 §13.5.13 recognizes the three subsecond units.
+    // https://tc39.es/ecma402/#sec-isfractionalsecondunitname
     pub fn is_subsecond(self) -> bool {
         matches!(
             self,

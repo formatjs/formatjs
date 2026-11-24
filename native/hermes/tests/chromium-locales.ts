@@ -35,8 +35,17 @@ for (const [kind, name] of Object.entries({
     'sr-Latn',
   ]
   equal(api[name].supportedLocalesOf(included), included)
-  if (kind !== 'durationformat')
-    equal(api[name].supportedLocalesOf(['aa', 'agq', 'ak', 'az']), [])
+  if (kind !== 'durationformat') {
+    // Lookup checks which language packs are present. Best fit may match a
+    // related language outside the compiled Chromium locale list.
+    equal(
+      api[name].supportedLocalesOf(['aa', 'agq', 'ak', 'az'], {
+        localeMatcher: 'lookup',
+      }),
+      []
+    )
+    equal(api[name].supportedLocalesOf(['aa', 'agq']), [])
+  }
   kinds.push(kind)
 }
 if (api.NumberFormat?.polyfilled) {

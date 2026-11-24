@@ -6,6 +6,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Arc;
 
 #[derive(Default)]
+// ECMA-402 §16.2.3: registered locales provide formatting data and the nu key.
+// https://tc39.es/ecma402/#sec-intl.numberformat-internal-slots
 pub struct Registry {
     data: BTreeMap<String, Data<LocaleData>>,
     explicit: BTreeSet<String>,
@@ -51,6 +53,9 @@ impl Registry {
         };
         let (index, locale) = matched
             .map(|(index, locale)| (Some(index), locale))
+            .or_else(|| {
+                matcher::host_default(self.available.as_slice()).map(|locale| (None, locale))
+            })
             .or_else(|| self.default.clone().map(|locale| (None, locale)))
             .ok_or(Error::MissingLocale)?;
         let request = index.map(|index| {
@@ -69,7 +74,7 @@ impl Registry {
     }
     fn insert(&mut self, tag: String, data: Data<LocaleData>, replace: bool) {
         if !self.data.contains_key(&tag) {
-            self.available.push(tag.clone());
+            self.available.push_service_locale(tag.clone());
         }
         if replace || !self.data.contains_key(&tag) {
             self.data.insert(tag, data);
@@ -110,7 +115,9 @@ impl Registry {
 
     fn register(&mut self, locale: String, aliases: Vec<String>, data: Data<LocaleData>) {
         let tags: Vec<_> = std::iter::once(locale.clone()).chain(aliases).collect();
-        self.explicit.insert(locale.clone());
+        if !self.explicit.insert(locale.clone()) {
+            formatjs_intl_data::refresh_locale_data(&mut self.data, &locale, &data);
+        }
         for tag in &tags {
             self.insert(
                 tag.clone(),
@@ -161,10 +168,14 @@ impl Registry {
     pub fn available_locales(&self) -> &[String] {
         self.available.as_slice()
     }
+    // The first registered locale is the data fallback. ECMA-402 §6.2.3
+    // defines the default from the host environment.
+    // https://tc39.es/ecma402/#sec-defaultlocale
     pub fn default_locale(&self) -> Option<&str> {
         self.default.as_deref()
     }
     pub fn get(&self, locale: &str) -> Result<Arc<LocaleData>, Error> {
+        let locale = self.available.data_locale(locale);
         self.data
             .get(locale)
             .ok_or(Error::MissingLocale)?
@@ -172,6 +183,8 @@ impl Registry {
             .map_err(Error::InvalidData)
     }
     pub fn add_unit_data(&self, locale: &str, json: &str) -> Result<(), Error> {
-        self.get(locale)?.add_unit_data(json)
+        let locale = formatjs_intl_getcanonicallocales::canonicalize_locale(locale)
+            .map_err(|_| Error::InvalidLocale)?;
+        self.get(&locale)?.add_unit_data(json)
     }
 }

@@ -1,5 +1,6 @@
 import {
   match,
+  FilterLocales,
   LookupSupportedLocales,
 } from '#packages/intl-localematcher/index.js'
 import {expect, test} from 'vitest'
@@ -256,6 +257,28 @@ test('supported locale filtering preserves requested tags and order', () => {
       ['sr-Thai-RS', 'en', 'de-u-co-phonebk', 'zh-CN']
     )
   ).toEqual(['sr-Thai-RS', 'de-u-co-phonebk', 'zh-CN'])
+})
+
+test('filtering chooses the requested matcher without adding a default locale', () => {
+  const available = ['en', 'de']
+  const requested = ['gsw-u-nu-latn', 'zz-ZZ', 'en-US']
+  expect(FilterLocales(available, requested, 'lookup')).toEqual(['en-US'])
+  expect(FilterLocales(available, requested, 'best fit')).toEqual([
+    'gsw-u-nu-latn',
+    'en-US',
+  ])
+})
+
+test('prefix lookup removes chains of single-character subtags together', () => {
+  expect(LookupSupportedLocales(['en-x-a'], ['en-x-a-b-long'])).toEqual([])
+})
+
+test('best fit retains a supported prefix when the script distance is too high', () => {
+  const available = ['en', 'zh']
+  const requested = ['zh-TW-u-nu-hanidec', 'zz-ZZ', 'en-XA']
+  expect(FilterLocales(available, requested, 'best fit')).toEqual([
+    'zh-TW-u-nu-hanidec',
+  ])
 })
 
 test('preserves legacy RegExp statics across matching paths', () => {

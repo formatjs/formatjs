@@ -1,3 +1,5 @@
+import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
+import {supplementalEnglishCurrencyNames} from '#packages/ecma402-abstract/supplementalEnglishCurrencyNames.js'
 import {type DisplayNamesData} from '#packages/ecma402-abstract/types/displaynames.js'
 import AVAILABLE_LOCALES from 'cldr-core/availableLocales.json' with {type: 'json'}
 import calendarIdentifiers from 'cldr-bcp47/bcp47/calendar.json' with {type: 'json'}
@@ -7,6 +9,7 @@ import {createRequire} from 'node:module'
 import type * as LanguagesJSON from 'cldr-localenames-full/main/en/languages.json' with {type: 'json'}
 import type * as TerritoriesJSON from 'cldr-localenames-full/main/en/territories.json' with {type: 'json'}
 import type * as ScriptsJSON from 'cldr-localenames-full/main/en/scripts.json' with {type: 'json'}
+import type * as VariantsJSON from 'cldr-localenames-full/main/en/variants.json' with {type: 'json'}
 import type * as LocaleDisplayNamesJSON from 'cldr-localenames-full/main/en/localeDisplayNames.json' with {type: 'json'}
 import type * as CurrenciesJSON from 'cldr-numbers-full/main/en/currencies.json' with {type: 'json'}
 import type * as DateFieldsJSON from 'cldr-dates-full/main/en/dateFields.json' with {type: 'json'}
@@ -69,10 +72,9 @@ function extractStyleData(
   return {long: longData, short: shortData, narrow: narrowData}
 }
 
-// ECMA-402 §12.3.3, steps 4–6 look up the canonical calendar code.
-// https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L185-L187
-// CLDR defines gregory/ethioaa and their legacy aliases here:
+// ECMA-402 §12.5.1 step 4 validates and lowercases calendar codes.
+// https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
+// Keep valid CLDR names such as ethiopic-amete-alem alongside ethioaa.
 // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/common/bcp47/calendar.xml#L17-L19
 function extractCalendarStyleData(cldrData: CalendarRawData) {
   const aliases: Record<string, string> = {}
@@ -90,34 +92,38 @@ function extractCalendarStyleData(cldrData: CalendarRawData) {
   for (const [key, value] of Object.entries(cldrData)) {
     // CLDR 49 groups scoped names under _core; DisplayNames uses unscoped names.
     if (typeof value !== 'string') continue
-    const [code, style] = key.split('-alt-')
-    data[(aliases[code] || code) + (style ? '-alt-' + style : '')] = value
+    const [code] = key.split('-alt-')
+    const canonical = aliases[code] ?? code
+    if (canonical !== code) data[canonical + key.slice(code.length)] ??= value
+    if (IsUnicodeLocaleIdentifierType(code)) data[key] = value
   }
   return extractStyleData(data)
 }
 
 // Currency code -> {Property -> Value}.
 function extractCurrencyStyleData(
-  locale: string,
-  cldrData: CurrencyRawData
+  cldrData: CurrencyRawData,
+  locale: string
 ): Record<'long' | 'short' | 'narrow', Record<string, string>> {
   const longData: Record<string, string> = {}
   for (const [currencyCode, value] of Object.entries(cldrData)) {
     // There does not seem to be narrow or short display names.
     const displayName = value.displayName
-    if (displayName) {
-      console.warn(
-        `displayName does not exist for currency ${currencyCode} of locale ${locale}.`
-      )
-    }
-    longData[currencyCode] = displayName || ''
+    // ECMA-402 §12.3.3 steps 6–8 distinguish a missing field from an empty name.
+    // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
+    if (typeof displayName === 'string') longData[currencyCode] = displayName
+  }
+  if (locale === 'en' || locale.startsWith('en-')) {
+    for (const [code, name] of Object.entries(supplementalEnglishCurrencyNames))
+      longData[code] ??= name
   }
   return {long: longData, short: {}, narrow: {}}
 }
 
-// Some keys used in the CLDR file differ from the ones in the TC39 proposal.
-// This constant maps them.
+// Map CLDR field names to ECMA-402 Table 19 codes.
+// https://tc39.es/ecma402/#table-validcodefordatetimefield
 const CLDR_TO_TC39_KEYS: Record<string, string> = {
+  dayperiod: 'dayPeriod',
   week: 'weekOfYear',
   zone: 'timeZoneName',
 }
@@ -183,6 +189,7 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
     languagesImport,
     territoriesImport,
     scriptsImport,
+    variantsImport,
     localeDisplayNamesImport,
     currenciesImport,
     dateFieldsImport,
@@ -195,6 +202,9 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
     ),
     optionalNames<typeof ScriptsJSON>(
       `cldr-localenames-full/main/${locale}/scripts.json`
+    ),
+    optionalNames<typeof VariantsJSON>(
+      `cldr-localenames-full/main/${locale}/variants.json`
     ),
     import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`, {
       with: {type: 'json'},
@@ -218,6 +228,8 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
     territories?.main[locale].localeDisplayNames.territories || {}
   const scriptData: ScriptRawData =
     scripts?.main[locale].localeDisplayNames.scripts || {}
+  const variantData =
+    variantsImport?.main[locale].localeDisplayNames.variants || {}
   const localePatternData: LocalePatternRawData =
     localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
       .localePattern
@@ -233,7 +245,15 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
       language: extractLanguageStyleData(langData),
       region: extractStyleData(regionData),
       script: extractStyleData(scriptData),
-      currency: extractCurrencyStyleData(locale, currencyData),
+      variant: extractStyleData(
+        Object.fromEntries(
+          Object.entries(variantData).map(([code, name]) => [
+            code.toLowerCase(),
+            name,
+          ])
+        )
+      ),
+      currency: extractCurrencyStyleData(currencyData, locale),
       calendar: extractCalendarStyleData(calendarData),
       dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
     },

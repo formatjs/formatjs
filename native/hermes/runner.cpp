@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
     }
     if (firstScript != 1) formatjs::installCanonicalLocales(rt);
     formatjs::installSupportedValuesOf(rt);
-    formatjs::installLocale(rt);
+    auto refreshLocaleFormatters = formatjs::prepareLocale(rt);
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
@@ -147,7 +147,7 @@ int main(int argc, char **argv) {
       if (flag.rfind("--extensions=", 0) != 0) break;
       auto extensions = evaluateFile(flag.substr(13)).asObject(rt);
       if (extensions.hasProperty(rt, "IntlSupportedValuesOf")) formatjs::installSupportedValuesOf(rt, extensions);
-      if (extensions.hasProperty(rt, "IntlLocale")) formatjs::installLocale(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlLocale")) refreshLocaleFormatters = formatjs::prepareLocale(rt, extensions);
       if (extensions.hasProperty(rt, "IntlGetCanonicalLocales")) formatjs::installCanonicalLocales(rt, extensions);
       if (extensions.hasProperty(rt, "IntlPluralRules")) formatjs::installPluralRules(rt, extensions);
       if (extensions.hasProperty(rt, "IntlListFormat")) formatjs::installListFormat(rt, extensions);
@@ -160,6 +160,7 @@ int main(int argc, char **argv) {
       if (extensions.hasProperty(rt, "IntlDurationFormat")) formatjs::installDurationFormat(rt, extensions);
       ++firstScript;
     }
+    refreshLocaleFormatters.call(rt);
     for (int i = firstScript; i < argc; ++i) {
       evaluateFile(argv[i]);
     }

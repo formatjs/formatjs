@@ -4,7 +4,6 @@ declare function print(value: string): void
 
 const candidate = Intl.supportedValuesOf as (key?: unknown) => string[]
 const reference = supportedValuesOf as (key?: unknown) => string[]
-const savedAddUnitData = (Intl.NumberFormat as any).__addUnitData
 const keys = [
   'calendar',
   'collation',
@@ -197,55 +196,253 @@ const numberFormatDescriptor = Object.getOwnPropertyDescriptor(
 const unitsBefore = candidate('unit')
 try {
   Object.defineProperty(Intl, 'NumberFormat', {value: undefined})
-  equal(candidate('unit'), [], 'Missing formatter')
+  equal(candidate('unit'), unitsBefore, 'Units without a Rust formatter')
+  equal(reference('unit'), unitsBefore, 'Units without a TS formatter')
 } finally {
   Object.defineProperty(Intl, 'NumberFormat', numberFormatDescriptor)
 }
 equal(candidate('unit'), unitsBefore, 'Restored formatter support')
 
-const resolvedDescriptor = Object.getOwnPropertyDescriptor(
-  Intl.NumberFormat.prototype,
-  'resolvedOptions'
+for (const [name, categories] of [
+  ['DateTimeFormat', ['calendar', 'timeZone']],
+  ['NumberFormat', ['unit', 'currency', 'numberingSystem']],
+  ['Collator', ['collation']],
+] as const) {
+  const Constructor = Intl[name]
+  const expected = categories.map(key => candidate(key))
+  const constructor = Object.getOwnPropertyDescriptor(Intl, name)!
+  const prototype = Constructor.prototype
+  const methods =
+    name === 'NumberFormat'
+      ? ['resolvedOptions', 'format']
+      : ['resolvedOptions']
+  const descriptors = methods.map(method =>
+    Object.getOwnPropertyDescriptor(prototype, method)!
+  )
+  const fail = {
+    configurable: true,
+    get() {
+      throw new Error('Read public formatter property')
+    },
+  }
+  let actual: string[][]
+  try {
+    Object.defineProperty(Intl, name, fail)
+    for (const method of methods) Object.defineProperty(prototype, method, fail)
+    actual = categories.map(key => candidate(key))
+  } finally {
+    Object.defineProperty(Intl, name, constructor)
+    for (const [index, method] of methods.entries())
+      Object.defineProperty(prototype, method, descriptors[index])
+  }
+  equal(actual, expected, `Retained ${name} operations`)
+}
+
+const arrayConstructor = Object.getOwnPropertyDescriptor(
+  Array.prototype,
+  'constructor'
 )!
+let firstValues: string[]
+let secondValues: string[]
 try {
-  Object.defineProperty(Intl.NumberFormat.prototype, 'resolvedOptions', {
-    ...resolvedDescriptor,
-    value() {
-      return {...resolvedDescriptor.value.call(this), unit: 'unsupported'}
+  Object.defineProperty(Array.prototype, 'constructor', {
+    configurable: true,
+    get() {
+      throw new Error('supportedValuesOf consulted Array.prototype.constructor')
     },
   })
-  equal(candidate('unit'), [], 'Changed formatter behavior')
+  firstValues = candidate('unit')
+  secondValues = candidate('unit')
 } finally {
-  Object.defineProperty(
-    Intl.NumberFormat.prototype,
-    'resolvedOptions',
-    resolvedDescriptor
-  )
+  Object.defineProperty(Array.prototype, 'constructor', arrayConstructor)
 }
-equal(candidate('unit'), unitsBefore, 'Restored formatter behavior')
+equal(firstValues, unitsBefore, 'Intrinsic array without species lookup')
+equal(
+  secondValues,
+  unitsBefore,
+  'Cached intrinsic array without species lookup'
+)
+check(firstValues !== secondValues, 'Separate intrinsic arrays')
+
+const OriginalNumberFormat = Intl.NumberFormat
+let hasChuvashData = false
+class CurrencyNameFormatter extends OriginalNumberFormat {
+  static polyfilled = true
+  private readonly name: string
+
+  static __addLocaleData() {
+    hasChuvashData = true
+  }
+
+  constructor(locale?: string, options?: Intl.NumberFormatOptions) {
+    super(locale, options)
+    const code = options?.currency ?? ''
+    this.name =
+      code === 'USD'
+        ? 'US dollar USD'
+        : hasChuvashData && locale === 'cv' && code === 'XAD'
+          ? 'ази шутлав динарӗ'
+          : code
+  }
+
+  get format() {
+    return () =>
+      this.name === 'US dollar USD' ? `123 ${this.name}` : `123 (${this.name})`
+  }
+
+  formatToParts(): Intl.NumberFormatPart[] {
+    return [
+      {type: 'integer', value: '123'},
+      {type: 'literal', value: this.name === 'US dollar USD' ? ' ' : ' ('},
+      {type: 'currency', value: this.name},
+      ...(this.name === 'US dollar USD'
+        ? []
+        : [{type: 'literal' as const, value: ')'}]),
+    ]
+  }
+}
+try {
+  Intl.NumberFormat = CurrencyNameFormatter
+  for (const enumerate of [candidate, reference])
+    equal(enumerate('currency'), ['USD'], 'Currency names use currency parts')
+
+  const original = Object.getOwnPropertyDescriptor(Intl, 'DisplayNames')
+  let hasName = false
+  class CurrencyDisplayNames {
+    constructor(private locale: string) {}
+
+    static __addLocaleData() {
+      hasName = true
+    }
+
+    of(code: string) {
+      if (hasName && code === 'USD') return 'USD'
+      if (hasName && this.locale === 'cv' && code === 'XAD')
+        return 'ази шутлав динарӗ'
+    }
+  }
+  try {
+    Object.defineProperty(Intl, 'DisplayNames', {
+      configurable: true,
+      value: CurrencyDisplayNames,
+    })
+    for (const enumerate of [candidate, reference])
+      equal(
+        enumerate('currency'),
+        [],
+        'Currency support requires DisplayNames data'
+      )
+    CurrencyDisplayNames.__addLocaleData()
+    for (const enumerate of [candidate, reference])
+      equal(
+        enumerate('currency'),
+        ['USD'],
+        'DisplayNames data refreshes currency support'
+      )
+    CurrencyNameFormatter.__addLocaleData()
+    for (const enumerate of [candidate, reference])
+      equal(
+        enumerate('currency'),
+        ['USD', 'XAD'],
+        'Currency names outside English'
+      )
+  } finally {
+    hasChuvashData = false
+    if (original) Object.defineProperty(Intl, 'DisplayNames', original)
+    else Reflect.deleteProperty(Intl, 'DisplayNames')
+  }
+} finally {
+  Intl.NumberFormat = OriginalNumberFormat
+}
 
 let probes = 0
+let hasCurrencyData = false
+class NumberFormat extends CurrencyNameFormatter {
+  constructor(locale?: string, options?: Intl.NumberFormatOptions) {
+    super(locale, options)
+    probes++
+    if (!hasCurrencyData) throw new RangeError('No currency data')
+  }
+
+  static __addLocaleData() {
+    hasCurrencyData = true
+  }
+}
 try {
-  Object.defineProperty(Intl.NumberFormat.prototype, 'resolvedOptions', {
-    ...resolvedDescriptor,
-    value() {
-      probes++
-      return resolvedDescriptor.value.call(this)
+  Intl.NumberFormat = NumberFormat
+  equal(candidate('currency'), [], 'Replacement starts without currency data')
+  const first = probes
+  equal(candidate('currency'), [], 'Cached formatter observations')
+  check(probes === first, 'Reuses cached formatter observations')
+  const savedLoader = NumberFormat.__addLocaleData
+  Object.defineProperty(NumberFormat.prototype, 'resolvedOptions', {
+    get() {
+      throw new Error('Read public method on an uncached probe')
     },
   })
-  candidate('unit')
-  const first = probes
-  candidate('unit')
-  check(probes === first, 'Cached formatter observations')
-  savedAddUnitData('en', {simple: {}, compound: {}})
-  candidate('unit')
-  check(probes > first, 'Saved locale loader invalidates cache')
-} finally {
-  Object.defineProperty(
-    Intl.NumberFormat.prototype,
-    'resolvedOptions',
-    resolvedDescriptor
+  savedLoader()
+  equal(
+    candidate('currency'),
+    ['USD'],
+    'Saved loader refreshes retained probes'
   )
+} finally {
+  Intl.NumberFormat = OriginalNumberFormat
+}
+
+{
+  const required = candidate('numberingSystem')
+  const names = [
+    'NumberFormat',
+    'DateTimeFormat',
+    'RelativeTimeFormat',
+  ] as const
+  const originals = names.map(name =>
+    Object.getOwnPropertyDescriptor(Intl, name)
+  )
+  class AlgorithmicFormatter {
+    constructor(private locale: string) {}
+
+    resolvedOptions() {
+      const systems: Record<string, string> = {
+        'en-u-nu-roman': 'roman',
+        'ja-u-nu-jpan': 'jpan',
+        'zh-Hant-u-nu-hant': 'hant',
+        'he-u-nu-hebr': 'hebr',
+      }
+      return {numberingSystem: systems[this.locale] ?? 'latn'}
+    }
+  }
+  try {
+    for (const name of names.slice(0, 2))
+      Object.defineProperty(Intl, name, {value: AlgorithmicFormatter})
+    Object.defineProperty(Intl, 'RelativeTimeFormat', {
+      value: undefined,
+      configurable: true,
+    })
+    for (const enumerate of [candidate, reference])
+      equal(
+        enumerate('numberingSystem'),
+        required,
+        'Additional systems require every formatter'
+      )
+
+    Object.defineProperty(Intl, 'RelativeTimeFormat', {
+      value: AlgorithmicFormatter,
+    })
+    for (const enumerate of [candidate, reference])
+      equal(
+        enumerate('numberingSystem'),
+        [...required, 'roman', 'jpan', 'hant', 'hebr'].sort(),
+        'Additional systems supported in their CLDR locales'
+      )
+  } finally {
+    for (const [index, name] of names.entries()) {
+      const original = originals[index]
+      if (original) Object.defineProperty(Intl, name, original)
+      else Reflect.deleteProperty(Intl, name)
+    }
+  }
 }
 
 const descriptor = Object.getOwnPropertyDescriptor(Intl, 'supportedValuesOf')!

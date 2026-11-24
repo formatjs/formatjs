@@ -1,29 +1,13 @@
 import {NumberFormat} from '#packages/intl-numberformat/core.js'
-import {toLocaleString as _toLocaleString} from '#packages/intl-numberformat/to_locale_string.js'
-import {type NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
+import {installNumberLocaleMethods} from '#packages/intl-numberformat/to_locale_string.js'
 import {defineProperty, ensureIntl} from '#packages/ecma402-abstract/utils.js'
 
 const intl = ensureIntl()
 
+// ECMA-402 §8.2.7 installs Intl.NumberFormat.
+// https://tc39.es/ecma402/#sec-intl.numberformat-intro
 defineProperty(intl, 'NumberFormat', {value: NumberFormat})
-defineProperty(Number.prototype, 'toLocaleString', {
-  value: function toLocaleString(
-    locales?: string | string[],
-    options?: NumberFormatOptions
-  ) {
-    return _toLocaleString(this, locales, options)
-  },
-})
-if (typeof BigInt !== 'undefined') {
-  defineProperty(BigInt.prototype, 'toLocaleString', {
-    value: function toLocaleString(
-      locales?: string | string[],
-      options?: NumberFormatOptions
-    ) {
-      return _toLocaleString(this, locales, options)
-    },
-  })
-}
+installNumberLocaleMethods()
 
 // Drain any locale data that was buffered before polyfill loaded
 const buf = (globalThis as Record<string, unknown>)

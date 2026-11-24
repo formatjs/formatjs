@@ -28,7 +28,7 @@ void installIntl(jsi::Runtime &runtime, jsi::Object &extensions) {
 
   formatjs::installCanonicalLocales(runtime, extensions);
   auto watchFormatters = formatjs::prepareSupportedValuesOf(runtime, extensions);
-  formatjs::installLocale(runtime, extensions);
+  auto refreshLocaleFormatters = formatjs::prepareLocale(runtime, extensions);
   // Canonicalization captures the Locale brand installed above.
   formatjs::installCanonicalLocales(runtime, extensions);
   formatjs::installPluralRules(runtime, extensions);
@@ -40,6 +40,7 @@ void installIntl(jsi::Runtime &runtime, jsi::Object &extensions) {
   formatjs::installRelativeTimeFormat(runtime, extensions);
   auto dateTime = formatjs::installDateTimeFormat(runtime, extensions);
   formatjs::installDurationFormat(runtime, extensions);
+  refreshLocaleFormatters.call(runtime);
   watchFormatters.call(runtime);
   runtime.setRuntimeData(installationId, std::shared_ptr<void>(std::move(dateTime)));
 }

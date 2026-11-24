@@ -152,6 +152,42 @@ ${ctor}.__addLocaleData = (...packs) => {
 ${kind === 'datetimeformat' ? `for (const key of ['__addCalendarLocaleData', '__addTZData']) { const load = ${ctor}[key]; ${ctor}[key] = (...packs) => { Reference[key](...packs); load(...packs.map(pack => typeof pack === 'string' ? pack : JSON.stringify(pack))); }; }` : ''}
 Intl.${ctor} = Reference;
 `
+  if (kind === 'numberformat')
+    candidate += `
+// Route the shared locale-method tests to the methods installed by Hermes.
+const numberMethod = Object.getOwnPropertyDescriptor(Number.prototype, 'toLocaleString');
+const bigIntMethod = Object.getOwnPropertyDescriptor(BigInt.prototype, 'toLocaleString');
+export function toLocaleString(value, locales, options) {
+  const method = typeof value === 'bigint' ? bigIntMethod : numberMethod;
+  return Reflect.apply(method.value, value, [locales, options]);
+}
+export function installNumberLocaleMethods() {
+  Object.defineProperty(Number.prototype, 'toLocaleString', numberMethod);
+  Object.defineProperty(BigInt.prototype, 'toLocaleString', bigIntMethod);
+}
+`
+  if (kind === 'datetimeformat')
+    candidate += `
+// Route the shared locale-method tests to the methods installed by Hermes.
+const dateMethods = Object.fromEntries(
+  ['toLocaleString', 'toLocaleDateString', 'toLocaleTimeString'].map(
+    name => [name, Object.getOwnPropertyDescriptor(Date.prototype, name)]
+  )
+);
+function formatDate(name, value, locales, options) {
+  const date = typeof value === 'number' ? new Date(value) : value;
+  return Reflect.apply(dateMethods[name].value, date, [locales, options]);
+}
+export const toLocaleString = (value, locales, options) =>
+  formatDate('toLocaleString', value, locales, options);
+export const toLocaleDateString = (value, locales, options) =>
+  formatDate('toLocaleDateString', value, locales, options);
+export const toLocaleTimeString = (value, locales, options) =>
+  formatDate('toLocaleTimeString', value, locales, options);
+export function installDateLocaleMethods() {
+  Object.defineProperties(Date.prototype, dateMethods);
+}
+`
   if (!['numberformat', 'datetimeformat'].includes(kind)) {
     const defaultExport = ['listformat', 'relativetimeformat'].includes(kind)
     const refImport = defaultExport ? 'Reference' : `{${ctor} as Reference}`
@@ -196,6 +232,7 @@ ${ctor}.__addListFormatData(JSON.stringify(globalThis.__NATIVE_PACKS.list));`
       'supportedvaluesof',
       'locale',
       'pluralrules',
+      'segmenter',
       'relativetimeformat',
       'durationformat',
       'datetimeformat',
@@ -214,6 +251,9 @@ ${ctor}.__addListFormatData(JSON.stringify(globalThis.__NATIVE_PACKS.list));`
   if (kind === 'locale')
     bootstrap +=
       "import '@formatjs/intl-numberformat/locale-data/ar.js';\nimport '@formatjs/intl-numberformat/locale-data/ar-EG.js';\nimport '@formatjs/intl-numberformat/locale-data/ar-SA.js';\nimport '@formatjs/intl-numberformat/locale-data/ja.js';\nimport '@formatjs/intl-numberformat/locale-data/pt.js';\n"
+  if (kind === 'supportedvaluesof')
+    bootstrap +=
+      "import '@formatjs/intl-displaynames/polyfill-force.js';\nimport '@formatjs/intl-displaynames/locale-data/en.js';\n"
   if (['supportedvaluesof', 'locale'].includes(kind))
     bootstrap += `
 import '@formatjs/intl-datetimeformat/polyfill-force.js';
@@ -282,14 +322,6 @@ Intl.DateTimeFormat.__addTZData(timezone);
       exclusions[
         'Intl.DateTimeFormat > uses explicitly supplied ISO locale patterns'
       ] = 'TS localeData mutation'
-      for (const name of [
-        'toLocaleString returns "Invalid Date", GH #3508',
-        'toLocaleString returns date and time with the default format, GH #3508',
-        'toLocaleTimeString returns "Invalid Date", GH #3508',
-        'toLocaleDateString returns "Invalid Date", GH #3508',
-      ])
-        exclusions[`Intl.DateTimeFormat > ${name}`] =
-          'Host Date.prototype method; extension installs Intl.DateTimeFormat only'
       for (const calendar of ['gregory', 'chinese'])
         exclusions[
           `Intl.DateTimeFormat > parses cold ${calendar} formats without inherited setters`
@@ -335,6 +367,12 @@ Intl.DateTimeFormat.__addTZData(timezone);
               id === `#packages/intl-${kind}/core` ||
               id === `#packages/intl-${kind}/core.js` ||
               id === `#packages/intl-${kind}/index.js` ||
+              (kind === 'numberformat' &&
+                id === '#packages/intl-numberformat/to_locale_string.js') ||
+              (kind === 'datetimeformat' &&
+                (id === '#packages/intl-datetimeformat/to_locale_string' ||
+                  id ===
+                    '#packages/intl-datetimeformat/to_locale_string.js')) ||
               (kind === 'segmenter' &&
                 id === '#packages/intl-segmenter/segmenter.js')
             )

@@ -341,9 +341,9 @@ impl ListFormat {
         })
     }
     fn visit_parts<T: AsRef<[u16]>>(&self, list: &[T], mut visit: impl FnMut(bool, &[u16])) {
-        // CreatePartsFromList 1–2: empty list has no parts. One empty string
-        // still produces one element record (steps 4–8).
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L274-L299
+        // ECMA-402 §14.5.2 steps 1–2, 4–8: an empty list has no parts.
+        // A single empty string produces one element record.
+        // https://tc39.es/ecma402/#sec-createpartsfromlist
         if list.is_empty() {
             return;
         }
@@ -414,9 +414,8 @@ impl ListFormat {
             Literal(&'a [u16]),
         }
         let mut pending = vec![Task::Node(tail)];
-        // DeconstructPattern 1–4: append literal records and substitute element
-        // records/lists without merging adjacent parts or interpreting inputs.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L244-L258
+        // ECMA-402 §14.5.1: append literals and substitute parts in pattern order.
+        // https://tc39.es/ecma402/#sec-deconstructpattern
         while let Some(task) = pending.pop() {
             match task {
                 Task::Literal(value) => visit(false, value),
@@ -483,6 +482,8 @@ impl ListFormat {
         self.visit_parts(list, |_, value| result.extend_from_slice(value));
         result
     }
+    // ECMA-402 §14.5.3 concatenates the selected element and literal parts.
+    // https://tc39.es/ecma402/#sec-formatlist
     pub fn format(&self, list: &[Vec<u16>]) -> Vec<u16> {
         self.format_with(list)
     }

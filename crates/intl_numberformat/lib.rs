@@ -34,6 +34,8 @@ impl Part {
     }
 }
 
+// ECMA-402 §16.4: retain resolved locale data, numbering, style and digit options.
+// https://tc39.es/ecma402/#sec-properties-of-intl-numberformat-instances
 pub struct NumberFormat {
     data: Arc<LocaleData>,
     resolved: ResolvedOptions,
@@ -104,9 +106,9 @@ impl NumberFormat {
         let resolved = options::resolve(locale, system.clone(), options)?;
         let digit_values = serde_json::to_value(&resolved.digits)
             .map_err(|error| Error::InvalidData(error.to_string()))?;
-        // TS's internal PluralRules receives active digit limits, but keeps its
-        // own rounding defaults. Do not leak NumberFormat roundingMode into it.
-        // https://github.com/formatjs/formatjs/blob/9e91be2686383ab389c90d1e6294de446aa0e6d0/packages/intl-numberformat/core.ts#L88-L96
+        // Label selection uses the active digit limits and its own rounding
+        // defaults. The formatter has already applied the caller's rounding.
+        // https://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
         let plural_options = DigitOptions {
             minimum_integer_digits: digit_values["minimumIntegerDigits"].as_f64(),
             minimum_fraction_digits: digit_values["minimumFractionDigits"].as_f64(),
@@ -158,6 +160,8 @@ impl NumberFormat {
             .map(|part| part.value.as_str())
             .collect())
     }
+    // ECMA-402 §16.5.5 concatenates the partitioned number's values.
+    // https://tc39.es/ecma402/#sec-formatnumber
     pub fn format_value(&self, value: &MathematicalValue) -> Result<String, Error> {
         Ok(self
             .format_value_to_parts(value)?
@@ -165,11 +169,13 @@ impl NumberFormat {
             .map(|part| part.value.as_str())
             .collect())
     }
+    // ECMA-402 §16.5.6 creates fresh part records from the partitioned number.
+    // https://tc39.es/ecma402/#sec-formatnumbertoparts
     pub fn format_value_to_parts(&self, value: &MathematicalValue) -> Result<Vec<Part>, Error> {
-        self.partition(&numeric::Numeric::from_value(value)?, false)
+        self.partition(&numeric::Numeric::from_value(value)?)
     }
     pub fn format_to_parts(&self, value: &str) -> Result<Vec<Part>, Error> {
-        self.partition(&numeric::Numeric::parse(value)?, false)
+        self.partition(&numeric::Numeric::parse(value)?)
     }
 }
 

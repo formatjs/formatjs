@@ -53,14 +53,18 @@ describe('UCA parser', () => {
     })
   })
 
-  it('parses code point references in fractional weights', () => {
-    expect(parseCollationElement('U+4E00, 10')).toMatchObject({
-      primary: 0x4e00,
-      secondary: 0x10,
-    })
-    expect(parseCollationElement('U+4E0D')).toMatchObject({
-      primary: 0x4e0d,
-    })
+  it('resolves FractionalUCA references and their secondary and tertiary overrides', () => {
+    const entries = parseUCA(`
+4E00; [82 02 02, 05, 05]
+F967; [U+4E00]
+2F02; [U+4E00, 10]
+2E80; [U+4E00, 70, 20]
+`)
+    expect(entries.slice(1).map(entry => entry.elements[0])).toEqual([
+      entries[0].elements[0],
+      {...entries[0].elements[0], tertiary: 0x10},
+      {...entries[0].elements[0], secondary: 0x70, tertiary: 0x20},
+    ])
   })
 
   it('parses UCA data lines', () => {

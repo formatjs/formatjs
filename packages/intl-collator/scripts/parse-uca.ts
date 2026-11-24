@@ -21,7 +21,8 @@ export type PackedTrieNode = {
 const COLLATION_ELEMENT_RE = /\[([^\]]+)\]/g
 const VARIABLE_TOP_RE = /^\[variable top\s*=\s*([^\]]+)\]/im
 const HEX_BYTE_RE = /^[0-9A-Fa-f]{1,2}$/
-const CODE_POINT_WEIGHT_RE = /^U\+([0-9A-Fa-f]+)$/
+const CODE_POINT_WEIGHT_RE =
+  /^U\+([0-9A-Fa-f]+)(?:,\s*([^,]+))?(?:,\s*([^,]+))?$/
 const LEADING_ASTERISK_RE = /^\*/
 const LEADING_DOT_RE = /^\./
 const LINE_SPLIT_RE = /\r?\n/
@@ -40,14 +41,6 @@ function parseHex(input: string): number {
 }
 
 function parseWeightComponent(input: string): number {
-  // FractionalUCA weights can be raw hexadecimal bytes or symbolic U+NNNN
-  // weights; both become numeric UCA level weights.
-  // https://www.unicode.org/reports/tr10/#Default_Unicode_Collation_Element_Table
-  const codePointWeight = input.trim().match(CODE_POINT_WEIGHT_RE)
-  if (codePointWeight) {
-    return parseHex(codePointWeight[1])
-  }
-
   const bytes = input.trim().split(WHITESPACE_RE).filter(Boolean)
   if (bytes.length === 0) {
     return 0
@@ -56,11 +49,6 @@ function parseWeightComponent(input: string): number {
     throw new RangeError(`Invalid hexadecimal weight: ${input}`)
   }
   return parseHex(bytes.join(''))
-}
-
-function parseDottedWeightComponent(input: string): number {
-  const codePointWeight = input.trim().match(CODE_POINT_WEIGHT_RE)
-  return codePointWeight ? parseHex(codePointWeight[1]) : parseHex(input)
 }
 
 export function parseCodePointSequence(input: string): number[] {
@@ -78,20 +66,45 @@ export function parseCodePointSequence(input: string): number[] {
   return codePoints
 }
 
-export function parseCollationElement(input: string): ParsedCollationElement {
+type ResolveReference = (point: number) => ParsedCollationElement | undefined
+
+export function parseCollationElement(
+  input: string,
+  resolveReference?: ResolveReference
+): ParsedCollationElement {
   // Collation elements expose primary, secondary, tertiary, and quaternary
   // weights. A leading "*" marks variable elements for shifted handling.
   // https://www.unicode.org/reports/tr10/#Multi_Level_Comparison
   // https://www.unicode.org/reports/tr10/#Variable_Weighting
   const normalized = input.trim().replace(LEADING_ASTERISK_RE, '')
   const variable = input.trim().startsWith('*')
+  // FractionalUCA [U+NNNN, T] inherits the referenced primary and secondary.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#FractionalUCA
+  const reference = CODE_POINT_WEIGHT_RE.exec(normalized)
+  if (reference) {
+    const [, point, first, second] = reference
+    const inherited = resolveReference?.(parseHex(point))
+    if (!inherited)
+      throw new RangeError(`Missing collation reference U+${point}`)
+    return {
+      ...inherited,
+      secondary:
+        second === undefined
+          ? inherited.secondary
+          : parseWeightComponent(first),
+      tertiary:
+        first === undefined
+          ? inherited.tertiary
+          : parseWeightComponent(second ?? first),
+    }
+  }
   const weights = normalized.includes(',')
     ? normalized.split(',').map(parseWeightComponent)
     : normalized
         .replace(LEADING_DOT_RE, '')
         .split('.')
         .filter(Boolean)
-        .map(parseDottedWeightComponent)
+        .map(parseHex)
 
   return {
     primary: weights[0] || 0,
@@ -102,7 +115,10 @@ export function parseCollationElement(input: string): ParsedCollationElement {
   }
 }
 
-export function parseUCALine(line: string): ParsedUCAEntry | undefined {
+export function parseUCALine(
+  line: string,
+  resolveReference?: ResolveReference
+): ParsedUCAEntry | undefined {
   // Lines may include a prefix before "|" for context-sensitive mappings and
   // one or more bracketed collation elements after ";".
   // https://www.unicode.org/reports/tr10/#Contextual_Sensitive_Mappings
@@ -120,7 +136,7 @@ export function parseUCALine(line: string): ParsedUCAEntry | undefined {
   const elements: ParsedCollationElement[] = []
   let match: RegExpExecArray | null
   while ((match = COLLATION_ELEMENT_RE.exec(elementPart))) {
-    elements.push(parseCollationElement(match[1]))
+    elements.push(parseCollationElement(match[1], resolveReference))
   }
   if (elements.length === 0) {
     return undefined
@@ -135,11 +151,27 @@ export function parseUCALine(line: string): ParsedUCAEntry | undefined {
   }
 }
 
-export function parseUCA(source: string): ParsedUCAEntry[] {
-  return source
-    .split(LINE_SPLIT_RE)
-    .map(parseUCALine)
-    .filter((entry): entry is ParsedUCAEntry => entry !== undefined)
+export function parseUCA(
+  source: string,
+  implicit?: ResolveReference
+): ParsedUCAEntry[] {
+  const entries: ParsedUCAEntry[] = []
+  const explicit = new Map<number, ParsedCollationElement>()
+  const resolveReference: ResolveReference = point =>
+    explicit.get(point) ?? implicit?.(point)
+  for (const line of source.split(LINE_SPLIT_RE)) {
+    const entry = parseUCALine(line, resolveReference)
+    if (!entry) continue
+    entries.push(entry)
+    if (
+      entry.prefix === undefined &&
+      entry.codePoints.length === 1 &&
+      entry.elements.length === 1
+    ) {
+      explicit.set(entry.codePoints[0], entry.elements[0])
+    }
+  }
+  return entries
 }
 
 export function parseUCAVariableTop(source: string): number | undefined {

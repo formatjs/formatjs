@@ -34,6 +34,11 @@ export interface IntlCollatorInternal {
   boundCompare?: (x: string, y: string) => number
 }
 
+export type CollatorSlots = IntlCollatorInternal & {
+  dataLocale: string
+  comparisonCollation: string
+}
+
 export interface Collator extends Intl.Collator {
   resolvedOptions(): ResolvedCollatorOptions
 }
@@ -59,4 +64,7 @@ export interface CollatorLocaleData {
   defaultCollation?: string
   sensitivity: CollatorSensitivity
   ignorePunctuation: boolean
+  collationDefaults?: Readonly<
+    Record<string, {caseFirst: CollatorCaseFirst; ignorePunctuation: boolean}>
+  >
 }

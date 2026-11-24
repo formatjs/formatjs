@@ -262,7 +262,14 @@ pub unsafe extern "C" fn formatjs_plural_registry_match(
             serde_json::from_str(unsafe { input(data, len)? }).map_err(|_| 2)?;
         let registry = unsafe { &(*registry).0 };
         let result = if request.supported {
-            json!(registry.supported_locales(&request.requested))
+            json!(
+                formatjs_intl_locale::matcher::filter(
+                    registry.available_locales(),
+                    &request.requested,
+                    request.lookup,
+                )
+                .map_err(|_| 1)?
+            )
         } else {
             json!(
                 registry

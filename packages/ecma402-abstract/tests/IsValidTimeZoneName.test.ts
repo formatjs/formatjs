@@ -12,29 +12,23 @@ describe('IsValidTimeZoneName', () => {
 
     expect(
       IsValidTimeZoneName('America/Indiana/Indianapolis', {
-        zoneNamesFromData: [
-          'America/Indianapolis',
-          'America/Fort_Wayne',
-          'US/East-Indiana',
-        ],
-        uppercaseLinks: {
-          'America/Fort_Wayne': 'America/Indiana/Indianapolis',
-          'America/Indianapolis': 'America/Indiana/Indianapolis',
-          'US/East-Indiana': 'America/Indiana/Indianapolis',
-        },
+        zoneNamesFromData: ['America/Indiana/Indianapolis'],
+        uppercaseLinks: {},
       })
     ).toBe(true)
 
-    expect(
-      IsValidTimeZoneName('America/Indiana/Indianapolis', {
-        zoneNamesFromData: ['America/New_York'],
-        uppercaseLinks: {
-          'America/Fort_Wayne': 'America/Indiana/Indianapolis',
-          'America/Indianapolis': 'America/Indiana/Indianapolis',
-          'US/East-Indiana': 'America/Indiana/Indianapolis',
-        },
-      })
-    ).toBe(true)
+    const uppercaseLinks = {'US/EAST-INDIANA': 'America/Indiana/Indianapolis'}
+    for (const [zoneNamesFromData, valid] of [
+      [['America/Indiana/Indianapolis'], true],
+      [['America/New_York'], false],
+    ] as const) {
+      expect(
+        IsValidTimeZoneName('us/east-indiana', {
+          zoneNamesFromData,
+          uppercaseLinks,
+        })
+      ).toBe(valid)
+    }
   })
 
   test('UTC offset timezones - valid formats', () => {

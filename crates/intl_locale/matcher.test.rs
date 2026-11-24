@@ -1,9 +1,33 @@
 use formatjs_intl_locale::matcher::{
-    AvailableLocales, best_fit, lookup, supported, without_unicode_extension,
+    AvailableLocales, best_fit, filter, lookup, supported, without_unicode_extension,
 };
 
 fn tags(values: &[&str]) -> Vec<String> {
     values.iter().map(|value| (*value).to_owned()).collect()
+}
+
+#[test]
+fn filtering_chooses_the_matcher_and_preserves_supported_requests() {
+    let available = tags(&["en", "de"]);
+    let requested = tags(&["gsw-u-nu-latn", "zz-ZZ", "en-US"]);
+    assert_eq!(
+        filter(&available, &requested, true).unwrap(),
+        tags(&["en-US"])
+    );
+    assert_eq!(
+        filter(&available, &requested, false).unwrap(),
+        tags(&["gsw-u-nu-latn", "en-US"]),
+    );
+}
+
+#[test]
+fn best_fit_filter_retains_a_supported_prefix_when_distance_is_too_high() {
+    let available = tags(&["en", "zh"]);
+    let requested = tags(&["zh-TW-u-nu-hanidec", "zz-ZZ", "en-XA"]);
+    assert_eq!(
+        filter(&available, &requested, false).unwrap(),
+        tags(&["zh-TW-u-nu-hanidec"])
+    );
 }
 
 #[test]

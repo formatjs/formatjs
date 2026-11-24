@@ -1,6 +1,7 @@
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core'
 import allData from '@formatjs_generated/tz/all-tz.js'
 import {
+  installDateLocaleMethods,
   toLocaleDateString,
   toLocaleString,
   toLocaleTimeString,
@@ -15,6 +16,246 @@ import {describe, expect, it} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(bs, de, en, fi, ko, ru)
 DateTimeFormat.__addTZData(allData)
+
+it.each([
+  ['+05:30', 0, 'GMT+05:30'],
+  ['America/Los_Angeles', Date.UTC(1880, 0, 1), 'GMT-07:52:58'],
+] as const)(
+  'preserves RegExp statics when rendering a GMT offset for %s',
+  (timeZone, time, expected) => {
+    const formatter = new DateTimeFormat('en', {
+      timeZone,
+      hour: 'numeric',
+      timeZoneName: 'longOffset',
+    })
+    ;/sent(inel)/.exec('sentinel')
+    const before = [RegExp.lastMatch, RegExp.$1]
+    const parts = formatter.formatToParts(time)
+    const after = [RegExp.lastMatch, RegExp.$1]
+    expect(after).toEqual(before)
+    expect(parts).toContainEqual({type: 'timeZoneName', value: expected})
+  }
+)
+
+it('formats date fields with a time-zone name without adding a clock time', () => {
+  const date = new Date(Date.UTC(2026, 0, 15, 15, 30))
+  const zone = {timeZone: 'America/New_York', timeZoneName: 'short'} as const
+  for (const formatMatcher of ['basic', 'best fit'] as const) {
+    const defaults = new DateTimeFormat('en', {...zone, formatMatcher})
+    const explicit = new DateTimeFormat('en', {
+      ...zone,
+      formatMatcher,
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+    expect(defaults.format(date)).toBe('1/15/2026, EST')
+    expect(explicit.format(date)).toBe('Jan 15, 2026, EST')
+    for (const formatter of [defaults, explicit]) {
+      expect(formatter.resolvedOptions()).not.toHaveProperty('hour')
+      expect(formatter.resolvedOptions()).not.toHaveProperty('hourCycle')
+      expect(formatter.resolvedOptions()).not.toHaveProperty('hour12')
+    }
+  }
+  expect(toLocaleDateString(date, 'en', zone)).toBe('1/15/2026, EST')
+})
+
+it.each([
+  [
+    'en',
+    'America/New_York',
+    {weekday: 'long', timeZoneName: 'short'},
+    'Thursday, EST',
+  ],
+  [
+    'en',
+    'America/New_York',
+    {month: 'long', day: 'numeric', timeZoneName: 'long'},
+    'January 15 at Eastern Standard Time',
+  ],
+  ['de', 'Europe/Berlin', {timeZoneName: 'short'}, '15.1.2026, MEZ'],
+] as const)(
+  'keeps date and zone fields for %s in %s',
+  (locale, timeZone, options, expected) => {
+    const time = Date.UTC(2026, 0, 15, 15, 30)
+    const formatter = new DateTimeFormat(locale, {timeZone, ...options})
+    expect(formatter.format(time)).toBe(expected)
+    expect(formatter.resolvedOptions()).not.toHaveProperty('hour')
+    expect(formatter.resolvedOptions()).not.toHaveProperty('hourCycle')
+    expect(formatter.resolvedOptions()).not.toHaveProperty('hour12')
+  }
+)
+
+it('retains resolved locale data when a later option reloads it', () => {
+  const time = Date.UTC(2024, 5, 3)
+  const options = {dateStyle: 'short', timeZone: 'UTC'} as const
+  const reloaded = {
+    ...en,
+    data: {
+      ...en.data,
+      dateFormat: {...en.data.dateFormat, short: 'yyyy-MM-dd'},
+    },
+  }
+  const original = new DateTimeFormat('en', options).format(time)
+
+  try {
+    const formatter = new DateTimeFormat('en', {
+      ...options,
+      get year() {
+        // @ts-ignore JSON fixture fields are inferred as strings.
+        DateTimeFormat.__addLocaleData(reloaded)
+        return undefined
+      },
+    })
+    // ECMA-402 §11.1.2 step 13 retains the record before component reads.
+    // https://tc39.es/ecma402/#sec-createdatetimeformat
+    expect(formatter.format(time)).toBe(original)
+    expect(new DateTimeFormat('en', options).format(time)).toBe('2024-06-03')
+  } finally {
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(en)
+  }
+})
+
+it('uses AM/PM when a flexible day-period name exists only on a prototype', () => {
+  const entry = {
+    ...en,
+    data: {...en.data, dayPeriods: {...en.data.dayPeriods}},
+  }
+  entry.data.dayPeriods.long = Object.create({
+    get morning1() {
+      throw new Error('read inherited day-period name')
+    },
+  })
+  const rule = {name: 'morning1', from: 0, before: 43_200_000}
+  Object.setPrototypeOf(rule, {
+    get at() {
+      throw new Error('read inherited exact-time rule')
+    },
+  })
+  entry.data.dayPeriodRules = [rule]
+  try {
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(entry)
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      dayPeriod: 'long',
+    })
+    expect(formatter.formatToParts(9 * 3_600_000)).toEqual([
+      {type: 'dayPeriod', value: entry.data.am},
+    ])
+  } finally {
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(en)
+  }
+})
+
+it.each([
+  'dayPeriodRules',
+  'dayPeriods',
+  'rangeFormatOptions',
+  'gregory',
+] as const)('formats when omitted %s has an inherited getter', key => {
+  const entry = {...en, data: {...en.data}}
+  const missingDayPeriodData = key === 'dayPeriodRules' || key === 'dayPeriods'
+  if (missingDayPeriodData) Reflect.deleteProperty(entry.data, key)
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+  const morning = 9 * 3_600_000
+  let parts: ReturnType<InstanceType<typeof DateTimeFormat>['formatToParts']>
+  let range: ReturnType<
+    InstanceType<typeof DateTimeFormat>['formatRangeToParts']
+  >
+  try {
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(entry)
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      dayPeriod: 'long',
+    })
+    Object.defineProperty(Object.prototype, key, {
+      configurable: true,
+      get() {
+        throw new Error(`read inherited ${key}`)
+      },
+    })
+    parts = formatter.formatToParts(morning)
+    range = formatter.formatRangeToParts(morning, morning + 3_600_000)
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, key, original)
+    else Reflect.deleteProperty(Object.prototype, key)
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(en)
+  }
+  const value = missingDayPeriodData ? entry.data.am : 'in the morning'
+  expect(parts).toEqual([{type: 'dayPeriod', value}])
+  expect(range).toEqual([{type: 'dayPeriod', value, source: 'shared'}])
+})
+
+it('uses an own zone label when a specific name exists only on a prototype', () => {
+  const entry = {
+    ...en,
+    data: {...en.data, timeZoneName: {...en.data.timeZoneName}},
+  }
+  const zone = {long: ['Standard test label', 'Summer test label']}
+  Object.setPrototypeOf(zone, {
+    get longStandard() {
+      throw new Error('read inherited specific zone name')
+    },
+  })
+  Object.assign(entry.data.timeZoneName, {UTC: zone})
+  try {
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(entry)
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      timeZoneName: 'long',
+      hour: 'numeric',
+    })
+    expect(formatter.formatToParts(0)).toContainEqual({
+      type: 'timeZoneName',
+      value: 'Standard test label',
+    })
+  } finally {
+    // @ts-ignore JSON fixture fields are inferred as strings.
+    DateTimeFormat.__addLocaleData(en)
+  }
+})
+
+it.each([
+  'toLocaleString',
+  'toLocaleDateString',
+  'toLocaleTimeString',
+] as const)('%s keeps invalid dates and option errors distinct', name => {
+  const prototype = Date.prototype
+  const names = [
+    'toLocaleString',
+    'toLocaleDateString',
+    'toLocaleTimeString',
+  ] as const
+  const descriptors = Object.getOwnPropertyDescriptors(prototype)
+  installDateLocaleMethods()
+  try {
+    const method = prototype[name]
+    const options = {
+      get timeZone(): never {
+        throw new Error('timeZone read')
+      },
+    }
+
+    expect(method.length).toBe(0)
+    expect(Reflect.apply(method, new Date(NaN), ['en', options])).toBe(
+      'Invalid Date'
+    )
+    expect(() => Reflect.apply(method, 0, ['en', options])).toThrow(TypeError)
+    expect(() => Reflect.apply(method, new Date(0), ['en', options])).toThrow(
+      'timeZone read'
+    )
+  } finally {
+    for (const name of names) {
+      Object.defineProperty(prototype, name, descriptors[name])
+    }
+  }
+})
 
 it('preserves CLDR standalone weekday context inside full dates', () => {
   const formatter = new DateTimeFormat('fi', {

@@ -88,7 +88,10 @@ function transitionIndex(seconds: number, data: UnpackedTimeZoneData): number {
   return low
 }
 
-/** Offsets in seconds. TZif future rules apply after the last explicit transition. */
+// ECMA-262 §21.4.1.21 looks up the offset at the requested instant.
+// https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds
+// Offsets are stored in seconds. The TZif footer supplies future rules.
+// https://www.rfc-editor.org/rfc/rfc9636.html#section-3.3
 export function TimeZoneOffset(
   t: number,
   data: UnpackedTimeZoneData

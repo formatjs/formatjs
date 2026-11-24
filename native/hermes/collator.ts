@@ -27,6 +27,8 @@
   const BadOption = RangeError
   const getSlot = WeakMap.prototype.get
   const setSlot = WeakMap.prototype.set
+  // ECMA-402 §10.4: native collation state and the cached [[BoundCompare]].
+  // https://tc39.es/ecma402/#sec-properties-of-intl-collator-instances
   interface State {
     handle: object
     bound: ((x: unknown, y: unknown) => number) | undefined
@@ -100,7 +102,7 @@
   function unicodeType(text: string): boolean {
     // ResolveOptions rejects malformed co immediately, before kn/kf getters.
     // ASCII type subtags contain 3–8 letters/digits, separated by hyphens.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L306-L314
+    // https://tc39.es/ecma402/#sec-resolveoptions
     let length = 0
     for (let index = 0; index < text.length; index++) {
       const code = apply(charCodeAt, text, [index]) as number
@@ -128,7 +130,7 @@
   ): object {
     // Collator is callable. Get the requested prototype exactly once before
     // canonicalization; a construct trap avoids Hermes preallocating a receiver.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L20-L25
+    // https://tc39.es/ecma402/#sec-intl.collator
     const requestedPrototype = newTarget.prototype
     const receiver = create(
       requestedPrototype !== null &&
@@ -149,7 +151,7 @@
     )
     // ResolveOptions descriptor order: co, kn, kf. Boolean conversion never
     // invokes user coercion hooks; string conversion uses hint string.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L91
+    // https://tc39.es/ecma402/#sec-intl-collator-internal-slots
     const collation = option(opts, 'collation', undefined, undefined)
     if (collation !== undefined) {
       if (!unicodeType(collation))
@@ -168,7 +170,7 @@
     const defaults = decoded(nativeResolve(request(requested, record)))
     // ResolveLocale precedes locale-dependent sensitivity/punctuation defaults.
     // Rust resolves co/kn/kf and performs the actual UCA/LDML comparisons.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L32-L43
+    // https://tc39.es/ecma402/#sec-intl.collator
     record.sensitivity = option(
       opts,
       'sensitivity',
@@ -204,6 +206,8 @@
       )
     },
   })
+  // ECMA-402 §10.3.1 exposes the installed constructor on the prototype.
+  // https://tc39.es/ecma402/#sec-intl.collator.prototype.constructor
   property(prototype, 'constructor', Collator)
   property(Collator, 'name', 'Collator', false, false)
   const methods = {
@@ -212,19 +216,27 @@
       optionsInput: unknown = undefined
     ): string[] {
       // Canonicalization precedes FilterLocales option accesses.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L75-L78
+      // https://tc39.es/ecma402/#sec-intl.collator.supportedlocalesof
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
-      option(
+      const matcher = option(
         options(optionsInput),
         'localeMatcher',
         ['lookup', 'best fit'],
         'best fit'
       )
-      return decoded(nativeSupported(requested))
+      return decoded(
+        nativeSupported(
+          '{"locales":' +
+            requested +
+            ',"lookup":' +
+            (matcher === 'lookup') +
+            '}'
+        )
+      )
     },
     resolvedOptions(this: unknown): object {
       // Fresh ordinary object, table order, own data properties.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L126-L183
+      // https://tc39.es/ecma402/#sec-intl.collator.prototype.resolvedoptions
       const values = decoded(
         nativeQuery(state(this).handle, '{"method":"resolvedOptions"}')
       )
@@ -245,13 +257,13 @@
     getCompare(this: unknown): (x: unknown, y: unknown) => number {
       // Brand first. Cache a non-constructor function tied to this instance;
       // its caller-supplied receiver is ignored.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L197-L204
+      // https://tc39.es/ecma402/#sec-intl.collator.prototype.compare
       const value = state(this)
       if (value.bound === undefined) {
         const compare = (x: unknown, y: unknown): number => {
           // ToString(x) precedes ToString(y); Symbols throw. Units preserve
           // lone surrogates through the borrowed UTF-16 boundary.
-          // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L216-L224
+          // https://tc39.es/ecma402/#sec-collator-compare-functions
           const left = `${x}`
           const right = `${y}`
           return nativeCompare(state(this).handle, left, right)
@@ -269,9 +281,12 @@
   descriptor.configurable = true
   define(prototype, 'compare', descriptor)
   property(prototype, 'resolvedOptions', methods.resolvedOptions)
+  // ECMA-402 §10.3.4 https://tc39.es/ecma402/#sec-intl.collator.prototype-%symbol.tostringtag%
   property(prototype, Symbol.toStringTag, 'Intl.Collator', false, false)
   property(Collator, 'supportedLocalesOf', methods.supportedLocalesOf)
   property(Collator, 'polyfilled', true)
+  // ECMA-402 §10.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-intl.collator.prototype
   const prototypeDescriptor = create(null)
   prototypeDescriptor.writable = false
   define(Collator, 'prototype', prototypeDescriptor)

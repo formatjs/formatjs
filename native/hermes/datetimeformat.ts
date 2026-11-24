@@ -1,8 +1,11 @@
 // eslint-disable-next-line no-unused-expressions -- Hermes evaluates this factory.
 ;(function (native: {
+  fallbackSymbol: symbol
   nativeLoad: (kind: number, pack: string) => number
   nativeInfo: () => string | number
+  nativeCalendars: () => string | number
   nativeDefaultZone: (zone: string) => number
+  nativeHasZone: (zone: string) => boolean | number
   nativeLoadCalendar: (pack: string) => number
   nativeCalendar: (
     name: string,
@@ -19,9 +22,12 @@
 }) {
   'use strict'
   const {
+    fallbackSymbol,
     nativeLoad,
     nativeInfo,
+    nativeCalendars,
     nativeDefaultZone,
+    nativeHasZone,
     nativeLoadCalendar,
     nativeCalendar,
     nativeSupported,
@@ -44,7 +50,7 @@
     parse = JSON.parse,
     stringify = JSON.stringify,
     charCodeAt = String.prototype.charCodeAt,
-    hasInstance = Function.prototype[Symbol.hasInstance],
+    isPrototypeOf = Object.prototype.isPrototypeOf,
     getSlot = WeakMap.prototype.get,
     setSlot = WeakMap.prototype.set,
     setAdd = Set.prototype.add,
@@ -55,15 +61,23 @@
     dateNow = Date.now
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
+  const HostDateTimeFormat = intl.DateTimeFormat
+  const hostResolvedOptions =
+    typeof HostDateTimeFormat === 'function' && !HostDateTimeFormat.polyfilled
+      ? HostDateTimeFormat.prototype?.resolvedOptions
+      : undefined
+  let lastHostZone: string | undefined
   const canonicalize = intl.getCanonicalLocales
   if (typeof canonicalize !== 'function')
     throw new BadReceiver(
       'Install Intl.getCanonicalLocales before DateTimeFormat'
     )
+  // ECMA-402 §11.4: the handle owns formatter state and the wrapper holds [[BoundFormat]].
+  // https://tc39.es/ecma402/#sec-properties-of-intl-datetimeformat-instances
   type Slot = {
     handle: object
     callbacks: object
-    bound?: (value?: unknown) => string
+    bound: ((value?: unknown) => string) | undefined
   }
   const slots = new WeakMap<object, Slot>()
   const callbacks = create(null)
@@ -169,59 +183,24 @@
     if (value === null) throw new BadReceiver('Options cannot be null')
     return object(value)
   }
-  function dateTimeOptions(
-    value: unknown,
-    required: 'all' | 'date' | 'time'
-  ): any {
-    const result = create(options(value))
-    let defaults = true
-    if (required !== 'time') {
-      for (const key of ['weekday', 'year', 'month', 'day'])
-        if (result[key] !== undefined) defaults = false
-    }
-    if (required !== 'date') {
-      for (const key of [
-        'dayPeriod',
-        'hour',
-        'minute',
-        'second',
-        'fractionalSecondDigits',
-      ])
-        if (result[key] !== undefined) defaults = false
-    }
-    const dateStyle = result.dateStyle,
-      timeStyle = result.timeStyle
-    if (required === 'date' && timeStyle !== undefined)
-      throw new BadReceiver('timeStyle is not valid for toLocaleDateString')
-    if (required === 'time' && dateStyle !== undefined)
-      throw new BadReceiver('dateStyle is not valid for toLocaleTimeString')
-    if (dateStyle !== undefined || timeStyle !== undefined) defaults = false
-    if (defaults) {
-      if (required !== 'time') {
-        property(result, 'year', 'numeric', true, true)
-        property(result, 'month', 'numeric', true, true)
-        property(result, 'day', 'numeric', true, true)
-      }
-      if (required !== 'date') {
-        property(result, 'hour', 'numeric', true, true)
-        property(result, 'minute', 'numeric', true, true)
-        property(result, 'second', 'numeric', true, true)
-      }
-    }
-    return result
-  }
+  // ECMA-402 §20.4.1–3.
+  // https://tc39.es/ecma402/#sup-properties-of-the-date-prototype-object
   function localDate(
     receiver: unknown,
     locales: unknown,
     optionsInput: unknown,
-    required: 'all' | 'date' | 'time'
+    mode: 'all' | 'date' | 'time'
   ): string {
     const milliseconds = apply(dateGetTime, receiver, []) as number
     if (milliseconds !== milliseconds) return 'Invalid Date'
-    return new (DateTimeFormat as any)(
+    const formatter = initialize(
+      create(prototype),
       locales,
-      dateTimeOptions(optionsInput, required)
-    ).format(milliseconds)
+      optionsInput,
+      undefined,
+      mode
+    )
+    return single(slot(formatter), milliseconds, 'format')
   }
   function option(
     value: any,
@@ -257,6 +236,41 @@
       }
     }
     return length >= 3 && length <= 8
+  }
+  // The constructor's prototype is fixed. Walk the receiver's prototype chain
+  // without consulting Symbol.hasInstance.
+  // https://tc39.es/ecma262/#sec-ordinaryhasinstance
+  function hasDateTimeFormatPrototype(receiver: unknown): boolean {
+    return apply(isPrototypeOf, prototype, [receiver])
+  }
+  // ECMA-402 §11.5.13 unwraps only format and resolvedOptions.
+  // https://tc39.es/ecma402/#sec-unwrapdatetimeformat
+  function unwrap(receiver: unknown): Slot {
+    const state = apply(getSlot, slots, [receiver]) as Slot | undefined
+    if (state) return state
+    if (hasDateTimeFormatPrototype(receiver)) {
+      return slot((receiver as Record<symbol, unknown>)[fallbackSymbol])
+    }
+    return slot(receiver)
+  }
+  // ECMA-402 §11.1.2 step 18 reads the host's zone for omitted options.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
+  function updateHostTimeZone(): void {
+    if (typeof hostResolvedOptions !== 'function') return
+    let zone: string | undefined
+    try {
+      const resolved = apply(hostResolvedOptions, new HostDateTimeFormat(), [])
+      // ECMA-402 §11.3.2 step 5 creates an own data property for the zone.
+      // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
+      const field = descriptor(resolved, 'timeZone')
+      const value = field && descriptor(field, 'value')?.value
+      if (typeof value === 'string') zone = value
+    } catch {
+      // A partial host Intl may not supply a timezone.
+    }
+    if (zone === lastHostZone) return
+    checked(nativeDefaultZone('{"hostTimeZone":' + quote(zone ?? '') + '}'))
+    lastHostZone = zone
   }
   function slot(receiver: unknown): Slot {
     const value = apply(getSlot, slots, [receiver]) as Slot | undefined
@@ -318,9 +332,14 @@
     second: unknown,
     operation: string
   ): any {
+    // ECMA-402 §§11.3.4–5 steps 2–5 check both arguments before coercion.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
+    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
     const state = slot(receiver)
     if (first === undefined || second === undefined)
       throw new BadReceiver('startDate/endDate cannot be undefined')
+    // Both coercions finish before Rust applies TimeClip in §11.5.8 steps 1–4.
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
     const firstValue = value(first, false),
       secondValue = value(second, false)
     return decoded(
@@ -358,28 +377,65 @@
     'hour12',
     'hourCycle',
   ]
-  const createNames = ['formatMatcher', 'dateStyle', 'timeStyle', 'zonedLocale']
+  const createNames = [
+    'formatMatcher',
+    'dateStyle',
+    'timeStyle',
+    'zonedLocale',
+    'dateLocale',
+  ]
   const styles = ['full', 'long', 'medium', 'short']
-  function DateTimeFormat(
-    this: any,
-    locales?: unknown,
-    optionsInput?: unknown
-  ): any {
-    if (!new.target && !apply(hasInstance, DateTimeFormat, [this]))
-      return new (DateTimeFormat as any)(locales, optionsInput)
-    return initialize(this, locales, optionsInput)
-  }
+  // ECMA-402 §11.1.1 dispatches calls and construction to CreateDateTimeFormat.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat
+  const DateTimeFormat = new Proxy(function DateTimeFormat() {}, {
+    // The private proxy handler has no inherited traps.
+    // https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots-get-p-receiver
+    __proto__: null,
+    apply(_target, receiver, args) {
+      const formatter = initialize(create(prototype), args[0], args[1])
+      // ECMA-402 §11.1.1.1 wraps the receiver after creating the formatter.
+      // https://tc39.es/ecma402/#sec-chaindatetimeformat
+      if (hasDateTimeFormatPrototype(receiver)) {
+        const descriptor = create(null)
+        descriptor.value = formatter
+        descriptor.writable = false
+        descriptor.enumerable = false
+        descriptor.configurable = false
+        define(receiver, fallbackSymbol, descriptor)
+        return receiver
+      }
+      return formatter
+    },
+    construct(_target, args, newTarget) {
+      // ECMA-402 §11.1.2 step 1 uses NewTarget.prototype before reading options.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
+      // ECMA-262 §10.1.14 step 4 uses the constructor's realm. Here the
+      // intrinsic fallback is limited to the polyfill's own realm.
+      // https://tc39.es/ecma262/#sec-getprototypefromconstructor
+      const requested = newTarget.prototype
+      const receiver = create(
+        requested !== null &&
+          (typeof requested === 'object' || typeof requested === 'function')
+          ? requested
+          : prototype
+      )
+      return initialize(receiver, args[0], args[1])
+    },
+  } as ProxyHandler<Function>)
   type TemporalValue = {
     kind: string
     calendar?: string
     epochNanoseconds: bigint
     timeZone?: string
   }
+  // ECMA-402 §11.1.2.
+  // https://tc39.es/ecma402/#sec-createdatetimeformat
   function initialize(
     receiver: any,
     locales: unknown,
     optionsInput: unknown,
-    temporal?: TemporalValue
+    temporal?: TemporalValue,
+    dateLocale?: 'all' | 'date' | 'time'
   ): any {
     const construction = handle(nativeBegin())
     try {
@@ -422,6 +478,7 @@
           throw new BadReceiver('timeZone option conflicts with ZonedDateTime')
         zone = temporal.timeZone
       }
+      if (zone === undefined) updateHostTimeZone()
       checked(
         nativeZone(
           construction,
@@ -466,6 +523,11 @@
       )
       late.dateStyle = option(opts, 'dateStyle', styles)
       late.timeStyle = option(opts, 'timeStyle', styles)
+      if (dateLocale === 'date' && late.timeStyle !== undefined)
+        throw new BadReceiver('timeStyle is not valid for toLocaleDateString')
+      if (dateLocale === 'time' && late.dateStyle !== undefined)
+        throw new BadReceiver('dateStyle is not valid for toLocaleTimeString')
+      late.dateLocale = dateLocale
       if (temporal) {
         if (temporal.kind === 'PlainTime' && late.dateStyle !== undefined)
           throw new BadReceiver('dateStyle is not valid for PlainTime')
@@ -481,9 +543,8 @@
       const model = handle(
         nativeCreate(construction, record(late, createNames))
       )
-      const previous = apply(getSlot, slots, [receiver]) as Slot | undefined
-      if (previous) previous.handle = model
-      else apply(setSlot, slots, [receiver, {handle: model, callbacks}])
+      const state: Slot = {handle: model, callbacks, bound: undefined}
+      apply(setSlot, slots, [receiver, state])
       return receiver
     } finally {
       nativeReleaseConstruction(construction)
@@ -516,15 +577,23 @@
   }
   const prototype = DateTimeFormat.prototype
   const methods = {
+    // ECMA-402 §11.3.2.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
     resolvedOptions(this: unknown): object {
-      return decoded(nativeQuery(slot(this).handle, '{"op":"resolved"}'))
+      return decoded(nativeQuery(unwrap(this).handle, '{"op":"resolved"}'))
     },
+    // ECMA-402 §11.3.6.
+    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatToParts
     formatToParts(this: unknown, input?: unknown): object[] {
       return single(slot(this), input, 'parts')
     },
+    // ECMA-402 §11.3.4.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
     formatRange(this: unknown, first: unknown, second: unknown): string {
       return range(this, first, second, 'range')
     },
+    // ECMA-402 §11.3.5.
+    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
     formatRangeToParts(
       this: unknown,
       first: unknown,
@@ -532,6 +601,8 @@
     ): object[] {
       return range(this, first, second, 'rangeParts')
     },
+    // ECMA-402 §11.2.2: canonicalize before reading FilterLocales options.
+    // https://tc39.es/ecma402/#sec-intl.datetimeformat.supportedlocalesof
     supportedLocalesOf(locales: unknown, optionsInput?: unknown): string[] {
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
       const values = create(null)
@@ -566,6 +637,7 @@
       )
     },
     getDefaultTimeZone(): string {
+      updateHostTimeZone()
       return decoded(nativeInfo()).timeZone
     },
     getDefaultLocale(): string {
@@ -636,12 +708,15 @@
   ] as const
   for (let index = 0; index < instanceNames.length; index++)
     property(prototype, instanceNames[index], methods[instanceNames[index]])
+  // ECMA-402 §11.3.3 steps 2–5 unwrap, brand-check, and cache [[BoundFormat]].
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
   const format = create(null)
   // Hermes makes object-literal getters constructible; the arrow target is not.
   format.get = new Proxy(() => {}, {
+    __proto__: null,
     apply(_target, receiver) {
-      const state = slot(receiver)
-      if (!state.bound) {
+      const state = unwrap(receiver)
+      if (state.bound === undefined) {
         const bound = (input?: unknown): string =>
           single(state, input, 'format')
         property(bound, 'name', '', false)
@@ -649,7 +724,7 @@
       }
       return state.bound
     },
-  })
+  } as ProxyHandler<() => void>)
   format.configurable = true
   property(format.get, 'name', 'get format', false)
   define(prototype, 'format', format)
@@ -670,36 +745,66 @@
   available.get = descriptor(methods, 'availableLocales')!.get
   available.configurable = true
   define(DateTimeFormat, 'availableLocales', available)
+  // ECMA-402 §6.9.1 uses calendars from every loaded locale.
+  // https://tc39.es/ecma402/#sec-availablecalendars
+  const calendars = create(null)
+  calendars.value = (): string[] => decoded(nativeCalendars())
+  define(
+    DateTimeFormat,
+    Symbol.for('@formatjs/intl-datetimeformat/availableCalendars'),
+    calendars
+  )
+  // ECMA-402 §6.5.2 resolves zones independently of locale data.
+  // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
+  const zones = create(null)
+  zones.value = (name: string): boolean => {
+    const result = nativeHasZone(name)
+    if (typeof result === 'boolean') return result
+    checked(result)
+    return false
+  }
+  define(
+    DateTimeFormat,
+    Symbol.for('@formatjs/intl-datetimeformat/hasTimeZone'),
+    zones
+  )
   property(DateTimeFormat, 'calendarData', create(null))
   property(DateTimeFormat, '__addTemporalNamespace', addTemporalNamespace)
   property(DateTimeFormat, '__formatTemporal', formatTemporal)
   property(DateTimeFormat, 'polyfilled', true)
   property(DateTimeFormat, 'relevantExtensionKeys', ['nu', 'ca', 'hc'])
   property(DateTimeFormat, 'length', 0, false)
+  // ECMA-402 §11.3.1 exposes the public constructor on its prototype.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.constructor
+  property(prototype, 'constructor', DateTimeFormat)
+  // ECMA-402 §11.3.7 https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype-%symbol.tostringtag%
   property(prototype, Symbol.toStringTag, 'Intl.DateTimeFormat', false)
+  // ECMA-402 §11.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype
   const attributes = create(null)
   attributes.writable = false
   define(DateTimeFormat, 'prototype', attributes)
   property(intl, 'DateTimeFormat', DateTimeFormat)
-  property(
-    Date.prototype,
-    'toLocaleString',
-    function toLocaleString(this: unknown) {
+  // ECMA-262 §10.3. These methods have no [[Construct]].
+  // https://tc39.es/ecma262/#sec-built-in-function-objects
+  const dateMethods = {
+    // ECMA-402 §20.4.1 steps 5–6.
+    // https://tc39.es/ecma402/#sup-date.prototype.tolocalestring
+    toLocaleString(this: unknown) {
       return localDate(this, arguments[0], arguments[1], 'all')
-    }
-  )
-  property(
-    Date.prototype,
-    'toLocaleDateString',
-    function toLocaleDateString(this: unknown) {
+    },
+    // ECMA-402 §20.4.2 steps 5–6.
+    // https://tc39.es/ecma402/#sup-date.prototype.tolocaledatestring
+    toLocaleDateString(this: unknown) {
       return localDate(this, arguments[0], arguments[1], 'date')
-    }
-  )
-  property(
-    Date.prototype,
-    'toLocaleTimeString',
-    function toLocaleTimeString(this: unknown) {
+    },
+    // ECMA-402 §20.4.3 steps 5–6.
+    // https://tc39.es/ecma402/#sup-date.prototype.tolocaletimestring
+    toLocaleTimeString(this: unknown) {
       return localDate(this, arguments[0], arguments[1], 'time')
-    }
-  )
+    },
+  }
+  property(Date.prototype, 'toLocaleString', dateMethods.toLocaleString)
+  property(Date.prototype, 'toLocaleDateString', dateMethods.toLocaleDateString)
+  property(Date.prototype, 'toLocaleTimeString', dateMethods.toLocaleTimeString)
 })

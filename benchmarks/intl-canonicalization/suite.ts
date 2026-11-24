@@ -69,6 +69,7 @@ const invalid = [
   '',
   'a',
   'abcd',
+  'root',
   'i-klingon',
   'en_US',
   'en--US',
@@ -193,8 +194,6 @@ function check(method: Canonicalizer, name: string): void {
 
 check(rust, 'rust-jsi')
 check(polyfill as Canonicalizer, 'js-polyfill')
-throws(() => rust('root'), 'RangeError', 'rust-jsi root')
-equal(polyfill('root'), ['root'], 'js-polyfill known root acceptance')
 let generatedTags = 0
 for (const language of ['en', 'sh', 'hye', 'und', 'posix', 'abcde']) {
   for (const script of ['', '-Latn', '-Armn']) {
@@ -247,9 +246,7 @@ print(
     generatedTags,
     observable,
     casingVariants,
-    knownBaselineDifferences: [
-      {input: 'root', rust: 'RangeError', polyfill: ['root']},
-    ],
+    knownBaselineDifferences: [],
   })
 )
 

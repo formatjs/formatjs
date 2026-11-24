@@ -235,7 +235,179 @@ function compare(entry: Packed, tz: string, cases: Case[]) {
       actual[index],
       `${entry.locale}/${JSON.stringify(cases[index].options)}`
     ).toEqual(expected[index])
+  return actual
 }
+
+it('uses the field value when a localized date name is missing', () => {
+  const entry = pack('en')
+  entry.data.era = {narrow: {}, short: {}, long: {}}
+  entry.data.month = {narrow: [], short: [], long: []}
+  entry.data.monthStandalone = {narrow: [], short: [], long: []}
+  entry.data.weekday = {narrow: [], short: [], long: []}
+  entry.data.weekdayStandalone = {narrow: [], short: [], long: []}
+  const result = compare(
+    entry,
+    read('packages/intl-datetimeformat/tz-all.json'),
+    [
+      {
+        locales: ['en'],
+        options: {
+          timeZone: 'UTC',
+          era: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'long',
+        },
+        values: [{type: 'date', value: '0'}],
+      },
+    ]
+  )
+  expect(result).toEqual([
+    [
+      {
+        parts: expect.arrayContaining([
+          {type: 'era', value: 'AD'},
+          {type: 'month', value: '1'},
+          {type: 'weekday', value: '4'},
+        ]),
+        text: expect.any(String),
+      },
+    ],
+  ])
+})
+
+it('falls back to the resolved zone when a localized zone name is unavailable', () => {
+  const entry = pack('en')
+  entry.data.timeZoneName = {}
+  entry.data.hourFormat = '+HH:mm'
+  const zones = [
+    {timeZone: '+0530', expected: 'GMT+05:30'},
+    {timeZone: '-0530', expected: '-05:30'},
+    {timeZone: 'US/Pacific', expected: 'US/Pacific'},
+  ]
+  const results = compare(
+    entry,
+    read('packages/intl-datetimeformat/tz-all.json'),
+    zones.map(({timeZone}) => ({
+      locales: ['en'],
+      options: {timeZone, timeZoneName: 'longOffset', hour: 'numeric'},
+      values: [{type: 'date', value: '0'}],
+    }))
+  )
+  expect(results).toEqual(
+    zones.map(({expected}) => [
+      {
+        parts: expect.arrayContaining([
+          {type: 'timeZoneName', value: expected},
+        ]),
+        text: expect.stringContaining(expected),
+      },
+    ])
+  )
+})
+
+it('inserts the localized GMT offset as literal text', () => {
+  const entry = pack('en')
+  entry.data.hourFormat = '+$&HH:mm;-$&HH:mm'
+  const result = compare(
+    entry,
+    read('packages/intl-datetimeformat/tz-all.json'),
+    [
+      {
+        locales: ['en'],
+        options: {timeZone: '+05:30', timeZoneName: 'longOffset'},
+        values: [{type: 'date', value: '0'}],
+      },
+    ]
+  )
+  expect(result).toEqual([
+    [
+      {
+        parts: expect.arrayContaining([
+          {type: 'timeZoneName', value: 'GMT+$&05:30'},
+        ]),
+        text: expect.stringContaining('GMT+$&05:30'),
+      },
+    ],
+  ])
+})
+
+it('keeps zone-only date requests free of unrequested clock parts', () => {
+  const timeZone = 'America/New_York'
+  const values: Input[] = [
+    {type: 'date', value: String(Date.UTC(2026, 0, 15, 15, 30))},
+  ]
+  for (const locale of ['en', 'de', 'ja', 'zh-Hans']) {
+    const results = compare(
+      pack(locale),
+      read('packages/intl-datetimeformat/tz-all.json'),
+      [
+        {locales: [locale], options: {timeZone, timeZoneName: 'short'}, values},
+        {
+          locales: [locale],
+          options: {
+            timeZone,
+            timeZoneName: 'long',
+            day: 'numeric',
+            month: 'long',
+            formatMatcher: 'basic',
+          },
+          values,
+        },
+      ]
+    ) as Array<Array<{parts: IntlDateTimeFormatPart[]}>>
+    for (const [{parts}] of results) {
+      const fields = parts.map(part => part.type)
+      expect(fields).toContain('timeZoneName')
+      expect(fields).toContain('day')
+      expect(fields).not.toContain('hour')
+      expect(fields).not.toContain('minute')
+    }
+  }
+}, 20_000)
+
+it('preserves endpoint sources when a date-plus-zone range uses a reversed fallback', () => {
+  const entry = pack('en')
+  entry.data.formats.gregory = {d: "'day 'd"}
+  entry.data.intervalFormats = {intervalFormatFallback: '[{1}] – [{0}]'}
+  const results = compare(
+    entry,
+    read('packages/intl-datetimeformat/tz-all.json'),
+    [
+      {
+        locales: ['en'],
+        options: {
+          day: 'numeric',
+          timeZone: 'UTC',
+          timeZoneName: 'shortOffset',
+        },
+        values: [{type: 'range', first: '0', second: '86400000'}],
+      },
+    ]
+  )
+  expect(results).toEqual([
+    [
+      {
+        text: '[day 2, GMT+0] – [day 1, GMT+0]',
+        parts: [
+          {type: 'literal', value: '[', source: 'shared'},
+          {type: 'literal', value: 'day ', source: 'endRange'},
+          {type: 'day', value: '2', source: 'endRange'},
+          {type: 'literal', value: ', ', source: 'endRange'},
+          {type: 'timeZoneName', value: 'GMT+0', source: 'endRange'},
+          {type: 'literal', value: '] – [', source: 'shared'},
+          {type: 'literal', value: 'day ', source: 'startRange'},
+          {type: 'day', value: '1', source: 'startRange'},
+          {type: 'literal', value: ', ', source: 'startRange'},
+          {type: 'timeZoneName', value: 'GMT+0', source: 'startRange'},
+          {type: 'literal', value: ']', source: 'shared'},
+        ],
+      },
+    ],
+  ])
+})
+
 it('renders localized Gregorian/ISO fields, eras, digits, day periods and historical timezone offsets', () => {
   const values: Input[] = [
     -8640000000000000, -62167219200000, -62135596800000, -2208988800000, -1.9,
@@ -250,6 +422,12 @@ it('renders localized Gregorian/ISO fields, eras, digits, day periods and histor
     {era: 'long', year: 'numeric', month: 'long', day: '2-digit'},
     {hour: 'numeric', minute: '2-digit', second: '2-digit'},
     {hour: 'numeric', dayPeriod: 'long'},
+    {hour: 'numeric', minute: 'numeric', dayPeriod: 'long'},
+    {dayPeriod: 'long'},
+    {minute: 'numeric'},
+    {second: 'numeric'},
+    {fractionalSecondDigits: 3},
+    {minute: 'numeric', fractionalSecondDigits: 2},
     {hour: 'numeric', dayPeriod: 'narrow'},
     {minute: 'numeric', second: 'numeric'},
     {second: 'numeric', fractionalSecondDigits: 1},
@@ -428,6 +606,7 @@ it('formats ranges with displayed precision, shared grammar and endpoint sources
     {year: 'numeric', month: 'long', day: 'numeric'},
     {era: 'long', year: 'numeric', month: 'short', day: 'numeric'},
     {hour: 'numeric', minute: '2-digit'},
+    {hour: '2-digit', minute: '2-digit', formatMatcher: 'basic'},
     {hour: 'numeric', minute: '2-digit', second: '2-digit'},
     {hour: 'numeric', dayPeriod: 'long'},
     {minute: 'numeric', second: 'numeric'},
@@ -562,7 +741,7 @@ it('preserves resolvedOptions fields and property order for components and style
         })
     compare(pack(locale), tz, cases)
   }
-})
+}, 20_000)
 it('rejects incompatible Temporal calendars, unsupported ZonedDateTime and mixed range types', () => {
   const values: Input[] = [{type: 'zoned'}]
   for (const kind of [

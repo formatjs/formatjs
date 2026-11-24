@@ -161,9 +161,16 @@ This polyfill is only needed for older browsers that don't have native support f
 
 The polyfill requires the following `Intl` APIs to be available:
 
-- `Intl.DateTimeFormat` (for `calendar`, `timeZone`, `numberingSystem`)
-- `Intl.NumberFormat` (for `currency`, `unit`, `numberingSystem`)
+- `Intl.DateTimeFormat` (for `calendar`, `timeZone`)
+- `Intl.NumberFormat` (for `currency`)
 - `Intl.Collator` (for `collation`)
+
+Currency enumeration also checks `Intl.DisplayNames` when installed.
+
+The `unit` category returns the sanctioned units from ECMA-402 Table 2 and
+works without a formatter. The `numberingSystem` category always includes
+Table 30. Additional systems are checked in NumberFormat, DateTimeFormat,
+and RelativeTimeFormat.
 
 ## Breaking Changes in v3.0
 

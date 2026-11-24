@@ -1,6 +1,5 @@
-// Intl.getCanonicalLocales 1–2 delegates to CanonicalizeLocaleList, then returns an array.
-// https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/intl.html#L92-L93
-// https://github.com/tc39/ecma402/blob/3691634ebc1794f2af74cb26e59824b21090c3ad/spec/negotiation.html#L48-L71
+// ECMA-402 §8.3.1, steps 1–2.
+// https://tc39.es/ecma402/#sec-intl.getcanonicallocales
 // eslint-disable-next-line no-unused-expressions -- JSI consumes the evaluated factory.
 ;(function (canonicalize) {
   'use strict'
@@ -22,7 +21,42 @@
       configurable: true,
     })
   }
-  var localeToString = intl.Locale && intl.Locale.prototype.toString
+  // ECMA-402 §8.1.1 gives the Intl namespace a non-writable tag.
+  // https://tc39.es/ecma402/#sec-intl-%symbol.tostringtag%
+  if (!Object.getOwnPropertyDescriptor(intl, Symbol.toStringTag)) {
+    defineProperty(intl, Symbol.toStringTag, {
+      __proto__: null,
+      value: 'Intl',
+      configurable: true,
+    })
+  }
+  var Locale = intl.Locale
+  var registry = intl.getCanonicalLocales?.__localeBrandRegistry ??
+    Locale?.__localeBrandRegistry ?? {readers: undefined, parent: undefined}
+
+  // Share the TS registry with canonicalizers and Locale constructors already in use.
+  function rootRegistry() {
+    var root = registry
+    while (root.parent) root = root.parent
+    return root
+  }
+  function addLocaleBrandReader(read) {
+    if (typeof read !== 'function')
+      throw new TypeErrorIntrinsic('Locale brand reader must be callable')
+    var root = rootRegistry()
+    for (var node = root.readers; node; node = node.next)
+      if (node.read === read) return
+    root.readers = {read: read, next: root.readers}
+  }
+  if (Locale && !Locale.__localeBrandRegistry) {
+    var localeToString = Locale.prototype.toString
+    if (typeof localeToString === 'function')
+      addLocaleBrandReader(function (value) {
+        try {
+          if (!isArray(value)) return apply(localeToString, value, [])
+        } catch {}
+      })
+  }
   var tagCache = new Map()
   var cachedTag = Map.prototype.get.bind(tagCache)
   var storeTag = Map.prototype.set.bind(tagCache)
@@ -50,46 +84,42 @@
     return result
   }
 
-  // CanonicalizeLocaleList 3, 7.c.iii–iii.1: the trusted Locale intrinsic
-  // supplies its brand and tag without reading overridden instance properties.
-  // Capture after trusted Locale installation, before application code.
+  // ECMA-402 §9.2.1, steps 3 and 7.c.iii. Read the brand and tag before coercion.
+  // https://tc39.es/ecma402/#sec-canonicalizelocalelist
   function localeString(value) {
     if (
-      value !== null &&
-      (typeof value === 'object' || typeof value === 'function')
-    ) {
-      // Arrays cannot carry Locale internal slots. Avoid a thrown brand error
-      // for locale lists while preserving their later HasProperty/Get steps.
-      if (localeToString && !isArray(value)) {
-        try {
-          return apply(localeToString, value, [])
-        } catch {}
-      }
+      value === null ||
+      (typeof value !== 'object' && typeof value !== 'function')
+    )
+      return undefined
+    for (var node = rootRegistry().readers; node; node = node.next) {
+      var tag = node.read(value)
+      if (typeof tag === 'string') return tag
     }
     return undefined
   }
 
   // Method syntax supplies name, length 1, and no [[Construct]] or prototype.
-  // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L30318-L30328
+  // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
   var getCanonicalLocales = {
     getCanonicalLocales(locales) {
       // CanonicalizeLocaleList 1–1.a: omitted input returns an empty list.
       if (locales === undefined) return []
       // CanonicalizeLocaleList 4.a: ToObject rejects null.
-      // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L5679-L5701
+      // https://tc39.es/ecma262/#sec-toobject
       if (locales === null)
         throw new TypeErrorIntrinsic('Cannot convert null to an object')
       if (typeof locales === 'string') return [canonicalTag(locales)]
       // CanonicalizeLocaleList 3–4.a: singleton array for a string/Locale tag;
       // otherwise box with ToObject. Array literals create own elements.
-      // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6493-L6511
+      // https://tc39.es/ecma262/#sec-createarrayfromlist
       var single = localeString(locales)
       if (single !== undefined) return [canonicalTag(single)]
       var list = toObject(locales)
       // CanonicalizeLocaleList 5: LengthOfArrayLike reads/coerces length once,
       // then ToLength truncates and clamps to 2^53 - 1. Unary + rejects BigInt.
-      // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6513-L6526
-      // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L5719-L5734
+      // https://tc39.es/ecma262/#sec-lengthofarraylike
+      // https://tc39.es/ecma262/#sec-tolength
       var length = +list.length
       var len =
         length !== length || length <= 0
@@ -102,8 +132,8 @@
       // Steps 6–7, 7.d: start at zero, visit in order, increment after each entry.
       for (var k = 0; k < len; k++) {
         // Steps 7.a–c.i: numeric keys become strings; HasProperty precedes Get.
-        // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6360-L6375
-        // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6185-L6201
+        // https://tc39.es/ecma262/#sec-hasproperty
+        // https://tc39.es/ecma262/#sec-get-o-p
         if (!(k in list)) continue
         var value = list[k]
         var type = typeof value
@@ -115,9 +145,9 @@
           throw new TypeErrorIntrinsic(
             'Locale list entries must be strings or objects'
           )
-        // Steps 7.c.iii–iv.1: Locale tag, otherwise string-hint ToString.
+        // Steps 7.c.iii–iv: Locale tag, otherwise string-hint ToString.
         // Conversion errors propagate; primitive symbols failed the type check.
-        // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L5653-L5677
+        // https://tc39.es/ecma262/#sec-tostring
         var tag = localeString(value)
         if (tag === undefined) tag = toString(value)
         // CanonicalizeLocaleList 7.c.v–vi: Rust validates, then canonicalizes.
@@ -132,7 +162,7 @@
         }
         // Intl.getCanonicalLocales 2: fuse CreateArrayFromList with append.
         // Own data properties bypass push; null-prototype descriptors ignore get/set poisoning.
-        // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L6493-L6511
+        // https://tc39.es/ecma262/#sec-createarrayfromlist
         if (!duplicate)
           defineProperty(result, result.length, {
             __proto__: null,
@@ -147,8 +177,20 @@
     },
   }.getCanonicalLocales
 
-  // Standard method attributes: writable, configurable, non-enumerable.
-  // https://github.com/tc39/ecma262/blob/40ce6f206b5669e69bf010a38267ae24a2843404/spec.html#L30329
+  defineProperty(getCanonicalLocales, '__localeBrandRegistry', {
+    __proto__: null,
+    value: registry,
+  })
+  defineProperty(getCanonicalLocales, '__addLocaleBrandReader', {
+    __proto__: null,
+    value: addLocaleBrandReader,
+  })
+  defineProperty(getCanonicalLocales, '__readLocaleTag', {
+    __proto__: null,
+    value: localeString,
+  })
+  // ECMA-402 §8.3.1 and ECMA-262 built-in property attributes.
+  // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
   defineProperty(intl, 'getCanonicalLocales', {
     __proto__: null,
     value: getCanonicalLocales,

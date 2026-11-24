@@ -1,34 +1,20 @@
-import {LookupSupportedLocales} from '@formatjs/intl-localematcher'
-import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
+import {FilterLocales} from '@formatjs/intl-localematcher'
+import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 
-/**
- * https://tc39.es/ecma402/#sec-supportedlocales
- * @param availableLocales
- * @param requestedLocales
- * @param options
- */
+// ECMA-402 §9.2.9 steps 1–2 coerce options and default to best fit.
+// https://tc39.es/ecma402/#sec-filterlocales
 export function SupportedLocales(
   availableLocales: Set<string>,
   requestedLocales: string[],
   options?: {localeMatcher?: 'best fit' | 'lookup'}
 ): string[] {
-  let matcher: 'best fit' | 'lookup' = 'best fit'
-  if (options !== undefined) {
-    options = ToObject(options)
-    matcher = GetOption(
-      options,
-      'localeMatcher',
-      'string',
-      ['lookup', 'best fit'],
-      'best fit'
-    ) as 'best fit'
-  }
-  if (matcher === 'best fit') {
-    return LookupSupportedLocales(
-      Array.from(availableLocales),
-      requestedLocales
-    )
-  }
-  return LookupSupportedLocales(Array.from(availableLocales), requestedLocales)
+  const matcher = GetOption(
+    CoerceOptionsToObject(options),
+    'localeMatcher',
+    'string',
+    ['lookup', 'best fit'],
+    'best fit' as const
+  )
+  return FilterLocales(availableLocales, requestedLocales, matcher, true)
 }

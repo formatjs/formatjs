@@ -14,7 +14,6 @@ function main(args: Args) {
   // primary identifiers include non-continental zones. DateTimeFormat's
   // transition-file list omits these fixed-offset Zone records from etcetera.
   // https://tc39.es/ecma402/#sec-availableprimarytimezoneidentifiers
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locales-currencies-tz.html#L338-L340
   for (const line of readFileSync(args.source, 'utf8').split(/\r?\n/)) {
     const [kind, name] = line.trim().split(/\s+/)
     if (kind === 'Zone') timezones.add(name)

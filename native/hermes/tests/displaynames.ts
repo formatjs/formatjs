@@ -40,6 +40,73 @@ throws(
 )
 Native.__addLocaleData(fixtures.packs[0])
 TypeScriptDisplayNames.__addLocaleData(fixtures.tsData[0])
+for (const Constructor of [Native, TypeScriptDisplayNames]) {
+  const names = new Constructor('en', {
+    type: 'language',
+    languageDisplay: 'standard',
+  })
+  const expected = names.of('en-US')
+  const create = Object.create
+  const lastIndex = Object.getOwnPropertyDescriptor(String.prototype, '9')
+  let actual: string | undefined
+  try {
+    actual = names.of({
+      toString() {
+        Object.create = () => {
+          throw new Error('DisplayNames called public Object.create')
+        }
+        Object.defineProperty(String.prototype, '9', {
+          configurable: true,
+          get() {
+            throw new Error('DisplayNames read past its locale pattern')
+          },
+        })
+        return 'en-US'
+      },
+    })
+  } finally {
+    Object.create = create
+    if (lastIndex) {
+      Object.defineProperty(String.prototype, '9', lastIndex)
+    } else {
+      Reflect.deleteProperty(String.prototype, '9')
+    }
+  }
+  equal(actual, expected, 'code coercion cannot intercept field lookup')
+}
+const originalMatcher = Object.getOwnPropertyDescriptor(
+  Number.prototype,
+  'localeMatcher'
+)
+let matcherReads = 0
+try {
+  Object.defineProperty(Number.prototype, 'localeMatcher', {
+    configurable: true,
+    get() {
+      matcherReads++
+      return 'lookup'
+    },
+  })
+  for (const Constructor of [Native, TypeScriptDisplayNames]) {
+    const before = matcherReads
+    throws(
+      () => new Constructor('en', 1),
+      TypeError,
+      'constructor rejects primitive options before reading localeMatcher'
+    )
+    equal(matcherReads, before, 'primitive constructor options stay unboxed')
+    equal(Constructor.supportedLocalesOf('en', 1), ['en'], 'locale filtering')
+    equal(
+      matcherReads,
+      before + 1,
+      'locale filtering coerces primitive options'
+    )
+  }
+} finally {
+  if (originalMatcher)
+    Object.defineProperty(Number.prototype, 'localeMatcher', originalMatcher)
+  else Reflect.deleteProperty(Number.prototype, 'localeMatcher')
+}
 const existing = new Native('en', {type: 'language'})
 equal(existing.of('en'), 'English', 'initial English pack')
 equal(Native.supportedLocalesOf('fr'), [], 'French stays unloaded')

@@ -155,6 +155,7 @@ std::unique_ptr<DateTimeFormatInstallation> installDateTimeFormat(jsi::Runtime &
   using State = DateTimeFormatInstallation::State;
   auto state = std::make_shared<State>(runtime);
   jsi::Object bridge(runtime);
+  bridge.setProperty(runtime, "fallbackSymbol", hermes_bridge::intlFallbackSymbol(runtime));
   auto add = [&](const char *name, size_t arity, State::Operation operation) {
     bridge.setProperty(runtime, name, State::bind(runtime, name, arity, state, operation));
   };
@@ -170,9 +171,20 @@ std::unique_ptr<DateTimeFormatInstallation> installDateTimeFormat(jsi::Runtime &
     auto status = formatjs_datetime_registry_info(state.registry.get(), &bytes.value);
     return state.result(status, bytes);
   });
+  add("nativeCalendars", 0, [](State &state, jsi::Runtime &, const jsi::Value *, size_t) -> jsi::Value {
+    Bytes bytes;
+    auto status = formatjs_datetime_registry_calendars(state.registry.get(), &bytes.value);
+    return state.result(status, bytes);
+  });
   add("nativeDefaultZone", 1, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 0);
     return state.status(formatjs_datetime_registry_zone(state.registry.get(), bytesOf(data), data.size()));
+  });
+  add("nativeHasZone", 1, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
+    auto name = stringArgument(rt, args, count, 0);
+    auto status = formatjs_datetime_registry_has_zone(state.registry.get(), bytesOf(name), name.size());
+    if (status == 0 || status == 1) return jsi::Value(status == 0);
+    return state.status(status);
   });
   add("nativeLoadCalendar", 1, [](State &state, jsi::Runtime &rt, const jsi::Value *args, size_t count) -> jsi::Value {
     auto data = stringArgument(rt, args, count, 0);

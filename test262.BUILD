@@ -33,6 +33,29 @@ copy_to_bin(
     ],
 )
 
+LOCALE_METHOD_SUITES = [
+    ("date-locale", "Date"),
+    ("number-locale", "Number"),
+    ("bigint-locale", "BigInt"),
+]
+
+[
+    filegroup(
+        name = "test262-" + name,
+        srcs = glob(["test/intl402/" + suite + "/**/*.js"]),
+    )
+    for name, suite in LOCALE_METHOD_SUITES
+]
+
+[
+    copy_to_bin(
+        name = "test262-" + name + "-copy",
+        srcs = [":test262-" + name],
+        visibility = ["@//tools/test262:__pkg__"],
+    )
+    for name, _ in LOCALE_METHOD_SUITES
+]
+
 filegroup(
     name = "test262-displaynames",
     srcs = glob(["test/intl402/DisplayNames/**/*.js"]),

@@ -9,6 +9,7 @@ style = "both"
 [export.rename]
 "ListRegistry" = "FormatjsListRegistry"
 "ListHandle" = "FormatjsListHandle"
+"ListSnapshot" = "FormatjsListSnapshot"
 "ListBytes" = "FormatjsListBytes"
 "ListSlice" = "FormatjsListSlice"
 "ListUnits" = "FormatjsListUnits"

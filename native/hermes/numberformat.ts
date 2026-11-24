@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-expressions -- Hermes evaluates this factory.
 ;(function (native: {
+  fallbackSymbol: symbol
   nativeLoad: (pack: string) => number
   nativeUnits: (request: string) => number
   nativeInfo: () => string | number
@@ -10,6 +11,7 @@
 }) {
   'use strict'
   const {
+    fallbackSymbol,
     nativeLoad,
     nativeUnits,
     nativeInfo,
@@ -25,7 +27,6 @@
   const objectPrototype = Object.prototype
   const own = Object.prototype.hasOwnProperty
   const isPrototypeOf = Object.prototype.isPrototypeOf
-  const legacyConstructedSymbol = Symbol('IntlLegacyConstructedSymbol')
   const floor = Math.floor
   const parse = JSON.parse
   const stringify = JSON.stringify
@@ -34,6 +35,9 @@
   const indexOf = String.prototype.indexOf
   const slice = String.prototype.slice
   const numberValueOf = Number.prototype.valueOf
+  const bigIntPrototype =
+    typeof BigInt === 'function' ? BigInt.prototype : undefined
+  const bigIntValueOf = bigIntPrototype?.valueOf
   const ProxyConstructor = Proxy
   const SetConstructor = Set
   const setAdd = Set.prototype.add
@@ -90,6 +94,8 @@
     if (value === null) throw new BadReceiver('options must not be null')
     return object(value)
   }
+  // ECMA-402 §9.2.11 reads the property before coercing or applying a default.
+  // https://tc39.es/ecma402/#sec-getoption
   function option(
     opts: any,
     name: string,
@@ -104,6 +110,9 @@
       if (text === choices[index]) return text
     throw new BadOption('Invalid Intl.NumberFormat option: ' + name)
   }
+  // ECMA-402 §§9.2.13–14: callers read the option, then coerce, bound, and floor it.
+  // https://tc39.es/ecma402/#sec-defaultnumberoption
+  // https://tc39.es/ecma402/#sec-getnumberoption
   function number(
     value: unknown,
     minimum: number,
@@ -169,9 +178,10 @@
   }
   function primitive(value: any): any {
     if (!isObject(value)) return value
-    // ToIntlMathematicalValue 1 delegates ToPrimitive with hint number. Read
+    // ECMA-402 §16.5.15 step 1 delegates ToPrimitive with hint number. Read
     // @@toPrimitive once, then valueOf/toString only when no exotic hook exists.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1652
+    // https://tc39.es/ecma402/#sec-tointlmathematicalvalue
+    // https://tc39.es/ecma262/#sec-toprimitive
     const exotic = value[primitiveKey]
     if (exotic !== undefined && exotic !== null) {
       if (typeof exotic !== 'function')
@@ -198,14 +208,14 @@
     const prim = primitive(value)
     // Steps 2–4: BigInt stays exact; Symbol must throw outside numeric-string
     // parsing. Primitive Numbers use their intrinsic decimal representation.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1653-L1659
+    // https://tc39.es/ecma402/#sec-tointlmathematicalvalue
     if (typeof prim === 'bigint')
       return {text: `${prim}`, bigint: true, string: false}
     if (typeof prim === 'symbol')
       throw new BadReceiver('Cannot convert Symbol to number')
     const numeric = +prim
-    // Keep valid numeric strings, including underflow/overflow source precision.
-    // Malformed UTF-16 never crosses the native boundary.
+    // ECMA-402 §16.5.14: Rust evaluates valid numeric strings at source precision.
+    // https://tc39.es/ecma402/#sec-runtime-semantics-stringintlmv
     if (typeof prim === 'string' && numeric === numeric)
       return {text: prim, bigint: false, string: true}
     return {
@@ -215,9 +225,14 @@
     }
   }
   const metadata = decoded(nativeInfo())
+  // ECMA-402 §6.6.2 tests single IDs against the sanctioned set.
+  // https://tc39.es/ecma402/#sec-issanctionedsingleunitidentifier
   const units = create(null)
   for (let index = 0; index < metadata.units.length; index++)
     units[metadata.units[index]] = true
+  // ECMA-402 §6.6.1 allows a single ID or exactly two IDs split at "-per-".
+  // https://tc39.es/ecma402/#sec-iswellformedunitidentifier
+  // https://tc39.es/ecma402/#sec-string-split-to-list
   function validUnit(unit: string): boolean {
     if (units[unit] === true) return true
     const position = apply(indexOf, unit, ['-per-']) as number
@@ -258,9 +273,9 @@
     optionsInput: unknown,
     newTarget: any
   ): object {
-    // OrdinaryCreateFromConstructor precedes locale and option coercion.
+    // ECMA-402 §16.1.1: allocate before locale and option coercion.
     // The construct trap prevents Hermes from reading the prototype twice.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L20-L24
+    // https://tc39.es/ecma402/#sec-intl.numberformat
     const requestedPrototype = newTarget.prototype
     const receiver = create(
       isObject(requestedPrototype) ? requestedPrototype : prototype
@@ -295,6 +310,8 @@
     if (typeof resolved === 'number') decoded(resolved)
     const seed = resolved as object
     const values: Values = create(null)
+    // ECMA-402 §16.1.3 reads style, currency, and unit options in order.
+    // https://tc39.es/ecma402/#sec-setnumberformatunitoptions
     const style = (values.style = option(
       opts,
       'style',
@@ -302,6 +319,8 @@
       'decimal'
     ))
     let currency = option(opts, 'currency', undefined, undefined)
+    // ECMA-402 §6.3.1 requires exactly three ASCII letters.
+    // https://tc39.es/ecma402/#sec-iswellformedcurrencycode
     if (currency !== undefined) {
       if (currency.length !== 3) throw new BadOption('Invalid currency')
       for (let index = 0; index < 3; index++) {
@@ -343,8 +362,8 @@
       ['standard', 'scientific', 'engineering', 'compact'],
       'standard'
     ))
-    // Raw precision values are read now, coerced only when their branch is active.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L139
+    // ECMA-402 §16.1.2 reads precision values, then coerces active branches.
+    // https://tc39.es/ecma402/#sec-setnumberformatdigitoptions
     values.minimumIntegerDigits = number(opts.minimumIntegerDigits, 1, 21, 1)
     const minFraction = opts.minimumFractionDigits,
       maxFraction = opts.maximumFractionDigits
@@ -419,6 +438,8 @@
       ['short', 'long'],
       'short'
     )
+    // ECMA-402 §9.2.12 tests booleans before coercing legacy strings.
+    // https://tc39.es/ecma402/#sec-getbooleanorstringnumberformatoption
     const grouping = opts.useGrouping
     const defaultGrouping = notation === 'compact' ? 'min2' : 'auto'
     if (grouping === undefined) values.useGrouping = defaultGrouping
@@ -438,6 +459,8 @@
       ['auto', 'never', 'always', 'exceptZero', 'negative'],
       'auto'
     )
+    // ECMA-402 §16.4: the handle owns resolved state and the wrapper caches [[BoundFormat]].
+    // https://tc39.es/ecma402/#sec-properties-of-intl-numberformat-instances
     const value = create(null) as State
     value.handle = configured(seed, values)
     value.bound = undefined
@@ -457,13 +480,16 @@
       descriptor.writable = false
       descriptor.enumerable = false
       descriptor.configurable = false
-      define(this, legacyConstructedSymbol, descriptor)
+      define(this, fallbackSymbol, descriptor)
       return this
     }
     return receiver
   }
   const prototype = NumberFormat.prototype
   NumberFormat = new ProxyConstructor(NumberFormat, {
+    // The private proxy handler has no inherited traps.
+    // https://tc39.es/ecma262/#sec-proxy-object-internal-methods-and-internal-slots-get-p-receiver
+    __proto__: null,
     construct(_target, args, newTarget): object {
       return initialize(
         args.length > 0 ? args[0] : undefined,
@@ -471,17 +497,19 @@
         newTarget
       )
     },
-  })
+  } as ProxyHandler<Function>)
   function unwrap(receiver: any): State {
     // https://tc39.es/ecma402/#sec-unwrapnumberformat
     if (!isObject(receiver)) throw new BadReceiver('Expected an object')
     const value = apply(getSlot, slots, [receiver]) as State | undefined
     if (value) return value
     if (apply(isPrototypeOf, prototype, [receiver])) {
-      return state(receiver[legacyConstructedSymbol])
+      return state(receiver[fallbackSymbol])
     }
     return state(receiver)
   }
+  // ECMA-402 §16.3.1 links the prototype to the installed constructor.
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.constructor
   property(prototype, 'constructor', NumberFormat)
   property(NumberFormat, 'name', 'NumberFormat', false, false)
   function numeric(value: {
@@ -499,12 +527,22 @@
       '}'
     )
   }
+  function formatNumber(handle: object, input: unknown): string {
+    return decoded(
+      nativeQuery(
+        handle,
+        '{"method":"format","value":' + numeric(mathematical(input)) + '}'
+      )
+    )
+  }
   function range(
     receiver: unknown,
     start: unknown,
     end: unknown,
     method: string
   ): any {
+    // ECMA-402 §§16.3.4–5 steps 3–5 coerce both endpoints before checking NaN.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
     const handle = state(receiver).handle
     if (start === undefined || end === undefined)
       throw new BadReceiver('Range endpoints must be defined')
@@ -524,19 +562,31 @@
     )
   }
   const methods = {
+    // ECMA-402 §16.2.2 canonicalizes locales before reading the matcher.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.supportedlocalesof
     supportedLocalesOf(
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
-      option(
+      const matcher = option(
         options(optionsInput),
         'localeMatcher',
         ['lookup', 'best fit'],
         'best fit'
       )
-      return decoded(nativeSupported('{"locales":' + requested + '}'))
+      return decoded(
+        nativeSupported(
+          '{"locales":' +
+            requested +
+            ',"lookup":' +
+            (matcher === 'lookup') +
+            '}'
+        )
+      )
     },
+    // ECMA-402 §16.3.6 checks the receiver before coercion.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formattoparts
     formatToParts(this: unknown, value: unknown): object[] {
       const handle = state(this).handle
       return decoded(
@@ -548,12 +598,18 @@
         )
       )
     },
+    // ECMA-402 §16.3.4 delegates receiver validation and endpoint coercion.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrange
     formatRange(this: unknown, start: unknown, end: unknown): string {
       return range(this, start, end, 'formatRange')
     },
+    // ECMA-402 §16.3.5 uses the same checks and returns source-tagged parts.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.formatrangetoparts
     formatRangeToParts(this: unknown, start: unknown, end: unknown): object[] {
       return range(this, start, end, 'formatRangeToParts')
     },
+    // ECMA-402 §16.3.2 defines active slots in table order on a fresh object.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.resolvedoptions
     resolvedOptions(this: unknown): object {
       const values = decoded(
         nativeQuery(unwrap(this).handle, '{"method":"resolvedOptions"}')
@@ -589,16 +645,13 @@
       }
       return result
     },
+    // ECMA-402 §16.3.3 validates the receiver and caches the bound formatter.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.format
     getFormat(this: unknown): (value: unknown) => string {
       const value = unwrap(this)
       if (value.bound === undefined) {
         const format = (input: unknown): string =>
-          decoded(
-            nativeQuery(
-              value.handle,
-              '{"method":"format","value":' + numeric(mathematical(input)) + '}'
-            )
-          )
+          formatNumber(value.handle, input)
         property(format, 'name', '', false, false)
         value.bound = format
       }
@@ -662,18 +715,35 @@
   available.get = methods.getAvailableLocales
   available.configurable = true
   define(NumberFormat, 'availableLocales', available)
+  // ECMA-402 §16.3.7 https://tc39.es/ecma402/#sec-intl.numberformat.prototype-%symbol.tostringtag%
   property(prototype, Symbol.toStringTag, 'Intl.NumberFormat', false, false)
   property(NumberFormat, 'polyfilled', true)
+  // ECMA-402 §16.2.1 fixes the constructor's prototype property.
+  // https://tc39.es/ecma402/#sec-intl.numberformat.prototype
   const prototypeDescriptor = create(null)
   prototypeDescriptor.writable = false
   define(NumberFormat, 'prototype', prototypeDescriptor)
   property(intl, 'NumberFormat', NumberFormat)
-  property(
-    Number.prototype,
-    'toLocaleString',
-    function toLocaleString(this: unknown) {
+  const numberMethods = {
+    // ECMA-402 §20.2.1 steps 1–3 validate the receiver, then call FormatNumeric.
+    // https://tc39.es/ecma402/#sup-number.prototype.tolocalestring
+    toLocaleString(this: unknown) {
       const value = apply(numberValueOf, this, [])
-      return new NumberFormat(arguments[0], arguments[1]).format(value)
-    }
-  )
+      const formatter = new NumberFormat(arguments[0], arguments[1])
+      return formatNumber(state(formatter).handle, value)
+    },
+  }
+  const bigIntMethods = {
+    // ECMA-402 §20.3.1 steps 1–3 format the BigInt mathematical value exactly.
+    // https://tc39.es/ecma402/#sup-bigint.prototype.tolocalestring
+    toLocaleString(this: unknown) {
+      const value = apply(bigIntValueOf!, this, [])
+      const formatter = new NumberFormat(arguments[0], arguments[1])
+      return formatNumber(state(formatter).handle, value)
+    },
+  }
+  property(Number.prototype, 'toLocaleString', numberMethods.toLocaleString)
+  if (bigIntPrototype) {
+    property(bigIntPrototype, 'toLocaleString', bigIntMethods.toLocaleString)
+  }
 })

@@ -1,62 +1,96 @@
-import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
+import {supportedEntries} from '#packages/intl-supportedvaluesof/supported-entries.js'
+import {
+  arraySome,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {
+  getCurrencyDisplayNamesProbe,
+  getNumberFormatProbe,
+} from '#packages/intl-supportedvaluesof/memoize.js'
 import type {Currency} from '@formatjs_generated/cldr.supported-values/currencies.js'
-import {currencies} from '@formatjs_generated/cldr.supported-values/currencies.js'
+import {
+  currencies,
+  currencyCandidateLocales,
+} from '@formatjs_generated/cldr.supported-values/currencies.js'
+const apply = Reflect.apply
+const createObject = Object.create
+const stringIndexOf = String.prototype.indexOf
+const stringSlice = String.prototype.slice
+const english = ['en']
 
-/**
- * Implementation: Tests if a currency is supported by attempting to create
- * a NumberFormat with that currency and verifying it was accepted.
- *
- * CLDR Data: Candidate values come from CLDR currency codes (ISO 4217)
- */
-function isSupportedCurrency(currency: Currency): boolean {
-  try {
-    // Always use 'en' for testing
-    const numberFormat = createMemoizedNumberFormat('en', {
-      style: 'currency',
-      currencyDisplay: 'name',
-      currency,
-    })
-
-    const format = numberFormat.format(123)
-
-    if (
-      format.substring(0, 3) !== currency &&
-      format.substring(format.length - 3) !== currency
-    ) {
-      return true
-    }
-  } catch {}
-
-  return false
-}
-
-/**
- * ECMA-402 Spec: Returns supported currency identifiers
- * ECMA-402 Spec: Results must be sorted lexicographically
- *
- * Implementation: Filters CLDR list against actual runtime support
- */
+// ECMA-402 §8.3.2 step 4 returns available canonical currency codes.
+// https://tc39.es/ecma402/#sec-availablecanonicalcurrencies
 export function getSupportedCurrencies(): Currency[] {
+  const probe = getNumberFormatProbe()
+  if (!probe || (!probe.formatToParts && !probe.format)) return []
+  const {create, format, formatToParts} = probe
+  const namesProbe = getCurrencyDisplayNamesProbe()
+  if (namesProbe && !namesProbe.hasName) return []
+  const namesByLocale = createObject(null) as Record<
+    string,
+    Intl.DisplayNames | null | undefined
+  >
   const ATOZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  const supportedCurrencies: Currency[] = []
+  const candidates: Currency[] = []
 
-  for (const currency of currencies) {
+  for (let index = 0; index < currencies.length; index++) {
+    const currency = currencies[index]
     if (currency.length === 3) {
-      if (isSupportedCurrency(currency)) {
-        supportedCurrencies.push(currency)
-      }
+      setDataProperty(candidates, `${candidates.length}`, currency)
     } else if (currency.length === 5 && currency[3] === '~') {
-      const start = ATOZ.indexOf(currency[2])
-      const end = ATOZ.indexOf(currency[4])
-
+      const start = apply(stringIndexOf, ATOZ, [currency[2]])
+      const end = apply(stringIndexOf, ATOZ, [currency[4]])
+      const prefix = currency[0] + currency[1]
       for (let i = start; i <= end; i++) {
-        const currentCurrency = (currency.substring(0, 2) + ATOZ[i]) as Currency
-        if (isSupportedCurrency(currentCurrency)) {
-          supportedCurrencies.push(currentCurrency)
-        }
+        setDataProperty(candidates, `${candidates.length}`, prefix + ATOZ[i])
       }
     }
   }
 
-  return supportedCurrencies.sort()
+  return supportedEntries(candidates, currency => {
+    const locales = HasOwnProperty(currencyCandidateLocales, currency)
+      ? currencyCandidateLocales[currency]
+      : english
+    return arraySome(locales, locale => {
+      try {
+        // ECMA-402 §6.4 requires support in both services. On hosts without
+        // DisplayNames, the NumberFormat probe supplies the available evidence.
+        if (namesProbe) {
+          let names = namesByLocale[locale]
+          if (names === undefined) {
+            namesByLocale[locale] = null
+            names = namesByLocale[locale] = namesProbe.create(locale)
+          }
+          if (!names || !namesProbe.hasName?.(names, currency)) return false
+        }
+        // The probe stands in for private locale data in §8.3.2 step 4.
+        const options = {
+          __proto__: null,
+          style: 'currency',
+          currencyDisplay: 'name',
+          currency,
+        } as const
+        const formatter = create(locale, options)
+        // Currency parts distinguish a localized name from an ISO code fallback
+        // even when the locale's number pattern adds literals around it.
+        if (formatToParts) {
+          const parts = formatToParts(formatter, 123)
+          for (let i = 0; i < parts.length; i++) {
+            const part = parts[i]
+            if (part.type === 'currency' && part.value !== currency) return true
+          }
+          return false
+        }
+        const text = format!(formatter, 123)
+        // Older hosts expose only the complete formatted string.
+        return (
+          apply(stringSlice, text, [0, 3]) !== currency &&
+          apply(stringSlice, text, [-3]) !== currency
+        )
+      } catch {
+        return false
+      }
+    })
+  })
 }

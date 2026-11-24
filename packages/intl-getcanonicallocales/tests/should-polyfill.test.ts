@@ -27,6 +27,7 @@ describe('native canonicalization detection', () => {
     ['unknown yes values', 'en-u-aa-yes', 'en-u-aa'],
     ['boolean aliases', 'en-u-kn-yes', 'en-u-kn-yes'],
     ['private-use tags', 'und-x-private', 'x-private'],
+    ['alphanumeric variants', 'en-atom1', 'en-Atom'],
   ])(
     'replaces native functions that mishandle %s',
     async (_, input, output) => {
@@ -42,8 +43,15 @@ describe('native canonicalization detection', () => {
           'en-u-fw-yes',
           'en-u-kn-yes',
           'und-x-private',
+          'EN-ATOM1',
         ])
-      ).toEqual(['en-u-aa-yes', 'en-u-fw-yes', 'en-u-kn', 'und-x-private'])
+      ).toEqual([
+        'en-u-aa-yes',
+        'en-u-fw-yes',
+        'en-u-kn',
+        'und-x-private',
+        'en-atom1',
+      ])
     }
   )
 

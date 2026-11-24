@@ -115,6 +115,38 @@ fn replaced_provider_destructors_run_outside_runtime_borrows() {
 }
 
 #[test]
+fn calendar_availability_tracks_providers_and_patterns_across_locales() {
+    use formatjs_intl_datetimeformat::Runtime;
+    use serde_json::{Value, json};
+
+    let runtime = Runtime::default();
+    let english = include_str!(env!("FORMATJS_DATETIME_EN"));
+    let mut legacy: Value = serde_json::from_str(english).unwrap();
+    legacy["data"]["ca"] = json!(["gregory"]);
+    legacy["data"]["formats"]
+        .as_object_mut()
+        .unwrap()
+        .remove("iso8601");
+    runtime.add_locale_data(&legacy.to_string()).unwrap();
+    let mut australian = legacy;
+    australian["locale"] = json!("en-AU");
+    let base = australian.to_string();
+    let gregory = australian["data"]["formats"]["gregory"].clone();
+    australian["data"]["formats"]["japanese"] = gregory;
+    australian["data"]["ca"] = json!(["gregory", "iso8601", "japanese"]);
+    runtime.add_locale_data(&australian.to_string()).unwrap();
+    assert_eq!(runtime.available_calendars(), ["gregory", "iso8601"]);
+    runtime.register_calendar("japanese".into(), Arc::new(|_| Err(Error::InvalidDate)));
+    assert_eq!(runtime.info().unwrap().calendars, ["gregory", "iso8601"]);
+    assert_eq!(
+        runtime.available_calendars(),
+        ["gregory", "iso8601", "japanese"]
+    );
+    runtime.add_locale_data(&base).unwrap();
+    assert_eq!(runtime.available_calendars(), ["gregory", "iso8601"]);
+}
+
+#[test]
 fn gregorian_records_preserve_signed_years_at_era_and_date_bounds() {
     let registry = CalendarRegistry::default();
     for calendar in ["gregory", "iso8601"] {

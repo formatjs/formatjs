@@ -43,18 +43,20 @@ fn lists_are_sorted_unique_and_runtime_specific() {
         .unwrap();
         assert!(!values.is_empty(), "{key:?}");
         assert!(values.windows(2).all(|pair| pair[0] < pair[1]), "{key:?}");
-        assert_eq!(
-            supported_values_of(key.as_str(), |_, _, _| None),
-            Ok(Vec::new())
-        );
+        if !matches!(key, Key::Unit | Key::NumberingSystem) {
+            assert_eq!(
+                supported_values_of(key.as_str(), |_, _, _| None),
+                Ok(Vec::new())
+            );
+        }
     }
 }
 
 #[test]
 fn aliases_and_formatter_fallbacks_are_not_advertised() {
-    for key in ["calendar", "collation", "unit"] {
+    for key in ["calendar", "collation"] {
         let values = supported_values_of(key, |_, value, _| {
-            if ["gregory", "emoji", "UTC", "acre"].contains(&value) {
+            if ["gregory", "emoji"].contains(&value) {
                 resolved(value)
             } else {
                 resolved("fallback")
@@ -109,25 +111,42 @@ fn currency_names_must_not_fall_back_to_the_code() {
         assert!(values.is_empty(), "{text}");
     }
     let values = supported_values_of("currency", |_, value, _| {
-        ["USD", "EUR"].contains(&value).then(|| Observation {
+        ["USD", "CNX", "EUR"].contains(&value).then(|| Observation {
             resolved: None,
             formatted: Some("123 currency names".to_owned()),
         })
     })
     .unwrap();
-    assert_eq!(values, ["EUR", "USD"]);
+    assert_eq!(values, ["CNX", "EUR", "USD"]);
 }
 
 #[test]
-fn numbering_systems_require_accepted_latin_or_changed_digits() {
-    let values = supported_values_of("numberingSystem", |_, value, _| {
+fn numbering_systems_exclude_candidates_that_fall_back_to_localized_digits() {
+    let required = supported_values_of("numberingSystem", |_, _, _| None).unwrap();
+    let values = supported_values_of("numberingSystem", |_, _, _| {
         Some(Observation {
-            resolved: Some(if value == "latn" { "latn" } else { "fallback" }.to_owned()),
-            formatted: Some(if value == "arab" { "١٢٣" } else { "123" }.to_owned()),
+            resolved: Some("arab".to_owned()),
+            formatted: Some("١٢٣".to_owned()),
         })
     })
     .unwrap();
-    assert_eq!(values, ["arab", "latn"]);
+    assert!(required.iter().any(|system| system == "outlined"));
+    assert_eq!(values, required);
+    let values = supported_values_of("numberingSystem", |_, value, locale| {
+        match (value, locale) {
+            ("roman", "en") | ("jpan", "ja") | ("hant", "zh-Hant") | ("hebr", "he") => {
+                resolved(value)
+            }
+            _ => None,
+        }
+    })
+    .unwrap();
+    let additional: Vec<_> = values
+        .iter()
+        .filter(|system| !required.contains(system))
+        .map(String::as_str)
+        .collect();
+    assert_eq!(additional, ["hant", "hebr", "jpan", "roman"]);
 }
 
 #[test]
@@ -180,8 +199,12 @@ fn primary_time_zones_survive_older_formatter_aliases() {
 
 #[test]
 fn callers_get_independent_owned_lists() {
-    let mut first = supported_values_of("unit", |_, value, _| resolved(value)).unwrap();
-    let second = supported_values_of("unit", |_, value, _| resolved(value)).unwrap();
+    let mut first = supported_values_of("unit", |_, _, _| {
+        panic!("unit enumeration consulted a formatter")
+    })
+    .unwrap();
+    let second = supported_values_of("unit", |_, _, _| None).unwrap();
+    assert_eq!(first, second);
     first.clear();
     assert!(!second.is_empty());
 }

@@ -2,6 +2,53 @@ import {DurationFormat} from '#packages/intl-durationformat/core.js'
 import {type DurationFormatOptions} from '#packages/intl-durationformat/index.js'
 import {test, expect} from 'vitest'
 
+test('captures digital separators before the style getter reloads locale data', () => {
+  const data = DurationFormat.localeData
+  const input = {hours: 1, minutes: 2, seconds: 3}
+  let reads = 0
+  try {
+    const formatter = new DurationFormat('en', {
+      get style() {
+        reads++
+        if (data) {
+          DurationFormat.localeData = {
+            ...data,
+            en: {...data.en!, digitalFormat: {default: '/'}},
+          }
+        }
+        return 'digital' as const
+      },
+    })
+    expect(formatter.format(input)).toBe('1:02:03')
+    expect(reads).toBe(1)
+    if (data)
+      expect(new DurationFormat('en', {style: 'digital'}).format(input)).toBe(
+        '1/02/03'
+      )
+  } finally {
+    if (data) DurationFormat.localeData = data
+  }
+})
+
+test('requires initialized slots before input coercion and retains them after prototype changes', () => {
+  const formatter = new DurationFormat('en')
+  const {format, formatToParts, resolvedOptions} = DurationFormat.prototype
+  Object.setPrototypeOf(formatter, null)
+  expect(format.call(formatter, {hours: 1})).toBe('1 hr')
+  expect(formatToParts.call(formatter, {hours: 1})[0].unit).toBe('hour')
+  expect(resolvedOptions.call(formatter).locale).toBe('en')
+
+  const impostor = Object.create(DurationFormat.prototype)
+  const duration = {
+    get hours(): number {
+      throw new Error('read invalid receiver input')
+    },
+  }
+  expect(() => format.call(impostor, duration)).toThrow(TypeError)
+  expect(() => formatToParts.call(impostor, duration)).toThrow(TypeError)
+  expect(() => resolvedOptions.call(impostor)).toThrow(TypeError)
+})
+
 test('Intl.DurationFormat resolvedOptions', function () {
   expect(new DurationFormat('en').resolvedOptions()).toEqual({
     days: 'short',
@@ -257,6 +304,34 @@ test('uses RangeError for nonintegral fields without repeated coercion', () => {
   expect(() => formatter.format({seconds} as any)).toThrow(RangeError)
   expect(calls).toBe(1)
 })
+test.each(['format', 'formatToParts'] as const)(
+  '%s checks integer coercion before later getters and record bounds after them',
+  method => {
+    const formatter = new DurationFormat('en')
+    const failure = new Error('Later duration field')
+    let reads = 0
+    const duration = {
+      days: 0.5,
+      get hours(): number {
+        reads++
+        throw failure
+      },
+    }
+    expect(() => formatter[method](duration)).toThrow(RangeError)
+    expect(reads).toBe(0)
+
+    duration.days = 2 ** 53
+    let caught: unknown
+    try {
+      formatter[method](duration)
+    } catch (error) {
+      caught = error
+    }
+    expect(caught).toBe(failure)
+    expect(reads).toBe(1)
+  }
+)
+
 test('enforces exact duration magnitude limits', () => {
   const formatter = new DurationFormat('en')
   for (const sign of [-1, 1]) {
@@ -429,6 +504,44 @@ test('zero minutes remain between displayed numeric hours and seconds', () => {
   ).toBe('01')
 })
 
+test.each(['digital', 'long'] as const)(
+  '%s separators have no unit and ignore inherited unit getters',
+  style => {
+    const formatter = new DurationFormat('en', {style})
+    const duration = {hours: 1, seconds: 2}
+    const expected = formatter.formatToParts(duration)
+    expect(
+      expected.some(
+        part => part.type === 'literal' && !Object.hasOwn(part, 'unit')
+      )
+    ).toBe(true)
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, 'unit')
+    let actual
+    try {
+      Object.defineProperty(Object.prototype, 'unit', {
+        configurable: true,
+        get() {
+          throw new Error('Read an inherited unit on a separator')
+        },
+      })
+      actual = formatter.formatToParts(duration)
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, 'unit', original)
+      else Reflect.deleteProperty(Object.prototype, 'unit')
+    }
+    expect(actual).toEqual(expected)
+  }
+)
+
+test('only supportedLocalesOf boxes primitive options', () => {
+  for (const options of [false, 0, 0n, '', Symbol('options')]) {
+    expect(() => new DurationFormat('en', options as never)).toThrow(TypeError)
+    expect(DurationFormat.supportedLocalesOf('en', options as never)).toEqual([
+      'en',
+    ])
+  }
+})
+
 test('DurationFormat resolves numbering systems supported by NumberFormat', () => {
   const formatter = new DurationFormat('en-u-nu-arab', {
     numberingSystem: 'foobar',
@@ -506,5 +619,32 @@ test('does not observe private numeric hooks between duration field Gets', () =>
     }
     expect(error).toBe(failure)
     expect(events).toEqual(['days', 'hours'])
+  }
+})
+
+test('uses its intrinsic prototype for a same-realm primitive NewTarget prototype', () => {
+  const newTarget = function () {}
+  Object.defineProperty(newTarget, 'prototype', {value: null})
+  const instance = Reflect.construct(DurationFormat, ['en'], newTarget)
+  expect(Object.getPrototypeOf(instance)).toBe(DurationFormat.prototype)
+  expect(instance.resolvedOptions().locale).toBe('en')
+})
+
+test('keeps locale state private from getDefaultLocale', () => {
+  const property = 'getDefaultLocale'
+  const original = Object.getOwnPropertyDescriptor(DurationFormat, property)
+  try {
+    Object.defineProperty(DurationFormat, property, {
+      configurable: true,
+      get() {
+        throw new Error(`Read public ${property}`)
+      },
+    })
+    expect(
+      new DurationFormat('en', {style: 'digital'}).format({hours: 1})
+    ).toBe('1:00:00')
+  } finally {
+    if (original) Object.defineProperty(DurationFormat, property, original)
+    else Reflect.deleteProperty(DurationFormat, property)
   }
 })

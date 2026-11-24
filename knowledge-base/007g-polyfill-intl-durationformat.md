@@ -39,6 +39,7 @@ and captured formatToParts methods. Callable own data-valued replacements on the
 supplied Intl object are adopted for new instances, including polyfills installed
 after module import. Accessor replacements are skipped, retaining the previously
 captured provider. Existing instances keep their choices through first rendering.
+Clock separators are captured during locale resolution, before the style getter.
 Parts methods are captured per constructor through data descriptors, including
 inherited supplied methods. Initial providers are captured during module load;
 later constructors are captured when first selected.
@@ -63,6 +64,8 @@ Extracts time separator characters per locale and numbering system:
 - Default separator is `:` (colon)
 - Script only includes locales/systems where the separator differs from default
 - Resolves default numbering system per locale
+- TypeScript and Rust share parent and scriptless region aliases generated
+  from the same locale records.
 - Runtime locale data keeps the locale default numbering system first, and adds
   `latn` when needed for explicit `numberingSystem` overrides.
 

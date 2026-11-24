@@ -66,6 +66,8 @@ impl Mode {
             _ => return Err(Error::Range("roundingMode")),
         })
     }
+    // ECMA-402 §16.5.16 maps signed rounding modes to unsigned modes.
+    // https://tc39.es/ecma402/#sec-getunsignedroundingmode
     fn unsigned(self, negative: bool) -> UnsignedRoundingMode {
         use UnsignedRoundingMode::*;
         match self {
@@ -166,6 +168,8 @@ fn number(
 impl Digits {
     /// Rounded unsigned text, including BigInt integers beyond ICU's i16
     /// magnitude range.
+    // ECMA-402 §16.5.2 rounds the magnitude before formatting digits.
+    // https://tc39.es/ecma402/#sec-formatnumerictostring
     pub fn format_string(&self, input: &str) -> Result<String, Error> {
         let Some((integer, fraction)) = crate::mathematical::parts(input) else {
             return self.format(input).map(|value| value.formatted_string);
@@ -207,6 +211,8 @@ impl Digits {
                 || (remainder[0] == b'5' && remainder[1..].iter().any(|digit| *digit != b'0'));
             let exactly_half =
                 remainder[0] == b'5' && !remainder[1..].iter().any(|digit| *digit != b'0');
+            // ECMA-402 §16.5.17 chooses the lower or upper neighbor.
+            // https://tc39.es/ecma402/#sec-applyunsignedroundingmode
             let expand = match mode {
                 UnsignedRoundingMode::Trunc => false,
                 UnsignedRoundingMode::Expand => nonzero,
@@ -491,9 +497,9 @@ impl Digits {
             _ => unreachable!("validated increment"),
         };
         let mut result = source.clone();
-        // ToRawFixed: exact rounding at the selected increment; retain minimum
+        // ECMA-402 §16.5.8: round at the selected increment and retain minimum
         // fraction digits and report -maxFraction, independent of increment size.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1353-L1393
+        // https://tc39.es/ecma402/#sec-torawfixed
         result.round_with_mode_and_increment(-i16::from(max) + shift, mode, increment);
         let source_fraction = if result.is_zero() {
             fraction_digit_count
@@ -529,9 +535,9 @@ impl Digits {
         let position = source.nonzero_magnitude_start().saturating_sub(max - 1);
         result.round_with_mode(position, mode);
         let exponent = result.nonzero_magnitude_start();
-        // ToRawPrecision: a carry can change e; minimum precision pads zeros,
+        // ECMA-402 §16.5.7: a carry can change e. Minimum precision pads zeros,
         // and the returned rounding magnitude is e-maxPrecision+1.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1294-L1332
+        // https://tc39.es/ecma402/#sec-torawprecision
         let source_precision = if result.is_zero() {
             fraction_digit_count.saturating_add(1)
         } else {

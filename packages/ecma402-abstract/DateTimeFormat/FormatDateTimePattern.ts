@@ -9,6 +9,7 @@ import {
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
@@ -25,7 +26,10 @@ import {
   ToLocalTime,
   type ToLocalTimeImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
-import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
+import {
+  calendarLocaleData,
+  DATE_TIME_PROPS,
+} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 const apply = Reflect.apply
 const find = Array.prototype.find
@@ -37,39 +41,33 @@ const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
 const stringIndexOf = Function.prototype.call.bind(
   String.prototype.indexOf
 ) as (value: string, search: string, position?: number) => number
-const stringLastIndexOf = Function.prototype.call.bind(
-  String.prototype.lastIndexOf
-) as (value: string, search: string) => number
-const regexpExec = RegExp.prototype.exec
-const regexpReplace = RegExp.prototype[Symbol.replace]
 
-// Proposal comparison §15.6.4 steps 16.d–f: private locale text uses runtime intrinsics.
-function privatePattern(pattern: RegExp, global = false): RegExp {
-  setDataProperty(pattern, 'exec', regexpExec)
-  setDataProperty(pattern, 'flags', global ? 'g' : '')
-  setDataProperty(pattern, 'global', global)
-  setDataProperty(pattern, 'unicode', false)
-  setDataProperty(pattern, 'unicodeSets', false)
-  return pattern
+// Locale data is a set of private Records, so absent fields stay absent.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+function ownField<T extends object, K extends keyof T>(
+  record: T | undefined,
+  key: K
+): T[K] | undefined {
+  return record && HasOwnProperty(record, ToString(key))
+    ? record[key]
+    : undefined
 }
-const separatorPattern = /H+([^Hm]*)m+/
-const hourPairPattern = privatePattern(/HH/)
-const hourPattern = privatePattern(/H/)
-const minutePairPattern = privatePattern(/mm/)
-const minutePattern = privatePattern(/m/)
-const secondPairPattern = privatePattern(/ss/)
-const hourRunPattern = privatePattern(/H+/)
-const minuteRunPattern = privatePattern(/m+/)
-const secondRunPattern = privatePattern(/s+/)
-const substitutionPattern = privatePattern(/\{0\}/)
-const leftMarkPattern = privatePattern(/\u200e\u200e/g, true)
-const rightMarkPattern = privatePattern(/\u200f\u200f/g, true)
-function replacePattern(
-  value: string,
-  pattern: RegExp,
-  replacement: string | ((match: string) => string)
+
+// ECMA-402 §11.5.4 step 15.f.x.i uses the field value when its name is missing.
+// https://tc39.es/ecma402/#sec-formatdatetimepattern
+function localizedName<K extends string | number>(
+  names: {[key in K]?: string},
+  index: K,
+  value: string | number
 ): string {
-  return apply(regexpReplace, pattern, [value, replacement])
+  return ownField(names, index) ?? ToString(value)
+}
+
+function insertLocaleValue(pattern: string, value: string): string {
+  const index = stringIndexOf(pattern, '{0}')
+  return index < 0
+    ? pattern
+    : stringSlice(pattern, 0, index) + value + stringSlice(pattern, index + 3)
 }
 
 export function getDayPeriodName(
@@ -81,13 +79,17 @@ export function getDayPeriodName(
     'hour' | 'minute' | 'second' | 'fractionalSecondDigits'
   >
 ): string {
-  const timed = format?.hour !== undefined
-  const minute = timed && format.minute === undefined ? 0 : time.minute
-  const second = timed && format.second === undefined ? 0 : time.second
+  const timed = ownField(format, 'hour') !== undefined
+  const minute =
+    timed && ownField(format, 'minute') === undefined ? 0 : time.minute
+  const second =
+    timed && ownField(format, 'second') === undefined ? 0 : time.second
   const millisecond =
-    timed && format.fractionalSecondDigits === undefined ? 0 : time.millisecond
+    timed && ownField(format, 'fractionalSecondDigits') === undefined
+      ? 0
+      : time.millisecond
   const value = ((time.hour * 60 + minute) * 60 + second) * 1000 + millisecond
-  const rules = data.dayPeriodRules || []
+  const rules = ownField(data, 'dayPeriodRules') ?? []
   // Temporal comparison §15.6.8 steps 23.d.iii.1–2 use this locale policy.
   // ECMA-402 §11.5.4, step 15.d.iii selects the localized day period and width.
   // LDML variable-period rules 2-4, 8: inclusive start, exclusive end, wrap midnight.
@@ -96,34 +98,38 @@ export function getDayPeriodName(
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L1360-L1375
   const rule =
     apply(find, rules, [
-      (rule: NonNullable<typeof rules>[number]) => rule.at === value,
+      (rule: NonNullable<typeof rules>[number]) =>
+        ownField(rule, 'at') === value,
     ]) ||
     apply(find, rules, [
-      (rule: NonNullable<typeof rules>[number]) =>
-        rule.from !== undefined &&
-        rule.before !== undefined &&
-        (rule.from < rule.before
-          ? value >= rule.from && value < rule.before
-          : value >= rule.from || value < rule.before),
+      (rule: NonNullable<typeof rules>[number]) => {
+        const from = ownField(rule, 'from')
+        const before = ownField(rule, 'before')
+        return (
+          from !== undefined &&
+          before !== undefined &&
+          (from < before
+            ? value >= from && value < before
+            : value >= from || value < before)
+        )
+      },
     ])
+  const names = ownField(ownField(data, 'dayPeriods'), width)
   return (
-    (rule && data.dayPeriods?.[width][rule.name]) ||
-    (time.hour < 12 ? data.am : data.pm)
+    (rule && ownField(names, rule.name)) || (time.hour < 12 ? data.am : data.pm)
   )
 }
 
-function pad(n: number): string {
-  if (n < 10) {
-    return `0${n}`
-  }
-  return `${n}`
-}
-
+// ECMA-402 §11.5.4 step 15.e.iv uses the localized time-zone representation.
+// LDML localized GMT formats use decimal digits and distinct short/long widths.
+// https://tc39.es/ecma402/#sec-formatdatetimepattern
+// https://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Format_Terminology
 function offsetToGmtString(
   gmtFormat: string,
   hourFormat: string,
   offsetInMs: number,
-  style: 'long' | 'short'
+  style: 'long' | 'short',
+  {nf, nf2}: Pick<NumberFormatters, 'nf' | 'nf2'>
 ) {
   const absoluteSeconds = mathAbs(mathTrunc(offsetInMs / 1000))
   const seconds = absoluteSeconds % 60
@@ -144,41 +150,50 @@ function offsetToGmtString(
           secondSeparator < 0 ? undefined : secondSeparator
         )
 
-  let offsetStr = ''
-  let pattern = (offsetInMs < 0 ? negativePattern : positivePattern)!
-  if (seconds) {
-    const separator = apply(regexpExec, separatorPattern, [pattern])?.[1] ?? ':'
-    pattern = replacePattern(
-      pattern,
-      minuteRunPattern,
-      match => match + separator + 'ss'
-    )
-  }
-  if (style === 'long') {
-    offsetStr = replacePattern(pattern, hourPairPattern, pad(hours))
-    offsetStr = replacePattern(offsetStr, hourPattern, `${hours}`)
-    offsetStr = replacePattern(offsetStr, minutePairPattern, pad(mins))
-    offsetStr = replacePattern(offsetStr, minutePattern, `${mins}`)
-    offsetStr = replacePattern(offsetStr, secondPairPattern, pad(seconds))
+  const pattern = offsetInMs < 0 ? negativePattern : positivePattern
+  if (!pattern || stringIndexOf(gmtFormat, '{0}') < 0) return undefined
+  const hourStart = stringIndexOf(pattern, 'H')
+  if (hourStart < 0) return undefined
+  let hourEnd = hourStart + 1
+  while (hourEnd < pattern.length && pattern[hourEnd] === 'H') hourEnd++
+  const minuteStart = stringIndexOf(pattern, 'm')
+  if (
+    minuteStart < 0
+      ? style === 'long' || mins !== 0 || seconds !== 0
+      : minuteStart < hourEnd
+  )
+    return undefined
+  const formatHours = style === 'long' ? nf2 : nf
+  let offset = stringSlice(pattern, 0, hourStart) + formatHours(hours)
+  if (minuteStart < 0) {
+    offset += stringSlice(pattern, hourEnd)
   } else {
-    if (!mins && !seconds) {
-      const start = stringIndexOf(pattern, 'm')
-      if (start >= 0) {
-        let end = start
-        while (pattern[end] === 'm') end++
-        pattern =
-          stringSlice(pattern, 0, stringLastIndexOf(pattern, 'H') + 1) +
-          stringSlice(pattern, end)
-      }
-    }
-    offsetStr = replacePattern(pattern, hourRunPattern, `${hours}`)
-    offsetStr = replacePattern(offsetStr, minuteRunPattern, pad(mins))
-    offsetStr = replacePattern(offsetStr, secondRunPattern, pad(seconds))
+    let minuteEnd = minuteStart + 1
+    while (minuteEnd < pattern.length && pattern[minuteEnd] === 'm') minuteEnd++
+    const separator = stringSlice(pattern, hourEnd, minuteStart)
+    if (style === 'long' || mins || seconds) offset += separator + nf2(mins)
+    if (seconds) offset += separator + nf2(seconds)
+    offset += stringSlice(pattern, minuteEnd)
   }
 
-  let result = replacePattern(gmtFormat, substitutionPattern, offsetStr)
-  result = replacePattern(result, leftMarkPattern, '\u200e')
-  return replacePattern(result, rightMarkPattern, '\u200f')
+  const result = insertLocaleValue(gmtFormat, offset)
+  if (
+    stringIndexOf(result, '\u200e') < 0 &&
+    stringIndexOf(result, '\u200f') < 0
+  )
+    return result
+  let normalized = ''
+  for (let index = 0; index < result.length; index++) {
+    const char = result[index]
+    normalized += char
+    if (
+      (char === '\u200e' || char === '\u200f') &&
+      index + 1 < result.length &&
+      result[index + 1] === char
+    )
+      index++
+  }
+  return normalized
 }
 
 // ECMA-402 §11.5.4, step 15.f.ix: preserve the final two code points.
@@ -324,48 +339,49 @@ export function FormatDateTimePattern(
   patternParts: IntlDateTimeFormatPart[],
   epochNanoseconds: bigint,
   isPlain: boolean,
-  {
+  implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
+): IntlDateTimeFormatPart[] {
+  /** IMPL START */
+  const {
     getInternalSlots,
     localeData,
     getDefaultTimeZone,
     tzData,
     calendarData,
-    rangeFormatOptions,
-  }: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
-): IntlDateTimeFormatPart[] {
-  /** IMPL START */
+  } = implDetails
   const internalSlots = getInternalSlots(dtf)
-  const format = rangeFormatOptions?.format
+  // ECMA-402 §11.5.4 formats the selected record. §11.5.8 step 19.e
+  // supplies the range record, which exists only for range formatting.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
+  // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+  const rangeFormatOptions = ownField(implDetails, 'rangeFormatOptions')
+  const format = ownField(rangeFormatOptions, 'format')
   const dataLocale = internalSlots.dataLocale
-  const rootLocaleData = localeData[dataLocale]
-  const dataLocaleData =
-    rootLocaleData.calendarData?.[internalSlots.calendar!] ?? rootLocaleData
+  const dataLocaleData = calendarLocaleData(
+    localeData[dataLocale],
+    internalSlots.calendar
+  )
   /** IMPL END */
 
   // ECMA-402 §11.5.4, steps 1-11 use identical NumberFormat options for
   // every call with this profile. Retain the existing memoized formatters.
   // https://tc39.es/ecma402/#sec-formatdatetimepattern
   // Optional precision comes from own fields of the private format records.
-  const rangeDigits =
-    format && HasOwnProperty(format, 'fractionalSecondDigits')
-      ? format.fractionalSecondDigits
-      : undefined
   const fractionalSecondDigits =
-    rangeDigits ??
-    (HasOwnProperty(internalSlots, 'fractionalSecondDigits')
-      ? internalSlots.fractionalSecondDigits
-      : undefined)
+    ownField(format, 'fractionalSecondDigits') ??
+    ownField(internalSlots, 'fractionalSecondDigits')
   const numberFormatters =
-    rangeFormatOptions?.numberFormatters ||
+    ownField(rangeFormatOptions, 'numberFormatters') ??
     createNumberFormatters(internalSlots, fractionalSecondDigits)
-  if (rangeFormatOptions) rangeFormatOptions.numberFormatters = numberFormatters
+  if (rangeFormatOptions)
+    setDataProperty(rangeFormatOptions, 'numberFormatters', numberFormatters)
   const {nf, nf2, nf3} = numberFormatters
   // ECMA-402 §11.5.4, step 12: reuse the identical endpoint conversion from
   // PartitionDateTimeRangePattern (§11.5.8) within this call.
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
   // https://tc39.es/ecma402/#sec-formatdatetimepattern
   const tm =
-    rangeFormatOptions?.localTime ??
+    ownField(rangeFormatOptions, 'localTime') ??
     ToLocalTime(
       epochNanoseconds,
       // @ts-ignore
@@ -381,7 +397,8 @@ export function FormatDateTimePattern(
   // Check if month is stand-alone (no other date fields like day, year, weekday)
   // Month grammar depends on the complete date pattern, including shared fields.
   // ECMA-402 §11.5.4, step 15.f.x: https://tc39.es/ecma402/#sec-formatdatetimepattern
-  const contextParts = rangeFormatOptions?.patternParts || patternParts
+  const contextParts =
+    ownField(rangeFormatOptions, 'patternParts') ?? patternParts
   const hasMonth = arraySome(contextParts, part => part.type === 'month')
   const hasOtherDateFields = arraySome(
     contextParts,
@@ -397,19 +414,15 @@ export function FormatDateTimePattern(
   // ECMA-402 §11.5.4 step 15.f.x uses the resulting localized field string.
   const primaryFormat = internalSlots.format
   const isMonthStandalone =
-    format?.monthStandalone ??
-    (primaryFormat && HasOwnProperty(primaryFormat, 'monthStandalone')
-      ? primaryFormat.monthStandalone
-      : undefined) ??
+    ownField(format, 'monthStandalone') ??
+    ownField(primaryFormat, 'monthStandalone') ??
     (hasMonth && !hasOtherDateFields)
   // Weekday is stand-alone only when it is the sole field, as in the CLDR `E`
   // skeleton (`ccc`). With a day or a time it keeps the format form (`Ed`, `EHm`).
   // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
   const isWeekdayStandalone =
-    format?.weekdayStandalone ??
-    (primaryFormat && HasOwnProperty(primaryFormat, 'weekdayStandalone')
-      ? primaryFormat.weekdayStandalone
-      : undefined) ??
+    ownField(format, 'weekdayStandalone') ??
+    ownField(primaryFormat, 'weekdayStandalone') ??
     (arraySome(contextParts, part => part.type === 'weekday') &&
       arrayEvery(
         contextParts,
@@ -420,11 +433,16 @@ export function FormatDateTimePattern(
     const patternPart = patternParts[index]
     const p = patternPart.type
     if (p === 'literal') {
+      // ECMA-402 §11.5.4 step 15.b preserves the CLDR literal verbatim.
+      // The pinned hanidec test expects ASCII space before AM. CLDR uses U+202F.
+      // https://github.com/tc39/test262/issues/3711
+      // https://tc39.es/ecma402/#sec-formatdatetimepattern
       setDataProperty(result, `${result.length}`, {
         type: 'literal',
         value: patternPart.value!,
       })
     } else if (p === 'fractionalSecondDigits') {
+      // ECMA-402 §11.5.4 step 15.c truncates and formats local milliseconds.
       const v = floor(
         tm.millisecond / 10 ** (3 - (fractionalSecondDigits || 0))
       )
@@ -438,70 +456,60 @@ export function FormatDateTimePattern(
         value: getDayPeriodName(
           dataLocaleData,
           tm,
-          format?.dayPeriod ?? internalSlots.dayPeriod,
+          ownField(format, 'dayPeriod') ?? internalSlots.dayPeriod,
           format ? {...internalSlots, ...format} : internalSlots
         ),
       })
     } else if (p === 'timeZoneName') {
-      const f = format?.timeZoneName ?? internalSlots.timeZoneName
-      let fv
+      const f = ownField(format, 'timeZoneName') ?? internalSlots.timeZoneName
       const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData
       const timeZone =
         internalSlots.dataTimeZone ??
         (internalSlots.timeZone || getDefaultTimeZone())
+      const zoneNames = ownField(timeZoneName, timeZone)
       // ICU metazone name data starts at 1970; UTC names are invariant.
       const timeZoneData =
         epochNanoseconds >= bigIntFrom(0) || timeZone === 'UTC'
-          ? timeZoneName[timeZone]
+          ? zoneNames
           : undefined
-      const zoneNames = timeZoneName[timeZone]
       const specific =
         f === 'long'
-          ? zoneNames?.[tm.inDST ? 'longDaylight' : 'longStandard']
+          ? ownField(zoneNames, tm.inDST ? 'longDaylight' : 'longStandard')
           : f === 'short'
-            ? zoneNames?.[tm.inDST ? 'shortDaylight' : 'shortStandard']
+            ? ownField(zoneNames, tm.inDST ? 'shortDaylight' : 'shortStandard')
             : undefined
-      if (specific) {
-        fv = specific
-      } else if (f === 'shortGeneric' || f === 'longGeneric') {
-        fv =
-          timeZoneData?.[f] ||
-          offsetToGmtString(
-            gmtFormat,
-            hourFormat,
-            tm.timeZoneOffset,
-            f === 'longGeneric' ? 'long' : 'short'
-          )
-      } else if ((f === 'short' || f === 'long') && timeZoneData?.[f]) {
-        const names = timeZoneData[f as 'short']!
-        // GH #5114: If in DST and both standard/daylight names are the same,
-        // fall back to GMT offset format (matches native browser behavior).
-        // This handles locales where CLDR doesn't provide a daylight name.
-        // NOTE: This is a formatjs implementation detail - ECMA-402 doesn't
-        // explicitly specify behavior for missing DST names in locale data.
-        if (tm.inDST && names.length >= 2 && names[0] === names[1]) {
-          fv = offsetToGmtString(
-            gmtFormat,
-            hourFormat,
-            tm.timeZoneOffset,
-            f as 'long'
-          )
-        } else {
-          fv = names[+tm.inDST]
-        }
-      } else {
-        // Fallback to gmtFormat
-        fv = offsetToGmtString(
+      const generic =
+        f === 'shortGeneric' || f === 'longGeneric'
+          ? ownField(timeZoneData, f)
+          : undefined
+      const names =
+        f === 'short' || f === 'long' ? ownField(timeZoneData, f) : undefined
+      // GH #5114: Identical standard/daylight names leave DST without a label.
+      const name =
+        specific ||
+        generic ||
+        (names && !(tm.inDST && names[0] === names[1])
+          ? names[+tm.inDST]
+          : undefined)
+      // ECMA-402 §11.5.4 step 15.e.iv falls back to [[TimeZone]].
+      // https://tc39.es/ecma402/#sec-formatdatetimepattern
+      const value =
+        name ||
+        (offsetToGmtString(
           gmtFormat,
           hourFormat,
           tm.timeZoneOffset,
-          f === 'long' || f === 'longOffset' ? 'long' : 'short'
-        )
-      }
-      setDataProperty(result, `${result.length}`, {type: p, value: fv})
+          f === 'long' || f === 'longGeneric' || f === 'longOffset'
+            ? 'long'
+            : 'short',
+          numberFormatters
+        ) ??
+          internalSlots.timeZone ??
+          timeZone)
+      setDataProperty(result, `${result.length}`, {type: p, value})
     } else if (arrayIndexOf(DATE_TIME_PROPS, p as 'era') > -1) {
       let fv = ''
-      let f = (format?.[p as 'year'] ?? internalSlots[p as 'year']) as
+      let f = (ownField(format, p as 'year') ?? internalSlots[p as 'year']) as
         | 'numeric'
         | '2-digit'
         | 'narrow'
@@ -539,32 +547,35 @@ export function FormatDateTimePattern(
         }
       } else if (f === 'narrow' || f === 'short' || f === 'long') {
         if (p === 'era') {
-          fv = dataLocaleData[p][f][v as 'BC']
+          fv = localizedName(dataLocaleData[p][f], v as string, v)
         } else if (p === 'month') {
-          // Use stand-alone month form if available and month is displayed alone
+          // ECMA-402 §11.5.4 step 15.f.x reads the available locale fields.
           const monthData =
-            isMonthStandalone && dataLocaleData.monthStandalone
-              ? dataLocaleData.monthStandalone
-              : dataLocaleData.month
-          fv = monthData[f][tm.monthNameIndex ?? v - 1]
+            (isMonthStandalone
+              ? ownField(dataLocaleData, 'monthStandalone')
+              : undefined) ?? dataLocaleData.month
+          fv = localizedName(monthData[f], tm.monthNameIndex ?? v - 1, v)
         } else {
-          // Use stand-alone weekday form if available and weekday is displayed alone
           const weekdayData =
-            p === 'weekday' &&
-            isWeekdayStandalone &&
-            dataLocaleData.weekdayStandalone
-              ? dataLocaleData.weekdayStandalone
-              : dataLocaleData[p as 'weekday']
-          fv = weekdayData[f][v]
+            (p === 'weekday' && isWeekdayStandalone
+              ? ownField(dataLocaleData, 'weekdayStandalone')
+              : undefined) ?? dataLocaleData[p as 'weekday']
+          fv = localizedName(weekdayData[f], v as number, v)
         }
       }
-      if (p === 'month' && tm.leapMonth && dataLocaleData.leapMonthPatterns) {
-        const patterns = dataLocaleData.leapMonthPatterns
+      const leapPatterns =
+        p === 'month' && tm.leapMonth
+          ? ownField(dataLocaleData, 'leapMonthPatterns')
+          : undefined
+      if (leapPatterns) {
         const leapPattern =
           f === 'numeric' || f === '2-digit'
-            ? patterns.numeric
-            : (isMonthStandalone ? patterns.standalone : patterns.format)[f]
-        fv = replacePattern(leapPattern, substitutionPattern, fv)
+            ? leapPatterns.numeric
+            : (isMonthStandalone
+                ? leapPatterns.standalone
+                : leapPatterns.format
+              )[f]
+        fv = insertLocaleValue(leapPattern, fv)
       }
       setDataProperty(result, `${result.length}`, {
         type: p as Intl.DateTimeFormatPartTypes,

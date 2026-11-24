@@ -424,11 +424,43 @@ class Child extends Native {
   }
 }
 check(new Child('en') instanceof Child, 'subclass prototype')
+const Alternate = function () {}
+Object.defineProperty(Alternate.prototype, 'constructor', {
+  get() {
+    throw new Error('read receiver.constructor')
+  },
+})
+const alternate = Reflect.construct(Native, ['en'], Alternate)
+equal(
+  Object.getPrototypeOf(alternate),
+  Alternate.prototype,
+  'new target prototype'
+)
+equal(
+  Native.prototype.resolvedOptions.call(alternate).locale,
+  'en',
+  'initialized slots on alternate prototype'
+)
 equal(
   safely(() => Native('en')),
   {error: 'TypeError'},
   'requires new'
 )
+for (const options of [null, false, 0, 0n, '', Symbol('options')]) {
+  for (const Constructor of [Native, Reference]) {
+    equal(
+      safely(() => new Constructor('en', options)),
+      {error: 'TypeError'},
+      'constructor rejects non-object options'
+    )
+  }
+}
+for (const Constructor of [Native, Reference])
+  equal(
+    Constructor.supportedLocalesOf('en', 0),
+    ['en'],
+    'supportedLocalesOf boxes primitive options'
+  )
 const sentinel = {identity: 'duration getter'}
 sameFailure(
   () =>

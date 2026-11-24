@@ -60,9 +60,10 @@ Each polyfill has scripts in `scripts/` that extract data from CLDR npm packages
 3. **Generate**: Output as `.generated.ts` (static) or `locale-data/{locale}.js` (dynamic)
 4. **All orchestrated via Bazel** `generate_src_file` and `ts_run_binary` targets
 
-## Conformance Audit
+## Spec references
 
-See the [2026-09-06 ECMA-402 draft audit](./013-ecma402-audit-2026-09-06.md) for confirmed gaps, reproductions, and follow-up checklists.
+Inline comments link the implementing code to numbered ECMA-402 and ECMA-262
+sections and applicable Unicode rules. Check those links when changing behavior.
 
 ## Test Strategy
 
@@ -114,13 +115,10 @@ The suites use isolated IIFE preludes. ListFormat's prelude
 loads generated locale data. `tools/test262/runner_test` exercises the real
 harness with passing, failing, and empty suites. Baselines require review when the pinned upstream selection changes.
 
-All twelve package suites now select every upstream test at revision
-`419d3e0a2273ba01a3bfcbec423f2801425b8e93`; `test262.BUILD` has no file exclusions.
-The prelude also installs polyfills in nested Test262 realms. Run
-`:test262-native` for the corresponding native-only control. Both modes use
-the same pinned Node 26.8.1 host; fixtures verify Temporal in nested realms. See
-[the full baseline and runtime comparison](./014-test262-conformance.md) and
-[the remaining gaps and performance report](./015-test262-progress-2026-09-09.md).
+The twelve package suites use the Test262 revision pinned in
+[`MODULE.bazel`](../MODULE.bazel). [`test262.BUILD`](../test262.BUILD) defines
+suite inputs. The prelude installs polyfills in nested Test262 realms.
+Run `:test262-native` for the host-only control on the same Node runtime.
 
 Test262 execution uses rules_js generated harness rules. Strict/native modes
 are direct harness tests; baseline mode invokes the generated harness binary
@@ -135,17 +133,19 @@ patterns English data. Explicit language aliases continue to be minimized.
 
 ### Locale registration
 
-Dynamic polyfills register loaded data under its original locale and CLDR
+Dynamic polyfills register loaded data under its canonical locale and CLDR
 default-content children. Missing less-specific fallback tags are filled without
 overwriting explicitly loaded data. Likely-subtag minimization does not merge
 distinct locale records, so loading `ar-EG` cannot replace `ar`.
-The default locale remains the first loaded locale's actual tag, rather than a
-minimized tag that later data loading could overwrite.
+Formatters keep the host locale tag when either that locale or a parent supplies
+data. The first loaded locale remains the fallback.
 
 ## Native compiled data
 
 Hermes SDK builds select locale records in Rust, independently of the TS packages'
-dynamic registration API. See [native data setup](../native/hermes/README.md#compiled-locale-data).
+dynamic registration API. See [native data setup](../native/hermes/README.md#design).
+Rust resolves the POSIX message locale against available data before using the
+package fallback.
 Rust tools validate existing CLDR inputs, compile plural expressions, merge calendar
 locale patches, and embed binary records in each native archive. No application JS
 or C++ locale registration is required. Additional locales require a native rebuild.

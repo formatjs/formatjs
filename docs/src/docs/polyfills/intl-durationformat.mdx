@@ -236,6 +236,7 @@ a leading zero: digital formatting of `{seconds: -1}` produces `"-0:00:01"` in E
 Later units omit their signs in both `format()` and `formatToParts()`.
 
 Numeric duration fields omit grouping separators, even for large values.
+Clock separators follow the locale resolved when the formatter is constructed.
 Textual styles retain locale grouping. Fractional arithmetic preserves each
 input Number's exact integer value, including values beyond the safe-integer range.
 

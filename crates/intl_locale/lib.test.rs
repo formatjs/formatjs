@@ -136,6 +136,23 @@ fn minimizes_maximized_components_preserving_variants_and_extensions() {
 }
 
 #[test]
+fn calendar_preferences_filter_available_data_but_preserve_explicit_options() {
+    let available = ["gregory".to_owned(), "buddhist".to_owned()];
+    assert_eq!(
+        locale("th-TH").calendars_with_support(Some(&available)),
+        ["buddhist", "gregory"],
+    );
+    assert_eq!(
+        locale("ja-JP").calendars_with_support(Some(&[])),
+        ["gregory"],
+    );
+    assert_eq!(
+        locale("ja-JP-u-ca-japanese").calendars_with_support(Some(&available)),
+        ["japanese"],
+    );
+}
+
+#[test]
 fn preferences_respect_region_override_subdivision_and_explicit_region() {
     assert_eq!(locale("ja").calendars(), ["gregory", "japanese"]);
     assert_eq!(

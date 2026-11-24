@@ -1,23 +1,14 @@
-/**
- * This follows https://tc39.es/ecma402/#sec-case-sensitivity-and-case-mapping
- * @param str string to convert
- */
-function toUpperCase(str: string): string {
-  return str.replace(/([a-z])/g, (_, c) => c.toUpperCase())
-}
+const apply = Reflect.apply
+const charCodeAt = String.prototype.charCodeAt
 
-const NOT_A_Z_REGEX = /[^A-Z]/
-
-/**
- * https://tc39.es/ecma402/#sec-iswellformedcurrencycode
- */
+// ECMA-402 §6.3.1 steps 1–4 accept exactly three ASCII letters.
+// https://tc39.es/ecma402/#sec-iswellformedcurrencycode
 export function IsWellFormedCurrencyCode(currency: string): boolean {
-  currency = toUpperCase(currency)
-  if (currency.length !== 3) {
-    return false
-  }
-  if (NOT_A_Z_REGEX.test(currency)) {
-    return false
+  if (currency.length !== 3) return false
+  for (let index = 0; index < currency.length; index++) {
+    const code = apply(charCodeAt, currency, [index])
+    if (!(code >= 0x41 && code <= 0x5a) && !(code >= 0x61 && code <= 0x7a))
+      return false
   }
   return true
 }

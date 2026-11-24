@@ -151,6 +151,8 @@ pub(crate) fn resolve(
     )?;
     let currency = options.currency.as_deref().map(str::to_ascii_uppercase);
     let (minimum, maximum) = if style == "currency" && notation == "standard" {
+        // ECMA-402 §16.5.1 defaults to two digits for unknown currencies.
+        // https://tc39.es/ecma402/#sec-currencydigits
         let digits = *metadata
             .currency_digits
             .get(currency.as_deref().unwrap())

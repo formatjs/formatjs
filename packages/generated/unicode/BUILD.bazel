@@ -6,9 +6,7 @@ generate_package_file(
     name = "unicode_regex",
     src = "regex.ts",
     data = [
-        "//:node_modules/@types/regenerate",
         "//:node_modules/@unicode/unicode-17.0.0",
-        "//:node_modules/regenerate",
     ],
     tool = "//packages/ecma402-abstract/scripts:regex-gen",
 )
@@ -71,6 +69,7 @@ UNICODE_FILES = [
         name = unicode_file_name(f),
         src = f,
         out = "%s.txt" % unicode_file_name(f),
+        visibility = ["//packages/generated/cldr-collation:__pkg__"] if f == "@DerivedCombiningClass//file" else ["//visibility:private"],
     )
     for f in UNICODE_FILES
 ]

@@ -7,8 +7,41 @@ import {getAllLocales} from './utils.ts'
 
 type RawData = typeof arData
 
-interface Args {
+interface Args extends minimist.ParsedArgs {
   out: string
+}
+
+interface LocaleData {
+  nu: string[]
+  separator?: Record<string, string>
+}
+
+// ECMA-402 §9.1 requires parent locales and the scriptless region. Preserve
+// explicit records and prefer the likely script when several records can supply
+// the same scriptless region.
+// https://tc39.es/ecma402/#sec-internal-slots
+function addFallbackLocales(localeData: Record<string, LocaleData>): void {
+  const locales = Object.keys(localeData).sort()
+  const explicit = new Set(locales)
+  for (const locale of locales) {
+    const parts = locale.split('-')
+    const {language, script} = new Intl.Locale(locale)
+    const data = localeData[locale]
+    while (parts.length > 1) {
+      if (script && parts.length > 2) {
+        const alias = [language, ...parts.slice(2)].join('-')
+        if (
+          !explicit.has(alias) &&
+          (!localeData[alias] ||
+            new Intl.Locale(alias).maximize().script === script)
+        ) {
+          localeData[alias] = data
+        }
+      }
+      parts.pop()
+      localeData[parts.join('-')] ??= data
+    }
+  }
 }
 
 async function main(args: Args) {
@@ -16,13 +49,7 @@ async function main(args: Args) {
 
   const result: {
     default: string
-    localeData: Record<
-      string,
-      {
-        nu: string[]
-        separator?: Record<string, string>
-      }
-    >
+    localeData: Record<string, LocaleData>
   } = {
     default: ':',
     localeData: {},
@@ -65,6 +92,7 @@ async function main(args: Args) {
     }
   }
 
+  addFallbackLocales(result.localeData)
   outputFileSync(
     out,
     `/* @generated */

@@ -1,8 +1,11 @@
 use crate::{Error, Unit};
 #[derive(Debug, Clone, PartialEq, Eq)]
+// ECMA-402 §13.5.1 https://tc39.es/ecma402/#sec-duration-records
 pub struct Duration([i128; 10]);
 impl Duration {
     pub fn from_numbers(values: [Option<f64>; 10]) -> Result<Self, Error> {
+        // ECMA-402 §13.5.3 steps 23–25 validate the collected duration.
+        // https://tc39.es/ecma402/#sec-todurationrecord
         if values.iter().all(Option::is_none) {
             return Err(Error::EmptyDuration);
         }
@@ -22,6 +25,8 @@ impl Duration {
         Self::from_integers(integers)
     }
     pub fn from_integers(values: [i128; 10]) -> Result<Self, Error> {
+        // ECMA-402 §13.5.5: validate signs and bounds using exact integers.
+        // https://tc39.es/ecma402/#sec-isvalidduration
         let sign = values
             .iter()
             .find(|value| **value != 0)
@@ -67,6 +72,8 @@ impl Duration {
     pub fn values(&self) -> &[i128; 10] {
         &self.0
     }
+    // ECMA-402 §13.5.4: all nonzero fields share the validated sign.
+    // https://tc39.es/ecma402/#sec-durationsign
     pub fn is_negative(&self) -> bool {
         self.0.iter().any(|value| *value < 0)
     }

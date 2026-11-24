@@ -3,6 +3,7 @@ import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import hebrew from '#packages/intl-datetimeformat/calendars/implementations/hebrew.js'
 import chinese from '#packages/intl-datetimeformat/calendars/implementations/chinese.js'
 import buddhist from '#packages/intl-datetimeformat/calendars/implementations/buddhist.js'
+import japanese from '#packages/intl-datetimeformat/calendars/implementations/japanese.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import type {
   RawDateTimeLocaleData,
@@ -32,6 +33,79 @@ const formatter = (calendar: string) =>
     month: 'long',
     day: 'numeric',
   })
+
+test('uses private hour-cycle preferences for legacy locale data', () => {
+  const legacy = {...base.data}
+  delete legacy.hourCycle12
+  delete legacy.hourCycle24
+  DateTimeFormat.__addLocaleData({
+    ...base,
+    locale: 'en-NZ',
+    data: {...legacy, hc: [null, 'h11', 'h24']},
+  })
+  for (const [hour12, preference, expected] of [
+    [true, 'hourCycle12', 'h11'],
+    [false, 'hourCycle24', 'h24'],
+  ] as const) {
+    for (const [prototype, key] of [
+      [Object.prototype, preference],
+      [Array.prototype, 'find'],
+    ] as const) {
+      const original = Object.getOwnPropertyDescriptor(prototype, key)
+      let cycle
+      try {
+        cycle = new DateTimeFormat('en-NZ', {
+          timeZone: 'UTC',
+          hour: 'numeric',
+          hour12,
+          get hourCycle() {
+            Object.defineProperty(prototype, key, {
+              configurable: true,
+              get() {
+                throw new Error(
+                  'Read a public property for private hour-cycle data'
+                )
+              },
+            })
+            return undefined
+          },
+        }).resolvedOptions().hourCycle
+      } finally {
+        if (original) Object.defineProperty(prototype, key, original)
+        else Reflect.deleteProperty(prototype, key)
+      }
+      expect(cycle).toBe(expected)
+    }
+  }
+})
+
+test('calendar availability includes patterns loaded outside the default locale', () => {
+  const key = Symbol.for('@formatjs/intl-datetimeformat/availableCalendars')
+  const availableCalendars = Object.getOwnPropertyDescriptor(
+    DateTimeFormat,
+    key
+  )!.value as () => string[]
+  DateTimeFormat.__addLocaleData(
+    {
+      ...base,
+      data: {
+        ...base.data,
+        ca: ['gregory'],
+        formats: {gregory: formats.gregory},
+      },
+    },
+    {...base, locale: 'en-AU'}
+  )
+  expect(formatter('iso8601').resolvedOptions().calendar).toBe('iso8601')
+  DateTimeFormat.__addCalendarLocaleData({
+    ...patch('japanese'),
+    locale: 'en-AU',
+  })
+  expect(availableCalendars()).not.toContain('japanese')
+  DateTimeFormat.__addCalendarData(japanese)
+  expect(formatter('japanese').resolvedOptions().calendar).toBe('gregory')
+  expect(availableCalendars()).toContain('japanese')
+})
 
 test.each([
   ['-000544-01-01T00:00:00Z', '2', '02'],
@@ -66,6 +140,54 @@ test.each([
     }
   }
 )
+
+test.each([
+  [buddhist, '2567'],
+  [japanese, '6'],
+] as const)('formats required date fields with %s', (provider, year) => {
+  DateTimeFormat.__addLocaleData(base)
+  DateTimeFormat.__addCalendarData(provider)
+  DateTimeFormat.__addCalendarLocaleData(patch(provider.calendar))
+  const options = {
+    calendar: provider.calendar,
+    timeZone: 'UTC',
+    formatMatcher: 'basic',
+    year: 'numeric',
+    month: 'numeric',
+  } as const
+  const time = Date.UTC(2024, 0, 2, 3, 4, 5, 678)
+  const dateOptions = {...options, day: 'numeric'} as const
+  const weekdayOptions = {...dateOptions, weekday: 'short'} as const
+  expect(new DateTimeFormat('en', options).format(time)).toBe(`1/${year}`)
+  expect(new DateTimeFormat('en', dateOptions).format(time)).toBe(`1/2/${year}`)
+  expect(new DateTimeFormat('en', weekdayOptions).format(time)).toBe(
+    `Tue, 1/2/${year}`
+  )
+  const timestamp = new DateTimeFormat('en', {
+    ...weekdayOptions,
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3,
+    hourCycle: 'h23',
+  })
+  expect(
+    timestamp.formatToParts(time).filter(part => part.type !== 'literal')
+  ).toEqual([
+    {type: 'weekday', value: 'Tue'},
+    {type: 'month', value: '1'},
+    {type: 'day', value: '2'},
+    {type: 'year', value: year},
+    {type: 'hour', value: '03'},
+    {type: 'minute', value: '04'},
+    {type: 'second', value: '05'},
+    {type: 'fractionalSecond', value: '678'},
+  ])
+  const explicitEra = new DateTimeFormat('en', {...dateOptions, era: 'short'})
+  expect(
+    explicitEra.formatToParts(time).some(part => part.type === 'era')
+  ).toBe(true)
+})
 
 test('calendar arithmetic and locale patterns load independently in either order', () => {
   DateTimeFormat.__addLocaleData(base)
@@ -105,6 +227,34 @@ test('calendar locale patterns can arrive before their base locale', () => {
   expect(
     new DateTimeFormat('en-GB', {calendar: 'hebrew'}).resolvedOptions().calendar
   ).toBe('hebrew')
+})
+
+test('a rejected calendar patch leaves the last valid patch available for reloads', () => {
+  const locale = 'en-recov'
+  const localeData = {...base, locale}
+  const valid = {...patch('buddhist'), locale}
+  DateTimeFormat.__addCalendarData(buddhist)
+  DateTimeFormat.__addLocaleData(localeData)
+  DateTimeFormat.__addCalendarLocaleData(valid)
+
+  const format = () =>
+    new DateTimeFormat(locale, {
+      calendar: 'buddhist',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).formatToParts(0)
+
+  expect(() =>
+    DateTimeFormat.__addCalendarLocaleData({
+      ...valid,
+      get formats(): typeof valid.formats {
+        throw new RangeError('Rejected calendar formats')
+      },
+    })
+  ).toThrow('Rejected calendar formats')
+
+  DateTimeFormat.__addLocaleData(localeData)
+  expect(format()).toContainEqual({type: 'year', value: '2513'})
 })
 
 test('a user-supplied calendar uses its registered conversion for dates and ranges', () => {

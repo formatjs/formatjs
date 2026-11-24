@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import {DateTimeFormat as Reference} from '@formatjs/intl-datetimeformat'
 import {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
+import '@formatjs/intl-getcanonicallocales/polyfill-force.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {CalendarDateFromTime} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 
@@ -221,6 +222,20 @@ it('matches calendar patches before base data, provider ordering, replacement an
     info(second, 'en'),
   ])
 })
+
+it('shares the canonical locale key for a legacy pack and calendar patch', () => {
+  compare([
+    addPatch(patch('HE-il', 'buddhist', 'canonical patch')),
+    {action: 'provider', calendar: 'buddhist'},
+    load(fixture('IW-il', 'legacy pack')),
+    info('he-IL', 'he'),
+    {action: 'resolve', locales: ['iw-IL'], options: {calendar: 'buddhist'}},
+  ])
+  expect(Reference.localeData['he-IL'].am).toBe('legacy pack')
+  expect(
+    Reference.localeData['he-IL'].calendarData?.buddhist.month.long[0]
+  ).toBe('canonical patch')
+})
 it('matches locale/Unicode option negotiation, overrides and supportedLocalesOf', () => {
   const steps: Step[] = ['en', 'fr', 'ar', 'ja', 'zh-Hans'].map(locale =>
     load(fixture(locale, locale, locale))
@@ -321,11 +336,17 @@ it('preserves published locale records when an eager style fails to load', () =>
     info('en-atom1', 'en'),
     load(broken),
     info('en-atom1', 'en'),
+    addPatch(patch('en-atom1', 'buddhist', 'after rejected base')),
+    {action: 'provider', calendar: 'buddhist'},
+    info('en-atom1', 'en'),
     load(newBroken),
     info('en-atom1', 'en'),
     load(replacement),
     info('en-atom1', 'en'),
   ])
+  expect(
+    Reference.localeData['en-atom1'].calendarData?.buddhist.month.long[0]
+  ).toBe('after rejected base')
 })
 
 it('isolates core calendar names/styles while sharing Gregorian/ISO format lists', () => {

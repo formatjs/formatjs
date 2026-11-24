@@ -61,6 +61,10 @@ extensions even when matching falls back to a parent locale.
 LookupSupportedLocales(['de'], ['de-AT-u-co-phonebk']) // ['de-AT-u-co-phonebk']
 ```
 
+`FilterLocales(availableLocales, requestedLocales, matcher)` takes canonical
+locale tags and accepts `'lookup'` or `'best fit'`. It returns matching requested
+tags in order. Formatter `supportedLocalesOf` uses best fit by default.
+
 Locale resolution uses an internal record isolated from inherited extension-key
 setters on `Object.prototype`.
 

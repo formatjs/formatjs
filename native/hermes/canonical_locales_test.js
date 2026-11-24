@@ -19,6 +19,13 @@
     throw new Error('Expected ' + type.name)
   }
 
+  equal(Object.prototype.toString.call(Intl), '[object Intl]')
+  equal(Object.getOwnPropertyDescriptor(Intl, Symbol.toStringTag), {
+    value: 'Intl',
+    writable: false,
+    enumerable: false,
+    configurable: true,
+  })
   equal(canonicalize(), [])
   equal(canonicalize('EN-us'), ['en-US'])
   equal(canonicalize(['iw', 'he', 'in', 'ji']), ['he', 'id', 'yi'])

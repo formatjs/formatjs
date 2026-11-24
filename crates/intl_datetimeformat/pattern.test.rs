@@ -71,10 +71,9 @@ fn matching_retains_named_months_numeric_patterns_and_minute_padding() {
 fn ties_use_registration_order_and_cyclic_year_ranges_require_calendar_fields() {
     let first = pattern::parse("yMd", "y-MM-dd", &RawPatterns::default(), None).unwrap();
     let second = pattern::parse("yMd", "dd/MM/y", &RawPatterns::default(), None).unwrap();
-    assert_eq!(
-        matching::basic(Components::default(), &[first.clone(), second]).unwrap(),
-        first
-    );
+    let selected = matching::basic(Components::default(), &[first.clone(), second]).unwrap();
+    assert_eq!(selected.pattern, first.pattern);
+    assert_eq!(selected.components, first.pattern_fields);
     let format = pattern::parse(
         "rUMMMd",
         "r U MMM d",
@@ -129,7 +128,7 @@ fn unknown_pattern_fields_retain_position_and_epoch_in_their_ilnd_value() {
             pattern,
             pattern,
             &local,
-            "UTC",
+            &zone,
             profile.components,
         )
         .unwrap();

@@ -64,12 +64,12 @@ impl<'a> Iterator for PatternTokens<'a> {
     }
 }
 
-struct Rendered {
+pub(crate) struct Rendered {
     rounded: Numeric,
     text: String,
     exponent: i64,
     magnitude: i64,
-    sign: i8,
+    pub(crate) sign: i8,
 }
 fn missing(name: &str) -> Error {
     Error::InvalidData(format!("Missing number data: {name}"))
@@ -219,6 +219,8 @@ impl NumberFormat {
             .find(|(key, _)| key.len() as i64 - 1 == magnitude)
             .map(|(_, rules)| rules))
     }
+    // ECMA-402 §16.5.13 selects scale by notation and locale data.
+    // https://tc39.es/ecma402/#sec-computeexponentformagnitude
     fn exponent(&self, magnitude: i64) -> Result<i64, Error> {
         Ok(match self.resolved.notation.as_str() {
             "scientific" => magnitude,
@@ -242,36 +244,53 @@ impl NumberFormat {
             _ => 0,
         })
     }
-    fn category(&self, value: &Numeric) -> Result<&'static str, Error> {
+    fn category(&self, value: &Numeric, formatted: Option<&str>) -> Result<&'static str, Error> {
         if value.special.is_some() {
             return Ok("other");
         }
-        // TS's internal PluralRules takes Number, even for a BigInt formatting
-        // input. Keep that conversion here; decimal rounding itself stays exact.
-        let number = value
-            .text()?
-            .parse::<f64>()
-            .map_err(|_| Error::Range("value"))?;
-        if !number.is_finite() {
-            return Ok("other");
-        }
-        let rounded = self
-            .plural_digits
-            .format_string(&number.to_string())
-            .map_err(digit_error)?;
+        // ECMA-402 §16.5.3, steps 5.b–d and 9.g–k. LDML plural operands
+        // depend on the exact decimal and its visible trailing zeros.
+        // https://tc39.es/ecma402/#sec-partitionnumberpattern
+        // https://unicode.org/reports/tr35/tr35-numbers.html#Language_Plural_Rules
+        let rounded;
+        let formatted = match formatted {
+            Some(text) => text,
+            None => {
+                rounded = self
+                    .plural_digits
+                    .format_string(&value.text()?)
+                    .map_err(digit_error)?;
+                &rounded
+            }
+        };
         self.data
             .plurals
-            .select_rounded(&rounded, 0, false)
+            .select_rounded(formatted, 0, false)
             .map_err(|error| Error::InvalidData(error.to_string()))
     }
-    fn select<'a>(&self, value: &Numeric, rules: &'a Plurals) -> Result<&'a str, Error> {
+    fn name_category(&self, number: &Rendered) -> Result<&'static str, Error> {
+        if number.exponent == 0 {
+            return self.category(&number.rounded, Some(&number.text));
+        }
+        let mut expanded = number.rounded.clone();
+        expanded.shift(number.exponent)?;
+        if self.resolved.notation == "compact" {
+            return self.category(&expanded, None);
+        }
+        // The scientific mantissa is already rounded. Move the decimal point
+        // before counting visible fraction digits for the unit or currency name.
+        // https://unicode.org/reports/tr35/tr35-numbers.html#Scientific_Notation
+        // https://unicode.org/reports/tr35/tr35-numbers.html#Operands
+        self.category(&expanded, Some(&expanded.exact_text()?))
+    }
+    fn select<'a>(category: &str, rules: &'a Plurals) -> Result<&'a str, Error> {
         rules
-            .get(self.category(value)?)
+            .get(category)
             .or_else(|| rules.get("other"))
             .map(String::as_str)
             .ok_or_else(|| missing("plural other"))
     }
-    fn render(&self, input: &Numeric) -> Result<Rendered, Error> {
+    pub(crate) fn render(&self, input: &Numeric) -> Result<Rendered, Error> {
         let symbols = self
             .data
             .numbers
@@ -294,6 +313,8 @@ impl NumberFormat {
             if self.resolved.style == "percent" {
                 number.shift(2)?;
             }
+            // ECMA-402 §16.5.12 rechecks scale after rounding can change magnitude.
+            // https://tc39.es/ecma402/#sec-computeexponent
             let mut magnitude = number.magnitude();
             let mut exponent = if number.zero() {
                 0
@@ -417,6 +438,8 @@ impl NumberFormat {
         grouping != Grouping::Disabled
             && (grouping == Grouping::Always || integer_len >= primary.saturating_add(minimum))
     }
+    // ECMA-402 §16.5.4 groups digits and substitutes locale symbols.
+    // https://tc39.es/ecma402/#sec-partitionnotationsubpattern
     fn visit_number_parts(
         &self,
         number: &Rendered,
@@ -504,13 +527,75 @@ impl NumberFormat {
         })?;
         Ok(parts)
     }
-    pub(crate) fn partition(
+    pub(crate) fn partition(&self, input: &Numeric) -> Result<Vec<Part>, Error> {
+        self.partition_rendered(&self.render(input)?)
+    }
+
+    // ECMA-402 §16.5.19 chooses a position and inserts into the original parts.
+    // https://tc39.es/ecma402/#sec-formatapproximately
+    pub(crate) fn insert_approximate_sign(
         &self,
-        input: &Numeric,
-        approximately: bool,
-    ) -> Result<Vec<Part>, Error> {
-        let number = self.render(input)?;
-        self.partition_rendered(&number, approximately)
+        parts: &mut Vec<Part>,
+        number: &Rendered,
+    ) -> Result<(), Error> {
+        let symbol = &self.data.numbers.symbols[&self.system].approximately_sign;
+        if symbol.is_empty() {
+            return Ok(());
+        }
+        let plan = self.style_plan(number.sign, true)?;
+        let (ids, tokens) = plan.parts();
+        let number_part = |kind: &str| {
+            matches!(
+                kind,
+                "integer"
+                    | "group"
+                    | "decimal"
+                    | "fraction"
+                    | "exponentSeparator"
+                    | "exponentMinusSign"
+                    | "exponentInteger"
+                    | "compact"
+                    | "nan"
+                    | "infinity"
+            )
+        };
+        let find_part = |kind: &str, value: &str, start: usize| {
+            parts[start..]
+                .iter()
+                .position(|part| {
+                    if kind == "number" {
+                        number_part(part.kind)
+                    } else {
+                        part.kind == kind && (kind != "literal" || part.value == value)
+                    }
+                })
+                .map(|index| start + index)
+        };
+        let mut start = 0;
+        let mut position = 0;
+        let mut after_sign = false;
+        for id in &ids[2..] {
+            let (kind, value) = &tokens[*id];
+            if kind == "approximatelySign" {
+                after_sign = true;
+                position = start;
+                continue;
+            }
+            if let Some(index) = find_part(kind, value, start) {
+                if after_sign {
+                    position = index;
+                    break;
+                }
+                start = index + 1;
+                if kind == "number" {
+                    while start < parts.len() && number_part(parts[start].kind) {
+                        start += 1;
+                    }
+                }
+            }
+        }
+        parts.insert(position, Part::new("approximatelySign", symbol));
+        Ok(())
     }
 
     /// Format standard decimal parts and select cardinal rules from the same
@@ -522,7 +607,7 @@ impl NumberFormat {
         rules: &formatjs_intl_pluralrules::LocaleRules,
     ) -> Result<(Vec<Part>, &'static str), Error> {
         let (number, category) = self.decimal_with_plural(value, rules)?;
-        Ok((self.partition_rendered(&number, false)?, category))
+        Ok((self.partition_rendered(&number)?, category))
     }
 
     /// Avoid owned number parts when the consumer only needs text and its plural.
@@ -568,7 +653,7 @@ impl NumberFormat {
                 text.push_str(&value);
             })?;
         } else {
-            for part in self.partition_rendered(&number, false)? {
+            for part in self.partition_rendered(&number)? {
                 text.push_str(&part.value);
             }
         }
@@ -663,18 +748,12 @@ impl NumberFormat {
         };
         Ok(Pattern::Cached(legacy))
     }
-    fn partition_rendered(
-        &self,
-        number: &Rendered,
-        approximately: bool,
-    ) -> Result<Vec<Part>, Error> {
+    pub(crate) fn partition_rendered(&self, number: &Rendered) -> Result<Vec<Part>, Error> {
         let options = &self.resolved;
         let symbols = &self.data.numbers.symbols[&self.system];
-        let approximately = approximately && !symbols.approximately_sign.is_empty();
         // This CLDR pattern has only a number slot. Skip pattern tokenization;
         // rounding, grouping, digit mapping and sign choice still use common code.
-        if !approximately
-            && options.style == "decimal"
+        if options.style == "decimal"
             && options.notation == "standard"
             && self.data.numbers.decimal[&self.system].standard == "#,##0.###"
         {
@@ -687,14 +766,20 @@ impl NumberFormat {
             return Ok(parts);
         }
         let compact = if options.notation == "compact" && number.magnitude != 0 {
+            // ECMA-402 §16.5.11 step 6 selects the locale's compact pattern.
+            // LDML compact formatting steps 7–8 use the rendered mantissa.
+            // https://tc39.es/ecma402/#sec-getnotationsubpattern
+            // https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
             self.compact_rules(number.magnitude)?
-                .map(|rules| self.select(&number.rounded, rules))
+                .map(|rules| {
+                    Self::select(self.category(&number.rounded, Some(&number.text))?, rules)
+                })
                 .transpose()?
                 .filter(|pattern| *pattern != "0")
         } else {
             None
         };
-        let style = self.style_plan(number.sign, approximately)?;
+        let style = self.style_plan(number.sign, false)?;
         let notation = compact
             .map(|pattern| self.pattern_plan(pattern, 0, false, true))
             .transpose()?;
@@ -774,13 +859,11 @@ impl NumberFormat {
             };
             parts.push(part);
         }
-        let mut expanded = number.rounded.clone();
-        expanded.shift(number.exponent)?;
         if options.style == "currency" && options.currency_display.as_deref() == Some("name") {
             let label = match currency {
                 Some(currency) => currency
                     .display_name
-                    .get(self.category(&expanded)?)
+                    .get(self.name_category(number)?)
                     .or_else(|| currency.display_name.get("other"))
                     .filter(|name| !name.is_empty())
                     .map(String::as_str)
@@ -807,44 +890,40 @@ impl NumberFormat {
             return Ok(output);
         }
         if options.style == "unit" {
+            let category = self.name_category(number)?;
             let units = self.data.units.read().map_err(|_| missing("unit lock"))?;
             let unit = options.unit.as_deref().unwrap();
             let style = options.unit_display.as_deref().unwrap();
-            let pattern = if let Some(unit) = units.simple.get(unit) {
-                self.select(&expanded, unit_forms(unit, style))?.to_owned()
-            } else {
-                let (numerator, denominator) = unit
-                    .split_once("-per-")
-                    .ok_or_else(|| missing("compound unit"))?;
-                let numerator = self.select(
-                    &expanded,
-                    unit_forms(
-                        units
-                            .simple
-                            .get(numerator)
-                            .ok_or_else(|| missing(numerator))?,
-                        style,
-                    ),
-                )?;
-                let denominator = units
-                    .simple
-                    .get(denominator)
-                    .ok_or_else(|| missing(denominator))?;
-                if let Some(per) = denominator.per_unit.get(style) {
-                    per.replacen("{0}", numerator, 1)
-                } else {
-                    let per = units
-                        .compound
-                        .get("per")
-                        .and_then(|per| per.get(style))
-                        .ok_or_else(|| missing("per"))?;
-                    let denominator = self
-                        .select(&Numeric::parse("1")?, unit_forms(denominator, style))?
-                        .replacen("{0}", "", 1);
-                    per.replacen("{0}", numerator, 1)
-                        .replacen("{1}", &denominator, 1)
-                }
+            let unit_form = |id: &str, category: &str| {
+                let forms = unit_forms(units.simple.get(id)?, style);
+                forms.get(category).or_else(|| forms.get("other"))
             };
+            let mut pattern = unit_form(unit, category).cloned();
+            if pattern.is_none() {
+                pattern = unit
+                    .split_once("-per-")
+                    .and_then(|(numerator, denominator)| {
+                        let numerator = unit_form(numerator, category)?;
+                        let denominator_data = units.simple.get(denominator)?;
+                        if let Some(per) = denominator_data.per_unit.get(style) {
+                            return Some(per.replacen("{0}", numerator, 1));
+                        }
+                        let per = units.compound.get("per")?.get(style)?;
+                        // CLDR's per derivation uses category "one" for the denominator.
+                        // https://unicode.org/reports/tr35/tr35-general.html#Deriving_the_Plural_Category_of_Unit_Components
+                        let denominator = unit_form(denominator, "one")?.replacen("{0}", "", 1);
+                        Some(per.replacen("{0}", numerator, 1).replacen(
+                            "{1}",
+                            denominator.trim(),
+                            1,
+                        ))
+                    });
+            }
+            // ECMA-402 §16.5.10 steps 6.d–f select a fallback for missing unit data.
+            // https://tc39.es/ecma402/#sec-getnumberformatpattern
+            let pattern = pattern
+                .or_else(|| unit_form("fallback", category).cloned())
+                .unwrap_or_else(|| format!("{{0}} {unit}"));
             let mut output = Vec::new();
             let mut end = 0;
             for token in UNIT_SLOT.find_iter(&pattern) {

@@ -24,8 +24,8 @@ pub fn supported_locales(
     options: &ResolutionOptions,
 ) -> Result<Vec<String>, Error> {
     let requested = get_canonical_locales(requested).map_err(|_| Error::InvalidLocale)?;
-    lookup(options)?;
-    Ok(matcher::supported(available_locales()?, &requested))
+    let lookup = lookup(options)?;
+    matcher::filter(available_locales()?, &requested, lookup).map_err(|_| Error::InvalidLocale)
 }
 #[derive(Debug, Clone)]
 pub struct LocaleResolution {
@@ -45,6 +45,8 @@ impl LocaleResolution {
     }
 }
 impl Renderer {
+    // ECMA-402 §13.2.3: registered locale support supplies the nu extension.
+    // https://tc39.es/ecma402/#sec-Intl.DurationFormat-internal-slots
     /// Resolve before reading style/display options at an observable host boundary.
     pub fn resolve_locale(
         &mut self,
@@ -78,13 +80,20 @@ impl Renderer {
             matcher::best_fit_requested(&data.available, &requested)
                 .map_err(|_| Error::InvalidLocale)?
         };
-        let (index, data_locale) = matched
+        let (index, base_locale) = matched
             .map(|(index, locale)| (Some(index), locale))
+            .or_else(|| matcher::host_default(&data.available).map(|locale| (None, locale)))
             .unwrap_or((None, "en".into()));
+        let data_locale = if data.locales.contains_key(&base_locale) {
+            base_locale.as_str()
+        } else {
+            matcher::host_locale_data(&base_locale, |tag| data.locales.contains_key(tag))
+                .ok_or_else(|| Error::InvalidData(base_locale.clone()))?
+        };
         let locale_data = data
             .locales
-            .get(&data_locale)
-            .ok_or_else(|| Error::InvalidData(data_locale.clone()))?;
+            .get(data_locale)
+            .ok_or_else(|| Error::InvalidData(data_locale.into()))?;
         let systems = self.supported_numbering_systems(&data.numbering_systems);
         let supported = |system: &str| {
             locale_data.nu.iter().any(|value| value == system)
@@ -94,7 +103,7 @@ impl Renderer {
             .nu
             .first()
             .cloned()
-            .ok_or_else(|| Error::InvalidData(data_locale.clone()))?;
+            .ok_or_else(|| Error::InvalidData(data_locale.into()))?;
         let request = index
             .map(|index| {
                 if lookup {
@@ -125,7 +134,7 @@ impl Renderer {
         }
         let locale = if extension {
             Locale::new(
-                &data_locale,
+                &base_locale,
                 &LocaleOptions {
                     numbering_system: Some(numbering_system.clone()),
                     ..Default::default()
@@ -135,11 +144,11 @@ impl Renderer {
             .as_str()
             .to_owned()
         } else {
-            data_locale.clone()
+            base_locale.clone()
         };
         Ok(LocaleResolution {
             locale,
-            data_locale,
+            data_locale: data_locale.into(),
             numbering_system,
         })
     }
@@ -152,6 +161,8 @@ pub struct ResolvedOptions {
     #[serde(flatten)]
     pub configuration: Configuration,
 }
+// ECMA-402 §13.4: store resolved options and the locale's time separator.
+// https://tc39.es/ecma402/#sec-properties-of-intl-durationformat-instances
 pub struct DurationFormat {
     resolved: ResolvedOptions,
     separator: &'static str,

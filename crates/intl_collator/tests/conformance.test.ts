@@ -180,6 +180,313 @@ const pairs = [
   ['x\0', 'x'],
   ['\u2060', ''],
 ] as const
+it('applies pinned CLDR German EOR reordering around the others group', () => {
+  // CLDR 49 common/collation/de.xml explicitly puts digits after letters.
+  const [result] = compare([
+    {
+      locales: ['de-u-co-eor'],
+      options: {numeric: true},
+      pairs: [
+        ['2', 'a'],
+        ['10', '2'],
+        ['\u0378', '2'],
+        ['\ufffe', 'a'],
+        ['\uffff', '2'],
+      ],
+    },
+  ])
+  expect(result.options.collation).toBe('eor')
+  expect(result.values).toEqual([1, 1, -1, -1, 1])
+  const [base] = compare([
+    {
+      locales: ['de-u-co-eor'],
+      options: {sensitivity: 'base'},
+      // CLDR's provisional German delta imports root EOR, then moves ezh to y.
+      // https://github.com/unicode-org/cldr/blob/release-49/common/collation/de.xml#L29-L51
+      pairs: [
+        ['y', 'ʒ'],
+        ['ʒ', 'z'],
+      ],
+    },
+  ])
+  expect(base.values).toEqual([0, -1])
+})
+
+it('places implicit weights in their CLDR groups and resolves Han references', () => {
+  const [variant, base, reordered] = compare([
+    {
+      locales: ['en'],
+      options: {},
+      pairs: [
+        ['\u0378', '\ufffd'],
+        ['\ue000', '\uffff'],
+        ['\ud800', '\udc00'],
+        ['\ud800', '\ufffd'],
+        ['\u{323b0}', '\u0378'],
+        ['一', '㐀'],
+        ['𪛙', '丁'],
+        ['一', '⼀'],
+      ],
+    },
+    {
+      locales: ['en'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['㈠', '(一)'],
+        ['⼀', '一'],
+      ],
+    },
+    {
+      locales: ['ru'],
+      options: {},
+      pairs: [
+        ['я', '一'],
+        ['一', '\u0378'],
+        ['\u0378', '\ufffd'],
+      ],
+    },
+  ])
+  expect(variant.values).toEqual([-1, -1, -1, -1, -1, -1, -1, -1])
+  expect(base.values).toEqual([0, 0])
+  expect(reordered.values).toEqual([-1, -1, -1])
+})
+
+it('puts tailored CJK primaries in the Han group before implicit Han', () => {
+  const [japanese, chinese] = compare([
+    {
+      locales: ['ja'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['a', '一'],
+        ['あ', '阿'],
+        ['亜', '阿'],
+        ['阿', '𪛙'],
+        ['一', 'α'],
+      ],
+    },
+    {
+      locales: ['zh-u-co-pinyin'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['阿', '一'],
+        ['阿', 'a'],
+        ['一', '\u{33479}'],
+      ],
+    },
+  ])
+  expect(japanese.values).toEqual([-1, -1, -1, -1, -1])
+  expect(chinese.values).toEqual([-1, -1, -1])
+})
+
+it('applies Kana prefix relations and retains collation extensions', () => {
+  const [kanaBase, kanaVariant, swedish] = compare([
+    {
+      locales: ['ja'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['こー', 'こお'],
+        ['カレー', 'カレエ'],
+        ['こゝ', 'ここ'],
+        ['aー', 'aお'],
+        ['ー', 'お'],
+      ],
+    },
+    {
+      locales: ['ja'],
+      options: {sensitivity: 'variant'},
+      pairs: [
+        ['こー', 'こお'],
+        ['か', 'カ'],
+      ],
+    },
+    {
+      locales: ['sv'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['þ', 'th'],
+        ['þ', 't'],
+      ],
+    },
+  ])
+  expect(kanaBase.values).toEqual([0, 0, 0, -1, -1])
+  expect(kanaVariant.values).toEqual([-1, 0])
+  expect(swedish.values).toEqual([0, 1])
+})
+
+it('suppresses root contractions and prefixes only in the configured tailoring', () => {
+  const [serbian, macedonian, russian, sort, search, imported] = compare([
+    {
+      locales: ['sr'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['и', 'й'],
+        ['И', 'И\u0306'],
+      ],
+    },
+    {locales: ['mk'], options: {sensitivity: 'base'}, pairs: [['и', 'й']]},
+    {locales: ['ru'], options: {sensitivity: 'base'}, pairs: [['и', 'й']]},
+    {
+      locales: ['en'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['เก', 'กเ'],
+        ['ເກ', 'ກເ'],
+        ['l·', 'l'],
+      ],
+    },
+    // CLDR 49 root search removes prefixes for U+00B7 and U+0387 (CLDR-19476).
+    {
+      locales: ['en'],
+      options: {usage: 'search', sensitivity: 'base'},
+      pairs: [
+        ['เก', 'กเ'],
+        ['ເກ', 'ກເ'],
+        ['l·', 'l'],
+        ['l·', 'l'],
+      ],
+    },
+    {
+      locales: ['de'],
+      options: {usage: 'search', sensitivity: 'base'},
+      pairs: [
+        ['เก', 'กเ'],
+        ['l·', 'l'],
+        ['ä', 'ae'],
+      ],
+    },
+  ])
+  expect(serbian.values).toEqual([0, 0])
+  expect(macedonian.values).toEqual([0])
+  expect(russian.values).toEqual([-1])
+  expect(sort.values).toEqual([0, 0, 0])
+  expect(search.values).toEqual([1, 1, 1, 1])
+  expect(imported.values).toEqual([1, 1, 0])
+})
+
+it('applies escaped apostrophes in Breton and escaped letters in Church Slavonic', () => {
+  const [breton, churchSlavonic] = compare([
+    {
+      locales: ['br'],
+      options: {sensitivity: 'variant'},
+      pairs: [
+        ["c'h", 'cʼh'],
+        ["c'h", 'c’h'],
+        ['ch', "c'h"],
+      ],
+    },
+    {
+      locales: ['cu'],
+      options: {sensitivity: 'variant'},
+      pairs: [['д', 'ᲁ']],
+    },
+  ])
+  expect(breton.values).toEqual([0, 0, -1])
+  expect(churchSlavonic.values).toEqual([0])
+})
+
+it('extends contractions across lower combining classes and retains skipped accents', () => {
+  const [russian, accent, danish, serbian] = compare([
+    {
+      locales: ['ru'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['и\u0323\u0306', 'й'],
+        ['и\u0301\u0306', 'й'],
+        ['и\u034f\u0306', 'й'],
+      ],
+    },
+    {
+      locales: ['ru'],
+      options: {sensitivity: 'accent'},
+      pairs: [['и\u0323\u0306', 'й']],
+    },
+    {
+      locales: ['da'],
+      options: {sensitivity: 'base'},
+      pairs: [
+        ['a\u0327\u030a', 'å'],
+        ['a\u0304\u030a', 'å'],
+      ],
+    },
+    {
+      locales: ['sr'],
+      options: {sensitivity: 'base'},
+      pairs: [['и\u0323\u0306', 'и']],
+    },
+  ])
+  expect(russian.values).toEqual([0, -1, -1])
+  expect(accent.values).toEqual([1])
+  expect(danish.values).toEqual([0, -1])
+  expect(serbian.values).toEqual([0])
+})
+
+it('resolves CLDR case and punctuation defaults separately for sort and search', () => {
+  const cases = compare([
+    {locales: ['da'], options: {}, pairs: [['A', 'a']]},
+    {locales: ['mt'], options: {}, pairs: [['A', 'a']]},
+    {locales: ['da'], options: {usage: 'search'}, pairs: [['A', 'a']]},
+    {locales: ['da-u-kf-false'], options: {}, pairs: [['A', 'a']]},
+    {
+      locales: ['da-u-kf-upper'],
+      options: {caseFirst: 'lower'},
+      pairs: [['A', 'a']],
+    },
+    {locales: ['th'], options: {}, pairs: [['a-b', 'ab']]},
+    {locales: ['th'], options: {usage: 'search'}, pairs: [['a-b', 'ab']]},
+    {
+      locales: ['th'],
+      options: {usage: 'search', ignorePunctuation: true},
+      pairs: [['a-b', 'ab']],
+    },
+  ])
+  expect(cases.slice(0, 5).map(({options}) => options.caseFirst)).toEqual([
+    'upper',
+    'upper',
+    'false',
+    'false',
+    'lower',
+  ])
+  expect(cases[3].options.locale).toBe('da-u-kf-false')
+  expect(cases[4].options.locale).toBe('da')
+  expect(cases.slice(5).map(({options}) => options.ignorePunctuation)).toEqual([
+    true,
+    false,
+    true,
+  ])
+  expect(cases.flatMap(({values}) => values)).toEqual([
+    -1, -1, 1, 1, 1, 0, -1, 0,
+  ])
+})
+
+it('uses the chosen collation defaults while retaining explicit overrides', () => {
+  const cases = compare([
+    {locales: ['da-u-co-eor'], options: {}, pairs: [['A', 'a']]},
+    {locales: ['da-u-co-eor-kf-upper'], options: {}, pairs: [['A', 'a']]},
+    {
+      locales: ['da'],
+      options: {collation: 'eor', caseFirst: 'upper'},
+      pairs: [['A', 'a']],
+    },
+    {locales: ['th'], options: {collation: 'emoji'}, pairs: [['a-b', 'ab']]},
+    {
+      locales: ['th-u-co-emoji'],
+      options: {ignorePunctuation: true},
+      pairs: [['a-b', 'ab']],
+    },
+  ])
+  expect(cases.slice(0, 3).map(({options}) => options.caseFirst)).toEqual([
+    'false',
+    'upper',
+    'upper',
+  ])
+  expect(cases[1].options.locale).toBe('da-u-co-eor-kf-upper')
+  expect(cases.slice(3).map(({options}) => options.ignorePunctuation)).toEqual([
+    false,
+    true,
+  ])
+  expect(cases.flatMap(({values}) => values)).toEqual([1, -1, -1, -1, 0])
+})
+
 it('compares every available locale, every advertised collation and search with TS', () => {
   const metadata = collationLocaleData as Record<
     string,

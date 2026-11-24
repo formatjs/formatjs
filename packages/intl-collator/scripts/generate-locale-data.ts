@@ -3,26 +3,39 @@ import {basename} from 'node:path'
 import minimist from 'minimist'
 import {readdirSync, readFileSync, statSync} from 'node:fs'
 import {outputFileSync} from 'fs-extra/esm'
-import {parseLDMLCollations} from './parse-ldml-collation.js'
+import {
+  parseLDMLCollations,
+  type CollationRule,
+} from './parse-ldml-collation.js'
+
+type CaseFirst = 'false' | 'upper' | 'lower'
+type TailoringDefaults = {caseFirst: CaseFirst; ignorePunctuation: boolean}
 
 type GeneratedLocaleData = {
   readonly co: readonly string[]
   readonly kn: readonly ['false', 'true']
-  readonly kf: readonly ['false', 'upper', 'lower']
+  readonly kf: readonly CaseFirst[]
+  readonly searchKf: readonly CaseFirst[]
   readonly defaultCollation: string
   readonly sensitivity: 'variant'
   readonly ignorePunctuation: boolean
+  readonly searchIgnorePunctuation: boolean
+  readonly collationDefaults: Record<string, TailoringDefaults>
 }
+
+type LocaleMetadata = Pick<
+  GeneratedLocaleData,
+  'co' | 'kn' | 'defaultCollation' | 'sensitivity'
+>
 
 const DEFAULT_COLLATION_RE =
   /<defaultCollation\b[^>]*>([^<]+)<\/defaultCollation>/i
 const UNDERSCORE_RE = /_/g
 const WHITESPACE_RE = /\s+/g
 
-// Emits the ECMA-402 locale data shape consumed by ResolveLocale for
-// Intl.Collator relevant extension keys co/kn/kf.
+// ECMA-402 §10.2.3 defines the Collator locale data for co, kf, and kn.
 // https://tc39.es/ecma402/#sec-initializecollator
-// https://tc39.es/ecma402/#sec-intl.collator-internal-slots
+// https://tc39.es/ecma402/#sec-intl-collator-internal-slots
 
 function collationPaths(dir: string): string[] {
   const entries = readdirSync(dir).flatMap(entry => {
@@ -78,7 +91,56 @@ if (!argv.out) {
   throw new Error('--out is required')
 }
 
-const localeData: Record<string, GeneratedLocaleData> = {}
+const baseLocaleData: Record<string, LocaleMetadata> = {}
+const localeRules = new Map<string, Map<string, CollationRule[]>>()
+
+function applyTailoringDefaults(
+  locale: string,
+  type: string,
+  defaults: TailoringDefaults,
+  active: Set<string>
+) {
+  while (locale !== 'root' && !localeRules.get(locale)?.has(type)) {
+    const parent = locale.lastIndexOf('-')
+    locale = parent < 0 ? 'root' : locale.slice(0, parent)
+  }
+  const key = locale + '|' + type
+  if (active.has(key)) return
+  active.add(key)
+  // LDML imports contribute settings in order, including later overrides.
+  // https://www.unicode.org/reports/tr35/tr35-collation.html#Special_Purpose_Commands
+  for (const rule of localeRules.get(locale)?.get(type) || []) {
+    if (rule.type === 'caseFirst') {
+      defaults.caseFirst =
+        rule.value === 'upper' || rule.value === 'lower' ? rule.value : 'false'
+    } else if (rule.type === 'alternate') {
+      defaults.ignorePunctuation = rule.value === 'shifted'
+    } else if (rule.type === 'import') {
+      const [source, collation = 'standard'] = rule.value.split('-u-co-', 2)
+      applyTailoringDefaults(
+        source === 'und' ? 'root' : source,
+        collation,
+        defaults,
+        active
+      )
+    }
+  }
+  active.delete(key)
+}
+
+function tailoringDefaults(locale: string, type: string): TailoringDefaults {
+  const defaults: TailoringDefaults = {
+    caseFirst: 'false',
+    ignorePunctuation: false,
+  }
+  applyTailoringDefaults(locale, type, defaults, new Set())
+  return defaults
+}
+
+function caseFirstValues(defaultValue: CaseFirst): CaseFirst[] {
+  const values: CaseFirst[] = ['false', 'upper', 'lower']
+  return [defaultValue, ...values.filter(value => value !== defaultValue)]
+}
 
 const paths =
   argv.collationPath !== undefined
@@ -96,6 +158,14 @@ for (const path of resolvedPaths) {
   const locale = localeFromPath(path)
   const defaultType = defaultCollation(source)
   const collations = parseLDMLCollations(locale, source)
+  localeRules.set(
+    locale,
+    new Map(
+      collations
+        .filter(collation => collation.rules.length)
+        .map(collation => [canonicalCollation(collation.type), collation.rules])
+    )
+  )
   const collationTypes = new Set<string>(['default'])
   // ECMA-402 exposes supported "co" values through locale data. Keep
   // non-standard/search LDML types plus the locale default type.
@@ -113,31 +183,41 @@ for (const path of resolvedPaths) {
   if (defaultType !== 'standard' && defaultType !== 'search') {
     collationTypes.add(canonicalCollation(defaultType))
   }
-  // ECMA-402 §10.1.1, steps 21–22: use the locale punctuation default.
-  // LDML alternate=shifted ignores variable punctuation at these strengths.
-  // https://tc39.es/ecma402/#sec-intl.collator
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L42-L43
-  // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
-  const alternate = collations
-    .find(collation => collation.type === defaultType)
-    ?.rules.findLast(rule => rule.type === 'alternate')
-  localeData[locale] = {
+  baseLocaleData[locale] = {
     co: [...collationTypes].sort(),
     kn: ['false', 'true'],
-    kf: ['false', 'upper', 'lower'],
     defaultCollation: canonicalCollation(defaultType),
     sensitivity: 'variant',
-    ignorePunctuation:
-      alternate?.type === 'alternate' && alternate.value === 'shifted',
   }
 }
 
 // Root collations apply to every language; their rules remain shared.
-const rootTypes = localeData.root?.co || []
-for (const [locale, data] of Object.entries(localeData)) {
+const rootTypes = baseLocaleData.root?.co || []
+const localeData: Record<string, GeneratedLocaleData> = {}
+for (const [locale, data] of Object.entries(baseLocaleData)) {
+  // ECMA-402 §10.1.1 selects sort or search locale data before resolving kf
+  // and the locale's ignorePunctuation default.
+  // https://tc39.es/ecma402/#sec-intl.collator
+  const sort = tailoringDefaults(locale, data.defaultCollation)
+  const search = tailoringDefaults(locale, 'search')
+  const co = [...new Set([...rootTypes, ...data.co])].sort()
   localeData[locale] = {
     ...data,
-    co: [...new Set([...rootTypes, ...data.co])].sort(),
+    co,
+    kf: caseFirstValues(sort.caseFirst),
+    searchKf: caseFirstValues(search.caseFirst),
+    ignorePunctuation: sort.ignorePunctuation,
+    searchIgnorePunctuation: search.ignorePunctuation,
+    collationDefaults: Object.fromEntries(
+      co
+        .filter(type => type !== 'default')
+        .map(type => [type, tailoringDefaults(locale, type)] as const)
+        .filter(
+          ([, defaults]) =>
+            defaults.caseFirst !== sort.caseFirst ||
+            defaults.ignorePunctuation !== sort.ignorePunctuation
+        )
+    ),
   }
 }
 

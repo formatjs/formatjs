@@ -5,6 +5,15 @@ import {
   type ArithmeticCalendarId,
 } from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import type {CalendarData} from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
+import {
+  RangeErrorConstructor,
+  floor,
+  numberFrom,
+  numberIsFinite,
+} from '#packages/ecma262-abstract/intrinsics.js'
+
+const apply = Reflect.apply
+const slice = String.prototype.slice
 
 // Temporal era identifiers mapped to CLDR calendar era keys.
 const eras: Record<string, string> = {
@@ -39,19 +48,15 @@ export function arithmeticCalendar(
   return {
     calendar,
     dateFromTime(t) {
-      const epochDay = Math.floor(t / 86400000)
+      const epochDay = floor(t / 86400000)
       // Keep one day of padding around Date's range for timezone offsets.
-      if (
-        !Number.isFinite(t) ||
-        epochDay < -100000001 ||
-        epochDay > 100000000
-      ) {
-        throw new RangeError('Calendar date out of range')
+      if (!numberIsFinite(t) || epochDay < -100000001 || epochDay > 100000000) {
+        throw new RangeErrorConstructor('Calendar date out of range')
       }
       const date = ArithmeticCalendarFromEpochDay(calendar, epochDay)
       if (hebrew) {
         // CLDR reserves month 6 for Adar I and a separate name for leap-year Adar II.
-        const monthCode = Number(date.monthCode.slice(1, 3))
+        const monthCode = numberFrom(apply(slice, date.monthCode, [1, 3]))
         const monthNameIndex =
           date.monthCode === 'M05L'
             ? 5

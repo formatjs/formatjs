@@ -1,47 +1,81 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {defaultContent} from '@formatjs_generated/cldr.supported-locales/default-content.js'
 
-const explicitLocales = new WeakMap<object, Set<string>>()
-const getExplicitLocales = explicitLocales.get.bind(explicitLocales)
-const setExplicitLocales = explicitLocales.set.bind(explicitLocales)
+const registrations = new WeakMap<object, Map<string, string>>()
+const getRegistrations = registrations.get.bind(registrations)
+const setRegistrations = registrations.set.bind(registrations)
+const LocaleMap = Map
+const apply = Reflect.apply
+const add = Set.prototype.add
+const getOwner = Map.prototype.get
+const setOwner = Map.prototype.set
+const forEachOwner = Map.prototype.forEach
+const split = String.prototype.split
+const slice = String.prototype.slice
 
+// ECMA-402 §9 defines [[AvailableLocales]] over canonical tags. Callers
+// canonicalize pack labels before indexing their data.
 // ECMA-402 §9.1 [[AvailableLocales]] requires fallback tags, including the
 // scriptless language-region tag. Fill missing fallbacks without replacing
-// explicitly loaded locale data with another locale's likely-subtag alias.
+// explicitly loaded locale data. Refresh inferred rows owned by a reloaded pack.
 // https://tc39.es/ecma402/#sec-internal-slots
-// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L18-L26
 export function registerLocaleData<T>(
   locale: string,
   data: T,
   localeData: Record<string, T | undefined>,
   availableLocales: Set<string>
 ): void {
-  let loaded = getExplicitLocales(localeData)
-  if (!loaded) {
-    loaded = new Set<string>()
-    setExplicitLocales(localeData, loaded)
+  let owners = getRegistrations(localeData)
+  if (!owners) {
+    owners = new LocaleMap()
+    setRegistrations(localeData, owners)
   }
-  loaded.add(locale)
-  const locales = [locale, ...(defaultContent[locale] || [])]
-  for (const tag of locales) {
-    if (tag === locale || !loaded.has(tag) || localeData[tag] === undefined) {
-      localeData[tag] = data
+  if (apply(getOwner, owners, [locale]) === locale) {
+    apply(forEachOwner, owners, [
+      (owner: string, tag: string) => {
+        if (owner === locale) setDataProperty(localeData, tag, data)
+      },
+    ])
+  }
+  apply(setOwner, owners, [locale, locale])
+  setDataProperty(localeData, locale, data)
+  apply(add, availableLocales, [locale])
+
+  const aliases = HasOwnProperty(defaultContent, locale)
+    ? defaultContent[locale]
+    : undefined
+  for (let index = 0; index < (aliases?.length ?? 0); index++) {
+    const tag = aliases![index]
+    if (apply(getOwner, owners, [tag]) !== tag) {
+      setDataProperty(localeData, tag, data)
+      apply(setOwner, owners, [tag, locale])
     }
-    availableLocales.add(tag)
+    apply(add, availableLocales, [tag])
   }
-  for (const tag of locales) {
-    const parts = tag.split('-')
-    const fallbacks: string[] = []
-    while (parts.length > 1) {
-      if (parts.length > 2 && parts[1].length === 4) {
-        fallbacks.push([parts[0], ...parts.slice(2)].join('-'))
+  for (let index = -1; index < (aliases?.length ?? 0); index++) {
+    const tag = index === -1 ? locale : aliases![index]
+    const owner = apply(getOwner, owners, [tag]) ?? tag
+    const selected = localeData[tag]
+    const addFallback = (fallback: string) => {
+      if (!HasOwnProperty(localeData, fallback)) {
+        setDataProperty(localeData, fallback, selected)
+        apply(setOwner, owners, [fallback, owner])
       }
-      parts.pop()
-      fallbacks.push(parts.join('-'))
+      apply(add, availableLocales, [fallback])
     }
-    for (const fallback of fallbacks) {
-      if (localeData[fallback] === undefined)
-        localeData[fallback] = localeData[tag]
-      availableLocales.add(fallback)
+    const parts = apply(split, tag, ['-']) as string[]
+    const scriptEnd = parts[0].length + 5
+    let parent = tag
+    for (let length = parts.length; length > 1; length--) {
+      if (length > 2 && parts[1].length === 4) {
+        addFallback(parts[0] + apply(slice, parent, [scriptEnd]))
+      }
+      parent = apply(slice, parent, [
+        0,
+        parent.length - parts[length - 1].length - 1,
+      ])
+      addFallback(parent)
     }
   }
 }

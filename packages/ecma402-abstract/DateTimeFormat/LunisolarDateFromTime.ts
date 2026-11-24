@@ -1,4 +1,7 @@
-import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  floor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 interface CalendarData {
   firstYear: number
   endDay: number
@@ -9,13 +12,15 @@ interface CalendarData {
 
 const alphabet =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
+const apply = Reflect.apply
+const indexOf = String.prototype.indexOf
 
 // Each year stores two base-64 digits selecting a shared month-pattern entry.
 function yearPattern(data: CalendarData, index: number): number {
   const offset = index * 2
   const key =
-    alphabet.indexOf(data.years[offset]) * 64 +
-    alphabet.indexOf(data.years[offset + 1])
+    apply(indexOf, alphabet, [data.years[offset]]) * 64 +
+    apply(indexOf, alphabet, [data.years[offset + 1]])
   return data.dictionary[key]
 }
 
@@ -56,7 +61,7 @@ export function LunisolarDateFromTime(
   leapMonth: boolean
   day: number
 } {
-  const epochDay = Math.floor(t / 86400000)
+  const epochDay = floor(t / 86400000)
   const {checkpoints} = data
   if (epochDay < checkpoints[0] || epochDay >= data.endDay) {
     throw new RangeErrorConstructor('Date outside calendar data range')
@@ -64,7 +69,7 @@ export function LunisolarDateFromTime(
   let low = 0
   let high = checkpoints.length
   while (low + 1 < high) {
-    const middle = Math.floor((low + high) / 2)
+    const middle = floor((low + high) / 2)
     if (checkpoints[middle] <= epochDay) low = middle
     else high = middle
   }

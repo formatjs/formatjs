@@ -1,21 +1,31 @@
-import {registerLocaleBrand} from '#packages/intl-locale/locale-brand.js'
+import {
+  readLocaleTag,
+  registerLocaleBrand,
+} from '#packages/intl-locale/locale-brand.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  arrayIndexOf,
+  createFromConstructor,
+  nullClassBase,
+  numberFrom,
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  setDataProperty,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
-import {
-  createDataProperty,
-  invariant,
-} from '#packages/ecma402-abstract/utils.js'
+import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
-import type {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {
   type UnicodeExtension,
   type UnicodeLanguageId,
   emitUnicodeLanguageId,
   emitUnicodeLocaleId,
+  getCanonicalLocales,
   isStructurallyValidLanguageTag,
   isUnicodeLanguageSubtag,
   isUnicodeRegionSubtag,
@@ -26,9 +36,7 @@ import {
   parseUnicodeLocaleId,
 } from '@formatjs/intl-getcanonicallocales'
 import {scriptDirections} from '@formatjs_generated/cldr.locale/script-directions.js'
-import getInternalSlots, {
-  getInternalSlotsIfPresent,
-} from '#packages/intl-locale/get_internal_slots.js'
+import getInternalSlots from '#packages/intl-locale/get_internal_slots.js'
 import {
   getCalendarPreferenceDataForRegion,
   getHourCyclesPreferenceDataForLocaleOrRegion,
@@ -37,6 +45,16 @@ import {
 } from '#packages/intl-locale/preference-data.js'
 
 import type {WeekInfoInternal} from '#packages/intl-locale/preference-data.js'
+
+const apply = Reflect.apply
+const createObject = Object.create
+const descriptor = Object.getOwnPropertyDescriptor
+const getPrototypeOf = Object.getPrototypeOf
+const objectPrototype = Object.prototype
+const lowerCase = String.prototype.toLowerCase
+const split = String.prototype.split
+const slice = String.prototype.slice
+const indexOf = String.prototype.indexOf
 
 export interface IntlLocaleOptions {
   language?: string
@@ -62,8 +80,9 @@ const RELEVANT_EXTENSION_KEYS = [
   'fw',
 ] as const
 type RELEVANT_EXTENSION_KEY = (typeof RELEVANT_EXTENSION_KEYS)[number]
-type ExtensionOpts = Record<RELEVANT_EXTENSION_KEY, string>
+type ExtensionOpts = Record<RELEVANT_EXTENSION_KEY, string | undefined>
 
+// ECMA-402 §15.4 https://tc39.es/ecma402/#sec-properties-of-intl-locale-instances
 export interface IntlLocaleInternal extends IntlLocaleOptions {
   locale: string
   initializedLocale: boolean
@@ -74,14 +93,11 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   invariant(
     isStructurallyValidLanguageTag(tag),
     'malformed language tag',
-    RangeError
+    RangeErrorConstructor
   )
   // ECMA-402 §15.1.1, steps 13–14: canonicalize before applying overrides.
   // https://tc39.es/ecma402/#sec-Intl.Locale
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L34-L36
-  tag = ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
-    tag
-  )[0]
+  tag = getCanonicalLocales(tag)[0]
   const language = GetOption(
     options,
     'language',
@@ -93,7 +109,7 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
     invariant(
       isUnicodeLanguageSubtag(language),
       'Malformed unicode_language_subtag',
-      RangeError
+      RangeErrorConstructor
     )
   }
   const script = GetOption(options, 'script', 'string', undefined, undefined)
@@ -101,7 +117,7 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
     invariant(
       isUnicodeScriptSubtag(script),
       'Malformed unicode_script_subtag',
-      RangeError
+      RangeErrorConstructor
     )
   }
   const region = GetOption(options, 'region', 'string', undefined, undefined)
@@ -109,13 +125,11 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
     invariant(
       isUnicodeRegionSubtag(region),
       'Malformed unicode_region_subtag',
-      RangeError
+      RangeErrorConstructor
     )
   }
   // ECMA-402 §15.1.2 UpdateLanguageId, steps 8–9 and 14.
   // https://tc39.es/ecma402/#sec-updatelanguageid
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L101-L108
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L113
   const variants = GetOption(
     options,
     'variants',
@@ -125,14 +139,23 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   )
   const languageId = parseUnicodeLanguageId(tag)
   if (variants !== undefined) {
-    const subtags = variants
-      .replace(/[A-Z]/g, character => character.toLowerCase())
-      .split('-')
-    if (
-      subtags.some(variant => !isUnicodeVariantSubtag(variant)) ||
-      new Set(subtags).size !== subtags.length
-    ) {
-      throw new RangeError('Malformed unicode_variant_subtag')
+    const subtags = apply(split, variants, ['-']) as string[]
+    const seen = {__proto__: null} as unknown as Record<
+      string,
+      true | undefined
+    >
+    for (let index = 0; index < subtags.length; index++) {
+      const original = subtags[index]
+      if (!isUnicodeVariantSubtag(original)) {
+        throw new RangeErrorConstructor('Malformed unicode_variant_subtag')
+      }
+      // Only validated ASCII subtags reach case folding.
+      const variant = apply(lowerCase, original, []) as string
+      if (seen[variant]) {
+        throw new RangeErrorConstructor('Malformed unicode_variant_subtag')
+      }
+      seen[variant] = true
+      subtags[index] = variant
     }
     languageId.variants = subtags
   }
@@ -145,7 +168,7 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   if (region !== undefined) {
     languageId.region = region
   }
-  return ((Intl as any).getCanonicalLocales as typeof getCanonicalLocales)(
+  return getCanonicalLocales(
     emitUnicodeLocaleId({
       ...parseUnicodeLocaleId(tag),
       lang: languageId,
@@ -153,75 +176,61 @@ function applyOptionsToTag(tag: string, options: IntlLocaleOptions): string {
   )[0]
 }
 
+function findUnicodeExtension(
+  extensions: ReturnType<typeof parseUnicodeLocaleId>['extensions']
+): UnicodeExtension | undefined {
+  for (let index = 0; index < extensions.length; index++) {
+    const extension = extensions[index]
+    if (extension.type === 'u') return extension
+  }
+}
+
 function applyUnicodeExtensionToTag(
   tag: string,
-  options: ExtensionOpts,
-  relevantExtensionKeys: typeof RELEVANT_EXTENSION_KEYS
+  options: ExtensionOpts
 ): ExtensionOpts & {locale: string} {
-  let unicodeExtension: UnicodeExtension | undefined
-  let keywords: UnicodeExtension['keywords'] = []
   const ast = parseUnicodeLocaleId(tag)
-  for (const ext of ast.extensions) {
-    if (ext.type === 'u') {
-      unicodeExtension = ext
-      if (Array.isArray(ext.keywords)) keywords = ext.keywords
-    }
-  }
+  const extension = findUnicodeExtension(ast.extensions)
+  const keywords = extension?.keywords ?? []
 
-  const result = Object.create(null)
-
-  for (const key of relevantExtensionKeys) {
-    let value, entry
-    for (const keyword of keywords) {
-      if (keyword[0] === key) {
-        entry = keyword
-        value = entry[1]
-      }
-    }
-    invariant(key in options, `${key} must be in options`)
-    const optionsValue = options[key]
-    if (optionsValue !== undefined) {
-      invariant(
-        typeof optionsValue === 'string',
-        `Value for ${key} must be a string`
-      )
-      value = optionsValue
-      if (entry) {
-        entry[1] = value
-      } else {
-        keywords.push([key, value])
-      }
-    }
-    result[key] = value
-  }
-  if (!unicodeExtension) {
-    if (keywords.length) {
-      // Private use consumes following subtags; insert before it, then canonicalize.
-      ast.extensions.unshift({
-        type: 'u',
-        keywords,
-        attributes: [],
-      })
-    }
-  } else {
-    unicodeExtension.keywords = keywords
-  }
-  result.locale = (
-    (Intl as any).getCanonicalLocales as typeof getCanonicalLocales
-  )(emitUnicodeLocaleId(ast))[0]
-  // ECMA-402 §15.1.3 MakeLocaleRecord, steps 4.e.i and 4.f: store canonical
-  // option values, matching the canonical Unicode extension in the final tag.
+  // MakeLocaleRecord updates its private Unicode keyword list.
   // https://tc39.es/ecma402/#sec-makelocalerecord
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L151-L156
-  const canonicalExtension = parseUnicodeLocaleId(
-    result.locale
-  ).extensions.find(extension => extension.type === 'u') as
-    | UnicodeExtension
-    | undefined
-  for (const key of relevantExtensionKeys) {
-    result[key] = canonicalExtension?.keywords.find(
-      keyword => keyword[0] === key
-    )?.[1]
+  for (let index = 0; index < RELEVANT_EXTENSION_KEYS.length; index++) {
+    const key = RELEVANT_EXTENSION_KEYS[index]
+    const value = options[key]
+    if (value === undefined) continue
+    let position = 0
+    while (position < keywords.length && keywords[position][0] !== key)
+      position++
+    if (position < keywords.length) {
+      keywords[position][1] = value
+    } else {
+      setDataProperty(keywords, position, [key, value])
+    }
+  }
+
+  if (!extension && keywords.length) {
+    // Private use consumes following subtags. Insert Unicode data before it.
+    const extensions: typeof ast.extensions = [
+      {type: 'u', keywords, attributes: []},
+    ]
+    for (let index = 0; index < ast.extensions.length; index++) {
+      setDataProperty(extensions, index + 1, ast.extensions[index])
+    }
+    ast.extensions = extensions
+  }
+
+  const result = createObject(null) as ExtensionOpts & {locale: string}
+  result.locale = getCanonicalLocales(emitUnicodeLocaleId(ast))[0]
+  // ECMA-402 §15.1.3 steps 4.e.i and 4.f store the canonical option values.
+  // https://tc39.es/ecma402/#sec-makelocalerecord
+  const canonical = findUnicodeExtension(
+    parseUnicodeLocaleId(result.locale).extensions
+  )?.keywords
+  for (let index = 0; canonical && index < canonical.length; index++) {
+    const keyword = canonical[index]
+    if (HasOwnProperty(options, keyword[0]))
+      result[keyword[0] as RELEVANT_EXTENSION_KEY] = keyword[1]
   }
   return result
 }
@@ -245,7 +254,7 @@ function mergeUnicodeLanguageId(
     lang: !lang || lang === 'und' ? replacement.lang : lang,
     script: script || replacement.script,
     region: region || replacement.region,
-    variants: [...variants, ...replacement.variants],
+    variants,
   }
 }
 
@@ -257,18 +266,19 @@ function addLikelySubtags(tag: string): string {
   // ECMA-402 §15.3.9, step 3; UTS 35 §4.3 Add Likely Subtags,
   // steps 1.2–1.4, 2, and 3: preserve supplied components and report no match.
   // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.maximize
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L284
   // https://www.unicode.org/reports/tr35/tr35-78/tr35.html#Likely_Subtags
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2542-L2556
   if (lang !== 'und' && script && region) return tag
-  for (const candidate of [
+  const candidates = [
     {lang, script, region, variants: []},
     {lang, script, variants: []},
     {lang, region, variants: []},
     {lang, variants: []},
-  ]) {
-    const match = likelySubtags[emitUnicodeLanguageId(candidate) as 'aa']
-    if (!match) continue
+  ]
+  for (let index = 0; index < candidates.length; index++) {
+    const key = emitUnicodeLanguageId(candidates[index])
+    if (!HasOwnProperty(likelySubtags, key)) continue
+    const match = (likelySubtags as Readonly<Record<string, string>>)[key]
     ast.lang = mergeUnicodeLanguageId(
       lang,
       script,
@@ -293,7 +303,6 @@ function removeLikelySubtags(tag: string): string {
   // ECMA-402 §15.3.10, step 3; UTS 35 §4.3 Remove Likely Subtags, steps 1–6.
   // Trials use maximized components, retaining the original variants/extensions.
   // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.minimize
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L295
   // https://www.unicode.org/reports/tr35/tr35-78/tr35.html#Likely_Subtags
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2595-L2601
   const ast = parseUnicodeLocaleId(maxLocale)
@@ -336,104 +345,200 @@ function removeLikelySubtags(tag: string): string {
   return emitUnicodeLocaleId(ast)
 }
 
-function createArrayFromListOrRestricted(
-  list: any[],
-  restricted: any
-): Array<any> {
-  let result = list
-  if (restricted !== undefined) {
-    result = [restricted]
-  }
-
-  return Array.from(result)
-}
-
 function calendarsOfLocale(loc: Locale): Array<string> {
-  const locInternalSlots = getInternalSlots(loc)
-
-  const restricted = locInternalSlots.calendar
-  const locale = locInternalSlots.locale
+  const {calendar, locale} = getInternalSlots(loc)
+  // ECMA-402 §15.5.9 step 1 returns the explicit calendar before region lookup.
+  // https://tc39.es/ecma402/#sec-calendarsoflocale
+  if (calendar !== undefined) return [calendar]
 
   const {region, regionOverride} = regionPreference(loc)
 
-  const preferredCalendars = getCalendarPreferenceDataForRegion(
+  const preferred = getCalendarPreferenceDataForRegion(
     region,
     regionOverride,
     parseUnicodeLanguageId(locale).lang
   )
-  return createArrayFromListOrRestricted(preferredCalendars, restricted)
+  const available = supportedValuesOf('calendar')
+  const result: string[] = []
+  // Steps 7–11 canonicalize and retain supported preferences in order.
+  for (let index = 0; index < preferred.length; index++) {
+    // CLDR uses "gregorian" for the BCP 47 calendar identifier "gregory".
+    const value =
+      preferred[index] === 'gregorian' ? 'gregory' : preferred[index]
+    const tag = getCanonicalLocales(`und-u-ca-${value}`)[0]
+    const extension = parseUnicodeLocaleId(tag)
+      .extensions[0] as UnicodeExtension
+    const canonical = extension.keywords[0][1]
+    if (
+      arrayIndexOf(available, canonical) !== -1 &&
+      arrayIndexOf(result, canonical) === -1
+    ) {
+      setDataProperty(result, result.length, canonical)
+    }
+  }
+  return result.length ? result : ['gregory']
 }
 
-function collationsOfLocale(loc: Locale): Array<string> {
-  const locInternalSlots = getInternalSlots(loc)
+let formatterIntl = globalThis.Intl
 
-  const restricted = locInternalSlots.collation
+function ownDataProperty(object: object, key: string) {
+  const property = descriptor(object, key)
+  return property && descriptor(property, 'value')
+}
 
-  if (restricted !== undefined) return [restricted]
-
-  // ECMA-402 §15.5.10 CollationsOfLocale, steps 2–4: use the matched
-  // locale's sort collations, or emoji/eor when lookup finds no locale.
-  // https://tc39.es/ecma402/#sec-collationsoflocale
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L665-L673
-  const locale = locInternalSlots.locale
-  if (
-    !Intl.Collator.supportedLocalesOf([locale], {localeMatcher: 'lookup'})
-      .length
+function formatterMethod(owner: unknown, name: string) {
+  while (
+    owner !== null &&
+    (typeof owner === 'object' || typeof owner === 'function') &&
+    owner !== objectPrototype
   ) {
+    const method = ownDataProperty(owner, name)?.value
+    if (typeof method === 'function') return method
+    owner = getPrototypeOf(owner)
+  }
+}
+
+// ECMA-402 §15.5.10 and §15.5.12 read formatter data through internal
+// slots. Retain the operations used to query the host or installed provider.
+function retainFormatter<K extends 'Collator' | 'NumberFormat'>(name: K) {
+  type Constructor = (typeof Intl)[K]
+  type Provider = {
+    Constructor: Constructor
+    supportedLocalesOf: Intl.CollatorConstructor['supportedLocalesOf']
+    resolvedOptions: (...args: never[]) => any
+  }
+  const providers = new WeakMap<Constructor, Provider>()
+  const get = providers.get.bind(providers)
+  const set = providers.set.bind(providers)
+  let current: Provider | undefined
+  const read = () => {
+    try {
+      formatterIntl ??= ownDataProperty(globalThis, 'Intl')?.value
+      const property = formatterIntl && ownDataProperty(formatterIntl, name)
+      if (!property) return current
+      const candidate = property.value
+      if (typeof candidate !== 'function') return undefined
+      const Constructor = candidate as Constructor
+      let provider = get(Constructor)
+      if (!provider) {
+        const supportedLocalesOf = formatterMethod(
+          Constructor,
+          'supportedLocalesOf'
+        )
+        const resolvedOptions = formatterMethod(
+          ownDataProperty(Constructor, 'prototype')?.value,
+          'resolvedOptions'
+        )
+        if (
+          typeof supportedLocalesOf !== 'function' ||
+          typeof resolvedOptions !== 'function'
+        )
+          return undefined
+        provider = {
+          Constructor,
+          supportedLocalesOf:
+            supportedLocalesOf as Provider['supportedLocalesOf'],
+          resolvedOptions: resolvedOptions as Provider['resolvedOptions'],
+        }
+        set(Constructor, provider)
+      }
+      current = provider
+      return provider
+    } catch {
+      // An unavailable host formatter has no locale data to probe.
+      return undefined
+    }
+  }
+  read()
+  return read
+}
+const readCollator = retainFormatter('Collator')
+const readNumberFormat = retainFormatter('NumberFormat')
+
+const lookupOptions = {__proto__: null, localeMatcher: 'lookup'} as const
+
+function collationsOfLocale(loc: Locale): Array<string> {
+  const {collation, locale} = getInternalSlots(loc)
+  // ECMA-402 §15.5.10 steps 1–4 select explicit, matched, or fallback collations.
+  // https://tc39.es/ecma402/#sec-collationsoflocale
+  if (collation !== undefined) return [collation]
+  try {
+    const provider = readCollator()
+    if (
+      !provider ||
+      !apply(provider.supportedLocalesOf, provider.Constructor, [
+        [locale],
+        lookupOptions,
+      ]).length
+    )
+      return ['emoji', 'eor']
+
+    const {Constructor, resolvedOptions} = provider
+    const candidates = supportedValuesOf('collation')
+    const result: string[] = []
+    // supportedValuesOf already returns candidates in lexicographic order.
+    for (let index = 0; index < candidates.length; index++) {
+      const value = candidates[index]
+      if (value === 'standard' || value === 'search') continue
+      const options = {
+        __proto__: null,
+        localeMatcher: 'lookup',
+        // The runtime list includes CLDR values missing from TypeScript's union.
+        collation: value as Intl.CollatorOptions['collation'],
+      } as const
+      const formatter = new Constructor(locale, options)
+      const optionsResult = apply(resolvedOptions, formatter, [])
+      if (ownDataProperty(optionsResult, 'collation')?.value === value)
+        setDataProperty(result, result.length, value)
+    }
+    return result
+  } catch {
     return ['emoji', 'eor']
   }
-  const supportedCollations = supportedValuesOf('collation').filter(
-    (co: string) =>
-      co !== 'standard' &&
-      co !== 'search' &&
-      new Intl.Collator(locale, {
-        collation: co as Intl.CollatorOptions['collation'],
-        localeMatcher: 'lookup',
-      }).resolvedOptions().collation === co
-  )
-  supportedCollations.sort()
-
-  return createArrayFromListOrRestricted(supportedCollations, restricted)
 }
 
 function hourCyclesOfLocale(loc: Locale): Array<string> {
-  const locInternalSlots = getInternalSlots(loc)
-
-  const restricted = locInternalSlots.hourCycle
-  const locale = locInternalSlots.locale
+  const {hourCycle, locale} = getInternalSlots(loc)
+  // ECMA-402 §15.5.11 step 1 returns the explicit hour cycle before region lookup.
+  // https://tc39.es/ecma402/#sec-hourcyclesoflocale
+  if (hourCycle !== undefined) return [hourCycle]
 
   const {region, regionOverride} = regionPreference(loc)
 
-  const preferredHourCycles = getHourCyclesPreferenceDataForLocaleOrRegion(
+  return getHourCyclesPreferenceDataForLocaleOrRegion(
     parseUnicodeLanguageId(locale).lang,
     region,
     regionOverride
   )
-  return createArrayFromListOrRestricted(preferredHourCycles, restricted)
 }
 
 function numberingSystemsOfLocale(loc: Locale): Array<string> {
-  const locInternalSlots = getInternalSlots(loc)
-
-  const restricted = locInternalSlots.numberingSystem
-  const locale = locInternalSlots.locale
-  // NumberingSystemsOfLocale 1–5 returns the explicit extension or the matched
-  // NumberFormat locale's default system, with latn when no locale matches.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L715-L727
-  if (restricted !== undefined) return [restricted]
-  const NumberFormat = Intl.NumberFormat
-  if (
-    typeof NumberFormat !== 'function' ||
-    !NumberFormat.supportedLocalesOf([locale], {localeMatcher: 'lookup'}).length
-  ) {
-    return ['latn']
+  const {numberingSystem, locale} = getInternalSlots(loc)
+  // ECMA-402 §15.5.12 steps 1–5 return the explicit system, matched
+  // NumberFormat locale's default system, or latn when no locale matches.
+  // https://tc39.es/ecma402/#sec-numberingsystemsoflocale
+  if (numberingSystem !== undefined) return [numberingSystem]
+  try {
+    const provider = readNumberFormat()
+    if (
+      provider &&
+      apply(provider.supportedLocalesOf, provider.Constructor, [
+        [locale],
+        lookupOptions,
+      ]).length
+    ) {
+      const formatter = new provider.Constructor(locale, lookupOptions)
+      const result = apply(provider.resolvedOptions, formatter, [])
+      const system = ownDataProperty(result, 'numberingSystem')?.value
+      if (typeof system === 'string') return [system]
+    }
+  } catch {
+    // A partial host formatter may fail even after reporting a locale match.
   }
-  return [
-    new NumberFormat(locale, {localeMatcher: 'lookup'}).resolvedOptions()
-      .numberingSystem,
-  ]
+  return ['latn']
 }
 
+// ECMA-402 §15.5.13 https://tc39.es/ecma402/#sec-timezonesoflocale
 function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
   const locInternalSlots = getInternalSlots(loc)
 
@@ -444,50 +549,80 @@ function timeZonesOfLocale(loc: Locale): Array<string> | undefined {
     return undefined
   }
 
-  const preferredTimeZones = getTimeZonePreferenceForRegion(region)
-  preferredTimeZones.sort()
-
-  return Array.from(preferredTimeZones)
+  return getTimeZonePreferenceForRegion(region)
 }
 
+// ECMA-402 §15.5.14 https://tc39.es/ecma402/#sec-textdirectionoflocale
 function characterDirectionOfLocale(loc: Locale): string | undefined {
   // TextDirectionOfLocale 1–6: use the explicit script, otherwise likely script;
   // unknown or unoriented scripts return undefined. Extensions do not matter.
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L758-L767
+  // https://tc39.es/ecma402/#sec-textdirectionoflocale
   const locale = getInternalSlots(loc).locale
-  const script =
-    parseUnicodeLanguageId(locale).script ||
-    parseUnicodeLanguageId(addLikelySubtags(locale)).script
-  return script ? scriptDirections[script] : undefined
+  let script = parseUnicodeLanguageId(locale).script
+  if (script === undefined) {
+    try {
+      script = parseUnicodeLanguageId(addLikelySubtags(locale)).script
+    } catch {
+      return undefined
+    }
+  }
+  return script && HasOwnProperty(scriptDirections, script)
+    ? scriptDirections[script]
+    : undefined
 }
 
+// ECMA-402 §15.5.6–7 extracts the Unicode keyword and canonicalizes its region.
+// https://tc39.es/ecma402/#sec-unicodeextensionvalue
+// https://tc39.es/ecma402/#sec-canonicalunicodesubdivision
+function canonicalSubdivisionRegion(
+  extension: UnicodeExtension | undefined,
+  key: 'sd' | 'rg'
+): string | undefined {
+  const keywords = extension?.keywords
+  if (!keywords) return undefined
+  for (let index = 0; index < keywords.length; index++) {
+    const keyword = keywords[index]
+    if (keyword[0] !== key) continue
+    const value = keyword[1]
+    if (value === undefined) return undefined
+    // The locale parser has already validated the ASCII type subtags.
+    // A subdivision is one region prefix followed by 1–4 alphanumerics.
+    if (apply(indexOf, value, ['-']) !== -1) return undefined
+    let region = apply(slice, value, [0, 2]) as string
+    if (!isUnicodeRegionSubtag(region)) {
+      region = apply(slice, value, [0, 3]) as string
+      if (!isUnicodeRegionSubtag(region)) return undefined
+    }
+    const suffixLength = value.length - region.length
+    if (suffixLength < 1 || suffixLength > 4) return undefined
+    const tag = getCanonicalLocales(`und-${region}`)[0]
+    return parseUnicodeLanguageId(tag).region
+  }
+}
+
+// ECMA-402 §15.5.8 steps 1–4 resolve the base region and independent override.
+// https://tc39.es/ecma402/#sec-regionpreference
 function regionPreference(loc: Locale): {
   region: string
   regionOverride: string | undefined
 } {
-  const locInternalSlots = getInternalSlots(loc)
-
-  const locale = locInternalSlots.locale
-
-  // RegionPreference uses the explicit region, subdivision, then likely subtags.
-  // ECMA-402 §15.5.8 RegionPreference, steps 1–4.
-  // https://tc39.es/ecma402/#sec-regionpreference
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L606-L616
+  const {locale} = getInternalSlots(loc)
   const ast = parseUnicodeLocaleId(locale)
-  const extension = ast.extensions.find(ext => ext.type === 'u') as
-    | UnicodeExtension
-    | undefined
-  const subdivisionRegion = (key: string) => {
-    const value = extension?.keywords.find(entry => entry[0] === key)?.[1]
-    const match = value?.match(/^([a-z]{2}|[0-9]{3})[a-z0-9]{1,4}$/i)
-    return match ? new Locale(`und-${match[1]}`).region : undefined
+  const extension = findUnicodeExtension(ast.extensions)
+  let region = ast.lang.region ?? canonicalSubdivisionRegion(extension, 'sd')
+  if (region === undefined) {
+    let maximal = locale
+    try {
+      maximal = addLikelySubtags(locale)
+    } catch {
+      // Step 2.b.i keeps the original tag if likely-subtag lookup fails.
+    }
+    region = parseUnicodeLanguageId(getCanonicalLocales(maximal)[0]).region
   }
-  const region =
-    ast.lang.region ||
-    subdivisionRegion('sd') ||
-    parseUnicodeLanguageId(addLikelySubtags(locale)).region ||
-    '001'
-  return {region, regionOverride: subdivisionRegion('rg')}
+  return {
+    region: region ?? '001',
+    regionOverride: canonicalSubdivisionRegion(extension, 'rg'),
+  }
 }
 
 function weekInfoOfLocale(loc: Locale): WeekInfoInternal {
@@ -501,74 +636,42 @@ function weekdayToString(fw: string) {
   // WeekdayToUValue maps only exact numeric strings; other strings pass through.
   // ECMA-402 §15.5.15 WeekdayToUValue, steps 1–2, Table 26.
   // https://tc39.es/ecma402/#sec-weekdaytouvalue
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L786-L790
-  return /^[0-7]$/.test(fw) ? TABLE_1[Number(fw) % 7] : fw
+  return fw.length === 1 && fw >= '0' && fw <= '7'
+    ? TABLE_1[numberFrom(fw) % 7]
+    : fw
 }
 
-export class Locale {
+// ECMA-402 §15.2.1 https://tc39.es/ecma402/#sec-Intl.Locale.prototype
+// ECMA-402 §15.3.1 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.constructor
+export class Locale extends nullClassBase {
+  // @ts-expect-error TS2377: extends null and returns its own receiver.
+  // oxlint-disable-next-line constructor-super -- The constructor returns its allocated receiver.
   constructor(tag: string | Locale, opts?: IntlLocaleOptions) {
-    // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
-    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-    const newTarget = this && this instanceof Locale ? this.constructor : void 0
-    if (!newTarget) {
-      throw new TypeError("Intl.Locale must be called with 'new'")
-    }
-
-    const {relevantExtensionKeys} = Locale
-
-    const internalSlotsList: Array<keyof IntlLocaleInternal> = [
-      'initializedLocale',
-      'locale',
-      'calendar',
-      'collation',
-      'hourCycle',
-      'numberingSystem',
-    ]
-
-    if (relevantExtensionKeys.indexOf('kf') > -1) {
-      internalSlotsList.push('caseFirst')
-    }
-
-    if (relevantExtensionKeys.indexOf('kn') > -1) {
-      internalSlotsList.push('numeric')
-    }
-
+    // ECMA-402 §15.1.1 uses NewTarget to allocate the branded receiver.
+    // https://tc39.es/ecma402/#sec-Intl.Locale
+    const receiver = createFromConstructor(new.target, Locale.prototype)
     if (tag === undefined) {
-      throw new TypeError(
+      throw new TypeErrorConstructor(
         "First argument to Intl.Locale constructor can't be empty or missing"
       )
     }
 
-    if (
-      tag === null ||
-      (typeof tag !== 'string' &&
-        typeof tag !== 'object' &&
-        typeof tag !== 'function')
-    ) {
-      throw new TypeError('tag must be a string or object')
-    }
-
-    let tagInternalSlots
-    if (
-      typeof tag === 'object' &&
-      (tagInternalSlots = getInternalSlotsIfPresent(tag)) &&
-      HasOwnProperty(tagInternalSlots, 'initializedLocale')
-    ) {
-      tag = tagInternalSlots.locale
-    } else {
-      // ECMA-402 §15.1.1, step 9.a: use ToString, including the string hint
-      // for @@toPrimitive and the ordinary valueOf fallback.
+    if (typeof tag !== 'string') {
+      if (!IsObject(tag))
+        throw new TypeErrorConstructor('tag must be a string or object')
+      // ECMA-402 §15.1.1, steps 7–9. Read [[Locale]] before trying string coercion.
       // https://tc39.es/ecma402/#sec-Intl.Locale
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L31
-      tag = ToString(tag)
+      tag = readLocaleTag(tag) ?? ToString(tag)
     }
 
-    let internalSlots = getInternalSlots(this, internalSlotsList)
+    const internalSlots = getInternalSlots(receiver, true)
 
-    let options = CoerceOptionsToObject<IntlLocaleOptions>(opts)
+    // ECMA-402 §15.1.1 steps 10–14 coerce options before validating the tag.
+    const options = CoerceOptionsToObject<IntlLocaleOptions>(opts)
 
     tag = applyOptionsToTag(tag, options)
-    const opt = Object.create(null)
+    // Steps 15–34 validate each Unicode option before reading the next.
+    const opt = createObject(null)
     const calendar = GetOption(
       options,
       'calendar',
@@ -578,7 +681,7 @@ export class Locale {
     )
     if (calendar !== undefined) {
       if (!IsUnicodeLocaleIdentifierType(calendar)) {
-        throw new RangeError('invalid calendar')
+        throw new RangeErrorConstructor('invalid calendar')
       }
     }
     opt.ca = calendar
@@ -592,7 +695,7 @@ export class Locale {
     )
     if (collation !== undefined) {
       if (!IsUnicodeLocaleIdentifierType(collation)) {
-        throw new RangeError('invalid collation')
+        throw new RangeErrorConstructor('invalid collation')
       }
     }
     opt.co = collation
@@ -606,14 +709,13 @@ export class Locale {
     if (fw !== undefined) {
       fw = weekdayToString(fw)
       if (!IsUnicodeLocaleIdentifierType(fw)) {
-        throw new RangeError('Invalid firstDayOfWeek')
+        throw new RangeErrorConstructor('Invalid firstDayOfWeek')
       }
     }
     // MakeLocaleRecord canonicalizes Unicode option values before storing them.
     // ECMA-402 §15.1.3 MakeLocaleRecord, step 4.e.i.
     // https://tc39.es/ecma402/#sec-makelocalerecord
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L151
-    opt.fw = fw?.toLowerCase()
+    opt.fw = fw === undefined ? undefined : apply(lowerCase, fw, [])
     const hc = GetOption(
       options,
       'hourCycle',
@@ -630,12 +732,14 @@ export class Locale {
       undefined
     )
     opt.kf = kf
-    const _kn = GetOption(options, 'numeric', 'boolean', undefined, undefined)
-    let kn
-    if (_kn !== undefined) {
-      kn = String(_kn)
-    }
-    opt.kn = kn
+    const numeric = GetOption(
+      options,
+      'numeric',
+      'boolean',
+      undefined,
+      undefined
+    )
+    opt.kn = numeric === undefined ? undefined : ToString(numeric)
     const numberingSystem = GetOption(
       options,
       'numberingSystem',
@@ -645,28 +749,25 @@ export class Locale {
     )
     if (numberingSystem !== undefined) {
       if (!IsUnicodeLocaleIdentifierType(numberingSystem)) {
-        throw new RangeError('Invalid numberingSystem')
+        throw new RangeErrorConstructor('Invalid numberingSystem')
       }
     }
     opt.nu = numberingSystem
-    const r = applyUnicodeExtensionToTag(tag, opt, relevantExtensionKeys)
+    const r = applyUnicodeExtensionToTag(tag, opt)
     internalSlots.locale = r.locale
     internalSlots.calendar = r.ca
     internalSlots.collation = r.co
     internalSlots.firstDayOfWeek = r.fw
     internalSlots.hourCycle = r.hc as 'h11'
 
-    if (relevantExtensionKeys.indexOf('kf') > -1) {
-      internalSlots.caseFirst = r.kf as 'upper'
-    }
-    if (relevantExtensionKeys.indexOf('kn') > -1) {
-      // An empty Unicode boolean keyword has the same meaning as 'true'.
-      // ECMA-402 §15.1.1 Intl.Locale, steps 42.a–42.b.i.
-      // https://tc39.es/ecma402/#sec-Intl.Locale
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L71-L74
-      internalSlots.numeric = r.kn === '' || SameValue(r.kn, 'true')
-    }
+    internalSlots.caseFirst = r.kf as 'upper'
+    // An empty Unicode boolean keyword has the same meaning as 'true'.
+    // ECMA-402 §15.1.1 steps 42.a–42.b.i.
+    // https://tc39.es/ecma402/#sec-Intl.Locale
+    internalSlots.numeric = r.kn === '' || SameValue(r.kn, 'true')
     internalSlots.numberingSystem = r.nu
+    internalSlots.initializedLocale = true
+    return receiver
   }
 
   /**
@@ -699,14 +800,15 @@ export class Locale {
     // The intrinsic must reject uninitialized receivers before exposing [[Locale]].
     // ECMA-402 §15.3.15 Intl.Locale.prototype.toString, steps 2–3.
     // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.toString
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L346-L347
     const slots = getInternalSlots(this)
     if (!HasOwnProperty(slots, 'initializedLocale')) {
-      throw new TypeError('Error uninitialized locale')
+      throw new TypeErrorConstructor('Error uninitialized locale')
     }
     return slots.locale
   }
 
+  // ECMA-402 §15.3.2 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.baseName
+  // ECMA-402 §15.5.1 https://tc39.es/ecma402/#sec-getlocalebasename
   public get baseName(): string {
     const locale = getInternalSlots(this).locale
     return emitUnicodeLanguageId(parseUnicodeLanguageId(locale))
@@ -716,37 +818,38 @@ export class Locale {
     return getInternalSlots(this).calendar
   }
 
+  // ECMA-402 §15.3.5 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.collation
   public get collation(): string | undefined {
     return getInternalSlots(this).collation
   }
 
+  // ECMA-402 §15.3.4 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.caseFirst
   public get caseFirst(): 'upper' | 'lower' | 'false' | undefined {
     return getInternalSlots(this).caseFirst
   }
 
+  // ECMA-402 §15.3.12 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.numeric
   public get numeric(): boolean | undefined {
     return getInternalSlots(this).numeric
   }
+  // ECMA-402 §15.3.11 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.numberingSystem
   public get numberingSystem(): string | undefined {
     return getInternalSlots(this).numberingSystem
   }
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.language
-   */
+  // ECMA-402 §15.3.8 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.language
+  // ECMA-402 §15.5.2 https://tc39.es/ecma402/#sec-getlocalelanguage
   public get language(): string {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).lang
   }
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.script
-   */
+  // ECMA-402 §15.3.14 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.script
+  // ECMA-402 §15.5.3 https://tc39.es/ecma402/#sec-getlocalescript
   public get script(): string | undefined {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).script
   }
-  /**
-   * https://tc39.es/proposal-intl-locale/#sec-Intl.Locale.prototype.region
-   */
+  // ECMA-402 §15.3.13 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.region
+  // ECMA-402 §15.5.4 https://tc39.es/ecma402/#sec-getlocaleregion
   public get region(): string | undefined {
     const locale = getInternalSlots(this).locale
     return parseUnicodeLanguageId(locale).region
@@ -763,6 +866,7 @@ export class Locale {
    */
   public get variants(): string | undefined {
     const locale = getInternalSlots(this).locale
+    // ECMA-402 §15.5.5 https://tc39.es/ecma402/#sec-getlocalevariants
     const variants = parseUnicodeLanguageId(locale).variants
     if (!variants || variants.length === 0) {
       return undefined
@@ -770,122 +874,90 @@ export class Locale {
     return variants.join('-')
   }
 
+  // ECMA-402 §15.3.6 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.firstDayOfWeek
   public get firstDayOfWeek(): string | undefined {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
-      throw new TypeError('Error uninitialized locale')
+      throw new TypeErrorConstructor('Error uninitialized locale')
     }
     return internalSlots.firstDayOfWeek
   }
 
+  // ECMA-402 §15.3.7 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.hourCycle
   public get hourCycle(): 'h11' | 'h12' | 'h23' | 'h24' | undefined {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
-      throw new TypeError('Error uninitialized locale')
+      throw new TypeErrorConstructor('Error uninitialized locale')
     }
     return internalSlots.hourCycle
   }
 
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCalendars
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCalendars
-   */
+  // ECMA-402 §15.3.16 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getCalendars
   public getCalendars(): string[] {
     return calendarsOfLocale(this)
   }
 
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getCollations
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getCollations
-   */
+  // ECMA-402 §15.3.17 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getCollations
   public getCollations(): string[] {
     return collationsOfLocale(this)
   }
 
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getHourCycles
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getHourCycles
-   */
+  // ECMA-402 §15.3.18 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getHourCycles
   public getHourCycles(): string[] {
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
-      throw new TypeError('Error uninitialized locale')
+      throw new TypeErrorConstructor('Error uninitialized locale')
     }
 
     return hourCyclesOfLocale(this)
   }
 
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getNumberingSystems
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getNumberingSystems
-   */
+  // ECMA-402 §15.3.19 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getNumberingSystems
   public getNumberingSystems(): string[] {
     return numberingSystemsOfLocale(this)
   }
 
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTimeZones
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTimeZones
-   */
+  // ECMA-402 §15.3.20 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getTimeZones
   public getTimeZones(): string[] | undefined {
     return timeZonesOfLocale(this)
   }
 
-  /**
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getTextInfo
-   * https://tc39.es/proposal-intl-locale-info/#sec-Intl.Locale.prototype.getTextInfo
-   */
+  // ECMA-402 §15.3.21 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getTextInfo
   public getTextInfo(): {
     direction: string | undefined
   } {
-    const info = Object.create(Object.prototype)
-    const dir = characterDirectionOfLocale(this)
-
-    createDataProperty(info, 'direction', dir)
-
-    return info
+    return {direction: characterDirectionOfLocale(this)}
   }
 
   /**
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo
    * ECMA-402 §15.3.22 Intl.Locale.prototype.getWeekInfo, steps 3–7.
    * https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getWeekInfo
-   * https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L420-L424
    */
   public getWeekInfo(): {
     firstDay: number
     weekend: number[]
   } {
-    const info = Object.create(Object.prototype)
     const internalSlots = getInternalSlots(this)
     if (!HasOwnProperty(internalSlots, 'initializedLocale')) {
-      throw new TypeError('Error uninitialized locale')
+      throw new TypeErrorConstructor('Error uninitialized locale')
     }
 
     const wi = weekInfoOfLocale(this)
-    const we = wi.weekend
-
-    createDataProperty(info, 'firstDay', wi.firstDay)
-
-    // getWeekInfo returns a fresh weekend array and no minimalDays property.
-    // ECMA-402 §15.3.22 Intl.Locale.prototype.getWeekInfo, steps 3–7.
-    // https://tc39.es/ecma402/#sec-Intl.Locale.prototype.getWeekInfo
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L420-L424
-    createDataProperty(info, 'weekend', [...we])
-
     const fw = internalSlots.firstDayOfWeek
     // WeekInfoOfLocale applies recognized weekday identifiers as ISO day numbers.
     // ECMA-402 §15.5.17 WeekInfoOfLocale, steps 8–9.b.
     // https://tc39.es/ecma402/#sec-weekinfooflocale
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L887-L890
-    const day = TABLE_1.indexOf(fw as (typeof TABLE_1)[number])
-    if (day !== -1) {
-      info.firstDay = day || 7
+    // ECMA-402 §15.5.16 https://tc39.es/ecma402/#sec-weekdayuvaluetonumber
+    const day = arrayIndexOf(TABLE_1, fw)
+    const weekend: number[] = []
+    for (let index = 0; index < wi.weekend.length; index++) {
+      setDataProperty(weekend, index, wi.weekend[index])
     }
-
-    return info
+    return {firstDay: day === -1 ? wi.firstDay : day || 7, weekend}
   }
 
+  // ECMA-402 §15.2.2 https://tc39.es/ecma402/#sec-intl.locale-internal-slots
   static relevantExtensionKeys: readonly [
     'ca',
     'co',
@@ -894,11 +966,14 @@ export class Locale {
     'kn',
     'nu',
     'fw',
-  ] = RELEVANT_EXTENSION_KEYS
+  ] = [...RELEVANT_EXTENSION_KEYS]
   public static readonly polyfilled = true
 }
 
+Object.setPrototypeOf(Locale.prototype, Object.prototype)
+
 try {
+  // ECMA-402 §15.3.24 https://tc39.es/ecma402/#sec-intl.locale.prototype-%symbol.tostringtag%
   if (typeof Symbol !== 'undefined') {
     Object.defineProperty(Locale.prototype, Symbol.toStringTag, {
       value: 'Intl.Locale',

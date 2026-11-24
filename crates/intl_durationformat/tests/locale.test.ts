@@ -39,6 +39,16 @@ it('matches static availability and locale/numbering negotiation before and afte
     writable: true,
   })
   const available = [...DurationFormat.availableLocales]
+  for (const locale of available) {
+    const [language, script, region] = locale.split('-')
+    expect(available, locale).toContain(language)
+    if (script?.length === 4 && region && /^(?:[A-Z]{2}|\d{3})$/.test(region)) {
+      expect(available, locale).toContain(language + '-' + region)
+    }
+  }
+  expect(
+    new DurationFormat('ff-CM', {localeMatcher: 'lookup'}).resolvedOptions()
+  ).toMatchObject({locale: 'ff-CM', numberingSystem: 'latn'})
   const requests: object[] = [{method: 'available'}]
   const expected: unknown[] = [available]
   function check(locales: string[], options: DurationFormatOptions) {

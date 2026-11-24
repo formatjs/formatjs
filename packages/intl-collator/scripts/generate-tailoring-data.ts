@@ -12,7 +12,7 @@ import {
 type PackedSetting = readonly [
   type: 'setting',
   key: string,
-  value: string | readonly string[],
+  value: string | readonly string[] | readonly number[],
 ]
 
 type PackedReset =
@@ -141,7 +141,7 @@ outputFileSync(
 export type PackedLDMLSetting = readonly [
   type: 'setting',
   key: string,
-  value: string | readonly string[],
+  value: string | readonly string[] | readonly number[],
 ]
 
 export type PackedLDMLReset =

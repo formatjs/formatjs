@@ -1,3 +1,4 @@
+import type {ApproximateStyle} from '#packages/ecma402-abstract/NumberFormat/FormatApproximately.js'
 import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {
@@ -10,13 +11,12 @@ import formatToParts from '#packages/ecma402-abstract/NumberFormat/format_to_par
 import {FormatNumericToString} from '#packages/ecma402-abstract/NumberFormat/FormatNumericToString.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 
-/**
- * https://tc39.es/ecma402/#sec-partitionnumberpattern
- */
+// ECMA-402 §16.5.3 PartitionNumberPattern.
+// https://tc39.es/ecma402/#sec-partitionnumberpattern
 export function PartitionNumberPattern(
   internalSlots: NumberFormatInternal,
   _x: Decimal | IntlMathematicalValue,
-  approximately = false
+  approximateStyle?: ApproximateStyle
 ): NumberFormatPart[] {
   const record = 'value' in _x ? _x : undefined
   const digitCount = record?.stringDigitCount || 0
@@ -25,41 +25,33 @@ export function PartitionNumberPattern(
   // IMPL: We need to record the magnitude of the number
   let magnitude = 0
 
-  // 2. Let dataLocaleData be internalSlots.[[dataLocaleData]].
-  const {pl, dataLocaleData, numberingSystem} = internalSlots
+  const {selectPlural, dataLocaleData, numberingSystem} = internalSlots
 
-  // 3. Let symbols be dataLocaleData.[[numbers]].[[symbols]][internalSlots.[[numberingSystem]]].
   const symbols =
     dataLocaleData.numbers.symbols[numberingSystem] ||
     dataLocaleData.numbers.symbols[dataLocaleData.numbers.nu[0]]
 
-  // 4. Let exponent be 0.
+  // Step 1 starts with exponent zero.
   let exponent = 0
 
-  // 5. Let n be ! ToString(x).
   let n: string
 
-  // 6. If x is NaN, then
+  // Steps 2–4 use locale symbols for NaN and both infinities.
   if (x.isNaN()) {
-    // 6.a. Let n be symbols.[[nan]].
     n = symbols.nan
   } else if (!x.isFinite()) {
-    // 7. Else if x is a non-finite Number, then
-    // 7.a. Let n be symbols.[[infinity]].
     n = symbols.infinity
   } else {
-    // 8. Else,
     let preview: ReturnType<typeof FormatNumericToString> | undefined
     if (!x.isZero()) {
-      // 8.a. If x < 0, let x be -x.
       invariant(x.isFinite(), 'Input must be a mathematical value')
 
-      // 8.b. If internalSlots.[[style]] is "percent", let x be 100 × x.
+      // Step 5.a.ii scales percentages by 100.
       if (internalSlots.style == 'percent') {
         x = x.times(100)
       }
 
-      // 8.c. Let exponent be ComputeExponent(numberFormat, x).
+      // Steps 5.a.iii–iv compute the exponent and scale the mantissa.
       if (internalSlots.notation !== 'standard') {
         ;[
           exponent,
@@ -68,7 +60,6 @@ export function PartitionNumberPattern(
           preview,
         ] = ComputeExponent(internalSlots, x)
 
-        // 8.d. Let x be x × 10^(-exponent).
         if (digitCount || fractionDigitCount) preview = undefined
         if (!preview) {
           x = x.times(getPowerOf10(-exponent))
@@ -76,80 +67,64 @@ export function PartitionNumberPattern(
       }
     }
 
-    // 8.e. Let formatNumberResult be FormatNumericToString(internalSlots, x).
+    // Steps 5.b–d store both the formatted digits and the rounded value.
     const formatNumberResult =
       preview ??
       FormatNumericToString(internalSlots, x, digitCount, fractionDigitCount)
 
-    // 8.f. Let n be formatNumberResult.[[formattedString]].
     n = formatNumberResult.formattedString
 
-    // 8.g. Let x be formatNumberResult.[[roundedNumber]].
     x = formatNumberResult.roundedNumber
   }
 
-  // 9. Let sign be 0.
+  // Step 6 selects a signed pattern via §16.5.10 GetNumberFormatPattern.
+  // https://tc39.es/ecma402/#sec-getnumberformatpattern
   let sign: -1 | 0 | 1
 
-  // 10. If x is negative, then
   const signDisplay = internalSlots.signDisplay
   switch (signDisplay) {
     case 'never':
-      // 10.a. If internalSlots.[[signDisplay]] is "never", then
-      // 10.a.i. Let sign be 0.
+      // Step 15 uses the zero pattern for every value.
       sign = 0
       break
     case 'auto':
-      // 10.b. Else if internalSlots.[[signDisplay]] is "auto", then
+      // Step 16 uses the negative pattern for negative values and negative zero.
       if (x.isPositive() || x.isNaN()) {
-        // 10.b.i. If x is positive or x is NaN, let sign be 0.
         sign = 0
       } else {
-        // 10.b.ii. Else, let sign be -1.
         sign = -1
       }
       break
     case 'always':
-      // 10.c. Else if internalSlots.[[signDisplay]] is "always", then
+      // Step 17 uses either the positive or negative pattern.
       if (x.isPositive() || x.isNaN()) {
-        // 10.c.i. If x is positive or x is NaN, let sign be 1.
         sign = 1
       } else {
-        // 10.c.ii. Else, let sign be -1.
         sign = -1
       }
       break
     case 'exceptZero':
-      // 10.d. Else if internalSlots.[[signDisplay]] is "exceptZero", then
-      // ECMA-402 §16.5.11 GetNumberFormatPattern, steps 11.a and 18.a.i:
-      // NaN has category positive-zero, so exceptZero uses the zero pattern.
-      // https://tc39.es/ecma402/#sec-getnumberformatpattern
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1448-L1449
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1473-L1475
+      // Steps 11.a and 18.a use the zero pattern for NaN and signed zeros.
       if (x.isZero() || x.isNaN()) {
         sign = 0
       } else if (x.isNegative()) {
-        // 10.d.ii. Else if x is negative, let sign be -1.
         sign = -1
       } else {
-        // 10.d.iii. Else, let sign be 1.
         sign = 1
       }
       break
     default:
-      // 10.e. Else,
+      // Step 19 uses the negative pattern only for negative nonzero values.
       invariant(signDisplay === 'negative', 'signDisplay must be "negative"')
       if (x.isNegative() && !x.isZero()) {
-        // 10.e.i. If x is negative and x is not 0, let sign be -1.
         sign = -1
       } else {
-        // 10.e.ii. Else, let sign be 0.
         sign = 0
       }
       break
   }
 
-  // 11. Return ? FormatNumberToParts(numberFormat, x, n, exponent, sign).
+  // Steps 7–10 expand pattern slots into parts.
   return formatToParts(
     {
       roundedNumber: x,
@@ -160,8 +135,8 @@ export function PartitionNumberPattern(
       sign,
     },
     internalSlots.dataLocaleData,
-    pl,
+    selectPlural,
     internalSlots,
-    approximately
+    approximateStyle
   )
 }

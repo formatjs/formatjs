@@ -32,6 +32,8 @@ export interface IntlDurationFormatInternal {
   initializedDurationFormat: boolean
   fractionalDigits: number | undefined
   dataLocale: string
+  hourMinuteSeparator: string
+  minuteSecondSeparator: string
   locale: string
   numberingSystem: string
   style: DurationFormatOptions['style']

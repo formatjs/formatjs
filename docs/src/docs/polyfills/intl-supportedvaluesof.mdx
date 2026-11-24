@@ -46,8 +46,10 @@ pnpm add @formatjs/intl-supportedvaluesof
 
 Timezone enumeration uses pinned IANA/CLDR primary IDs, including country-specific
 IDs such as `Africa/Accra`. It omits aliases such as `America/Yellowknife`.
-The installed DateTimeFormat must accept each returned ID; its resolved spelling
-may differ on older hosts.
+With FormatJS DateTimeFormat, the list reflects the loaded time-zone pack,
+including UTC and fixed IANA zones built into the polyfill. Time-zone enumeration
+works before locale data loads. Older hosts may resolve a primary ID to an older
+spelling.
 
 ### Simple
 
@@ -118,6 +120,23 @@ downloaded executable and bytecode.
 category. String wrapper objects are accepted; Symbols throw `TypeError`.
 
 `Intl.supportedValuesOf` is callable but cannot be used as a constructor.
+
+With FormatJS DateTimeFormat, calendar results reflect the calendar data loaded
+across all locales and use canonical identifiers.
+
+The `unit` category returns all sanctioned units independently of formatter
+support. [ECMA-402 §6.6.3](https://tc39.es/ecma402/#sec-availablecanonicalunits)
+
+The `numberingSystem` category includes every system in Table 30. Additional
+systems require support in NumberFormat, DateTimeFormat, and RelativeTimeFormat.
+The polyfill checks English and the locales associated with the system in CLDR.
+[ECMA-402 §6.7.1](https://tc39.es/ecma402/#sec-availablecanonicalnumberingsystems)
+
+Currency codes are checked against NumberFormat and, where installed,
+DisplayNames. The polyfill probes other CLDR locales when CLDR lacks an English
+name. FormatJS also supplies the registered English name for `XAD`.
+[ECMA-402 §6.4](https://tc39.es/ecma402/#sec-availablecanonicalcurrencies)
+[ISO 4217 amendment 179](https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/amendments/dl-currency-iso-amendment-179.pdf)
 
 Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
 in addition to continental transition zones. Runtime filtering retains primary

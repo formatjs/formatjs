@@ -1,6 +1,7 @@
 import {UTCOffsetNanoseconds} from '#packages/ecma262-abstract/UTCOffsetNanoseconds.js'
-import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
+  bigIntFrom,
   numberFrom,
   numberIsSafeInteger,
 } from '#packages/ecma262-abstract/intrinsics.js'
@@ -17,47 +18,38 @@ import {
   CalendarDateFromTime,
   type CalendarRegistry,
 } from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
-import Decimal from '@formatjs/bigdecimal'
 
-const NANOSECONDS_PER_MILLISECOND = BigInt(1000000)
-const ZERO = BigInt(0)
-const ONE = BigInt(1)
+const NANOSECONDS_PER_MILLISECOND = bigIntFrom(1_000_000)
+const bigintZero = bigIntFrom(0)
+const bigintOne = bigIntFrom(1)
 
-/**
- * GetNamedTimeZoneOffsetNanoseconds ( timeZone, t )
- * Similar to abstract operation in ECMA-262, adapted for IANA timezone data.
- * Extended to support UTC offset time zones per ECMA-402 PR #788.
- *
- * Returns the timezone offset in milliseconds (not nanoseconds for this impl)
- * and DST flag for the given timezone at time t.
- *
- * @param t - Time value in milliseconds since epoch
- * @param timeZone - The timezone identifier
- * @param tzData - IANA timezone database
- * @returns Tuple of [offset in milliseconds, inDST boolean]
- */
+function floorToMilliseconds(nanoseconds: bigint): bigint {
+  const milliseconds = nanoseconds / NANOSECONDS_PER_MILLISECOND
+  return nanoseconds < bigintZero &&
+    nanoseconds % NANOSECONDS_PER_MILLISECOND !== bigintZero
+    ? milliseconds - bigintOne
+    : milliseconds
+}
+
+// ECMA-402 §11.5.11 steps 1–2 resolve a fixed or named offset.
+// https://tc39.es/ecma402/#sec-tolocaltime
+// Keep the exact nanosecond offset and the DST flag for formatting.
 function getApplicableZoneData(
   t: number,
   timeZone: string,
   tzData: Record<string, UnpackedTimeZoneData>
 ): [number, boolean] {
-  // ECMA-402 §11.5.11 step 1: recognize and parse the complete UTCOffset.
   const offsetNs = UTCOffsetNanoseconds(timeZone)
-  if (offsetNs !== undefined) return [offsetNs / 1_000_000, false]
+  if (offsetNs !== undefined) return [offsetNs, false]
 
-  // 2. Let timeZoneData be the IANA Time Zone Database entry for timeZone
-  const zoneData = tzData[timeZone]
-
-  // 3. If no data available, treat as UTC (0 offset, no DST)
-  if (!zoneData) {
-    return [0, false]
-  }
-
-  // 4. Find the applicable transition for time t
+  // ECMA-262 §21.4.1.21 supplies the named offset. UTC needs no packed row.
+  // https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds
+  const zoneData = HasOwnProperty(tzData, timeZone)
+    ? tzData[timeZone]
+    : undefined
+  if (!zoneData) return [0, false]
   const zone = TimeZoneOffset(t, zoneData)
-
-  // 5. Return offset in milliseconds and DST flag
-  return [zone[0] * 1e3, zone[1]]
+  return [zone[0] * 1_000_000_000, zone[1]]
 }
 
 export interface ToLocalTimeImplDetails {
@@ -67,6 +59,7 @@ export interface ToLocalTimeImplDetails {
 
 // ECMA-402 §11.5.11 steps 1–3: add the offset before computing calendar fields.
 // Table 17 in §11.5.12 projects integer milliseconds from epoch nanoseconds.
+// https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records
 // https://tc39.es/ecma402/#sec-tolocaltime
 // Temporal amendment §15.6.23: project exact epoch nanoseconds into calendar fields.
 // https://tc39.es/proposal-temporal/#sec-tolocaltime
@@ -93,17 +86,10 @@ export function ToLocalTime(
   inDST: boolean
   timeZoneOffset: number
 } {
-  // BigInt division truncates; negative submilliseconds must floor.
-  let epochMilliseconds = epochNanoseconds / NANOSECONDS_PER_MILLISECOND
-  if (
-    epochNanoseconds < ZERO &&
-    epochNanoseconds % NANOSECONDS_PER_MILLISECOND !== ZERO
-  ) {
-    epochMilliseconds -= ONE
-  }
-  const milliseconds = numberFrom(epochMilliseconds)
+  const milliseconds = numberFrom(floorToMilliseconds(epochNanoseconds))
   const zone = getApplicableZoneData(milliseconds, timeZone, tzData)
-  const timeZoneOffset = zone[0]
+  const offsetNanoseconds = zone[0]
+  const timeZoneOffset = offsetNanoseconds / 1_000_000
   const inDST = zone[1]
 
   // Integer offsets commute with flooring; fractional offsets must be added first.
@@ -113,12 +99,12 @@ export function ToLocalTime(
     numberIsSafeInteger(timeZoneOffset) &&
     numberIsSafeInteger(localMilliseconds)
       ? localMilliseconds
-      : new Decimal(ToString(epochNanoseconds))
-          .div(1000000)
-          .plus(timeZoneOffset)
-          .floor()
-          .toNumber()
-  return {
+      : numberFrom(
+          floorToMilliseconds(epochNanoseconds + bigIntFrom(offsetNanoseconds))
+        )
+  // Table 17 has optional fields. Missing fields on the Record stay absent.
+  const localTime = {
+    __proto__: null,
     ...CalendarDateFromTime(tz, calendar, calendarData),
     weekday: WeekDay(tz),
     hour: HourFromTime(tz),
@@ -129,4 +115,5 @@ export function ToLocalTime(
     // IMPORTANT: Not in spec
     timeZoneOffset,
   }
+  return localTime
 }

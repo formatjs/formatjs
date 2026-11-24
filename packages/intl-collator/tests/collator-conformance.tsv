@@ -4,16 +4,54 @@ English accent sensitivity orders plain before accented	en	accent	-	-	-	resume	r
 English accent sensitivity ignores case	en	accent	-	-	-	a	A	0
 English case sensitivity ignores accents	en	case	-	-	-	a	á	0
 English case sensitivity distinguishes lowercase and uppercase	en	case	-	-	-	a	A	-1
+English case sensitivity ignores circled forms	en	case	-	-	-	a	ⓐ	0
+English upper caseFirst applies to circled letters	en	case	-	upper	-	a	Ⓐ	1
+English case sensitivity expands ligatures	en	case	-	-	-	ﬀ	ff	0
+Greek case sensitivity equates both lowercase sigmas	el	case	-	-	-	σ	ς	0
+Greek reorders Greek letters before Latin	el	variant	-	-	-	ω	a	-1
+Russian reorders Cyrillic letters before Latin	ru	variant	-	-	-	я	a	-1
+Russian numeric lead stays before reordered Cyrillic	ru	variant	true	-	-	10	я	-1
+Arabic reorders Arabic letters before Latin	ar	variant	-	-	-	ي	a	-1
+Greek upper caseFirst does not lowercase uppercase words	el	case	-	upper	-	σοσ	ΣΟΣ	1
+Czech mixed-case contractions share a case weight	cs	case	-	-	-	Ch	cH	0
+Czech upper caseFirst orders uppercase before mixed-case contractions	cs	case	-	upper	-	CH	Ch	-1
+Breton c’h sorts before d	br	base	-	-	-	c’h	d	-1
 English variant sensitivity distinguishes accents	en	variant	-	-	-	resume	résumé	-1
 English numeric ordering sorts digit runs numerically	en	variant	true	-	-	item2	item10	-1
 English numeric ordering treats leading zeros as equal	en	variant	true	-	-	item02	item2	0
+English numeric ordering compares Arabic-Indic digit runs	en	variant	true	-	-	item٢	item١٠	-1
+English numeric ordering combines digits from different scripts	en	variant	true	-	-	item٢2	item٢١	1
+English numeric ordering recognizes supplementary digits and leading zeros	en	variant	true	-	-	item٠𝟚	item2	0
+English numeric primary weights precede accent differences	en	variant	true	-	-	á2	a10	-1
+English later numeric primary weights precede earlier case differences	en	variant	true	-	-	Item02a2	item2a10	-1
+English equal numeric primary weights leave accent differences	en	variant	true	-	-	á02	a2	1
+English currency symbols precede the numeric digit group	en	variant	true	-	-	a$	a0	-1
+English numeric runs precede non-decimal digits	en	variant	true	-	-	a12	a⓪	-1
 English default ordering sorts digit runs lexically	en	variant	false	-	-	item2	item10	1
+English currency sorts before Latin with numeric ordering off	en	variant	false	-	-	$	a	-1
+English punctuation sorts before Latin with numeric ordering off	en	variant	false	-	-	—	a	-1
 English locale numeric extension sorts digit runs numerically	en-u-kn-true	variant	-	-	-	item2	item10	-1
 English upper caseFirst orders uppercase first	en	variant	-	upper	-	A	a	-1
 English lower caseFirst orders lowercase first	en	variant	-	lower	-	A	a	1
+English variant upper caseFirst precedes circled form differences	en	variant	-	upper	-	a	Ⓐ	1
+English variant lower caseFirst precedes circled form differences	en	variant	-	lower	-	Ⓐ	a	1
+Greek default variant order preserves final sigma distinction	el	variant	-	-	-	ς	Σ	1
+Greek variant upper caseFirst preserves uppercase word ordering	el	variant	-	upper	-	σοσ	ΣΟΣ	1
+Lithuanian accent comparison preserves the dotted accent contraction	lt	accent	-	-	-	İ́	Í	0
+Turkish accent comparison equates uppercase and lowercase dotless I	tr	accent	-	-	-	I	ı	0
+Turkish accent comparison distinguishes dotted and dotless I	tr	accent	-	-	-	I	İ	-1
+Czech variant upper caseFirst orders uppercase before mixed contractions	cs	variant	-	upper	-	CH	Ch	-1
+Czech variant upper caseFirst preserves the order of mixed-case contractions	cs	variant	-	upper	-	Ch	cH	1
 English locale upper caseFirst extension orders uppercase first	en-u-kf-upper	variant	-	-	-	A	a	-1
 English ignorePunctuation ignores em dash	en	variant	-	-	true	a—b	ab	0
+English ignores an accent on shifted punctuation	en	accent	-	-	true	-́a	a	0
+Canadian French ignores an accent after shifted punctuation	fr-CA	variant	-	-	true	a-́	a	0
+Canadian French retains an accent after a letter	fr-CA	accent	-	-	true	-á	a	1
 French accent sensitivity orders multi-accent words	fr	accent	-	-	-	cote	côté	-1
+French standard collation compares accents forwards	fr	accent	-	-	-	côte	coté	1
+Canadian French compares accents backwards	fr-CA	accent	-	-	-	côte	coté	-1
+Canadian French base sensitivity ignores accent order	fr-CA	base	-	-	-	côte	coté	0
+Canadian French keeps merge segments in forward order	fr-CA	variant	-	-	-	côte￾xé	coté￾xe	-1
 German variant sensitivity keeps umlaut before z	de	variant	-	-	-	ä	z	-1
 Spanish sorts n before ñ	es	variant	-	-	-	n	ñ	-1
 Chinese pinyin tone one before tone two	zh-u-co-pinyin	variant	-	-	-	ā	á	-1
@@ -23,6 +61,10 @@ Chinese default collation uses pinyin tone order	zh	variant	-	-	-	à	a	-1
 Swedish sorts z before å	sv	variant	-	-	-	z	å	-1
 Swedish sorts å before ä	sv	variant	-	-	-	å	ä	-1
 Swedish sorts ä before ö	sv	variant	-	-	-	ä	ö	-1
+Swedish shares the primary weight of ä and æ	sv	base	-	-	-	ä	æ	0
+Swedish distinguishes ä and æ at secondary strength	sv	accent	-	-	-	ä	æ	-1
+Swedish sorts Æ before ö	sv	variant	-	-	-	Æ	ö	-1
+Swedish upper caseFirst orders Æ before ä at case sensitivity	sv	case	-	upper	-	ä	Æ	1
 Danish sorts z before æ	da	variant	-	-	-	z	æ	-1
 Danish sorts æ before ø	da	variant	-	-	-	æ	ø	-1
 Danish sorts ø before å	da	variant	-	-	-	ø	å	-1
@@ -42,7 +84,7 @@ tr inherits root emoji variant 🧑 👨	tr-u-co-emoji	variant	-	-	-	🧑	👨	-
 tr inherits root emoji variant 😀 😃	tr-u-co-emoji	variant	-	-	-	😀	😃	-1
 de inherits root eor base b ɓ	de-u-co-eor	base	-	-	-	b	ɓ	0
 de inherits root eor variant b ɓ	de-u-co-eor	variant	-	-	-	b	ɓ	-1
-de inherits root eor base z ʒ	de-u-co-eor	base	-	-	-	z	ʒ	0
+fr inherits root eor base z ʒ	fr-u-co-eor	base	-	-	-	z	ʒ	0
 de inherits root emoji variant 🤣 😂	de-u-co-emoji	variant	-	-	-	🤣	😂	-1
 de inherits root emoji variant 🤩 😘	de-u-co-emoji	variant	-	-	-	🤩	😘	-1
 de inherits root emoji variant 🧑 👨	de-u-co-emoji	variant	-	-	-	🧑	👨	-1

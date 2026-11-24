@@ -66,13 +66,20 @@ pub struct Segmenter {
     granularity: Granularity,
     engine: Engine,
 }
+// ECMA-402 §19.2.3: locale coverage has no Unicode extension keys.
+// https://tc39.es/ecma402/#sec-intl.segmenter-internal-slots
 pub fn available_locales() -> &'static [String] {
-    static AVAILABLE: OnceLock<Vec<String>> = OnceLock::new();
+    segmenter_locales().as_slice()
+}
+
+fn segmenter_locales() -> &'static formatjs_intl_locale::matcher::AvailableLocales {
+    static AVAILABLE: OnceLock<formatjs_intl_locale::matcher::AvailableLocales> = OnceLock::new();
     AVAILABLE.get_or_init(|| {
-        data_generated::AVAILABLE_LOCALES
+        let available = data_generated::AVAILABLE_LOCALES
             .iter()
             .map(|tag| (*tag).to_owned())
-            .collect()
+            .collect();
+        formatjs_intl_locale::matcher::AvailableLocales::with_host_locale(available)
     })
 }
 pub fn supported_locales(requested: &[String]) -> Result<Vec<String>, Error> {
@@ -85,9 +92,8 @@ pub fn supported_locales(requested: &[String]) -> Result<Vec<String>, Error> {
 }
 impl Segmenter {
     pub fn new(requested: &[String], options: &Options) -> Result<Self, Error> {
-        // ResolveOptions: canonical requested tags, no relevant extension keys;
-        // the implementation default is en, matching the TS root-rule fallback.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L21-L29
+        // ResolveOptions: canonical requested tags, no relevant extension keys.
+        // https://tc39.es/ecma402/#sec-intl.segmenter
         let requested = formatjs_intl_getcanonicallocales::get_canonical_locales(requested)
             .map_err(|_| Error::InvalidLocale)?;
         let locale = match options.locale_matcher {
@@ -99,12 +105,14 @@ impl Segmenter {
                     .map_err(|_| Error::InvalidLocale)?
             }
         }
+        .or_else(|| formatjs_intl_locale::matcher::host_default(available_locales()))
         .unwrap_or_else(|| "en".into());
+        let data_locale = segmenter_locales().data_locale(&locale);
         let content_locale: LanguageIdentifier =
-            locale.parse().map_err(|_| Error::InvalidLocale)?;
+            data_locale.parse().map_err(|_| Error::InvalidLocale)?;
         // FindBoundary is locale-sensitive and implementation-defined. Keep
         // ICU's content-locale tailorings and automatic complex-script models.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L393-L406
+        // https://tc39.es/ecma402/#sec-findboundary
         let engine = match options.granularity {
             Granularity::Grapheme => Engine::Grapheme,
             Granularity::Word => {
@@ -139,7 +147,7 @@ impl Segmenter {
     pub fn segment(&self, input: Vec<u16>) -> Segments {
         // CreateSegmentsObject retains the original code units. Precompute its
         // boundary index once; iterators and containing() share immutable data.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L187-L191
+        // https://tc39.es/ecma402/#sec-createsegmentsobject
         let mut boundaries = Vec::new();
         match &self.engine {
             Engine::Grapheme => {
@@ -234,7 +242,7 @@ impl Segments {
         // CreateSegmentDataObject 1–13: slice the original string, retain its
         // UTF-16 start index/input, and expose isWordLike only for word mode.
         // ICU's status excludes punctuation/space as recommended by the spec.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L358-L372
+        // https://tc39.es/ecma402/#sec-createsegmentdataobject
         Some(SegmentData {
             segment: &self.0.input[boundary.start..boundary.end],
             index: boundary.start,
@@ -249,7 +257,7 @@ impl Segments {
         // containing 7–10: reject past-end indices; find the immediately enclosing
         // UTF-16 boundaries, including a code unit inside a surrogate pair.
         // Host adapters perform ToIntegerOrInfinity first (step 6).
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L214-L218
+        // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%.containing
         if index >= self.0.input.len() {
             return None;
         }
@@ -261,7 +269,7 @@ impl Segments {
     }
     pub fn cursor(&self) -> Cursor {
         // Each iterator starts at zero and retains the input independently.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L225-L230
+        // https://tc39.es/ecma402/#sec-%intlsegmentsprototype%-%symbol.iterator%
         Cursor {
             segments: self.clone(),
             position: 0,
@@ -275,7 +283,7 @@ pub struct Cursor {
 impl Cursor {
     pub fn next_record(&mut self) -> Option<SegmentData<'_>> {
         // next 6–11: exhaustion stays exhausted; advance before returning data.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L291-L298
+        // https://tc39.es/ecma402/#sec-%intlsegmentiteratorprototype%.next
         if self.position >= self.segments.len() {
             return None;
         }

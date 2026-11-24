@@ -9,6 +9,7 @@ style = "both"
 [export.rename]
 "RelativeRegistry" = "FormatjsRelativeRegistry"
 "RelativeHandle" = "FormatjsRelativeHandle"
+"RelativeResolution" = "FormatjsRelativeResolution"
 "RelativeBytes" = "FormatjsRelativeBytes"
 
 [export]

@@ -2,7 +2,7 @@ use crate::{
     Error,
     calendar::CalendarProvider,
     civil::time_clip,
-    data::HourCycle,
+    data::{HourCycle, LocaleData},
     fields::Components,
     matching::Style,
     numbers::NumberFormatters,
@@ -70,6 +70,9 @@ impl Runtime {
     pub fn time_zones(&self) -> &TimeZoneRegistry {
         &self.zones
     }
+    pub fn available_calendars(&self) -> Vec<String> {
+        self.registry.borrow().all_available_calendars().to_vec()
+    }
     pub fn supported_locales(
         &self,
         locales: &[String],
@@ -106,6 +109,16 @@ impl Construction {
         options: &ResolutionOptions,
     ) -> Result<Resolution, Error> {
         self.runtime.registry.borrow().resolve(locales, options)
+    }
+    pub(crate) fn resolve_with_data(
+        &self,
+        locales: &[String],
+        options: &ResolutionOptions,
+    ) -> Result<(Resolution, Arc<LocaleData>), Error> {
+        self.runtime
+            .registry
+            .borrow()
+            .resolve_with_data(locales, options)
     }
     pub fn time_zone(&self, explicit: Option<&str>) -> Result<TimeZone, Error> {
         explicit
@@ -188,6 +201,7 @@ impl DateTimeFormat {
             &self.numbers[usize::from(index)],
         )
     }
+    // ECMA-402 §11.3.2. https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.resolvedoptions
     pub fn resolved_options(&self) -> ResolvedOptions {
         let resolution = &self.configuration.snapshot.resolution;
         ResolvedOptions {
@@ -217,6 +231,8 @@ impl DateTimeFormat {
     }
     fn prepare(&self, value: &DateTimeValue) -> Result<PreparedValue, Error> {
         match value {
+            // ECMA-402 §11.5.5 steps 1–4: TimeClip, then convert milliseconds to nanoseconds.
+            // https://tc39.es/ecma402/#sec-partitiondatetimepattern
             DateTimeValue::Number(number) => Ok(PreparedValue {
                 profile: self.main.clone(),
                 epoch_nanoseconds: i128::from(time_clip(*number)?) * 1_000_000,
@@ -243,6 +259,7 @@ impl DateTimeFormat {
             }
         }
     }
+    // ECMA-402 §11.5.7. https://tc39.es/ecma402/#sec-formatdatetimetoparts
     pub fn format_to_parts(&self, value: &DateTimeValue) -> Result<Vec<Part>, Error> {
         let value = self.prepare(value)?;
         let render = self.render_data(&value.profile)?;
@@ -256,6 +273,7 @@ impl DateTimeFormat {
             value.plain,
         )
     }
+    // ECMA-402 §11.5.6. https://tc39.es/ecma402/#sec-formatdatetime
     pub fn format(&self, value: &DateTimeValue) -> Result<String, Error> {
         Ok(self
             .format_to_parts(value)?
@@ -263,6 +281,7 @@ impl DateTimeFormat {
             .map(|part| part.value)
             .collect())
     }
+    // ECMA-402 §11.5.8 and §11.5.10. https://tc39.es/ecma402/#sec-formatdatetimerangetoparts
     pub fn format_range_to_parts(
         &self,
         first: &DateTimeValue,
@@ -277,6 +296,8 @@ impl DateTimeFormat {
             ) if first == second => {}
             _ => return Err(Error::TemporalTypeMismatch),
         }
+        // ECMA-402 §11.5.8 steps 1–8 clip both endpoints before local conversion.
+        // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
         let first = self.prepare(first)?;
         let second = self.prepare(second)?;
         let snapshot =
@@ -298,6 +319,7 @@ impl DateTimeFormat {
             &local_second,
         )
     }
+    // ECMA-402 §11.5.9. https://tc39.es/ecma402/#sec-formatdatetimerange
     pub fn format_range(
         &self,
         first: &DateTimeValue,

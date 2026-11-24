@@ -258,6 +258,54 @@ it('captures calendar data and formats before late style/matcher getters', () =>
     },
   ])
 })
+it('resolves hour-cycle preferences from the locale before applying calendar data', () => {
+  const entry = pack('en')
+  Object.assign(entry.data.calendarData!.iso8601, {
+    hourCycle: 'h24',
+    hourCycle12: 'h11',
+    hourCycle24: 'h24',
+  })
+  const cases: CreationCase[] = [undefined, true, false].map(hour12 => ({
+    locales: ['en'],
+    options: {calendar: 'iso8601', hour: 'numeric', hour12, timeZone: 'UTC'},
+    kinds: ['PlainTime'],
+  }))
+  compare(entry, cases)
+  for (const [index, request] of cases.entries()) {
+    const hourCycle = ['h12', 'h12', 'h23'][index]
+    expect(reference(entry, request)).toMatchObject({
+      main: {hourCycle},
+      temporal: {PlainTime: {hourCycle}},
+    })
+  }
+})
+it('prefers supplied date and zone patterns over equally good synthesized patterns', () => {
+  const entry = pack('en')
+  entry.data.formats.gregory = {
+    yMMMd: 'MMM d, y',
+    yMMMdz: "z 'on' MMM d, y",
+  }
+  const cases: CreationCase[] = (['basic', 'best fit'] as const).map(
+    formatMatcher => ({
+      locales: ['en'],
+      options: {
+        formatMatcher,
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'UTC',
+        timeZoneName: 'short',
+      },
+      kinds: [],
+    })
+  )
+  compare(entry, cases)
+  for (const request of cases) {
+    expect(reference(entry, request)).toMatchObject({
+      main: {pattern: '{timeZoneName} on {month} {day}, {year}'},
+    })
+  }
+})
 it('validates late options before reporting style/component conflicts', () => {
   const entry = pack('en')
   const options = [

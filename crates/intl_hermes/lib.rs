@@ -20,16 +20,18 @@ pub use formatjs_intl_supportedvaluesof::ffi::{
 };
 
 pub use formatjs_intl_listformat::ffi::{
-    formatjs_list_bytes_free, formatjs_list_create, formatjs_list_destroy, formatjs_list_query,
+    formatjs_list_bytes_free, formatjs_list_capture, formatjs_list_create,
+    formatjs_list_create_from_snapshot, formatjs_list_destroy, formatjs_list_query,
     formatjs_list_registry_create, formatjs_list_registry_destroy, formatjs_list_registry_info,
-    formatjs_list_registry_load, formatjs_list_registry_match,
+    formatjs_list_registry_load, formatjs_list_registry_match, formatjs_list_snapshot_destroy,
 };
 
 pub use formatjs_intl_displaynames::ffi::{
-    formatjs_display_bytes_free, formatjs_display_create, formatjs_display_destroy,
-    formatjs_display_query, formatjs_display_registry_create, formatjs_display_registry_destroy,
+    formatjs_display_bytes_free, formatjs_display_capture, formatjs_display_create,
+    formatjs_display_create_from_snapshot, formatjs_display_destroy, formatjs_display_query,
+    formatjs_display_registry_create, formatjs_display_registry_destroy,
     formatjs_display_registry_info, formatjs_display_registry_load,
-    formatjs_display_registry_match,
+    formatjs_display_registry_match, formatjs_display_snapshot_destroy,
 };
 
 pub use formatjs_intl_segmenter::ffi::{
@@ -52,20 +54,21 @@ pub use formatjs_intl_numberformat::ffi::{
 };
 
 pub use formatjs_intl_relativetimeformat::ffi::{
-    formatjs_relative_bytes_free, formatjs_relative_create, formatjs_relative_destroy,
-    formatjs_relative_query, formatjs_relative_registry_create, formatjs_relative_registry_destroy,
-    formatjs_relative_registry_info, formatjs_relative_registry_load, formatjs_relative_resolve,
-    formatjs_relative_supported,
+    formatjs_relative_bytes_free, formatjs_relative_create, formatjs_relative_create_from_snapshot,
+    formatjs_relative_destroy, formatjs_relative_query, formatjs_relative_registry_create,
+    formatjs_relative_registry_destroy, formatjs_relative_registry_info,
+    formatjs_relative_registry_load, formatjs_relative_resolve, formatjs_relative_resolve_snapshot,
+    formatjs_relative_snapshot_destroy, formatjs_relative_supported,
 };
 
 pub use formatjs_intl_datetimeformat::ffi::{
     formatjs_datetime_begin, formatjs_datetime_bytes_free, formatjs_datetime_capture,
     formatjs_datetime_construction_destroy, formatjs_datetime_create, formatjs_datetime_destroy,
     formatjs_datetime_query, formatjs_datetime_registry_calendar,
-    formatjs_datetime_registry_create, formatjs_datetime_registry_destroy,
-    formatjs_datetime_registry_info, formatjs_datetime_registry_load,
-    formatjs_datetime_registry_zone, formatjs_datetime_resolve, formatjs_datetime_supported,
-    formatjs_datetime_zone,
+    formatjs_datetime_registry_calendars, formatjs_datetime_registry_create,
+    formatjs_datetime_registry_destroy, formatjs_datetime_registry_info,
+    formatjs_datetime_registry_load, formatjs_datetime_registry_zone, formatjs_datetime_resolve,
+    formatjs_datetime_supported, formatjs_datetime_zone,
 };
 pub use formatjs_intl_datetimeformat_calendars::ffi::{
     formatjs_datetime_calendar_load, formatjs_datetime_calendar_load_compiled,

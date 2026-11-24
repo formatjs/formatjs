@@ -19,17 +19,19 @@ it.each([
   ['canonicalizer,locale,canonicalizer'],
   ['locale,canonicalizer,locale'],
   ['canonicalizer,locale,locale,canonicalizer'],
+  ['locale,canonicalizer,locale,canonicalizer,locale'],
 ])('preserves native and independent bundled Locale brands: %s', order => {
   const realm = createContext({})
   runInContext(
-    'globalThis.values = [new Intl.Locale("en-US")]; globalThis.constructors = []',
+    'globalThis.values = [new Intl.Locale("en-US")]; globalThis.constructors = []; globalThis.canonicalizers = []',
     realm
   )
   let count = 0
   for (const module of order.split(',')) {
     runInContext(module === 'locale' ? locale : canonicalizer, realm)
+    runInContext('canonicalizers.push(Intl.getCanonicalLocales)', realm)
     if (module === 'locale') {
-      const tag = count++ === 0 ? 'de-DE' : 'fr-CA'
+      const tag = ['de-DE', 'fr-CA', 'ja-JP'][count++]
       runInContext(
         `values.push(new Intl.Locale('${tag}')); constructors.push(Intl.Locale)`,
         realm
@@ -38,7 +40,6 @@ it.each([
   }
   const actual = runInContext(
     `(() => {
-    const canonicalize = Intl.getCanonicalLocales;
     for (const value of values) Object.defineProperties(value, {
       toString: {get() { throw new Error('Visible Locale toString reached') }},
       length: {get() { throw new Error('Visible Locale length reached') }},
@@ -52,13 +53,32 @@ it.each([
     Object.defineProperty(Intl, 'Locale', {configurable: true, get() {
       throw new Error('Replaced global Locale reached');
     }});
+    Object.defineProperty(Intl, 'getCanonicalLocales', {configurable: true, get() {
+      throw new Error('Replaced global getCanonicalLocales reached');
+    }});
     WeakMap.prototype.get = () => { throw new Error('Replaced WeakMap lookup reached') };
-    return [canonicalize(values), canonicalize([fake])];
+    return [
+      canonicalizers.map(canonicalize => [
+        canonicalize(values),
+        canonicalize([fake]),
+      ]),
+      constructors.map(Constructor => [
+        new Constructor(fake).baseName,
+        ...values.map(value => {
+          const copy = new Constructor(value, {numberingSystem: 'latn'});
+          return [copy.baseName, copy.numberingSystem];
+        }),
+      ]),
+    ];
   })()`,
     realm
   )
+  const tags = ['en-US', 'de-DE', 'fr-CA', 'ja-JP'].slice(0, count + 1)
   expect(actual).toEqual([
-    count === 1 ? ['en-US', 'de-DE'] : ['en-US', 'de-DE', 'fr-CA'],
-    ['it'],
+    Array.from({length: order.split(',').length}, () => [tags, ['it']]),
+    Array.from({length: count}, () => [
+      'it',
+      ...tags.map(tag => [tag, 'latn']),
+    ]),
   ])
 })

@@ -9,6 +9,52 @@ import type {IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date
 
 DateTimeFormat.__addLocaleData(en as any)
 
+it('keeps the locale data resolved before reading timeZone', () => {
+  const localeData = DateTimeFormat.localeData.en
+  let formatter: InstanceType<typeof DateTimeFormat>
+  try {
+    formatter = new DateTimeFormat('en', {
+      year: 'numeric',
+      get timeZone() {
+        delete DateTimeFormat.localeData.en
+        return 'UTC'
+      },
+    })
+  } finally {
+    DateTimeFormat.localeData.en = localeData
+  }
+  expect(formatter.format(0)).toBe('1970')
+})
+
+it('uses the registered default locale without invoking a public getter', () => {
+  const original = Object.getOwnPropertyDescriptor(
+    DateTimeFormat,
+    '__defaultLocale'
+  )!
+  const availableLocales = DateTimeFormat.availableLocales
+  try {
+    DateTimeFormat.availableLocales = new Set()
+    Object.defineProperty(DateTimeFormat, '__defaultLocale', {
+      configurable: true,
+      get() {
+        throw new Error('Read public __defaultLocale')
+      },
+    })
+    DateTimeFormat.__addLocaleData(en as any)
+    // Force the registered fallback regardless of the host locale.
+    DateTimeFormat.availableLocales.clear()
+    expect(
+      new DateTimeFormat(undefined, {
+        localeMatcher: 'lookup',
+        timeZone: 'UTC',
+      }).resolvedOptions().locale
+    ).toBe('en')
+  } finally {
+    Object.defineProperty(DateTimeFormat, '__defaultLocale', original)
+    DateTimeFormat.availableLocales = availableLocales
+  }
+})
+
 it.each([
   ['get', 'best fit'],
   ['get', 'lookup'],

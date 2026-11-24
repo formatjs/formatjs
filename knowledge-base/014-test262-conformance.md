@@ -1,80 +1,47 @@
 # Test262 conformance baseline
 
-Refreshed 2026-11-12 with CLDR 49 against Test262 `2e58f87d8350ad51224617a041c6e041d52f8444`,
-using the pinned Node 26.8.1 Test262 host. Counts include strict/default executions.
-Isolated Locale installation rechecked 2026-11-21 after connecting private brand readers.
-All cases in each of the twelve upstream directories are included. No test is
-excluded because it fails.
+Test262 pin `2a1ade303f72d3de80565c921d685222405c32ce` with CLDR 49. The Node
+harness is pinned to 26.8.1. Counts include strict and non-strict executions
+from all twelve selected Intl directories.
 
-The pin advances 43 upstream commits and adds 52 executions per mode: 44 Locale,
-four DateTimeFormat, and four NumberFormat. Locale Info cases cover collation
-ordering, formatter defaults, script direction metadata, and Unicode aliases.
-Existing locale data covers the new tests' English and German metadata.
+| Polyfill            | Executed per mode | Isolated failures | Combined failures | Hermes failures |
+| ------------------- | ----------------: | ----------------: | ----------------: | --------------: |
+| collator            |               130 |                 2 |                 2 |               2 |
+| datetimeformat      |               492 |                 4 |                 4 |               4 |
+| displaynames        |               114 |                 2 |                 2 |               2 |
+| durationformat      |               220 |                 0 |                 0 |               0 |
+| getcanonicallocales |                76 |                 0 |                 0 |               0 |
+| listformat          |               162 |                 2 |                 2 |               2 |
+| locale              |               380 |                 2 |                 2 |               2 |
+| numberformat        |               502 |                 2 |                 2 |               2 |
+| pluralrules         |               106 |                 2 |                 2 |               2 |
+| relativetimeformat  |               160 |                 2 |                 2 |               2 |
+| segmenter           |               158 |                 4 |                 4 |               4 |
+| supportedvaluesof   |                50 |                 0 |                 0 |               0 |
+| **Total**           |         **2,550** |            **22** |            **22** |          **22** |
 
-Stage 4 timezone identifier preservation passes the alias, UTC-name, casing, and
-renamed-zone cases. DateTimeFormat now runs 492 executions; ten existing failures
-remain in isolated, combined, and native Hermes installation.
+Each mode passes 2,528 executions. Each raw report tracks 20 constructor
+failures for a foreign `newTarget` with a non-object prototype. The spec takes
+the fallback prototype from that constructor's realm.
+[ECMA-262 §10.1.14 step 4](https://tc39.es/ecma262/#sec-getprototypefromconstructor)
 
-| Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
-| ------------------- | -------: | ----------------: | --------------: | ----------------: |
-| collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      492 |                10 |              52 |                10 |
-| displaynames        |      114 |                 2 |               0 |                 2 |
-| durationformat      |      220 |                 0 |               4 |                 0 |
-| getcanonicallocales |       76 |                 0 |               2 |                 0 |
-| listformat          |      162 |                 2 |               0 |                 2 |
-| locale              |      380 |                 2 |              50 |                 2 |
-| numberformat        |      502 |                 2 |               0 |                 2 |
-| pluralrules         |      106 |                 2 |               0 |                 2 |
-| relativetimeformat  |      160 |                 2 |               0 |                 2 |
-| segmenter           |      158 |                 4 |               0 |                 4 |
-| supportedvaluesof   |       50 |                 4 |               6 |                 0 |
+Two DateTimeFormat cases expect ASCII space before `AM`.
+TypeScript and Rust/Hermes tests verify the Han decimal digits and CLDR narrow
+no-break space. ECMA-402 preserves the selected pattern's literal.
+[ECMA-402 §11.5.4 step 15.b](https://tc39.es/ecma402/#sec-formatdatetimepattern)
+[Test262 #3711](https://github.com/tc39/test262/issues/3711)
 
-Total: 2,550 executions, 2,518 polyfill passes, 32 polyfill failures. Native controls
-use the same pin and Node 26.8.1 host: 2,436 passes and 114 failures. Native failures
-do not establish polyfill correctness.
+Independent ICU gates cover locale-sensitive NumberFormat and DateTimeFormat
+behavior. Temporal has separate Test262 selections.
 
-Combined and Hermes: 2,550 executions, 2,522 passes, 28 failures per mode.
+`//tools/test262:date-locale` checks all 12 pinned `intl402/Date` tests for the installed
+`Date.prototype.toLocale*` methods. Each mode runs 24 cases and requires zero
+failures. These counts are separate from the table. [ECMA-402 §20.4](https://tc39.es/ecma402/#sup-properties-of-the-date-prototype-object)
 
-Locale installation now connects its private slots to FormatJS canonicalization,
-replacing a canonicalizer without the compatible brand registry. Ten former
-isolated failures now pass: two Locale-brand executions and eight `yes` alias
-executions previously delegated to the host. The isolated Locale suite passes
-378/380; two constructor-realm failures remain. Ten stale baseline entries are
-removed. Combined and Hermes counts above are unchanged.
-[Native feature detection](https://github.com/formatjs/formatjs/pull/7929) also replaces
-affected host functions during normal canonicalization polyfill installation.
-
-ECMA-402 [CanonicalizeUnicodeLocaleId](https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid)
-uses [CLDR's key-specific alias rules](https://unicode.org/reports/tr35/#processing-localeids):
-`en-u-aa-yes` stays unchanged, while `en-u-kn-yes` becomes `en-u-kn`.
-Targeted oracle probes found ICU4C/J 78.1 remove unknown `aa=yes`, while ICU4X
-2.3.1 retains `kn=yes`. Those differences do not override the specification.
-Independent NumberFormat and DateTimeFormat ICU snapshot/range gates supplement
-the JS conformance matrix; their reviewed differences remain explicit.
-
-This matrix selects twelve polyfill directories, not `intl402/Temporal`.
-Calendar formatting coverage does not establish complete Era/MonthCode Temporal
-construction or arithmetic conformance.
-
-Locale installation fixes its two native canonicalizer/JS-private-brand failures. RelativeTimeFormat has the same two
-foreign-realm failures in both modes. Removing its redundant class constructor
-guard changes those diagnostics from TypeError to prototype mismatch; failure
-identities and counts stay unchanged. Its numbering-system coverage no longer
-depends on suppressing unsupported systems. Compact PluralRules also passes
-independently of NumberFormat locale data. Raw reports and checked-in baselines
-preserve every remaining diagnostic.
-
-CLDR 49 removes the obsolete `CNX` currency from its English currency data.
-The isolated SupportedValuesOf suite uses the pinned host's native DisplayNames,
-which still names `CNX`, so its two cross-API executions are tracked as data-version
-mismatches. The combined suite installs both CLDR 49 polyfills and passes those
-checks. No tests are skipped and the supported currency list follows CLDR 49.
-
-NumberFormat implements optional legacy construction in TS and Hermes. All six
-legacy-constructor executions now pass in isolated, combined and Hermes modes.
-Only its two foreign-realm intrinsic executions remain failing. DateTimeFormat's
-six optional legacy-constructor executions remain tracked separately.
+`//tools/test262:numeric-locale` checks all 18 pinned `intl402/Number` and
+`intl402/BigInt` tests for the installed `toLocaleString` hooks. Each mode runs
+36 cases and requires zero failures. [ECMA-402 §20.2.1](https://tc39.es/ecma402/#sup-number.prototype.tolocalestring)
+[ECMA-402 §20.3.1](https://tc39.es/ecma402/#sup-bigint.prototype.tolocalestring)
 
 ## Harness guarantees
 
@@ -109,14 +76,14 @@ not need a directory-wide Gazelle ignore.
 
 The [2026-09-11 tracking report](./015b-test262-progress-2026-09-11.md) records
 140 DateTimeFormat fixes, plus two combined calendar-enumeration fixes.
-Remaining failure counts appear in the table above, with explicit runtime,
-legacy, specification, or locale-data explanations.
-Foreign-realm/native-brand limitations, optional legacy construction, and
-specific data/proposal expectations stay visible in the raw counts.
+The table above counts the remaining constructor-realm and locale-data
+failures. NumberFormat and DateTimeFormat pass the optional legacy construction
+cases.
 
 ## Commands
 
 ```sh
+bazel test //tools/test262:combined //tools/test262:hermes
 bazel test //packages/intl-numberformat:test262
 bazel test //packages/intl-numberformat:test262-strict
 bazel test //packages/intl-numberformat:test262-native
@@ -266,14 +233,6 @@ combined calendar enumeration also passes.
 Standalone PluralRules now uses its own compact exponent tables for the nine
 CLDR locales with c/e operands. Two isolated failures are fixed; combined
 selection no longer depends on NumberFormat locale data.
-
-The remaining DateTimeFormat `numbering-system.js` failures reach the Han decimal
-time pattern: Test262 expects ASCII space before `AM`, while CLDR 48.2 supplies
-U+202F. Digit substitution, decimal separators and two-digit fields pass. A unit
-test verifies the CLDR output and that joining `formatToParts()` reproduces it.
-These executions remain visible in the raw failure counts. ECMA-402 11.2.3 makes
-locale data implementation-defined ([source line 222](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L222))
-and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L854)).
 
 ## Temporal development selections
 

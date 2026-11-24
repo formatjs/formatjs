@@ -12,7 +12,7 @@ import type Decimal from '@formatjs/bigdecimal'
 
 export interface NumberFormat {
   resolvedOptions(): ResolvedNumberFormatOptions
-  formatToParts(x: number | bigint | Decimal | string): NumberFormatPart[]
+  formatToParts(x?: number | bigint | Decimal | string): NumberFormatPart[]
   format(x: number | bigint | Decimal | string): string
   formatRange(
     start: number | bigint | Decimal | string,

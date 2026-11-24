@@ -5,7 +5,16 @@ import {
   collationLocaleData,
 } from '@formatjs_generated/cldr.collation/locale-data.js'
 import {
+  combiningClasses,
+  decimalDigitZeros,
+  hanImplicitStart,
+  hanRanges,
+  hanRanks,
+  hanWeightStep,
+  numericOrderingElement,
+  primaryReordering,
   rootElements,
+  rootLogicalResets,
   rootPrefixEntries,
   rootTrie,
 } from '@formatjs_generated/cldr.collation/root.js'
@@ -24,8 +33,17 @@ function main(args: Args) {
       available: availableCollationLocales,
       locales: collationLocaleData,
       elements: rootElements,
+      logical_resets: rootLogicalResets,
       prefixes: rootPrefixEntries,
       trie: rootTrie,
+      combining_classes: combiningClasses,
+      decimal_digit_zeros: decimalDigitZeros,
+      numeric_ordering_element: numericOrderingElement,
+      han_ranges: hanRanges,
+      han_ranks: hanRanks,
+      han_implicit_start: hanImplicitStart,
+      han_weight_step: hanWeightStep,
+      primary_reordering: primaryReordering,
       tailorings: collationTailorings,
     }) + '\n'
   )

@@ -191,19 +191,21 @@ impl Renderer {
         separator: &str,
         duration: &Duration,
     ) -> Result<Vec<Part>, RenderError> {
+        // ECMA-402 §13.5.15: form groups of duration parts in unit order.
+        // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
         let mut groups: Vec<Vec<Part>> = Vec::new();
         let mut separated = false;
         let mut sign_displayed = false;
         for unit in Unit::ALL {
             let index = unit as usize;
             let options = configuration.units[index];
+            // §13.5.7–8: fold fractional fields at their exact scale.
+            // https://tc39.es/ecma402/#sec-computefractionaldigits
+            // https://tc39.es/ecma402/#sec-nextunitfractional
             let fold = matches!(
                 unit,
                 Unit::Seconds | Unit::Milliseconds | Unit::Microseconds
-            ) && matches!(
-                configuration.units[index + 1].style,
-                UnitStyle::Numeric | UnitStyle::Fractional
-            );
+            ) && configuration.units[index + 1].style == UnitStyle::Fractional;
             let scale_digits = if fold { (9 - index) * 3 } else { 0 };
             let scale = 10_i128.pow(scale_digits as u32);
             let mut value = duration.get(unit) * scale;
@@ -212,6 +214,8 @@ impl Renderer {
                     value += duration.get(*next) * 10_i128.pow(((9 - *next as usize) * 3) as u32);
                 }
             }
+            // §13.5.12 step 15: include minutes between displayed hours and seconds.
+            // https://tc39.es/ecma402/#sec-formatnumericunits
             let minutes_between = unit == Unit::Minutes
                 && separated
                 && (configuration.units[Unit::Seconds as usize].display == Display::Always
@@ -227,6 +231,11 @@ impl Renderer {
                 } else {
                     Fraction::Default
                 };
+                // ECMA-402 §§13.5.9–11 use one decimal path for numeric time
+                // fields, with their resolved widths and fractional precision.
+                // https://tc39.es/ecma402/#sec-formatnumerichours
+                // https://tc39.es/ecma402/#sec-formatnumericminutes
+                // https://tc39.es/ecma402/#sec-formatnumericseconds
                 let presentation = match options.style {
                     UnitStyle::Long => Presentation::Unit(unit, Width::Long),
                     UnitStyle::Short => Presentation::Unit(unit, Width::Short),
@@ -284,6 +293,8 @@ impl Renderer {
                 break;
             }
         }
+        // ECMA-402 §13.5.14: format unit groups as a list, using short for digital.
+        // https://tc39.es/ecma402/#sec-listformatparts
         let width = match configuration.style {
             Style::Long => Width::Long,
             Style::Short | Style::Digital => Width::Short,

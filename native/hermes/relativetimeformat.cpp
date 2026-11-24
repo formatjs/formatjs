@@ -13,9 +13,9 @@ namespace {
 constexpr char wrapperSource[] =
 #include "relativetimeformat.inc"
     ;
-using Handle = std::unique_ptr<FormatjsRelativeHandle, decltype(&formatjs_relative_destroy)>;
 using Registry = std::unique_ptr<FormatjsRelativeRegistry, decltype(&formatjs_relative_registry_destroy)>;
 using RelativeRecord = hermes_bridge::Record<FormatjsRelativeHandle, formatjs_relative_destroy>;
+using RelativeSnapshot = hermes_bridge::Record<FormatjsRelativeResolution, formatjs_relative_snapshot_destroy>;
 using Bytes = hermes_bridge::Buffer<FormatjsRelativeBytes, formatjs_relative_bytes_free>;
 using hermes_bridge::bytesOf;
 jsi::Value result(jsi::Runtime &rt, int32_t status, const Bytes &bytes) {
@@ -35,8 +35,17 @@ void installRelativeTimeFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
   bridge.setProperty(runtime, "nativeLoad", hermes_bridge::load(runtime, "relativeLoad", "Expected relative-time locale JSON", "Rust relative-time locale load failed", formatjs_relative_registry_load, registry));
   bridge.setProperty(runtime, "nativeInfo", hermes_bridge::json<0, Bytes>(runtime, "relativeInfo", nullptr, {2, "Rust RelativeTimeFormat bridge failed"}, formatjs_relative_registry_info, registry));
   bridge.setProperty(runtime, "nativeSupported", hermes_bridge::json<1, Bytes>(runtime, "relativeSupported", "Expected RelativeTimeFormat JSON request", {2, "Rust RelativeTimeFormat bridge failed"}, formatjs_relative_supported, registry));
-  bridge.setProperty(runtime, "nativeResolve", hermes_bridge::json<1, Bytes>(runtime, "relativeResolve", "Expected RelativeTimeFormat JSON request", {2, "Rust RelativeTimeFormat bridge failed"}, formatjs_relative_resolve, registry));
-  bridge.setProperty(runtime, "nativeCreate", hermes_bridge::create<1, RelativeRecord>(runtime, "relativeCreate", "Expected relative-time construction JSON", {2, "Rust RelativeTimeFormat construction failed"}, formatjs_relative_create, registry));
+  bridge.setProperty(runtime, "nativeResolve", hermes_bridge::create<1, RelativeSnapshot>(runtime, "relativeResolve", "Expected RelativeTimeFormat JSON request", {2, "Rust RelativeTimeFormat resolution failed"}, formatjs_relative_resolve_snapshot, registry));
+  hermes_bridge::bind(runtime, bridge, "nativeCreate", "relativeCreate", 2, [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
+    if (count != 2 || !args[1].isString()) throw jsi::JSError(rt, "Expected relative-time resolution and options JSON");
+    auto snapshot = hermes_bridge::record<RelativeSnapshot>(rt, args[0], "Expected RelativeTimeFormat resolution", "Invalid RelativeTimeFormat resolution");
+    auto options = args[1].asString(rt).utf8(rt);
+    FormatjsRelativeHandle *raw = nullptr;
+    auto code = formatjs_relative_create_from_snapshot(snapshot->handle.get(), bytesOf(options), options.size(), &raw);
+    RelativeRecord::Pointer handle(raw, formatjs_relative_destroy);
+    if (code != 0) return hermes_bridge::status(rt, code, 2, "Rust RelativeTimeFormat construction failed");
+    return jsi::Object::createFromHostObject(rt, std::make_shared<RelativeRecord>(std::move(handle)));
+  });
   hermes_bridge::bind(runtime, bridge, "nativeQuery", "relativeQuery", 2, [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
     if (count != 2 || !args[1].isString()) throw jsi::JSError(rt, "Expected relative-time record and query JSON");
     auto model = record(rt, args[0]);

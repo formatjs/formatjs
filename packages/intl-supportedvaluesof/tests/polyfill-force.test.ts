@@ -38,4 +38,10 @@ describe('Intl.supportedValuesOf polyfill-force', () => {
       RangeError
     )
   })
+
+  it('uses DateTimeFormat installed after creating the Intl namespace', () => {
+    globalThis.Intl.DateTimeFormat = intlDescriptor!.value.DateTimeFormat
+    expect(globalThis.Intl.supportedValuesOf('calendar')).toContain('gregory')
+    expect(globalThis.Intl.supportedValuesOf('timeZone')).toContain('UTC')
+  })
 })

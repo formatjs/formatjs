@@ -74,16 +74,32 @@ struct Styles {
     narrow: BTreeMap<String, String>,
 }
 impl Styles {
-    fn name(&self, style: Style, code: &str) -> Option<&str> {
-        let fields = match style {
+    fn fields(&self, style: Style) -> &BTreeMap<String, String> {
+        match style {
             Style::Long => &self.long,
             Style::Short => &self.short,
             Style::Narrow => &self.narrow,
-        };
+        }
+    }
+
+    fn name(&self, style: Style, code: &str) -> Option<&str> {
+        self.name_with_legacy_code(style, code, None)
+    }
+
+    fn name_with_legacy_code(
+        &self,
+        style: Style,
+        code: &str,
+        legacy_code: Option<&str>,
+    ) -> Option<&str> {
+        let fields = self.fields(style);
+        // ECMA-402 §12.3.3 step 6 checks field presence, including empty names.
+        // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
         fields
             .get(code)
-            .filter(|name| !name.is_empty())
+            .or_else(|| legacy_code.and_then(|legacy| fields.get(legacy)))
             .or_else(|| self.long.get(code))
+            .or_else(|| legacy_code.and_then(|legacy| self.long.get(legacy)))
             .map(String::as_str)
     }
 }
@@ -98,6 +114,7 @@ struct Types {
     language: LanguageStyles,
     region: Styles,
     script: Styles,
+    variant: Option<Styles>,
     currency: Styles,
     calendar: Styles,
     date_time_field: Styles,
@@ -211,10 +228,10 @@ pub const DATE_TIME_FIELDS: &[&str] = &[
 ];
 
 pub fn canonical_code(kind: Type, code: &str) -> Result<String, Error> {
-    // CanonicalCodeForDisplayNames 1.a–c: Unicode language-id grammar excludes
+    // ECMA-402 §12.5.1 step 1: Unicode language-id grammar excludes
     // extensions/private use; the shared canonicalizer checks duplicate variants
     // and applies aliases after grammar validation.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L235-L238
+    // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
     if kind == Type::Language {
         if !language_id(code) {
             return Err(Error::InvalidCode);
@@ -222,9 +239,8 @@ pub fn canonical_code(kind: Type, code: &str) -> Result<String, Error> {
         return formatjs_intl_getcanonicallocales::canonicalize_locale(code)
             .map_err(|_| Error::InvalidCode);
     }
-    // Steps 2–6: ASCII case mapping only; validate the entire input, including
+    // Steps 2–8: ASCII case mapping only; validate the entire input, including
     // trailing line terminators, before indexing or changing case.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L239-L257
     match kind {
         Type::Region if region(code) => Ok(code.to_ascii_uppercase()),
         Type::Script if code.len() == 4 && letters(code) => {
@@ -239,8 +255,8 @@ pub fn canonical_code(kind: Type, code: &str) -> Result<String, Error> {
         {
             Ok(code.to_ascii_lowercase())
         }
-        // IsValidDateTimeFieldCode 1–2: table membership is case sensitive.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L272-L273
+        // ECMA-402 §12.5.2: Table 19 membership is case sensitive.
+        // https://tc39.es/ecma402/#sec-isvaliddatetimefieldcode
         Type::DateTimeField if DATE_TIME_FIELDS.contains(&code) => Ok(code.to_owned()),
         _ => Err(Error::InvalidCode),
     }
@@ -271,8 +287,8 @@ impl DisplayNames {
         }
     }
     pub fn resolved_options(&self) -> ResolvedOptions {
-        // Fresh record in table order; languageDisplay exists for language only.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L132-L170
+        // ECMA-402 §12.3.2 step 4: table order, with only defined slots.
+        // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.resolvedOptions
         ResolvedOptions {
             locale: self.locale.clone(),
             style: self.options.style,
@@ -283,9 +299,9 @@ impl DisplayNames {
         }
     }
     pub fn of(&self, code: &str) -> Result<Option<String>, Error> {
-        // of 4–8: canonical code lookup, then code/undefined fallback. The host
+        // ECMA-402 §12.3.3 steps 4–8: canonical code lookup, then fallback. The host
         // performs RequireInternalSlot and ToString (steps 1–3) before this call.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L182-L189
+        // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.of
         let code = canonical_code(self.options.kind, code)?;
         let data = &self.data.data.types;
         let fields = match self.options.kind {
@@ -299,7 +315,10 @@ impl DisplayNames {
             Type::Calendar => &data.calendar,
             Type::DateTimeField => &data.date_time_field,
         };
-        if let Some(name) = fields.name(self.options.style, &code) {
+        // Preexisting packs may use the CLDR spelling for this Table 19 field.
+        let legacy_code = (self.options.kind == Type::DateTimeField && code == "dayPeriod")
+            .then_some("dayperiod");
+        if let Some(name) = fields.name_with_legacy_code(self.options.style, &code, legacy_code) {
             return Ok(Some(name.to_owned()));
         }
         if self.options.kind == Type::Language {
@@ -344,6 +363,45 @@ fn substitute_pattern(pattern: &str, first: &str, second: &str) -> String {
     result
 }
 
+// UTS 35 Part 2, Locale Display Name Algorithm steps 2–4.
+// https://unicode.org/reports/tr35/tr35-general.html#Locale_Display_Name_Algorithm
+fn match_variant_language<'a>(
+    fields: &'a Styles,
+    style: Style,
+    parts: &[&'a str],
+) -> (&'a str, Vec<usize>) {
+    let mut code = parts[0];
+    let mut consumed = Vec::new();
+    let prefix = format!("{}-", parts[0]);
+    let tables = [fields.fields(style), &fields.long];
+    let table_count = if style == Style::Long { 1 } else { 2 };
+    for table in &tables[..table_count] {
+        for (candidate, _) in table.range(prefix.clone()..) {
+            let Some(suffix) = candidate.strip_prefix(&prefix) else {
+                break;
+            };
+            let mut positions = Vec::new();
+            let mut input = 1;
+            for subtag in suffix.split('-') {
+                let Some(offset) = parts[input..].iter().position(|part| *part == subtag) else {
+                    positions.clear();
+                    break;
+                };
+                let index = input + offset;
+                positions.push(index);
+                input = index + 1;
+            }
+            if positions.len() > consumed.len()
+                || (positions.len() == consumed.len() && positions < consumed)
+            {
+                code = candidate;
+                consumed = positions;
+            }
+        }
+    }
+    (code, consumed)
+}
+
 fn compose_language_name(
     data: &Data,
     fields: &Styles,
@@ -355,37 +413,28 @@ fn compose_language_name(
         .get(1)
         .filter(|part| part.len() == 4 && letters(part))
         .map(|_| 1);
-    let region_index = (1..parts.len()).find(|index| region(parts[*index]));
-    let mut script = script_index.map(|index| parts[index]);
-    let mut territory = region_index.map(|index| parts[index]);
-    let without = |skip: Option<usize>, other: Option<usize>| {
-        parts
-            .iter()
-            .enumerate()
-            .filter(|(index, _)| Some(*index) != skip && Some(*index) != other)
-            .map(|(_, part)| *part)
-            .collect::<Vec<_>>()
-            .join("-")
-    };
-    let mut name = None;
-    if options.language_display == LanguageDisplay::Dialect
-        && script.is_some()
-        && territory.is_some()
-    {
-        name = fields.name(options.style, &without(region_index, None));
-        if name.is_some() {
-            script = None;
-        } else {
-            name = fields.name(options.style, &without(script_index, None));
-            if name.is_some() {
-                territory = None;
+    let next = 1 + usize::from(script_index.is_some());
+    let region_index = parts.get(next).filter(|part| region(part)).map(|_| next);
+    let variant_start = next + usize::from(region_index.is_some());
+    let mut name = fields.name(options.style, parts[0]);
+    let mut consumed = Vec::new();
+    if options.language_display == LanguageDisplay::Dialect {
+        if variant_start < parts.len() {
+            let (code, matched) = match_variant_language(fields, options.style, &parts);
+            name = fields.name(options.style, code);
+            consumed = matched;
+        } else if let (Some(script), Some(region)) = (script_index, region_index) {
+            for index in [script, region] {
+                let code = format!("{}-{}", parts[0], parts[index]);
+                if let Some(display) = fields.name(options.style, &code) {
+                    name = Some(display);
+                    consumed.push(index);
+                    break;
+                }
             }
         }
     }
-    let name = name.or_else(|| fields.name(options.style, &without(script_index, region_index)))?;
-    if script.is_none() && territory.is_none() {
-        return None;
-    }
+    let name = name?;
     let pattern = &data.patterns.locale;
     let nested = |value: &str| -> String {
         value
@@ -400,22 +449,29 @@ fn compose_language_name(
             .collect()
     };
     let mut qualifiers = Vec::new();
-    for (code, names) in [
-        (script, &data.types.script),
-        (territory, &data.types.region),
-    ] {
-        if let Some(code) = code {
-            let display = names
-                .name(options.style, code)
-                .filter(|name| !name.is_empty());
-            if display.is_none() && options.fallback == Fallback::None {
-                return None;
-            }
-            qualifiers.push(nested(display.unwrap_or(code)));
+    for (index, code) in parts.iter().enumerate().skip(1) {
+        if consumed.binary_search(&index).is_ok() {
+            continue;
         }
+        let names = if Some(index) == script_index {
+            &data.types.script
+        } else if Some(index) == region_index {
+            &data.types.region
+        } else {
+            // Older packs leave the whole-code fallback to of().
+            data.types.variant.as_ref()?
+        };
+        let display = names.name(options.style, code);
+        if display.is_none() && options.fallback == Fallback::None {
+            return None;
+        }
+        qualifiers.push(nested(display.unwrap_or(code)));
     }
     let qualifier = qualifiers
         .into_iter()
-        .reduce(|first, second| substitute_pattern(&data.patterns.separator, &first, &second))?;
-    Some(substitute_pattern(pattern, &nested(name), &qualifier))
+        .reduce(|first, second| substitute_pattern(&data.patterns.separator, &first, &second));
+    Some(match qualifier {
+        Some(qualifier) => substitute_pattern(pattern, &nested(name), &qualifier),
+        None => name.to_owned(),
+    })
 }

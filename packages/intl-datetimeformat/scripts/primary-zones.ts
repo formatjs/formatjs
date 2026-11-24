@@ -20,6 +20,8 @@ export function primaryZones(
   tab: string,
   entries: Record<string, ZoneEntry>
 ): Record<string, string> {
+  // ECMA-402 §6.5.1 steps 1–3 collect and order IANA Zones and Links.
+  // https://tc39.es/ecma402/#sup-availablenamedtimezoneidentifiers
   const zones = new Set<string>(),
     identifiers = new Set<string>()
   for (const source of sources) {
@@ -31,9 +33,8 @@ export function primaryZones(
       } else if (fields[0] === 'Link') identifiers.add(fields[2])
     }
   }
-  // ECMA-402 §6.5 keeps the restored POSIX zones primary.
-  // https://tc39.es/ecma402/#sec-use-of-iana-time-zone-database
-  // Pending alias policy: https://github.com/tc39/ecma402/issues/1103
+  // Step 5.a–b keeps Zones and zone.tab entries primary.
+  // Restored POSIX zones remain primary pending https://github.com/tc39/ecma402/issues/1103
   const primary = new Set(zones)
   for (const line of tab.split(newline)) {
     if (!line || line.startsWith('#')) continue
@@ -41,6 +42,7 @@ export function primaryZones(
     if (!identifiers.has(id)) throw new Error(`Missing IANA identifier: ${id}`)
     primary.add(id)
   }
+  // CLDR supplies the remaining primary mappings for steps 5.b and 5.d.
   const aliases = new Map<string, string>()
   function preferred(
     key: string,
@@ -62,6 +64,7 @@ export function primaryZones(
   const result: Record<string, string> = Object.create(null)
   for (const id of [...identifiers].sort()) {
     let target = primary.has(id) ? id : aliases.get(id)
+    // Step 5.c maps the UTC-equivalent identifiers to UTC.
     if (target === 'Etc/UTC' || target === 'Etc/GMT' || target === 'GMT')
       target = 'UTC'
     if (!target || (target !== 'UTC' && !primary.has(target)))

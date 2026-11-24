@@ -44,6 +44,9 @@ enum Token<'a> {
     Literal(&'a str),
     Field(&'a str),
 }
+// ECMA-402 §§6.10 and 9.2.15 split pattern strings into literal and field parts.
+// https://tc39.es/ecma402/#sec-pattern-string-types
+// https://tc39.es/ecma402/#sec-partitionpattern
 fn partition(pattern: &str) -> Result<Vec<Token<'_>>, Error> {
     let mut result = Vec::new();
     let mut next = 0;
@@ -124,11 +127,12 @@ impl RenderData {
             &profile.pattern,
             &profile.pattern,
             &local,
-            zone.data_identifier(),
+            zone,
             profile.components,
         )
     }
 
+    // ECMA-402 §11.5.11. https://tc39.es/ecma402/#sec-tolocaltime
     pub fn local_time(
         &self,
         zones: &TimeZoneSnapshot,
@@ -158,6 +162,7 @@ impl RenderData {
         })
     }
 
+    // ECMA-402 §11.5.4. https://tc39.es/ecma402/#sec-formatdatetimepattern
     pub fn pattern(
         &self,
         _config: &Configuration,
@@ -165,7 +170,7 @@ impl RenderData {
         pattern: &str,
         context: &str,
         local: &LocalTime,
-        zone: &str,
+        zone: &TimeZone,
         format: Components,
     ) -> Result<Vec<Part>, Error> {
         let civil = local.civil;
@@ -199,8 +204,12 @@ impl RenderData {
         let mut result = Vec::new();
         for part in parts {
             let (kind, value) = match part {
+                // ECMA-402 §11.5.4 step 15.b preserves the CLDR literal verbatim.
+                // The pinned hanidec test expects ASCII space before AM. CLDR uses U+202F.
+                // https://github.com/tc39/test262/issues/3711
                 Token::Literal(value) => (PartKind::Literal, value.into()),
                 Token::Field("fractionalSecondDigits") => {
+                    // ECMA-402 §11.5.4 step 15.c truncates local milliseconds.
                     let digits = format
                         .fractional_second_digits
                         .ok_or(Error::InvalidPattern)?;
@@ -226,9 +235,10 @@ impl RenderData {
                     },
                 ),
                 Token::Field("timeZoneName") => {
+                    let data_zone = zone.data_identifier();
                     let width = format.time_zone_name.unwrap_or(ZoneWidth::Short);
-                    let zone_names = if local.epoch_nanoseconds >= 0 || zone == "UTC" {
-                        self.locale.metadata.time_zone_name.get(zone)
+                    let zone_names = if local.epoch_nanoseconds >= 0 || data_zone == "UTC" {
+                        self.locale.metadata.time_zone_name.get(data_zone)
                     } else {
                         None
                     };
@@ -242,37 +252,36 @@ impl RenderData {
                         ZoneWidth::Long => names.long.as_ref(),
                         _ => None,
                     });
-                    let specific =
-                        self.locale
-                            .metadata
-                            .time_zone_name
-                            .get(zone)
-                            .and_then(|names| match (width, in_dst) {
-                                (ZoneWidth::Long, false) => names.long_standard.as_ref(),
-                                (ZoneWidth::Long, true) => names.long_daylight.as_ref(),
-                                (ZoneWidth::Short, false) => names.short_standard.as_ref(),
-                                (ZoneWidth::Short, true) => names.short_daylight.as_ref(),
-                                _ => None,
-                            });
-                    let value = if let Some(specific) = specific {
-                        specific.clone()
-                    } else if let Some(generic) = generic {
-                        generic.clone()
+                    let specific = self.locale.metadata.time_zone_name.get(data_zone).and_then(
+                        |names| match (width, in_dst) {
+                            (ZoneWidth::Long, false) => names.long_standard.as_ref(),
+                            (ZoneWidth::Long, true) => names.long_daylight.as_ref(),
+                            (ZoneWidth::Short, false) => names.short_standard.as_ref(),
+                            (ZoneWidth::Short, true) => names.short_daylight.as_ref(),
+                            _ => None,
+                        },
+                    );
+                    let name = specific
+                        .filter(|name| !name.is_empty())
+                        .or_else(|| generic.filter(|name| !name.is_empty()))
+                        .or_else(|| {
+                            let names = names?;
+                            let name = &names[usize::from(in_dst)];
+                            (!(name.is_empty() || in_dst && names[0] == names[1])).then_some(name)
+                        });
+                    let value = if let Some(name) = name {
+                        name.clone()
                     } else {
-                        match names {
-                            Some(names) if !(in_dst && names[0] == names[1]) => {
-                                names[usize::from(in_dst)].clone()
-                            }
-                            _ => self.offset_name(
-                                offset_seconds,
-                                matches!(
-                                    width,
-                                    ZoneWidth::Long
-                                        | ZoneWidth::LongGeneric
-                                        | ZoneWidth::LongOffset
-                                ),
-                            )?,
-                        }
+                        // ECMA-402 §11.5.4 step 15.e.iv falls back to [[TimeZone]].
+                        // https://tc39.es/ecma402/#sec-formatdatetimepattern
+                        self.offset_name(
+                            offset_seconds,
+                            matches!(
+                                width,
+                                ZoneWidth::Long | ZoneWidth::LongGeneric | ZoneWidth::LongOffset
+                            ),
+                        )?
+                        .unwrap_or_else(|| zone.identifier().to_owned())
                     };
                     (PartKind::TimeZoneName, value)
                 }
@@ -390,7 +399,16 @@ impl RenderData {
                                 }
                             }
                             .cloned()
-                            .ok_or(Error::InvalidLocaleData)?
+                            // ECMA-402 §11.5.4 step 15.f.x.i uses the field value
+                            // when its localized representation is missing.
+                            // https://tc39.es/ecma402/#sec-formatdatetimepattern
+                            .unwrap_or_else(|| {
+                                if field == Field::Era {
+                                    fields.era.clone()
+                                } else {
+                                    value.to_string()
+                                }
+                            })
                         }
                         _ => String::new(),
                     };
@@ -429,75 +447,67 @@ impl RenderData {
         Ok(result)
     }
 
-    fn offset_name(&self, seconds: i32, long: bool) -> Result<String, Error> {
+    // ECMA-402 §11.5.4 step 15.e.iv uses the localized time-zone representation.
+    // Reuse the selected decimal digits and apply LDML short/long GMT widths.
+    // https://tc39.es/ecma402/#sec-formatdatetimepattern
+    // https://unicode.org/reports/tr35/tr35-dates.html#Time_Zone_Format_Terminology
+    fn offset_name(&self, seconds: i32, long: bool) -> Result<Option<String>, Error> {
         let absolute = seconds.unsigned_abs();
         let hours = absolute / 3600;
         let minute = absolute / 60 % 60;
         let second = absolute % 60;
-        let (positive, negative) = self
+        let gmt_format = &self.locale.metadata.gmt_format;
+        let Some(pattern) = self
             .locale
             .metadata
             .hour_format
-            .split_once(';')
-            .ok_or(Error::InvalidLocaleData)?;
-        let mut pattern = if seconds < 0 {
-            negative.to_owned()
-        } else {
-            positive.to_owned()
+            .split(';')
+            .nth(usize::from(seconds < 0))
+        else {
+            return Ok(None);
         };
-        if second != 0 {
-            let start = pattern.find('m').ok_or(Error::InvalidLocaleData)?;
-            let hour_end = pattern[..start]
-                .rfind('H')
-                .ok_or(Error::InvalidLocaleData)?
-                + 1;
-            let separator = pattern[hour_end..start].to_owned();
+        let Some(hour_end) = pattern.rfind('H').map(|index| index + 1) else {
+            return Ok(None);
+        };
+        let minute_start = pattern.find('m');
+        if !gmt_format.contains("{0}")
+            || (long || minute != 0 || second != 0) && minute_start.is_none()
+            || minute_start.is_some_and(|start| start < hour_end)
+        {
+            return Ok(None);
+        }
+        let mut pattern = pattern.to_owned();
+        if let Some(start) = minute_start {
             let end = start
                 + pattern[start..]
                     .bytes()
                     .take_while(|value| *value == b'm')
                     .count();
-            pattern.insert_str(end, &format!("{separator}ss"));
-        }
-        let value = if long {
-            pattern
-                .replacen("HH", &format!("{hours:02}"), 1)
-                .replacen('H', &hours.to_string(), 1)
-                .replacen("mm", &format!("{minute:02}"), 1)
-                .replacen('m', &minute.to_string(), 1)
-                .replacen("ss", &format!("{second:02}"), 1)
-        } else {
-            if minute == 0 && second == 0 {
-                if let Some(start) = pattern.find('m') {
-                    let begin = pattern[..start]
-                        .rfind('H')
-                        .map(|index| index + 1)
-                        .unwrap_or(start);
-                    let end = start
-                        + pattern[start..]
-                            .chars()
-                            .take_while(|character| *character == 'm')
-                            .count();
-                    pattern.replace_range(begin..end, "");
-                }
+            if second != 0 {
+                let seconds_pattern = format!("{}ss", &pattern[hour_end..start]);
+                pattern.insert_str(end, &seconds_pattern);
+            } else if !long && minute == 0 {
+                pattern.replace_range(hour_end..end, "");
             }
-            replace_run(
-                &replace_run(
-                    &replace_run(&pattern, 'H', &hours.to_string()),
-                    'm',
-                    &format!("{minute:02}"),
-                ),
-                's',
-                &format!("{second:02}"),
-            )
+        }
+        let formatted_hours = if long {
+            self.numbers.two_digit(hours as i32)?
+        } else {
+            self.numbers.numeric(hours as i32)?
         };
-        Ok(self
-            .locale
-            .metadata
-            .gmt_format
-            .replacen("{0}", &value, 1)
-            .replace("\u{200e}\u{200e}", "\u{200e}")
-            .replace("\u{200f}\u{200f}", "\u{200f}"))
+        let mut value = replace_run(&pattern, 'H', &formatted_hours);
+        if long || minute != 0 || second != 0 {
+            value = replace_run(&value, 'm', &self.numbers.two_digit(minute as i32)?);
+        }
+        if second != 0 {
+            value = replace_run(&value, 's', &self.numbers.two_digit(second as i32)?);
+        }
+        Ok(Some(
+            gmt_format
+                .replacen("{0}", &value, 1)
+                .replace("\u{200e}\u{200e}", "\u{200e}")
+                .replace("\u{200f}\u{200f}", "\u{200f}"),
+        ))
     }
 }
 fn replace_run(pattern: &str, character: char, value: &str) -> String {
@@ -566,6 +576,8 @@ fn day_period(
     })
 }
 
+// ECMA-402 §11.5.12: calendar fields and civil time from the resolved offset.
+// https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records
 pub struct LocalTime {
     pub epoch_nanoseconds: i128,
     pub civil: CivilDateTime,
@@ -584,6 +596,8 @@ impl RangeSnapshot {
         Ok(Self { locale, calendar })
     }
 
+    // ECMA-402 §11.5.8 compares the local endpoints, then expands a range pattern.
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
     // Capture before endpoint callbacks; acquire rendering data after both conversions.
     pub fn format(
         &self,
@@ -594,6 +608,7 @@ impl RangeSnapshot {
         first: &LocalTime,
         second: &LocalTime,
     ) -> Result<Vec<Part>, Error> {
+        // ECMA-402 §11.5.8 step 15 follows Table 6. The default row is fallback only.
         const FIELDS: [&str; 10] = [
             "era",
             "year",
@@ -639,6 +654,7 @@ impl RangeSnapshot {
                     "day" => first.fields.day == second.fields.day,
                     "ampm" => (first.civil.hour < 12) == (second.civil.hour < 12),
                     "dayPeriod" => {
+                        // Step 15.d.iii compares localized stand-alone periods too.
                         let width = profile.components.day_period.unwrap_or(TextWidth::Short);
                         day_period(
                             &self.locale.metadata,
@@ -678,7 +694,7 @@ impl RangeSnapshot {
                 &profile.pattern,
                 &profile.pattern,
                 first,
-                zone.data_identifier(),
+                zone,
                 profile.components,
             )?;
             for part in &mut parts {
@@ -730,10 +746,14 @@ impl RangeSnapshot {
             .map(|part| expand(&part.pattern))
             .collect::<String>();
         let expanded;
-        let patterns = if let Some(first) = patterns
-            .iter()
-            .find(|part| matches!(part.pattern.as_str(), "{0}" | "{1}"))
-        {
+        // ECMA-402 §11.5.8 steps 19.b–f preserve the fallback records' sources.
+        // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+        let patterns = if let Some(first) = selected.and_then(|interval| {
+            interval
+                .pattern_parts
+                .iter()
+                .find(|part| matches!(part.pattern.as_str(), "{0}" | "{1}"))
+        }) {
             let mut parts = pattern::split_range(&context);
             if first.source == Source::EndRange {
                 for part in &mut parts {
@@ -781,15 +801,8 @@ impl RangeSnapshot {
             } else {
                 first
             };
-            let mut parts = render.pattern(
-                config,
-                profile,
-                &pattern,
-                &context,
-                local,
-                zone.data_identifier(),
-                format,
-            )?;
+            let mut parts =
+                render.pattern(config, profile, &pattern, &context, local, zone, format)?;
             for item in &mut parts {
                 item.source = Some(part.source);
             }

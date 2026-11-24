@@ -45,7 +45,8 @@ impl Canonicalizer {
         &self,
         locales: &[S],
     ) -> Result<Vec<String>, InvalidLocale> {
-        // CanonicalizeLocaleList 7.c.v–vii for already-coerced Rust strings.
+        // ECMA-402 §9.2.1 canonicalizes and deduplicates already-coerced tags.
+        // https://tc39.es/ecma402/#sec-canonicalizelocalelist
         let mut seen = HashSet::with_capacity(locales.len());
         let mut result = Vec::with_capacity(locales.len());
         for locale in locales {
@@ -224,6 +225,8 @@ fn transform_key(value: &str) -> bool {
         && value.as_bytes()[1].is_ascii_digit()
 }
 
+// ECMA-402 §6.2.1 validates the Unicode locale grammar.
+// https://tc39.es/ecma402/#sec-iswellformedlanguagetag
 fn validate(tag: &str) -> Result<(), InvalidLocale> {
     // IsWellFormedLanguageTag 1–3: ASCII case folding is built into comparisons;
     // parse Unicode locale grammar without backwards-compatibility syntax.
@@ -489,6 +492,8 @@ fn canonicalize_extensions(
         .join("-"))
 }
 
+// ECMA-402 §6.2.2 canonicalizes a validated tag with Unicode aliases.
+// https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
 fn canonicalize_with(
     canonicalizer: &LocaleCanonicalizer,
     tag: &str,
@@ -530,6 +535,8 @@ pub fn canonicalize_locale(tag: &str) -> Result<String, InvalidLocale> {
 }
 
 /// Canonicalizes tags using baked ICU4X data, preserving first occurrence.
+/// ECMA-402 §8.3.1 steps 1–2, after the host's ECMAScript input coercions.
+/// https://tc39.es/ecma402/#sec-intl.getcanonicallocales
 #[cfg(feature = "compiled_data")]
 pub fn get_canonical_locales<S: AsRef<str>>(locales: &[S]) -> Result<Vec<String>, InvalidLocale> {
     Canonicalizer::new().get_canonical_locales(locales)

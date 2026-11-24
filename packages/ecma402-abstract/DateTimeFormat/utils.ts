@@ -1,7 +1,22 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
+  type DateTimeFormatLocaleInternalData,
   type IntlDateTimeFormatInternal,
   type TABLE_6,
 } from '#packages/ecma402-abstract/types/date-time.js'
+
+// ECMA-402 §11.2.3 says locale data contains calendar-indexed Records.
+// https://tc39.es/ecma402/#sec-intl.datetimeformat-internal-slots
+export function calendarLocaleData(
+  data: DateTimeFormatLocaleInternalData,
+  calendar: string | undefined
+): DateTimeFormatLocaleInternalData {
+  if (calendar !== undefined && HasOwnProperty(data, 'calendarData')) {
+    const names = data.calendarData
+    if (names && HasOwnProperty(names, calendar)) return names[calendar] ?? data
+  }
+  return data
+}
 
 export const DATE_TIME_PROPS: Array<
   keyof Pick<IntlDateTimeFormatInternal, TABLE_6>
