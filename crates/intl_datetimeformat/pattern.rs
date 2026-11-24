@@ -368,6 +368,44 @@ fn append(parts: &mut Vec<PatternPart>, pattern: &str, start: usize, end: usize,
         });
     }
 }
+// Keep the recorded endpoint and share punctuation outside its field span.
+// ECMA-402 §11.5.8 step 19 https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
+pub(crate) fn expand_fallback(parts: &[PatternPart], endpoint: &str) -> Option<Vec<PatternPart>> {
+    let placeholder = |part: &PatternPart| matches!(part.pattern.as_str(), "{0}" | "{1}");
+    if !parts.iter().any(placeholder) {
+        return None;
+    }
+    let span = endpoint.find('{').zip(endpoint.rfind('}'));
+    let mut result: Vec<PatternPart> = Vec::new();
+    let mut append = |pattern: &str, source| {
+        if pattern.is_empty() {
+            return;
+        }
+        if source == Source::Shared {
+            if let Some(last) = result.last_mut().filter(|part| part.source == source) {
+                last.pattern.push_str(pattern);
+                return;
+            }
+        }
+        result.push(PatternPart {
+            source,
+            pattern: pattern.into(),
+        });
+    };
+    for part in parts {
+        if !placeholder(part) {
+            append(&part.pattern, part.source);
+        } else if let Some((start, end)) = span.filter(|(start, end)| start < end) {
+            append(&endpoint[..start], Source::Shared);
+            append(&endpoint[start..=end], part.source);
+            append(&endpoint[end + 1..], Source::Shared);
+        } else {
+            append(endpoint, part.source);
+        }
+    }
+    Some(result)
+}
+
 pub fn split_range(pattern: &str) -> Vec<PatternPart> {
     let mut fields = BTreeMap::<&str, (usize, usize)>::new();
     let (mut start_begin, mut start_end, mut end_begin, mut end_end) =

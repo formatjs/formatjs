@@ -28,7 +28,7 @@ import {
   ToLocalTime,
   type ToLocalTimeImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
-import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {expandFallbackRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {calendarLocaleData} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
 // ECMA-402 §11.5.8 step 15 follows Table 6. The default row is fallback only.
@@ -275,38 +275,13 @@ export function PartitionDateTimeRangePattern(
     }
     rangePattern = {__proto__: null, patternParts} as RangePatterns
   }
-  const originalParts = rangePattern.patternParts
-  let firstEndpoint: (typeof originalParts)[number] | undefined
-  for (let index = 0; index < originalParts.length; index++) {
-    const part = originalParts[index]
-    if (part.pattern === '{0}' || part.pattern === '{1}') {
-      firstEndpoint = part
-      break
-    }
-  }
-  if (firstEndpoint) {
-    const expanded = splitRangePattern(
-      expandRangePattern(originalParts, pattern)
-    )
-    if (firstEndpoint.source === RangePatternType.endRange) {
-      for (let index = 0; index < expanded.length; index++) {
-        const part = expanded[index]
-        if (part.source !== RangePatternType.shared)
-          part.source =
-            part.source === RangePatternType.startRange
-              ? RangePatternType.endRange
-              : RangePatternType.startRange
-      }
-    }
-    rangePattern = {
-      __proto__: null,
-      ...rangePattern,
-      patternParts: expanded,
-    } as RangePatterns
-  }
   const result: IntlDateTimeFormatPart[] = []
+  const rangeParts = expandFallbackRangePattern(
+    rangePattern.patternParts,
+    pattern
+  )
   const contextParts = PartitionPattern<IntlDateTimeFormatPartType>(
-    expandRangePattern(rangePattern.patternParts, pattern)
+    expandRangePattern(rangeParts, pattern)
   )
   // ECMA-402 §11.5.8 step 19.e: keep optional formatter inputs private.
   const rangeFormatOptions = {
@@ -315,11 +290,10 @@ export function PartitionDateTimeRangePattern(
     format: rangePattern,
   }
   const rangeImplDetails = {...implDetails, rangeFormatOptions}
-  for (let index = 0; index < rangePattern.patternParts.length; index++) {
-    const part = rangePattern.patternParts[index]
+  for (let index = 0; index < rangeParts.length; index++) {
+    const part = rangeParts[index]
     const {source} = part
-    // Steps 19.a and 19.f use each pattern without changing locale data.
-    // Resolve fallback placeholders per call; other formatters share records.
+    // Steps 19.a–f keep each record's source when expanding a fallback endpoint.
     // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
     const partPattern =
       part.pattern === '{0}' || part.pattern === '{1}' ? pattern : part.pattern
