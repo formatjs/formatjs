@@ -55,9 +55,15 @@ const hostDefaultLocaleKey = Symbol.for('@formatjs/intlHostDefaultLocale')
 function readHostDefaultLocale(): string | undefined {
   const intl = localeDescriptorMember(globalThis, 'Intl') as object | undefined
   if (!intl) return undefined
-  const retained = localeDescriptor(intl, hostDefaultLocaleKey)
-  const cached = retained && localeDescriptor(retained, 'value')?.value
-  if (typeof cached === 'string') return cached
+  let canRetain = false
+  try {
+    const retained = localeDescriptor(intl, hostDefaultLocaleKey)
+    const cached = retained && localeDescriptor(retained, 'value')?.value
+    if (typeof cached === 'string') return cached
+    canRetain = retained === undefined
+  } catch {
+    // A partial Intl can reject cache inspection. Probe the host formatters.
+  }
   for (const name of ['NumberFormat', 'DateTimeFormat'] as const) {
     try {
       const Constructor = localeDescriptorMember(intl, name) as
@@ -81,11 +87,15 @@ function readHostDefaultLocale(): string | undefined {
       const locale = localeDescriptorMember(resolved, 'locale')
       if (typeof locale !== 'string' || !locale) continue
       const tag = splitUnicodeExtension(locale).locale
-      if (!retained && Object.isExtensible(intl)) {
-        Object.defineProperty(intl, hostDefaultLocaleKey, {
-          __proto__: null,
-          value: tag,
-        } as PropertyDescriptor)
+      try {
+        if (canRetain && Object.isExtensible(intl)) {
+          Object.defineProperty(intl, hostDefaultLocaleKey, {
+            __proto__: null,
+            value: tag,
+          } as PropertyDescriptor)
+        }
+      } catch {
+        // A failed cache write cannot override the detected host locale.
       }
       return tag
     } catch {

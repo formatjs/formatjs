@@ -111,6 +111,51 @@ test('uses the next host formatter when inspecting the first one throws', async 
   }
 })
 
+test.each(['read', 'write'])(
+  'uses the host default when the shared cache %s throws',
+  async operation => {
+    const original = Object.getOwnPropertyDescriptor(globalThis, 'Intl')!
+    const cacheKey = Symbol.for('@formatjs/intlHostDefaultLocale')
+    const host = {
+      NumberFormat: class {
+        resolvedOptions() {
+          return {locale: 'fr-CA-u-nu-latn'}
+        }
+      },
+    }
+    const intl = new Proxy(host, {
+      getOwnPropertyDescriptor(target, key) {
+        if (key === cacheKey && operation === 'read') throw new Error('read')
+        return Reflect.getOwnPropertyDescriptor(target, key)
+      },
+      defineProperty(target, key, descriptor) {
+        if (key === cacheKey && operation === 'write') throw new Error('write')
+        return Reflect.defineProperty(target, key, descriptor)
+      },
+    })
+    try {
+      Object.defineProperty(globalThis, 'Intl', {value: intl})
+      vi.resetModules()
+      const {ResolveLocale: resolve} =
+        await import('#packages/intl-localematcher/abstract/ResolveLocale.js')
+      expect(
+        resolve(
+          ['en', 'fr'],
+          [],
+          {localeMatcher: 'lookup'},
+          [],
+          undefined,
+          () => 'en',
+          'hostDefaultWithLocaleData'
+        )
+      ).toMatchObject({locale: 'fr-CA', dataLocale: 'fr'})
+    } finally {
+      Object.defineProperty(globalThis, 'Intl', original)
+      vi.resetModules()
+    }
+  }
+)
+
 test('a script-specific host locale also supports its scriptless region', async () => {
   const OriginalIntl = Intl
   const hostLocale = 'az-Latn-AZ'
