@@ -8,6 +8,8 @@ Private slot get/set methods are captured when the module loads. Complete Plural
 
 Polyfill for `Intl.PluralRules` — evaluates CLDR plural rules to select plural categories (zero, one, two, few, many, other) for 227 locales. Also supports ordinal rules and plural ranges (LDML-43).
 
+The conditional installer requires a callable host `supportedLocalesOf`.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`, `@formatjs/bigdecimal`

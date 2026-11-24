@@ -50,3 +50,22 @@ it('detects missing source precision in native NumberFormat', () => {
     ;(Intl as any).NumberFormat = original
   }
 })
+
+it('falls back when the host cannot query supported locales', () => {
+  const host = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
+  const method = Object.getOwnPropertyDescriptor(
+    NumberFormat,
+    'supportedLocalesOf'
+  )!
+  try {
+    Object.defineProperty(Intl, 'NumberFormat', {value: NumberFormat})
+    expect(shouldPolyfill('en')).toBeUndefined()
+    Object.defineProperty(NumberFormat, 'supportedLocalesOf', {
+      value: undefined,
+    })
+    expect(shouldPolyfill('en')).toBe('en')
+  } finally {
+    Object.defineProperty(NumberFormat, 'supportedLocalesOf', method)
+    Object.defineProperty(Intl, 'NumberFormat', host)
+  }
+})
