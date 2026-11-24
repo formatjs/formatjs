@@ -368,7 +368,9 @@ function replaceDateTimeTokens(
   for (let i = 0; i < pattern.length;) {
     const c = pattern[i]
     if (c === "'") {
-      if (pattern[i + 1] === "'") {
+      // A final quote has no next code unit.
+      // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
+      if (i + 1 < pattern.length && pattern[i + 1] === "'") {
         output += "'"
         i += 2
       } else {

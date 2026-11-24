@@ -6,7 +6,7 @@ function main() {
   const resolve = (path: string) =>
     runfiles.resolve(`${process.env.TEST_WORKSPACE || '_main'}/${path}`)
   const locales = ['en', 'fr', 'ar', 'ja', 'zh-Hans', 'ru', 'hi', 'he']
-  const packs = locales.map(locale =>
+  const packs = [...locales, 'de'].map(locale =>
     readFileSync(
       resolve(`crates/intl_datetimeformat/locale-data/${locale}.json`),
       'utf8'

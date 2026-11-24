@@ -215,6 +215,42 @@ for (const Constructor of [Native, Reference]) {
   }
   equal(emptyZone, {error: 'RangeError'}, 'empty time zone after coercion')
 
+  const patternEnd = "HH–HH 'Uhr'".length
+  const previousPatternEnd = Object.getOwnPropertyDescriptor(
+    String.prototype,
+    patternEnd
+  )
+  let quotedRange: Intl.DateTimeRangeFormatPart[]
+  try {
+    Object.defineProperty(String.prototype, patternEnd, {
+      configurable: true,
+      get() {
+        throw new Error('Read past the closing quote in a date-time pattern')
+      },
+    })
+    quotedRange = new Constructor('de', {
+      timeZone: 'UTC',
+      hour: '2-digit',
+      hourCycle: 'h23',
+    }).formatRangeToParts(0, 3600000)
+  } finally {
+    if (previousPatternEnd) {
+      Object.defineProperty(String.prototype, patternEnd, previousPatternEnd)
+    } else {
+      Reflect.deleteProperty(String.prototype, patternEnd)
+    }
+  }
+  equal(
+    quotedRange,
+    [
+      {type: 'hour', value: '00', source: 'startRange'},
+      {type: 'literal', value: '–', source: 'shared'},
+      {type: 'hour', value: '01', source: 'endRange'},
+      {type: 'literal', value: ' Uhr', source: 'shared'},
+    ],
+    'terminal quote in a range pattern'
+  )
+
   const canonicalize = Intl.getCanonicalLocales
   const requested = 'en-u-nu-arab'
   let resolvedLocale: string
