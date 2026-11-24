@@ -107,7 +107,10 @@ function supportedLocalesOf(locale?: string | string[]) {
 export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     typeof Intl === 'undefined' ||
-    !('NumberFormat' in Intl) ||
+    typeof Intl.NumberFormat !== 'function' ||
+    // ECMA-402 §16.2.2 provides the locale support query.
+    // https://tc39.es/ecma402/#sec-intl.numberformat.supportedlocalesof
+    typeof Intl.NumberFormat.supportedLocalesOf !== 'function' ||
     !supportsES2020() ||
     !supportsES2023() ||
     !supportsRangeAndParts() ||

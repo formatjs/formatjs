@@ -94,6 +94,7 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/plural-provider.test.ts",
+        "tests/should-polyfill.test.ts",
         "tests/supported-locales-of.test.ts",
         ":tests-locale-data-bn",  # keep: generated locale data imported by tests
         ":tests-locale-data-en",  # keep: generated locale data imported by tests

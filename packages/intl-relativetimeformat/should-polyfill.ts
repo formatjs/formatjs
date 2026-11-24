@@ -28,7 +28,10 @@ function hasResolvedOptionsNumberingSystem(locale?: string | string[]) {
 export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     typeof Intl === 'undefined' ||
-    !('RelativeTimeFormat' in Intl) ||
+    typeof Intl.RelativeTimeFormat !== 'function' ||
+    // ECMA-402 §18.2.2 provides the locale support query.
+    // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.supportedLocalesOf
+    typeof Intl.RelativeTimeFormat.supportedLocalesOf !== 'function' ||
     !supportedLocalesOf(locale) ||
     !hasResolvedOptionsNumberingSystem(locale)
   ) {

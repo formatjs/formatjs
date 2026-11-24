@@ -20,3 +20,20 @@ it('detects missing source precision in native PluralRules', () => {
     ;(Intl as any).PluralRules = original
   }
 })
+
+it('falls back when the host cannot query supported locales', () => {
+  const host = Object.getOwnPropertyDescriptor(Intl, 'PluralRules')!
+  const method = Object.getOwnPropertyDescriptor(
+    PluralRules,
+    'supportedLocalesOf'
+  )!
+  try {
+    Object.defineProperty(Intl, 'PluralRules', {value: PluralRules})
+    expect(shouldPolyfill('en')).toBeUndefined()
+    Object.defineProperty(PluralRules, 'supportedLocalesOf', {value: undefined})
+    expect(shouldPolyfill('en')).toBe('en')
+  } finally {
+    Object.defineProperty(PluralRules, 'supportedLocalesOf', method)
+    Object.defineProperty(Intl, 'PluralRules', host)
+  }
+})

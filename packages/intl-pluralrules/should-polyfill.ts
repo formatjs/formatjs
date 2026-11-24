@@ -28,7 +28,10 @@ function supportsSourcePrecision() {
 export function shouldPolyfill(locale = 'en'): string | undefined {
   if (
     typeof Intl === 'undefined' ||
-    !('PluralRules' in Intl) ||
+    typeof Intl.PluralRules !== 'function' ||
+    // ECMA-402 §17.2.2 provides the locale support query.
+    // https://tc39.es/ecma402/#sec-intl.pluralrules.supportedlocalesof
+    typeof Intl.PluralRules.supportedLocalesOf !== 'function' ||
     !supportsSourcePrecision() ||
     new Intl.PluralRules('en', {minimumFractionDigits: 2} as any).select(1) ===
       'one' ||
