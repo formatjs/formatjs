@@ -178,6 +178,8 @@
     }
     return result + '}'
   }
+  // ECMA-402 §9.2.10 defaults undefined to an empty null-prototype object.
+  // https://tc39.es/ecma402/#sec-coerceoptionstoobject
   function options(value: unknown): any {
     if (value === undefined) return create(null)
     if (value === null) throw new BadReceiver('Options cannot be null')
@@ -202,6 +204,8 @@
     )
     return single(slot(formatter), milliseconds, 'format')
   }
+  // ECMA-402 §9.2.11 uses GetOption for string fields and their defaults.
+  // https://tc39.es/ecma402/#sec-getoption
   function option(
     value: any,
     key: string,
@@ -357,6 +361,8 @@
   }
   const textWidths = ['narrow', 'short', 'long']
   const numericWidths = ['2-digit', 'numeric']
+  // ECMA-402 §11.1.2 step 25 reads components in Table 16 order.
+  // https://tc39.es/ecma402/#table-datetimeformat-components
   const componentNames = [
     'weekday',
     'era',
@@ -428,7 +434,7 @@
     epochNanoseconds: bigint
     timeZone?: string
   }
-  // ECMA-402 §11.1.2.
+  // ECMA-402 §11.1.2 creates the formatter in phases across the Rust bridge.
   // https://tc39.es/ecma402/#sec-createdatetimeformat
   function initialize(
     receiver: any,
@@ -439,6 +445,8 @@
   ): any {
     const construction = handle(nativeBegin())
     try {
+      // ECMA-402 §9.2.8 steps 1–6 read locales before options and descriptors.
+      // https://tc39.es/ecma402/#sec-resolveoptions
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
       const opts = options(optionsInput),
         early = create(null),
@@ -462,6 +470,8 @@
       const hour12 = opts.hour12
       if (hour12 !== undefined) early.hour12 = !!hour12
       early.hourCycle = option(opts, 'hourCycle', ['h11', 'h12', 'h23', 'h24'])
+      // ECMA-402 §11.1.2 steps 2–14 retain locale data before reading timeZone.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
       checked(
         nativeResolve(
           construction,
@@ -488,6 +498,8 @@
       for (let index = 0; index < componentNames.length; index++) {
         const key = componentNames[index]
         if (key === 'fractionalSecondDigits') {
+          // ECMA-402 §9.2.13 steps 2–4 check bounds before truncation.
+          // https://tc39.es/ecma402/#sec-defaultnumberoption
           const raw = opts[key]
           if (raw !== undefined) {
             const digits = +(raw as any)
@@ -515,6 +527,8 @@
         }
       }
       checked(nativeCapture(construction, record(components, componentNames)))
+      // ECMA-402 §11.1.2 steps 26–30 read the matcher, then both styles.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
       late.formatMatcher = option(
         opts,
         'formatMatcher',
@@ -523,6 +537,8 @@
       )
       late.dateStyle = option(opts, 'dateStyle', styles)
       late.timeStyle = option(opts, 'timeStyle', styles)
+      // ECMA-402 §11.1.2 steps 31.b–c reject styles outside the required fields.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
       if (dateLocale === 'date' && late.timeStyle !== undefined)
         throw new BadReceiver('timeStyle is not valid for toLocaleDateString')
       if (dateLocale === 'time' && late.dateStyle !== undefined)
@@ -543,6 +559,8 @@
       const model = handle(
         nativeCreate(construction, record(late, createNames))
       )
+      // ECMA-402 §11.1.2 steps 33–35 finish the private state and return.
+      // https://tc39.es/ecma402/#sec-createdatetimeformat
       const state: Slot = {handle: model, callbacks, bound: undefined}
       apply(setSlot, slots, [receiver, state])
       return receiver

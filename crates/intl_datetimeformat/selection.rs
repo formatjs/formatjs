@@ -167,6 +167,8 @@ impl Snapshot {
         let mut requested = self.components;
         let styled = date_style.is_some() || time_style.is_some();
         let format = if styled {
+            // ECMA-402 §11.1.2 steps 31.a and 31.e check components and select styles.
+            // https://tc39.es/ecma402/#sec-createdatetimeformat
             if Field::ALL
                 .into_iter()
                 .any(|field| requested.get(field).is_some())
@@ -181,7 +183,7 @@ impl Snapshot {
                 time_style.map(|_| twelve(cycle)),
             )?
         } else {
-            // ECMA-402 §11.1.2 step 32 checks required fields before adding defaults.
+            // ECMA-402 §11.1.2 steps 32.a–f check required fields before adding defaults.
             // https://tc39.es/ecma402/#sec-createdatetimeformat
             let has_date = [Field::Weekday, Field::Year, Field::Month, Field::Day]
                 .into_iter()
@@ -219,6 +221,8 @@ impl Snapshot {
             {
                 requested.hour12 = Some(twelve(cycle));
             }
+            // ECMA-402 §11.1.2 steps 32.g–h select from the resolved calendar.
+            // https://tc39.es/ecma402/#sec-createdatetimeformat
             choose(matcher, requested, &self.calendar)?
         };
         let profile = make_profile(&self, format, requested, cycle, false)?;
@@ -290,6 +294,8 @@ fn make_profile(
             .fractional_second_digits
             .or(components.fractional_second_digits);
     }
+    // ECMA-402 §11.1.2 step 34 exposes the cycle when the main format has an hour.
+    // https://tc39.es/ecma402/#sec-createdatetimeformat
     let hour_cycle = if temporal || components.hour.is_some() {
         Some(cycle)
     } else {
