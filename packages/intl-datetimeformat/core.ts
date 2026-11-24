@@ -1099,9 +1099,17 @@ function prepareLocaleData(
   entry: RawDateTimeLocaleData,
   patches: ReadonlyMap<string, RawCalendarLocaleData> | undefined
 ): DateTimeFormatLocaleInternalData {
+  // ECMA-402 §11.2.3.8–9 reads private date and time range records.
+  // https://tc39.es/ecma402/#sec-datetimeformat-date-range-record
+  // https://tc39.es/ecma402/#sec-datetimeformat-time-range-record
+  const rawCalendars = HasOwnProperty(entry.data, 'calendarData')
+    ? entry.data.calendarData
+    : undefined
   deleteIntervalCandidates(entry.data.intervalFormats)
-  for (const calendar of Object.keys(entry.data.calendarData || {}))
-    deleteIntervalCandidates(entry.data.calendarData![calendar].intervalFormats)
+  if (rawCalendars) {
+    for (const calendar of objectKeys(rawCalendars))
+      deleteIntervalCandidates(rawCalendars[calendar].intervalFormats)
+  }
   const d = {
     __proto__: null,
     ...entry.data,
@@ -1114,7 +1122,7 @@ function prepareLocaleData(
     } as unknown as RawDateTimeLocaleData['data']['formats'],
     calendarData: {
       __proto__: null,
-      ...entry.data.calendarData,
+      ...rawCalendars,
     } as unknown as NonNullable<RawDateTimeLocaleData['data']['calendarData']>,
   }
   for (const patch of patches?.values() ?? []) {
@@ -1128,7 +1136,7 @@ function prepareLocaleData(
   )
   delete d.intervalFormatTemplates
   for (const calendar of Object.keys(d.calendarData)) {
-    const fields = {...d.calendarData[calendar]}
+    const fields = {__proto__: null, ...d.calendarData[calendar]}
     fields.intervalFormats = expandIntervalFormatTemplates(
       fields.intervalFormats,
       fields.intervalFormatTemplates
@@ -1201,12 +1209,13 @@ function prepareLocaleData(
   if (arrayIndexOf(d.ca, 'iso8601') < 0) d.ca.push('iso8601')
 
   if (calendarData) {
-    processedData.calendarData = {}
+    const processedCalendars = {}
+    setDataProperty(processedData, 'calendarData', processedCalendars)
     for (const calendar of Object.keys(calendarData)) {
       const fields = calendarData[calendar]
       const {intervalFormats: calendarIntervals, ...calendarFields} = fields
       let parsed: DateTimeFormatLocaleInternalData | undefined
-      Object.defineProperty(processedData.calendarData, calendar, {
+      Object.defineProperty(processedCalendars, calendar, {
         enumerable: true,
         get() {
           return (parsed ??= {
