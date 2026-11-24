@@ -289,6 +289,28 @@ for (const Constructor of [Native, Reference]) {
   }
   equal(renderedYear, '1970', 'first render retains NumberFormat')
 
+  const dateDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'Date')!
+  for (const method of ['format', 'formatToParts'] as const) {
+    const before = stringify(numeric[method](Date.now()))
+    let current: string
+    try {
+      Object.defineProperty(globalThis, 'Date', {
+        configurable: true,
+        get() {
+          throw new Error('Read global Date')
+        },
+      })
+      current = stringify(numeric[method]())
+    } finally {
+      Object.defineProperty(globalThis, 'Date', dateDescriptor)
+    }
+    const after = stringify(numeric[method](Date.now()))
+    check(
+      current === before || current === after,
+      method + ' uses intrinsic Date.now without reading global Date'
+    )
+  }
+
   const periods = new Constructor('en', {timeZone: 'UTC', dayPeriod: 'long'})
   const morning = Date.UTC(2026, 0, 15, 9)
   const laterMorning = Date.UTC(2026, 0, 15, 11)
