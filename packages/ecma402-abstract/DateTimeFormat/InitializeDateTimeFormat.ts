@@ -228,17 +228,26 @@ function resolveHourCycle(
 
 const createObject = Object.create
 const timePatternIndexOf = String.prototype.indexOf
-const timePatternExec = RegExp.prototype.exec
-const timePatternReplace = RegExp.prototype[Symbol.replace]
-function timeReplacementPattern(pattern: RegExp): RegExp {
-  setDataProperty(pattern, 'exec', timePatternExec)
-  setDataProperty(pattern, 'global', true)
-  setDataProperty(pattern, 'unicode', false)
-  setDataProperty(pattern, 'unicodeSets', false)
-  return pattern
+const timePatternSlice = String.prototype.slice
+
+// ECMA-402 §11.1.2 steps 32.h–33 select a private format record.
+// https://tc39.es/ecma402/#sec-createdatetimeformat
+function replaceTimePatternField(
+  pattern: string,
+  field: string,
+  value: string
+): string {
+  let result = ''
+  let start = 0
+  let index = temporalFormatApply(timePatternIndexOf, pattern, [field, start])
+  while (index >= 0) {
+    result += temporalFormatApply(timePatternSlice, pattern, [start, index])
+    result += value
+    start = index + field.length
+    index = temporalFormatApply(timePatternIndexOf, pattern, [field, start])
+  }
+  return result + temporalFormatApply(timePatternSlice, pattern, [start])
 }
-const secondPlaceholder = timeReplacementPattern(/\{second\}/g)
-const dayPeriodPlaceholder = timeReplacementPattern(/\{ampm\}/g)
 
 function applyExplicitTimePatternOptions(
   pattern: string,
@@ -256,8 +265,6 @@ function applyExplicitTimePatternOptions(
     // LDML matching skeletons: append the locale's decimal separator before S.
     // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L834
-    // Temporal comparison §15.4.1 step46.m: adapt the selected CLDR time pattern.
-    // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
     const numberOptions = createObject(null)
     numberOptions.numberingSystem = numberingSystem
     const NumberFormat = getNumberFormatIntrinsic()
@@ -283,16 +290,14 @@ function applyExplicitTimePatternOptions(
       decimal !== undefined,
       'Missing decimal separator for fractional seconds'
     )
-    pattern = temporalFormatApply(timePatternReplace, secondPlaceholder, [
+    pattern = replaceTimePatternField(
       pattern,
-      `{second}${decimal}{fractionalSecondDigits}`,
-    ])
+      '{second}',
+      `{second}${decimal}{fractionalSecondDigits}`
+    )
   }
   if (opt.dayPeriod !== undefined) {
-    pattern = temporalFormatApply(timePatternReplace, dayPeriodPlaceholder, [
-      pattern,
-      '{dayPeriod}',
-    ])
+    pattern = replaceTimePatternField(pattern, '{ampm}', '{dayPeriod}')
   }
   return pattern
 }
