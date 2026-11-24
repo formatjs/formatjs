@@ -98,6 +98,43 @@ for (const text of fixtures.packs) {
   Reference.__addLocaleData(pack)
   ;(Intl.NumberFormat as any).__addLocaleData(pack.number)
 }
+const firstUseOptions = {
+  timeZone: 'UTC',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+} as const
+const firstUseEnd = 86_400_000
+const expectedRange = new Native('en', firstUseOptions).formatRange(
+  0,
+  firstUseEnd
+)
+for (const Constructor of [Native, Reference]) {
+  const {keys} = Object
+  const {map, reduce} = Array.prototype
+  const {get, set} = Map.prototype
+  const {indexOf, slice} = String.prototype
+  const unexpected = () => {
+    throw new Error('Called a public method while preparing a date interval')
+  }
+  let range: string
+  try {
+    Object.keys = unexpected
+    Array.prototype.map = Array.prototype.reduce = unexpected
+    Map.prototype.get = Map.prototype.set = unexpected
+    String.prototype.indexOf = String.prototype.slice = unexpected
+    range = new Constructor('en', firstUseOptions).formatRange(0, firstUseEnd)
+  } finally {
+    Object.keys = keys
+    Array.prototype.map = map
+    Array.prototype.reduce = reduce
+    Map.prototype.get = get
+    Map.prototype.set = set
+    String.prototype.indexOf = indexOf
+    String.prototype.slice = slice
+  }
+  equal(range, expectedRange, 'first use of private interval patterns')
+}
 for (const Constructor of [Native, Reference]) {
   check(
     Constructor.prototype.constructor === Constructor,
