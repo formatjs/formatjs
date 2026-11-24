@@ -163,7 +163,7 @@ let numberFormatIntrinsic = numberFormatProvider
 
 export function registerNumberFormatIntrinsic(
   intl: typeof Intl,
-  Constructor: typeof Intl.NumberFormat
+  Constructor: new (...args: never[]) => object
 ): void {
   if (
     getOwnPropertyDescriptor(intl, numberFormatIntrinsicKey) ||
