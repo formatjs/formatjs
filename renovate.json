@@ -1,6 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
+  "gitIgnoredAuthors": [
+    "41898282+github-actions[bot]@users.noreply.github.com"
+  ],
   "semanticCommitType": "build",
   "minimumReleaseAge": "7 days",
   "internalChecksFilter": "strict",
@@ -9,6 +12,16 @@
     "packages/react-intl/example-sandboxes/**"
   ],
   "packageRules": [
+    {
+      "description": "Hermes examples consume an extracted SDK through --override_module",
+      "matchManagers": ["bazel-module"],
+      "matchFileNames": [
+        "examples/hermes-intl/MODULE.bazel",
+        "examples/hermes-apple-sdk/MODULE.bazel"
+      ],
+      "matchPackageNames": ["formatjs_intl_getcanonicallocales_hermes"],
+      "enabled": false
+    },
     {
       "description": "Keep CLDR data and calendar peer dependencies on one release",
       "groupName": "CLDR",

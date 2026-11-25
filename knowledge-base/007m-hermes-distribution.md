@@ -33,6 +33,9 @@ Apple consumers select one architecture per build; CMake honors
 Its optional second target separates Hermes' object compilation from final link.
 The SDK's Bazel module retains its original name for compatibility; `:intl`
 links all adapters. The independent Bazel consumer verifies the extracted layout.
+The standalone examples supply this module through `--override_module` pointing
+to an extracted SDK. Renovate skips registry lookup for this dependency in those
+two examples; their other Bazel dependencies still receive updates.
 
 Release Please owns the SDK component at `native/hermes`, independently of Rust
 crate versions. `version.txt` is authoritative; its generic updater keeps the SDK
