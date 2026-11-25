@@ -35,16 +35,23 @@ function main(args: Args) {
     string,
     string
   >
+  const regionalLanguages = new Set<string>()
   for (const [region, preferred] of Object.entries(
     preferences.supplemental.calendarPreferenceData
   )) {
     const locale = likely[`und-${region}`]
     if (!locale) continue
     const [language] = locale.split('-')
+    regionalLanguages.add(language)
     for (const name of preferred) {
       const locales = candidates.get(names.get(name) ?? name)
       locales?.add(language).add(`${language}-${region}`).add(locale)
     }
+  }
+  // Some calendars, such as ethioaa, have no preference row of their own.
+  for (const [calendar, locales] of candidates) {
+    if (calendar !== 'iso8601' && locales.size === 1)
+      for (const locale of regionalLanguages) locales.add(locale)
   }
   const calendarCandidateLocales = Object.fromEntries(
     Array.from(candidates, ([calendar, locales]) => [calendar, [...locales]])

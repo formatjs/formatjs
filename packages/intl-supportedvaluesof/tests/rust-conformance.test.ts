@@ -65,9 +65,9 @@ function observe(
       case 'calendar':
         return {
           ...candidate,
-          resolved: new Intl.DateTimeFormat(
-            `${locale}-u-ca-${value}`
-          ).resolvedOptions().calendar,
+          resolved: new Intl.DateTimeFormat(`${locale}-u-ca-${value}`, {
+            calendar: value,
+          }).resolvedOptions().calendar,
         }
       case 'collation':
         return {

@@ -212,11 +212,18 @@ try {
 }
 
 class RegionalCalendarFormatter {
-  constructor(private readonly locale: string) {}
+  constructor(
+    private readonly locale: string,
+    private readonly options?: Intl.DateTimeFormatOptions
+  ) {}
 
   resolvedOptions() {
+    if (this.locale === 'fa-u-ca-persian') return {calendar: 'persian'}
+    if (this.locale === 'am-u-ca-ethioaa') return {calendar: 'ethioaa'}
+    // The provider's default locale accepts Japanese calendar even when the
+    // requested locale does not match and its Unicode extension is dropped.
     return {
-      calendar: this.locale === 'fa-u-ca-persian' ? 'persian' : 'gregory',
+      calendar: this.options?.calendar === 'japanese' ? 'japanese' : 'gregory',
     }
   }
 }
@@ -227,8 +234,8 @@ try {
   equal(
     [candidate('calendar'), reference('calendar')],
     [
-      ['gregory', 'iso8601', 'persian'],
-      ['gregory', 'iso8601', 'persian'],
+      ['ethioaa', 'gregory', 'iso8601', 'japanese', 'persian'],
+      ['ethioaa', 'gregory', 'iso8601', 'japanese', 'persian'],
     ],
     'Calendar support can depend on the formatter locale'
   )

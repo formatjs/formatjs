@@ -83,6 +83,9 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
     case FORMATJS_CALENDAR:
       property = "calendar";
       language += "-u-ca-" + identifier;
+      // ECMA-402 §9.2.7 steps 3 and 11 apply the option after locale fallback.
+      // https://tc39.es/ecma402/#sec-resolvelocale
+      options.setProperty(rt, "calendar", jsi::String::createFromUtf8(rt, identifier));
       break;
     case FORMATJS_COLLATION:
       property = "collation";

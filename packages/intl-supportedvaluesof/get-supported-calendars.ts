@@ -28,10 +28,14 @@ export function getSupportedCalendars(): Calendar[] {
     if (calendar === 'iso8601') return true
     // §6.9.1 includes calendars supported in any locale. Probe CLDR candidates
     // when the formatter cannot enumerate its calendars directly.
+    // §9.2.7 steps 3 and 11 still apply an explicit calendar after locale fallback.
+    // https://tc39.es/ecma402/#sec-resolvelocale
+    const options = {__proto__: null, calendar}
     return arraySome(calendarCandidateLocales[calendar], locale => {
       try {
         return (
-          resolve(create(`${locale}-u-ca-${calendar}`)).calendar === calendar
+          resolve(create(`${locale}-u-ca-${calendar}`, options)).calendar ===
+          calendar
         )
       } catch {
         return false

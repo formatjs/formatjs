@@ -11,7 +11,7 @@ pub static CALENDAR_LOCALES: &[(&str, &[&str])] = &[
 ("chinese", &["en","zh","zh-CN","zh-Hans-CN","zh-HK","zh-Hant-HK","zh-MO","zh-Hant-MO","zh-TW","zh-Hant-TW"]),
 ("coptic", &["en","ar","ar-EG","ar-Arab-EG"]),
 ("dangi", &["en","ko","ko-KR","ko-Kore-KR"]),
-("ethioaa", &["en"]),
+("ethioaa", &["en","ar","fa","sq","az","bn","zh","fr","ti","am","id","he","hi","ja","ko","dv","ms","ha","ur","th","tg","tk","tr","uz"]),
 ("ethiopic", &["en","am","am-ET","am-Ethi-ET"]),
 ("gregory", &["en","ar","ar-AE","ar-Arab-AE","fa","fa-AF","fa-Arab-AF","sq","sq-AL","sq-Latn-AL","az","az-AZ","az-Latn-AZ","bn","bn-BD","bn-Beng-BD","ar-BH","ar-Arab-BH","zh","zh-CN","zh-Hans-CN","fr","fr-DJ","fr-Latn-DJ","ar-DZ","ar-Arab-DZ","ar-EG","ar-Arab-EG","ar-EH","ar-Arab-EH","ti","ti-ER","ti-Ethi-ER","am","am-ET","am-Ethi-ET","zh-HK","zh-Hant-HK","id","id-ID","id-Latn-ID","he","he-IL","he-Hebr-IL","hi","hi-IN","hi-Deva-IN","ar-IQ","ar-Arab-IQ","fa-IR","fa-Arab-IR","ar-JO","ar-Arab-JO","ja","ja-JP","ja-Jpan-JP","ar-KM","ar-Arab-KM","ko","ko-KR","ko-Kore-KR","ar-KW","ar-Arab-KW","ar-LB","ar-Arab-LB","ar-LY","ar-Arab-LY","ar-MA","ar-Arab-MA","zh-MO","zh-Hant-MO","ar-MR","ar-Arab-MR","dv","dv-MV","dv-Thaa-MV","ms","ms-MY","ms-Latn-MY","ha","ha-NE","ha-Latn-NE","ar-OM","ar-Arab-OM","ur","ur-PK","ur-Arab-PK","ar-PS","ar-Arab-PS","ar-QA","ar-Arab-QA","ar-SA","ar-Arab-SA","ar-SD","ar-Arab-SD","ar-SY","ar-Arab-SY","ar-TD","ar-Arab-TD","th","th-TH","th-Thai-TH","tg","tg-TJ","tg-Cyrl-TJ","tk","tk-TM","tk-Latn-TM","ar-TN","ar-Arab-TN","tr","tr-TR","tr-Latn-TR","zh-TW","zh-Hant-TW","uz","uz-UZ","uz-Latn-UZ","sq-XK","sq-Latn-XK","ar-YE","ar-Arab-YE"]),
 ("hebrew", &["en","he","he-IL","he-Hebr-IL"]),
