@@ -464,9 +464,9 @@ Following Stage 4 Temporal timezone behavior, `resolvedOptions().timeZone`
 preserves named identifiers with IANA casing: `asia/calcutta` becomes
 `Asia/Calcutta`, and `Etc/GMT` stays `Etc/GMT`. Formatting uses the linked zone's
 transition data and localized names. `__setDefaultTimeZone` preserves names too.
-`shouldPolyfill()` checks named-zone preservation, numeric offsets, and callable
-locale, range, and parts methods. A throwing capability probe also selects the
-polyfill.
+`shouldPolyfill()` accepts native alias canonicalization, including `Etc/UTC`
+to `UTC`. It checks numeric offsets and callable locale, range, and parts methods.
+A throwing capability probe also selects the polyfill.
 
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.

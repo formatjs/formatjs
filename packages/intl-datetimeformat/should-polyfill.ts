@@ -15,11 +15,7 @@ function supportsTimeZoneIdentifiers() {
   // https://tc39.es/ecma402/#sec-createdatetimeformat
   // https://tc39.es/ecma402/#sec-formatoffsettimezoneidentifier
   return arrayEvery(
-    [
-      ['Asia/Calcutta', 'Asia/Calcutta'],
-      ['Etc/UTC', 'Etc/UTC'],
-      ['+0530', '+05:30'],
-    ],
+    [['+0530', '+05:30']],
     probe =>
       new Intl.DateTimeFormat('en', {timeZone: probe[0]}).resolvedOptions()
         .timeZone === probe[1]
