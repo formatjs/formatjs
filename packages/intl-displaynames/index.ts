@@ -178,9 +178,11 @@ export class DisplayNames extends nullClassBase {
 
   // ECMA-402 §12.2.2 canonicalizes locales before reading filter options.
   // https://tc39.es/ecma402/#sec-Intl.DisplayNames.supportedLocalesOf
+  // ECMA-262 §17: only required parameters count toward length.
+  // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
   static supportedLocalesOf(
     locales?: string | string[],
-    options?: Pick<DisplayNamesOptions, 'localeMatcher'>
+    options: Pick<DisplayNamesOptions, 'localeMatcher'> | undefined = undefined
   ): string[] {
     return SupportedLocales(
       DisplayNames.availableLocales,

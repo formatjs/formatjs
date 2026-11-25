@@ -33,6 +33,9 @@ check(
   'Rust DisplayNames installed'
 )
 equal(Native.supportedLocalesOf(['en', 'fr']), [], 'no implicit locale data')
+for (const Constructor of [Native, TypeScriptDisplayNames]) {
+  equal(Constructor.supportedLocalesOf.length, 1, 'supportedLocalesOf length')
+}
 throws(
   () => new Native(),
   TypeError,
