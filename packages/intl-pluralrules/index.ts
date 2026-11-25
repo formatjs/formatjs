@@ -106,6 +106,9 @@ function getDefaultLocale(): string {
 // https://tc39.es/ecma402/#sec-intl.pluralrules-internal-slots
 const relevantExtensionKeys: never[] = []
 
+// ECMA-402 §17.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-pluralrules-constructor
+//
 // ECMA-402 §17.2.1 https://tc39.es/ecma402/#sec-intl.pluralrules.prototype
 // ECMA-402 §17.3.1 https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.constructor
 export class PluralRules extends nullClassBase {
@@ -254,6 +257,8 @@ Object.defineProperty(PluralRules, '__defaultLocale', {
   },
 })
 
+// ECMA-402 §17.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-pluralrules-prototype-object
 Object.setPrototypeOf(PluralRules.prototype, Object.prototype)
 
 try {

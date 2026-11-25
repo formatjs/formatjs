@@ -642,6 +642,9 @@ function weekdayToString(fw: string) {
     : fw
 }
 
+// ECMA-402 §15.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-locale-constructor
+//
 // ECMA-402 §15.2.1 https://tc39.es/ecma402/#sec-Intl.Locale.prototype
 // ECMA-402 §15.3.1 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.constructor
 export class Locale extends nullClassBase {
@@ -972,6 +975,8 @@ export class Locale extends nullClassBase {
   public static readonly polyfilled = true
 }
 
+// ECMA-402 §15.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-locale-prototype-object
 Object.setPrototypeOf(Locale.prototype, Object.prototype)
 
 try {

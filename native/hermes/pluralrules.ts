@@ -43,6 +43,8 @@
   const BadReceiver = TypeError
   const BadOption = RangeError
   const primitiveKey = Symbol.toPrimitive
+  // ECMA-402 §17.4 Instance slots live in the native handle.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-pluralrules-instances
   const slots = new WeakMap<object, object>()
   const getSlot = WeakMap.prototype.get.bind(slots) as (
     receiver: unknown
@@ -248,6 +250,9 @@
     define(target, name, descriptor)
   }
 
+  // ECMA-402 §17.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-pluralrules-constructor
+  //
   // ECMA-402 §17.1.1 steps 1–6 allocate the receiver before locale and option coercion.
   // https://tc39.es/ecma402/#sec-intl.pluralrules
   class PluralRules extends null {
@@ -396,6 +401,9 @@
   }
   // ECMA-402 §17.3.1: class syntax supplies the prototype's constructor.
   // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.constructor
+  //
+  // ECMA-402 §17.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-pluralrules-prototype-object
   const prototype = PluralRules.prototype
   Object.setPrototypeOf(prototype, objectPrototype)
   const members = {

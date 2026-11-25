@@ -143,6 +143,9 @@
     return decoded(nativeParts(handle, numeric, text))
   }
 
+  // ECMA-402 §18.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-relativetimeformat-constructor
+  //
   // ECMA-402 §18.1.1 steps 1–3: allocate before reading locales or options.
   // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat
   class RelativeTimeFormat extends null {
@@ -240,6 +243,9 @@
   }
   // ECMA-402 §18.3.1: class syntax supplies the prototype's constructor.
   // https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.constructor
+  //
+  // ECMA-402 §18.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-relativetimeformat-prototype-object
   const prototype = RelativeTimeFormat.prototype
   setPrototype(prototype, objectPrototype)
   const methods = {

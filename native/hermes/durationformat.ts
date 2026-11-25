@@ -55,6 +55,8 @@
   const BadReceiver = TypeError,
     BadOption = RangeError,
     BadData = Error
+  // ECMA-402 §13.4 Instance slots live in the native handle.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-durationformat-instances
   const slots = new WeakMap<object, object>()
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
@@ -267,6 +269,8 @@
     // https://tc39.es/ecma402/#sec-todurationrecord
     return decoded(nativeFormat(model, record.values, record.defined, mode))
   }
+  // ECMA-402 §13.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-durationformat-constructor
   class DurationFormat extends null {
     // ECMA-402 §13.1.1 steps 1–2 allocate from NewTarget.
     // https://tc39.es/ecma402/#sec-Intl.DurationFormat
@@ -382,6 +386,9 @@
   // ECMA-402 §§13.2.1 and 13.3.1: class syntax supplies both prototype links.
   // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype
   // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.constructor
+  //
+  // ECMA-402 §13.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-durationformat-prototype-object
   const prototype = DurationFormat.prototype
   setPrototype(prototype, objectPrototype)
   const methods = {

@@ -245,6 +245,9 @@ export interface DateTimeFormatConstructor {
   __addTZData(d: PackedData): void
 }
 
+// ECMA-402 §11.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-datetimeformat-constructor
+//
 // ECMA-402 §11.1.1 creates a formatter for calls and construction.
 // https://tc39.es/ecma402/#sec-intl.datetimeformat
 export const DateTimeFormat: DateTimeFormatConstructor = new Proxy(
@@ -337,6 +340,9 @@ export function formatDateWithDefaults(
 // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype
 Object.defineProperty(DateTimeFormat, 'prototype', {writable: false})
 
+// ECMA-402 §11.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-datetimeformat-prototype-object
+//
 // ECMA-402 §11.3.1 links the prototype to the public constructor.
 // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.constructor
 defineProperty(DateTimeFormat.prototype, 'constructor', {value: DateTimeFormat})

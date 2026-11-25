@@ -190,12 +190,16 @@
     apply(setSlot, slots, [receiver, value])
     return receiver
   }
+  // ECMA-402 §10.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-the-intl-collator-constructor
   let Collator: any = function (
     locales: unknown = undefined,
     optionsInput: unknown = undefined
   ): object {
     return initialize(locales, optionsInput, Collator)
   }
+  // ECMA-402 §10.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-the-intl-collator-prototype-object
   const prototype = Collator.prototype
   Collator = new ProxyConstructor(Collator, {
     construct(_target, args, newTarget): object {

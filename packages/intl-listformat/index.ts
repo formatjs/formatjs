@@ -291,6 +291,9 @@ function visitParts(parts: Placeable, visit: (part: Part) => void): void {
   }
 }
 
+// ECMA-402 §14.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-listformat-constructor
+//
 // Class syntax supplies the prototype and constructor descriptors.
 // ECMA-402 §14.2.1 https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype
 // ECMA-402 §14.3.1 https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.constructor
@@ -427,6 +430,8 @@ export default class ListFormat extends nullClassBase {
   public static polyfilled = true
 }
 
+// ECMA-402 §14.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-listformat-prototype-object
 Object.setPrototypeOf(ListFormat.prototype, Object.prototype)
 
 try {

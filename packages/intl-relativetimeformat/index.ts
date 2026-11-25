@@ -26,6 +26,9 @@ function getDefaultLocale(): string {
   return defaultLocale
 }
 
+// ECMA-402 §18.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-relativetimeformat-constructor
+//
 // Class syntax supplies the prototype and constructor descriptors.
 // ECMA-402 §18.2.1 https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype
 // ECMA-402 §18.3.1 https://tc39.es/ecma402/#sec-Intl.RelativeTimeFormat.prototype.constructor
@@ -127,6 +130,8 @@ export default class RelativeTimeFormat extends nullClassBase {
   public static polyfilled = true
 }
 
+// ECMA-402 §18.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-relativetimeformat-prototype-object
 Object.setPrototypeOf(RelativeTimeFormat.prototype, Object.prototype)
 
 try {

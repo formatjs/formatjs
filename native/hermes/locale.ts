@@ -226,6 +226,9 @@
     return result + ']'
   }
 
+  // ECMA-402 §15.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-locale-constructor
+  //
   // A derived constructor returns its own receiver, avoiding both the ordinary
   // JS constructor's Object.prototype fallback and Hermes's eager allocation
   // before Proxy construct traps. Read newTarget.prototype exactly once.
@@ -301,6 +304,8 @@
     }
   }
   const target = Locale
+  // ECMA-402 §15.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-locale-prototype-object
   const prototype = Locale.prototype
   Object.setPrototypeOf(prototype, Object.prototype)
 
