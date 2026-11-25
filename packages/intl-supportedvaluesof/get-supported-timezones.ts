@@ -12,7 +12,13 @@ export function getSupportedTimeZones(): Timezone[] {
   if (!probe) return ['UTC']
   return supportedEntries(timezones, timeZone => {
     if (timeZone === 'UTC') return true
-    if (probe.hasTimeZone) return probe.hasTimeZone(timeZone)
+    if (probe.hasTimeZone) {
+      try {
+        return probe.hasTimeZone(timeZone)
+      } catch {
+        // Fall back to construction if optional time-zone metadata fails.
+      }
+    }
     try {
       const options = {__proto__: null, timeZone}
       probe.create('en', options)

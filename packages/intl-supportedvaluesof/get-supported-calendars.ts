@@ -15,12 +15,16 @@ import {
 export function getSupportedCalendars(): Calendar[] {
   const probe = getDateTimeFormatProbe()
   if (probe?.availableCalendars) {
-    const available = probe.availableCalendars()
-    return supportedEntries(
-      calendars,
-      calendar =>
-        calendar === 'iso8601' || arrayIndexOf(available, calendar) >= 0
-    )
+    try {
+      const available = probe.availableCalendars()
+      return supportedEntries(
+        calendars,
+        calendar =>
+          calendar === 'iso8601' || arrayIndexOf(available, calendar) >= 0
+      )
+    } catch {
+      // Fall back to formatter probes if optional calendar metadata fails.
+    }
   }
   if (!probe?.resolve) return ['iso8601']
   const {create, resolve} = probe
