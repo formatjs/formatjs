@@ -230,6 +230,9 @@
         return large(handle, values!)
     }
   }
+  // ECMA-402 §14.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-listformat-constructor
+  //
   // ECMA-402 §14.1.1 steps 1–6: allocate before ResolveOptions. A derived constructor
   // avoids Hermes allocating from newTarget.prototype before our explicit Get.
   // https://tc39.es/ecma402/#sec-Intl.ListFormat
@@ -293,6 +296,9 @@
   }
   // ECMA-402 §14.3.1: class syntax supplies the prototype's constructor.
   // https://tc39.es/ecma402/#sec-Intl.ListFormat.prototype.constructor
+  //
+  // ECMA-402 §14.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-listformat-prototype-object
   const prototype = ListFormat.prototype
   setPrototypeOf(prototype, objectPrototype)
   const members = {

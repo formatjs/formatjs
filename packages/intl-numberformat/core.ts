@@ -148,6 +148,8 @@ function initializeNumberFormat(
   return numberFormat
 }
 
+// ECMA-402 §16.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-numberformat-constructor
 export const NumberFormat = new Proxy(
   function (
     this: NumberFormat,
@@ -194,6 +196,9 @@ Object.defineProperty(NumberFormat, 'name', {
   value: 'NumberFormat',
   configurable: true,
 })
+// ECMA-402 §16.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-numberformat-prototype-object
+//
 // ECMA-402 §16.3.1 https://tc39.es/ecma402/#sec-intl.numberformat.prototype.constructor
 defineProperty(NumberFormat.prototype, 'constructor', {value: NumberFormat})
 

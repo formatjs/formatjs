@@ -57,6 +57,9 @@ export interface DisplayNamesResolvedOptions {
   languageDisplay?: NonNullable<DisplayNamesOptions['languageDisplay']>
 }
 
+// ECMA-402 §12.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-displaynames-constructor
+//
 // Class syntax supplies the prototype and constructor descriptors.
 // ECMA-402 §12.2.1 https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype
 // ECMA-402 §12.3.1 https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.constructor
@@ -262,6 +265,8 @@ export class DisplayNames extends nullClassBase {
   public static readonly polyfilled = true
 }
 
+// ECMA-402 §12.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-displaynames-prototype-object
 Object.setPrototypeOf(DisplayNames.prototype, Object.prototype)
 
 try {

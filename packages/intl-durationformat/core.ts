@@ -257,6 +257,9 @@ const TABLE_3 = [
  * DurationFormat provides locale-sensitive duration formatting
  * Implements the Intl.DurationFormat API from the TC39 proposal
  */
+// ECMA-402 §13.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-durationformat-constructor
+//
 // ECMA-402 §13.2.1 https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype
 // ECMA-402 §13.3.1 https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.constructor
 export class DurationFormat
@@ -522,6 +525,9 @@ Object.defineProperty(DurationFormat.supportedLocalesOf, 'length', {
 })
 // ECMA-402 §13.3.5: the prototype exposes the specified toStringTag descriptor.
 // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype-%symbol.tostringtag%
+//
+// ECMA-402 §13.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-durationformat-prototype-object
 Object.setPrototypeOf(DurationFormat.prototype, Object.prototype)
 
 Object.defineProperty(DurationFormat.prototype, Symbol.toStringTag, {

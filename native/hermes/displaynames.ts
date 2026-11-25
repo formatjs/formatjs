@@ -133,6 +133,9 @@
       result += (index ? ',' : '') + apply(charCodeAt, code, [index])
     return result + ']'
   }
+  // ECMA-402 §12.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-displaynames-constructor
+  //
   // ECMA-402 §12.1.1 steps 1–6: allocate once before ResolveOptions. A derived constructor
   // avoids Hermes allocating from newTarget.prototype before our explicit Get.
   // https://tc39.es/ecma402/#sec-Intl.DisplayNames
@@ -229,6 +232,9 @@
   }
   // ECMA-402 §12.3.1: the class supplies the prototype's constructor property.
   // https://tc39.es/ecma402/#sec-Intl.DisplayNames.prototype.constructor
+  //
+  // ECMA-402 §12.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-displaynames-prototype-object
   const prototype = DisplayNames.prototype
   setPrototypeOf(prototype, objectPrototype)
   const members = {

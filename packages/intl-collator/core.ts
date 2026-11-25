@@ -59,6 +59,9 @@ function ensureIntl() {
 const createObject = Object.create
 const defineOwnProperty = Object.defineProperty
 
+// ECMA-402 §10.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-the-intl-collator-constructor
+//
 // ECMA-402 §10.1.1 steps 1–3: allocate using NewTarget, or the active constructor.
 // https://tc39.es/ecma402/#sec-intl.collator
 export const Collator: CollatorConstructor = new Proxy(
@@ -244,6 +247,9 @@ const {resolvedOptions} = {
   },
 }
 defineProperty(Collator.prototype, 'resolvedOptions', {value: resolvedOptions})
+// ECMA-402 §10.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-the-intl-collator-prototype-object
+//
 // ECMA-402 §10.3.1 https://tc39.es/ecma402/#sec-intl.collator.prototype.constructor
 defineProperty(Collator.prototype, 'constructor', {value: Collator})
 

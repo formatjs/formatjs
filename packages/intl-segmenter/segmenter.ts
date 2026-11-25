@@ -143,6 +143,9 @@ const breaksAtResult = (
   matchingRule,
 })
 
+// ECMA-402 §19.2 Constructor inherits Function.prototype.
+// https://tc39.es/ecma402/#sec-properties-of-intl-segmenter-constructor
+//
 // ECMA-402 §19.2.1 https://tc39.es/ecma402/#sec-intl.segmenter.prototype
 // ECMA-402 §19.3.1 https://tc39.es/ecma402/#sec-intl.segmenter.prototype.constructor
 export class Segmenter extends nullClassBase {
@@ -569,6 +572,8 @@ function readModel(
   return model
 }
 
+// ECMA-402 §19.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+// https://tc39.es/ecma402/#sec-properties-of-intl-segmenter-prototype-object
 Object.setPrototypeOf(Segmenter.prototype, Object.prototype)
 
 try {

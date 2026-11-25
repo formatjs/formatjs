@@ -145,6 +145,9 @@
       ? {segment, index, input}
       : {segment, index, input, isWordLike: value[2] === 1}
   }
+  // ECMA-402 §19.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-segmenter-constructor
+  //
   // ECMA-402 §19.1.1: read prototype, canonicalize, resolve, then read granularity.
   // https://tc39.es/ecma402/#sec-intl.segmenter
   class Segmenter extends null {
@@ -199,6 +202,9 @@
   }
   // ECMA-402 §19.3.1: class syntax supplies the prototype's constructor.
   // https://tc39.es/ecma402/#sec-intl.segmenter.prototype.constructor
+  //
+  // ECMA-402 §19.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-segmenter-prototype-object
   const prototype = Segmenter.prototype
   setPrototypeOf(prototype, objectPrototype)
   // ECMA-402 §19.5.2 and §19.6.2 use distinct intrinsic prototypes.

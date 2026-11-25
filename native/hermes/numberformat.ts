@@ -467,6 +467,8 @@
     apply(setSlot, slots, [receiver, value])
     return receiver
   }
+  // ECMA-402 §16.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-numberformat-constructor
   let NumberFormat: any = function (
     this: any,
     locales: unknown = undefined,
@@ -485,6 +487,8 @@
     }
     return receiver
   }
+  // ECMA-402 §16.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-numberformat-prototype-object
   const prototype = NumberFormat.prototype
   NumberFormat = new ProxyConstructor(NumberFormat, {
     // The private proxy handler has no inherited traps.

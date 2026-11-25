@@ -401,6 +401,9 @@
     'dateLocale',
   ]
   const styles = ['full', 'long', 'medium', 'short']
+  // ECMA-402 §11.2 Constructor inherits Function.prototype.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-datetimeformat-constructor
+  //
   // ECMA-402 §11.1.1 dispatches calls and construction to CreateDateTimeFormat.
   // https://tc39.es/ecma402/#sec-intl.datetimeformat
   const DateTimeFormat = new Proxy(function DateTimeFormat() {}, {
@@ -605,6 +608,8 @@
       )
     ) as string
   }
+  // ECMA-402 §11.3 Ordinary prototype inherits Object.prototype and has no instance slots.
+  // https://tc39.es/ecma402/#sec-properties-of-intl-datetimeformat-prototype-object
   const prototype = DateTimeFormat.prototype
   const methods = {
     // ECMA-402 §11.3.2.
