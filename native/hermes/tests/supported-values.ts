@@ -211,6 +211,31 @@ try {
   Object.defineProperty(Intl, 'DateTimeFormat', dateTimeFormatDescriptor)
 }
 
+class RegionalCalendarFormatter {
+  constructor(private readonly locale: string) {}
+
+  resolvedOptions() {
+    return {
+      calendar: this.locale === 'fa-u-ca-persian' ? 'persian' : 'gregory',
+    }
+  }
+}
+try {
+  Object.defineProperty(Intl, 'DateTimeFormat', {
+    value: RegionalCalendarFormatter,
+  })
+  equal(
+    [candidate('calendar'), reference('calendar')],
+    [
+      ['gregory', 'iso8601', 'persian'],
+      ['gregory', 'iso8601', 'persian'],
+    ],
+    'Calendar support can depend on the formatter locale'
+  )
+} finally {
+  Object.defineProperty(Intl, 'DateTimeFormat', dateTimeFormatDescriptor)
+}
+
 const numberFormatDescriptor = Object.getOwnPropertyDescriptor(
   Intl,
   'NumberFormat'

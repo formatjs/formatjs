@@ -19,6 +19,7 @@ The conditional installer keeps a callable host `Intl.supportedValuesOf`.
 | CLDR Package                 | Data Used                                      |
 | ---------------------------- | ---------------------------------------------- |
 | `cldr-bcp47`                 | calendar, collation, and currency registries   |
+| `cldr-core`                  | calendar preferences and likely subtags        |
 | `cldr-numbers-full`          | currencies.json (currency codes)               |
 | `@formatjs/ecma402-abstract` | SIMPLE_UNITS constant (spec-defined unit list) |
 | Pre-computed timezone list   | IANA timezone identifiers                      |
@@ -69,7 +70,7 @@ export const units = ['acre', 'bit', 'byte', 'celsius', ...] as const
 - `supportedValuesOf(key)` returns a fresh, sorted array. Units come from ECMA-402 Table 2. Other categories probe installed formatters.
 - Numbering systems include ECMA-402 Table 30. Additional systems are checked in NumberFormat, DateTimeFormat, and RelativeTimeFormat using English and CLDR rule and locale data.
 - Currencies use NumberFormat and check DisplayNames when installed. Currencies without an English name use CLDR locale candidates.
-- FormatJS DateTimeFormat supplies calendar and time-zone availability from its registries. Other providers use formatter probes.
+- FormatJS DateTimeFormat supplies calendar and time-zone availability from its registries. Calendar probes for other providers try English and locales derived from CLDR calendar preferences.
 - Calendar and time-zone lists always include `iso8601` and `UTC`, respectively.
 - Each value type is a `const` array for type safety
 

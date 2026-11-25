@@ -5,6 +5,7 @@ ts_binary(
     name = "calendars",
     entry_point = "calendars.ts",
     visibility = ["//packages/intl-supportedvaluesof:__pkg__"],
+    deps = ["//:node_modules/cldr-core"],
 )
 
 ts_binary(

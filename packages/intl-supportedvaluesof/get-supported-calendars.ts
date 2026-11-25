@@ -1,8 +1,11 @@
-import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
+import {arrayIndexOf, arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {supportedEntries} from '#packages/intl-supportedvaluesof/supported-entries.js'
 import {getDateTimeFormatProbe} from '#packages/intl-supportedvaluesof/memoize.js'
-import type {Calendar} from '@formatjs_generated/cldr.supported-values/calendars.js'
-import {calendars} from '@formatjs_generated/cldr.supported-values/calendars.js'
+import {
+  type Calendar,
+  calendarCandidateLocales,
+  calendars,
+} from '@formatjs_generated/cldr.supported-values/calendars.js'
 
 // ECMA-402 §8.3.2 step 2.b filters §6.9.1 to canonical calendar identifiers.
 // ISO 8601 is required even without a formatter probe.
@@ -23,10 +26,16 @@ export function getSupportedCalendars(): Calendar[] {
   const {create, resolve} = probe
   return supportedEntries(calendars, calendar => {
     if (calendar === 'iso8601') return true
-    try {
-      return resolve(create(`en-u-ca-${calendar}`)).calendar === calendar
-    } catch {
-      return false
-    }
+    // §6.9.1 includes calendars supported in any locale. Probe CLDR candidates
+    // when the formatter cannot enumerate its calendars directly.
+    return arraySome(calendarCandidateLocales[calendar], locale => {
+      try {
+        return (
+          resolve(create(`${locale}-u-ca-${calendar}`)).calendar === calendar
+        )
+      } catch {
+        return false
+      }
+    })
   })
 }
