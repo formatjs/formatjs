@@ -105,7 +105,7 @@ const firstUseOptions = {
   day: 'numeric',
 } as const
 const firstUseEnd = 86_400_000
-const expectedRange = new Native('en', firstUseOptions).formatRange(
+const expectedRange = new Native('en', firstUseOptions).formatRangeToParts(
   0,
   firstUseEnd
 )
@@ -114,16 +114,24 @@ for (const Constructor of [Native, Reference]) {
   const {map, reduce} = Array.prototype
   const {get, set} = Map.prototype
   const {indexOf, slice} = String.prototype
+  const reversed = Object.getOwnPropertyDescriptor(Object.prototype, 'reversed')
   const unexpected = () => {
     throw new Error('Called a public method while preparing a date interval')
   }
-  let range: string
+  let range: Intl.DateTimeRangeFormatPart[]
   try {
+    Object.defineProperty(Object.prototype, 'reversed', {
+      configurable: true,
+      get: unexpected,
+    })
     Object.keys = unexpected
     Array.prototype.map = Array.prototype.reduce = unexpected
     Map.prototype.get = Map.prototype.set = unexpected
     String.prototype.indexOf = String.prototype.slice = unexpected
-    range = new Constructor('en', firstUseOptions).formatRange(0, firstUseEnd)
+    range = new Constructor('en', firstUseOptions).formatRangeToParts(
+      0,
+      firstUseEnd
+    )
   } finally {
     Object.keys = keys
     Array.prototype.map = map
@@ -132,6 +140,8 @@ for (const Constructor of [Native, Reference]) {
     Map.prototype.set = set
     String.prototype.indexOf = indexOf
     String.prototype.slice = slice
+    if (reversed) Object.defineProperty(Object.prototype, 'reversed', reversed)
+    else Reflect.deleteProperty(Object.prototype, 'reversed')
   }
   equal(range, expectedRange, 'first use of private interval patterns')
 }

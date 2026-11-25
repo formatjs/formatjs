@@ -459,9 +459,13 @@ export function processDateTimePattern(
   return [skeletonTrim(withoutPeriod), pattern12]
 }
 
+// ECMA-402 §11.2.3.4 keeps each range part's source in the record.
+// https://tc39.es/ecma402/#sec-datetimeformat-range-pattern-part-record
+// Unprefixed LDML intervals use the fallback's endpoint order.
+// https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
 export function getRangePatternInfo(rawPattern: string): {
   pattern: string
-  reversed?: boolean
+  reversed: boolean | undefined
 } {
   if (skeletonStartsWith(rawPattern, 'latestFirst:'))
     return {
@@ -473,7 +477,7 @@ export function getRangePatternInfo(rawPattern: string): {
       pattern: skeletonSlice(rawPattern, 'earliestFirst:'.length),
       reversed: false,
     }
-  return {pattern: rawPattern}
+  return {pattern: rawPattern, reversed: undefined}
 }
 
 export function parseDateTimeSkeleton(
