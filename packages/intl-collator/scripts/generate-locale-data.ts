@@ -20,7 +20,6 @@ type GeneratedLocaleData = {
   readonly sensitivity: 'variant'
   readonly ignorePunctuation: boolean
   readonly searchIgnorePunctuation: boolean
-  readonly collationDefaults: Record<string, TailoringDefaults>
 }
 
 type LocaleMetadata = Pick<
@@ -208,16 +207,6 @@ for (const [locale, data] of Object.entries(baseLocaleData)) {
     searchKf: caseFirstValues(search.caseFirst),
     ignorePunctuation: sort.ignorePunctuation,
     searchIgnorePunctuation: search.ignorePunctuation,
-    collationDefaults: Object.fromEntries(
-      co
-        .filter(type => type !== 'default')
-        .map(type => [type, tailoringDefaults(locale, type)] as const)
-        .filter(
-          ([, defaults]) =>
-            defaults.caseFirst !== sort.caseFirst ||
-            defaults.ignorePunctuation !== sort.ignorePunctuation
-        )
-    ),
   }
 }
 

@@ -175,8 +175,8 @@ check the initialized instance slots. [ECMA-402 §10](https://tc39.es/ecma402/#c
 but cannot be constructed with `new`. The constructor's `prototype` property
 is non-writable; the compare getter and bound function expose the standard names.
 
-The default `ignorePunctuation` value follows the locale’s CLDR collation
-settings. Thai defaults to `true`; an explicit `false` preserves punctuation.
+The resolved sort or search locale record supplies the `caseFirst` and
+`ignorePunctuation` defaults. Thai defaults to ignoring punctuation.
 Shifted weighting also suppresses primary-ignorable elements after variable
 punctuation.
 

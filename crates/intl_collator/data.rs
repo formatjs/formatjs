@@ -23,12 +23,6 @@ pub struct Prefix {
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct TailoringDefaults {
-    pub case_first: crate::CaseFirst,
-    pub ignore_punctuation: bool,
-}
-#[derive(Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct Metadata {
     pub co: Vec<String>,
     pub kn: Vec<String>,
@@ -38,7 +32,6 @@ pub struct Metadata {
     pub sensitivity: crate::Sensitivity,
     pub ignore_punctuation: bool,
     pub search_ignore_punctuation: bool,
-    pub collation_defaults: BTreeMap<String, TailoringDefaults>,
 }
 #[derive(Deserialize)]
 pub struct Tailoring {

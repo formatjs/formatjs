@@ -234,19 +234,12 @@ impl Collator {
             }
             resolved_values.push(value.to_owned());
         }
-        // Explicit tailoring defaults apply when no option or retained kf keyword
-        // supplied the case order.
-        // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
-        let tailoring_defaults = metadata.collation_defaults.get(&resolved_values[0]);
-        let case_first = match tailoring_defaults {
-            Some(defaults) if first.is_none() && retained.case_first.is_none() => {
-                defaults.case_first
-            }
-            _ => match resolved_values[2].as_str() {
-                "upper" => CaseFirst::Upper,
-                "lower" => CaseFirst::Lower,
-                _ => CaseFirst::False,
-            },
+        // ECMA-402 §10.1.1 step 17 uses the resolved locale's kf value.
+        // https://tc39.es/ecma402/#sec-intl.collator
+        let case_first = match resolved_values[2].as_str() {
+            "upper" => CaseFirst::Upper,
+            "lower" => CaseFirst::Lower,
+            _ => CaseFirst::False,
         };
         // ECMA-402 §9.2.6 steps 6–10 put the Unicode extension before private use.
         // https://tc39.es/ecma402/#sec-insert-unicode-extension-and-canonicalize
@@ -272,13 +265,12 @@ impl Collator {
             locale,
             usage: options.usage,
             sensitivity,
+            // Steps 21–22 use the selected sort or search locale's punctuation default.
             ignore_punctuation: options.ignore_punctuation.unwrap_or(
                 if options.usage == Usage::Search {
                     metadata.search_ignore_punctuation
                 } else {
-                    tailoring_defaults.map_or(metadata.ignore_punctuation, |defaults| {
-                        defaults.ignore_punctuation
-                    })
+                    metadata.ignore_punctuation
                 },
             ),
             collation: resolved_values[0].clone(),

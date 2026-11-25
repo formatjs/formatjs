@@ -58,24 +58,6 @@ function ensureIntl() {
 
 const createObject = Object.create
 const defineOwnProperty = Object.defineProperty
-const splitString = String.prototype.split
-const apply = Reflect.apply
-
-function retainedCaseFirstKeyword(locale: string): boolean {
-  // ResolveLocale retained only supported keys in the Unicode extension.
-  // Stop at an extension boundary so private-use "kf" is ignored.
-  // https://tc39.es/ecma402/#sec-resolvelocale
-  const subtags = apply(splitString, locale, ['-']) as string[]
-  let unicode = false
-  for (let i = 1; i < subtags.length; i++) {
-    const subtag = subtags[i]
-    if (subtag.length === 1) {
-      if (unicode || subtag === 'x') return false
-      unicode = subtag === 'u'
-    } else if (unicode && subtag === 'kf') return true
-  }
-  return false
-}
 
 // ECMA-402 §10.1.1 steps 1–3: allocate using NewTarget, or the active constructor.
 // https://tc39.es/ecma402/#sec-intl.collator
@@ -163,20 +145,6 @@ function initializeCollator(
   // https://tc39.es/ecma402/#sec-intl.collator
   const resolvedLocaleData = r.localeData
   invariant(!!resolvedLocaleData, `Missing locale data for ${r.dataLocale}`)
-  const tailoringDefaults = r.co
-    ? resolvedLocaleData.collationDefaults?.[r.co]
-    : undefined
-  let resolvedCaseFirst = r.kf || 'false'
-  // A selected LDML tailoring has its own caseFirst default. Supported kf
-  // keywords and explicit options still take precedence.
-  // https://www.unicode.org/reports/tr35/tr35-collation.html#Setting_Options
-  if (
-    tailoringDefaults &&
-    caseFirst === undefined &&
-    !retainedCaseFirstKeyword(r.locale)
-  ) {
-    resolvedCaseFirst = tailoringDefaults.caseFirst
-  }
 
   // Steps 19–22: sort defaults to variant. Search and punctuation use locale data.
   const sensitivity = GetOption(
@@ -191,7 +159,7 @@ function initializeCollator(
     'ignorePunctuation',
     'boolean',
     undefined,
-    tailoringDefaults?.ignorePunctuation ?? resolvedLocaleData.ignorePunctuation
+    resolvedLocaleData.ignorePunctuation
   )
 
   const internalSlots = getInternalSlots(receiver)
@@ -209,7 +177,9 @@ function initializeCollator(
       ? 'search'
       : (r.co ?? resolvedLocaleData.defaultCollation ?? 'standard')
   internalSlots.numeric = r.kn === 'true'
-  internalSlots.caseFirst = resolvedCaseFirst
+  // ECMA-402 §10.1.1 step 17 uses the resolved locale's kf value.
+  // https://tc39.es/ecma402/#sec-intl.collator
+  internalSlots.caseFirst = r.kf || 'false'
   internalSlots.sensitivity = sensitivity
   internalSlots.ignorePunctuation = ignorePunctuation
   return receiver

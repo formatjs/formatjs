@@ -485,10 +485,10 @@ it('resolves CLDR case and punctuation defaults separately for sort and search',
   ])
 })
 
-it('uses the chosen collation defaults while retaining explicit overrides', () => {
+it('uses resolved locale defaults when another collation is selected', () => {
   const cases = compare([
     {locales: ['da-u-co-eor'], options: {}, pairs: [['A', 'a']]},
-    {locales: ['da-u-co-eor-kf-upper'], options: {}, pairs: [['A', 'a']]},
+    {locales: ['da-u-co-eor-kf-false'], options: {}, pairs: [['A', 'a']]},
     {
       locales: ['da'],
       options: {collation: 'eor', caseFirst: 'upper'},
@@ -497,21 +497,21 @@ it('uses the chosen collation defaults while retaining explicit overrides', () =
     {locales: ['th'], options: {collation: 'emoji'}, pairs: [['a-b', 'ab']]},
     {
       locales: ['th-u-co-emoji'],
-      options: {ignorePunctuation: true},
+      options: {ignorePunctuation: false},
       pairs: [['a-b', 'ab']],
     },
   ])
   expect(cases.slice(0, 3).map(({options}) => options.caseFirst)).toEqual([
+    'upper',
     'false',
     'upper',
-    'upper',
   ])
-  expect(cases[1].options.locale).toBe('da-u-co-eor-kf-upper')
+  expect(cases[1].options.locale).toBe('da-u-co-eor-kf-false')
   expect(cases.slice(3).map(({options}) => options.ignorePunctuation)).toEqual([
-    false,
     true,
+    false,
   ])
-  expect(cases.flatMap(({values}) => values)).toEqual([1, -1, -1, -1, 0])
+  expect(cases.flatMap(({values}) => values)).toEqual([-1, 1, -1, 0, -1])
 })
 
 it('compares every available locale, every advertised collation and search with TS', () => {
