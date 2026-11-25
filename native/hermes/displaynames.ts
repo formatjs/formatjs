@@ -270,5 +270,7 @@
   const descriptor = create(null)
   descriptor.writable = false
   define(DisplayNames, 'prototype', descriptor)
+  // ECMA-402 §8.2.3 exposes %Intl.DisplayNames% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.displaynames-intro
   property(intl, 'DisplayNames', DisplayNames)
 })

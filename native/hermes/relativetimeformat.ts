@@ -285,5 +285,7 @@
   const descriptor = create(null)
   descriptor.writable = false
   define(RelativeTimeFormat, 'prototype', descriptor)
+  // ECMA-402 §8.2.9 exposes %Intl.RelativeTimeFormat% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.relativetimeformat-intro
   property(intl, 'RelativeTimeFormat', RelativeTimeFormat)
 })

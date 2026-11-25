@@ -723,6 +723,8 @@
   const prototypeDescriptor = create(null)
   prototypeDescriptor.writable = false
   define(NumberFormat, 'prototype', prototypeDescriptor)
+  // ECMA-402 §8.2.7 exposes %Intl.NumberFormat% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.numberformat-intro
   property(intl, 'NumberFormat', NumberFormat)
   const numberMethods = {
     // ECMA-402 §20.2.1 steps 1–3 validate the receiver, then call FormatNumeric.

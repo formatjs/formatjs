@@ -814,6 +814,8 @@
   const attributes = create(null)
   attributes.writable = false
   define(DateTimeFormat, 'prototype', attributes)
+  // ECMA-402 §8.2.2 exposes %Intl.DateTimeFormat% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.datetimeformat-intro
   property(intl, 'DateTimeFormat', DateTimeFormat)
   // ECMA-262 §10.3. These methods have no [[Construct]].
   // https://tc39.es/ecma262/#sec-built-in-function-objects

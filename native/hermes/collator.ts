@@ -290,5 +290,7 @@
   const prototypeDescriptor = create(null)
   prototypeDescriptor.writable = false
   define(Collator, 'prototype', prototypeDescriptor)
+  // ECMA-402 §8.2.1 exposes %Intl.Collator% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.collator-intro
   property(intl, 'Collator', Collator)
 })
