@@ -8,6 +8,7 @@ A Rust implementation of the ICU MessageFormat parser.
 - High-performance parsing - **2.3-3.5x faster than JavaScript parser** on the checked-in benchmark
 - Zero-copy parsing where possible
 - Comprehensive error handling
+- Unicode text and argument names, including quoted number/date/time styles
 
 ## Performance
 
