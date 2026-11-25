@@ -199,8 +199,8 @@ importers:
         specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
       react-intl:
-        specifier: 12.1.8
-        version: 12.1.8(@types/react@19.3.0)(react@19.3.1)
+        specifier: 12.2.0
+        version: 12.2.0(@types/react@19.3.0)(react@19.3.1)
       react-scripts:
         specifier: 5.0.1
         version: 5.0.1(@babel/plugin-syntax-flow@7.29.7(@babel/core@7.29.7(supports-color@8.1.1)))(@babel/plugin-transform-react-jsx@7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/babel__core@7.20.5)(clean-css@5.3.3)(cssnano@5.1.15(postcss@8.5.15))(csso@4.2.0)(debug@4.4.3(supports-color@8.1.1))(eslint@10.15.0(jiti@1.21.7)(supports-color@8.1.1))(html-minifier-terser@6.1.0)(react@19.3.1)(supports-color@8.1.1)(type-fest@0.21.3)(typescript@7.0.2)
@@ -1157,8 +1157,8 @@ packages:
   '@formatjs/icu-skeleton-parser@2.1.13':
     resolution: {integrity: sha512-IdAJ9NrHn7AF0zqncD9UpxQozTYyJtbwwrZnJMEKVxTcOOXtVkUb2XYTpNOGTAv58NCsk0rjRB9G+i2SvBmGAQ==}
 
-  '@formatjs/intl@6.1.6':
-    resolution: {integrity: sha512-82puHaUuaqw9kuy2URLXW1PrIRxlUwPAWp15ERGKY0C2ReE6g17Ul2w02D4KJVaebU8jAUzP3Y8F6LVpT6Y6Ow==}
+  '@formatjs/intl@6.2.0':
+    resolution: {integrity: sha512-HVu+quR1XS8L/yK+5bdPsiTwdDx0NJ7+9RfyqzEgOOlIdDW4fCu74eXLkVyYYVHdRsrdPdCaVBAJmG5rxWEDXA==}
 
   '@formatjs/ts-transformer@4.5.3':
     resolution: {integrity: sha512-QaxIG1ycc3CG4TNNJenmuqm1KRdLBCdw+cXo9YzaJKNbBeKXuwTm3NbI2EjtF/MBYznnb5lJGb4+txbgaKqpzA==}
@@ -5326,8 +5326,8 @@ packages:
   react-error-overlay@6.1.0:
     resolution: {integrity: sha512-SN/U6Ytxf1QGkw/9ve5Y+NxBbZM6Ht95tuXNMKs8EJyFa/Vy/+Co3stop3KBHARfn/giv+Lj1uUnTfOJ3moFEQ==}
 
-  react-intl@12.1.8:
-    resolution: {integrity: sha512-Wl8m/zodiXPuhOEUWBZZ+CI4TapngapRdRGjJhFTArSnGw6Wpqfrn0kTGiI6UgBkHEtDYk9viMmb9eq8IMxE6g==}
+  react-intl@12.2.0:
+    resolution: {integrity: sha512-GUSrHGBmOzPqiINvII3x2h8VwLyyhDaZFymSmN7gYQj0pGT1y4eiL6SbLVHelP2z5ItgIikrwXTIx05XgZllUw==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -7668,7 +7668,7 @@ snapshots:
 
   '@formatjs/icu-skeleton-parser@2.1.13': {}
 
-  '@formatjs/intl@6.1.6':
+  '@formatjs/intl@6.2.0':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
       '@formatjs/icu-messageformat-parser': 3.5.23
@@ -12583,10 +12583,10 @@ snapshots:
 
   react-error-overlay@6.1.0: {}
 
-  react-intl@12.1.8(@types/react@19.3.0)(react@19.3.1):
+  react-intl@12.2.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.23
-      '@formatjs/intl': 6.1.6
+      '@formatjs/intl': 6.2.0
       '@types/react': 19.3.0
       intl-messageformat: 12.2.0
       react: 19.3.1

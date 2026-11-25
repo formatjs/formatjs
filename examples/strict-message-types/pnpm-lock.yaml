@@ -182,8 +182,8 @@ importers:
         specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
       react-intl:
-        specifier: 12.1.8
-        version: 12.1.8(@types/react@19.3.0)(react@19.3.1)
+        specifier: 12.2.0
+        version: 12.2.0(@types/react@19.3.0)(react@19.3.1)
     devDependencies:
       '@types/react':
         specifier: 19.3.0
@@ -209,8 +209,8 @@ packages:
   '@formatjs/icu-skeleton-parser@2.1.13':
     resolution: {integrity: sha512-IdAJ9NrHn7AF0zqncD9UpxQozTYyJtbwwrZnJMEKVxTcOOXtVkUb2XYTpNOGTAv58NCsk0rjRB9G+i2SvBmGAQ==}
 
-  '@formatjs/intl@6.1.6':
-    resolution: {integrity: sha512-82puHaUuaqw9kuy2URLXW1PrIRxlUwPAWp15ERGKY0C2ReE6g17Ul2w02D4KJVaebU8jAUzP3Y8F6LVpT6Y6Ow==}
+  '@formatjs/intl@6.2.0':
+    resolution: {integrity: sha512-HVu+quR1XS8L/yK+5bdPsiTwdDx0NJ7+9RfyqzEgOOlIdDW4fCu74eXLkVyYYVHdRsrdPdCaVBAJmG5rxWEDXA==}
 
   '@lezer/common@1.5.2':
     resolution: {integrity: sha512-sxQE460fPZyU3sdc8lafxiPwJHBzZRy/udNFynGQky1SePYBdhkBl1kOagA9uT3pxR8K09bOrmTUqA9wb/PjSQ==}
@@ -1124,8 +1124,8 @@ packages:
     peerDependencies:
       react: ^19.3.1
 
-  react-intl@12.1.8:
-    resolution: {integrity: sha512-Wl8m/zodiXPuhOEUWBZZ+CI4TapngapRdRGjJhFTArSnGw6Wpqfrn0kTGiI6UgBkHEtDYk9viMmb9eq8IMxE6g==}
+  react-intl@12.2.0:
+    resolution: {integrity: sha512-GUSrHGBmOzPqiINvII3x2h8VwLyyhDaZFymSmN7gYQj0pGT1y4eiL6SbLVHelP2z5ItgIikrwXTIx05XgZllUw==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -1195,7 +1195,7 @@ snapshots:
 
   '@formatjs/icu-skeleton-parser@2.1.13': {}
 
-  '@formatjs/intl@6.1.6':
+  '@formatjs/intl@6.2.0':
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
       '@formatjs/icu-messageformat-parser': 3.5.23
@@ -2235,10 +2235,10 @@ snapshots:
       react: 19.3.1
       scheduler: 0.28.0
 
-  react-intl@12.1.8(@types/react@19.3.0)(react@19.3.1):
+  react-intl@12.2.0(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.23
-      '@formatjs/intl': 6.1.6
+      '@formatjs/intl': 6.2.0
       '@types/react': 19.3.0
       intl-messageformat: 12.2.0
       react: 19.3.1
