@@ -304,59 +304,45 @@
   const prototype = Locale.prototype
   Object.setPrototypeOf(prototype, Object.prototype)
 
-  function property(receiver: unknown, name: string): any {
-    const value = properties(slot(receiver))[name]
-    return value === null ? undefined : value
-  }
-  const members = {
+  const getterNames = [
     // ECMA-402 §15.3.2 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.baseName
-    get baseName() {
-      return property(this, 'baseName')
-    },
+    'baseName',
     // ECMA-402 §15.3.8 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.language
-    get language() {
-      return property(this, 'language')
-    },
+    'language',
     // ECMA-402 §15.3.14 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.script
-    get script() {
-      return property(this, 'script')
-    },
+    'script',
     // ECMA-402 §15.3.13 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.region
-    get region() {
-      return property(this, 'region')
-    },
+    'region',
     // ECMA-402 §15.3.23 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.variants
-    get variants() {
-      return property(this, 'variants')
-    },
+    'variants',
     // ECMA-402 §15.3.3 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.calendar
-    get calendar() {
-      return property(this, 'calendar')
-    },
+    'calendar',
     // ECMA-402 §15.3.5 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.collation
-    get collation() {
-      return property(this, 'collation')
-    },
+    'collation',
     // ECMA-402 §15.3.6 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.firstDayOfWeek
-    get firstDayOfWeek() {
-      return property(this, 'firstDayOfWeek')
-    },
+    'firstDayOfWeek',
     // ECMA-402 §15.3.7 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.hourCycle
-    get hourCycle() {
-      return property(this, 'hourCycle')
-    },
+    'hourCycle',
     // ECMA-402 §15.3.4 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.caseFirst
-    get caseFirst() {
-      return property(this, 'caseFirst')
-    },
+    'caseFirst',
     // ECMA-402 §15.3.12 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.numeric
-    get numeric() {
-      return property(this, 'numeric')
-    },
+    'numeric',
     // ECMA-402 §15.3.11 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.numberingSystem
-    get numberingSystem() {
-      return property(this, 'numberingSystem')
-    },
+    'numberingSystem',
+  ]
+  getterNames.forEach(name => {
+    // ECMA-262 §17: expose a getter without [[Construct]] or a prototype.
+    // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
+    const getter = {
+      read(this: unknown) {
+        const value = properties(slot(this))[name]
+        return value === null ? undefined : value
+      },
+    }.read
+    defineProperty(getter, 'name', {value: 'get ' + name})
+    defineProperty(prototype, name, {get: getter, configurable: true})
+  })
+  const members = {
     // ECMA-402 §15.3.15 https://tc39.es/ecma402/#sec-Intl.Locale.prototype.toString
     toString() {
       return properties(slot(this)).locale

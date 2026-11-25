@@ -322,10 +322,11 @@ for (const name of Object.getOwnPropertyNames(NativeLocale.prototype)) {
   ])
     throws(() => method.call(receiver), TypeError, name + ' receiver brand')
   throws(
-    () => Reflect.construct(method, []),
+    () => Reflect.construct(Object, [], method),
     TypeError,
     name + ' not constructible'
   )
+  check(!Object.hasOwn(method, 'prototype'), name + ' no own prototype')
   equal(method.length, 0, name + ' length')
 }
 class Child extends NativeLocale {
