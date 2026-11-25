@@ -43,6 +43,32 @@ for (const pack of fixtures.packs) {
   Native.__addLocaleData(pack)
   Reference.__addLocaleData(JSON.parse(pack))
 }
+for (const Constructor of [Native, Reference]) {
+  const formatter = new Constructor('en', {
+    style: 'unit',
+    unit: 'meter-per-byte',
+    unitDisplay: 'long',
+  })
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'long')
+  let formatted: string
+  try {
+    Object.defineProperty(Object.prototype, 'long', {
+      configurable: true,
+      get() {
+        throw new Error('Read inherited compound-unit width')
+      },
+    })
+    formatted = formatter.format(5)
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'long', original)
+    else Reflect.deleteProperty(Object.prototype, 'long')
+  }
+  equal(
+    formatted,
+    '5 meters per byte',
+    'missing denominator pattern uses locale fallback'
+  )
+}
 const {min, max, log10} = Math
 const {isInteger, isNaN, isSafeInteger} = Number
 try {

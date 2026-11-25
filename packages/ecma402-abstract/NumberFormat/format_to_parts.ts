@@ -400,7 +400,17 @@ export default function formatToParts(
           const numerator = apply(slice, unit, [0, per]) as string
           const denominator = apply(slice, unit, [per + 5]) as string
           const numeratorPattern = unitForm(numerator, category)
-          const perUnitPattern = unitData(denominator)?.perUnit?.[width]
+          // ECMA-402 §16.5.10 step 6 reads stored unit patterns.
+          // https://tc39.es/ecma402/#sec-getnumberformatpattern
+          const denominatorData = unitData(denominator)
+          const perUnit =
+            denominatorData && HasOwnProperty(denominatorData, 'perUnit')
+              ? denominatorData.perUnit
+              : undefined
+          const perUnitPattern =
+            perUnit && HasOwnProperty(perUnit, width)
+              ? perUnit[width]
+              : undefined
           if (numeratorPattern && perUnitPattern) {
             unitPattern = replaceField(perUnitPattern, '{0}', numeratorPattern)
           } else if (numeratorPattern) {
