@@ -416,5 +416,7 @@
   available.get = methods.getAvailableLocales
   available.configurable = true
   define(DurationFormat, 'availableLocales', available)
+  // ECMA-402 §8.2.4 exposes %Intl.DurationFormat% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.durationformat-intro
   property(intl, 'DurationFormat', DurationFormat)
 })

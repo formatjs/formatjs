@@ -292,5 +292,7 @@
   const descriptor = create(null)
   descriptor.writable = false
   define(Segmenter, 'prototype', descriptor)
+  // ECMA-402 §8.2.10 exposes %Intl.Segmenter% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.segmenter-intro
   property(intl, 'Segmenter', Segmenter)
 })

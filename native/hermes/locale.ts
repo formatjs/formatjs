@@ -331,7 +331,7 @@
     'numberingSystem',
   ]
   getterNames.forEach(name => {
-    // ECMA-262 §17: expose a getter without [[Construct]] or a prototype.
+    // ECMA-262 §18: expose a getter without [[Construct]] or a prototype.
     // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
     const getter = {
       read(this: unknown) {
@@ -515,6 +515,8 @@
       value: localeBrandRegistry,
     })
   }
+  // ECMA-402 §8.2.6 exposes %Intl.Locale% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.locale-intro
   defineProperty(intl, 'Locale', {
     value: Locale,
     writable: true,

@@ -356,5 +356,7 @@
   const descriptor = create(null)
   descriptor.writable = false
   define(ListFormat, 'prototype', descriptor)
+  // ECMA-402 §8.2.5 exposes %Intl.ListFormat% on Intl.
+  // https://tc39.es/ecma402/#sec-intl.listformat-intro
   property(intl, 'ListFormat', ListFormat)
 })

@@ -67,7 +67,7 @@ function CanonicalizeLocaleList(locales?: Locales): string[] {
   return seen
 }
 
-// ECMA-262 §17: a built-in without [[Construct]] has no own prototype.
+// ECMA-262 §18: a built-in without [[Construct]] has no own prototype.
 // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
 export const getCanonicalLocales: (locales?: Locales) => string[] = {
   getCanonicalLocales(locales?: Locales): string[] {
