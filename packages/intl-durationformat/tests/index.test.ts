@@ -53,7 +53,6 @@ test('Intl.DurationFormat resolvedOptions', function () {
   expect(new DurationFormat('en').resolvedOptions()).toEqual({
     days: 'short',
     daysDisplay: 'auto',
-    fractionalDigits: undefined,
     hours: 'short',
     hoursDisplay: 'auto',
     locale: 'en',

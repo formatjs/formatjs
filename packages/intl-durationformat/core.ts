@@ -413,6 +413,8 @@ export class DurationFormat
       const key = RESOLVED_OPTIONS_KEYS[index]
       let v = internalSlots[key]
       if (key === 'fractionalDigits') {
+        // Always including fractionalDigits is tracked upstream.
+        // https://github.com/tc39/ecma402/issues/964
         if (v === undefined) continue
         v = numberFrom(v)
       } else if (v === 'fractional') {
