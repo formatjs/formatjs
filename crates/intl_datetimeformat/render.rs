@@ -227,6 +227,8 @@ impl RenderData {
                         (civil.nanosecond / 1_000_000) / 10u32.pow(3 - u32::from(u8::from(digits)));
                     (PartKind::FractionalSecond, self.numbers.fractional(value)?)
                 }
+                // ECMA-402 §11.5.4 step 15.d selects the localized day period.
+                // https://tc39.es/ecma402/#sec-formatdatetimepattern
                 Token::Field("dayPeriod") => (
                     PartKind::DayPeriod,
                     day_period(
@@ -236,6 +238,8 @@ impl RenderData {
                         format,
                     ),
                 ),
+                // ECMA-402 §11.5.4 step 15.g selects AM or PM from the local hour.
+                // https://tc39.es/ecma402/#sec-formatdatetimepattern
                 Token::Field("ampm") => (
                     PartKind::DayPeriod,
                     if civil.hour < 12 {
@@ -295,6 +299,8 @@ impl RenderData {
                     };
                     (PartKind::TimeZoneName, value)
                 }
+                // ECMA-402 §11.5.4 step 15.h formats the related year.
+                // https://tc39.es/ecma402/#sec-formatdatetimepattern
                 Token::Field("relatedYear") => (
                     PartKind::RelatedYear,
                     match fields.related_year {

@@ -248,6 +248,9 @@ impl Serialize for Configuration {
             output.serialize_entry(unit.key(), &style)?;
             output.serialize_entry(unit.display_key(), &options.display)?;
         }
+        // ECMA-402 §13.3.2 step 4 omits an undefined fractionalDigits slot.
+        // https://tc39.es/ecma402/#sec-Intl.DurationFormat.prototype.resolvedOptions
+        // https://github.com/tc39/ecma402/issues/964
         if let Some(digits) = self.fractional_digits {
             output.serialize_entry("fractionalDigits", &digits)?;
         }

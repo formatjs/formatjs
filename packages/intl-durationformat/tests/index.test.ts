@@ -50,10 +50,9 @@ test('requires initialized slots before input coercion and retains them after pr
 })
 
 test('Intl.DurationFormat resolvedOptions', function () {
-  expect(new DurationFormat('en').resolvedOptions()).toEqual({
+  expect(new DurationFormat('en').resolvedOptions()).toStrictEqual({
     days: 'short',
     daysDisplay: 'auto',
-    fractionalDigits: undefined,
     hours: 'short',
     hoursDisplay: 'auto',
     locale: 'en',
