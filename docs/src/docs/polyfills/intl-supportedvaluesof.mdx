@@ -137,6 +137,10 @@ name. FormatJS also supplies the registered English name for `XAD`.
 [ECMA-402 §6.4](https://tc39.es/ecma402/#sec-availablecanonicalcurrencies)
 [ISO 4217 amendment 179](https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/amendments/dl-currency-iso-amendment-179.pdf)
 
+FormatJS DateTimeFormat supplies its loaded calendar list directly. For other
+formatters, calendar probes try English and locales associated with each
+calendar in CLDR. [ECMA-402 §6.9.1](https://tc39.es/ecma402/#sec-availablecalendars)
+
 Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
 in addition to continental transition zones. Runtime filtering retains primary
 identifiers and omits aliases such as `Etc/UTC`.

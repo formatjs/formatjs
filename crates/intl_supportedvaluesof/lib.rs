@@ -99,6 +99,9 @@ pub fn candidates(key: Key) -> Vec<Candidate> {
         .iter()
         .flat_map(|value| {
             let candidate_locales = match key {
+                // ECMA-402 §6.9.1 includes calendars supported in any locale.
+                // https://tc39.es/ecma402/#sec-availablecalendars
+                Key::Calendar => CALENDAR_LOCALES,
                 Key::Collation => COLLATION_LOCALES,
                 Key::Currency => CURRENCY_LOCALES,
                 Key::NumberingSystem => NUMBERING_SYSTEM_LOCALES,

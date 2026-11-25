@@ -1,7 +1,10 @@
 import {mkdirSync, writeFileSync} from 'node:fs'
 import {dirname} from 'node:path'
 import minimist from 'minimist'
-import {calendars} from '@formatjs_generated/cldr.supported-values/calendars.js'
+import {
+  calendarCandidateLocales,
+  calendars,
+} from '@formatjs_generated/cldr.supported-values/calendars.js'
 import {collations} from '@formatjs_generated/cldr.supported-values/collations.js'
 import {
   currencies,
@@ -31,6 +34,7 @@ function main(args: Args) {
     UNITS: units,
   }
   const candidateLocales = {
+    CALENDAR_LOCALES: calendarCandidateLocales,
     COLLATION_LOCALES: collationCandidateLocales,
     CURRENCY_LOCALES: currencyCandidateLocales,
     NUMBERING_SYSTEM_LOCALES: numberingSystemCandidateLocales,

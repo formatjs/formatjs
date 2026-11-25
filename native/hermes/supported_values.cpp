@@ -60,9 +60,13 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
     // ECMA-402 §6.5.2 checks zone data without constructing a formatter.
     // https://tc39.es/ecma402/#sec-getavailablenamedtimezoneidentifier
     if (key == FORMATJS_TIME_ZONE && context.formatProbe.isObject()) {
-      auto supported = context.formatProbe.asObject(rt).asFunction(rt).call(
-          rt, jsi::String::createFromUtf8(rt, identifier));
-      return supported.isBool() && supported.getBool() ? 0 : 1;
+      try {
+        auto supported = context.formatProbe.asObject(rt).asFunction(rt).call(
+            rt, jsi::String::createFromUtf8(rt, identifier));
+        return supported.isBool() && supported.getBool() ? 0 : 1;
+      } catch (const jsi::JSError &) {
+        // Fall back to construction if optional time-zone metadata fails.
+      }
     }
     std::string language(reinterpret_cast<const char *>(locale.data), locale.len);
     if (key == FORMATJS_NUMBERING_SYSTEM) {
@@ -83,6 +87,9 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
     case FORMATJS_CALENDAR:
       property = "calendar";
       language += "-u-ca-" + identifier;
+      // ECMA-402 §9.2.7 steps 3 and 11 apply the option after locale fallback.
+      // https://tc39.es/ecma402/#sec-resolvelocale
+      options.setProperty(rt, "calendar", jsi::String::createFromUtf8(rt, identifier));
       break;
     case FORMATJS_COLLATION:
       property = "collation";

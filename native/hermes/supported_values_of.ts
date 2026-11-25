@@ -341,6 +341,12 @@
 
       // Steps 2–8 use the retained probe and let Rust select accepted values.
       // https://tc39.es/ecma402/#sec-intl.supportedvaluesof
+      let calendars: readonly string[] | undefined
+      try {
+        calendars = availableCalendars?.()
+      } catch {
+        // Fall back to formatter probes if optional calendar metadata fails.
+      }
       const values = nativeSupportedValuesOf(
         category,
         provider?.constructor,
@@ -351,7 +357,7 @@
             ? currencyProbe(provider, names)
             : hasTimeZone,
         makeOptions,
-        availableCalendars?.()
+        calendars
       )
       if (values === null) throw new InvalidKeyError('Invalid key: ' + category)
       if (provider && canCache)

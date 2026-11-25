@@ -211,6 +211,72 @@ try {
   Object.defineProperty(Intl, 'DateTimeFormat', dateTimeFormatDescriptor)
 }
 
+class RegionalCalendarFormatter {
+  constructor(
+    private readonly locale: string,
+    private readonly options?: Intl.DateTimeFormatOptions
+  ) {}
+
+  resolvedOptions() {
+    if (this.locale === 'fa-u-ca-persian') return {calendar: 'persian'}
+    if (this.locale === 'am-u-ca-ethioaa') return {calendar: 'ethioaa'}
+    // The provider's default locale accepts Japanese calendar even when the
+    // requested locale does not match and its Unicode extension is dropped.
+    return {
+      calendar: this.options?.calendar === 'japanese' ? 'japanese' : 'gregory',
+    }
+  }
+}
+class FailingCalendarMetadata extends RegionalCalendarFormatter {
+  static [Symbol.for('@formatjs/intl-datetimeformat/availableCalendars')]() {
+    throw new Error('Calendar metadata unavailable')
+  }
+}
+const regionalCalendars = [
+  'ethioaa',
+  'gregory',
+  'iso8601',
+  'japanese',
+  'persian',
+]
+try {
+  for (const Formatter of [
+    RegionalCalendarFormatter,
+    FailingCalendarMetadata,
+  ]) {
+    Object.defineProperty(Intl, 'DateTimeFormat', {value: Formatter})
+    equal(
+      [outcome(candidate, 'calendar'), outcome(reference, 'calendar')],
+      [{values: regionalCalendars}, {values: regionalCalendars}],
+      `Calendar support with ${Formatter.name}`
+    )
+  }
+} finally {
+  Object.defineProperty(Intl, 'DateTimeFormat', dateTimeFormatDescriptor)
+}
+
+class FailingZoneMetadata {
+  constructor(_locale: string, options: Intl.DateTimeFormatOptions) {
+    if (options.timeZone !== 'America/New_York')
+      throw new RangeError('Unsupported time zone')
+  }
+
+  static [Symbol.for('@formatjs/intl-datetimeformat/hasTimeZone')]() {
+    throw new Error('Time-zone metadata unavailable')
+  }
+}
+try {
+  Object.defineProperty(Intl, 'DateTimeFormat', {value: FailingZoneMetadata})
+  const zones = ['America/New_York', 'UTC']
+  equal(
+    [outcome(candidate, 'timeZone'), outcome(reference, 'timeZone')],
+    [{values: zones}, {values: zones}],
+    'Time-zone support with failing metadata'
+  )
+} finally {
+  Object.defineProperty(Intl, 'DateTimeFormat', dateTimeFormatDescriptor)
+}
+
 const numberFormatDescriptor = Object.getOwnPropertyDescriptor(
   Intl,
   'NumberFormat'
