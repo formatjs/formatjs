@@ -281,7 +281,7 @@ impl LocalePatterns {
     }
 }
 fn canonical(tag: &str) -> Result<String, Error> {
-    formatjs_intl_getcanonicallocales::canonicalize_locale(tag)
+    formatjs_intl_locale::matcher::canonicalize_data_locale(tag)
         .map_err(|error| Error::InvalidData(error.to_string()))
 }
 

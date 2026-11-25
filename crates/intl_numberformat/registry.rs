@@ -189,7 +189,7 @@ impl Registry {
             .map_err(Error::InvalidData)
     }
     pub fn add_unit_data(&self, locale: &str, json: &str) -> Result<(), Error> {
-        let locale = formatjs_intl_getcanonicallocales::canonicalize_locale(locale)
+        let locale = formatjs_intl_locale::matcher::canonicalize_data_locale(locale)
             .map_err(|_| Error::InvalidLocale)?;
         self.get(&locale)?.add_unit_data(json)
     }

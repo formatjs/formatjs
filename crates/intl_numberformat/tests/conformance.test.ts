@@ -286,6 +286,52 @@ it.each([
   }
 )
 
+it('removes Unicode options from the first loaded locale pack', () => {
+  const locale = 'qaa-x-u-private'
+  const requested = 'qaa-u-nu-arab-x-u-private'
+  const pack = {
+    ...JSON.parse(readFileSync(join(directory, 'en.json'), 'utf8')),
+    locale: requested,
+    aliases: [],
+  }
+  const path = mkdtempSync(
+    join(process.env.TEST_TMPDIR || tmpdir(), 'nf-default-')
+  )
+  const saved = {
+    availableLocales: NumberFormat.availableLocales,
+    localeData: NumberFormat.localeData,
+    __defaultLocale: NumberFormat.__defaultLocale,
+  }
+  const options = {localeMatcher: 'lookup'} as const
+  try {
+    writeFileSync(join(path, 'en.json'), JSON.stringify(pack))
+    NumberFormat.availableLocales = new Set()
+    NumberFormat.localeData = {}
+    NumberFormat.__defaultLocale = ''
+    NumberFormat.__addLocaleData(pack)
+    compare(
+      [
+        {locales: [], options, values: [123]},
+        {locales: [requested], options, values: [123]},
+      ],
+      path
+    )
+    expect(new NumberFormat().resolvedOptions()).toMatchObject({
+      locale,
+      numberingSystem: 'latn',
+    })
+    expect(
+      new NumberFormat(requested, options).resolvedOptions()
+    ).toMatchObject({
+      locale: requested,
+      numberingSystem: 'arab',
+    })
+  } finally {
+    Object.assign(NumberFormat, saved)
+    rmSync(path, {recursive: true, force: true})
+  }
+})
+
 it('retains the numbering extension before private-use subtags', () => {
   const locale = 'en-x-u-private'
   const requested = 'en-u-nu-arab-x-u-private'

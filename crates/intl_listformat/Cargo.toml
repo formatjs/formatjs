@@ -16,7 +16,6 @@ compiled_data = []
 
 [dependencies]
 formatjs_intl_data = { path = "../intl_data", version = "0.2.0" }
-formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "1.0.0" }
 formatjs_intl_locale = { path = "../intl_locale", version = "1.0.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

@@ -5,7 +5,7 @@
 use std::collections::BTreeMap;
 use std::fmt;
 
-use formatjs_intl_getcanonicallocales::canonicalize_locale;
+use formatjs_intl_locale::matcher::canonicalize_data_locale;
 use icu_plurals::provider::rules::runtime::ast::Rule;
 use icu_plurals::provider::{PluralRulesData, PluralsCardinalV1, PluralsOrdinalV1};
 use icu_plurals::{PluralCategory, PluralOperands, PluralRules, RawPluralOperands};
@@ -204,13 +204,13 @@ impl LocaleRules {
         if pack.format_version.is_some_and(|version| version != 1) {
             return Err(Error::InvalidData("formatVersion".to_owned()));
         }
-        let locale = canonicalize_locale(&pack.locale)
+        let locale = canonicalize_data_locale(&pack.locale)
             .map_err(|_| Error::InvalidData("locale".to_owned()))?;
         let aliases = pack
             .aliases
             .iter()
             .map(|alias| {
-                canonicalize_locale(alias).map_err(|_| Error::InvalidData("alias".to_owned()))
+                canonicalize_data_locale(alias).map_err(|_| Error::InvalidData("alias".to_owned()))
             })
             .collect::<Result<Vec<_>, _>>()?;
         for (kind, ranges) in &pack.ranges {

@@ -54,6 +54,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs_generated/cldr.core",
+        "//packages/ecma402-abstract/Locale",
     ],
 )
 

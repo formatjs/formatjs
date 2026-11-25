@@ -16,7 +16,10 @@ import type {
   CalendarData,
   CalendarRegistry,
 } from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
-import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  canonicalizeLocaleDataTag,
+  registerLocaleData,
+} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {
   ToDateTimeFormattable,
@@ -1268,7 +1271,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
   ...data: RawDateTimeLocaleData[]
 ) {
   for (const entry of data) {
-    const [locale] = CanonicalizeLocaleList(entry.locale)
+    const locale = canonicalizeLocaleDataTag(entry.locale)
     publishLocaleData(
       locale,
       prepareLocaleData(entry, calendarLocaleData.get(locale))
@@ -1317,7 +1320,7 @@ DateTimeFormat.__addCalendarLocaleData = function (
   ...data: RawCalendarLocaleData[]
 ) {
   for (const patch of data) {
-    const [locale] = CanonicalizeLocaleList(patch.locale)
+    const locale = canonicalizeLocaleDataTag(patch.locale)
     const calendars = new Map(calendarLocaleData.get(locale))
     calendars.set(patch.calendar, patch)
     const raw = rawLocaleData.get(locale)

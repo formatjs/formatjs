@@ -6,7 +6,7 @@ use crate::{
 #[cfg(feature = "compiled_data")]
 use formatjs_intl_data::Compiled;
 use formatjs_intl_data::Data;
-use formatjs_intl_getcanonicallocales::{canonicalize_locale, get_canonical_locales};
+use formatjs_intl_getcanonicallocales::get_canonical_locales;
 use formatjs_intl_locale::{Locale, LocaleOptions, matcher};
 use serde::{Deserialize, Serialize};
 use std::{
@@ -321,7 +321,8 @@ impl Registry {
             serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
         // ECMA-402 §9 requires canonical AvailableLocales entries.
         // https://tc39.es/ecma402/#locale-and-parameter-negotiation
-        raw.locale = canonicalize_locale(&raw.locale).map_err(|_| Error::InvalidLocale)?;
+        raw.locale =
+            matcher::canonicalize_data_locale(&raw.locale).map_err(|_| Error::InvalidLocale)?;
         let data = Self::prepare(
             &raw,
             self.patches
@@ -338,7 +339,8 @@ impl Registry {
     pub fn add_calendar_locale_data(&mut self, json: &str) -> Result<(), Error> {
         let mut patch: CalendarPatch =
             serde_json::from_str(json).map_err(|_| Error::InvalidLocaleData)?;
-        patch.locale = canonicalize_locale(&patch.locale).map_err(|_| Error::InvalidLocale)?;
+        patch.locale =
+            matcher::canonicalize_data_locale(&patch.locale).map_err(|_| Error::InvalidLocale)?;
         let locale = patch.locale.clone();
         if !self.raw.contains_key(&locale) {
             if let Some(record) = self.compiled.get(&locale) {

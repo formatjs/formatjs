@@ -833,7 +833,6 @@ name = "formatjs_intl_listformat"
 version = "1.0.0"
 dependencies = [
  "formatjs_intl_data",
- "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
  "icu_properties",
  "serde",
@@ -890,7 +889,6 @@ version = "0.3.0"
 dependencies = [
  "fixed_decimal",
  "formatjs_intl_data",
- "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
  "icu_plurals",
  "icu_provider",

@@ -1,4 +1,7 @@
-import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  canonicalizeLocaleDataTag,
+  registerLocaleData,
+} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   createFromConstructor,
@@ -188,7 +191,7 @@ export class DisplayNames extends nullClassBase {
 
   static __addLocaleData(...data: DisplayNamesLocaleData[]): void {
     for (const {data: d, locale: tag} of data) {
-      const [locale] = CanonicalizeLocaleList(tag)
+      const locale = canonicalizeLocaleDataTag(tag)
       registerLocaleData(
         locale,
         d,

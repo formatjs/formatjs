@@ -1,6 +1,9 @@
 import {getIntlFallbackSymbol} from '#packages/ecma402-abstract/intl-fallback-symbol.js'
 import {invalidateCompactPatterns} from '#packages/ecma402-abstract/NumberFormat/compact-patterns.js'
-import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  canonicalizeLocaleDataTag,
+  registerLocaleData,
+} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
@@ -361,7 +364,7 @@ NumberFormat.__addLocaleData = function __addLocaleData(
   ...data: RawNumberLocaleData[]
 ) {
   for (const {data: source, locale: tag} of data) {
-    const [locale] = CanonicalizeLocaleList(tag)
+    const locale = canonicalizeLocaleDataTag(tag)
     const d = source.numbers.aliases
       ? {
           ...source,
@@ -407,7 +410,7 @@ NumberFormat.__addUnitData = function __addUnitData(
   tag: string,
   unitsData: RawNumberLocaleData['data']['units']
 ) {
-  const [locale] = CanonicalizeLocaleList(tag)
+  const locale = canonicalizeLocaleDataTag(tag)
   const {[locale]: existingData} = NumberFormat.localeData
   if (!existingData) {
     throw new Error(`Locale data for "${locale}" has not been loaded in NumberFormat. 

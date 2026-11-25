@@ -4,7 +4,10 @@ import {
   nullClassBase,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
+import {
+  canonicalizeLocaleDataTag,
+  registerLocaleData,
+} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {GetOptionsObject} from '#packages/ecma402-abstract/GetOptionsObject.js'
@@ -405,7 +408,7 @@ export default class ListFormat extends nullClassBase {
 
   public static __addLocaleData(...data: ListPatternLocaleData[]): void {
     for (const {data: d, locale: tag} of data) {
-      const [locale] = CanonicalizeLocaleList(tag)
+      const locale = canonicalizeLocaleDataTag(tag)
       registerLocaleData(
         locale,
         d,

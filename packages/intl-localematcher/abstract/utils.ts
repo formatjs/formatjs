@@ -1,14 +1,19 @@
+import {
+  splitLocaleSubtags,
+  splitUnicodeExtension,
+} from '#packages/ecma402-abstract/Locale/splitUnicodeExtension.js'
 import {CanonicalizeLocaleList} from '#packages/intl-localematcher/abstract/CanonicalizeLocaleList.js'
 import {
   arrayIncludes,
   setDataProperty,
-  splitLocaleSubtags,
   stringCharCodeAt,
   stringIndexOf,
   stringSlice,
 } from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {memoize} from '@formatjs/fast-memoize'
 import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
+
+export {splitUnicodeExtension}
 
 const apply = Reflect.apply
 const some = Array.prototype.some
@@ -27,30 +32,6 @@ const hasLocaleSet = Function.prototype.call.bind(LocaleSet.prototype.has) as (
 ) => boolean
 const minDistance = Math.min
 const maxDistance = Math.max
-
-// ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
-// A private-use subtag named "u" does not start a Unicode extension.
-// https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
-export function splitUnicodeExtension(locale: string): {
-  locale: string
-  extension?: string
-} {
-  const subtags = splitLocaleSubtags(locale)
-  for (let i = 1; i < subtags.length; i++) {
-    if (subtags[i] === 'x') break
-    if (subtags[i] !== 'u') continue
-    let end = i + 1
-    while (end < subtags.length && subtags[end].length > 1) end++
-    let base = subtags[0]
-    for (let j = 1; j < i; j++) base += '-' + subtags[j]
-    for (let j = end; j < subtags.length; j++) base += '-' + subtags[j]
-    let extension = ''
-    for (let j = i; j < end; j++) extension += '-' + subtags[j]
-    return {locale: base, extension}
-  }
-  // ECMA-402 §9.2.3 step 1.a: the private extension field starts empty.
-  return {locale, extension: undefined}
-}
 
 /**
  * Asserts that a condition is true, throwing an error if it is not.
