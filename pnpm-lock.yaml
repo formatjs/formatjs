@@ -602,7 +602,7 @@ importers:
         version: 0.159.0
       oxfmt:
         specifier: ^0.76.0
-        version: 0.76.0(svelte@5.57.3)
+        version: 0.76.0(svelte@5.58.0)
       oxlint:
         specifier: ^1.64.0
         version: 1.94.0
@@ -671,7 +671,7 @@ importers:
         version: 7.1.4
       svelte:
         specifier: ^5.0.0
-        version: 5.57.3
+        version: 5.58.0
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.7.0
@@ -861,7 +861,7 @@ importers:
         version: 2.2.0
       svelte:
         specifier: '5'
-        version: 5.57.3
+        version: 5.58.0
       vue:
         specifier: '3'
         version: 3.5.45(typescript@7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0))
@@ -1182,7 +1182,7 @@ importers:
         version: link:../intl
       svelte:
         specifier: '5'
-        version: 5.57.3
+        version: 5.58.0
 
   packages/temporal: {}
 
@@ -5207,8 +5207,8 @@ packages:
     resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
     engines: {node: '>=0.10'}
 
-  esrap@2.3.6:
-    resolution: {integrity: sha512-yc0OC12UjPqLoc+fe+v5GNs4TOjAigUw3sTikfC+xeBPGUw7gDRz3DtYaqEhxyMVJojcSWJw7jT0QWR+CbuE/A==}
+  esrap@2.4.2:
+    resolution: {integrity: sha512-WpVZsWnSheHBy+fGrO/0duwnbe6ODZH1QyBbjupreSCJGojaBWRncrq+HVeIJ8eHQjEwSJg9hC4yPJyNVOrpqg==}
     peerDependencies:
       '@typescript-eslint/types': ^8.2.0
     peerDependenciesMeta:
@@ -7269,8 +7269,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  svelte@5.57.3:
-    resolution: {integrity: sha512-5mAftM3SoDV9X0zdF386F9p2pv8iKOwi/KfBS1XnBAkVCKFzVOLHUoa8iGWAt4buoicLmyWVRpuuD5wplXOQsg==}
+  svelte@5.58.0:
+    resolution: {integrity: sha512-rOMKTD9WP2C6ahWDmntey4p+JqUxtup1w9G3KdVuTbNGHi5u97iMw0CIc8a+F5rZtiH7x98kVniDlBRRR5e98w==}
     engines: {node: '>=18'}
 
   tailwind-merge@3.7.0:
@@ -11591,7 +11591,7 @@ snapshots:
     dependencies:
       estraverse: 5.3.0
 
-  esrap@2.3.6:
+  esrap@2.4.2:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
@@ -13431,7 +13431,7 @@ snapshots:
       '@oxc-transform/binding-win32-ia32-msvc': 0.159.0
       '@oxc-transform/binding-win32-x64-msvc': 0.159.0
 
-  oxfmt@0.76.0(svelte@5.57.3):
+  oxfmt@0.76.0(svelte@5.58.0):
     dependencies:
       tinypool: 2.2.0
     optionalDependencies:
@@ -13454,7 +13454,7 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.76.0
       '@oxfmt/binding-win32-ia32-msvc': 0.76.0
       '@oxfmt/binding-win32-x64-msvc': 0.76.0
-      svelte: 5.57.3
+      svelte: 5.58.0
 
   oxlint@1.94.0:
     optionalDependencies:
@@ -14297,7 +14297,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte@5.57.3:
+  svelte@5.58.0:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
@@ -14309,7 +14309,7 @@ snapshots:
       clsx: 2.1.1
       devalue: 5.9.4
       esm-env: 1.2.2
-      esrap: 2.3.6
+      esrap: 2.4.2
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.21
