@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.2.0...eslint-plugin-formatjs@8.3.0) (2026-11-26)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add no-literal-template-placeholder rule ([#8244](https://github.com/formatjs/formatjs/issues/8244)) ([6fb3c95](https://github.com/formatjs/formatjs/commit/6fb3c95ea071873159f0b3ab6b18984943050986))
+
 ## [8.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.1.4...eslint-plugin-formatjs@8.2.0) (2026-11-26)
 
 
