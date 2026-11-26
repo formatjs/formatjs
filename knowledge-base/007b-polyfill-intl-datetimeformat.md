@@ -245,7 +245,9 @@ preserve identifiers. `shouldPolyfill` accepts native alias canonicalization,
 including `Etc/UTC` to `UTC`; it checks numeric-offset normalization and throwing
 host probes.
 It also checks that `supportedLocalesOf` and the range and parts methods are callable.
-This follows the [Temporal integration text](https://tc39.es/proposal-temporal/#sec-intl.datetimeformat),
+Temporal integration conformance is separate from this capability detector;
+`undefined` does not certify Temporal input support or identifier preservation.
+The polyfill's identifier preservation follows the [Temporal integration text](https://tc39.es/proposal-temporal/#sec-intl.datetimeformat),
 which uses `[[Identifier]]` where the standalone ECMA-402 draft still uses
 `[[PrimaryIdentifier]]`.
 

@@ -467,6 +467,8 @@ transition data and localized names. `__setDefaultTimeZone` preserves names too.
 `shouldPolyfill()` accepts native alias canonicalization, including `Etc/UTC`
 to `UTC`. It checks numeric offsets and callable locale, range, and parts methods.
 A throwing capability probe also selects the polyfill.
+This detector does not certify Temporal integration conformance, including
+Temporal inputs and identifier preservation.
 
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.
