@@ -21,3 +21,35 @@ assert.deepEqual(
   ]),
   []
 )
+
+const notationMessages = linter.verify(
+  "defineMessage({defaultMessage: 'v{version} {count}day'})",
+  [
+    {
+      plugins: {formatjs: plugin},
+      rules: {
+        'formatjs/prefer-full-sentence': [
+          'error',
+          {allowlist: [{argument: 'version', prefix: 'v'}]},
+        ],
+      },
+    },
+  ]
+)
+assert.equal(notationMessages.length, 1)
+assert.equal(notationMessages[0].messageId, 'placeholderAdjacentToWord')
+assert.equal(notationMessages[0].fatal, undefined)
+assert.deepEqual(
+  linter.verify("defineMessage({defaultMessage: 'v{version}'})", [
+    {
+      plugins: {formatjs: plugin},
+      rules: {
+        'formatjs/prefer-full-sentence': [
+          'error',
+          {allowlist: [{argument: 'version', prefix: 'v'}]},
+        ],
+      },
+    },
+  ]),
+  []
+)

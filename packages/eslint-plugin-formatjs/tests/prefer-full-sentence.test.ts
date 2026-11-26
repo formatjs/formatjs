@@ -151,3 +151,107 @@ ruleTester.run(name, rule, {
     },
   ],
 })
+
+const notationOptions = [
+  {
+    allowlist: [
+      {argument: 'version', prefix: 'v'},
+      {argument: 'quarter', prefix: 'Q'},
+      {argument: 'generation', suffix: 'G'},
+    ],
+  },
+]
+
+ruleTester.run(`${name} allowlist`, rule, {
+  valid: [
+    {
+      code: `<FormattedMessage defaultMessage="v{version}" />`,
+      options: notationOptions,
+    },
+    {
+      code: `defineMessage({defaultMessage: 'Compare v{version} and Q{quarter, number}'})`,
+      options: notationOptions,
+    },
+    {
+      code: `defineMessage({defaultMessage: '版本{version}'})`,
+      options: [{allowlist: [{argument: 'version', prefix: '版本'}]}],
+    },
+    {
+      code: `defineMessage({defaultMessage: '{generation}G'})`,
+      options: notationOptions,
+    },
+    {
+      code: `defineMessage({defaultMessage: '{count, plural, one {<b>v{version}</b>} other {v{version}}}'})`,
+      options: notationOptions,
+    },
+  ],
+  invalid: [
+    {
+      code: `<FormattedMessage defaultMessage="v{version}" />`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'v{revision}'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'previewv{version}'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'é_2v{version}'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: '{generation}GHz'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'pre\u200dv{version}'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'v{version} {'})`,
+      options: notationOptions,
+      errors: [{messageId: 'parseError'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'q{quarter}'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: '{version}v'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'v{version}days'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: ' v{version} '})`,
+      options: notationOptions,
+      errors: [
+        {messageId: 'leadingWhitespace'},
+        {messageId: 'trailingWhitespace'},
+      ],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'v{version} {count}day'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `defineMessage({defaultMessage: 'v{version, select, other {latest}}'})`,
+      options: notationOptions,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+  ],
+})

@@ -1023,7 +1023,7 @@ cases remain report-only. Hook calls are retained.
 
 ### `prefer-full-sentence`
 
-Messages should be self-contained, full sentences. Leading or trailing whitespace in a message suggests it is a fragment being concatenated with other strings, which is an anti-pattern for localization. Placeholders joined directly to words, such as `{count}day`, also fail because units and spacing vary by locale.
+Messages should be self-contained; complete labels and intentional notation are valid too. Leading or trailing whitespace in a message suggests it is a fragment being concatenated with other strings, which is an anti-pattern for localization. Placeholders joined directly to words, such as `{count}day`, also fail because units and spacing vary by locale.
 
 #### Why
 
@@ -1052,6 +1052,29 @@ const messages = defineMessages({
   },
 })
 ```
+
+#### Intentional notation
+
+Use an opt-in `allowlist` for compact notation such as `v{version}` or `Q{quarter, number}`. Each entry names an ICU `argument` and either a `prefix` or a `suffix`:
+
+```json
+{
+  "formatjs/prefer-full-sentence": [
+    "error",
+    {
+      "allowlist": [
+        {"argument": "version", "prefix": "v"},
+        {"argument": "quarter", "prefix": "Q"},
+        {"argument": "generation", "suffix": "G"}
+      ]
+    }
+  ]
+}
+```
+
+Entries match the complete adjacent word token and argument name, case-sensitively. Allowing `v{version}` does not allow `previewv{version}`, `v{revision}`, or `v{version}days`. Only plain arguments and number arguments can be allowlisted. Leading/trailing whitespace, malformed ICU, and unrelated fragments still fail, including inside plural/select branches and rich-text tags. The default allowlist is empty.
+
+An allowlist does not localize notation. Keep quarter abbreviations in the translatable message so translators can use their locale's form. Prefer ICU number skeletons or an `Intl` formatter for measurement units instead of allowlisting them.
 
 ### `prefer-pound-in-plural`
 

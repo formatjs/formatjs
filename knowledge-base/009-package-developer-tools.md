@@ -92,6 +92,13 @@ in ICU literal text, including plural/select branches and rich-text tags. Printf
 tokens need no word boundaries; `%%` pairs are consumed as escapes. The rule is
 enabled in `strict`.
 
+`prefer-full-sentence` accepts an opt-in `allowlist` of exact `argument` names
+and either a `prefix` or `suffix` word token. Matching is case-sensitive and
+limited to plain/number arguments. Entries apply recursively inside ICU branches
+and tags; they do not suppress whitespace or other adjacency diagnostics.
+The default list is empty. Consumer configuration is also checked by
+`:package_load_test` against the assembled plugin in ESLint.
+
 `enforce-default-message` accepts `literal` (require a static message) or
 `anything` (require the property, allowing dynamic values). Both presets use
 `literal`. Override with `['error', 'anything']` after the preset; severity-only
