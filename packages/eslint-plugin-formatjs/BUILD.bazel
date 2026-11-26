@@ -90,7 +90,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     type = "module",
-    version = "8.2.0",  # x-release-please-version
+    version = "8.3.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
