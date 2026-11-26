@@ -119,6 +119,10 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 ## CI/CD (GitHub Actions)
 
+Renovate ignores the exact GitHub Actions bot author used by
+`renovate-bazel-lock.yml`. Its generated lockfile commits must not make Renovate
+PRs appear manually edited and block future rebases. Human authors remain protected.
+
 CodeQL/Code Quality scanning is disabled in repository settings. The Claude Code
 workflow and repository Copilot auto-review ruleset have been removed.
 
