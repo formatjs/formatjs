@@ -802,6 +802,36 @@ const messages = defineMessages({
 })
 ```
 
+### `no-literal-template-placeholder`
+
+Don't put another template syntax's placeholders in message text: `{{name}}` (Mustache, Handlebars, i18next) or printf's `%s`, `%d`, `%1$s` and `%(name)s`. In strict config.
+
+Printf placeholders are detected next to other text, including CJK characters.
+Escaped percent pairs (`%%`) stay literal.
+
+#### Why
+
+- ICU only parses these as literal text, usually quoted (`'{{name}}'`), so translators see them as words to keep or translate.
+- Code that fills them in after translation with `.replace()` breaks once a translator reorders the sentence or translates the words around the token.
+- An ICU argument lets the value be formatted for the locale, like `{price, number, ::currency/USD}`.
+
+```tsx
+const messages = defineMessages({
+  // WORKS
+  foo: {
+    defaultMessage: 'Its recent {direction} to {price, number, ::currency/USD}',
+  },
+  // FAILS
+  bar: {
+    defaultMessage: "Its recent '{{direction}}' to '{{event_value}}'",
+  },
+  // FAILS
+  baz: {
+    defaultMessage: 'Uploaded %s files',
+  },
+})
+```
+
 ### `no-multiple-plurals`
 
 This prevents specifying multiple plurals in your message.
