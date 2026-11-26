@@ -18,8 +18,8 @@ const TEMPLATE_PLACEHOLDER = new RegExp(
   [
     // Mustache, Handlebars, i18next, Jinja: {{name}}, {{ user.name }}
     String.raw`\{\{\s*[\p{L}_$][\p{L}\p{N}_$.]*\s*\}\}`,
-    // printf: %s, %d, %1$s, %(name)s, %@
-    String.raw`(?<![\p{L}\p{N}%])%(?:\d+\$)?(?:\([\p{L}_][\p{L}\p{N}_]*\))?[sd@](?![\p{L}\p{N}])`,
+    // Consume %% escapes before matching printf placeholders.
+    String.raw`%(?:%|(?:\d+\$)?(?:\([\p{L}_][\p{L}\p{N}_]*\))?[sd@])`,
   ].join('|'),
   'gu'
 )
@@ -29,7 +29,7 @@ function findTokens(ast: MessageFormatElement[], tokens: Set<string>): void {
     switch (element.type) {
       case TYPE.literal: {
         for (const [token] of element.value.matchAll(TEMPLATE_PLACEHOLDER)) {
-          tokens.add(token)
+          if (token !== '%%') tokens.add(token)
         }
         break
       }

@@ -87,6 +87,11 @@ fragments. It manages component imports and preserves hook calls.
 
 **Peer dep:** `eslint@9 || 10`
 
+`no-literal-template-placeholder` rejects Mustache-style and printf placeholders
+in ICU literal text, including plural/select branches and rich-text tags. Printf
+tokens need no word boundaries; `%%` pairs are consumed as escapes. The rule is
+enabled in `strict`.
+
 `enforce-default-message` accepts `literal` (require a static message) or
 `anything` (require the property, allowing dynamic values). Both presets use
 `literal`. Override with `['error', 'anything']` after the preset; severity-only

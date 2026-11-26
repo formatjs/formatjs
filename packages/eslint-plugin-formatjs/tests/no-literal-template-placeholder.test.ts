@@ -38,6 +38,7 @@ ruleTester.run(name, rule, {
     message('50% off, 100%'),
     message('{ratio, number, ::percent} of users'),
     message('Use %PATH% on Windows'),
+    message('Escaped %%s, %%d, %%@ and %%%%s'),
   ],
   invalid: [
     invalid(
@@ -49,6 +50,12 @@ ruleTester.run(name, rule, {
     invalid('Uploaded %s of %d files', '%s', '%d'),
     invalid('Hello %(name)s', '%(name)s'),
     invalid('Item %1$s', '%1$s'),
+    invalid('已上传%s个文件', '%s'),
+    invalid('Ranked %dth', '%d'),
+    invalid('%@님', '%@'),
+    invalid('prefix%1$sSuffix', '%1$s'),
+    invalid('Hello%(name)sWorld', '%(name)s'),
+    invalid('Escaped percent then placeholder: %%%s', '%s'),
     invalid(
       "{count, plural, one {# alert for '{{symbol}}'} other {# alerts for '{{symbol}}'}}",
       '{{symbol}}'

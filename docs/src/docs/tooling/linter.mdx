@@ -806,6 +806,9 @@ const messages = defineMessages({
 
 Don't put another template syntax's placeholders in message text: `{{name}}` (Mustache, Handlebars, i18next) or printf's `%s`, `%d`, `%1$s` and `%(name)s`. In strict config.
 
+Printf placeholders are detected next to other text, including CJK characters.
+Escaped percent pairs (`%%`) stay literal.
+
 #### Why
 
 - ICU only parses these as literal text, usually quoted (`'{{name}}'`), so translators see them as words to keep or translate.
