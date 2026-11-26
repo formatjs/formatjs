@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.1.1...@formatjs/intl-numberformat@10.1.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** retain NumberFormat intrinsic ([#8162](https://github.com/formatjs/formatjs/issues/8162)) ([4ce3292](https://github.com/formatjs/formatjs/commit/4ce3292b20519a9af8f9d4889dd8d0928b554357))
+* **@formatjs/intl-numberformat:** detect missing range and parts methods ([#8198](https://github.com/formatjs/formatjs/issues/8198)) ([22710ca](https://github.com/formatjs/formatjs/commit/22710caa2d9fa3822cadc1a81a81dcc38ed6b1f5))
+* **@formatjs/intl-relativetimeformat:** retain formatter intrinsics ([#8164](https://github.com/formatjs/formatjs/issues/8164)) ([e197991](https://github.com/formatjs/formatjs/commit/e197991165d91fd535803202dbf365fe59208df6))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** fall back when Intl locale probes throw ([#8218](https://github.com/formatjs/formatjs/issues/8218)) ([f51237b](https://github.com/formatjs/formatjs/commit/f51237b150ba77eb57c5c53b32059605d9ff13b3))
+* **deps:** guard Intl locale capability probes ([#8202](https://github.com/formatjs/formatjs/issues/8202)) ([d8d24de](https://github.com/formatjs/formatjs/commit/d8d24dea97025ca6bc631c0fb647164d0914a78d))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.12
+    * @formatjs/intl-localematcher bumped to 0.10.3
+
 ## [10.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.1.0...@formatjs/intl-numberformat@10.1.1) (2026-11-23)
 
 

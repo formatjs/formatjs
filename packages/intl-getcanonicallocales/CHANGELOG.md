@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.4.1...@formatjs/intl-getcanonicallocales@3.4.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+
 ## [3.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.4.0...@formatjs/intl-getcanonicallocales@3.4.1) (2026-11-23)
 
 

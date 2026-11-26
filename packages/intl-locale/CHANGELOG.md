@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.5.1...@formatjs/intl-locale@5.5.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** retain variant list join intrinsic ([#8195](https://github.com/formatjs/formatjs/issues/8195)) ([9795fe2](https://github.com/formatjs/formatjs/commit/9795fe2af2166f760aa648b63072b9d14255c241))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-getcanonicallocales bumped to 3.4.2
+    * @formatjs/intl-supportedvaluesof bumped to 3.1.2
+
 ## [5.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.5.0...@formatjs/intl-locale@5.5.1) (2026-11-23)
 
 

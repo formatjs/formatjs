@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.13.1...@formatjs/intl-durationformat@0.13.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-durationformat:** retain formatter intrinsics ([#8165](https://github.com/formatjs/formatjs/issues/8165)) ([d4f92f2](https://github.com/formatjs/formatjs/commit/d4f92f21e8746380467c594c16b5d9c3536f155e))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** replace non-callable Intl host entries ([#8203](https://github.com/formatjs/formatjs/issues/8203)) ([18397c4](https://github.com/formatjs/formatjs/commit/18397c4ce4be335332e31acfa74c06753c32dd28))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.12
+    * @formatjs/intl-localematcher bumped to 0.10.3
+
 ## [0.13.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.13.0...@formatjs/intl-durationformat@0.13.1) (2026-11-23)
 
 

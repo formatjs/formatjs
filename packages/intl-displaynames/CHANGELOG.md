@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@8.0.4...@formatjs/intl-displaynames@8.0.5) (2026-11-26)
+
+
+### Bug Fixes
+
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** fall back when Intl locale probes throw ([#8218](https://github.com/formatjs/formatjs/issues/8218)) ([f51237b](https://github.com/formatjs/formatjs/commit/f51237b150ba77eb57c5c53b32059605d9ff13b3))
+* **deps:** match Intl DisplayNames arity and Locale getter shape ([#8226](https://github.com/formatjs/formatjs/issues/8226)) ([7c0c62c](https://github.com/formatjs/formatjs/commit/7c0c62c12d56fe71319800d08b54afbc818b9c48))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.3
+
 ## [8.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@8.0.3...@formatjs/intl-displaynames@8.0.4) (2026-11-23)
 
 
