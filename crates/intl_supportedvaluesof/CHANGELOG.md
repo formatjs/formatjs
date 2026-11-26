@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_supportedvaluesof_v1.1.0...formatjs_intl_supportedvaluesof_v1.1.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-supportedvaluesof:** probe regional calendar support ([#8224](https://github.com/formatjs/formatjs/issues/8224)) ([42b5540](https://github.com/formatjs/formatjs/commit/42b5540ec1acde44fb200fac184f38ed4fb71234))
+* **@formatjs/intl-supportedvaluesof:** retain required identifiers ([#8188](https://github.com/formatjs/formatjs/issues/8188)) ([2bc9e71](https://github.com/formatjs/formatjs/commit/2bc9e71c82795b85f313b07ce157acaef8254045))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+
 ## [1.1.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_supportedvaluesof_v1.0.0...formatjs_intl_supportedvaluesof_v1.1.0) (2026-11-17)
 
 

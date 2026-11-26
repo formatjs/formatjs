@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.4](https://github.com/formatjs/formatjs/compare/formatjs_intl_v2.2.3...formatjs_intl_v2.2.4) (2026-11-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat bumped from 0.3.3 to 0.3.4
+    * formatjs_intl_macros bumped from 1.1.3 to 1.1.4
+
 ## [2.2.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_v2.2.2...formatjs_intl_v2.2.3) (2026-11-08)
 
 

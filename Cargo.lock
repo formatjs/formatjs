@@ -665,7 +665,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
  "fixed_decimal",
  "formatjs_icu_messageformat_parser",
@@ -678,7 +678,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "2.0.1"
+version = "2.0.2"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
@@ -711,7 +711,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl"
-version = "2.2.3"
+version = "2.2.4"
 dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
@@ -725,7 +725,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_collator"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -736,7 +736,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_data"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "ciborium",
  "serde",
@@ -744,7 +744,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_data_build"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "ciborium",
  "formatjs_intl_data",
@@ -757,7 +757,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat"
-version = "1.1.1"
+version = "1.1.2"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -771,7 +771,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "formatjs_intl_datetimeformat",
  "serde",
@@ -780,7 +780,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_displaynames"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -791,7 +791,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_durationformat"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",
@@ -803,7 +803,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_getcanonicallocales"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "icu_locale",
  "icu_provider",
@@ -811,7 +811,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_hermes"
-version = "0.4.2"
+version = "0.4.3"
 dependencies = [
  "formatjs_intl_collator",
  "formatjs_intl_datetimeformat",
@@ -830,7 +830,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_listformat"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_locale",
@@ -841,7 +841,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_locale"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_localematcher",
@@ -860,7 +860,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_macros"
-version = "1.1.3"
+version = "1.1.4"
 dependencies = [
  "base64",
  "formatjs_icu_messageformat_parser",
@@ -871,7 +871,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_numberformat"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -885,7 +885,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_pluralrules"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "fixed_decimal",
  "formatjs_intl_data",
@@ -898,7 +898,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_relativetimeformat"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -912,7 +912,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_segmenter"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -925,7 +925,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_supportedvaluesof"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "serde",
  "serde_json",
@@ -937,7 +937,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_temporal"
-version = "2.0.1"
+version = "2.0.2"
 dependencies = [
  "formatjs_intl_datetimeformat_calendars",
  "serde_json",

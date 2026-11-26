@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_segmenter_v1.0.1...formatjs_intl_segmenter_v1.0.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_getcanonicallocales bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_locale bumped from 1.0.0 to 1.0.1
+
 ## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_segmenter_v1.0.0...formatjs_intl_segmenter_v1.0.1) (2026-11-23)
 
 

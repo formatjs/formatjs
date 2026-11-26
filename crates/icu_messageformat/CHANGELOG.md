@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.4](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_v0.3.3...formatjs_icu_messageformat_v0.3.4) (2026-11-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 2.0.1 to 2.0.2
+
 ## [0.3.3](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_v0.3.2...formatjs_icu_messageformat_v0.3.3) (2026-11-08)
 
 

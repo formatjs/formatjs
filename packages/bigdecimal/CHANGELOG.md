@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.12](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.11...@formatjs/bigdecimal@0.2.12) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/bigdecimal:** retain internal parsing and rendering operations ([#8178](https://github.com/formatjs/formatjs/issues/8178)) ([3f85014](https://github.com/formatjs/formatjs/commit/3f85014b1d1712b6372006ebc7bd35716e0cc669))
+* **@formatjs/bigdecimal:** retain numeric helpers for Intl rounding ([#8177](https://github.com/formatjs/formatjs/issues/8177)) ([36af037](https://github.com/formatjs/formatjs/commit/36af037da4d1bfc7d3f18be606e75f1a11072d82))
+* **@formatjs/intl-numberformat:** retain digit and rounding math helpers ([#8176](https://github.com/formatjs/formatjs/issues/8176)) ([a9ac6b4](https://github.com/formatjs/formatjs/commit/a9ac6b4031d6392e854dc4a045b0dab3f50b2b06))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+
 ## [0.2.11](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.10...@formatjs/bigdecimal@0.2.11) (2026-11-23)
 
 

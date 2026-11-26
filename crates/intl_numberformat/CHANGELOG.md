@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.3.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_numberformat_v0.3.0...formatjs_intl_numberformat_v0.3.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** respect Unicode range separator whitespace ([#8212](https://github.com/formatjs/formatjs/issues/8212)) ([3b23853](https://github.com/formatjs/formatjs/commit/3b23853a52ed0b27039ec5eb651dda71d077d11b))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+* **deps:** preserve private-use subtags in Intl locale resolution ([#8220](https://github.com/formatjs/formatjs/issues/8220)) ([3042290](https://github.com/formatjs/formatjs/commit/3042290edda51c55abde90e14eb5f2d8bd5bf545))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_data bumped from 0.2.0 to 0.2.1
+    * formatjs_intl_getcanonicallocales bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_locale bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_pluralrules bumped from 0.3.0 to 0.3.1
+
 ## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_numberformat_v0.2.1...formatjs_intl_numberformat_v0.3.0) (2026-11-17)
 
 

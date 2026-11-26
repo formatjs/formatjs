@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_collator_v0.2.2...formatjs_intl_collator_v0.2.3) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-collator:** use resolved locale option defaults ([#8223](https://github.com/formatjs/formatjs/issues/8223)) ([2a6c029](https://github.com/formatjs/formatjs/commit/2a6c029d79081a44a2bf9f36dffcfd5d2a5f02ea))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** preserve private-use subtags in Intl locale resolution ([#8220](https://github.com/formatjs/formatjs/issues/8220)) ([3042290](https://github.com/formatjs/formatjs/commit/3042290edda51c55abde90e14eb5f2d8bd5bf545))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_getcanonicallocales bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_locale bumped from 1.0.0 to 1.0.1
+
 ## [0.2.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_collator_v0.2.1...formatjs_intl_collator_v0.2.2) (2026-10-31)
 
 

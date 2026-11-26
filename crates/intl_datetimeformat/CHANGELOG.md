@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.1.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.1.1...formatjs_intl_datetimeformat_v1.1.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** defer unused range fallback ([#8193](https://github.com/formatjs/formatjs/issues/8193)) ([385e6cd](https://github.com/formatjs/formatjs/commit/385e6cd05d298e536ba6a5c080b97c7c0b129a5e))
+* **@formatjs/intl-datetimeformat:** fall back for missing cyclic year names ([#8208](https://github.com/formatjs/formatjs/issues/8208)) ([bbe6c06](https://github.com/formatjs/formatjs/commit/bbe6c063549371313d9139a526c81b01a3cdef7e))
+* **@formatjs/intl-datetimeformat:** keep calendar names in their own records ([#8210](https://github.com/formatjs/formatjs/issues/8210)) ([33d1083](https://github.com/formatjs/formatjs/commit/33d10838aefc1b7ab52907d9b58f63e7301bfd25))
+* **@formatjs/intl-datetimeformat:** preserve fallback range endpoint sources ([#8211](https://github.com/formatjs/formatjs/issues/8211)) ([8e9d7cc](https://github.com/formatjs/formatjs/commit/8e9d7ccf643af985aaae2a18e6e7bb596f899770))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+* **deps:** preserve private-use subtags in Intl locale resolution ([#8220](https://github.com/formatjs/formatjs/issues/8220)) ([3042290](https://github.com/formatjs/formatjs/commit/3042290edda51c55abde90e14eb5f2d8bd5bf545))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_data bumped from 0.2.0 to 0.2.1
+    * formatjs_intl_numberformat bumped from 0.3.0 to 0.3.1
+    * formatjs_intl_getcanonicallocales bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_locale bumped from 1.0.0 to 1.0.1
+
 ## [1.1.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.1.0...formatjs_intl_datetimeformat_v1.1.1) (2026-11-23)
 
 

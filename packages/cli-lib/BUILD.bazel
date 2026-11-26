@@ -192,7 +192,7 @@ formatjs_library(
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     tsconfig_types = ["node"],
     type = "module",
-    version = "10.6.0",  # x-release-please-version
+    version = "10.6.1",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

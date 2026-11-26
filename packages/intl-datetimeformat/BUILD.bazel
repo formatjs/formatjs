@@ -137,7 +137,7 @@ formatjs_library(
     ],
     type = "module",
     types = True,
-    version = "8.2.1",  # x-release-please-version
+    version = "8.2.2",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

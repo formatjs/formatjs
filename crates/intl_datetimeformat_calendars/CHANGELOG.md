@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v1.0.1...formatjs_intl_datetimeformat_calendars_v1.0.2) (2026-11-26)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_datetimeformat bumped from 1.1.1 to 1.1.2
+
 ## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v1.0.0...formatjs_intl_datetimeformat_calendars_v1.0.1) (2026-11-23)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v2.0.1...formatjs_icu_messageformat_parser_v2.0.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **icu_messageformat_parser:** use byte offsets for quoted styles ([#8235](https://github.com/formatjs/formatjs/issues/8235)) ([57efc39](https://github.com/formatjs/formatjs/commit/57efc392f941565cebfac96e239d3d30e40d5f9d))
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/formatjs_icu_messageformat_parser_v2.0.0...formatjs_icu_messageformat_parser_v2.0.1) (2026-11-08)
 
 

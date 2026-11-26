@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.2.1...@formatjs/intl-datetimeformat@8.2.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** accept native timezone canonicalization ([#8236](https://github.com/formatjs/formatjs/issues/8236)) ([f278846](https://github.com/formatjs/formatjs/commit/f278846fbe6617d2fc9dffa6a655b10e3a665ba9))
+* **@formatjs/intl-datetimeformat:** check native numeric time zone offsets ([#8219](https://github.com/formatjs/formatjs/issues/8219)) ([c001514](https://github.com/formatjs/formatjs/commit/c0015148b035ff513b9fd408e6844e218564b200))
+* **@formatjs/intl-datetimeformat:** defer unused range fallback ([#8193](https://github.com/formatjs/formatjs/issues/8193)) ([385e6cd](https://github.com/formatjs/formatjs/commit/385e6cd05d298e536ba6a5c080b97c7c0b129a5e))
+* **@formatjs/intl-datetimeformat:** detect missing range parts support ([#8197](https://github.com/formatjs/formatjs/issues/8197)) ([3ac024e](https://github.com/formatjs/formatjs/commit/3ac024e78bedcf9efcd0b75e2c047f581cf17235))
+* **@formatjs/intl-datetimeformat:** fall back when host probes throw ([#8217](https://github.com/formatjs/formatjs/issues/8217)) ([ee5befa](https://github.com/formatjs/formatjs/commit/ee5befa5f4907677e209dc0d8a0fb4a02c8b3113))
+* **@formatjs/intl-datetimeformat:** guard host time zone probe installation ([#8187](https://github.com/formatjs/formatjs/issues/8187)) ([e20408f](https://github.com/formatjs/formatjs/commit/e20408f9da04464ac504d50cacd817b97e14f980))
+* **@formatjs/intl-datetimeformat:** isolate calendar locale records ([#8205](https://github.com/formatjs/formatjs/issues/8205)) ([aa778a7](https://github.com/formatjs/formatjs/commit/aa778a7446a12660779edaf36865ab2b066d46b7))
+* **@formatjs/intl-datetimeformat:** isolate optional interval data ([#8206](https://github.com/formatjs/formatjs/issues/8206)) ([dc98908](https://github.com/formatjs/formatjs/commit/dc98908b341f256d0dc841ef4c898f30283315ee))
+* **@formatjs/intl-datetimeformat:** keep calendar names in their own records ([#8210](https://github.com/formatjs/formatjs/issues/8210)) ([33d1083](https://github.com/formatjs/formatjs/commit/33d10838aefc1b7ab52907d9b58f63e7301bfd25))
+* **@formatjs/intl-datetimeformat:** keep legacy style connectors private ([#8204](https://github.com/formatjs/formatjs/issues/8204)) ([bfb4dfc](https://github.com/formatjs/formatjs/commit/bfb4dfce0d77b3a96138ed745ea6d2efee69842b))
+* **@formatjs/intl-datetimeformat:** require callable host methods ([#8200](https://github.com/formatjs/formatjs/issues/8200)) ([c8b1743](https://github.com/formatjs/formatjs/commit/c8b174395c2d0f262c1469885f0d3eb9fa05d7bf))
+* **@formatjs/intl-datetimeformat:** retain cold calendar style operations ([#8186](https://github.com/formatjs/formatjs/issues/8186)) ([86a0322](https://github.com/formatjs/formatjs/commit/86a03223fda07c68e49aeed39eaf33e6d154f11f))
+* **@formatjs/intl-datetimeformat:** retain lazy interval preparation operations ([#8182](https://github.com/formatjs/formatjs/issues/8182)) ([2b3c481](https://github.com/formatjs/formatjs/commit/2b3c481e4537cf237bc3fe84b85867cdeff5cf77))
+* **@formatjs/intl-datetimeformat:** retain NumberFormat intrinsic ([#8162](https://github.com/formatjs/formatjs/issues/8162)) ([4ce3292](https://github.com/formatjs/formatjs/commit/4ce3292b20519a9af8f9d4889dd8d0928b554357))
+* **@formatjs/intl-datetimeformat:** substitute time pattern fields literally ([#8168](https://github.com/formatjs/formatjs/issues/8168)) ([882c359](https://github.com/formatjs/formatjs/commit/882c359a75c18b252055d5197366308c16e39168))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.3
+
 ## [8.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.2.0...@formatjs/intl-datetimeformat@8.2.1) (2026-11-23)
 
 
