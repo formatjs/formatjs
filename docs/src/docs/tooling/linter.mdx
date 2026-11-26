@@ -1055,6 +1055,8 @@ const messages = defineMessages({
 
 #### Intentional notation
 
+Affixes on `#` inside `selectordinal` branches are valid, such as `#st` in English or `#日` in Japanese. Translators control the whole branch. This exception follows the nearest plural context; cardinal joins such as `#items` still fail.
+
 Use an opt-in `allowlist` for compact notation such as `v{version}` or `Q{quarter, number}`. Each entry names an ICU `argument` and either a `prefix` or a `suffix`:
 
 ```json
