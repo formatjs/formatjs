@@ -56,8 +56,16 @@ function getLastBoundaryElement(
   return last
 }
 
-function isPlaceholder(element: MessageFormatElement): boolean {
-  return element.type !== TYPE.literal && element.type !== TYPE.tag
+function isPlaceholder(
+  element: MessageFormatElement,
+  ordinal: boolean
+): boolean {
+  // Ordinal affixes belong to the translated branch, as in English #st or Japanese #日.
+  return (
+    element.type !== TYPE.literal &&
+    element.type !== TYPE.tag &&
+    !(ordinal && element.type === TYPE.pound)
+  )
 }
 
 function isAllowedAdjacency(
@@ -83,7 +91,8 @@ function isAllowedAdjacency(
 
 function findMessageIssues(
   ast: MessageFormatElement[],
-  allowlist: AllowedAdjacency[]
+  allowlist: AllowedAdjacency[],
+  ordinal = false
 ): MessageIssue[] {
   const issues: MessageIssue[] = []
 
@@ -114,13 +123,13 @@ function findMessageIssues(
     if (
       current.type === TYPE.literal &&
       /\p{L}$/u.test(current.value) &&
-      isPlaceholder(next) &&
+      isPlaceholder(next, ordinal) &&
       !isAllowedAdjacency(next, current.value, 'prefix', allowlist)
     ) {
       issues.push('placeholderAdjacentToWord')
     }
     if (
-      isPlaceholder(current) &&
+      isPlaceholder(current, ordinal) &&
       next.type === TYPE.literal &&
       /^\p{L}/u.test(next.value) &&
       !isAllowedAdjacency(current, next.value, 'suffix', allowlist)
@@ -132,15 +141,26 @@ function findMessageIssues(
   // Check nested message branches independently.
   for (const element of ast) {
     switch (element.type) {
-      case TYPE.plural:
+      case TYPE.plural: {
+        for (const option of Object.values(element.options)) {
+          issues.push(
+            ...findMessageIssues(
+              option.value,
+              allowlist,
+              element.pluralType === 'ordinal'
+            )
+          )
+        }
+        break
+      }
       case TYPE.select: {
         for (const option of Object.values(element.options)) {
-          issues.push(...findMessageIssues(option.value, allowlist))
+          issues.push(...findMessageIssues(option.value, allowlist, ordinal))
         }
         break
       }
       case TYPE.tag:
-        issues.push(...findMessageIssues(element.children, allowlist))
+        issues.push(...findMessageIssues(element.children, allowlist, ordinal))
         break
     }
   }

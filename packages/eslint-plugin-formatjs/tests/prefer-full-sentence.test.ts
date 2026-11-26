@@ -13,6 +13,18 @@ import {ruleTester} from '#packages/eslint-plugin-formatjs/tests/util'
 
 ruleTester.run(name, rule, {
   valid: [
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{day, selectordinal, one {#st of every month} two {#nd of every month} few {#rd of every month} other {#th of every month}}'})`,
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{day, selectordinal, other {毎月#日}}'})`,
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{day, selectordinal, other {<b>#th</b> {kind, select, short {#th} other {#th day}}}}'})`,
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{count, plural, other {On the {day, selectordinal, other {#th}} day}}'})`,
+    },
     defineMessage,
     dynamicMessage,
     noMatch,
@@ -71,6 +83,22 @@ ruleTester.run(name, rule, {
     },
   ],
   invalid: [
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{count, plural, other {#items}}'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{day, selectordinal, other {#th with {count, plural, other {#items}}}}'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{day, selectordinal, other {#th {name}day}}'})`,
+      errors: [{messageId: 'placeholderAdjacentToWord'}],
+    },
+    {
+      code: `import {defineMessage} from 'react-intl'; defineMessage({defaultMessage: '{day, selectordinal, other { #th}}'})`,
+      errors: [{messageId: 'leadingWhitespace'}],
+    },
     // Leading whitespace
     {
       code: `import {defineMessage} from 'react-intl';defineMessage({defaultMessage: ' Hello world'})`,

@@ -98,6 +98,9 @@ limited to plain/number arguments. Entries apply recursively inside ICU branches
 and tags; they do not suppress whitespace or other adjacency diagnostics.
 The default list is empty. Consumer configuration is also checked by
 `:package_load_test` against the assembled plugin in ESLint.
+Ordinal `#` affixes are accepted inside `selectordinal` branches, including nested
+tags and selects. Nested plurals reset the context, so cardinal `#items` remains
+invalid. Ordinary argument adjacency and whitespace checks are unchanged.
 
 `enforce-default-message` accepts `literal` (require a static message) or
 `anything` (require the property, allowing dynamic values). Both presets use
