@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.4.1](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.4.0...eslint-plugin-formatjs@8.4.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **eslint-plugin-formatjs:** allow ordinal pound affixes ([#8250](https://github.com/formatjs/formatjs/issues/8250)) ([b2d8355](https://github.com/formatjs/formatjs/commit/b2d8355e549ddab44843d0790d7788c66067fe32))
+
 ## [8.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.3.0...eslint-plugin-formatjs@8.4.0) (2026-11-26)
 
 
