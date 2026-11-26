@@ -81,7 +81,7 @@
     "@stylexjs/stylex": "0.19.2",
     "@stylexjs/unplugin": "0.19.2",
     "@tailwindcss/vite": "^4.1.18",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^8.0.0",
     "@testing-library/react": "^16.3.1",
     "@types/aria-query": "^5.0.4",
     "@types/babel__core": "^7.20.5",
