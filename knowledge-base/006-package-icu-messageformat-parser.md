@@ -4,6 +4,10 @@
 
 Hand-written recursive descent parser for ICU MessageFormat syntax. Core parsing engine used by `intl-messageformat`, all framework integrations, and all build tools.
 
+Rust cursor advancement and string searches use UTF-8 byte offsets. Captured
+locations retain character offsets. Quoted argument styles and Unicode argument
+names must preserve this distinction, including unterminated quoted styles.
+
 ## Design Decisions
 
 ### Hand-Written Parser (Not PEG/Yacc)

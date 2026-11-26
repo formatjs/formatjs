@@ -3,6 +3,83 @@ use formatjs_icu_messageformat_parser::parser::*;
 use formatjs_icu_messageformat_parser::types::*;
 
 #[test]
+fn parses_quoted_styles_after_unicode_text() {
+    for message in [
+        "Meeting {d, date, ::yyyyMMMd 'at' HH}",
+        "Réunion prévue {d, date, ::d MMMM 'à' HH}",
+        "Tehtävä {d, date, ::hh 'o''clock'}",
+        "Встреча {d, date, ::d MMMM 'в' HH}",
+        "ééé {n, number, ::'percent'}",
+        "日本語 {n, number, 'a'}",
+    ] {
+        let (prefix, argument) = message.split_once('{').unwrap();
+        let mut expected = Parser::new(format!("text {{{argument}"), ParserOptions::default())
+            .parse()
+            .unwrap();
+        let MessageFormatElement::Literal(literal) = &mut expected[0] else {
+            panic!("expected literal")
+        };
+        literal.value = prefix.to_owned();
+        assert_eq!(
+            Parser::new(message, ParserOptions::default())
+                .parse()
+                .unwrap(),
+            expected,
+            "{message}"
+        );
+    }
+}
+
+#[test]
+fn parses_unicode_identifiers_and_quoted_styles_with_locations() {
+    let message = "🙂 {é, number, 'à'} {次}";
+    let ast = Parser::new(
+        message,
+        ParserOptions {
+            capture_location: true,
+            ..Default::default()
+        },
+    )
+    .parse()
+    .unwrap();
+    let MessageFormatElement::Number(number) = &ast[1] else {
+        panic!("expected number")
+    };
+    assert_eq!(number.value, "é");
+    assert_eq!(
+        number.style,
+        Some(NumberSkeletonOrStyle::String("'à'".to_owned()))
+    );
+    let MessageFormatElement::Argument(argument) = &ast[3] else {
+        panic!("expected argument")
+    };
+    assert_eq!(argument.value, "次");
+    assert_eq!(
+        argument.location.as_ref().unwrap().end.offset,
+        message.chars().count()
+    );
+}
+
+#[test]
+fn reports_unclosed_quoted_style_after_unicode_text() {
+    let message = "日本語 {n, number, 'à";
+    let error = Parser::new(
+        message,
+        ParserOptions {
+            capture_location: true,
+            ..Default::default()
+        },
+    )
+    .parse()
+    .unwrap_err();
+    assert_eq!(
+        error.kind,
+        formatjs_icu_messageformat_parser::error::ErrorKind::UnclosedQuoteInArgumentStyle
+    );
+    assert_eq!(error.location.end.offset, message.chars().count());
+}
+
+#[test]
 fn test_position_default() {
     let pos = Position::default();
     assert_eq!(pos.offset, 0);

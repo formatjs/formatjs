@@ -131,40 +131,22 @@ impl ArgType {
 
 /// Matches an identifier at a specific byte index in the string.
 ///
-/// Returns a tuple of (string_slice, character_count) to avoid counting characters twice.
-///
-/// OPTIMIZED: Uses character iteration instead of regex for 2-3x speedup,
-/// and counts characters during the scan to avoid a second pass.
-///
-/// In TypeScript terms, this is like:
-/// ```typescript
-/// let end = start, count = 0
-/// while (end < str.length && isIdentifierChar(str[end])) { end++; count++ }
-/// return [str.slice(start, end), count]  // Zero-copy + count in single pass
-/// ```
-fn match_identifier_at_index(s: &str, byte_index: usize) -> (&str, usize) {
+/// Returns a borrowed slice ending at the first non-identifier character.
+fn match_identifier_at_index(s: &str, byte_index: usize) -> &str {
     if byte_index >= s.len() {
-        return ("", 0);
+        return "";
     }
 
     let substring = &s[byte_index..];
 
-    // Count characters WHILE scanning for identifier boundary
-    let mut char_count = 0usize;
     let end_byte = substring
         .char_indices()
-        .take_while(|&(_idx, c)| {
-            let is_id_char = is_identifier_char(c);
-            if is_id_char {
-                char_count += 1;
-            }
-            is_id_char
-        })
+        .take_while(|&(_idx, c)| is_identifier_char(c))
         .last()
         .map(|(idx, ch)| idx + ch.len_utf8()) // Get byte AFTER the last character
         .unwrap_or(0); // Empty identifier
 
-    (&substring[..end_byte], char_count) // Return both slice and count!
+    &substring[..end_byte]
 }
 
 /// Checks if a codepoint is an ASCII letter (upper or lowercase).
@@ -530,7 +512,7 @@ impl<'a> Parser<'a> {
     ///
     /// Returns true if the pattern was found, false if EOF was reached.
     fn bump_until(&mut self, pattern: &str) -> bool {
-        let current_offset = self.offset();
+        let current_offset = self.byte_offset();
         if let Some(index) = self.message.as_ref()[current_offset..].find(pattern) {
             self.bump_to(current_offset + index);
             true
@@ -546,24 +528,24 @@ impl<'a> Parser<'a> {
     ///
     /// Panics if target_offset is less than current offset or at an invalid UTF-8 boundary.
     fn bump_to(&mut self, target_offset: usize) {
-        if self.offset() > target_offset {
+        if self.byte_offset() > target_offset {
             cold_panic_fmt(format_args!(
                 "targetOffset {} must be greater than or equal to the current offset {}",
                 target_offset,
-                self.offset()
+                self.byte_offset()
             ));
         }
 
         let target_offset = target_offset.min(self.message.as_ref().len());
 
-        while self.offset() < target_offset {
+        while self.byte_offset() < target_offset {
             self.bump();
             if self.is_eof() {
                 break;
             }
         }
 
-        if self.offset() != target_offset && target_offset < self.message.as_ref().len() {
+        if self.byte_offset() != target_offset && target_offset < self.message.as_ref().len() {
             cold_panic_fmt(format_args!(
                 "targetOffset {} is at invalid UTF-8 boundary",
                 target_offset
@@ -611,16 +593,13 @@ impl<'a> Parser<'a> {
         // FIX: Use byte_offset for string indexing, not character offset
         let start_byte_offset = self.byte_offset();
 
-        // OPTIMIZATION: Get both slice and character count in one pass
-        let (value, char_count) =
-            match_identifier_at_index(self.message.as_ref(), start_byte_offset);
+        let value = match_identifier_at_index(self.message.as_ref(), start_byte_offset);
 
         // Convert to String immediately to avoid borrowing issues
         // This is still better than regex because we avoid the regex overhead!
         let value_string = value.to_string();
 
-        // Use the character count we already computed (no need to count again!)
-        let target_offset = self.offset() + char_count;
+        let target_offset = start_byte_offset + value_string.len();
 
         self.bump_to(target_offset);
 
