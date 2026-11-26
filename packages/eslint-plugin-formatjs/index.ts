@@ -96,6 +96,10 @@ import {
   rule as noCountWithoutPlural,
   name as noCountWithoutPluralName,
 } from '#packages/eslint-plugin-formatjs/rules/no-count-without-plural.js'
+import {
+  rule as noLiteralTemplatePlaceholder,
+  name as noLiteralTemplatePlaceholderName,
+} from '#packages/eslint-plugin-formatjs/rules/no-literal-template-placeholder.js'
 
 // @ts-ignore - package.json only available in rolldown/typecheck builds, not vitest
 import * as packageJsonNs from './package.json' with {type: 'json'}
@@ -129,6 +133,7 @@ const rules: ESLint.Plugin['rules'] = {
   [preferFullSentenceName]: preferFullSentence,
   [noLiteralNumberSymbolName]: noLiteralNumberSymbol,
   [noCountWithoutPluralName]: noCountWithoutPlural,
+  [noLiteralTemplatePlaceholderName]: noLiteralTemplatePlaceholder,
 }
 
 type Plugin = {
@@ -201,6 +206,7 @@ const configs: Plugin['configs'] = {
       'formatjs/prefer-full-sentence': 'error',
       'formatjs/no-literal-number-symbol': 'error',
       'formatjs/no-count-without-plural': 'error',
+      'formatjs/no-literal-template-placeholder': 'error',
     },
   },
   recommended: {
