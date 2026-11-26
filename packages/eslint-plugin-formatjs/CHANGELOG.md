@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.4.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.3.0...eslint-plugin-formatjs@8.4.0) (2026-11-26)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** allow intentional placeholder notation ([#8248](https://github.com/formatjs/formatjs/issues/8248)) ([5569d93](https://github.com/formatjs/formatjs/commit/5569d93e71cd8851e759330db020fcc61709a0cc))
+
 ## [8.3.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.2.0...eslint-plugin-formatjs@8.3.0) (2026-11-26)
 
 
