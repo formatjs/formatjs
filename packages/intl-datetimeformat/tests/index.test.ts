@@ -173,7 +173,7 @@ describe('Intl.DateTimeFormat', function () {
   it.each([
     ['Asia/Calcutta', 'Asia/Kolkata'],
     ['Etc/UTC', 'UTC'],
-  ])('detects native canonicalization of %s', (identifier, primary) => {
+  ])('accepts native canonicalization of %s', (identifier, primary) => {
     const original = Intl.DateTimeFormat
     const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
     try {
@@ -188,7 +188,7 @@ describe('Intl.DateTimeFormat', function () {
           })
         },
       })
-      expect(shouldPolyfill('en')).toBe('en')
+      expect(shouldPolyfill('en')).toBeUndefined()
     } finally {
       Intl.DateTimeFormat = original
     }
