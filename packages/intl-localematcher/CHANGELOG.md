@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.10.2...@formatjs/intl-localematcher@0.10.3) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** ignore extension text when detecting pseudolocales ([#8170](https://github.com/formatjs/formatjs/issues/8170)) ([db60a53](https://github.com/formatjs/formatjs/commit/db60a53306e322fe0d1b1e5dceb4fa64213a4a80))
+* **@formatjs/intl-localematcher:** keep host locale when caching fails ([#8190](https://github.com/formatjs/formatjs/issues/8190)) ([40ad3da](https://github.com/formatjs/formatjs/commit/40ad3dafdbedd83ace7cded8e6541a6b4157a047))
+* **@formatjs/intl-localematcher:** tolerate an unavailable canonicalizer registry ([#8192](https://github.com/formatjs/formatjs/issues/8192)) ([f116784](https://github.com/formatjs/formatjs/commit/f116784ac749ab59d7b74aef88de8fafea6aa8e7))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+
 ## [0.10.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.10.1...@formatjs/intl-localematcher@0.10.2) (2026-11-23)
 
 

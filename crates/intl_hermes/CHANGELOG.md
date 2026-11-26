@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.4.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.4.2...formatjs_intl_hermes_v0.4.3) (2026-11-26)
+
+
+### Bug Fixes
+
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_displaynames bumped from 0.2.2 to 0.2.3
+    * formatjs_intl_listformat bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_locale bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_pluralrules bumped from 0.3.0 to 0.3.1
+    * formatjs_intl_getcanonicallocales bumped from 1.0.0 to 1.0.1
+    * formatjs_intl_supportedvaluesof bumped from 1.1.0 to 1.1.1
+    * formatjs_intl_segmenter bumped from 1.0.1 to 1.0.2
+    * formatjs_intl_collator bumped from 0.2.2 to 0.2.3
+    * formatjs_intl_numberformat bumped from 0.3.0 to 0.3.1
+    * formatjs_intl_relativetimeformat bumped from 0.2.2 to 0.2.3
+    * formatjs_intl_datetimeformat bumped from 1.1.1 to 1.1.2
+    * formatjs_intl_datetimeformat_calendars bumped from 1.0.1 to 1.0.2
+    * formatjs_intl_durationformat bumped from 1.0.1 to 1.0.2
+
 ## [0.4.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.4.1...formatjs_intl_hermes_v0.4.2) (2026-11-23)
 
 

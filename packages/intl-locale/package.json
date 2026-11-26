@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-locale",
-  "version": "5.5.1",
+  "version": "5.5.2",
   "description": "Intl.Locale polyfill",
   "keywords": [
     "ecma402",

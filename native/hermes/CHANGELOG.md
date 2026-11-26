@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.0.2](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v2.0.1...formatjs-hermes-intl_v2.0.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/bigdecimal:** retain internal parsing and rendering operations ([#8178](https://github.com/formatjs/formatjs/issues/8178)) ([3f85014](https://github.com/formatjs/formatjs/commit/3f85014b1d1712b6372006ebc7bd35716e0cc669))
+* **@formatjs/bigdecimal:** retain numeric helpers for Intl rounding ([#8177](https://github.com/formatjs/formatjs/issues/8177)) ([36af037](https://github.com/formatjs/formatjs/commit/36af037da4d1bfc7d3f18be606e75f1a11072d82))
+* **@formatjs/intl-datetimeformat:** call intrinsic Date.now directly in Hermes ([#8172](https://github.com/formatjs/formatjs/issues/8172)) ([5aa449f](https://github.com/formatjs/formatjs/commit/5aa449f6ecc563def588e757489f58902f648216))
+* **@formatjs/intl-datetimeformat:** guard host time zone probe installation ([#8187](https://github.com/formatjs/formatjs/issues/8187)) ([e20408f](https://github.com/formatjs/formatjs/commit/e20408f9da04464ac504d50cacd817b97e14f980))
+* **@formatjs/intl-datetimeformat:** keep interval order metadata private ([#8228](https://github.com/formatjs/formatjs/issues/8228)) ([ebafb6d](https://github.com/formatjs/formatjs/commit/ebafb6da8822e9eabd020576d4c0e1c738c12d87))
+* **@formatjs/intl-datetimeformat:** preserve literal interval templates ([#8184](https://github.com/formatjs/formatjs/issues/8184)) ([ffbdc53](https://github.com/formatjs/formatjs/commit/ffbdc5317147bd25f1232297047698b29a74d1ad))
+* **@formatjs/intl-datetimeformat:** reject Symbol time zones in Hermes ([#8171](https://github.com/formatjs/formatjs/issues/8171)) ([2df84d0](https://github.com/formatjs/formatjs/commit/2df84d072136dfae7d89195be9177ad05087b733))
+* **@formatjs/intl-datetimeformat:** retain cold calendar style operations ([#8186](https://github.com/formatjs/formatjs/issues/8186)) ([86a0322](https://github.com/formatjs/formatjs/commit/86a03223fda07c68e49aeed39eaf33e6d154f11f))
+* **@formatjs/intl-datetimeformat:** retain lazy interval preparation operations ([#8182](https://github.com/formatjs/formatjs/issues/8182)) ([2b3c481](https://github.com/formatjs/formatjs/commit/2b3c481e4537cf237bc3fe84b85867cdeff5cf77))
+* **@formatjs/intl-datetimeformat:** retain NumberFormat intrinsic ([#8162](https://github.com/formatjs/formatjs/issues/8162)) ([4ce3292](https://github.com/formatjs/formatjs/commit/4ce3292b20519a9af8f9d4889dd8d0928b554357))
+* **@formatjs/intl-durationformat:** retain formatter intrinsics ([#8165](https://github.com/formatjs/formatjs/issues/8165)) ([d4f92f2](https://github.com/formatjs/formatjs/commit/d4f92f21e8746380467c594c16b5d9c3536f155e))
+* **@formatjs/intl-numberformat:** keep compound unit patterns private ([#8230](https://github.com/formatjs/formatjs/issues/8230)) ([b9f4aeb](https://github.com/formatjs/formatjs/commit/b9f4aebe59e8cbf3e6d73842e7d41f994a42ca52))
+* **@formatjs/intl-numberformat:** retain digit and rounding math helpers ([#8176](https://github.com/formatjs/formatjs/issues/8176)) ([a9ac6b4](https://github.com/formatjs/formatjs/commit/a9ac6b4031d6392e854dc4a045b0dab3f50b2b06))
+* **@formatjs/intl-numberformat:** retain rounding string operations ([#8180](https://github.com/formatjs/formatjs/issues/8180)) ([8f4a991](https://github.com/formatjs/formatjs/commit/8f4a9917bc4d0aae1aa48a10b070a3fd8f143438))
+* **@formatjs/intl-relativetimeformat:** retain formatter intrinsics ([#8164](https://github.com/formatjs/formatjs/issues/8164)) ([e197991](https://github.com/formatjs/formatjs/commit/e197991165d91fd535803202dbf365fe59208df6))
+* **@formatjs/intl-segmenter:** preserve boundaries around lone surrogates ([#8169](https://github.com/formatjs/formatjs/issues/8169)) ([4d5d3bd](https://github.com/formatjs/formatjs/commit/4d5d3bd813e296cd73275bb06df62b7a7ec8ff5a))
+* **@formatjs/intl-segmenter:** use the intrinsic iterator prototype ([#8194](https://github.com/formatjs/formatjs/issues/8194)) ([4260c6c](https://github.com/formatjs/formatjs/commit/4260c6ca494cac7ecd4c6383dc454a531472e80e))
+* **@formatjs/intl-supportedvaluesof:** probe regional calendar support ([#8224](https://github.com/formatjs/formatjs/issues/8224)) ([42b5540](https://github.com/formatjs/formatjs/commit/42b5540ec1acde44fb200fac184f38ed4fb71234))
+* **@formatjs/intl-supportedvaluesof:** retain required identifiers ([#8188](https://github.com/formatjs/formatjs/issues/8188)) ([2bc9e71](https://github.com/formatjs/formatjs/commit/2bc9e71c82795b85f313b07ce157acaef8254045))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** match Intl DisplayNames arity and Locale getter shape ([#8226](https://github.com/formatjs/formatjs/issues/8226)) ([7c0c62c](https://github.com/formatjs/formatjs/commit/7c0c62c12d56fe71319800d08b54afbc818b9c48))
+* **deps:** retain Intl private slot allocation intrinsic ([#8179](https://github.com/formatjs/formatjs/issues/8179)) ([a22127f](https://github.com/formatjs/formatjs/commit/a22127f495938e00f9d50497f2181a42e1583641))
+
 ## [2.0.1](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v2.0.0...formatjs-hermes-intl_v2.0.1) (2026-11-23)
 
 

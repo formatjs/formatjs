@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_locale_v1.0.0...formatjs_intl_locale_v1.0.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-locale:** ignore extension text when detecting pseudolocales ([#8170](https://github.com/formatjs/formatjs/issues/8170)) ([db60a53](https://github.com/formatjs/formatjs/commit/db60a53306e322fe0d1b1e5dceb4fa64213a4a80))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** normalize Intl locale data keys without Unicode options ([#8222](https://github.com/formatjs/formatjs/issues/8222)) ([fcadd8e](https://github.com/formatjs/formatjs/commit/fcadd8e27906e570008627baf28ccb6084150a2e))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_getcanonicallocales bumped from 1.0.0 to 1.0.1
+
 ## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_locale_v0.2.0...formatjs_intl_locale_v1.0.0) (2026-10-31)
 
 

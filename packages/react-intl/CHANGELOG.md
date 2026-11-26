@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.2.2](https://github.com/formatjs/formatjs/compare/react-intl@12.2.1...react-intl@12.2.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **deps:** update formatjs monorepo ([#8199](https://github.com/formatjs/formatjs/issues/8199)) ([7916f0d](https://github.com/formatjs/formatjs/commit/7916f0dfd94cbab7f5f6f9ab3020cfb1b5ce430a))
+* **deps:** update formatjs monorepo ([#8232](https://github.com/formatjs/formatjs/issues/8232)) ([f6e9767](https://github.com/formatjs/formatjs/commit/f6e9767b0cd82b38a4b957df9e12b48c794739dc))
+
 ## [12.2.1](https://github.com/formatjs/formatjs/compare/react-intl@12.2.0...react-intl@12.2.1) (2026-11-23)
 
 

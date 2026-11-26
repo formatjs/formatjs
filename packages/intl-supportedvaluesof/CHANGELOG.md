@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.1.1...@formatjs/intl-supportedvaluesof@3.1.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-supportedvaluesof:** probe regional calendar support ([#8224](https://github.com/formatjs/formatjs/issues/8224)) ([42b5540](https://github.com/formatjs/formatjs/commit/42b5540ec1acde44fb200fac184f38ed4fb71234))
+* **@formatjs/intl-supportedvaluesof:** retain required identifiers ([#8188](https://github.com/formatjs/formatjs/issues/8188)) ([2bc9e71](https://github.com/formatjs/formatjs/commit/2bc9e71c82795b85f313b07ce157acaef8254045))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** replace non-callable Intl host entries ([#8203](https://github.com/formatjs/formatjs/issues/8203)) ([18397c4](https://github.com/formatjs/formatjs/commit/18397c4ce4be335332e31acfa74c06753c32dd28))
+
 ## [3.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.1.0...@formatjs/intl-supportedvaluesof@3.1.1) (2026-11-23)
 
 

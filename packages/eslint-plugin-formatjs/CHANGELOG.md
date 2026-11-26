@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.2.0](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.1.4...eslint-plugin-formatjs@8.2.0) (2026-11-26)
+
+
+### Features
+
+* **eslint-plugin-formatjs:** add no-literal-number-symbol and no-count-without-plural rules ([#8221](https://github.com/formatjs/formatjs/issues/8221)) ([d7d0c47](https://github.com/formatjs/formatjs/commit/d7d0c47ad84132b3cfbf0e18058c39b7b34c00e8))
+
 ## [8.1.4](https://github.com/formatjs/formatjs/compare/eslint-plugin-formatjs@8.1.3...eslint-plugin-formatjs@8.1.4) (2026-11-08)
 
 

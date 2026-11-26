@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-collator@0.3.3...@formatjs/intl-collator@0.3.4) (2026-11-26)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-collator:** preserve canonical equivalence without native normalization ([#8216](https://github.com/formatjs/formatjs/issues/8216)) ([9883be4](https://github.com/formatjs/formatjs/commit/9883be444912dd8cf8335a9fac7b6b7bd73161b9))
+* **@formatjs/intl-collator:** preserve RegExp state during comparisons ([#8167](https://github.com/formatjs/formatjs/issues/8167)) ([47d9102](https://github.com/formatjs/formatjs/commit/47d910212780395026ef36dbc5ef75593a1c3359))
+* **@formatjs/intl-collator:** use resolved locale option defaults ([#8223](https://github.com/formatjs/formatjs/issues/8223)) ([2a6c029](https://github.com/formatjs/formatjs/commit/2a6c029d79081a44a2bf9f36dffcfd5d2a5f02ea))
+* align Intl polyfills with ECMA-402 ([#8160](https://github.com/formatjs/formatjs/issues/8160)) ([23504c1](https://github.com/formatjs/formatjs/commit/23504c1a13b096ea8890fdfb5cc65b5603e59f8a))
+* **deps:** replace non-callable Intl host entries ([#8203](https://github.com/formatjs/formatjs/issues/8203)) ([18397c4](https://github.com/formatjs/formatjs/commit/18397c4ce4be335332e31acfa74c06753c32dd28))
+* **deps:** retain Intl private slot allocation intrinsic ([#8179](https://github.com/formatjs/formatjs/issues/8179)) ([a22127f](https://github.com/formatjs/formatjs/commit/a22127f495938e00f9d50497f2181a42e1583641))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.3
+
 ## [0.3.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-collator@0.3.2...@formatjs/intl-collator@0.3.3) (2026-11-23)
 
 
