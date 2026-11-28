@@ -602,7 +602,7 @@ importers:
         version: 0.159.0
       oxfmt:
         specifier: ^0.76.0
-        version: 0.76.0(svelte@5.59.0)
+        version: 0.76.0(svelte@5.59.1)
       oxlint:
         specifier: ^1.64.0
         version: 1.94.0
@@ -671,7 +671,7 @@ importers:
         version: 7.1.4
       svelte:
         specifier: ^5.0.0
-        version: 5.59.0
+        version: 5.59.1
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.7.1
@@ -861,7 +861,7 @@ importers:
         version: 2.2.0
       svelte:
         specifier: '5'
-        version: 5.59.0
+        version: 5.59.1
       vue:
         specifier: '3'
         version: 3.5.46(typescript@7.0.2(patch_hash=e8f3253d18aba594ebb6588699219c7533508cf5a9afd35f86b8a2737e7191d0))
@@ -1182,7 +1182,7 @@ importers:
         version: link:../intl
       svelte:
         specifier: '5'
-        version: 5.59.0
+        version: 5.59.1
 
   packages/temporal: {}
 
@@ -7280,8 +7280,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  svelte@5.59.0:
-    resolution: {integrity: sha512-D2wE/hsHvZtbitZ+2TSFsiw00ck/Y9uK4tO59f391z4bzbdyVO2tFHqwiENKc57pp51hX7klBG+EkAVyDlD4sw==}
+  svelte@5.59.1:
+    resolution: {integrity: sha512-ADG20W/jYSQut/79AavRRfbXQYebFKMVWT/xAbjVVZfZA4XzIoFfcpanEfYTyN+uWQUaPP+nstFx4qVKwEVnQQ==}
     engines: {node: '>=18'}
 
   tailwind-merge@3.7.1:
@@ -13452,7 +13452,7 @@ snapshots:
       '@oxc-transform/binding-win32-ia32-msvc': 0.159.0
       '@oxc-transform/binding-win32-x64-msvc': 0.159.0
 
-  oxfmt@0.76.0(svelte@5.59.0):
+  oxfmt@0.76.0(svelte@5.59.1):
     dependencies:
       tinypool: 2.2.0
     optionalDependencies:
@@ -13475,7 +13475,7 @@ snapshots:
       '@oxfmt/binding-win32-arm64-msvc': 0.76.0
       '@oxfmt/binding-win32-ia32-msvc': 0.76.0
       '@oxfmt/binding-win32-x64-msvc': 0.76.0
-      svelte: 5.59.0
+      svelte: 5.59.1
 
   oxlint@1.94.0:
     optionalDependencies:
@@ -14320,7 +14320,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte@5.59.0:
+  svelte@5.59.1:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
